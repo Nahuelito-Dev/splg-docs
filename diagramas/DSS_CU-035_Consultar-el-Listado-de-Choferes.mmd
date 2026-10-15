@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSS — CU-035 Consultar el Listado de Choferes
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: listarChoferes(pagina, limite)
+    activate SIS
+    SIS-->>ADM: página de choferes de su distribuidora
+    deactivate SIS
+
+    opt vista operativa del día
+        ADM->>SIS: listarChoferesActivos(pagina, limite)
+        activate SIS
+        SIS-->>ADM: choferes activos
+        deactivate SIS
+    end

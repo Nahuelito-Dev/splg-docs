@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-025 Resolver un Reclamo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: resolverReclamo(reclamoId, resolucion, estadoFinal)
+    activate SIS
+    alt el reclamo existe y la transición es válida
+        SIS-->>ADM: reclamo resuelto (estado y resolución registrados)
+    else el reclamo no existe
+        SIS-->>ADM: recurso no encontrado
+    else la transición no es válida (resuelto/rechazado sin reabrir antes)
+        SIS-->>ADM: transición de reclamo inválida
+    end
+    deactivate SIS

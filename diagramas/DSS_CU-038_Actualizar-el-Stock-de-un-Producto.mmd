@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-038 Actualizar el Stock de un Producto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: actualizarStock(productoId, variacion)
+    activate SIS
+    alt el stock resultante es mayor o igual a cero
+        SIS-->>ADM: stock actualizado (nuevo stock disponible)
+    else el stock resultante sería negativo
+        SIS-->>ADM: error de solicitud (stock insuficiente)
+    else el producto no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

@@ -62,7 +62,7 @@ def alias_de(ruta):
 
 
 # ---------------------------------------------------------------- indice del codigo
-# El manifiesto sólo lleva las clases que entran al diagrama de clases de diseño.
+# El manifiesto solo lleva las clases que entran al diagrama de clases de diseño.
 # Para decidir si algo "existe en el código" se mira todo `src/`: clases (con sus
 # métodos de 2 espacios de sangría, como deja Prettier) y funciones de módulo.
 BACK = os.path.abspath(D + "../splg-app-backend") + "/src/"
@@ -158,7 +158,6 @@ EXCEPCIONES_OP = {
                 "cambiarDireccion", "compraExpress", "direccionPredeterminada",
                 "indicarQuienRecibe", "modalidadesDisponibles", "verificarCobertura",
                 "verificarCoberturaExpress"),
-  **_propuestas("TimeSlotService", "CU-043: modificar la capacidad de una franja", "update"),
   **_propuestas("GasCylinderService", "CU-268, CU-269: reactivar un producto y listar los dados de baja", "findInactive", "reactivate"),
   **_propuestas("ClaimsService", "CU-174, CU-175: la fotografía del reclamo", "assertEsDelCliente", "attachPhoto", "getPhoto"),
   **_propuestas("PaymentsService", "CU-168: reintegro de un pago aprobado", "findApprovedByOrder", "markRefunded"),

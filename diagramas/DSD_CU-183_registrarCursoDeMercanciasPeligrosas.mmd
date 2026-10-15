@@ -1,0 +1,23 @@
+sequenceDiagram
+    title DSD — CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado · registrarCursoDeMercanciasPeligrosas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>EMP: assertActivo()
+    SRV->>+PLN: crearTarea(empleado, vencimiento, detalle)
+    PLN->>PLN: assertSujetoEmpleado()
+    PLN->>PLN: assertAplicaA(empleado)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(empleado, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea

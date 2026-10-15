@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-159 Almacenar un Archivo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: almacenarArchivo(clave, contenido, tipo)
+    activate SIS
+    alt el almacenamiento acepta el archivo
+        SIS-->>ADM: archivo almacenado en el bucket privado, cifrado en reposo
+    else el almacenamiento rechaza la subida
+        SIS-->>ADM: error del proveedor de archivos, sin traducir
+    end
+    deactivate SIS
+    Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-155 y también lo incluyen CU-174

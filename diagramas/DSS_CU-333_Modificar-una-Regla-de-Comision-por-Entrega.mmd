@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-333 Modificar una Regla de Comisión por Entrega
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarReglaDeComision(reglaId, datos)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: regla con los datos nuevos
+    else el cambio la solapa con otra regla
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

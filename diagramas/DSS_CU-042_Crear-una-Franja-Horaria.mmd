@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-042 Crear una Franja Horaria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)
+    activate SIS
+    alt el formato horario y la capacidad son válidos
+        SIS-->>ADM: franja creada (franjaId, activa)
+    else el formato horario es inválido
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

@@ -4,7 +4,7 @@ sequenceDiagram
     actor CHO as Chofer (ACT-02)
     participant SIS as :Sistema
 
-    CHO->>SIS: cambiarDisponibilidad(usuarioId, disponible)
+    CHO->>SIS: desactivarDisponibilidad(usuarioId)
     activate SIS
     SIS-->>CHO: no disponible (deja de recibir ofertas)
     deactivate SIS

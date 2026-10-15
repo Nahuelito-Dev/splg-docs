@@ -98,8 +98,8 @@ sec = analisis[analisis.index("### 1.2 Lista de Conceptos Idóneos"):analisis.in
 en_doc = set(re.findall(r'^\|\s*\d+\s*\|\s*\*\*(\w+)\*\*', sec, re.M))
 check("Conceptos: Documento 2 §1.2 = modelo conceptual (%d)" % len(MC.CLASES),
       en_doc == set(MC.CLASES),
-      [f"sólo en el documento: {sorted(en_doc - set(MC.CLASES))}",
-       f"sólo en el modelo: {sorted(set(MC.CLASES) - en_doc)}"])
+      [f"solo en el documento: {sorted(en_doc - set(MC.CLASES))}",
+       f"solo en el modelo: {sorted(set(MC.CLASES) - en_doc)}"])
 
 con_tabla = {c for c, t in MC.TABLA.items() if t}
 con_tabla_todos = con_tabla

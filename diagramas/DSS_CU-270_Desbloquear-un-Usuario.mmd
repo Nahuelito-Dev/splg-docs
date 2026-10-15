@@ -4,7 +4,7 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: bloquearUsuario(usuarioId, bloquear)
+    ADM->>SIS: desbloquearUsuario(usuarioId)
     activate SIS
     alt el usuario existe
         SIS-->>ADM: usuario desbloqueado

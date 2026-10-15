@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-322 Consultar las Cargas de Combustible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCargasDeCombustible(filtros)
+    activate SIS
+    SIS-->>ADM: cargas vigentes que cumplen los filtros, con el total
+    deactivate SIS

@@ -6,8 +6,16 @@ sequenceDiagram
     participant CLT as cliente:Cliente
     participant PRO as producto:Producto
     participant CRO as :CreateOrderUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
 
-    CLI->>+QOU: cotizarPedido(items, medioDePago, direccionId, clienteId)
+    CLI->>+QOU: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)
+    opt La cotización es de la edición de un pedido
+        QOU->>+PEDS: get(pedidoId)
+        PEDS-->>-QOU: pedido
+        QOU->>+PED: getRenglones()
+        PED-->>-QOU: renglonesActuales
+    end
     opt La cotización lleva dirección
         QOU->>+CLT: getDireccion(direccionId)
         CLT-->>-QOU: direccion

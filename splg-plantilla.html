@@ -897,19 +897,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     // dibuja sobre papel. Con el tema oscuro las líneas de vida y las flechas
     // quedaban casi del color del fondo y no se leían proyectadas.
     mermaid.initialize({startOnLoad:false, securityLevel:"loose", theme:"base",
-      themeVariables:{
-        fontFamily:'"IBM Plex Sans", sans-serif', fontSize:"14px",
-        background:"#FFFDF7",
-        primaryColor:"#FFFFFF", primaryTextColor:"#2A2547", primaryBorderColor:"#2A2547",
-        lineColor:"#4A4468", textColor:"#2A2547",
-        secondaryColor:"#EDE7F2", tertiaryColor:"#F3EFE9",
-        noteBkgColor:"#FFF3D6", noteTextColor:"#2A2547", noteBorderColor:"#B57A2E",
-        actorBkg:"#FFFFFF", actorBorder:"#2A2547", actorTextColor:"#2A2547",
-        actorLineColor:"#8A84A6", signalColor:"#2A2547", signalTextColor:"#2A2547",
-        labelBoxBkgColor:"#EDE7F2", labelBoxBorderColor:"#2A2547",
-        labelTextColor:"#2A2547", loopTextColor:"#2A2547",
-        altSectionBkgColor:"#F7F4FB", sequenceNumberColor:"#FFFFFF"
-      }});
+      themeVariables:{"fontFamily": "Arial, Helvetica, sans-serif", "fontSize": "12px", "background": "#FFFFFF", "primaryColor": "#C6DAF0", "primaryBorderColor": "#3C5F8F", "primaryTextColor": "#000000", "lineColor": "#1F3A5F", "signalColor": "#1F3A5F", "signalTextColor": "#000000", "actorBkg": "#C6DAF0", "actorBorder": "#3C5F8F", "actorTextColor": "#000000", "actorLineColor": "#3C5F8F", "activationBkgColor": "#C6DAF0", "activationBorderColor": "#3C5F8F", "labelBoxBkgColor": "#DCE6F2", "labelBoxBorderColor": "#3C5F8F", "labelTextColor": "#000000", "loopTextColor": "#000000", "noteBkgColor": "#FFFFFF", "noteBorderColor": "#3C5F8F", "noteTextColor": "#000000", "sequenceNumberColor": "#FFFFFF"}});
   }
   initM();
   function esc(s){ return String(s==null?"":s)

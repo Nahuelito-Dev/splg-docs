@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-082 Crear un Usuario Base
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: crearUsuarioBase(rol, datosPersonales, distribuidoraId)
+    activate SIS
+    alt el solicitante puede crear ese rol y el correo y el teléfono están libres
+        SIS-->>CLI: usuario creado, con su cuenta de acceso y su perfil
+    else el solicitante no puede crear ese rol o pide una distribuidora que no le corresponde
+        SIS-->>CLI: acceso denegado
+    else falta la distribuidora que el rol necesita, o el proveedor de identidad rechaza la cuenta
+        SIS-->>CLI: solicitud inválida, con el motivo
+    else la distribuidora no existe o no está activa
+        SIS-->>CLI: recurso no encontrado
+    else el correo o el teléfono ya están en uso
+        SIS-->>CLI: conflicto: correo o teléfono en uso
+    end
+    deactivate SIS
+    Note over CLI,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-002 y también lo incluyen CU-003, CU-031,<br/>CU-086 y CU-087

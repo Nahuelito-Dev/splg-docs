@@ -24,38 +24,15 @@ os.makedirs(SAL, exist_ok=True)
 
 TINTA = "#2C4257"
 
-CAB = f"""skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+CAB = f"""!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
-skinparam class {{
-  BorderColor {TINTA}
-  BackgroundColor #FFFFFF
-  ArrowColor {TINTA}
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}}
 skinparam class<<referencia>> {{
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }}
-skinparam note {{
-  BackgroundColor #FFFFFF
-  BorderColor {TINTA}
-}}
 skinparam packageStyle rectangle
-skinparam package {{
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}}
 hide circle
 hide methods
 hide empty members
@@ -84,7 +61,7 @@ def generalizaciones(nombres, foco):
             sal.append(f'{padre} <|-- {h}' + (f' : {restr}' if k == 0 else ""))
     return sal
 
-# Asociaciones que la vista general no dibuja: las que sólo registran quién hizo algo
+# Asociaciones que la vista general no dibuja: las que solo registran quién hizo algo
 # (autoría). Cruzan todo el diagrama y lo
 # vuelven ilegible; están en la vista de su área.
 OMITIDAS_EN_GENERAL = set()
@@ -134,12 +111,12 @@ def vista(titulo, foco, ref, detalle=True, paquetes=False):
     if paquetes:
         lin += ["", "legend bottom right",
                 "  Vista de conjunto: sin atributos (están en la vista de cada área). Se omiten las",
-                "  asociaciones de Usuario que sólo registran la autoría de un hecho;",
+                "  asociaciones de Usuario que solo registran la autoría de un hecho;",
                 "  figuran en la vista de su área.",
                 "endlegend"]
     if ref and not paquetes:
         lin += ["", "legend bottom right",
-                "  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.",
+                "  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.",
                 "endlegend"]
     lin.append("@enduml")
     return "\n".join(lin)

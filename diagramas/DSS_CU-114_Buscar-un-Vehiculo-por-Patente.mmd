@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-114 Buscar un Vehículo por Patente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: buscarVehiculoPorPatente(patente)
+    activate SIS
+    alt hay un vehículo con esa patente
+        SIS-->>ADM: ficha del vehículo
+    else ninguno coincide
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

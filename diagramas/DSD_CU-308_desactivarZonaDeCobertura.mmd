@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-308 Desactivar un Polígono de Cobertura · desactivarZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant COL as :Map#lt;String, ZonaCobertura#gt;
+    participant ZON as zona:ZonaCobertura
+
+    ADM->>+SRV: desactivarZonaDeCobertura(zonaId)
+    SRV->>+COL: get(zonaId)
+    COL-->>-SRV: zona
+    SRV->>ZON: desactivar()
+    SRV-->>-ADM: zona
+    Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)

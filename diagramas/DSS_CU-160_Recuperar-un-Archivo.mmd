@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSS — CU-160 Recuperar un Archivo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: recuperarArchivo(clave, nombreDeDescarga)
+    activate SIS
+    alt la clave se firma
+        SIS-->>ADM: enlace firmado de corta vigencia para bajar el archivo
+    end
+    deactivate SIS
+    Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-157 y también lo incluyen CU-175

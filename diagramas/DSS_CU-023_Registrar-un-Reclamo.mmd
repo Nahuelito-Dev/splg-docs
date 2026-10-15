@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-023 Registrar un Reclamo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: registrarReclamo(pedidoId, motivo, evidencia)
+    activate SIS
+    alt El pedido existe y es del cliente
+        SIS-->>CLI: reclamo registrado (número, estado pendiente)
+    else El pedido no existe
+        SIS-->>CLI: recurso no encontrado
+    else El pedido no le pertenece
+        SIS-->>CLI: rechazo (esta orden no pertenece al cliente indicado)
+    end
+    deactivate SIS

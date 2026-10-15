@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-316 Modificar una Licencia o Ausencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarLicencia(licenciaId, datos)
+    activate SIS
+    alt la licencia está solicitada y el período es válido
+        SIS-->>ADM: licencia modificada
+    else la licencia no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la licencia no está solicitada o el período se superpone
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

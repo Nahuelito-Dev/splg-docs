@@ -1,0 +1,31 @@
+sequenceDiagram
+    title DSD — CU-341 Modificar un Pedido Pendiente (Cliente) · modificarMiPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant UOU as :UpdateOrderUseCase
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PRO as producto:Producto
+
+    CLI->>+UOU: modificarMiPedido(pedidoId, datos)
+    UOU->>+COL: get(pedidoId)
+    COL-->>-UOU: pedido
+    UOU->>+PED: modificar(cliente, datos)
+    PED->>PED: validarEsDelCliente(cliente)
+    PED->>PED: validarEditable()
+    opt Cambian los renglones
+        PED->>PRO: reservar(cantidad)
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+    end
+    opt Cambia la dirección
+        create participant DIR as :CambioDireccion
+        PED->>DIR: «create»(direccionOrigen, direccionNueva, autor, motivo)
+    end
+    PED->>PED: calcularTotal()
+    opt El cambio no es vacío
+        create participant CAM as :CambioEstadoPedido
+        PED->>CAM: «create»(detalle)
+    end
+    deactivate PED
+    UOU-->>-CLI: pedido

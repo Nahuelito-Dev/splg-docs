@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-328 Consultar los Siniestros
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarSiniestros(filtros)
+    activate SIS
+    SIS-->>ADM: siniestros que cumplen los filtros, con el total
+    deactivate SIS

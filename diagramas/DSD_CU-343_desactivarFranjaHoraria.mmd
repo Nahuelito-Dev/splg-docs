@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-343 Desactivar una Franja Horaria · desactivarFranjaHoraria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TimeSlotService
+    participant COL as :Map#lt;String, FranjaHoraria#gt;
+    participant FRA as franja:FranjaHoraria
+
+    ADM->>+SRV: desactivarFranjaHoraria(franjaId)
+    SRV->>+COL: get(franjaId)
+    COL-->>-SRV: franja
+    SRV->>FRA: desactivar()
+    SRV-->>-ADM: franja

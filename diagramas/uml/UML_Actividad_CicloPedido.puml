@@ -1,27 +1,10 @@
 @startuml
 title Diagrama de actividad — Ciclo de vida del pedido
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
-skinparam ArrowColor #2C4257
-skinparam ArrowFontSize 12
-skinparam activity {
-  BackgroundColor #F4F7FA
-  BorderColor #2C4257
-  DiamondBackgroundColor #FBF7E6
-  DiamondBorderColor #7A7340
-  BarColor #2C4257
-  StartColor #2C4257
-  EndColor #2C4257
-}
+!include ../estilo-vp.iuml
 skinparam swimlane {
   BorderColor #6B7683
   TitleFontStyle bold
 }
-skinparam NoteBackgroundColor #FBF7E6
-skinparam NoteBorderColor #7A7340
 |Cliente|
 |Sistema|
 |Chofer|

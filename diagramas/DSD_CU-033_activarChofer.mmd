@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-033 Activar un Chofer · activarChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+
+    ADM->>+SRV: activarChofer(choferId)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: cambiarEstado(verdadero)
+    opt activo es falso
+        CHO->>CHO: desconectar()
+    end
+    deactivate CHO
+    opt activo es falso
+        SRV->>UBI: eliminar()
+    end
+    SRV-->>-ADM: chofer

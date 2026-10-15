@@ -37,11 +37,10 @@ ALTO_LINEA = 15
 MARGEN_GRUPO = 36
 TITULO_GRUPO = 38
 SEP_GRUPOS = 70
-TINTA = "#2C4257"
-GRIS = "#8A97A3"
-COLOR = {"dominio": "#E8EEF3", "controlador": "#D6E4F0", "fachada": "#D6E4F0", "fabricación pura": "#F3E9CF",
-         "colección": "#E6E6E6", "puerto": "#DCEBDD", "adaptador": "#DCEBDD", "planificado": "#E4EDF4"}
-FONDOS_GRUPO = ["#F7F9FB", "#FBF8F2", "#F5F9F6", "#F9F6FA", "#F6F8FB", "#FBF6F6"]
+from estilo_vp import TINTA, BORDE as GRIS, RELLENO, RELLENO_CLARO   # estilo Visual Paradigm, centralizado
+COLOR = {"dominio": RELLENO, "controlador": "#B7CDE8", "fachada": "#B7CDE8", "fabricación pura": "#E4ECF6",
+         "colección": "#E6E6E6", "puerto": "#D5E3F3", "adaptador": "#D5E3F3", "planificado": "#FFF6D9"}
+FONDOS_GRUPO = ["#FFFFFF", "#F7FAFD", "#FFFFFF", "#F7FAFD", "#FFFFFF", "#F7FAFD"]
 
 
 def esc(s):
@@ -230,7 +229,7 @@ def acomodar(lienzo, grupos, aristas_layout, estilo_nodo, dir_="TB", sep=(0.35, 
 # ------------------------------------------------------------------ enrutador ortogonal
 def estilo_arista(base, extra=""):
     return ("rounded=1;arcSize=8;html=1;jumpStyle=arc;jumpSize=7;"
-            f"strokeColor={TINTA};strokeWidth=1.2;fontSize=10;fontColor={TINTA};" + base + extra)
+            f"strokeColor={TINTA};strokeWidth=1;fontSize=10;fontColor={TINTA};" + base + extra)
 
 
 class Enrutador:
@@ -473,7 +472,7 @@ def caja_html(titulo, estereotipo, secciones):
 def estilo_caja(fondo, planificado=False, extra=""):
     borde = "dashed=1;dashPattern=6 3;" if planificado else ""
     return (f"rounded=0;whiteSpace=nowrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingRight=4;spacingTop=3;"
-            f"fontSize={FUENTE};fontFamily=Helvetica;fillColor={fondo};strokeColor={TINTA};strokeWidth=1.2;"
+            f"fontSize={FUENTE};fontFamily=Arial;fillColor={fondo};strokeColor={TINTA};strokeWidth=1;"
             f"overflow=hidden;{borde}{extra}")
 
 
@@ -529,7 +528,7 @@ def generar_mc():
                 {e["datos"]["origen_nombre"], e["datos"]["destino_nombre"]} == {c1, c2} and e["datos"]["nombre"] == "usa")
     L.arista(ids[ca], asoc["id"], estilo_arista("dashed=1;endArrow=none;startArrow=none;", ""), "clase_de_asociacion",
              {"origen_nombre": ca, "destino_nombre": f"{c1}-{c2}", "nombre": "clase de asociación"})
-    # los puertos sólo para aristas entre vértices
+    # los puertos solo para aristas entre vértices
     enrutar(L)
     return L
 
@@ -652,16 +651,16 @@ def generar_dbd(modelo):
 
     def dibujar(t, padre, x, y, ax, ay):
         w, h, tx, ix = medidas(t)
-        tid = L.vertice(t, (f"swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=27;fillColor=#D6E4F0;"
+        tid = L.vertice(t, (f"swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=27;fillColor=#C6DAF0;"
                             f"horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;"
-                            f"swimlaneFillColor=#FFFFFF;strokeColor={TINTA};strokeWidth=1.2;fontSize=12;fontColor={TINTA};"
+                            f"swimlaneFillColor=#FFFFFF;strokeColor={TINTA};strokeWidth=1;fontSize=12;fontColor={TINTA};"
                             f"align=center;"), x, y, w, h, padre, abs_=(ax, ay, w, h), nodo=True)
         tabla_id[t] = tid
         yy = 27
         for c, s in tx:
             rid = L.vertice(s, (f"text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;"
                                 f"spacingRight=4;overflow=hidden;rotatable=0;whiteSpace=nowrap;html=1;fontSize={FUENTE};"
-                                f"fontFamily=Helvetica;fontColor={TINTA};" + ("fontStyle=1;" if c["pk"] else "")),
+                                f"fontFamily=Arial;fontColor={TINTA};" + ("fontStyle=1;" if c["pk"] else "")),
                             0, yy, w, ALTO_FILA, tid, abs_=(ax, ay + yy, w, ALTO_FILA), de_nodo=tid)
             filas[(t, c["nombre"])] = rid
             yy += ALTO_FILA
@@ -844,7 +843,7 @@ python3 generar-drawio.py      # reescribe los cuatro .drawio
 python3 verificar-drawio.py    # 0 relaciones faltantes y 0 aristas sueltas, contra la base, el MC, el DER y el DC
 ```
 
-Los `.drawio` se regeneran sólo a mano con `generar-drawio.py` (el diagrama de clases tarda unos minutos); `generar-sitio.py` no los regenera y avisa si están desactualizados. Hace falta graphviz (`dot`, `fdp`): sin él, `generar-drawio.py` termina con error.
+Los `.drawio` se regeneran solo a mano con `generar-drawio.py` (el diagrama de clases tarda unos minutos); `generar-sitio.py` no los regenera y avisa si están desactualizados. Hace falta graphviz (`dot`, `fdp`): sin él, `generar-drawio.py` termina con error.
 """
 
 

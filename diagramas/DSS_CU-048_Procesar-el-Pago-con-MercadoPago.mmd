@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSS — CU-048 Procesar el Pago con MercadoPago
+    autonumber
+    actor MP as MercadoPago (ACT-06)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
+    actor CHO as Chofer (ACT-02)
+
+    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
+
+    MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
+    activate SIS
+    alt La firma no es válida
+        SIS-->>MP: notificación recibida (se descarta sin procesar)
+    else Pago aprobado de un pedido pendiente
+        SIS-->>MP: notificación recibida
+        SIS-)CLI: notificarPagoAcreditado(pedido)
+        SIS-)CHO: notificarOferta(pedido)
+    else Pago aprobado de la seña de una reserva
+        SIS-->>MP: notificación recibida (la seña queda paga, la reserva no se despacha)
+        SIS-)CLI: notificarPagoAcreditado(pedido)
+    else Pago aprobado de un pedido ya cancelado o entregado
+        SIS-->>MP: notificación recibida (se registra el pago, sin reactivar el pedido)
+    else Pago rechazado o cancelado
+        SIS-->>MP: notificación recibida (el pedido queda a la espera y el Cliente no recibe aviso)
+    end
+    deactivate SIS

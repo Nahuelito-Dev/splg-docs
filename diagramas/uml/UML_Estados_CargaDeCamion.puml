@@ -1,21 +1,6 @@
 @startuml
 title Diagrama de estados — Carga de camión
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
-skinparam ArrowColor #2C4257
-skinparam state {
-  BorderColor #2C4257
-  BackgroundColor #F4F7FA
-  StartColor #2C4257
-  EndColor #2C4257
-  AttributeFontSize 12
-}
-skinparam ArrowFontSize 12
-skinparam NoteBackgroundColor #FBF7E6
-skinparam NoteBorderColor #7A7340
+!include ../estilo-vp.iuml
 hide empty description
 state "Cargando\n(loading)" as loading
 state "En ruta\n(on_route)" as route

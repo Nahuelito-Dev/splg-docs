@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-097 Eliminar un Chofer (baja lógica)
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: eliminarChofer(choferId)
+    activate SIS
+    alt el chofer existe y no tiene pedidos en curso
+        SIS-->>ADM: chofer dado de baja junto con su cuenta, retirado del radar y con su vehículo en uso liberado (se conserva el histórico de entregas)
+    else el chofer tiene pedidos aceptados o en camino
+        SIS-->>ADM: conflicto, el chofer tiene pedidos en curso
+    else el chofer no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

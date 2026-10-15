@@ -15,7 +15,7 @@ sequenceDiagram
     alt El cobro entra a una caja
         SRV->>+LDG: registrarMovimientoDeCaja(cajaId, ingreso, importe, cobroDeCuentaCorriente, medio)
         LDG-->>-SRV: movimiento
-        Note over SRV,LDG: Caja: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>Crea el MovimientoDeCaja
+        Note over SRV,LDG: Caja: ver DSD de registrarEntradaDeDinero (CU-228).<br/>Crea el MovimientoDeCaja
     else El cobro lo registra un chofer en la calle
         SRV->>+RENS: get(usuarioId)
         RENS-->>-SRV: rendicion

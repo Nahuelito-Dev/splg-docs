@@ -1,0 +1,183 @@
+DIAGRAMAS DE CASOS DE USO — SPLG (Sistema de Pedidos y Logística de Garrafas de Gas)
+
+Cada imagen se lee sola: lleva su título, el nombre del sistema en el límite y la leyenda de la notación.
+Los PNG están exportados al doble de tamaño (el diagrama 00, a la escala máxima que admite un PNG: 32.000 px de alto);
+para ampliar o imprimir en A4 sin perder nitidez, usar el SVG o el PDF de la imagen 00.
+
+Notación: UML 2.5. Rosado = caso de uso planificado. «include» y «extend» con arco discontinuo dentro de un grupo;
+hacia otro grupo, un trazo corto con el código del caso al que remiten.
+
+ÍNDICE
+
+  00-Diagrama-de-Casos-de-Uso-Completo.png (+ .svg, .pdf)
+      Diagrama de casos de uso del sistema: los 340 casos de uso en una sola imagen (también SVG y PDF vectoriales)
+  01-Actores.png
+      Los actores del sistema y la generalización del Administrador General en el Administrador
+  02-Cliente-parte-1.png
+      Casos de uso de Cliente, parte 1
+  03-Cliente-parte-2.png
+      Casos de uso de Cliente, parte 2
+  04-Cliente-parte-3.png
+      Casos de uso de Cliente, parte 3
+  05-Cliente-parte-4.png
+      Casos de uso de Cliente, parte 4
+  06-Cliente-parte-5.png
+      Casos de uso de Cliente, parte 5
+  07-Cliente-parte-6.png
+      Casos de uso de Cliente, parte 6
+  08-Cliente-parte-7.png
+      Casos de uso de Cliente, parte 7
+  09-Cliente-parte-8.png
+      Casos de uso de Cliente, parte 8
+  10-Cliente-parte-9.png
+      Casos de uso de Cliente, parte 9
+  11-Cliente-parte-10.png
+      Casos de uso de Cliente, parte 10
+  12-Cliente-parte-11.png
+      Casos de uso de Cliente, parte 11
+  13-Cliente-parte-12.png
+      Casos de uso de Cliente, parte 12
+  14-Cliente-parte-13.png
+      Casos de uso de Cliente, parte 13
+  15-Chofer-parte-1.png
+      Casos de uso de Chofer, parte 1
+  16-Chofer-parte-2.png
+      Casos de uso de Chofer, parte 2
+  17-Chofer-parte-3.png
+      Casos de uso de Chofer, parte 3
+  18-Chofer-parte-4.png
+      Casos de uso de Chofer, parte 4
+  19-Administrador-parte-1.png
+      Casos de uso de Administrador, parte 1
+  20-Administrador-parte-2.png
+      Casos de uso de Administrador, parte 2
+  21-Administrador-parte-3.png
+      Casos de uso de Administrador, parte 3
+  22-Administrador-parte-4.png
+      Casos de uso de Administrador, parte 4
+  23-Administrador-parte-5.png
+      Casos de uso de Administrador, parte 5
+  24-Administrador-parte-6.png
+      Casos de uso de Administrador, parte 6
+  25-Administrador-parte-7.png
+      Casos de uso de Administrador, parte 7
+  26-Administrador-parte-8.png
+      Casos de uso de Administrador, parte 8
+  27-Administrador-parte-9.png
+      Casos de uso de Administrador, parte 9
+  28-Administrador-parte-10.png
+      Casos de uso de Administrador, parte 10
+  29-Administrador-parte-11.png
+      Casos de uso de Administrador, parte 11
+  30-Administrador-parte-12.png
+      Casos de uso de Administrador, parte 12
+  31-Administrador-parte-13.png
+      Casos de uso de Administrador, parte 13
+  32-Administrador-parte-14.png
+      Casos de uso de Administrador, parte 14
+  33-Administrador-parte-15.png
+      Casos de uso de Administrador, parte 15
+  34-Administrador-parte-16.png
+      Casos de uso de Administrador, parte 16
+  35-Administrador-parte-17.png
+      Casos de uso de Administrador, parte 17
+  36-Administrador-parte-18.png
+      Casos de uso de Administrador, parte 18
+  37-Administrador-parte-19.png
+      Casos de uso de Administrador, parte 19
+  38-Administrador-parte-20.png
+      Casos de uso de Administrador, parte 20
+  39-Administrador-parte-21.png
+      Casos de uso de Administrador, parte 21
+  40-Administrador-parte-22.png
+      Casos de uso de Administrador, parte 22
+  41-Administrador-parte-23.png
+      Casos de uso de Administrador, parte 23
+  42-Administrador-parte-24.png
+      Casos de uso de Administrador, parte 24
+  43-Administrador-parte-25.png
+      Casos de uso de Administrador, parte 25
+  44-Administrador-General-parte-1.png
+      Casos de uso de Administrador General, parte 1
+  45-Administrador-General-parte-2.png
+      Casos de uso de Administrador General, parte 2
+  46-Administrador-General-parte-3.png
+      Casos de uso de Administrador General, parte 3
+  47-Administrador-General-parte-4.png
+      Casos de uso de Administrador General, parte 4
+  48-Administrador-General-parte-5.png
+      Casos de uso de Administrador General, parte 5
+  49-Administrador-General-parte-6.png
+      Casos de uso de Administrador General, parte 6
+  50-Sistema-Automatico-parte-1.png
+      Casos de uso de Sistema Automatico, parte 1
+  51-Sistema-Automatico-parte-2.png
+      Casos de uso de Sistema Automatico, parte 2
+  52-Operador-tecnico.png
+      Casos de uso de Operador tecnico
+  53-MercadoPago.png
+      Casos de uso de MercadoPago
+  54-Firebase-parte-1.png
+      Casos de uso de Firebase, parte 1
+  55-Firebase-parte-2.png
+      Casos de uso de Firebase, parte 2
+  56-Servicio-de-correo.png
+      Casos de uso de Servicio de correo
+  57-Plataforma-de-despliegue.png
+      Casos de uso de Plataforma de despliegue
+  58-Diagrama-de-contexto.png
+      Diagrama de contexto del sistema
+  59-Mapa-de-navegacion.png
+      Mapa de navegación: qué actores participan en cada subsistema
+  60-SS-01-Autenticacion-y-Usuarios.png
+      Subsistema SS-01: Autenticacion y Usuarios
+  61-SS-02-Gestion-de-Pedidos-parte-1.png
+      Subsistema SS-02: Gestion de Pedidos, parte 1
+  62-SS-02-Gestion-de-Pedidos-parte-2.png
+      Subsistema SS-02: Gestion de Pedidos, parte 2
+  63-SS-03-Despacho-y-Asignacion.png
+      Subsistema SS-03: Despacho y Asignacion
+  64-SS-04-Seguimiento-en-Tiempo-Real.png
+      Subsistema SS-04: Seguimiento en Tiempo Real
+  65-SS-05-Reclamos.png
+      Subsistema SS-05: Reclamos
+  66-SS-06-Reportes-y-Tablero.png
+      Subsistema SS-06: Reportes y Tablero
+  67-SS-07-Choferes.png
+      Subsistema SS-07: Choferes
+  68-SS-07-Costos-Siniestros-y-Adjuntos.png
+      Subsistema SS-07: Costos Siniestros y Adjuntos
+  69-SS-07-Vehiculos.png
+      Subsistema SS-07: Vehiculos
+  70-SS-08-Gestion-de-Productos-parte-1.png
+      Subsistema SS-08: Gestion de Productos, parte 1
+  71-SS-08-Gestion-de-Productos-parte-2.png
+      Subsistema SS-08: Gestion de Productos, parte 2
+  72-SS-09-Franjas-Horarias.png
+      Subsistema SS-09: Franjas Horarias
+  73-SS-10-Multi-Distribuidora.png
+      Subsistema SS-10: Multi Distribuidora
+  74-SS-11-Cobertura-Geografica.png
+      Subsistema SS-11: Cobertura Geografica
+  75-SS-12-Incidencias-y-Calidad-de-Servicio.png
+      Subsistema SS-12: Incidencias y Calidad de Servicio
+  76-SS-13-Trazabilidad-de-Envases.png
+      Subsistema SS-13: Trazabilidad de Envases
+  77-SS-14-Pagos-y-Conciliacion.png
+      Subsistema SS-14: Pagos y Conciliacion
+  78-SS-15-Reservas-Programadas.png
+      Subsistema SS-15: Reservas Programadas
+  79-SS-16-Administracion-de-Cuentas-y-Roles.png
+      Subsistema SS-16: Administracion de Cuentas y Roles
+  80-SS-17-Notificaciones-y-Mensajeria.png
+      Subsistema SS-17: Notificaciones y Mensajeria
+  81-SS-18-Observabilidad-y-Operacion.png
+      Subsistema SS-18: Observabilidad y Operacion
+  82-SS-19-Personal-y-Legajos.png
+      Subsistema SS-19: Personal y Legajos
+  83-SS-20-Compras.png
+      Subsistema SS-20: Compras
+  84-SS-21-Caja-Rendiciones-y-Cuentas-Corrientes-parte-1.png
+      Subsistema SS-21: Caja Rendiciones y Cuentas Corrientes, parte 1
+  85-SS-21-Caja-Rendiciones-y-Cuentas-Corrientes-parte-2.png
+      Subsistema SS-21: Caja Rendiciones y Cuentas Corrientes, parte 2

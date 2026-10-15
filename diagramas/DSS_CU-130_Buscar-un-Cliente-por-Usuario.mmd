@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-130 Buscar un Cliente por Usuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: buscarClientePorUsuario(usuarioId)
+    activate SIS
+    alt la cuenta tiene ficha de cliente
+        SIS-->>ADM: ficha del cliente
+    else la cuenta no tiene ficha de cliente, o su cliente nunca le compró a la distribuidora del administrador
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

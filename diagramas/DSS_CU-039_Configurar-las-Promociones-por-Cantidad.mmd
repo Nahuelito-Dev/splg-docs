@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-039 Configurar las Promociones por Cantidad
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: configurarPromocionesDelProducto(productoId, promociones)
+    activate SIS
+    alt la tabla de promociones es válida
+        SIS-->>ADM: promociones vigentes (cantidad mínima y porcentaje de descuento)
+    else la tabla de promociones es inválida
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

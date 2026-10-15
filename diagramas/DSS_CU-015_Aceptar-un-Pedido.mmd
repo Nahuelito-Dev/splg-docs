@@ -1,0 +1,24 @@
+sequenceDiagram
+    title DSS — CU-015 Aceptar un Pedido
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
+
+    CHO->>SIS: aceptarPedido(pedidoId)
+    activate SIS
+    alt La transición de estado es válida y el chofer está activo
+        SIS-->>CHO: pedido asignado (datos de entrega y código de entrega)
+        SIS-)CLI: notificarPedidoAceptado(pedido)
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else El pedido ya tiene asignado a otro chofer
+        SIS-->>CHO: acceso denegado (el pedido no está asignado a este chofer)
+    else El pedido ya está entregado o cancelado
+        SIS-->>CHO: error de solicitud (transición no permitida)
+    else El chofer no puede recibir pedidos por su carga de camión
+        SIS-->>CHO: error de solicitud, con el motivo
+    else El chofer no existe o está dado de baja
+        SIS-->>CHO: error de solicitud (repartidor no encontrado o inactivo)
+    end
+    deactivate SIS

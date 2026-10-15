@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-112 Eliminar un Vehículo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: eliminarVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo existe y está libre
+        SIS-->>ADM: vehículo dado de baja (baja lógica, la patente queda libre)
+    else el vehículo está en uso por un chofer
+        SIS-->>ADM: conflicto, el vehículo está en uso: hay que liberarlo primero
+    else el vehículo no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

@@ -10,7 +10,7 @@ sequenceDiagram
         SIS-->>ADM: recepción anulada
     else la recepción no existe
         SIS-->>ADM: recurso no encontrado
-    else la recepción ya está anulada o las llenas ya no están en el depósito
+    else la recepción ya está anulada, las llenas ya no están en el depósito o el depósito fue dado de baja
         SIS-->>ADM: conflicto, con el detalle
     else la recepción figura como pagada o falta el motivo
         SIS-->>ADM: solicitud inválida

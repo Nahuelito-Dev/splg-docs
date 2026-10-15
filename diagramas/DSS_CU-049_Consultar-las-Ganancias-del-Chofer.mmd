@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-049 Consultar las Ganancias del Chofer
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: consultarPerfilDelChofer(usuarioId)
+    activate SIS
+    alt el perfil es del propio chofer o de la distribuidora del administrador
+        SIS-->>CHO: perfil con el saldo acumulado
+    else el perfil no existe o no es accesible
+        SIS-->>CHO: recurso no encontrado
+    end
+    deactivate SIS
+    Note over CHO,SIS: También lo inicia el Administrador (ACT-03)

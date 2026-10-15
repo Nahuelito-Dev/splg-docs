@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-111 Editar un Vehículo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: editarVehiculo(vehiculoId, datos)
+    activate SIS
+    alt el vehículo existe y los cambios son admisibles
+        SIS-->>ADM: vehículo actualizado
+    else la patente ya pertenece a otro vehículo
+        SIS-->>ADM: patente repetida
+    else se cambia la patente o el tipo de un vehículo en uso
+        SIS-->>ADM: conflicto (el vehículo está en uso: liberalo primero)
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

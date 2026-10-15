@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -67,9 +37,11 @@ class OrderService <<fachada>> {
   + cambiarDireccionDeEntrega(pedidoId: Identificador,\n      direccionId: Identificador, motivo: Cadena): Pedido
   + completarDiasSinVentas(ventasPorDia: Registro): Registro
   + consultarGraficoDeVentas(): Cadena
+  + consultarHistorialDeEstados(pedidoId: Identificador): CambioEstadoPedido[*]
   + consultarHistorialDePedidos(cliente: Cliente,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
   + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
   + consultarPedido(pedidoId: Identificador): Pedido
+  + consultarPedidoEnCurso(): Pedido
   + consultarPedidosAsignados(choferId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
   + consultarPedidosDisponibles(pagina: Entero,\n      limite: Entero): Cadena
   + consultarResumenDePedidos(): Registro
@@ -97,10 +69,10 @@ class CashCollectionUseCase <<controlador>> {
   + resolverCobroImpago(pedidoId: Identificador,\n      resolucion: Cadena, nota: Cadena): Pedido
 }
 class QuoteOrderUseCase <<controlador>> {
-  + cotizarPedido(items: Lista, metodoDePago: MetodoDePago,\n      direccionId: Identificador,\n      cliente: Cliente): Registro
+  + cotizarPedido(items: Lista, metodoDePago: MetodoDePago,\n      direccionId: Identificador, cliente: Cliente,\n      pedidoId: Identificador): Registro
 }
 class OrderStatusHistorySubscriber <<fachada>> {
-  + registrarCambioDeEstado(pedidoId: Identificador,\n      estadoAnterior: Cadena, estadoNuevo: Cadena,\n      autor: Identificador,\n      motivo: Cadena): CambioEstadoPedido
+  + registrarCambioDeEstado(pedidoId: Identificador,\n      estadoAnterior: Cadena, estadoNuevo: Cadena,\n      autor: Usuario, motivo: Cadena): CambioEstadoPedido
 }
 class "Map<String, Pedido>" as Map_String_Pedido <<colección>> {
   + get(clave: Cadena): Pedido
@@ -119,6 +91,7 @@ class "List<Pedido>" as List_Pedido <<colección>> {
   + entregadosEntre(fechaDesde: Fecha,\n      fechaHasta: Fecha): Pedido[*]
   + getCanceladosYPagados(desde: FechaHora,\n      hasta: FechaHora): Registro
   + getConCobroPendiente(desde: FechaHora,\n      hasta: FechaHora): AsientoCuentaCorriente[*]
+  + getEnCursoDelChofer(chofer: Chofer,\n      inicioDelDia: FechaHora): Pedido
   + getEnEfectivoSinRendir(chofer: Chofer,\n      hoy: Fecha): Pedido[*]
   + getEntregados(): Pedido[*]
   + getEntregadosSinMovimiento(): Pedido[*]
@@ -165,6 +138,7 @@ OrderService --> "1" NotificationPort
 OrderService --> "1" RealtimeDispatchPort
 OrderService --> "1" RefundPaymentUseCase
 QuoteOrderUseCase --> "1" CreateOrderUseCase
+QuoteOrderUseCase --> "1" Map_String_Pedido
 UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
 UpdateOrderStatusUseCase --> "1" Map_String_Pedido
 UpdateOrderStatusUseCase --> "1" NotificationPort
@@ -185,15 +159,17 @@ OrderService ..> TruckLoadGateService
 OrderService ..> ZonaCobertura
 OrderStatusHistorySubscriber ..> Pedido
 QuoteOrderUseCase ..> Cliente
+QuoteOrderUseCase ..> Pedido
 QuoteOrderUseCase ..> Producto
 UpdateOrderStatusUseCase ..> Chofer
 UpdateOrderStatusUseCase ..> Envase
+UpdateOrderStatusUseCase ..> OrderStatusHistorySubscriber
 UpdateOrderStatusUseCase ..> Pedido
 UpdateOrderStatusUseCase ..> StockDeliveryService
 UpdateOrderStatusUseCase ..> TruckLoadGateService
 UpdateOrderStatusUseCase ..> UbicacionGPS
 
 legend bottom right
-  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
 endlegend
 @enduml

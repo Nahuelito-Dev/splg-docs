@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-315 Registrar el Fin de la Jornada
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: registrarFinDeJornada()
+    activate SIS
+    alt el chofer tiene una jornada abierta
+        SIS-->>CHO: jornada cerrada con la hora de la marca
+    else no hay ninguna jornada abierta
+        SIS-->>CHO: conflicto
+    end
+    deactivate SIS

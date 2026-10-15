@@ -15,9 +15,9 @@ sequenceDiagram
     else el origen es inválido o no hay posición reciente
         SIS-->>CHO: solicitud inválida o conflicto
     else se superó un cupo
-        SIS-->>CHO: demasiados pedidos
+        SIS-->>CHO: demasiadas solicitudes
     else el proveedor de rutas falla
-        SIS-->>CHO: mala puerta de enlace
+        SIS-->>CHO: el proveedor de rutas falló
     else no hay proveedor configurado o el radar no responde
         SIS-->>CHO: servicio no disponible
     end

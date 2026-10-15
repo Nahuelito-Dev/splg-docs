@@ -4363,7 +4363,12 @@
      "history_id"
     ],
     "unicos": [],
-    "indices": []
+    "indices": [
+     [
+      "IDX_order_status_history_cancelacion",
+      "CREATE INDEX \"IDX_order_status_history_cancelacion\" ON public.order_status_history USING btree (order_id, changed_at) WHERE (to_status = 'cancelled'::order_status_enum)"
+     ]
+    ]
    },
    "payment": {
     "columnas": [
@@ -8031,7 +8036,10 @@
      "área",
      "recargo",
      "tipo de recargo",
-     "vigente hasta"
+     "prioridad",
+     "vigente desde",
+     "vigente hasta",
+     "activa"
     ],
     "planificado": false,
     "contexto": "VentaYPedidos"
@@ -10134,6 +10142,24 @@
     "nombre": "emite",
     "extremo_izq": "CasoRecupero",
     "extremo_der": "AvisoRecupero"
+   },
+   {
+    "izq": "Usuario",
+    "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "Pedido",
+    "nombre": "confirmó el cobro de",
+    "extremo_izq": "Usuario",
+    "extremo_der": "Pedido"
+   },
+   {
+    "izq": "Usuario",
+    "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "Pedido",
+    "nombre": "resolvió el cobro de",
+    "extremo_izq": "Usuario",
+    "extremo_der": "Pedido"
    },
    {
     "izq": "Empleado",

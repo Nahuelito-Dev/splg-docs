@@ -101,7 +101,7 @@ for t, cons, c in psql(f"""
 unicos = {t: list(v.values()) for t, v in _uq.items()}          # [[col, col], [col]]
 # Un índice único sin condición equivale a una restricción UNIQUE aunque la base no la
 # declare como tal (admin.user_id tiene `UQ_admin_user`, un índice). Los parciales
-# (`WHERE released_at IS NULL`) no cuentan: sólo valen para un subconjunto de filas.
+# (`WHERE released_at IS NULL`) no cuentan: solo valen para un subconjunto de filas.
 for t, cols in psql(f"""
   select i.indrelid::regclass::text,
          string_agg(a.attname, ',' order by array_position(i.indkey::int2[], a.attnum))
@@ -432,7 +432,7 @@ PROPUESTO_IMPLEMENTADO = [
        ],
        "pk": ["proposal_id"], "unicos": []},
       {"nombre": "vehicle_usage_log", "concepto": "Registro de uso del vehículo",
-       "desc": "Kilómetros, pedidos y horas en ruta por vehículo y día. Sólo se agrega.",
+       "desc": "Kilómetros, pedidos y horas en ruta por vehículo y día. Solo se agrega.",
        "columnas": [
          _id("log_id"),
          _ref("car_id", "car", "car_id", "CASCADE", "Vehículo."),
@@ -521,7 +521,7 @@ PROPUESTO_IMPLEMENTADO = [
   {
     "clave": "historial-estados",
     "casos": "CU-018 a CU-020, CU-008 a CU-010 (decidido el 23/09)",
-    "nota": "Hoy el pedido guarda sólo su estado actual y algunas marcas de tiempo sueltas (`acceptedAt`, `onTheWayAt`, `deliveredAt`): no queda quién hizo cada cambio ni por qué. Las marcas de tiempo se conservan porque los listados las leen sin unir tablas.",
+    "nota": "Hoy el pedido guarda solo su estado actual y algunas marcas de tiempo sueltas (`acceptedAt`, `onTheWayAt`, `deliveredAt`): no queda quién hizo cada cambio ni por qué. Las marcas de tiempo se conservan porque los listados las leen sin unir tablas.",
     "titulo": "Historial de estados del pedido",
     "pedido": "Dejar registro de cada cambio de estado de un pedido: de cuál a "
               "cuál, quién lo hizo, cuándo y por qué.",
@@ -582,7 +582,7 @@ PROPUESTO_IMPLEMENTADO = [
   {
     "clave": "zonas",
     "casos": "CU-056, CU-150 y CU-151",
-    "nota": "Una zona usa recargo fijo o porcentual, nunca los dos: `surcharge` guarda el valor y `surcharge_type` dice cómo leerlo. La vigencia sólo tiene fin; el comienzo programado quedó como decisión pendiente en CU-150.",
+    "nota": "Una zona usa recargo fijo o porcentual, nunca los dos: `surcharge` guarda el valor y `surcharge_type` dice cómo leerlo. La vigencia solo tiene fin; el comienzo programado quedó como decisión pendiente en CU-150.",
     "titulo": "Recargo porcentual y vigencia de zonas",
     "pedido": "Que el recargo de una zona pueda ser un porcentaje, que la zona tenga "
               "etiqueta y color, y que se pueda programar hasta cuándo rige.",
@@ -628,7 +628,7 @@ PROPUESTO_IMPLEMENTADO = [
   {
     "clave": "agrupacion",
     "casos": "CU-107 (M3)",
-    "nota": "El lote no reemplaza al pedido: cada pedido sigue su ciclo de entrega. El lote sólo decide a quién se asignan juntos y en qué orden. Si no se acepta, se deshace y los pedidos vuelven al despacho individual.",
+    "nota": "El lote no reemplaza al pedido: cada pedido sigue su ciclo de entrega. El lote solo decide a quién se asignan juntos y en qué orden. Si no se acepta, se deshace y los pedidos vuelven al despacho individual.",
     "titulo": "Agrupación de pedidos por recorrido",
     "pedido": "Armar lotes de pedidos que se entregan en un mismo viaje y "
               "ofrecerlos a los choferes de a uno.",
@@ -721,7 +721,7 @@ PROPUESTO_IMPLEMENTADO = [
          {"nombre": "kind", "tipo": "recovery_notice_kind_enum", "nulo": False,
           "concepto": "tipo", "desc": "Recordatorio, oferta de retiro o aviso de depósito."},
          {"nombre": "status", "tipo": "proposal_status_enum", "nulo": True,
-          "desc": "Respuesta, sólo para la oferta de retiro."},
+          "desc": "Respuesta, solo para la oferta de retiro."},
          {"nombre": "sent_at", "tipo": "timestamptz", "nulo": False, "default": "now()",
           "concepto": "enviado", "desc": "Cuándo se envió."},
          {"nombre": "expires_at", "tipo": "timestamptz", "nulo": False,
@@ -760,7 +760,7 @@ PROPUESTO_IMPLEMENTADO = [
   {
     "clave": "auditoria",
     "casos": "CU-152 y CU-153",
-    "nota": "El registro es de sólo escritura: no hay modificación ni baja para ningún rol. Las referencias al autor y a la distribuidora quedan vacías si esos registros se borran, pero el asiento no se pierde. Necesita índices por fecha, por autor y por distribuidora (CU-152, rendimiento).",
+    "nota": "El registro es de solo escritura: no hay modificación ni baja para ningún rol. Las referencias al autor y a la distribuidora quedan vacías si esos registros se borran, pero el asiento no se pierde. Necesita índices por fecha, por autor y por distribuidora (CU-152, rendimiento).",
     "titulo": "Registro de auditoría",
     "pedido": "Dejar constancia de toda operación que modifica datos: quién, qué, "
               "sobre qué, cuándo, desde dónde y con qué resultado.",
@@ -799,7 +799,7 @@ PROPUESTO_IMPLEMENTADO = [
        "pk": ["audit_id"], "unicos": []},
       {"nombre": "audit_action_type", "concepto": "Tipo de acción de auditoría",
        "desc": "Catálogo fijo de las acciones que se auditan: 1 Alta, 2 Modificación, 3 Baja lógica, "
-               "4 Reactivación, 5 Baja física. Lo siembra la migración; la API sólo lo lee.",
+               "4 Reactivación, 5 Baja física. Lo siembra la migración; la API solo lo lee.",
        "columnas": [
          {"nombre": "action_type_id", "tipo": "smallint", "nulo": False,
           "desc": "Identificador fijo de la acción."},
@@ -809,7 +809,7 @@ PROPUESTO_IMPLEMENTADO = [
        "pk": ["action_type_id"], "unicos": [["name"]]},
       {"nombre": "audit", "concepto": "Auditoría",
        "desc": "Una fila por registro de una entidad de negocio que se dio de alta, se modificó, "
-               "se dio de baja o se reactivó. De sólo escritura: un disparador rechaza todo UPDATE y "
+               "se dio de baja o se reactivó. De solo escritura: un disparador rechaza todo UPDATE y "
                "DELETE, salvo el que la base hace al vaciar el usuario o la distribuidora.",
        "columnas": [
          _id("audit_id"),
@@ -821,7 +821,7 @@ PROPUESTO_IMPLEMENTADO = [
               nulo=True),
          _ref("distributor_id", "distributor", "distributor_id", "SET NULL",
               "Distribuidora del registro, para acotar la consulta; vacía en lo que es de la persona o global "
-              "(usuario, cliente, rol), que sólo ve el Administrador General.", nulo=True),
+              "(usuario, cliente, rol), que solo ve el Administrador General.", nulo=True),
          {"nombre": "entity", "tipo": "varchar(60)", "nulo": False, "concepto": "entidad afectada",
           "desc": "Nombre de la entidad de dominio (Order, Car...), no la ruta."},
          {"nombre": "record_id", "tipo": "varchar(64)", "nulo": False, "concepto": "",
@@ -914,7 +914,7 @@ PROPUESTO = [
   {
     "clave": "configuracion-despacho-y-tareas",
     "casos": "CU-171 y CU-173 (I-1)",
-    "nota": "Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: sólo hace falta ampliar el tipo enumerado de procesos configurables.",
+    "nota": "Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: solo hace falta ampliar el tipo enumerado de procesos configurables.",
     "titulo": "Configuración del despacho y de las tareas programadas",
     "pedido": "Que el administrador configure el despacho y la frecuencia de las tareas de su distribuidora.",
     "enums": {},
@@ -925,7 +925,7 @@ PROPUESTO = [
   {
     "clave": "caja-rendicion-cuentas-corrientes",
     "casos": "CU-225 a CU-245 (I-14)",
-    "nota": "Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE \"deletedAt\" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.",
+    "nota": "Cinco libros de solo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que solo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE \"deletedAt\" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.",
     "titulo": "Caja, rendición del chofer, cuentas corrientes y comisiones",
     "pedido": "Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.",
     "enums": {
@@ -951,7 +951,7 @@ PROPUESTO = [
     "columnas": {},
     "tablas": [
       {"nombre": "cash_box", "concepto": "Caja",
-       "desc": "Cuenta de fondos de la distribuidora: efectivo, banco o billetera. Su saldo sólo cambia por el libro.",
+       "desc": "Cuenta de fondos de la distribuidora: efectivo, banco o billetera. Su saldo solo cambia por el libro.",
        "columnas": [
          _id("cash_box_id"), _dist(),
          {"nombre": "name", "tipo": "varchar(80)", "nulo": False, "desc": "Nombre de la caja."},
@@ -1001,7 +1001,7 @@ PROPUESTO = [
        ],
        "pk": ["category_id"], "unicos": [["distributor_id", "system_code"]]},
       {"nombre": "cash_movement", "concepto": "Movimiento de caja",
-       "desc": "Asiento del libro de una caja; de sólo agregar, se corrige con un contraasiento.",
+       "desc": "Asiento del libro de una caja; de solo agregar, se corrige con un contraasiento.",
        "columnas": [
          _id("movement_id"), _dist(),
          _ref("cash_box_id", "cash_box", "cash_box_id", "CASCADE", "Caja del asiento."),
@@ -1574,17 +1574,8 @@ open(SAL + "SPLG-base-de-datos-completa-portable.sql", "w", encoding="utf-8").wr
 
 # ------------------------------------------------------------ estilo comun
 AZUL, TINTA = "#1F5E8C", "#2C4257"
-CAB = f"""skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 12
-skinparam dpi 150
-skinparam class {{
-  BorderColor {TINTA}
-  BackgroundColor #FFFFFF
-  ArrowColor {TINTA}
-  FontSize 12
-}}
+RUTA_ESTILO = "../../estilo-vp.iuml"
+CAB = f"""!include {RUTA_ESTILO}
 skinparam entity<<ajena>> {{
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
@@ -1592,22 +1583,20 @@ skinparam entity<<ajena>> {{
 }}
 skinparam class<<propuesto>> {{
   BorderColor {AZUL}
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }}
 skinparam entity<<propuesto>> {{
   BorderColor {AZUL}
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }}
-skinparam legendBackgroundColor #FFFFFF
-skinparam legendBorderColor {TINTA}
 """
 def leyenda(marca_ref):
     """La misma leyenda en los dos diagramas; solo el físico marca las columnas
     con «ref», porque el conceptual no muestra columnas. Las filas de lo
-    propuesto y de las relaciones sin clave foránea salen sólo si hay alguna."""
+    propuesto y de las relaciones sin clave foránea salen solo si hay alguna."""
     filas = ["|<#FFFFFF> **implementado** | tabla o atributo que ya existe en la base |"]
     if PROPUESTO:
-        filas.append("|<#E4EDF4> **propuesto** | cambio planificado, todavía sin aplicar a la base |")
+        filas.append("|<#FFF6D9> **propuesto** | cambio planificado, todavía sin aplicar a la base |")
     if SIN_FK:
         filas.append(f"|<#FFFFFF> **línea punteada{' · «ref»' if marca_ref else ''}** | la relación existe "
                      "en el dominio pero la base no la declara como clave foránea |")
@@ -1706,7 +1695,7 @@ fisicos = []
 _orden_global = orden_dependencias(completo)
 
 # Vista general: la base que existe hoy, entera, en una sola lámina. Para que se lea con
-# 48 tablas, cada una muestra sólo su clave primaria y sus claves foráneas (las columnas
+# 48 tablas, cada una muestra solo su clave primaria y sus claves foráneas (las columnas
 # completas están en la lámina de su contexto y en el diccionario de datos), agrupadas
 # por contexto de negocio. La FK a distributor no se dibuja: la tienen casi todas.
 def _fisico_general():
@@ -1739,7 +1728,7 @@ def _fisico_general():
     lin += ["", "legend bottom right",
             f"  {len(implementadas)} tablas implementadas y {len(vistos)} relaciones dibujadas.",
             f"  Además, {n_dist} tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.",
-            "  Cada tabla muestra sólo su PK y sus FK; las columnas completas están en la lámina de su contexto",
+            "  Cada tabla muestra solo su PK y sus FK; las columnas completas están en la lámina de su contexto",
             "  y en el diccionario de datos. * = obligatoria.",
             "endlegend", "@enduml"]
     return "\n".join(lin)
@@ -1779,11 +1768,11 @@ for k, (ctx, ts) in enumerate(CONTEXTOS, 1):
             est = f' #line:{AZUL[1:]};text:{AZUL[1:]}' if f["prop"] else ""
             lin.append(f'e_{f["destino"]} {IZQ[card_padre(t, f)]}--{DER[card_hijo(t, f)]} e_{t}{est} : {f["col"]}')
     lin += ["", "legend bottom",
-            "|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |"]
+            "|<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |"]
     if "distributor" not in propias and any(f["destino"] == "distributor" for t in propias for f in completo[t]["fks"]):
         lin.append("|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |")
     if any(c["prop"] for t in propias for c in completo[t]["columnas"]):
-        lin.append("|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |")
+        lin.append("|<#FFF6D9> **propuesto** | columna planificada, todavía sin aplicar a la base |")
     lin += ["endlegend",
             "note as N"] + ["  " + l for l in textwrap.wrap(CONVENCIONES, 110)] + ["end note", "@enduml"]
     nombre = f"SPLG-fisico-{k:02d}-{slug(ctx)}"
@@ -1867,7 +1856,7 @@ def entidad_conceptual(c, con_atributos):
     est = " <<propuesto>>" if c in MC.PLANIFICADOS else ""
     if not con_atributos:
         return [f'entity {c}{est}']
-    marca = f" #E4EDF4;line:{AZUL[1:]}" if c in MC.PLANIFICADOS else ""
+    marca = f" #FFF6D9;line:{AZUL[1:]}" if c in MC.PLANIFICADOS else ""
     return [f'entity {c}{est}{marca} {{', "  * identificador", "  --"] + ["  {field} " + a for a in atributos_de(c)] + ["}"]
 
 def der_conceptual(titulo, foco, ref, general=False):
@@ -1915,12 +1904,12 @@ def der_conceptual(titulo, foco, ref, general=False):
     if general:
         lin += ["", "legend bottom right",
                 "  Vista de conjunto: sin atributos (están en la vista de cada área). Las relaciones de Usuario",
-                "  con los registros que sólo dejan constancia de su autoría figuran en la vista de su área.",
+                "  con los registros que solo dejan constancia de su autoría figuran en la vista de su área.",
                 "endlegend"]
     if not general:
         leyenda = ["  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado."]
         if ref:
-            leyenda.append("  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.")
+            leyenda.append("  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.")
         lin += ["", "legend bottom right"] + leyenda + ["endlegend"]
     lin.append("@enduml")
     return "\n".join(lin)
@@ -2092,8 +2081,8 @@ python3 generar-modelo-datos.py
 | Archivo | Qué es | Para qué sirve |
 |---|---|---|
 | `SPLG-base-de-datos.sql` | Volcado de `pg_dump`, esquema completo | Recrear la base tal cual está |
-| `SPLG-base-de-datos-portable.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual |
-| `SPLG-base-de-datos-propuesta.sql` | Sólo lo planificado (los módulos de gestión) | Boceto de las migraciones que faltan |
+| `SPLG-base-de-datos-portable.sql` | Solo lo implementado, en SQL portable | Diagramar el estado actual |
+| `SPLG-base-de-datos-propuesta.sql` | Solo lo planificado (los módulos de gestión) | Boceto de las migraciones que faltan |
 | `SPLG-base-de-datos-completa-portable.sql` | Actual + planificado, en SQL portable | Ver todo el modelo en un solo SQL |
 | `fisico/SPLG-fisico-NN-<contexto>.png` / `.svg` | Entidad-relación con tablas y columnas, una lámina por contexto de negocio | Las láminas técnicas |
 | `conceptual/SPLG-der-NN-<área>.png` / `.svg` | Entidad-relación conceptual: una entidad por concepto del modelo conceptual, con sus atributos y las relaciones con su nombre | Las láminas para la defensa |
@@ -2102,7 +2091,7 @@ python3 generar-modelo-datos.py
 
 En las láminas físicas, lo que ya está implementado va en blanco con borde oscuro y lo
 propuesto —columnas planificadas que todavía no están en la base— en celeste, con el
-marcador `<<propuesto>>`. Una tabla en gris es de otro contexto y sólo se muestra su nombre.
+marcador `<<propuesto>>`. Una tabla en gris es de otro contexto y solo se muestra su nombre.
 Los nombres reflejan la base real: conviven camelCase (`paymentMethod`) y snake_case
 (`scheduled_date`), y la tabla `claims` está en plural; unificarlos exigiría renombrar
 columnas en una base en uso.

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSD — CU-338 Retomar el Pedido en Curso · consultarPedidoEnCurso
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant CHS as :Map#lt;String, Chofer#gt;
+    participant PEDS as :List#lt;Pedido#gt;
+
+    CHO->>+SRV: consultarPedidoEnCurso()
+    SRV->>+CHS: get(usuarioId)
+    CHS-->>-SRV: chofer
+    SRV->>+PEDS: getEnCursoDelChofer(chofer, inicioDelDia)
+    PEDS-->>-SRV: pedido
+    SRV-->>-CHO: pedido

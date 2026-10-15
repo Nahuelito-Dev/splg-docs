@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -106,6 +76,6 @@ Usuario "1" --> "0..*" Calificacion : emite
 Usuario "1" --> "0..*" Calificacion : recibe
 
 legend bottom right
-  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.
+  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.
 endlegend
 @enduml

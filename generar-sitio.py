@@ -128,7 +128,7 @@ def imagen_apilada(pngs, sep=40):
     items, y, ancho = [], 0, 0
     for p in pngs:
         s = re.sub(r'\.png$', '.svg', p)
-        cab = re.search(r'<svg[^>]*\swidth="([\d.]+)px"\s+height="([\d.]+)px"', open(s, encoding="utf-8").read())
+        cab = re.search(r'<svg[^>]*\swidth="([\d.]+)(?:px)?"\s+height="([\d.]+)(?:px)?"', open(s, encoding="utf-8").read())
         w, h = float(cab.group(1)), float(cab.group(2))
         uri = "data:image/svg+xml;base64," + base64.b64encode(open(s, "rb").read()).decode()
         items.append(f'<image x="0" y="{y}" width="{w}" height="{h}" href="{uri}"/>')
@@ -172,19 +172,22 @@ for _k,(_f,_n,_d) in UMLSIS.items():
     _p = D+"diagramas/uml/"+_f+(".svg" if os.path.exists(D+"diagramas/uml/"+_f+".svg")
                                 and not os.path.exists(D+"diagramas/uml/"+_f+".png") else ".png")
     if os.path.exists(_p): umlsis[_k] = {"img":imagen(_p), "nombre":_n, "descripcion":_d}
-# El completo entero (290 casos en una lámina) no se lee: se muestra en seis láminas,
-# que juntas son el diagrama completo, y la vista de conjunto queda al final.
+# El completo va en una lámina por actor (más la de actores al principio): cada una es una figura.
 _lams = sorted(glob.glob(D + "diagramas/uml/CU_Sistema_Completo-Lamina-*.svg"),
                key=lambda r: int(re.search(r'Lamina-(\d+)', r).group(1)))
-if _lams and "completo" in umlsis:
-    def _titulo_lamina(r):
-        m = re.search(r'lámina (\d+ de \d+: [^<(]+)', open(r, encoding="utf-8").read())
-        return "Lámina " + m.group(1).strip() if m else os.path.basename(r)
-    umlsis["completo"]["laminas"] = ([{"img": imagen(r), "nombre": _titulo_lamina(r)} for r in _lams]
-        + [{"img": umlsis["completo"]["img"], "nombre": "Vista de conjunto: todos los casos de uso en una sola lámina"}])
-    umlsis["completo"]["descripcion"] = (f"Los %d casos de uso en {len(_lams)} láminas con la misma notación "
-        "(límite del sistema, subsistemas como paquetes, actores afuera, «include» y «extend»); juntas son el "
-        "diagrama completo. Al final, la vista de conjunto en una sola lámina.")
+if _lams:
+    _lams = [D + "diagramas/uml/CU_Sistema_Diagrama-Completo.svg", D + "diagramas/uml/CU_Sistema_Actores.svg"] + _lams
+    _lams = [r for r in _lams if os.path.exists(r)]
+    def _titulo_lamina(r, i):
+        if "Diagrama-Completo" in r: return "Diagrama de casos de uso del sistema (todos los casos de uso)"
+        m = re.search(r'<text[^>]*>(Diagrama de casos de uso — [^<]+?) · \d+ casos de uso</text>', open(r, encoding="utf-8").read())
+        if m: return f"Lámina {i - 1} de {len(_lams) - 1}: " + m.group(1).replace("Diagrama de casos de uso — ", "")
+        return f"Lámina {i - 1} de {len(_lams) - 1}: Actores del sistema y generalización"
+    umlsis["completo"] = {"img": "", "nombre": "Diagrama completo de casos de uso",
+        "laminas": [{"img": imagen(r), "nombre": _titulo_lamina(r, i)} for i, r in enumerate(_lams, 1)],
+        "descripcion": (f"Los %d casos de uso en una sola imagen y, como complemento, en {len(_lams) - 1} láminas, una por actor: el actor a la izquierda y, dentro del límite del "
+                        "sistema, todos sus casos de uso con los «include» y «extend» a la derecha; los casos de otros actores "
+                        "figuran como referencia, con borde discontinuo.")}
 contexto = umlsis.get("contexto",{}).get("img","")
 
 # ---------- markdown -> html, para los bloques que se muestran tal cual ----------
@@ -197,7 +200,7 @@ import html as _html
 def marcar(s):
     s = re.sub(r'\b(SS-\d\d)\b', r'<span class="marca-ss" data-ss="\1">\1</span>', s)
     s = re.sub(r'\b(CU-\d{3})\b', r'<span class="marca-cu">\1</span>', s)
-    s = re.sub(r'\b(ACT-0\d)\b', r'<span class="marca-act" data-act="\1">\1</span>', s)
+    s = re.sub(r'\b(ACT-\d\d)\b', r'<span class="marca-act" data-act="\1">\1</span>', s)
     return s
 
 def md2html(md):
@@ -399,7 +402,7 @@ def cuerpo_de(archivo):
         cuerpo = txt[i:txt.index("</svg>", i) + 6] + "\n" + cuerpo
     return cuerpo
 
-# La arquitectura y el despliegue vivían sólo en el documento de Diseño: el sitio no
+# La arquitectura y el despliegue vivían solo en el documento de Diseño: el sitio no
 # mostraba la sección 2 en ningún lado, así que el diagrama de entornos y los criterios
 # de la API no se veían. Entra como sección propia del menú.
 _arq = _seccion("3-Diseño.md", r'^## 2\. Arquitectura', r'^## 3\. ')
@@ -458,7 +461,7 @@ def _drawio():
 
 # ---------- catálogo de todos los diagramas ----------
 # La cátedra recorre todos los diagramas en su notación. Los de estados, actividad,
-# el Gantt, el de paquetes y el DER conceptual vivían sólo en los documentos: el sitio
+# el Gantt, el de paquetes y el DER conceptual vivían solo en los documentos: el sitio
 # no los mostraba. Esta página se arma leyendo las carpetas, así que un diagrama nuevo
 # entra solo. Los que ya se ven en otra sección se cuentan y se indica dónde están;
 # los demás se dibujan acá.

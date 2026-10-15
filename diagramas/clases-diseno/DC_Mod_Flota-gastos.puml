@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -66,12 +36,6 @@ class FuelLoadService <<fachada>> {
   + consultarConsumoDeCombustible(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
   + modificarCargaDeCombustible(cargaId: Identificador,\n      datos: Registro): CargaCombustible
   + registrarCargaDeCombustible(vehiculoId: Identificador,\n      datos: Registro): CargaCombustible
-}
-class "Map<String, CargaCombustible>" as Map_String_CargaCombustible <<colección>> {
-  + get(clave: Cadena): CargaCombustible
-}
-class "List<CargaCombustible>" as List_CargaCombustible <<colección>> {
-  + getVigentes(filtros: Registro): CargaCombustible[*]
 }
 class FuelConsumptionCalculator <<fabricación pura>> {
   + calcularConsumo(cargas: CargaCombustible[*]): Registro
@@ -89,21 +53,11 @@ class "Map<String, MultaTransito>" as Map_String_MultaTransito <<colección>> {
   + containsKey(clave: Cadena): Booleano
   + get(clave: Cadena): MultaTransito
 }
-class FleetExpenseAlertsCron <<fachada>> {
-  + avisarMultasPorVencer()
-}
-class "List<MultaTransito>" as List_MultaTransito <<colección>> {
-  + filtrar(filtros: Registro): MultaTransito[*]
-  + getPendientesPorVencer(dias: Entero): MultaTransito[*]
-}
 class VehicleAccidentService <<fachada>> {
   + cerrarSiniestro(siniestroId: Identificador,\n      costoDeReparacion: Moneda,\n      reintegroDelSeguro: Moneda,\n      franquicia: Moneda): Siniestro
   + consultarSiniestros(filtros: Registro): Siniestro[*]
   + modificarSiniestro(siniestroId: Identificador,\n      datos: Registro): Siniestro
   + registrarSiniestro(vehiculoId: Identificador,\n      datos: Registro): Siniestro
-}
-class "List<Siniestro>" as List_Siniestro <<colección>> {
-  + filtrar(filtros: Registro): Siniestro[*]
 }
 class "Map<String, Siniestro>" as Map_String_Siniestro <<colección>> {
   + get(clave: Cadena): Siniestro
@@ -115,6 +69,22 @@ class TireService <<fachada>> {
 class "Map<String, Neumatico>" as Map_String_Neumatico <<colección>> {
   + containsKey(clave: Cadena): Booleano
   + get(clave: Cadena): Neumatico
+}
+class "Map<String, CargaCombustible>" as Map_String_CargaCombustible <<colección>> {
+  + get(clave: Cadena): CargaCombustible
+}
+class "List<CargaCombustible>" as List_CargaCombustible <<colección>> {
+  + getVigentes(filtros: Registro): CargaCombustible[*]
+}
+class "List<MultaTransito>" as List_MultaTransito <<colección>> {
+  + filtrar(filtros: Registro): MultaTransito[*]
+  + getPendientesPorVencer(dias: Entero): MultaTransito[*]
+}
+class FleetExpenseAlertsCron <<fachada>> {
+  + avisarMultasPorVencer()
+}
+class "List<Siniestro>" as List_Siniestro <<colección>> {
+  + filtrar(filtros: Registro): Siniestro[*]
 }
 class "Map<String, Empleado>" as Map_String_Empleado <<colección>> {
   + get(clave: Cadena): Empleado
@@ -130,10 +100,10 @@ class "List<Vehiculo>" as List_Vehiculo <<colección>> {
 }
 class Vehiculo <<referencia>>
 class Empleado <<referencia>>
-class CargaCombustible <<referencia>>
 class MultaTransito <<referencia>>
 class Siniestro <<referencia>>
 class Neumatico <<referencia>>
+class CargaCombustible <<referencia>>
 class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
 class EmailSenderPort <<referencia>>
 class VehicleAssignmentService <<referencia>>
@@ -141,13 +111,13 @@ class Distribuidora <<referencia>>
 
 List_Vehiculo "1" o--> "0..*" Vehiculo
 Map_String_Empleado "1" o--> "0..*" Empleado
-Map_String_CargaCombustible "1" o--> "0..*" CargaCombustible
-List_CargaCombustible "1" o--> "0..*" CargaCombustible
 Map_String_MultaTransito "1" o--> "0..*" MultaTransito
-List_MultaTransito "1" o--> "0..*" MultaTransito
-List_Siniestro "1" o--> "0..*" Siniestro
 Map_String_Siniestro "1" o--> "0..*" Siniestro
 Map_String_Neumatico "1" o--> "0..*" Neumatico
+Map_String_CargaCombustible "1" o--> "0..*" CargaCombustible
+List_CargaCombustible "1" o--> "0..*" CargaCombustible
+List_MultaTransito "1" o--> "0..*" MultaTransito
+List_Siniestro "1" o--> "0..*" Siniestro
 FleetCostReportService --> "1" List_Vehiculo
 FleetCostReportService --> "1" Map_String_Vehiculo
 FleetExpenseAlertsCron --> "1" EmailSenderPort
@@ -181,6 +151,6 @@ VehicleAccidentService ..> Siniestro
 VehicleAccidentService ..> Vehiculo
 
 legend bottom right
-  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
 endlegend
 @enduml

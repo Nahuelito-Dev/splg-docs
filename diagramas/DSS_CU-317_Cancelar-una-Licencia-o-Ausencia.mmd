@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-317 Cancelar una Licencia o Ausencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: cancelarLicencia(licenciaId)
+    activate SIS
+    alt la licencia no está rechazada ni cancelada y no terminó
+        SIS-->>ADM: licencia cancelada
+    else la licencia no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la licencia ya estaba rechazada o cancelada, o ya terminó
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

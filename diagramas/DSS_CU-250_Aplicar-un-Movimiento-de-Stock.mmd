@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-250 Aplicar un Movimiento de Stock
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: aplicarMovimientoDeStock(operacion)
+    activate SIS
+    alt las ubicaciones y las garrafas son de la distribuidora y ningún saldo queda negativo
+        SIS-->>ADM: movimientos asentados y saldos movidos
+    else la operación no tiene movimientos o uno es inválido, o el destino no recibe stock
+        SIS-->>ADM: solicitud inválida
+    else una ubicación o una garrafa no es de la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else algún saldo quedaría negativo
+        SIS-->>ADM: solicitud inválida, con el detalle de cada faltante
+    else el lote ya fue contraasentado o las garrafas ya no están donde estaban
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS
+    Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-212 y también lo incluyen CU-213, CU-217,<br/>CU-219, CU-220, CU-222, CU-274, CU-276, CU-280<br/>y CU-296

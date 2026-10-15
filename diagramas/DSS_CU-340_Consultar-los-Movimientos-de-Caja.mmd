@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-340 Consultar los Movimientos de Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarMovimientosDeCaja(cajaId, desde, hasta)
+    activate SIS
+    alt la caja es de la distribuidora
+        SIS-->>ADM: movimientos del período
+    else la caja no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)

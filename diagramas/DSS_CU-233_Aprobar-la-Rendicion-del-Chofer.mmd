@@ -4,26 +4,15 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    alt Operación aprobarRendicion
-        ADM->>SIS: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: rendición aprobada con su movimiento de caja
-        else la rendición no está presentada
-            SIS-->>ADM: operación rechazada
-        else hay diferencia y falta indicar cómo se resuelve
-            SIS-->>ADM: operación rechazada
-        else la caja destino exige sesión y no la tiene abierta
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
-    else Reapertura de la rendición
-        ADM->>SIS: reabrirRendicion(rendicionId)
-        activate SIS
-        alt la operación es válida
-            SIS-->>ADM: rendición abierta otra vez
-        else la rendición no está presentada
-            SIS-->>ADM: operación rechazada
-        end
-        deactivate SIS
+    ADM->>SIS: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: rendición aprobada con su movimiento de caja
+    else la rendición no está presentada
+        SIS-->>ADM: operación rechazada
+    else hay diferencia y falta indicar cómo se resuelve
+        SIS-->>ADM: operación rechazada
+    else la caja destino exige sesión y no la tiene abierta
+        SIS-->>ADM: operación rechazada
     end
+    deactivate SIS

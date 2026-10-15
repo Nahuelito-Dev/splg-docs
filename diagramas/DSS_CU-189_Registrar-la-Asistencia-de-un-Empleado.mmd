@@ -4,15 +4,6 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: consultarAsistencias(desde, hasta)
-    activate SIS
-    alt hay jornadas en el período
-        SIS-->>ADM: jornadas con su duración, incluidas las abiertas
-    else no hay ninguna
-        SIS-->>ADM: listado vacío
-    end
-    deactivate SIS
-
     ADM->>SIS: registrarAsistencia(empleadoId, ingreso, egreso)
     activate SIS
     alt el empleado está activo y no tiene otra jornada abierta
@@ -22,17 +13,6 @@ sequenceDiagram
     else el empleado está egresado o ya tiene una jornada abierta
         SIS-->>ADM: conflicto
     else el egreso no es posterior al ingreso
-        SIS-->>ADM: datos inválidos
-    end
-    deactivate SIS
-
-    ADM->>SIS: corregirAsistencia(asistenciaId, datos, nota)
-    activate SIS
-    alt la jornada existe y la corrección tiene nota
-        SIS-->>ADM: jornada corregida
-    else la jornada no existe en la distribuidora
-        SIS-->>ADM: recurso no encontrado
-    else falta la nota
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS

@@ -4,7 +4,7 @@ sequenceDiagram
     actor CLI as Cliente (ACT-01)
     participant SIS as :Sistema
 
-    CLI->>SIS: cotizarPedido(items, medioDePago, direccionId, clienteId)
+    CLI->>SIS: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)
     activate SIS
     alt los renglones son de la distribuidora y hay stock
         SIS-->>CLI: desglose de la cotización
@@ -12,8 +12,10 @@ sequenceDiagram
         SIS-->>CLI: solicitud inválida
     else un cliente cotiza para otro
         SIS-->>CLI: acceso denegado
-    else la dirección no existe
+    else la dirección no existe o el pedido a editar no es del cliente
         SIS-->>CLI: recurso no encontrado
+    else el pedido a editar ya no es editable
+        SIS-->>CLI: conflicto
     end
     deactivate SIS
     Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05), por un cliente

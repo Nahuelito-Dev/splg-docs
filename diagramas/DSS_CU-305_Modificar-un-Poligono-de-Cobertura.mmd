@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSS — CU-305 Modificar un Polígono de Cobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)
+    activate SIS
+    alt la zona es de la distribuidora y los datos son válidos
+        SIS-->>ADM: zona modificada
+    else el polígono o el recargo son inválidos
+        SIS-->>ADM: error de validación
+    else la zona no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)

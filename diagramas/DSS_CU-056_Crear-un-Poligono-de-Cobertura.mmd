@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-056 Crear un Polígono de Cobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: definirZonaDeCobertura(nombre, poligono, recargo, activa)
+    activate SIS
+    alt el polígono y el recargo son válidos
+        SIS-->>ADM: zona creada (zonaId, recargo asociado)
+    else el polígono es inválido
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

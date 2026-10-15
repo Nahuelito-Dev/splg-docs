@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-071 Consultar el Historial de Movimientos de un Envase
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarHistorialDelEnvase(envaseId)
+    activate SIS
+    SIS-->>ADM: movimientos en orden cronológico (estado origen, estado destino, pedido, responsable, fecha)
+    deactivate SIS

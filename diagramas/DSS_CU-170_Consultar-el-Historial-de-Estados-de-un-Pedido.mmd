@@ -10,6 +10,10 @@ sequenceDiagram
         SIS-->>USR: cambios de estado, del más antiguo al más reciente
     else el pedido no existe o no es del usuario
         SIS-->>USR: recurso no encontrado
+    else el chofer tuvo el pedido y ya no lo tiene a cargo
+        SIS-->>USR: pedido ya no asignado
+    else el Administrador General no indicó la distribuidora
+        SIS-->>USR: solicitud inválida
     end
     deactivate SIS
-    Note over USR,SIS: También lo inician el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)
+    Note over USR,SIS: También lo inician el Chofer (ACT-02), el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)

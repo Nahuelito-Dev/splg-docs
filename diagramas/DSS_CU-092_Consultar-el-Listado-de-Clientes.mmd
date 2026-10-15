@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-092 Consultar el Listado de Clientes
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: listarClientes(pagina, limite)
+    activate SIS
+    SIS-->>ADM: página de clientes (nombre, contacto, validación, ubicación)
+    deactivate SIS

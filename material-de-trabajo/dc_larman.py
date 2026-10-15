@@ -306,7 +306,7 @@ MODULO_PLANIFICADA = {
     "FleetMaintenancePlannerService": "fleet", "FleetAvailabilityPort": "fleet",
     "ModuleConfigService": "distributor", "DispatchConfigService": "distributor",
     "ScheduledTaskGate": "distributor", "ModuleConfigController": "distributor",
-    "OrderStatusHistoryService": "order", "RouteBatchPlannerService": "order",
+    "RouteBatchPlannerService": "order",
     "RouteSequencerService": "order",
     "RefundPaymentUseCase": "payments", "ReintegroListener": "payments",
     "JobPositionService": "employee", "EmployeeService": "employee", "TerminateEmployeeUseCase": "employee",
@@ -527,9 +527,9 @@ GLOSARIO = {
     "deposito": "Moneda", "descuento": "Decimal",
     "fecha": "Fecha", "fechaAgendada": "Fecha", "fechaDesde": "Fecha", "fechaHasta": "Fecha",
     "fechaEstimada": "Fecha", "fechaDeRegistro": "Fecha", "ultimaCompra": "Fecha", "vencimiento": "Fecha",
-    "ahora": "FechaHora", "hoy": "Fecha", "desde": "FechaHora", "hasta": "FechaHora", "llegada": "FechaHora",
+    "ahora": "FechaHora", "inicioDelDia": "FechaHora", "hoy": "Fecha", "desde": "FechaHora", "hasta": "FechaHora", "llegada": "FechaHora",
     "vigencia": "FechaHora", "vigenteHasta": "FechaHora", "horaInicio": "Hora", "horaFin": "Hora",
-    "activa": "Booleano", "activo": "Booleano", "disponible": "Booleano", "bloquear": "Booleano",
+    "activa": "Booleano", "activo": "Booleano", "disponible": "Booleano", "bloquear": "Booleano", "verdadero": "Booleano", "falso": "Booleano",
     "deshabilitada": "Booleano", "express": "Booleano", "esSenia": "Booleano", "predeterminada": "Booleano",
     "coordenadas": "Coordenada", "punto": "Coordenada", "origen": "Coordenada", "destino": "Coordenada",
     "poligono": "Poligono", "precision": "PrecisionDeGeocodificacion", "latLng": "Coordenada",
@@ -730,7 +730,7 @@ GLOSARIO.update({
     "minimoDeStock": "Entero", "incluirInactivos": "Booleano", "alcanzaElSaldo": "Booleano",
     "esUnaTransferencia": "Booleano", "sinConteoInicial": "Booleano", "transferenciaValida": "Booleano",
     "avisoRepetido": "Booleano", "predeterminadoQuitado": "Booleano", "nadaQueDescontar": "Booleano",
-    "resumenDeReaplicacion": "Registro", "cobrosPendientes": "Registro", "cotizacion": "Registro", "totales": "Registro", "renglon": "Registro", "ruta": "Registro", "reintegros": "Registro", "cantidadDeAjustes": "Entero", "cantidadDeMovimientos": "Entero",
+    "resumenDeReaplicacion": "Registro", "cobrosPendientes": "Registro", "cotizacion": "Registro", "totales": "Registro", "renglon": "Registro", "renglonesActuales": "Registro", "ruta": "Registro", "reintegros": "Registro", "cantidadDeAjustes": "Entero", "cantidadDeMovimientos": "Entero",
 })
 # Compras (implementado): nombres propios de sus DSD, sin colisión con otros módulos.
 ALIAS_CLASE.update({"itemsRecibidos": "ItemRecepcion", "proveedorDadoDeBaja": "Proveedor",
@@ -855,7 +855,7 @@ RETORNO_ACUSE = {"confirmacion", "recibido", "guardado"}
 # (clase, operación) -> tipo.
 RETORNO_ESPECIFICO = {
     ("Pedido", "getCambiosDeEstado"): "CambioEstadoPedido[*]",
-    ("OrderStatusHistoryService", "consultarHistorialDeEstados"): "CambioEstadoPedido[*]",
+    ("OrderService", "consultarHistorialDeEstados"): "CambioEstadoPedido[*]",
     ("OrderService", "avisarLlegada"): None,
     ("CylinderService", "verificarVigenciaAlAsignar"): "Envase[*]",
     ("Pedido", "estaSinPagar"): "Booleano",
@@ -894,7 +894,7 @@ RETORNO_ESPECIFICO = {
 
 # Consultas y cálculos que el DSD llama sin mostrar qué devuelven (o que devuelven una prosa que
 # no es un nombre): el retorno sale del propio nombre y del código. (clase, operación) -> tipo.
-# Sólo se aplica si el DSD no dio un retorno.
+# Solo se aplica si el DSD no dio un retorno.
 RETORNO_DE_CONSULTA = {
     ("Usuario", "calcularPromedio"): "Decimal",
     ("Cliente", "getFechaEstimadaDeRecompra"): "Fecha",
@@ -1255,7 +1255,7 @@ def _elegir_nombre(candidatos, tipo):
 
 def _deduplicar_firmas(dc):
     """Dos operaciones de una clase con el mismo nombre y los mismos tipos de argumento son la misma
-    operación: los DSD sólo le ponen nombres distintos al argumento (`getConfiguracion(despacho)`,
+    operación: los DSD solo le ponen nombres distintos al argumento (`getConfiguracion(despacho)`,
     `getConfiguracion(controlDeStock)`). Queda una, con un nombre que sirve a todas."""
     for cl in dc.clases.values():
         grupos = collections.OrderedDict()

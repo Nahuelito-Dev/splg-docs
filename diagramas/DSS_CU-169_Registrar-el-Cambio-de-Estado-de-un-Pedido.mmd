@@ -1,15 +1,15 @@
 sequenceDiagram
     title DSS — CU-169 Registrar el Cambio de Estado de un Pedido
     autonumber
-    actor SAU as Sistema Automático (ACT-04)
+    actor CLI as Cliente (ACT-01)
     participant SIS as :Sistema
 
-    Note over SAU: Se dispara en cada<br/>cambio de estado del<br/>pedido, dentro de la<br/>misma transacción
-    SAU->>SIS: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
+    CLI->>SIS: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
     activate SIS
-    alt El cambio es válido y se guarda
-        SIS-->>SAU: fila agregada al historial, junto con el cambio
-    else No se puede escribir el historial
-        SIS-->>SAU: cambio revertido
+    alt se puede escribir la fila del historial
+        SIS-->>CLI: cambio de estado asentado en el historial del pedido
+    else no se puede escribir la fila
+        SIS-->>CLI: operación revertida: el estado del pedido no cambia
     end
     deactivate SIS
+    Note over CLI,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-005 y también lo incluyen CU-008, CU-009,<br/>CU-010, CU-012, CU-015, CU-018, CU-020,<br/>CU-072, CU-075, CU-077, CU-079 y CU-147

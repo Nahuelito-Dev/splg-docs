@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSS — CU-072 Crear una Reserva Programada con Seña
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
+    activate SIS
+    alt hay stock y la franja tiene cupo para esa fecha
+        SIS-->>CLI: reserva creada (numero, total, seña, estado RESERVADO)
+        opt la seña se paga con la pasarela
+            SIS-->>CLI: enlace de pago de la seña
+        end
+    else no hay stock suficiente
+        SIS-->>CLI: error de solicitud (stock insuficiente)
+    else la franja está completa o la fecha es pasada
+        SIS-->>CLI: error de solicitud (no se puede agendar en esa franja)
+    end
+    deactivate SIS

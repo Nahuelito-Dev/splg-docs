@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-046 Consultar las Direcciones de Entrega del Cliente
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: consultarDireccionesDeEntrega(usuarioId)
+    activate SIS
+    SIS-->>CLI: listado de direcciones
+    deactivate SIS

@@ -2,56 +2,29 @@ sequenceDiagram
     title DSS — CU-195 Registrar una Carga de Combustible
     autonumber
     actor ADM as Administrador (ACT-03)
-    actor CHF as Chofer (ACT-02)
+    actor CHO as Chofer (ACT-02)
     participant SIS as :Sistema
 
-    ADM->>SIS: registrarCargaDeCombustible(vehiculoId, datos)
-    activate SIS
-    alt la carga es válida
-        SIS-->>ADM: carga registrada, con el kilometraje del vehículo actualizado
-        opt el consumo del tramo se aparta del promedio
-            SIS-)ADM: notificarCargaAnomala(carga)
+    alt El administrador lo registra sobre un vehículo de la distribuidora
+        ADM->>SIS: registrarCargaDeCombustible(vehiculoId, datos)
+        activate SIS
+        alt los datos son válidos
+            SIS-->>ADM: carga registrada
+        else el vehículo no existe o no es de la distribuidora
+            SIS-->>ADM: recurso no encontrado
+        else el kilometraje es menor que el de la última carga, el importe no coincide o los litros superan el tanque
+            SIS-->>ADM: solicitud inválida, con el detalle del campo
         end
-    else el vehículo no existe en la distribuidora
-        SIS-->>ADM: recurso no encontrado
-    else el kilometraje es menor que el de la última carga, el importe no coincide o los litros superan el tanque
-        SIS-->>ADM: solicitud inválida, con el detalle del campo
+        deactivate SIS
+    else El chofer lo registra sin indicar el vehículo (el sistema usa el que tiene en uso)
+        CHO->>SIS: registrarCargaDeCombustible(vehiculoId, datos)
+        activate SIS
+        alt los datos son válidos y el chofer tiene un vehículo en uso
+            SIS-->>CHO: carga registrada en el vehículo en uso
+        else el chofer no tiene un vehículo en uso
+            SIS-->>CHO: conflicto: sin vehículo en uso
+        else el kilometraje es menor que el de la última carga, el importe no coincide o los litros superan el tanque
+            SIS-->>CHO: solicitud inválida, con el detalle del campo
+        end
+        deactivate SIS
     end
-    deactivate SIS
-
-    Note over CHF,SIS: El chofer no indica el vehículo:<br/>el sistema usa el que tiene en uso
-    CHF->>SIS: registrarCargaDeCombustible(vehiculoId, datos)
-    activate SIS
-    alt la carga es válida
-        SIS-->>CHF: carga registrada
-    else el chofer no tiene un vehículo en uso
-        SIS-->>CHF: conflicto: sin vehículo en uso
-    else el kilometraje es menor que el de la última carga, el importe no coincide o los litros superan el tanque
-        SIS-->>CHF: solicitud inválida, con el detalle del campo
-    end
-    deactivate SIS
-
-    ADM->>SIS: modificarCargaDeCombustible(cargaId, datos)
-    activate SIS
-    alt la carga existe y no está anulada
-        SIS-->>ADM: carga modificada
-    else la carga no existe en la distribuidora
-        SIS-->>ADM: recurso no encontrado
-    else los datos no cumplen las reglas de la carga
-        SIS-->>ADM: solicitud inválida, con el detalle del campo
-    end
-    deactivate SIS
-
-    ADM->>SIS: anularCargaDeCombustible(cargaId)
-    activate SIS
-    alt la carga existe y no está anulada
-        SIS-->>ADM: carga anulada, con el kilometraje del vehículo recalculado
-    else la carga no existe en la distribuidora
-        SIS-->>ADM: recurso no encontrado
-    end
-    deactivate SIS
-
-    ADM->>SIS: consultarCargasDeCombustible(filtros)
-    activate SIS
-    SIS-->>ADM: cargas vigentes que cumplen los filtros, con el total
-    deactivate SIS

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-030 Ver el Gráfico de Ventas (últimos 7 días)
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)
+    activate SIS
+    alt granularidad diaria
+        SIS-->>ADM: serie por día del rango solicitado
+    else granularidad mensual
+        SIS-->>ADM: serie por mes del rango solicitado
+    end
+    deactivate SIS

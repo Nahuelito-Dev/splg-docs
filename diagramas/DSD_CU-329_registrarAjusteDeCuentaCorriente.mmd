@@ -1,0 +1,24 @@
+sequenceDiagram
+    title DSD — CU-329 Registrar un Ajuste de Cuenta Corriente · registrarAjusteDeCuentaCorriente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomerAccountService
+    participant CUES as :Map#lt;String, CuentaCorriente#gt;
+    participant CUE as cuentaCorriente:CuentaCorriente
+
+    ADM->>+SRV: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
+    SRV->>+CUES: get(cuentaId)
+    CUES-->>-SRV: cuentaCorriente
+    SRV->>+CUE: registrarAjuste(tipoDeAsiento, importe, motivo)
+    CUE->>CUE: validarAjuste(tipoDeAsiento, importe)
+    create participant NAS as nuevo:AsientoCuentaCorriente
+    CUE->>NAS: «create»(tipoDeAsiento, importe, motivo)
+    CUE->>CUE: actualizarSaldo(importe)
+    opt El ajuste es una nota de crédito
+        loop Por cada cargo impago cubierto, del más antiguo
+            create participant NIM as nueva:ImputacionCuentaCorriente
+            CUE->>NIM: «create»(cargo, asiento, importe)
+        end
+    end
+    CUE-->>-SRV: asiento
+    SRV-->>-ADM: asiento

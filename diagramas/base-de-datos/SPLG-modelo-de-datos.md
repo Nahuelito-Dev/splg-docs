@@ -727,6 +727,9 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `changed_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Índices (además de la clave primaria):
+- `IDX_order_status_history_cancelacion`: `CREATE INDEX "IDX_order_status_history_cancelacion" ON public.order_status_history USING btree (order_id, changed_at) WHERE (to_status = 'cancelled'::order_status_enum)`
+
 ### `payment` — Pago
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -1383,7 +1386,7 @@ Tipo enumerado `vehicle_type_enum`: `motorcycle`, `car`, `van`.
 
 Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `scheduled_tasks`.
 
-> **Decisión de modelado.** Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: sólo hace falta ampliar el tipo enumerado de procesos configurables.
+> **Decisión de modelado.** Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: solo hace falta ampliar el tipo enumerado de procesos configurables.
 
 ### 4. Caja, rendición del chofer, cuentas corrientes y comisiones
 
@@ -1541,10 +1544,10 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 | `driver_liquidation` **(tabla nueva)** | `cash_movement_id` | uuid | no | Egreso de caja del pago. |
 | `driver_liquidation` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
 
-`cash_box` — Cuenta de fondos de la distribuidora: efectivo, banco o billetera. Su saldo sólo cambia por el libro. Clave primaria `cash_box_id`. Referencias: `distributor_id` → `distributor`.
+`cash_box` — Cuenta de fondos de la distribuidora: efectivo, banco o billetera. Su saldo solo cambia por el libro. Clave primaria `cash_box_id`. Referencias: `distributor_id` → `distributor`.
 `cash_session` — Período entre una apertura y un cierre con arqueo de una caja. Clave primaria `session_id`. Referencias: `distributor_id` → `distributor`, `cash_box_id` → `cash_box`, `opened_by_user_id` → `user`, `closed_by_user_id` → `user`.
 `cash_category` — Categoría de ingreso o de gasto; las de sistema se siembran y no se modifican. Clave primaria `category_id`. Referencias: `distributor_id` → `distributor`. Única: (`distributor_id`, `system_code`).
-`cash_movement` — Asiento del libro de una caja; de sólo agregar, se corrige con un contraasiento. Clave primaria `movement_id`. Referencias: `distributor_id` → `distributor`, `cash_box_id` → `cash_box`, `session_id` → `cash_session`, `category_id` → `cash_category`, `reverses_movement_id` → `cash_movement`, `created_by_user_id` → `user`. Única: (`reverses_movement_id`).
+`cash_movement` — Asiento del libro de una caja; de solo agregar, se corrige con un contraasiento. Clave primaria `movement_id`. Referencias: `distributor_id` → `distributor`, `cash_box_id` → `cash_box`, `session_id` → `cash_session`, `category_id` → `cash_category`, `reverses_movement_id` → `cash_movement`, `created_by_user_id` → `user`. Única: (`reverses_movement_id`).
 `driver_settlement` — Rendición diaria del efectivo que cobró un chofer. Clave primaria `settlement_id`. Referencias: `distributor_id` → `distributor`, `delivery_id` → `delivery`, `destination_cash_box_id` → `cash_box`, `cash_movement_id` → `cash_movement`, `submitted_by_user_id` → `user`, `approved_by_user_id` → `user`.
 `driver_settlement_order` — Pedido en efectivo incluido en una rendición; un pedido se rinde una sola vez. Clave primaria `settlement_order_id`. Referencias: `settlement_id` → `driver_settlement`, `order_id` → `order`. Única: (`order_id`).
 `driver_settlement_expense` — Gasto que el chofer pagó con la cobranza. Clave primaria `expense_id`. Referencias: `settlement_id` → `driver_settlement`, `category_id` → `cash_category`.
@@ -1573,7 +1576,7 @@ Tipo enumerado `driver_liquidation_status_enum`: `draft`, `approved`, `paid`, `c
 Valores nuevos del tipo enumerado `order_paymentmethod_enum`: `account`.
 Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
 
-> **Decisión de modelado.** Cinco libros de sólo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE "deletedAt" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.
+> **Decisión de modelado.** Cinco libros de solo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que solo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE "deletedAt" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.
 
 ### 5. Personal y legajos
 
@@ -1623,7 +1626,7 @@ Tipo enumerado `maintenance_document_kind_enum`: `insurance`, `vtv`, `hazmat_veh
 
 Valores nuevos del tipo enumerado `maintenance_subject_enum`: `employee`.
 
-> **Decisión de modelado.** Los puestos (`job_position`) y los legajos (`employee`) ya están construidos y salen de la base: todo empleado existe como legajo, tenga o no cuenta de acceso, un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). Falta construir lo que cuelga del legajo. La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no sólo el servicio.
+> **Decisión de modelado.** Los puestos (`job_position`) y los legajos (`employee`) ya están construidos y salen de la base: todo empleado existe como legajo, tenga o no cuenta de acceso, un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). Falta construir lo que cuelga del legajo. La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no solo el servicio.
 
 ### 6. Flota ampliada: combustible, multas y siniestros
 

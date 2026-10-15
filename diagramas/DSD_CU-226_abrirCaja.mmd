@@ -18,6 +18,6 @@ sequenceDiagram
     opt El monto inicial difiere del saldo de la caja
         SRV->>+LDG: registrarMovimientoDeCaja(cajaId, sentido, diferencia, diferenciaDeCaja, enEfectivo)
         LDG-->>-SRV: movimiento
-        Note over SRV,LDG: El sentido sale del signo de la diferencia. Ajuste: ver DSD de<br/>registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja<br/>con la categoría de sistema diferencia de caja
+        Note over SRV,LDG: El sentido sale del signo de la diferencia. Ajuste: ver DSD de<br/>registrarEntradaDeDinero (CU-228) o registrarSalidaDeDinero (CU-309). Crea el MovimientoDeCaja<br/>con la categoría de sistema diferencia de caja
     end
     SRV-->>-ADM: sesionDeCaja

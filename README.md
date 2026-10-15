@@ -23,15 +23,15 @@ Todo lo demás está en `material-de-trabajo/` y no hace falta para entregar.
 
 | | Documento | Qué lleva |
 |---|---|---|
-| **0** | `0-Plan_Del_Proyecto.md` | Fases, hitos, cronograma, actores y los 303 casos de uso de alto nivel |
+| **0** | `0-Plan_Del_Proyecto.md` | Fases, hitos, cronograma, actores y los 340 casos de uso de alto nivel |
 | **0.1** | `0.1-Planificacion_Iteraciones.md` | Qué se hace en cada iteración |
-| **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 303 casos de uso expandidos |
-| **2** | `2-Analisis.md` | Modelo conceptual, los 296 diagramas de secuencia, el catálogo de operaciones y sus contratos |
+| **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 340 casos de uso expandidos |
+| **2** | `2-Analisis.md` | Modelo conceptual, los 340 diagramas de secuencia, el catálogo de operaciones y sus contratos |
 | **3** | `3-Diseño.md` | Arquitectura, casos de uso reales, los diagramas de interacción y los módulos inteligentes |
 
 ## El documento de consulta
 
-**`Casos-de-Uso.md`** tiene los **303 casos, del CU-001 al CU-304**, cada uno con sus
+**`Casos-de-Uso.md`** tiene los **340 casos, del CU-001 al CU-343**, cada uno con sus
 cuatro artefactos: alto nivel (CUA), expandido (CUE), diagrama de secuencia del sistema
 (DSS) y diagrama de interacción de diseño (DSD).
 
@@ -41,7 +41,7 @@ la cátedra exige su artefacto ahí**. Este archivo los reúne para no saltar en
 ## Los comandos
 
 ```bash
-python3 verificar-conformidad.py   # ¿cumple las plantillas? (21 chequeos)
+python3 verificar-conformidad.py   # ¿cumple las plantillas? (23 chequeos)
 python3 generar-html-drive.py      # regenera drive/*.html
 python3 generar-sitio.py           # regenera splg-documentacion.html
 python3 generar-drawio.py          # regenera drawio/*.drawio (MC, DER, base de datos y clases)
@@ -53,7 +53,7 @@ python3 generar-drawio.py          # regenera drawio/*.drawio (MC, DER, base de 
 |---|---|
 | **Proceso Unificado** | La metodología que exige la cátedra |
 | **Markdown** | Los seis documentos, versionados como texto plano |
-| **Mermaid** | Los 645 diagramas de secuencia, interacción, flujo y estados |
+| **Mermaid** | Los 711 diagramas de secuencia, interacción, flujo y estados |
 | **PlantUML** | Los 50 diagramas de casos de uso, estados, actividad, componentes, despliegue y cronograma |
 | **Python** | Verificación de conformidad y generación de los entregables |
 | **Git** | Historia completa de cada cambio |
@@ -62,4 +62,4 @@ python3 generar-drawio.py          # regenera drawio/*.drawio (MC, DER, base de 
 Los diagramas se escriben como código junto al texto que documentan, así que se versionan
 igual que el resto y no hay que redibujarlos a mano cuando algo cambia.
 
-El detalle completo del repositorio está en `material-de-trabajo/DETALLE-DEL-REPOSITORIO.md`.
+El mapa de archivos está en `GUIA-DEL-REPOSITORIO.md`.

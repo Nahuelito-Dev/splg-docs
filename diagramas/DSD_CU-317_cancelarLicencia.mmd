@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-317 Cancelar una Licencia o Ausencia · cancelarLicencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :LeaveService
+    participant COL as :Map#lt;String, LicenciaLaboral#gt;
+    participant LIC as licencia:LicenciaLaboral
+
+    ADM->>+SRV: cancelarLicencia(licenciaId)
+    SRV->>+COL: get(licenciaId)
+    COL-->>-SRV: licencia
+    SRV->>+LIC: cancelar()
+    LIC->>LIC: assertNoTerminada()
+    LIC->>LIC: validarTransicion(estadoNuevoDeLicencia)
+    deactivate LIC
+    SRV-->>-ADM: licencia

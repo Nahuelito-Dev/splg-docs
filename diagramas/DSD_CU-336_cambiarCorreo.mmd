@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-336 Cambiar el Correo del Usuario · cambiarCorreo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :EmailService
+    participant FBA as :FirebaseAuthPort
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
+    participant SND as :EmailSenderPort
+
+    CLI->>+SRV: cambiarCorreo(correoActual, correoNuevo)
+    SRV->>FBA: verifyIdToken(token)
+    SRV->>COL: verificarDisponibilidad(correoNuevo)
+    SRV->>+COL: get(correoActual)
+    COL-->>-SRV: usuario
+    SRV->>FBA: updateUser(cuenta, correoNuevo)
+    SRV->>USR: cambiarCorreo(correoNuevo)
+    SRV-)SND: send(verificacionDeCorreo)
+    SRV-->>-CLI: correoNuevo

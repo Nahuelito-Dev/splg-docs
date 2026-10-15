@@ -1,27 +1,9 @@
 @startuml
 title Diagrama de despliegue — SPLG en ejecución
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 12
-skinparam dpi 150
-skinparam ArrowColor #2C4257
-skinparam ArrowFontSize 12
-skinparam node {
-  BorderColor #2C4257
-  BackgroundColor #F4F7FA
-}
+!include ../estilo-vp.iuml
 skinparam artifact {
   BorderColor #2C4257
   BackgroundColor #FFFFFF
-}
-skinparam database {
-  BorderColor #2C4257
-  BackgroundColor #E8EDF2
-}
-skinparam node<<externo>> {
-  BorderColor #8E5566
-  BackgroundColor #F7ECEF
 }
 left to right direction
 skinparam nodesep 40

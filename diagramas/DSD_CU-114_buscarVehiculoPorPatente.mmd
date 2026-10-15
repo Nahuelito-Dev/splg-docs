@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-114 Buscar un Vehículo por Patente · buscarVehiculoPorPatente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COL as :Map#lt;String, Vehiculo#gt;
+
+    ADM->>+SRV: buscarVehiculoPorPatente(patente)
+    SRV->>+COL: get(patente)
+    COL-->>-SRV: vehiculo
+    SRV-->>-ADM: vehiculo

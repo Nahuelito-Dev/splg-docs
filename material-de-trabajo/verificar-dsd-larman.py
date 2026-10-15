@@ -3,10 +3,10 @@
 
     python3 material-de-trabajo/verificar-dsd-larman.py              informa lo que falta, sin fallar por eso
     python3 material-de-trabajo/verificar-dsd-larman.py --estricto   además falla por cada operación sin DSD
-    python3 material-de-trabajo/verificar-dsd-larman.py DSD_CU-025_resolverReclamo.mmd   sólo ese
+    python3 material-de-trabajo/verificar-dsd-larman.py DSD_CU-025_resolverReclamo.mmd   solo ese
 
 Las reglas están en `GUIA-DSD-LARMAN.md` §9 y en `dsd_larman.py`. Un DSD ya rehecho que
-rompe una regla falla siempre; lo que todavía no se rehízo sólo se informa hasta que se pasa
+rompe una regla falla siempre; lo que todavía no se rehízo solo se informa hasta que se pasa
 `--estricto` (o `DSD_ESTRICTO=1`), que es lo que se activa cuando se cierra la reescritura.
 Sale 0 si no hay errores, 1 si los hay.
 """

@@ -1,13 +1,13 @@
 sequenceDiagram
-    title DSD — CU-087 Crear el Primer Super Administrador (bootstrap) · crearPrimerSuperAdministrador
+    title DSD — CU-087 Crear el Primer Administrador General · crearPrimerSuperAdministrador
     autonumber
-    actor AGN as Administrador General (ACT-05)
+    actor OPE as Operador Técnico (ACT-10)
     participant SRV as :RegistroService
     participant LST as :List#lt;Administrador#gt;
     participant COL as :Map#lt;String, Usuario#gt;
     participant FBA as :FirebaseAuthPort
 
-    AGN->>+SRV: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
+    OPE->>+SRV: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
     SRV->>+LST: existeAdministradorGeneral()
     LST-->>-SRV: existe
     SRV->>COL: verificarDisponibilidad(correo, telefono)
@@ -20,4 +20,4 @@ sequenceDiagram
     opt La persistencia falla
         SRV->>FBA: deleteUserSafe(cuenta)
     end
-    SRV-->>-AGN: usuario
+    SRV-->>-OPE: usuario

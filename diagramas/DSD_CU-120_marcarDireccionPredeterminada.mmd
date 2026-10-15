@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-120 Marcar una Dirección como Predeterminada · marcarDireccionPredeterminada
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, DireccionEntrega#gt;
+    participant DIR as direccion:DireccionEntrega
+    participant CLE as cliente:Cliente
+
+    CLI->>+SRV: marcarDireccionPredeterminada(direccionId)
+    SRV->>+COL: get(direccionId)
+    COL-->>-SRV: direccion
+    SRV->>+DIR: marcarPredeterminada()
+    DIR->>CLE: desmarcarLasDemas(direccion)
+    deactivate DIR
+    SRV-->>-CLI: direccion

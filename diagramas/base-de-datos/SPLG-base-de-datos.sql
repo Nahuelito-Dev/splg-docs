@@ -3029,6 +3029,13 @@ CREATE INDEX "IDX_f63c2b78c253c8c92398d88fd5" ON public.job_position USING btree
 
 
 --
+-- Name: IDX_order_status_history_cancelacion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_order_status_history_cancelacion" ON public.order_status_history USING btree (order_id, changed_at) WHERE (to_status = 'cancelled'::public.order_status_enum);
+
+
+--
 -- Name: IDX_purchase_order_estado; Type: INDEX; Schema: public; Owner: -
 --
 

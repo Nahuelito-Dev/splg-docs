@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-129 Consultar el Detalle del Cliente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarDetalleDelCliente(clienteId)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: ficha del cliente
+    else el cliente no existe o nunca le compró a la distribuidora del administrador
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

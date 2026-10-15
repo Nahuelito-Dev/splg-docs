@@ -4,7 +4,7 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)
+    ADM->>SIS: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)
     activate SIS
     alt el plan aplica al puesto del empleado y el vencimiento está vigente
         SIS-->>ADM: tarea creada, empleado habilitado

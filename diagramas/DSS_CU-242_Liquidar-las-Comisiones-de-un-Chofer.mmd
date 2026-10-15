@@ -12,21 +12,3 @@ sequenceDiagram
         SIS-->>ADM: operación rechazada
     end
     deactivate SIS
-
-    ADM->>SIS: aprobarLiquidacion(liquidacionId)
-    activate SIS
-    alt la operación es válida
-        SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
-    else la liquidación no está en borrador
-        SIS-->>ADM: operación rechazada
-    end
-    deactivate SIS
-
-    ADM->>SIS: anularLiquidacion(liquidacionId)
-    activate SIS
-    alt la operación es válida
-        SIS-->>ADM: liquidación anulada y asientos liberados
-    else la liquidación ya está pagada
-        SIS-->>ADM: operación rechazada
-    end
-    deactivate SIS

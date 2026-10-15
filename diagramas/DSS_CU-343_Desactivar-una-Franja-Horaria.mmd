@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-343 Desactivar una Franja Horaria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: desactivarFranjaHoraria(franjaId)
+    activate SIS
+    alt la franja pertenece a la distribuidora
+        SIS-->>ADM: franja desactivada
+    else la franja no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

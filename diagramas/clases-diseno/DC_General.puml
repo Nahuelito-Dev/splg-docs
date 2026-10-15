@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -280,6 +250,7 @@ Caja "1" *--> "0..*" MovimientoDeCaja
 SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja
 CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja
 MovimientoDeCaja "0..1" -- "0..1" MovimientoDeCaja
+Usuario "1" -- "0..*" MovimientoDeCaja
 Chofer "1" *-- "0..*" RendicionChofer
 RendicionChofer "0..*" --> "0..1" Caja
 RendicionChofer "0..1" -- "0..1" MovimientoDeCaja
@@ -309,8 +280,8 @@ LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja
 (Chofer, Vehiculo) .. AsignacionVehiculo
 
 legend bottom right
-  Vista de conjunto: sin miembros; sólo llevan nombre las asociaciones que comparten par. La flecha abierta marca
+  Vista de conjunto: sin miembros; solo llevan nombre las asociaciones que comparten par. La flecha abierta marca
   la navegabilidad que piden los diagramas de interacción; se omiten las asociaciones
-  de Usuario que sólo registran la autoría de un hecho, que figuran en su área.
+  de Usuario que solo registran la autoría de un hecho, que figuran en su área.
 endlegend
 @enduml

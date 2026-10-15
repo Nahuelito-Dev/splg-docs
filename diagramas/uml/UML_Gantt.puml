@@ -1,7 +1,9 @@
 @startgantt
 title Cronograma del proyecto — Diagrama de Gantt
 skinparam backgroundColor #FFFFFF
-skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
 skinparam dpi 150
 Project starts 2026-04-07
 printscale weekly
@@ -38,16 +40,16 @@ language es
 [I3] is colored in #E6C7A0
 [I5] is colored in #E6C7A0
 -- Iteraciones postergadas a después de la defensa (fechas estimadas) --
-[I-4 Pedido en curso] as [I4] starts 2026-10-21 and lasts 4 days
+[I-4 Pedido en curso] as [I4] starts 2026-10-14 and lasts 9 days
 [I-6 Recompra (M3)] as [I6] starts 2026-10-21 and lasts 6 days
 [I-8 Recupero de envases (M5)] as [I8] starts 2026-10-21 and lasts 6 days
 [I-10 Flota (M2)] as [I10] starts 2026-10-21 and lasts 10 days
 [I-7 Compra express y reintegros] as [I7] starts at [I4]'s end and lasts 8 days
 [I-9 Recorridos (M4)] as [I9] starts at [I7]'s end and lasts 8 days
-[I-11 Personal y legajos] as [I11] starts 2026-10-21 and lasts 12 days
-[I-12 Flota ampliada] as [I12] starts 2026-11-30 and lasts 10 days
-[I-13 Stock y compras] as [I13] starts 2026-11-06 and lasts 16 days
-[I-14 Caja y rendición] as [I14] starts 2026-12-14 and lasts 20 days
+[I-11 Personal y legajos] as [I11] starts 2026-10-07 and lasts 21 days
+[I-12 Flota ampliada] as [I12] starts 2026-11-06 and lasts 10 days
+[I-13 Stock y compras] as [I13] starts 2026-10-11 and lasts 4 days
+[I-14 Caja y rendición] as [I14] starts 2026-11-23 and lasts 20 days
 [I4] is colored in #F0E1CC
 [I6] is colored in #F0E1CC
 [I7] is colored in #F0E1CC
@@ -59,7 +61,7 @@ language es
 [I13] is colored in #F0E1CC
 [I14] is colored in #F0E1CC
 -- Fase de Transición --
-[T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-10-21 and ends 2026-12-22
+[T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-12-21 and ends 2027-02-19
 [T01] is colored in #B58AC2
 
 -- Hitos --
@@ -67,5 +69,5 @@ language es
 [Arquitectura validada] happens 2026-05-19
 [Release 2.0] happens 2026-09-08
 [Cierre de C-06: I-1, I-2, I-3 e I-5] happens 2026-10-20
-[Sistema en producción] happens 2026-12-22
+[Sistema en producción] happens 2027-02-19
 @endgantt

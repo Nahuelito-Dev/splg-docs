@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-034 Registrar un Vehículo del Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)
+    activate SIS
+    alt datos válidos
+        SIS-->>ADM: vehículo registrado (vehiculoId)
+    else datos inválidos
+        SIS-->>ADM: error de validación
+    end
+    deactivate SIS

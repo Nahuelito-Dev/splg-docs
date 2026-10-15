@@ -4,7 +4,7 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: cambiarEstadoDelChofer(choferId, activo)
+    ADM->>SIS: activarChofer(choferId)
     activate SIS
     alt el chofer existe
         SIS-->>ADM: chofer activado

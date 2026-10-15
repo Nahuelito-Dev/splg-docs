@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-309 Registrar una Salida de Dinero de la Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: movimiento de salida registrado con el saldo actualizado
+    else la caja exige sesión y no está abierta, o el saldo no alcanza
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

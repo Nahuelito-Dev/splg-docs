@@ -1,13 +1,14 @@
 sequenceDiagram
     title DSD — CU-169 Registrar el Cambio de Estado de un Pedido · registrarCambioDeEstado
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
+    participant UOS as :UpdateOrderStatusUseCase
     participant HIS as :OrderStatusHistorySubscriber
     participant PED as pedido:Pedido
 
-    SIS->>+HIS: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
+    Note over UOS,HIS: Caso incluido desde CU-005, CU-008, CU-009, CU-010, CU-012, CU-015, CU-018, CU-020, CU-072, CU-075, CU-077, CU-079 y CU-147
+    UOS->>+HIS: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
     HIS->>+PED: registrarCambio(estadoAnterior, estadoNuevo, autor, motivo)
     create participant CAM as :CambioEstadoPedido
     PED->>CAM: «create»(estadoAnterior, estadoNuevo, autor, motivo)
     deactivate PED
-    HIS-->>-SIS: cambio
+    HIS-->>-UOS: cambio

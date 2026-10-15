@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-118 Editar una Dirección de Entrega · editarDireccionDeEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, DireccionEntrega#gt;
+    participant DIR as direccion:DireccionEntrega
+
+    CLI->>+SRV: editarDireccionDeEntrega(direccionId, cambios)
+    SRV->>+COL: get(direccionId)
+    COL-->>-SRV: direccion
+    SRV->>+DIR: editar(cambios)
+    DIR->>DIR: validarCoordenadas(cambios)
+    deactivate DIR
+    SRV-->>-CLI: direccion

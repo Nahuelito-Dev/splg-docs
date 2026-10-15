@@ -90,7 +90,7 @@ _c("ItemPedido", "VentaYPedidos", ["cantidad", "precio unitario", "/subtotal"])
 _c("CambioEstadoPedido", "VentaYPedidos", ["desde", "hacia", "motivo", "fecha"])
 _c("CambioDireccion", "VentaYPedidos", ["motivo", "fecha"])
 _c("ZonaCobertura", "VentaYPedidos",
-   ["nombre", "área", "recargo", "tipo de recargo", "vigente hasta"])
+   ["nombre", "área", "recargo", "tipo de recargo", "prioridad", "vigente desde", "vigente hasta", "activa"])
 _c("FranjaHoraria", "VentaYPedidos", ["desde", "hasta", "cupo", "activa"])
 
 _c("Pago", "Pagos", ["importe", "pasarela", "estado", "es seña", "fecha"])
@@ -366,6 +366,7 @@ ASOCIACIONES = [
     ("SesionDeCaja", "0..1", "-", "0..*", "MovimientoDeCaja", "agrupa", TR),
     ("CategoriaDeCaja", "1", "-", "0..*", "MovimientoDeCaja", "clasifica", DE),
     ("MovimientoDeCaja", "0..1", "-", "0..1", "MovimientoDeCaja", "anula a", TR),
+    ("Usuario", "1", "-", "0..*", "MovimientoDeCaja", "registró", TR),
     ("Chofer", "1", "*", "0..*", "RendicionChofer", "presenta", TR),
     ("RendicionChofer", "0..*", "-", "0..1", "Caja", "ingresa en", TR),
     ("RendicionChofer", "0..1", "-", "0..1", "MovimientoDeCaja", "genera", TR),
@@ -443,7 +444,7 @@ VISTAS = [
      ["Deposito", "Producto", "Usuario", "Distribuidora"]),
     ("Caja y movimientos", "MC_Caja",
      ["Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja"],
-     ["Distribuidora", "RendicionChofer", "AsientoCuentaCorriente", "LiquidacionComisiones"]),
+     ["Distribuidora", "Usuario", "RendicionChofer", "AsientoCuentaCorriente", "LiquidacionComisiones"]),
     ("Rendiciones de choferes", "MC_Rendiciones",
      ["RendicionChofer", "PedidoRendido", "GastoDeRendicion"],
      ["Chofer", "Pedido", "Caja", "MovimientoDeCaja", "CategoriaDeCaja", "AsientoCuentaCorriente",
@@ -661,7 +662,8 @@ ATRIBUTOS = {
                            "fecha": "changed_at"},
     "CambioDireccion": {"motivo": "reason", "fecha": "changed_at"},
     "ZonaCobertura": {"nombre": "name", "área": "area", "recargo": "surcharge_value",
-                      "tipo de recargo": "surcharge_type", "vigente hasta": "valid_until"},
+                      "tipo de recargo": "surcharge_type", "prioridad": "priority",
+                      "vigente desde": "valid_from", "vigente hasta": "valid_until", "activa": "isActive"},
     "FranjaHoraria": {"desde": "startTime", "hasta": "endTime", "cupo": "capacity",
                       "activa": "isActive"},
     "Pago": {"importe": "amount", "pasarela": "gateway", "estado": "status",
@@ -860,7 +862,7 @@ NOMBRE_POR_COLUMNA = {
     ("customer_account_entry", "reverses_entry_id"): "anula a",
 }
 
-# Columnas que sólo dicen quién hizo algo: no son asociaciones del dominio.
+# Columnas que solo dicen quién hizo algo: no son asociaciones del dominio.
 AUTORIA_TECNICA = {("maintenance_task_attachment", "uploaded_by_user_id"),
                    ("module_config", "updated_by_user_id"),
                    ("vehicle_assignment", "assigned_by_user_id"),

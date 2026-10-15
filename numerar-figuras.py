@@ -70,12 +70,13 @@ def procesar(archivo):
             i += 1
             continue
 
-        # vista parcial: se renumera como N.k respecto de la última figura
+        # vista parcial («Figura N.k»): la numeración es correlativa, una figura más
         ms = RE_SUBFIGURA.match(l)
         if ms and not l.strip().startswith(">"):
-            sub += 1
-            salida.append(f"**Figura {n}.{sub} — {ms.group(1).strip()}**")
-            indice.append((f"{n}.{sub}", ms.group(1).strip()))
+            n += 1
+            sub = 0
+            salida.append(f"**Figura {n} — {ms.group(1).strip()}**")
+            indice.append((n, ms.group(1).strip()))
             i += 1
             continue
 

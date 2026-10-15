@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-311 Eliminar el Legajo de un Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: eliminarEmpleado(empleadoId)
+    activate SIS
+    alt el legajo es una alta errónea: no tiene cuenta de acceso ni, cuando existan, jornadas o documentación
+        SIS-->>ADM: legajo dado de baja (alta errónea)
+    else el empleado no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else el legajo tiene cuenta de acceso o, cuando existan, jornadas o documentación
+        SIS-->>ADM: conflicto: corresponde registrar el egreso
+    end
+    deactivate SIS

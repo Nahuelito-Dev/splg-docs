@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSS — CU-336 Cambiar el Correo del Usuario
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    opt el usuario autenticado quiere cambiar su correo
+        CLI->>SIS: cambiarCorreo(correoActual, correoNuevo)
+        activate SIS
+        SIS-->>CLI: correo actualizado (se envió la verificación al nuevo)
+        deactivate SIS
+    end
+    Note over CLI,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)

@@ -1,8 +1,8 @@
 # Documento 3 — Diseño del Sistema
 **Proyecto:** SPLG – Sistema de Pedidos y Logística de Garrafas de Gas  
-**Metodología:** Unified Process (UP)  
-**Versión:** 1.5  
-**Fecha:** 2026-10-03  
+**Metodología:** Proceso Unificado (PU)  
+**Versión:** 1.7  
+**Fecha:** 2026-10-14  
 **Realizado por:** Nahuel Wagner  
 **Realizado para:** Distribuidor de Gas Envasado (Cliente Real)  
 **Institución:** FCEQyN – UNaM  
@@ -17,43 +17,43 @@
 - Figura 3 — Entornos y recorrido del código
 - Figura 4 — CU-001 Iniciar Sesión — Interfaz Gráfica
 - Figura 5 — CU-001 Iniciar Sesión — Diagrama de Interacción
-- Figura 6 — CU-005 Crear Pedido — Interfaz Gráfica
-- Figura 7 — CU-005 Crear Pedido — Diagrama de Interacción
-- Figura 8 — CU-013 Asignar Pedido Automáticamente por Proximidad — Interfaz Gráfica
-- Figura 9 — CU-013 Asignar Pedido Automáticamente por Proximidad — Diagrama de Interacción
-- Figura 10 — CU-014 Reintentar Asignación con Radio Expandido (Cron) — Diagrama de Interacción
-- Figura 11 — CU-015 Aceptar Pedido — Interfaz Gráfica
-- Figura 12 — CU-015 Aceptar Pedido — Diagrama de Interacción
-- Figura 13 — CU-017 Actualizar Ubicación GPS del Chofer — Interfaz Gráfica
-- Figura 14 — CU-017 Actualizar Ubicación GPS del Chofer — Diagrama de Interacción
-- Figura 15 — CU-020 Confirmar Entrega Manualmente — Interfaz Gráfica
-- Figura 16 — CU-020 Confirmar Entrega Manualmente — Diagrama de Interacción
-- Figura 17 — CU-048 Procesar Pago con MercadoPago — Interfaz Gráfica
-- Figura 18 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago
-- Figura 19 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Interfaz Gráfica
-- Figura 20 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Diagrama de Interacción
-- Figura 21 — CU-008 Cancelar Pedido (Cliente) — Interfaz Gráfica
-- Figura 22 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción
+- Figura 6 — CU-005 Crear un Pedido — Interfaz Gráfica
+- Figura 7 — CU-005 Crear un Pedido — Diagrama de Interacción
+- Figura 8 — CU-013 Asignar un Pedido Automáticamente por Proximidad — Interfaz Gráfica
+- Figura 9 — CU-013 Asignar un Pedido Automáticamente por Proximidad — Diagrama de Interacción
+- Figura 10 — CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer — Diagrama de Interacción
+- Figura 11 — CU-015 Aceptar un Pedido — Interfaz Gráfica
+- Figura 12 — CU-015 Aceptar un Pedido — Diagrama de Interacción
+- Figura 13 — CU-017 Actualizar la Ubicación GPS del Chofer — Interfaz Gráfica
+- Figura 14 — CU-017 Actualizar la Ubicación GPS del Chofer — Diagrama de Interacción
+- Figura 15 — CU-020 Confirmar una Entrega Manualmente — Interfaz Gráfica
+- Figura 16 — CU-020 Confirmar una Entrega Manualmente — Diagrama de Interacción
+- Figura 17 — CU-048 Procesar el Pago con MercadoPago — Interfaz Gráfica
+- Figura 18 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago
+- Figura 19 — CU-079 Confirmar una Entrega Escaneando el QR (cliente) — Interfaz Gráfica
+- Figura 20 — CU-079 Confirmar una Entrega Escaneando el QR (cliente) — Diagrama de Interacción
+- Figura 21 — CU-008 Cancelar un Pedido (Cliente) — Interfaz Gráfica
+- Figura 22 — CU-008 Cancelar un Pedido (Cliente) — Diagrama de Interacción
 - Figura 23 — DSD CU-001: Iniciar Sesión
 - Figura 24 — DSD CU-002: Registrarse como Cliente
-- Figura 25 — DSD CU-003: Registrar Chofer
+- Figura 25 — DSD CU-003: Registrar un Chofer (Gestión de Usuarios) — Operación: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
 - Figura 26 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfil(usuarioId)
 - Figura 27 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)
 - Figura 28 — DSD CU-251: Modificar el Perfil de Usuario — Operación: actualizarPerfil(usuarioId, datos)
-- Figura 29 — DSD CU-047: Recuperar Contraseña
-- Figura 30 — DSD CU-047: Recuperar Contraseña — Operación: solicitarRecuperacionDeClave(correo)
-- Figura 31 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId, bloquear)
-- Figura 32 — DSD CU-082: Crear Usuario Base
-- Figura 33 — DSD CU-083: Listar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
-- Figura 34 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)
-- Figura 35 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)
-- Figura 36 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)
-- Figura 37 — DSD CU-085: Eliminar Usuario (baja lógica)
-- Figura 38 — DSD CU-091: Validar Vigencia del Token de Sesión
-- Figura 39 — DSD CU-005: Crear pedido con despacho automático
-- Figura 40 — DSD CU-006: Consultar Detalle de Pedido
-- Figura 41 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId)
-- Figura 42 — DSD CU-007: Consultar Historial de Pedidos
+- Figura 29 — DSD CU-047: Recuperar la Contraseña — Operación: solicitarRecuperacionDeClave(correo)
+- Figura 30 — DSD CU-336: Cambiar el Correo del Usuario — Operación: cambiarCorreo(correoActual, correoNuevo)
+- Figura 31 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId)
+- Figura 32 — DSD CU-270: Desbloquear un Usuario — Operación: desbloquearUsuario(usuarioId)
+- Figura 33 — DSD CU-082: Crear un Usuario Base
+- Figura 34 — DSD CU-083: Listar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
+- Figura 35 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)
+- Figura 36 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)
+- Figura 37 — DSD CU-084: Verificar la Existencia de un Usuario (pre-registro)
+- Figura 38 — DSD CU-085: Eliminar un Usuario (baja lógica)
+- Figura 39 — DSD CU-005: Crear un Pedido
+- Figura 40 — DSD CU-006: Consultar el Detalle de un Pedido
+- Figura 41 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)
+- Figura 42 — DSD CU-007: Consultar el Historial de Pedidos
 - Figura 43 — DSD CU-169: Registrar el Cambio de Estado de un Pedido — Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
 - Figura 44 — DSD CU-170: Consultar el Historial de Estados de un Pedido
 - Figura 45 — DSD CU-143: Declarar el Consumo Promedio al Registrarse
@@ -62,452 +62,474 @@
 - Figura 48 — DSD CU-146: Consultar la Fecha Estimada de Recompra
 - Figura 49 — DSD CU-147: Realizar una Compra Express
 - Figura 50 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido
-- Figura 51 — DSD CU-008: Cancelar Pedido (Cliente)
-- Figura 52 — DSD CU-009: Cancelar Pedido (Chofer)
-- Figura 53 — DSD CU-010: Cancelar Pedido (Administrador)
+- Figura 51 — DSD CU-008: Cancelar un Pedido (Cliente) — Operación: cancelarMiPedido(pedidoId, motivo)
+- Figura 52 — DSD CU-009: Liberar un Pedido (Chofer)
+- Figura 53 — DSD CU-010: Cancelar un Pedido (Administrador) — Operación: cancelarPedido(pedidoId, motivo)
 - Figura 54 — DSD CU-168: Reintegrar el Pago de un Pedido
-- Figura 55 — DSD CU-011: Listar Todos los Pedidos
-- Figura 56 — DSD CU-046: Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
-- Figura 57 — DSD CU-046 / CU-116: Consultar Direcciones de Entrega del Cliente · registrarDireccionDeEntrega
-- Figura 58 — DSD CU-046 / CU-118: Consultar Direcciones de Entrega del Cliente · editarDireccionDeEntrega
-- Figura 59 — DSD CU-046 / CU-119: Consultar Direcciones de Entrega del Cliente · eliminarDireccionDeEntrega
-- Figura 60 — DSD CU-046 / CU-120: Consultar Direcciones de Entrega del Cliente · marcarDireccionPredeterminada
-- Figura 61 — DSD CU-117: Consultar Detalle de una Dirección de Entrega
-- Figura 62 — DSD CU-121: Consultar la Dirección Predeterminada
-- Figura 63 — DSD CU-122: Agregar Ítem al Carrito
-- Figura 64 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito
-- Figura 65 — DSD CU-124: Quitar Ítem del Carrito
-- Figura 66 — DSD CU-125: Consultar el Carrito
-- Figura 67 — DSD CU-126: Vaciar el Carrito
-- Figura 68 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido
-- Figura 69 — DSD CU-128: Indicar Quién Recibe el Pedido
-- Figura 70 — DSD CU-080: Consultar el Pool de Pedidos Disponibles
-- Figura 71 — DSD CU-081: Consultar los Pedidos Asignados al Chofer
-- Figura 72 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1) — Operación: ofrecerAlSiguienteChofer(pedidoId)
-- Figura 73 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal) — Operación: vencerOfertasExpiradas()
-- Figura 74 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: aceptarPedido(pedidoId)
-- Figura 75 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: rechazarOferta(pedidoId)
-- Figura 76 — DSD CU-012: Asignar Chofer Manualmente
-- Figura 77 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
-- Figura 78 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)
-- Figura 79 — DSD CU-017: Actualización de la ubicación del chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)
-- Figura 80 — DSD CU-020: Confirmar Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)
-- Figura 81 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: obtenerCodigoDeEntrega(pedidoId)
-- Figura 82 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)
-- Figura 83 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)
-- Figura 84 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)
-- Figura 85 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota)
-- Figura 86 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
-- Figura 87 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)
-- Figura 88 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)
-- Figura 89 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)
-- Figura 90 — DSD CU-018: Marcar Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)
-- Figura 91 — DSD CU-019: Avisar Llegada al Cliente — Operación: avisarLlegada(pedidoId)
-- Figura 92 — DSD CU-021: Recibir Notificaciones en Tiempo Real — Operación: suscribirseAlSeguimiento(clienteId)
-- Figura 93 — DSD CU-022: Activar la Disponibilidad — Operación: cambiarDisponibilidad(usuarioId, disponible)
-- Figura 94 — DSD CU-023: Registrar Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)
-- Figura 95 — DSD CU-024: Listar Reclamos — Operación: listarReclamos()
-- Figura 96 — DSD CU-025: Resolver Reclamo
-- Figura 97 — DSD CU-166: Tomar un Reclamo Pendiente
-- Figura 98 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)
-- Figura 99 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)
-- Figura 100 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)
-- Figura 101 — DSD CU-026: Ver Dashboard General · consultarResumenDePedidos
-- Figura 102 — DSD CU-026: Ver Dashboard General · consultarGraficoDeVentas
-- Figura 103 — DSD CU-027: Ver Reporte de Ventas por Chofer
-- Figura 104 — DSD CU-028: Ver Reporte de Ventas por Producto
-- Figura 105 — DSD CU-029: Ver Reporte por Método de Pago
-- Figura 106 — DSD CU-030: Ver Gráfico de Ventas
-- Figura 107 — DSD CU-304: Ver los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)
-- Figura 108 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)
-- Figura 109 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)
-- Figura 110 — DSD CU-033: Activar un Chofer — Operación: cambiarEstadoDelChofer(choferId, activo)
-- Figura 111 — DSD CU-034: Registrar Vehículo del Chofer
-- Figura 112 — DSD CU-035: Consultar Listado de Choferes
-- Figura 113 — DSD CU-035: Consultar Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)
-- Figura 114 — DSD CU-035: Consultar Listado de Choferes — Operación: consultarDetalleDelChofer(choferId)
-- Figura 115 — DSD CU-049: Consultar Balance / Ganancias del Chofer
-- Figura 116 — DSD CU-049: Consultar Balance / Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)
-- Figura 117 — DSD CU-051: Consultar Listado de Vehículos
-- Figura 118 — DSD CU-051: Consultar Listado de Vehículos — Operación: buscarVehiculoPorPatente(patente)
-- Figura 119 — DSD CU-051: Consultar Listado de Vehículos — Operación: editarVehiculo(vehiculoId, datos)
-- Figura 120 — DSD CU-051: Consultar Listado de Vehículos — Operación: eliminarVehiculo(vehiculoId)
-- Figura 121 — DSD CU-096: Actualizar Perfil del Chofer
-- Figura 122 — DSD CU-097: Eliminar Chofer (baja lógica)
-- Figura 123 — DSD CU-110: Buscar Chofer por Usuario
-- Figura 124 — DSD CU-113: Consultar Detalle del Vehículo
-- Figura 125 — DSD CU-115: Consultar Vehículos de un Chofer
-- Figura 126 — DSD CU-136: Registrar el Seguro del Vehículo
-- Figura 127 — DSD CU-139: Consultar los Vencimientos de la Flota
-- Figura 128 — DSD CU-141: Registrar un Mantenimiento Realizado
-- Figura 129 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota
-- Figura 130 — DSD CU-155: Adjuntar Archivo a una Tarea de Flota
-- Figura 131 — DSD CU-156: Consultar Adjuntos de una Tarea de Flota
-- Figura 132 — DSD CU-157: Descargar un Adjunto de Flota
-- Figura 133 — DSD CU-158: Eliminar un Adjunto de Flota
-- Figura 134 — DSD CU-159: Almacenar Archivo
-- Figura 135 — DSD CU-160: Recuperar Archivo
-- Figura 136 — DSD CU-161: Poner un Vehículo en Uso para un Chofer
-- Figura 137 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer
-- Figura 138 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer
-- Figura 139 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()
-- Figura 140 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer
-- Figura 141 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo
-- Figura 142 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)
-- Figura 143 — DSD CU-195: Registrar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)
-- Figura 144 — DSD CU-195: Registrar una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)
-- Figura 145 — DSD CU-195: Registrar una Carga de Combustible — Operación: consultarCargasDeCombustible(filtros)
-- Figura 146 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)
-- Figura 147 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)
-- Figura 148 — DSD CU-198: Registrar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)
-- Figura 149 — DSD CU-198: Registrar una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)
-- Figura 150 — DSD CU-198: Registrar una Multa de Tránsito — Operación: consultarMultasDeTransito(filtros)
-- Figura 151 — DSD CU-198: Registrar una Multa de Tránsito — Operación: avisarMultasPorVencer()
-- Figura 152 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)
-- Figura 153 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)
-- Figura 154 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)
-- Figura 155 — DSD CU-201: Registrar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)
-- Figura 156 — DSD CU-201: Registrar un Siniestro — Operación: consultarSiniestros(filtros)
-- Figura 157 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)
-- Figura 158 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)
-- Figura 159 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)
-- Figura 160 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)
-- Figura 161 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)
-- Figura 162 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)
-- Figura 163 — DSD CU-036: Crear Producto (Garrafa)
-- Figura 164 — DSD CU-037: Actualizar Precio de Producto
-- Figura 165 — DSD CU-038: Actualizar Stock de Producto — Operación: actualizarStock(productoId, variacion)
-- Figura 166 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)
-- Figura 167 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)
-- Figura 168 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()
-- Figura 169 — DSD CU-041: Consultar Catálogo de Productos
-- Figura 170 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProducto(productoId)
-- Figura 171 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)
-- Figura 172 — DSD CU-042: Crear Franja Horaria
-- Figura 173 — DSD CU-045: Consultar Franjas Horarias Disponibles
-- Figura 174 — DSD CU-044 / CU-045: Consultar Franjas Horarias Disponibles
-- Figura 175 — DSD CU-103: Eliminar Franja Horaria
-- Figura 176 — DSD CU-154: Consultar Listado de Franjas Horarias
-- Figura 177 — DSD CU-043: Modificar Capacidad de Franja Horaria
-- Figura 178 — DSD — CU-052: Registrar Distribuidora
-- Figura 179 — DSD — CU-053: Consultar Distribuidoras
-- Figura 180 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)
-- Figura 181 — DSD — CU-054: Modificar Datos de la Distribuidora
-- Figura 182 — DSD — CU-055: Dar de Baja una Distribuidora
-- Figura 183 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido
-- Figura 184 — DSD — CU-056: Definir Zona de Cobertura
-- Figura 185 — DSD — CU-057: Consultar Zonas de Cobertura
-- Figura 186 — DSD — CU-059: Eliminar Zona de Cobertura
-- Figura 187 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: calificarPedido(pedidoId, estrellas, comentario)
-- Figura 188 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: consultarResumenDeCalificaciones(usuarioId)
-- Figura 189 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
-- Figura 190 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()
-- Figura 191 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)
-- Figura 192 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
-- Figura 193 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)
-- Figura 194 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
-- Figura 195 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
-- Figura 196 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
-- Figura 197 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)
-- Figura 198 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)
-- Figura 199 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)
-- Figura 200 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
-- Figura 201 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)
-- Figura 202 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)
-- Figura 203 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)
-- Figura 204 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago
-- Figura 205 — DSD CU-048: Procesar Pago con MercadoPago · notificarResultadoDePago
-- Figura 206 — DSD CU-072: Crear reserva programada con seña
-- Figura 207 — DSD CU-075: Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia
-- Figura 208 — DSD CU-076: Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia
-- Figura 209 — DSD CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar
-- Figura 210 — DSD — CU-073: Listar Reservas y Estado de la Seña
-- Figura 211 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo
-- Figura 212 — DSD — CU-086: Registrar Administrador
-- Figura 213 — DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
-- Figura 214 — DSD — CU-088: Consultar Administradores
-- Figura 215 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)
-- Figura 216 — DSD CU-089: Consultar los Roles — Operación: listarRoles()
-- Figura 217 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)
-- Figura 218 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)
-- Figura 219 — DSD CU-254: Eliminar un Rol — Operación: eliminarRol(rolId)
-- Figura 220 — DSD — CU-090: Sembrar los Roles Iniciales
-- Figura 221 — DSD — CU-092: Consultar Listado de Clientes
-- Figura 222 — DSD — CU-094: Actualizar Ubicación del Cliente
-- Figura 223 — DSD — CU-095: Eliminar Cliente (baja lógica)
-- Figura 224 — DSD CU-129: Consultar Detalle del Cliente
-- Figura 225 — DSD CU-130: Buscar Cliente por Usuario
-- Figura 226 — DSD CU-131: Editar Datos del Cliente
-- Figura 227 — DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
-- Figura 228 — DSD — CU-099: Consultar los Tokens de un Usuario
-- Figura 229 — DSD — CU-100: Enviar Notificación de Prueba
-- Figura 230 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
-- Figura 231 — DSD — CU-102: Probar el Servicio de Correo
-- Figura 232 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
-- Figura 233 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()
-- Figura 234 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()
-- Figura 235 — DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
-- Figura 236 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
-- Figura 237 — DSD — CU-152: Consultar el Registro de Auditoría
-- Figura 238 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
-- Figura 239 — DSD — CU-153: Registrar Toda Operación de Escritura
-- Figura 240 — DSD CU-153: Registrar Toda Operación de Escritura — Operación: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
-- Figura 241 — DSD CU-172: Configurar los Parámetros de un Proceso Automático
-- Figura 242 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas
-- Figura 243 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()
-- Figura 244 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)
-- Figura 245 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)
-- Figura 246 — DSD CU-257: Eliminar un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)
-- Figura 246.1 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)
-- Figura 246.2 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)
-- Figura 246.3 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)
-- Figura 246.4 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)
-- Figura 246.5 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)
-- Figura 246.6 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
-- Figura 246.7 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)
-- Figura 246.8 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
-- Figura 246.9 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)
-- Figura 246.10 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)
-- Figura 246.11 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)
-- Figura 246.12 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)
-- Figura 246.13 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)
-- Figura 246.14 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)
-- Figura 246.15 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: consultarAsistencias(desde, hasta)
-- Figura 246.16 — DSD CU-190: Registrar el Inicio y el Fin de la Jornada — Operación: registrarInicioDeJornada()
-- Figura 246.17 — DSD CU-190: Registrar el Inicio y el Fin de la Jornada — Operación: registrarFinDeJornada()
-- Figura 246.18 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)
-- Figura 246.19 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)
-- Figura 246.20 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)
-- Figura 246.21 — DSD CU-192: Resolver una Solicitud de Licencia — Operación: consultarLicencias(estado, desde, hasta)
-- Figura 246.22 — DSD CU-192: Resolver una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)
-- Figura 246.23 — DSD CU-192: Resolver una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)
-- Figura 246.24 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)
-- Figura 246.25 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()
-- Figura 246.26 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)
-- Figura 247 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)
-- Figura 248 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)
-- Figura 249 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)
-- Figura 250 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)
-- Figura 251 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)
-- Figura 252 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)
-- Figura 253 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)
-- Figura 254 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)
-- Figura 255 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()
-- Figura 256 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()
-- Figura 257 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
-- Figura 258 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)
-- Figura 259 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()
-- Figura 260 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()
-- Figura 261 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)
-- Figura 262 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)
-- Figura 263 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
-- Figura 264 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)
-- Figura 265 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)
-- Figura 266 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
-- Figura 267 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)
-- Figura 268 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)
-- Figura 269 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)
-- Figura 270 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)
-- Figura 271 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)
-- Figura 272 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)
-- Figura 273 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)
-- Figura 274 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()
-- Figura 275 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
-- Figura 276 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)
-- Figura 277 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()
-- Figura 278 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()
-- Figura 279 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
-- Figura 280 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()
-- Figura 281 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)
-- Figura 282 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)
-- Figura 283 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()
-- Figura 284 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)
-- Figura 285 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)
-- Figura 286 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)
-- Figura 287 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-- Figura 288 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)
-- Figura 289 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)
-- Figura 290 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)
-- Figura 291 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
-- Figura 292 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)
-- Figura 293 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)
-- Figura 294 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)
-- Figura 295 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
-- Figura 296 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
-- Figura 297 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)
-- Figura 298 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)
-- Figura 299 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
-- Figura 300 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)
-- Figura 301 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)
-- Figura 302 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
-- Figura 303 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)
-- Figura 304 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()
-- Figura 305 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)
-- Figura 306 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)
-- Figura 307 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)
-- Figura 308 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)
-- Figura 309 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)
-- Figura 310 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
-- Figura 311 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)
-- Figura 312 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)
-- Figura 313 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)
-- Figura 314 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()
-- Figura 315 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
-- Figura 316 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
-- Figura 317 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)
-- Figura 318 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()
-- Figura 319 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
-- Figura 320 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)
-- Figura 321 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)
-- Figura 322 — DSD CU-236: Vender a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)
-- Figura 323 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
-- Figura 324 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
-- Figura 325 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
-- Figura 326 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()
-- Figura 327 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
-- Figura 328 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: modificarReglaDeComision(reglaId, datos)
-- Figura 329 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)
-- Figura 330 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
-- Figura 331 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: aprobarLiquidacion(liquidacionId)
-- Figura 332 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: anularLiquidacion(liquidacionId)
-- Figura 333 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)
-- Figura 334 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)
-- Figura 335 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)
-- Figura 336 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota
-- Figura 337 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
-- Figura 338 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
-- Figura 339 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra
-- Figura 340 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras
-- Figura 341 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()
-- Figura 342 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)
-- Figura 343 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()
-- Figura 344 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
-- Figura 345 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
-- Figura 346 — Diagrama de Clases de Dominio
-- Figura 346.1 — Clases de dominio: organización y acceso
-- Figura 346.2 — Clases de dominio: clientes
-- Figura 346.3 — Clases de dominio: pedido, líneas y pago
-- Figura 346.4 — Clases de dominio: carrito, franjas y cobertura
-- Figura 346.5 — Clases de dominio: despacho y propuestas con vigencia
-- Figura 346.6 — Clases de dominio: choferes y vehículos
-- Figura 346.7 — Clases de dominio: mantenimiento de la flota
-- Figura 346.8 — Clases de dominio: productos y envases
-- Figura 346.9 — Clases de dominio: personal
-- Figura 346.10 — Clases de dominio: recupero de envases
-- Figura 346.11 — Clases de dominio: posventa
-- Figura 346.12 — Clases de dominio: gastos de la flota
-- Figura 346.13 — Clases de dominio: stock físico
-- Figura 346.14 — Clases de dominio: carga del camión
-- Figura 346.15 — Clases de dominio: compras
-- Figura 346.16 — Clases de dominio: caja y movimientos
-- Figura 346.17 — Clases de dominio: rendición del chofer
-- Figura 346.18 — Clases de dominio: cuentas corrientes
-- Figura 346.19 — Clases de dominio: comisiones y liquidaciones
-- Figura 347 — Clases de diseño: sesión, registro e identidad
-- Figura 348 — Clases de diseño: usuarios, roles, administradores y auditoría
-- Figura 349 — Clases de diseño: clientes y direcciones de entrega
-- Figura 350 — Clases de diseño: carrito y recompra
-- Figura 351 — Clases de diseño: productos y franjas horarias
-- Figura 352 — Clases de diseño: cobertura y distribuidoras
-- Figura 353 — Clases de diseño: pedidos: alta y cancelación
-- Figura 354 — Clases de diseño: pedidos: consulta y estado
-- Figura 355 — Clases de diseño: pagos y reservas
-- Figura 356 — Clases de diseño: despacho de pedidos
-- Figura 357 — Clases de diseño: seguimiento en tiempo real
-- Figura 358 — Clases de diseño: choferes y vehículos
-- Figura 359 — Clases de diseño: flota: tareas, adjuntos y vencimientos
-- Figura 360 — Clases de diseño: flota: planificador de mantenimiento
-- Figura 361 — Clases de diseño: personal: puestos, legajos, jornadas y licencias
-- Figura 362 — Clases de diseño: adjuntos
-- Figura 363 — Clases de diseño: envases
-- Figura 364 — Clases de diseño: recupero de envases
-- Figura 365 — Clases de diseño: flota: gastos, multas y siniestros
-- Figura 366 — Clases de diseño: reclamos, incidencias y calificaciones
-- Figura 367 — Clases de diseño: notificaciones y correo
-- Figura 368 — Clases de diseño: reportes, salud y almacenamiento
-- Figura 369 — Clases de diseño: stock
-- Figura 370 — Clases de diseño: compras
-- Figura 371 — Clases de diseño: carga del camión
-- Figura 372 — Clases de diseño: caja: cajas, sesiones y libro
-- Figura 373 — Clases de diseño: rendición del chofer
-- Figura 374 — Clases de diseño: cuentas corrientes
-- Figura 375 — Clases de diseño: comisiones y liquidaciones
-- Figura 376 — Dependencias entre módulos
-- Figura 377 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
-- Figura 378 — D-16 — Catálogo de Productos (App Cliente)
-- Figura 379 — D-17 — Checkout (App Cliente)
-- Figura 380 — D-18 — Seguimiento en Tiempo Real (App Cliente)
-- Figura 381 — D-19 — Login y Registro (App Cliente + Chofer)
-- Figura 382 — D-20 — Home del Chofer (App Chofer)
-- Figura 383 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)
-- Figura 384 — D-22 — En Ruta (App Chofer)
-- Figura 385 — D-23 — Dashboard Administrador (Panel Web)
-- Figura 386 — D-24 — Listado de Pedidos Admin (Panel Web)
-- Figura 387 — Modelo físico de la base de datos: vista general
-- Figura 388 — Organización y acceso
-- Figura 389 — Clientes
-- Figura 390 — Catálogo e inventario de envases
-- Figura 391 — Venta y pedidos
-- Figura 392 — Pagos
-- Figura 393 — Despacho y logística
-- Figura 394 — Flota y choferes
-- Figura 395 — Posventa
-- Figura 396 — Personal (en parte planificado)
-- Figura 397 — Gastos de la flota (planificado)
-- Figura 398 — Stock físico y carga del camión
-- Figura 399 — Compras
-- Figura 400 — Modelo físico: compras
-- Figura 401 — Caja y finanzas (planificado)
-- Figura 402 — Relaciones entre contextos
-- Figura 403 — Modelo entidad-relación conceptual: vista general
-- Figura 404 — Modelo entidad-relación conceptual: usuarios y cuentas
-- Figura 405 — Modelo entidad-relación conceptual: pedidos y pagos
-- Figura 406 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
-- Figura 407 — Modelo entidad-relación conceptual: flota y choferes
-- Figura 408 — Modelo entidad-relación conceptual: envases y catálogo
-- Figura 409 — Modelo entidad-relación conceptual: personal
-- Figura 410 — Modelo entidad-relación conceptual: posventa
-- Figura 411 — Modelo entidad-relación conceptual: gastos de la flota
-- Figura 412 — Modelo entidad-relación conceptual: stock físico
-- Figura 413 — Modelo entidad-relación conceptual: carga del camión
-- Figura 414 — Modelo entidad-relación conceptual: compras
-- Figura 415 — Modelo entidad-relación conceptual: caja y movimientos
-- Figura 416 — Modelo entidad-relación conceptual: rendiciones de choferes
-- Figura 417 — Modelo entidad-relación conceptual: cuentas corrientes
-- Figura 418 — Modelo entidad-relación conceptual: comisiones y liquidaciones
-- Figura 419 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)
-- Figura 420 — Modelo entidad-relación conceptual: personal
-- Figura 421 — Modelo físico: gastos de la flota (planificado)
-- Figura 422 — Modelo entidad-relación conceptual: gastos de la flota
-- Figura 423 — Modelo físico: caja y finanzas (planificado)
-- Figura 424 — Modelo entidad-relación conceptual: caja y movimientos
-- Figura 425 — Modelo entidad-relación conceptual: rendiciones de choferes
-- Figura 426 — Modelo entidad-relación conceptual: cuentas corrientes
-- Figura 427 — Modelo entidad-relación conceptual: comisiones y liquidaciones
-- Figura 428 — Diagrama de estados del pedido
-- Figura 429 — Diagrama de estados del reclamo
-- Figura 430 — Diagrama de estados del envase
-- Figura 431 — Diagrama de estados de la reserva programada
-- Figura 432 — Diagrama de estados de la tarea de flota
-- Figura 433 — Diagrama de estados de la oferta de despacho
-- Figura 434 — Diagrama de estados de la orden de compra
-- Figura 435 — Diagrama de estados de la recepción de compra
-- Figura 436 — Diagrama de estados de la carga de camión
-- Figura 437 — Diagrama de estados del empleado
-- Figura 438 — Diagrama de estados de la licencia laboral
-- Figura 439 — Diagrama de estados de la jornada de trabajo
-- Figura 440 — Diagrama de estados de la carga de combustible (planificado, I-12)
-- Figura 441 — Diagrama de estados de la multa de tránsito (planificado, I-12)
-- Figura 442 — Diagrama de estados del siniestro (planificado, I-12)
-- Figura 443 — Diagrama de estados del neumático (planificado, I-12, opcional)
-- Figura 444 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)
-- Figura 445 — Diagrama de estados de la oferta de despacho
-- Figura 446 — Diagrama de estados: sesión de caja
-- Figura 447 — Diagrama de estados: rendición del chofer
-- Figura 448 — Diagrama de estados: liquidación de comisiones
-- Figura 449 — Diagrama de estados: cuenta corriente
-- Figura 450 — Diagrama de actividad del despacho por proximidad
-- Figura 451 — Diagrama de actividad del ciclo de vida del pedido
+- Figura 55 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)
+- Figura 56 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)
+- Figura 57 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota)
+- Figura 58 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
+- Figura 59 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)
+- Figura 60 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)
+- Figura 61 — DSD CU-011: Listar Todos los Pedidos
+- Figura 62 — DSD CU-046: Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
+- Figura 63 — DSD CU-116: Registrar una Dirección de Entrega — Operación: registrarDireccionDeEntrega(datos)
+- Figura 64 — DSD CU-117: Consultar Detalle de una Dirección de Entrega
+- Figura 65 — DSD CU-118: Editar una Dirección de Entrega — Operación: editarDireccionDeEntrega(direccionId, cambios)
+- Figura 66 — DSD CU-119: Eliminar una Dirección de Entrega — Operación: eliminarDireccionDeEntrega(direccionId)
+- Figura 67 — DSD CU-120: Marcar una Dirección como Predeterminada — Operación: marcarDireccionPredeterminada(direccionId)
+- Figura 68 — DSD CU-121: Consultar la Dirección Predeterminada
+- Figura 69 — DSD CU-122: Agregar un Ítem al Carrito
+- Figura 70 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito
+- Figura 71 — DSD CU-124: Quitar un Ítem del Carrito
+- Figura 72 — DSD CU-125: Consultar el Carrito
+- Figura 73 — DSD CU-126: Vaciar el Carrito
+- Figura 74 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido
+- Figura 75 — DSD CU-128: Indicar Quién Recibe el Pedido
+- Figura 76 — DSD CU-080: Consultar el Pool de Pedidos Disponibles
+- Figura 77 — DSD CU-081: Consultar los Pedidos Asignados al Chofer
+- Figura 78 — DSD CU-338: Retomar el Pedido en Curso — Operación: consultarPedidoEnCurso()
+- Figura 79 — DSD CU-339: Modificar un Pedido Pendiente (Administrador) — Operación: modificarPedido(pedidoId, datos)
+- Figura 80 — DSD CU-341: Modificar un Pedido Pendiente (Cliente) — Operación: modificarMiPedido(pedidoId, datos)
+- Figura 81 — DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)
+- Figura 82 — DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()
+- Figura 83 — DSD CU-015: Aceptar un Pedido — Operación: aceptarPedido(pedidoId)
+- Figura 84 — DSD CU-016: Rechazar un Pedido Ofrecido — Operación: rechazarOferta(pedidoId)
+- Figura 85 — DSD CU-012: Asignar un Chofer Manualmente
+- Figura 86 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
+- Figura 87 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)
+- Figura 88 — DSD CU-017: Actualizar la Ubicación GPS del Chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)
+- Figura 89 — DSD CU-020: Confirmar una Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)
+- Figura 90 — DSD CU-078: Obtener el Código de Entrega (QR del chofer) — Operación: obtenerCodigoDeEntrega(pedidoId)
+- Figura 91 — DSD CU-079: Confirmar una Entrega Escaneando el QR (cliente) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)
+- Figura 92 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)
+- Figura 93 — DSD CU-018: Marcar un Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)
+- Figura 94 — DSD CU-019: Avisar la Llegada al Cliente — Operación: avisarLlegada(pedidoId)
+- Figura 95 — DSD CU-022: Activar la Disponibilidad — Operación: activarDisponibilidad(usuarioId)
+- Figura 96 — DSD CU-266: Desactivar la Disponibilidad — Operación: desactivarDisponibilidad(usuarioId)
+- Figura 97 — DSD CU-023: Registrar un Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)
+- Figura 98 — DSD CU-024: Listar los Reclamos — Operación: listarReclamos()
+- Figura 99 — DSD CU-025: Resolver un Reclamo
+- Figura 100 — DSD CU-166: Tomar un Reclamo Pendiente
+- Figura 101 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)
+- Figura 102 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)
+- Figura 103 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)
+- Figura 104 — DSD CU-026: Ver el Tablero General · consultarResumenDePedidos
+- Figura 105 — DSD CU-026: Ver el Tablero General · consultarGraficoDeVentas
+- Figura 106 — DSD CU-027: Ver el Reporte de Ventas por Chofer
+- Figura 107 — DSD CU-028: Ver el Reporte de Ventas por Producto
+- Figura 108 — DSD CU-029: Ver el Reporte por Método de Pago
+- Figura 109 — DSD CU-030: Ver el Gráfico de Ventas (últimos 7 días)
+- Figura 110 — DSD CU-304: Ver los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)
+- Figura 111 — DSD CU-031: Registrar un Chofer (Gestión de la Flota) — Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)
+- Figura 112 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)
+- Figura 113 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)
+- Figura 114 — DSD CU-033: Activar un Chofer — Operación: activarChofer(choferId)
+- Figura 115 — DSD CU-267: Desactivar un Chofer — Operación: desactivarChofer(choferId)
+- Figura 116 — DSD CU-034: Registrar un Vehículo del Chofer
+- Figura 117 — DSD CU-035: Consultar el Listado de Choferes
+- Figura 118 — DSD CU-035: Consultar el Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)
+- Figura 119 — DSD CU-049: Consultar las Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)
+- Figura 120 — DSD CU-337: Ajustar el Saldo del Chofer — Operación: ajustarSaldoDelChofer(choferId, monto)
+- Figura 121 — DSD CU-051: Consultar el Listado de Vehículos
+- Figura 122 — DSD CU-096: Actualizar el Perfil del Chofer
+- Figura 123 — DSD CU-097: Eliminar un Chofer (baja lógica)
+- Figura 124 — DSD CU-109: Consultar el Detalle del Chofer — Operación: consultarDetalleDelChofer(choferId)
+- Figura 125 — DSD CU-110: Buscar un Chofer por Usuario
+- Figura 126 — DSD CU-111: Editar un Vehículo — Operación: editarVehiculo(vehiculoId, datos)
+- Figura 127 — DSD CU-112: Eliminar un Vehículo — Operación: eliminarVehiculo(vehiculoId)
+- Figura 128 — DSD CU-113: Consultar el Detalle del Vehículo
+- Figura 129 — DSD CU-114: Buscar un Vehículo por Patente — Operación: buscarVehiculoPorPatente(patente)
+- Figura 130 — DSD CU-115: Consultar los Vehículos de un Chofer
+- Figura 131 — DSD CU-136: Registrar el Seguro del Vehículo — Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)
+- Figura 132 — DSD CU-137: Registrar la Verificación Técnica Vehicular — Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)
+- Figura 133 — DSD CU-138: Registrar la Licencia de Conducir del Chofer — Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)
+- Figura 134 — DSD CU-139: Consultar los Vencimientos de la Flota
+- Figura 135 — DSD CU-140: Programar un Mantenimiento de Vehículo — Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)
+- Figura 136 — DSD CU-141: Registrar un Mantenimiento Realizado
+- Figura 137 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota — Operación: avisarVencimientosDeLaFlota()
+- Figura 138 — DSD CU-155: Adjuntar un Archivo a una Tarea de Flota
+- Figura 139 — DSD CU-156: Consultar los Adjuntos de una Tarea de Flota
+- Figura 140 — DSD CU-157: Descargar un Adjunto de Flota
+- Figura 141 — DSD CU-158: Eliminar un Adjunto de Flota
+- Figura 142 — DSD CU-159: Almacenar un Archivo
+- Figura 143 — DSD CU-160: Recuperar un Archivo
+- Figura 144 — DSD CU-161: Poner un Vehículo en Uso para un Chofer
+- Figura 145 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer
+- Figura 146 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer
+- Figura 147 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()
+- Figura 148 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer
+- Figura 149 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo
+- Figura 150 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)
+- Figura 151 — DSD CU-320: Modificar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)
+- Figura 152 — DSD CU-321: Anular una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)
+- Figura 153 — DSD CU-322: Consultar las Cargas de Combustible — Operación: consultarCargasDeCombustible(filtros)
+- Figura 154 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)
+- Figura 155 — DSD CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas — Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)
+- Figura 156 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)
+- Figura 157 — DSD CU-323: Modificar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)
+- Figura 158 — DSD CU-324: Anular una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)
+- Figura 159 — DSD CU-325: Consultar las Multas de Tránsito — Operación: consultarMultasDeTransito(filtros)
+- Figura 160 — DSD CU-326: Avisar las Multas por Vencer — Operación: avisarMultasPorVencer()
+- Figura 161 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)
+- Figura 162 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)
+- Figura 163 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)
+- Figura 164 — DSD CU-327: Modificar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)
+- Figura 165 — DSD CU-328: Consultar los Siniestros — Operación: consultarSiniestros(filtros)
+- Figura 166 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)
+- Figura 167 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)
+- Figura 168 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)
+- Figura 169 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)
+- Figura 170 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)
+- Figura 171 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)
+- Figura 172 — DSD CU-036: Crear un Producto (Garrafa)
+- Figura 173 — DSD CU-037: Actualizar el Precio de un Producto — Operación: actualizarPrecioDelProducto(productoId, precio)
+- Figura 174 — DSD CU-038: Actualizar el Stock de un Producto — Operación: actualizarStock(productoId, variacion)
+- Figura 175 — DSD CU-039: Configurar las Promociones por Cantidad — Operación: configurarPromocionesDelProducto(productoId, promociones)
+- Figura 176 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)
+- Figura 177 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)
+- Figura 178 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()
+- Figura 179 — DSD CU-041: Consultar el Catálogo de Productos
+- Figura 180 — DSD CU-041: Consultar el Catálogo de Productos — Operación: consultarProducto(productoId)
+- Figura 181 — DSD CU-041: Consultar el Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)
+- Figura 182 — DSD CU-042: Crear una Franja Horaria
+- Figura 183 — DSD CU-044: Seleccionar una Franja Horaria al Crear un Pedido — Operación: validarFranjaDelPedido(franjaId, fecha)
+- Figura 184 — DSD CU-045: Consultar las Franjas Horarias Disponibles
+- Figura 185 — DSD CU-045: Consultar las Franjas Horarias Disponibles
+- Figura 186 — DSD CU-103: Eliminar una Franja Horaria
+- Figura 187 — DSD CU-154: Consultar el Listado de Franjas Horarias
+- Figura 188 — DSD CU-043: Modificar una Franja Horaria
+- Figura 189 — DSD CU-342: Activar una Franja Horaria — Operación: activarFranjaHoraria(franjaId)
+- Figura 190 — DSD CU-343: Desactivar una Franja Horaria — Operación: desactivarFranjaHoraria(franjaId)
+- Figura 191 — DSD — CU-052: Registrar Distribuidora
+- Figura 192 — DSD — CU-053: Consultar Distribuidoras
+- Figura 193 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)
+- Figura 194 — DSD — CU-054: Modificar Datos de la Distribuidora
+- Figura 195 — DSD — CU-055: Dar de Baja una Distribuidora
+- Figura 196 — DSD CU-058: Validar la Cobertura de una Dirección
+- Figura 197 — DSD — CU-056: Crear un Polígono de Cobertura
+- Figura 198 — DSD — CU-057: Consultar los Polígonos de Cobertura
+- Figura 199 — DSD — CU-059: Dar de Baja un Polígono de Cobertura
+- Figura 200 — DSD CU-305: Modificar un Polígono de Cobertura — Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)
+- Figura 201 — DSD CU-306: Consultar un Polígono de Cobertura — Operación: consultarZonaDeCobertura(zonaId)
+- Figura 202 — DSD CU-307: Activar un Polígono de Cobertura — Operación: activarZonaDeCobertura(zonaId)
+- Figura 203 — DSD CU-308: Desactivar un Polígono de Cobertura — Operación: desactivarZonaDeCobertura(zonaId)
+- Figura 204 — DSD CU-064: Calificar un Pedido (cliente↔chofer) — Operación: calificarPedido(pedidoId, estrellas, comentario)
+- Figura 205 — DSD CU-065: Consultar el Promedio de Calificaciones de un Usuario — Operación: consultarResumenDeCalificaciones(usuarioId)
+- Figura 206 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
+- Figura 207 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()
+- Figura 208 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)
+- Figura 209 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
+- Figura 210 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)
+- Figura 211 — DSD CU-068: Asignar los Envases a un Pedido — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
+- Figura 212 — DSD CU-070: Registrar un Movimiento de Envase (cambio de estado) — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
+- Figura 213 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
+- Figura 214 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)
+- Figura 215 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)
+- Figura 216 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)
+- Figura 217 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
+- Figura 218 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)
+- Figura 219 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)
+- Figura 220 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)
+- Figura 221 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago
+- Figura 222 — DSD CU-048: Procesar el Pago con MercadoPago · notificarResultadoDePago
+- Figura 223 — DSD CU-072: Crear una Reserva Programada con Seña
+- Figura 224 — DSD CU-075: Activar las Reservas Vencidas Automáticamente · activarReservasDelDia
+- Figura 225 — DSD CU-076: Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia
+- Figura 226 — DSD CU-077: Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar
+- Figura 227 — DSD — CU-073: Listar Reservas y Estado de la Seña
+- Figura 228 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo
+- Figura 229 — DSD — CU-086: Registrar Administrador
+- Figura 230 — DSD — CU-087: Crear el Primer Administrador General
+- Figura 231 — DSD — CU-088: Consultar Administradores
+- Figura 232 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)
+- Figura 233 — DSD CU-089: Consultar los Roles — Operación: listarRoles()
+- Figura 234 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)
+- Figura 235 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)
+- Figura 236 — DSD CU-254: Eliminar un Rol — Operación: eliminarRol(rolId)
+- Figura 237 — DSD — CU-090: Sembrar los Roles Iniciales
+- Figura 238 — DSD — CU-092: Consultar Listado de Clientes
+- Figura 239 — DSD — CU-094: Actualizar Ubicación del Cliente
+- Figura 240 — DSD — CU-095: Eliminar Cliente (baja lógica)
+- Figura 241 — DSD CU-129: Consultar el Detalle del Cliente
+- Figura 242 — DSD CU-130: Buscar un Cliente por Usuario
+- Figura 243 — DSD CU-131: Editar los Datos del Cliente
+- Figura 244 — DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo
+- Figura 245 — DSD — CU-099: Consultar los Tokens de un Usuario
+- Figura 246 — DSD — CU-100: Enviar Notificación de Prueba
+- Figura 247 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 248 — DSD — CU-102: Probar el Servicio de Correo
+- Figura 249 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+- Figura 250 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()
+- Figura 251 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()
+- Figura 252 — DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura
+- Figura 253 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+- Figura 254 — DSD — CU-152: Consultar el Registro de Auditoría
+- Figura 255 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+- Figura 256 — DSD — CU-153: Registrar Toda Operación de Escritura
+- Figura 257 — DSD CU-153: Registrar Toda Operación de Escritura — Operación: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
+- Figura 258 — DSD CU-172: Configurar los Parámetros de un Proceso Automático
+- Figura 259 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas
+- Figura 260 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()
+- Figura 261 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)
+- Figura 262 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)
+- Figura 263 — DSD CU-257: Eliminar un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)
+- Figura 264 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)
+- Figura 265 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)
+- Figura 266 — DSD CU-311: Eliminar el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)
+- Figura 267 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)
+- Figura 268 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)
+- Figura 269 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
+- Figura 270 — DSD CU-312: Reingresar a un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)
+- Figura 271 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
+- Figura 272 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)
+- Figura 273 — DSD CU-184: Registrar el Examen Psicofísico del Empleado — Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)
+- Figura 274 — DSD CU-185: Registrar el Alta en la ART del Empleado — Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)
+- Figura 275 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)
+- Figura 276 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)
+- Figura 277 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)
+- Figura 278 — DSD CU-188: Avisar los Vencimientos Próximos del Personal — Operación: avisarVencimientosDelPersonal()
+- Figura 279 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)
+- Figura 280 — DSD CU-313: Corregir la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)
+- Figura 281 — DSD CU-314: Consultar la Asistencia de los Empleados — Operación: consultarAsistencias(desde, hasta)
+- Figura 282 — DSD CU-190: Registrar el Inicio de la Jornada — Operación: registrarInicioDeJornada()
+- Figura 283 — DSD CU-315: Registrar el Fin de la Jornada — Operación: registrarFinDeJornada()
+- Figura 284 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)
+- Figura 285 — DSD CU-316: Modificar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)
+- Figura 286 — DSD CU-317: Cancelar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)
+- Figura 287 — DSD CU-192: Aprobar una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)
+- Figura 288 — DSD CU-318: Rechazar una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)
+- Figura 289 — DSD CU-319: Consultar las Licencias — Operación: consultarLicencias(estado, desde, hasta)
+- Figura 290 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)
+- Figura 291 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()
+- Figura 292 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)
+- Figura 293 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)
+- Figura 294 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)
+- Figura 295 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)
+- Figura 296 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)
+- Figura 297 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)
+- Figura 298 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)
+- Figura 299 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)
+- Figura 300 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)
+- Figura 301 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()
+- Figura 302 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()
+- Figura 303 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
+- Figura 304 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)
+- Figura 305 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()
+- Figura 306 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()
+- Figura 307 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)
+- Figura 308 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)
+- Figura 309 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
+- Figura 310 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)
+- Figura 311 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)
+- Figura 312 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
+- Figura 313 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)
+- Figura 314 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)
+- Figura 315 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)
+- Figura 316 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)
+- Figura 317 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)
+- Figura 318 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)
+- Figura 319 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)
+- Figura 320 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()
+- Figura 321 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+- Figura 322 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)
+- Figura 323 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()
+- Figura 324 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()
+- Figura 325 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+- Figura 326 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()
+- Figura 327 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)
+- Figura 328 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)
+- Figura 329 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()
+- Figura 330 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)
+- Figura 331 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)
+- Figura 332 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)
+- Figura 333 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+- Figura 334 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)
+- Figura 335 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)
+- Figura 336 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)
+- Figura 337 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
+- Figura 338 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)
+- Figura 339 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)
+- Figura 340 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)
+- Figura 341 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
+- Figura 342 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+- Figura 343 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)
+- Figura 344 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)
+- Figura 345 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
+- Figura 346 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)
+- Figura 347 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)
+- Figura 348 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+- Figura 349 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)
+- Figura 350 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()
+- Figura 351 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)
+- Figura 352 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)
+- Figura 353 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)
+- Figura 354 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)
+- Figura 355 — DSD CU-228: Registrar una Entrada de Dinero en la Caja — Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+- Figura 356 — DSD CU-309: Registrar una Salida de Dinero de la Caja — Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+- Figura 357 — DSD CU-310: Transferir Fondos entre Cajas — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
+- Figura 358 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)
+- Figura 359 — DSD CU-340: Consultar los Movimientos de Caja — Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)
+- Figura 360 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)
+- Figura 361 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)
+- Figura 362 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()
+- Figura 363 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
+- Figura 364 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
+- Figura 365 — DSD CU-330: Reabrir la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)
+- Figura 366 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()
+- Figura 367 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
+- Figura 368 — DSD CU-331: Modificar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)
+- Figura 369 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)
+- Figura 370 — DSD CU-332: Asentar el Cargo de una Venta a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)
+- Figura 371 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
+- Figura 372 — DSD CU-329: Registrar un Ajuste de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
+- Figura 373 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
+- Figura 374 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()
+- Figura 375 — DSD CU-240: Crear una Regla de Comisión por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
+- Figura 376 — DSD CU-333: Modificar una Regla de Comisión por Entrega — Operación: modificarReglaDeComision(reglaId, datos)
+- Figura 377 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)
+- Figura 378 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
+- Figura 379 — DSD CU-334: Aprobar una Liquidación de Comisiones — Operación: aprobarLiquidacion(liquidacionId)
+- Figura 380 — DSD CU-335: Anular una Liquidación de Comisiones — Operación: anularLiquidacion(liquidacionId)
+- Figura 381 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)
+- Figura 382 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)
+- Figura 383 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)
+- Figura 384 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota
+- Figura 385 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
+- Figura 386 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
+- Figura 387 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra
+- Figura 388 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · anticiparRecompras
+- Figura 389 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()
+- Figura 390 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: aceptarRecorrido(recorridoId)
+- Figura 391 — DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()
+- Figura 392 — DSD CU-108: Recuperar Envases No Devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
+- Figura 393 — DSD CU-108: Recuperar Envases No Devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
+- Figura 394 — Diagrama de Clases de Dominio
+- Figura 395 — Clases de dominio: organización y acceso
+- Figura 396 — Clases de dominio: clientes
+- Figura 397 — Clases de dominio: pedido, líneas y pago
+- Figura 398 — Clases de dominio: carrito, franjas y cobertura
+- Figura 399 — Clases de dominio: despacho y propuestas con vigencia
+- Figura 400 — Clases de dominio: choferes y vehículos
+- Figura 401 — Clases de dominio: mantenimiento de la flota
+- Figura 402 — Clases de dominio: productos y envases
+- Figura 403 — Clases de dominio: personal
+- Figura 404 — Clases de dominio: recupero de envases
+- Figura 405 — Clases de dominio: posventa
+- Figura 406 — Clases de dominio: gastos de la flota
+- Figura 407 — Clases de dominio: stock físico
+- Figura 408 — Clases de dominio: carga del camión
+- Figura 409 — Clases de dominio: compras
+- Figura 410 — Clases de dominio: caja y movimientos
+- Figura 411 — Clases de dominio: rendición del chofer
+- Figura 412 — Clases de dominio: cuentas corrientes
+- Figura 413 — Clases de dominio: comisiones y liquidaciones
+- Figura 414 — Clases de diseño: sesión, registro e identidad
+- Figura 415 — Clases de diseño: usuarios, roles, administradores y auditoría
+- Figura 416 — Clases de diseño: clientes y direcciones de entrega
+- Figura 417 — Clases de diseño: carrito y recompra
+- Figura 418 — Clases de diseño: productos y franjas horarias
+- Figura 419 — Clases de diseño: cobertura y distribuidoras
+- Figura 420 — Clases de diseño: pedidos: alta y cancelación
+- Figura 421 — Clases de diseño: pedidos: consulta y estado
+- Figura 422 — Clases de diseño: pagos y reservas
+- Figura 423 — Clases de diseño: despacho de pedidos
+- Figura 424 — Clases de diseño: seguimiento en tiempo real
+- Figura 425 — Clases de diseño: choferes y vehículos
+- Figura 426 — Clases de diseño: flota: tareas, adjuntos y vencimientos
+- Figura 427 — Clases de diseño: flota: planificador de mantenimiento
+- Figura 428 — Clases de diseño: personal: puestos, legajos, jornadas y licencias
+- Figura 429 — Clases de diseño: adjuntos
+- Figura 430 — Clases de diseño: envases
+- Figura 431 — Clases de diseño: recupero de envases
+- Figura 432 — Clases de diseño: flota: gastos, multas y siniestros
+- Figura 433 — Clases de diseño: reclamos, incidencias y calificaciones
+- Figura 434 — Clases de diseño: notificaciones y correo
+- Figura 435 — Clases de diseño: reportes, salud y almacenamiento
+- Figura 436 — Clases de diseño: stock
+- Figura 437 — Clases de diseño: compras
+- Figura 438 — Clases de diseño: carga del camión
+- Figura 439 — Clases de diseño: caja: cajas, sesiones y libro
+- Figura 440 — Clases de diseño: rendición del chofer
+- Figura 441 — Clases de diseño: cuentas corrientes
+- Figura 442 — Clases de diseño: comisiones y liquidaciones
+- Figura 443 — Dependencias entre módulos
+- Figura 444 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
+- Figura 445 — D-16 — Catálogo de Productos (App Cliente)
+- Figura 446 — D-17 — Checkout (App Cliente)
+- Figura 447 — D-18 — Seguimiento en Tiempo Real (App Cliente)
+- Figura 448 — D-19 — Login y Registro (App Cliente + Chofer)
+- Figura 449 — D-20 — Home del Chofer (App Chofer)
+- Figura 450 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)
+- Figura 451 — D-22 — En Ruta (App Chofer)
+- Figura 452 — D-23 — tablero Administrador (Panel Web)
+- Figura 453 — D-24 — Listado de Pedidos Admin (Panel Web)
+- Figura 454 — Modelo físico de la base de datos: vista general
+- Figura 455 — Organización y acceso
+- Figura 456 — Clientes
+- Figura 457 — Catálogo e inventario de envases
+- Figura 458 — Venta y pedidos
+- Figura 459 — Pagos
+- Figura 460 — Despacho y logística
+- Figura 461 — Flota y choferes
+- Figura 462 — Posventa
+- Figura 463 — Personal (en parte planificado)
+- Figura 464 — Gastos de la flota (planificado)
+- Figura 465 — Stock físico y carga del camión
+- Figura 466 — Compras
+- Figura 467 — Modelo físico: compras
+- Figura 468 — Caja y finanzas (planificado)
+- Figura 469 — Relaciones entre contextos
+- Figura 470 — Modelo entidad-relación conceptual: vista general
+- Figura 471 — Modelo entidad-relación conceptual: usuarios y cuentas
+- Figura 472 — Modelo entidad-relación conceptual: pedidos y pagos
+- Figura 473 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
+- Figura 474 — Modelo entidad-relación conceptual: flota y choferes
+- Figura 475 — Modelo entidad-relación conceptual: envases y catálogo
+- Figura 476 — Modelo entidad-relación conceptual: personal
+- Figura 477 — Modelo entidad-relación conceptual: posventa
+- Figura 478 — Modelo entidad-relación conceptual: gastos de la flota
+- Figura 479 — Modelo entidad-relación conceptual: stock físico
+- Figura 480 — Modelo entidad-relación conceptual: carga del camión
+- Figura 481 — Modelo entidad-relación conceptual: compras
+- Figura 482 — Modelo entidad-relación conceptual: caja y movimientos
+- Figura 483 — Modelo entidad-relación conceptual: rendiciones de choferes
+- Figura 484 — Modelo entidad-relación conceptual: cuentas corrientes
+- Figura 485 — Modelo entidad-relación conceptual: comisiones y liquidaciones
+- Figura 486 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)
+- Figura 487 — Modelo entidad-relación conceptual: personal
+- Figura 488 — Modelo físico: gastos de la flota (planificado)
+- Figura 489 — Modelo entidad-relación conceptual: gastos de la flota
+- Figura 490 — Modelo físico: caja y finanzas (planificado)
+- Figura 491 — Modelo entidad-relación conceptual: caja y movimientos
+- Figura 492 — Modelo entidad-relación conceptual: rendiciones de choferes
+- Figura 493 — Modelo entidad-relación conceptual: cuentas corrientes
+- Figura 494 — Modelo entidad-relación conceptual: comisiones y liquidaciones
+- Figura 495 — Diagrama de estados del pedido
+- Figura 496 — Diagrama de estados del reclamo
+- Figura 497 — Diagrama de estados del envase
+- Figura 498 — Diagrama de estados de la reserva programada
+- Figura 499 — Diagrama de estados de la tarea de flota
+- Figura 500 — Diagrama de estados de la oferta de despacho
+- Figura 501 — Diagrama de estados de la orden de compra
+- Figura 502 — Diagrama de estados de la recepción de compra
+- Figura 503 — Diagrama de estados de la carga de camión
+- Figura 504 — Diagrama de estados del empleado
+- Figura 505 — Diagrama de estados de la licencia laboral
+- Figura 506 — Diagrama de estados de la jornada de trabajo
+- Figura 507 — Diagrama de estados de la carga de combustible (planificado, I-12)
+- Figura 508 — Diagrama de estados de la multa de tránsito (planificado, I-12)
+- Figura 509 — Diagrama de estados del siniestro (planificado, I-12)
+- Figura 510 — Diagrama de estados del neumático (planificado, I-12, opcional)
+- Figura 511 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)
+- Figura 512 — Diagrama de estados de la oferta de despacho
+- Figura 513 — Diagrama de estados: sesión de caja
+- Figura 514 — Diagrama de estados: rendición del chofer
+- Figura 515 — Diagrama de estados: liquidación de comisiones
+- Figura 516 — Diagrama de estados: cuenta corriente
+- Figura 517 — Diagrama de actividad del despacho por proximidad
+- Figura 518 — Diagrama de actividad del ciclo de vida del pedido
 
 ---
 
@@ -517,7 +539,7 @@
 |-----|-------|-------------|-------|
 | 0 | 2026-04-17 | Versión inicial | Nahuel Wagner |
 | 1 | 2026-08-30 | Verificación de la documentación contra el código. Corrección de los casos de uso reales y de los diagramas que modelaban comportamiento inexistente. Unificación del nombre del proyecto con el resto de los documentos. | Nahuel Wagner |
-| 2 | 2026-10-01 | Diagramas de interacción de diseño de CU-161 a CU-175 y ajustes de los casos planificados a las decisiones de diseño. Sección 10 reescrita: sólo lo pendiente, cada fila con su caso de uso y su iteración. Tabla de operaciones ampliada. | Nahuel Wagner |
+| 2 | 2026-10-01 | Diagramas de interacción de diseño de CU-161 a CU-175 y ajustes de los casos planificados a las decisiones de diseño. Sección 10 reescrita: solo lo pendiente, cada fila con su caso de uso y su iteración. Tabla de operaciones ampliada. | Nahuel Wagner |
 | 3 | 2026-10-01 | Arquitectura con diagrama de componentes y diagrama de despliegue UML; nueva sección 11 con los diagramas de estados y de actividad; estado actual de los componentes e índice de diagramas UML. | Nahuel Wagner |
 | 4 | 2026-10-01 | Cierre de la documentación: 198 diagramas de interacción de diseño en notación de Larman con su tabla de implementación, tabla de operaciones del sistema de 195 filas, pendientes de la sección 10 y diagramas nuevos (componentes, despliegue, estados y actividad) coherentes con el código. | Nahuel Wagner |
 | 5 | 2026-10-03 | Versión 1.1 del sistema (versión del software, back y panel, distinta de la versión de este documento): diagramas de interacción de los reportes y del tablero con los días en hora argentina, la semana ISO y el rango con `to` inclusivo; el reporte por producto suma los subtotales de los renglones; el detalle del pedido expone precio por renglón y distribuidora. | Nahuel Wagner |
@@ -533,6 +555,8 @@
 | 15 | 2026-10-12 | Carga y rendición del camión construidas: diagramas de interacción sobre las clases reales del módulo `truck-load`, con la tabla que dice con qué código se implementa cada mensaje; modelo de datos de 63 tablas (`truck_load` y `truck_load_item`) y 150 claves foráneas; el diagrama de clases de diseño suma la carga del camión y corrige los tipos de la orden de compra. | Nahuel Wagner |
 | 16 | 2026-10-14 | Diagramas de interacción de diseño (290 → 297 casos de uso): entrega manual (CU-020, con el descuento de stock incluido) y por código (CU-079), cobro en efectivo (CU-292 a CU-294), retiro de ofertas, vista previa del cierre de la carga, particiones de CU-218, CU-210 y CU-249; diagrama de clases de diseño con 298 clases. | Nahuel Wagner |
 | 17 | 2026-10-14 | Diagramas de interacción del blindaje (297 → 303 casos de uso): CU-299 a CU-304, el suscriptor del historial de estados (CU-169), tablas de implementación al día y modelo de datos con `reservation_deficit` y `previous_on_hand_at` (63 tablas); diagrama de clases de diseño con 301 clases. | Nahuel Wagner |
+| 18 | 2026-10-14 | Revisión integral: casos de uso reales de inicio de sesión, creación y cancelación de pedido al día con el código; diagramas de interacción de los 339 casos; criterios de la API REST (idempotencia y filtros) coherentes con el código; diagramas en estilo Visual Paradigm. | Nahuel Wagner |
+| 19 | 2026-10-14 | Revisión independiente: 340 casos de uso, 372 diagramas de interacción de diseño con los pies de figura según el catálogo y diagrama de clases de diseño regenerado. | Nahuel Wagner |
 
 ---
 
@@ -551,7 +575,7 @@
 
 ### 1.1 Propósito
 
-Este documento describe el diseño técnico detallado del sistema SPLG, partiendo del análisis UP realizado en el Documento 2. Incluye los CU Reales con interacción UI, los diagramas de interacción a nivel de diseño, el diagrama de clases de diseño y la especificación detallada de los **5 módulos inteligentes** priorizados para la cátedra.
+Este documento describe el diseño técnico detallado del sistema SPLG, partiendo del análisis PU realizado en el Documento 2. Incluye los CU Reales con interacción UI, los diagramas de interacción a nivel de diseño, el diagrama de clases de diseño y la especificación detallada de los **5 módulos inteligentes** priorizados para la cátedra.
 
 ### 1.2 Alcance
 
@@ -566,7 +590,7 @@ El diseño cubre la **Fase 1** del sistema:
 | Componente | Tecnología | Estado |
 |------------|------------|--------|
 | Backend API | NestJS + TypeORM + PostgreSQL/PostGIS | ● Implementado |
-| Cache / Geo | Redis (GEOADD, GEORADIUS, exclusión mutua de los procesos programados) | ● Implementado |
+| Caché / Geo | Redis (GEOADD, GEORADIUS, exclusión mutua de los procesos programados) | ● Implementado |
 | Tiempo real | Socket.IO con adaptador de Redis (espacios `/drivers`, `/customers` y `/admin`) | ● Implementado |
 | App Cliente | Flutter (Stacked MVVM) | ● Implementado |
 | App Chofer | Flutter (Stacked MVVM) | ● Implementado |
@@ -614,7 +638,7 @@ El diseño cubre la **Fase 1** del sistema:
 | `CustomersModule` | Clientes y su validación |
 | `UserAddressModule` | Direcciones de entrega del cliente y dirección predeterminada |
 | `OrderModule` | Alta y ciclo de vida del pedido, máquina de estados, despacho por proximidad con oferta al siguiente chofer, reservas programadas y recargo por pago en línea |
-| `CartModule` | Entidades del carrito de compras (carrito e ítems); todavía no expone endpoints propios |
+| `CartModule` | Entidades del carrito de compras (carrito e ítems); todavía no expone rutas propias |
 | `GasCylinderModule` | Catálogo de productos, stock y promociones |
 | `CylinderModule` | Trazabilidad del envase físico: estados, movimientos y recuperación |
 | `TimeSlotModule` | Franjas horarias y sus cupos |
@@ -653,13 +677,13 @@ es lo primero, `GET /users` es lo segundo.
 | Criterio | Estado | Cómo está resuelto |
 |---|:---:|---|
 | Nomenclatura de recursos | Parcial | Los recursos se nombran por sustantivo y las operaciones por método HTTP. Quedan tres inconsistencias, detalladas más abajo. |
-| Idempotencia | Cumple | Cabecera `Idempotency-Key` en las cinco operaciones del pedido que no son naturalmente idempotentes, resuelta por un interceptor propio. |
+| Idempotencia | Cumple | Encabezado `Idempotency-Key` en las escrituras que no son naturalmente idempotentes —las del pedido, los cobros, las incidencias, los reclamos, las direcciones, los envases, el personal, las tareas de flota, las compras y el stock—, resuelta por un interceptor propio; en las escrituras de stock y compras que crean movimientos es obligatoria. |
 | Paginación | Parcial | Por desplazamiento, con `limit` y `offset`. Sirve al panel y se degrada con el volumen. |
-| Orden y filtrado | Parcial | Hay filtro por término en usuarios; el orden está fijo en el código en la mayoría de las consultas. |
+| Orden y filtrado | Parcial | Hay búsqueda por término (`term`) en usuarios, clientes, choferes, pedidos y compras, filtro por estado en pedidos, clientes y choferes y por rango de fechas en pedidos; el orden está fijo en el código en la mayoría de las consultas. |
 | Referencias entre recursos | Cumple | Se usa el camino anidado —`GET /customers/user/:userId`— y no parámetros de consulta. |
 | Límite de tasa | Cumple | Cien peticiones por minuto por dirección, configurable, con el contador compartido en Redis. |
 | Versionado | Trabajo futuro | El prefijo es `api`, sin número de versión. |
-| Seguridad | Cumple | Token de identidad de Firebase en la cabecera de autorización, verificado en cada solicitud (el sistema no emite un token propio), control por rol y aislamiento por distribuidora. La consulta de un usuario por correo y la prueba del servicio de correo exigen autenticación y rol. |
+| Seguridad | Cumple | Token de identidad de Firebase en el encabezado de autorización, verificado en cada solicitud (el sistema no emite un token propio), control por rol y aislamiento por distribuidora. La consulta de un usuario por correo y la prueba del servicio de correo exigen autenticación y rol. |
 
 #### Nomenclatura: las tres inconsistencias
 
@@ -689,7 +713,7 @@ versionado se registra como trabajo futuro y no como un detalle.
 Los métodos `GET`, `PUT` y `DELETE` son idempotentes por definición: repetirlos deja el sistema
 en el mismo estado. `POST` y `PATCH` no lo son, y en este sistema eso importa: un corte de red
 al confirmar un pedido, seguido de un reintento de la aplicación, generaría dos pedidos y dos
-cobros. El backend resuelve el problema con una cabecera `Idempotency-Key` que la aplicación
+cobros. El backend resuelve el problema con un encabezado `Idempotency-Key` que la aplicación
 manda en cada intento; el interceptor guarda la respuesta de la primera ejecución y devuelve esa
 misma respuesta ante cualquier repetición de la clave.
 
@@ -797,7 +821,7 @@ complementaria.
 
 ## 3. Casos de Uso Reales (CU Real)
 
-> Esta sección presenta los **Casos de Uso Reales** según la plantilla UP de la cátedra. Cada CU priorizado se acompaña de:
+> Esta sección presenta los **Casos de Uso Reales** según la plantilla PU de la cátedra. Cada CU priorizado se acompaña de:
 >
 > 1. **Interfaz Gráfica** — el wireframe de la pantalla que usa el caso de uso
 > 2. **Especificación del CU Real** — tabla formal con todos los campos requeridos (Código, Objetivos asociados, Requisitos asociados, Descripción, Precondición, Secuencia, Postcondición, Excepciones, Rendimiento, Frecuencia, Estabilidad)
@@ -838,7 +862,7 @@ Pantalla de inicio de sesión de la App Cliente. La App Chofer y el Panel Admin 
 | **Actor Principal** | ACT-01 (Cliente), ACT-02 (Chofer), ACT-03 (Administrador) |
 | **Objetivos asociados** | OBJ-01, OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El usuario ingresa email y contraseña en la pantalla de login. El sistema valida las credenciales contra Firebase Authentication y devuelve el token de identidad que Firebase emite, sin generar credencial propia. La app persiste el token y navega a la HomeView según el rol, que se resuelve contra la base en cada solicitud. |
+| **Descripción** | El usuario ingresa email y contraseña en la pantalla de inicio de sesión. El sistema valida las credenciales contra Firebase Authentication, comprueba que la cuenta siga habilitada y devuelve el token de identidad que Firebase emite, sin generar credencial propia. La app persiste el token y navega a la HomeView según el rol, que se resuelve contra la base en cada solicitud. `POST /auth/login` es una ruta pública: no exige el encabezado `x-client-source` ni revisa el rol; esas comprobaciones corren desde la primera solicitud con token. |
 | **Precondición** | El usuario tiene una cuenta registrada en el sistema (CU-002 o CU-003). |
 
 **Secuencia normal**
@@ -847,28 +871,30 @@ Pantalla de inicio de sesión de la App Cliente. La App Chofer y el Panel Admin 
 |------|--------|
 | 1 | El usuario ingresa email y contraseña en `LoginView` y presiona "Iniciar sesión". |
 | 2 | El cliente HTTP envía `POST /auth/login` con `{ email, password }`. |
-| 3 | Backend `AuthController.login()` invoca `AuthService.signInWithFirebase()`. |
-| 4 | Firebase Auth valida las credenciales y retorna `firebaseUid`. |
-| 5 | Backend busca el `User` por `firebaseUid` para obtener `id`, `role`, `profileId`. |
-| 6 | Devuelve el token de identidad emitido por Firebase, sin transformarlo ni firmar nada propio. |
-| 7 | Retorna el token junto con los datos del usuario al cliente. |
-| 8 | La app persiste el token en SecureStorage (Flutter) o cookie `httpOnly` (Panel Admin). |
-| 9 | Navega a la HomeView correspondiente al rol. |
+| 3 | Backend `AuthController.login()` invoca `AuthService.login()`, que pide a Firebase el acceso con `signInWithEmailAndPassword`. |
+| 4 | Firebase valida las credenciales; si no sirven, `AuthService` responde 401 "El email o la contraseña son incorrectos", sin el texto de Firebase y con la misma respuesta para un usuario inexistente, una contraseña equivocada y una cuenta dada de baja. |
+| 5 | Con la contraseña correcta, `AuthService.assertCuentaHabilitada` busca al usuario con `UsersService.findOneByEmail` y comprueba que no esté bloqueado; una cuenta dada de baja no se encuentra y una bloqueada responde igual: 401 "La cuenta no está habilitada". |
+| 6 | Traduce la credencial de Firebase a la respuesta propia de la API (`SesionIniciadaDto`): el token de identidad (`accessToken`), su vida en segundos (`expiresIn`) y los datos de la cuenta (`uid`, `email`, `displayName`, `phoneNumber`, `emailVerified`). No devuelve el `refreshToken` ni firma nada propio. |
+| 7 | Retorna esa respuesta al cliente. En el Panel Admin, `POST /auth/login/dashboard` hace lo mismo y además verifica el token y que el email sea de un administrador (`AuthService.loginDashboard`), y deja el token en una cookie `httpOnly` de una hora. |
+| 8 | La app persiste el token en SecureStorage (Flutter) o el panel lo guarda en la cookie `httpOnly`. |
+| 9 | Navega a la HomeView correspondiente al rol, que se resuelve contra la base en cada solicitud. |
 
-**Postcondición:** El usuario está autenticado. Los próximos requests incluyen `Authorization: Bearer <jwt>`. La sesión persiste hasta logout o expiración del token.
+**Postcondición:** El usuario está autenticado. Los próximos requests incluyen `Authorization: Bearer <token de Firebase>` y el encabezado `x-client-source`. La sesión persiste hasta el cierre de sesión o la expiración del token.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si Firebase rechaza las credenciales → 401 "Credenciales inválidas". |
-| 5 | Si el `User` no existe en BD pese a tener `firebaseUid` → 403 "Usuario no autorizado". |
-| 6 | Si el rol del usuario no corresponde a la aplicación de origen, o falta el encabezado `x-client-source` → 401. La habilitación del chofer no se consulta en el ingreso. |
+| 4 | Si el email o la contraseña no sirven, o la cuenta fue dada de baja → 401 "El email o la contraseña son incorrectos". |
+| 5 | Si la cuenta está bloqueada, o ya no existe en la base, y la contraseña es correcta → 401 "La cuenta no está habilitada". |
+| 4 | Si Firebase informa demasiados intentos fallidos → 429; si el acceso falla por cualquier otra causa → 503 "No pudimos iniciar sesión en este momento: probá de nuevo en unos minutos". |
+| 7 | En el ingreso al panel (`POST /auth/login/dashboard`), si el email no es de un administrador → 401 "Admin not found". Es la única puerta de ingreso que rechaza por rol. |
+| — | Desde la primera solicitud con token, si falta el encabezado `x-client-source` o el rol del usuario no corresponde a la aplicación de origen → 401. La habilitación del chofer no se consulta en el ingreso. |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Tiempo de respuesta < 3 segundos. |
-| **Frecuencia** | 1–5 logins por usuario por semana. |
+| **Frecuencia** | 1–5 inicios de sesión por usuario por semana. |
 | **Estabilidad** | Alta. |
 
 #### Diagrama de Interacción
@@ -903,8 +929,8 @@ La operación del sistema es `iniciarSesion`; su contrato y su tabla de implemen
 |-------|------|-----------------|
 | `LoginView` | Presentation (Flutter / React) | UI con email/password fields y botón |
 | `AuthViewModel` | Presentation | Valida formulario, gestiona errores |
-| `AuthController` | Backend Controller (NestJS) | Endpoint `POST /auth/login` |
-| `AuthService` | Backend Service | Orquesta el ingreso con Firebase Auth; no emite un token propio |
+| `AuthController` | Backend Controller (NestJS) | Ruta de la API `POST /auth/login` |
+| `AuthService` | Backend Service | Orquesta el ingreso con Firebase Auth y comprueba que la cuenta esté habilitada (`UsersService.findOneByEmail`); no emite un token propio |
 | `FirebaseAuthAdapter` | Infrastructure | Verifica el token de identidad contra Firebase |
 
 **Comentarios.** El sistema no emite una credencial propia: la credencial de sesión es el token de identidad que emite Firebase, y el rol se resuelve contra la base en cada solicitud. El ingreso tampoco consulta la habilitación del chofer: un chofer que el administrador aún no habilitó puede iniciar sesión, pero no puede ponerse en línea (CU-022).
@@ -920,7 +946,7 @@ La operación del sistema es `iniciarSesion`; su contrato y su tabla de implemen
 
 ![Pantalla de confirmación del pedido](diagramas/wireframes/D-17.png)
 
-**Figura 6 — CU-005 Crear Pedido — Interfaz Gráfica**
+**Figura 6 — CU-005 Crear un Pedido — Interfaz Gráfica**
 
 Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha y método de pago.
 
@@ -933,7 +959,7 @@ Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha
 | **Actor Principal** | ACT-01 (Cliente) |
 | **Objetivos asociados** | OBJ-01, OBJ-02, OBJ-06, OBJ-07 |
 | **Requisitos asociados** | IRQ-02, IRQ-04, IRQ-05, IRQ-07, IRQ-08 |
-| **Descripción** | El cliente revisa el carrito en `CheckoutView`, selecciona dirección, franja horaria, fecha y método de pago. Al confirmar, el sistema valida y reserva atómicamente el stock dentro de una transacción PostgreSQL (Módulo M3), persiste la orden con estado PENDING y dispara el despacho automático (CU-013). |
+| **Descripción** | El cliente revisa el carrito en `CheckoutView`, selecciona dirección, franja horaria, fecha y método de pago. Al confirmar, el sistema valida y reserva atómicamente el stock dentro de una transacción PostgreSQL, persiste la orden con estado PENDING y, según el medio de pago, dispara el despacho automático (CU-013). El total que el cliente ve antes de confirmar lo cotiza el sistema (CU-302, `POST /orders/quote`). |
 | **Precondición** | El cliente está autenticado (CU-001). El carrito tiene ítems con cantidades > 0. |
 
 **Secuencia normal**
@@ -941,14 +967,14 @@ Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente accede a `CheckoutView` con ítems del carrito y completa: dirección, franja horaria, fecha de entrega y método de pago. |
-| 2 | Presiona "Confirmar Pedido". `CheckoutViewModel.confirmOrder()` valida campos y aplica recargo del 10% si `paymentMethod = TRANSFER`. |
-| 3 | Llama `historyService.createOrder()` → `POST /orders` con DTO completo. |
+| 2 | Cada vez que cambia lo que mueve el precio (dirección, medio de pago, franja), `CheckoutViewModel` pide la cotización al sistema (`POST /orders/quote`, CU-302) y muestra el total que devuelve: la app no calcula promociones ni recargos. Presiona "Confirmar Pedido" y `CheckoutViewModel.confirmOrder()` valida los campos. |
+| 3 | Llama `historyService.createOrder()` → `POST /orders` con el DTO completo y el encabezado `Idempotency-Key`, que es la misma para el mismo intento de checkout mientras no se resuelva, de modo que un reintento por corte de red no crea un segundo pedido. El total no viaja: lo calcula el sistema. |
 | 4 | Backend `OrderController.create()` invoca `OrderService.create()`, que delega en `CreateOrderUseCase.execute(createOrderDto, distributorId)`. El caso de uso abre `DataSource.createQueryRunner()` y `queryRunner.startTransaction()`. |
-| 5 | Por cada ítem, `GasCylinderService.reservarStock(queryRunner.manager, gasCylinderId, quantity)` toma lock pesimista (`SELECT ... FOR UPDATE`, `pessimistic_write`) sobre el `GasCylinder`, valida stock suficiente y lo devuelve bloqueado. |
-| 6 | Calcula, para cada renglón, el precio unitario con las promociones por volumen (decimal.js), redondeado a centavos, y el subtotal como cantidad por ese precio, y los guarda en el `OrderItem`: el pedido conserva el precio con el que se vendió aunque el catálogo cambie. Luego suma el recargo por zona de cobertura, si la distribuidora definió zonas, y el recargo del 10% si el método de pago es online (MERCADOPAGO o TRANSFER). |
+| 5 | Por cada ítem, `GasCylinderService.reservarStock(queryRunner.manager, gasCylinderId, quantity)` toma lock pesimista (`SELECT ... FOR UPDATE`, `pessimistic_write`) sobre el `GasCylinder`, valida stock suficiente —si no alcanza, lanza `InsufficientStockError`, que el filtro global responde como 400— y lo devuelve bloqueado. |
+| 6 | Calcula, para cada renglón, el precio unitario con las promociones por volumen (decimal.js), redondeado a centavos, y el subtotal como cantidad por ese precio, y los guarda en el `OrderItem`: el pedido conserva el precio con el que se vendió aunque el catálogo cambie. Luego suma el recargo por zona de cobertura, si la distribuidora definió zonas, y el recargo del 10% si el método de pago es en línea (MERCADOPAGO o TRANSFER). Es el mismo cálculo que usa la cotización (CU-302): el total cotizado y el del pedido creado con el mismo cuerpo no pueden diferir. |
 | 7 | Decrementa el stock de cada `GasCylinder` dentro de la transacción. Construye y persiste el `Order` (estado PENDING, o RESERVED si es una pre-reserva) junto a sus `OrderItem[]`. |
-| 8 | Hace `queryRunner.commitTransaction()`. Ya fuera de la transacción, dispara el despacho según el método de pago: si es CASH, llama `DispatchOrchestratorService.offerToNextDriver(savedOrder)` directamente (best-effort); si es MERCADOPAGO, en cambio NO despacha en ese momento — genera el checkout de pago y el despacho se dispara recién cuando el webhook confirme el pago (CU-048); si es una pre-reserva, tampoco despacha (lo hace el proceso programado el día agendado, CU-075). En paralelo envía la confirmación por FCM (`sendOrderConfirmation()`, best-effort). |
-| 9 | Retorna `{ orderId, status, totalAmount, paymentUrl? }` al cliente. |
+| 8 | Hace `queryRunner.commitTransaction()`. Ya fuera de la transacción, dispara el despacho según el método de pago: si es CASH, llama `DispatchOrchestratorService.offerToNextDriver(savedOrder)` directamente (de mejor esfuerzo); si es MERCADOPAGO, en cambio NO despacha en ese momento — genera el checkout de pago y el despacho se dispara recién cuando el webhook confirme el pago (CU-048); si es una pre-reserva, tampoco despacha (lo hace el proceso programado el día agendado, CU-075). En paralelo envía la confirmación por FCM (`sendOrderConfirmation()`, de mejor esfuerzo). |
+| 9 | Retorna `{ orderId, status, totalAmount, paymentUrl? }` al cliente. Si el total difiere del que se mostró, la app avisa el total real. |
 | 10 | La app navega a `OrderTrackingView`. |
 
 **Postcondición:** Existe un `Order` con estado PENDING (o RESERVED si es pre-reserva). El stock fue decrementado atómicamente. Si el pago es en efectivo, el despacho automático fue disparado; si es MercadoPago o una reserva, el despacho queda diferido.
@@ -957,9 +983,10 @@ Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha
 
 | Paso | Acción |
 |------|--------|
-| 6 | Stock insuficiente → la operación se revierte por completo y el stock no se modifica. La respuesta no llega traducida a una solicitud incorrecta: se devuelve como error interno. |
-| 6 | Producto inactivo o inexistente → `NotFoundException` y rollback. |
-| 7 | Falla al persistir → rollback automático. |
+| 5 | Stock insuficiente → 400 "Stock insuficiente para <producto>": la operación se revierte por completo y el stock no se modifica. |
+| 5 | Producto inactivo o inexistente → `NotFoundException` y reversión. |
+| 3 | Si la misma clave de idempotencia se reutiliza con otros datos → 422 y no se ejecuta la operación. |
+| 7 | Falla al persistir → reversión automática. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -986,7 +1013,7 @@ Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-005 / CU-044 · crearPedido
+    title DSD — CU-005 Crear un Pedido · crearPedido
     autonumber
     actor CLI as Cliente (ACT-01)
     participant CRT as :CreateOrderUseCase
@@ -1038,7 +1065,7 @@ sequenceDiagram
     CRT-->>-CLI: pedido, enlaceDePago
 ```
 
-**Figura 7 — CU-005 Crear Pedido — Diagrama de Interacción**
+**Figura 7 — CU-005 Crear un Pedido — Diagrama de Interacción**
 
 La operación del sistema es `crearPedido`; su contrato y su tabla de implementación están en la sección 4.2.
 
@@ -1056,7 +1083,7 @@ La operación del sistema es `crearPedido`; su contrato y su tabla de implementa
 | `DispatchOrchestratorService` | Service (NestJS) | Ofrece el pedido al chofer más cercano cuando el pago es en efectivo |
 | `NotificationsService` | Infrastructure | FCM push al cliente |
 
-**Comentarios.** El circuito tiene dos limitaciones conocidas: la falta de stock no llega traducida a una respuesta de solicitud incorrecta y se devuelve como error interno, y el motor de precios no valida que el descuento configurado en una promoción no supere el total, lo que puede producir un subtotal negativo.
+**Comentarios.** La cotización (CU-302) y el alta comparten el cálculo de precios y recargos, de modo que no hay dos copias de las reglas. El motor de precios no valida que el descuento configurado en una promoción no supere el total, lo que puede producir un subtotal negativo.
 
 ---
 
@@ -1071,7 +1098,7 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 
 ![Aviso de pedido entrante en la App Chofer](diagramas/wireframes/D-21.png)
 
-**Figura 8 — CU-013 Asignar Pedido Automáticamente por Proximidad — Interfaz Gráfica**
+**Figura 8 — CU-013 Asignar un Pedido Automáticamente por Proximidad — Interfaz Gráfica**
 
 #### Especificación del CU Real
 
@@ -1089,14 +1116,14 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 
 | Paso | Acción |
 |------|--------|
-| 1 | `CreateOrderUseCase.execute()` invoca `DispatchOrchestratorService.offerToNextDriver(savedOrder)` post-commit, en modo best-effort (sólo para pedidos CASH; los pagados con MercadoPago se despachan recién cuando el webhook confirma el pago, CU-048). |
+| 1 | `CreateOrderUseCase.execute()` invoca `DispatchOrchestratorService.offerToNextDriver(savedOrder)` post-commit, en modo de mejor esfuerzo (solo para pedidos CASH; los pagados con MercadoPago se despachan recién cuando el webhook confirma el pago, CU-048). |
 | 2 | `offerToNextDriver()` toma un bloqueo distribuido por pedido (Redlock), vuelve a leer el pedido y no ofrece si ya tiene una oferta vigente (`DispatchOfferRepositoryPort.hasActiveOffer`); toma el punto de entrega (`deliveryPoint`) y clasifica a los choferes ya contactados con `DispatchOfferRepositoryPort.findDriverOfferState`: los bloqueados y los re-ofertables, vacíos en la primera oferta. |
 | 3 | `findNearestAvailable()` recorre los radios `[5, 10, 15, 20]` km en orden creciente; para cada uno llama `RealtimeDispatchPort.findNearbyDrivers(lat, lng, radiusKm)` (`RedisService.getNearbyDrivers` → `GEORADIUS drivers:locations`, que devuelve `driverIds` ordenados ASC por distancia) y se queda con el primer radio que produzca un candidato. |
-| 4 | Dentro de cada radio, `DeliveryService.choferesElegibles()` filtra la lista contra la base, conservando sólo los choferes con `isEnabled = true` y `validated = true` (preservando el orden de cercanía). Después `FleetDispatchLockService.choferesInhabilitados` descarta a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-136 a CU-138, CU-161), y se toma el primero que todavía no fue contactado para este pedido. |
-| 5 | Crea la oferta (`DispatchOfferRepositoryPort.create`) con vencimiento a los 30 segundos y llama `RealtimeDispatchPort.notifyDriverNewOrder(driverId, payload)` → `DriversGateway.notifyNewOrder()` → `socket.to('driver_' + driverId).emit('server:new-order-request', { event: 'NEW_ORDER', orderId, totalAmount, paymentMethod, expiresAt, items })`. En paralelo envía un push FCM complementario (`NotificationsService.sendOfferPushToDriver`, best-effort). |
+| 4 | Dentro de cada radio, `DeliveryService.choferesElegibles()` filtra la lista contra la base, conservando solo los choferes con `isEnabled = true` y `validated = true` (preservando el orden de cercanía). Después `FleetDispatchLockService.choferesInhabilitados` descarta a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-136 a CU-138, CU-161), y se toma el primero que todavía no fue contactado para este pedido. |
+| 5 | Crea la oferta (`DispatchOfferRepositoryPort.create`) con vencimiento a los 30 segundos y llama `RealtimeDispatchPort.notifyDriverNewOrder(driverId, payload)` → `DriversGateway.notifyNewOrder()` → `socket.to('driver_' + driverId).emit('server:new-order-request', { event: 'NEW_ORDER', orderId, totalAmount, paymentMethod, expiresAt, items })`. En paralelo envía un push FCM complementario (`NotificationsService.sendOfferPushToDriver`, de mejor esfuerzo). |
 | 6 | Se detiene en el primer chofer elegible encontrado: no se contacta a ningún otro mientras esa oferta esté vigente. |
 | 7 | Si ningún radio produce un candidato nunca contactado, se repite la búsqueda con los choferes que dejaron vencer su oferta hace más que el enfriamiento (3 minutos): la re-oferta es el último recurso, y quien rechazó o ya tuvo el pedido no vuelve a recibirlo. Un chofer con tres ofertas vencidas para el mismo pedido (la original y dos re-ofertas) queda agotado para ese pedido. |
-| 8 | Si tampoco hay un chofer que se pueda re-ofertar: no se crea oferta, se avisa a los administradores del panel (`order:no-drivers`, una sola vez por agotamiento) y el pedido queda en PENDING para que el ciclo del cron (CU-014) lo reintente. |
+| 8 | Si tampoco hay un chofer que se pueda re-ofertar: no se crea oferta, se avisa a los administradores del panel (`order:no-drivers`, una sola vez por agotamiento) y el pedido queda en PENDING para que el ciclo de la tarea programada (CU-014) lo reintente. |
 
 **Postcondición:** Existe una oferta (`DispatchOffer`) vigente para el chofer más cercano disponible, que recibió la notificación en tiempo real. La orden permanece en PENDING hasta que el chofer la acepte (CU-015), la rechace (CU-016) o la oferta venza y se re-ofrezca al siguiente (CU-014).
 
@@ -1105,7 +1132,7 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 | Paso | Acción |
 |------|--------|
 | 2 | Si el pedido no tiene `deliveryPoint` resuelto → no hay contra qué medir cercanía, no se ofrece a nadie. |
-| 3 | Si Redis no está disponible → la oferta falla silenciosamente (captura `.catch()`) y el cron de CU-014 la reintentará en su próximo ciclo. |
+| 3 | Si Redis no está disponible → la oferta falla silenciosamente (captura `.catch()`) y la tarea programada de CU-014 la reintentará en su próximo ciclo. |
 | 4 | Si todos los `driverId` de los cuatro radios están deshabilitados, no validados, sin vehículo en uso, con documentación vencida o bloqueados para ese pedido → cae al paso 7 y, de no haber re-ofertables, al paso 8. |
 | 5 | Si la conexión WebSocket del chofer está caída → Socket.IO reintentará al reconectar; si no llega a tiempo, la oferta igual vence a los 30 segundos y el ciclo de CU-014 la re-ofrece. |
 
@@ -1114,7 +1141,7 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 | **Rendimiento** | Cada `GEORADIUS` se resuelve en memoria (< 500ms incluso probando los cuatro radios). Notificación WebSocket < 100ms desde el commit. |
 | **Frecuencia** | Una vez por cada pedido pagado en efectivo o confirmado por MercadoPago (50–200 veces/día). |
 | **Estabilidad** | Alta. |
-| **Comentarios** | El radar de Redis (`drivers:locations`) sólo sabe de posición: no filtra por habilitación ni validación, así que ese filtro lo aplica `choferesElegibles()` contra la base en cada radio. Los cuatro radios (5/10/15/20 km) y la ventana de aceptación de 30 segundos son constantes del código (`DispatchOrchestratorService`); su configuración por distribuidora está planificada (CU-171, I-1) y es un requisito explícito de la cátedra para los módulos inteligentes (ver §10.2). |
+| **Comentarios** | El radar de Redis (`drivers:locations`) solo sabe de posición: no filtra por habilitación ni validación, así que ese filtro lo aplica `choferesElegibles()` contra la base en cada radio. Los cuatro radios (5/10/15/20 km) y la ventana de aceptación de 30 segundos son constantes del código (`DispatchOrchestratorService`); su configuración por distribuidora está planificada (CU-171, I-1) y es un requisito explícito de la cátedra para los módulos inteligentes (ver §10.2). |
 
 #### Flujo del Algoritmo
 
@@ -1128,7 +1155,7 @@ DispatchOrchestratorService.offerToNextDriver(order)
   │  [3] Por cada radio en [5, 10, 15, 20] km:
   │      ├─▶ realtimeDispatchPort.findNearbyDrivers(lat, lng, radioKm)
   │      │       └─▶ redisService.getNearbyDrivers() → GEORADIUS drivers:locations ASC
-  │      ├─▶ deliveries.choferesElegibles(driverIds) → sólo isEnabled && validated
+  │      ├─▶ deliveries.choferesElegibles(driverIds) → solo isEnabled && validated
   │      └─▶ primer id no incluido en alreadyOffered → candidato
   │  [4] Si hay candidato:
   │      ├─▶ offers.create(orderId, candidato, expiresAt = +30s)
@@ -1173,7 +1200,7 @@ Operaciones:
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-013 Asignar Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
+    title DSD — CU-013 Asignar un Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :DispatchOrchestratorService
@@ -1223,13 +1250,13 @@ sequenceDiagram
     SRV-->>-SIS: chofer
 ```
 
-**Figura 9 — CU-013 Asignar Pedido Automáticamente por Proximidad — Diagrama de Interacción**
+**Figura 9 — CU-013 Asignar un Pedido Automáticamente por Proximidad — Diagrama de Interacción**
 
 La operación del sistema es `ofrecerAlSiguienteChofer` (CU-013); su contrato y su tabla de implementación están en la sección 4.3.
 
 ---
 
-### 3.4 CU-014 Crítico · automático — Reintentar Asignación con Radio Expandido (Cron)
+### 3.4 CU-014 Crítico · automático — Vencer la Oferta y Ofrecer al Siguiente Chofer
 
 **Actor:** Sistema (ACT-04)
 **Disparador:** tarea programada que se ejecuta cada 15 segundos
@@ -1281,7 +1308,7 @@ Este caso de uso no tiene pantalla: lo ejecuta el Sistema. Su salida visible es 
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-014 Reintentar Asignación con Radio Expandido (Cron) · vencerOfertasExpiradas
+    title DSD — CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer · vencerOfertasExpiradas
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant TIK as :DispatchService
@@ -1322,7 +1349,7 @@ sequenceDiagram
     deactivate TIK
 ```
 
-**Figura 10 — CU-014 Reintentar Asignación con Radio Expandido (Cron) — Diagrama de Interacción**
+**Figura 10 — CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer — Diagrama de Interacción**
 
 La operación del sistema es `vencerOfertasExpiradas` (CU-014); su contrato y su tabla de implementación están en la sección 4.3.
 
@@ -1337,7 +1364,7 @@ La operación del sistema es `vencerOfertasExpiradas` (CU-014); su contrato y su
 
 ![Pedido entrante en la App Chofer](diagramas/wireframes/D-21.png)
 
-**Figura 11 — CU-015 Aceptar Pedido — Interfaz Gráfica**
+**Figura 11 — CU-015 Aceptar un Pedido — Interfaz Gráfica**
 
 La hoja inferior muestra los ítems, el total y la ventana de aceptación de 30 segundos, con los botones «Aceptar» y «Rechazar».
 
@@ -1361,7 +1388,7 @@ La hoja inferior muestra los ítems, el total y la ventana de aceptación de 30 
 | 2 | La aplicación envía `PATCH /orders/:id/status` con `{ status: "accepted" }`. `OrderController.updateStatus()` invoca `OrderService.updateStatus()`, que delega en `UpdateOrderStatusUseCase.execute(id, ACCEPTED, deliveryId, role)`. |
 | 3 | Si el pedido ya tiene un chofer asignado, el caso de uso verifica primero que sea el mismo que acepta (`assertPedidoDelChofer`). Después, la máquina de estados valida que la transición PENDING→ACCEPTED sea legal. Recién entonces busca al chofer (`DeliveryService.buscarPorIdOUsuario`), confirma que sea de la misma distribuidora que el pedido y aplica `assertElegibleParaAsignacion`: habilitado (`isEnabled`) y validado (`validated`). Además llama a `FleetDispatchLockService.assertChoferHabilitado`: sin vehículo en uso, o con la licencia o el vehículo en uso vencidos, responde 400. No exige que esté en línea (`isAvailable`): aceptar una oferta es un acto explícito, no una búsqueda del radar. |
 | 4 | Asigna el chofer al pedido, lo pasa a ACCEPTED, registra `acceptedAt`, guarda en el pedido la patente, la marca y el modelo del vehículo en uso (`FleetDispatchLockService.vehiculoEnUsoDelChofer`) y genera el `deliveryCode` para la entrega verificada por QR (CU-078/CU-079). |
-| 5 | Cierra la oferta propia como ACCEPTED (`DispatchOrchestratorService.onDriverAccepted`), en modo best-effort: después retira, dentro de la misma transacción, las ofertas abiertas a los demás choferes (`DispatchOfferRepositoryPort.withdrawOtherActiveOffers`, estado `superseded`, que no cuenta como intento) y, tras el commit, les avisa que la oferta ya no está vigente; en el despacho secuencial (CU-013/CU-014) no suele haber otra, pero sí cuando acepta un administrador o hay una carrera. |
+| 5 | Cierra la oferta propia como ACCEPTED (`DispatchOrchestratorService.onDriverAccepted`), en modo de mejor esfuerzo: después retira, dentro de la misma transacción, las ofertas abiertas a los demás choferes (`DispatchOfferRepositoryPort.withdrawOtherActiveOffers`, estado `superseded`, que no cuenta como intento) y, tras el commit, les avisa que la oferta ya no está vigente; en el despacho secuencial (CU-013/CU-014) no suele haber otra, pero sí cuando acepta un administrador o hay una carrera. |
 | 6 | Notifica al cliente que su pedido fue aceptado (`RealtimeDispatchPort.notifyCustomer`, evento `order:accepted`) y al panel admin (`notifyAdmins`). El seguimiento en vivo del GPS todavía no arranca: se activa recién cuando el pedido pasa a ON_THE_WAY (CU-017/CU-020). |
 | 7 | Devuelve al chofer el pedido actualizado con sus datos de entrega. |
 
@@ -1381,13 +1408,13 @@ La hoja inferior muestra los ítems, el total y la ventana de aceptación de 30 
 | **Rendimiento** | La aceptación se confirma en menos de 2 segundos. |
 | **Frecuencia** | Varias veces por día por chofer, una por cada pedido que toma. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema comprueba que un pedido que ya tiene chofer sólo lo acepte ese mismo chofer, de modo que un segundo chofer no puede desplazar al primero ni regenerar el código de entrega que el cliente ya tenía. Sí consulta habilitación y validación del chofer en este punto (mismo gate que la asignación manual, CU-012) y la regla de flota (vehículo en uso y documentación al día). La copia del vehículo (patente, marca y modelo) queda en el pedido y se borra si el pedido vuelve a pendiente. Pero no comprueba que la oferta del aceptante siga vigente: una aceptación sobre una oferta ya vencida se admite igual si el pedido sigue pendiente y sin chofer. |
+| **Comentarios** | El sistema comprueba que un pedido que ya tiene chofer solo lo acepte ese mismo chofer, de modo que un segundo chofer no puede desplazar al primero ni regenerar el código de entrega que el cliente ya tenía. Sí consulta habilitación y validación del chofer en este punto (mismo gate que la asignación manual, CU-012) y la regla de flota (vehículo en uso y documentación al día). La copia del vehículo (patente, marca y modelo) queda en el pedido y se borra si el pedido vuelve a pendiente. Pero no comprueba que la oferta del aceptante siga vigente: una aceptación sobre una oferta ya vencida se admite igual si el pedido sigue pendiente y sin chofer. |
 
 #### Diagrama de Interacción
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-015 Aceptar Pedido · aceptarPedido
+    title DSD — CU-015 Aceptar un Pedido · aceptarPedido
     autonumber
     actor CHF as Chofer (ACT-02)
     participant UCS as :UpdateOrderStatusUseCase
@@ -1419,7 +1446,7 @@ sequenceDiagram
     UCS-->>-CHF: pedido
 ```
 
-**Figura 12 — CU-015 Aceptar Pedido — Diagrama de Interacción**
+**Figura 12 — CU-015 Aceptar un Pedido — Diagrama de Interacción**
 
 La operación del sistema es `aceptarPedido` (CU-015); su contrato y su tabla de implementación están en la sección 4.3.
 
@@ -1434,7 +1461,7 @@ La operación del sistema es `aceptarPedido` (CU-015); su contrato y su tabla de
 
 ![Seguimiento del pedido en la App Cliente](diagramas/wireframes/D-18.png)
 
-**Figura 13 — CU-017 Actualizar Ubicación GPS del Chofer — Interfaz Gráfica**
+**Figura 13 — CU-017 Actualizar la Ubicación GPS del Chofer — Interfaz Gráfica**
 
 El chofer envía su posición desde la App Chofer sin intervención de pantalla. El cliente ve esa posición en el seguimiento de su pedido, que muestra la figura.
 
@@ -1447,7 +1474,7 @@ El chofer envía su posición desde la App Chofer sin intervención de pantalla.
 | **Actor Principal** | ACT-02 (Chofer) |
 | **Objetivos asociados** | OBJ-02, OBJ-03 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | Mientras está conectado al WebSocket `/drivers`, la app del chofer emite eventos `driver:update-location` cada vez que el GPS detecta un movimiento de al menos 10 metros. El backend actualiza el radar geoespacial de Redis (`drivers:locations`) y, si el chofer tiene un pedido activo en tracking (desde que pasa a ON_THE_WAY), reenvía la ubicación al cliente de ese pedido y al panel admin. |
+| **Descripción** | Mientras está conectado al WebSocket `/drivers`, la app del chofer emite eventos `driver:update-location` cada vez que el GPS detecta un movimiento de al menos 10 metros. El backend actualiza el radar geoespacial de Redis (`drivers:locations`) y, si el chofer tiene un pedido activo en seguimiento (desde que pasa a ON_THE_WAY), reenvía la ubicación al cliente de ese pedido y al panel admin. |
 | **Precondición** | El chofer está autenticado con rol chofer (o admin/super_admin) y conectado al namespace `/drivers`. La app tiene permisos de ubicación concedidos. No es necesario estar habilitado ni validado: la actualización de posición no lo exige, y es justamente lo que permite que un chofer deshabilitado quede igual en el radar si su socket sigue conectado (ver Comentarios). |
 
 **Secuencia normal**
@@ -1459,16 +1486,16 @@ El chofer envía su posición desde la App Chofer sin intervención de pantalla.
 | 3 | El cliente WebSocket emite `socket.emit('driver:update-location', { lat, lng })` al backend. |
 | 4 | `DriversGateway.handleDriverLocation()` resuelve la identidad del socket (`SocketIdentityService.obtener`) — el `userId` sale del token, no del cuerpo del mensaje — y recuerda `client.data.choferId` para poder sacarlo del radar al desconectarse. |
 | 5 | Ejecuta `RedisService.updateDriverLocation(userId, lat, lng)` → `GEOADD drivers:locations <lng> <lat> <userId>`. |
-| 6 | Consulta `RedisService.getDriverActiveOrder(userId)` (clave `driver:active-order:<userId>`, la setea `UpdateOrderStatusUseCase` al pasar a ON_THE_WAY y la limpia al entregar). Si hay un pedido activo: reenvía `{ orderId, driverId, lat, lng, at }` al cliente (`CustomersGateway.notifyCustomer(customerId, 'order:driver-location', payload)`) y al panel (`AdminGateway.notifyAdmins('order:driver-location', payload)`). |
+| 6 | Consulta `RedisService.getDriverActiveOrder(userId)` (clave `driver:active-order:<userId>`, la asigna `UpdateOrderStatusUseCase` al pasar a ON_THE_WAY y la limpia al entregar). Si hay un pedido activo: reenvía `{ orderId, driverId, lat, lng, at }` al cliente (`CustomersGateway.notifyCustomer(customerId, 'order:driver-location', payload)`) y al panel (`AdminGateway.notifyAdmins('order:driver-location', payload)`). |
 
-**Postcondición:** El radar de Redis tiene la posición actualizada bajo el `user_id` del chofer. Si hay un pedido en tracking, el cliente y el panel recibieron la nueva posición.
+**Postcondición:** El radar de Redis tiene la posición actualizada bajo el `user_id` del chofer. Si hay un pedido en seguimiento, el cliente y el panel recibieron la nueva posición.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 1 | Si los permisos de ubicación se revocan → `LocationService` detiene el stream y muestra error en HomeView. |
-| 3 | Si el WebSocket está desconectado → Socket.IO buffera el evento y reintenta al reconectar. |
+| 3 | Si el WebSocket está desconectado → Socket.IO guarda el evento en un búfer y reintenta al reconectar. |
 | 4 | Si `lat` o `lng` llegan `null`/`undefined` (se acepta `0`, ecuador o meridiano) → se registra el error y se descarta el evento. |
 | 4 | Si no se puede resolver la identidad del socket → se desconecta al cliente. |
 
@@ -1477,13 +1504,13 @@ El chofer envía su posición desde la App Chofer sin intervención de pantalla.
 | **Rendimiento** | GEOADD < 100ms. Reenvío al cliente y al panel < 500ms desde la actualización. |
 | **Frecuencia** | Alta — una emisión cada 10 metros mientras el chofer se mueve (estimado 1 evento cada 5–15s). |
 | **Estabilidad** | Alta. |
-| **Comentarios** | La ubicación del chofer se mantiene únicamente en el radar geoespacial en memoria, que es lo que permite resolver la búsqueda por proximidad con la latencia que el despacho necesita. No se conserva un histórico de posiciones en la base relacional, de modo que el recorrido de una entrega no puede reconstruirse a posteriori. El radar no filtra por habilitación ni validación: ese filtro lo aplica `DeliveryService.choferesElegibles()` recién al buscar candidatos para una oferta (CU-013/CU-014); si un chofer deshabilitado quedara conectado por socket sin pasar por el endpoint de disponibilidad, seguiría actualizando su posición pero no recibiría ofertas nuevas. |
+| **Comentarios** | La ubicación del chofer se mantiene únicamente en el radar geoespacial en memoria, que es lo que permite resolver la búsqueda por proximidad con la latencia que el despacho necesita. No se conserva un histórico de posiciones en la base relacional, de modo que el recorrido de una entrega no puede reconstruirse a posteriori. El radar no filtra por habilitación ni validación: ese filtro lo aplica `DeliveryService.choferesElegibles()` recién al buscar candidatos para una oferta (CU-013/CU-014); si un chofer deshabilitado quedara conectado por socket sin pasar por la ruta de disponibilidad, seguiría actualizando su posición pero no recibiría ofertas nuevas. |
 
 #### Diagrama de Interacción
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-017 Actualizar Ubicación GPS del Chofer · actualizarUbicacion
+    title DSD — CU-017 Actualizar la Ubicación GPS del Chofer · actualizarUbicacion
     autonumber
     actor CHF as Chofer (ACT-02)
     participant GW as :DriversGateway
@@ -1510,7 +1537,7 @@ sequenceDiagram
     deactivate GW
 ```
 
-**Figura 14 — CU-017 Actualizar Ubicación GPS del Chofer — Diagrama de Interacción**
+**Figura 14 — CU-017 Actualizar la Ubicación GPS del Chofer — Diagrama de Interacción**
 
 La operación del sistema es `actualizarUbicacion` (CU-017); su contrato y su tabla de implementación están en la sección 4.4.
 
@@ -1527,7 +1554,7 @@ La operación del sistema es `actualizarUbicacion` (CU-017); su contrato y su ta
 
 ![Listado de pedidos del Panel Admin, desde el que se abre el detalle del pedido](diagramas/wireframes/D-24.png)
 
-**Figura 15 — CU-020 Confirmar Entrega Manualmente — Interfaz Gráfica**
+**Figura 15 — CU-020 Confirmar una Entrega Manualmente — Interfaz Gráfica**
 
 El administrador abre el pedido con «Ver». Si está en camino, puede marcarlo como entregado: el panel le pide el motivo (de 10 a 500 caracteres) antes de enviar la solicitud. El chofer no tiene este botón: su app muestra el código QR del pedido (CU-078) y la entrega la confirma el cliente (CU-079).
 
@@ -1574,7 +1601,7 @@ El administrador abre el pedido con «Ver». Si está en camino, puede marcarlo 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | La confirmación debe procesarse en menos de 3 segundos. |
-| **Frecuencia** | Baja: sólo los pedidos en los que el cliente no pudo confirmar con el código. |
+| **Frecuencia** | Baja: solo los pedidos en los que el cliente no pudo confirmar con el código. |
 | **Estabilidad** | Alta. |
 | **Comentarios** | La entrega es la prueba de que el cliente recibió el pedido: la cierra el cliente con el código (CU-079) o el administrador con el motivo por escrito, nunca el chofer. |
 
@@ -1582,7 +1609,7 @@ El administrador abre el pedido con «Ver». Si está en camino, puede marcarlo 
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-020 Confirmar Entrega Manualmente · confirmarEntrega
+    title DSD — CU-020 Confirmar una Entrega Manualmente · confirmarEntrega
     autonumber
     actor ADM as Administrador (ACT-03)
     participant UCS as :UpdateOrderStatusUseCase
@@ -1618,7 +1645,7 @@ sequenceDiagram
     Note over ADM,UCS: Si lo pide un chofer, la operación se rechaza: la entrega<br/>la confirma el cliente con el código (CU-079)
 ```
 
-**Figura 16 — CU-020 Confirmar Entrega Manualmente — Diagrama de Interacción**
+**Figura 16 — CU-020 Confirmar una Entrega Manualmente — Diagrama de Interacción**
 
 La operación del sistema es `confirmarEntrega` (CU-020); su contrato y su tabla de implementación están en la sección 4.4.
 
@@ -1626,7 +1653,7 @@ La operación del sistema es `confirmarEntrega` (CU-020); su contrato y su tabla
 
 
 
-### 3.8 CU-048 Crítico — Procesar Pago con MercadoPago
+### 3.8 CU-048 Crítico — Procesar el Pago con MercadoPago
 
 **Actor:** Sistema (ACT-04)
 **Pantalla:** Sin pantalla propia dentro del sistema — confirmación server-to-server
@@ -1637,25 +1664,25 @@ CU sin pantalla propia (proceso automático del Sistema, disparado por la notifi
 
 ![Selección del método de pago en la confirmación del pedido](diagramas/wireframes/D-17.png)
 
-**Figura 17 — CU-048 Procesar Pago con MercadoPago — Interfaz Gráfica**
+**Figura 17 — CU-048 Procesar el Pago con MercadoPago — Interfaz Gráfica**
 
 #### Especificación del CU Real
 
 | Campo | Detalle |
 |-------|---------|
 | **Código** | CU-048 |
-| **Caso de Uso** | Procesar Pago con MercadoPago |
+| **Caso de Uso** | Procesar el Pago con MercadoPago |
 | **Actor Principal** | ACT-04 (Sistema) |
 | **Objetivos asociados** | OBJ-02, OBJ-07 |
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
 | **Descripción** | Cuando un pedido se paga con MercadoPago, la pasarela notifica al backend mediante un webhook contra `MercadoPagoWebhookController`. El sistema valida la firma HMAC de la notificación, consulta el estado real del pago contra la API de MercadoPago sin confiar nunca en el contenido recibido, actualiza el registro `Payment`, marca el pedido como pagado dentro de una transacción con bloqueo pesimista sobre el `Order`, y recién entonces dispara el despacho automático al siguiente chofer candidato. |
-| **Precondición** | Existe un `Order` con `paymentMethod = MERCADOPAGO` y un `Payment` en estado PENDING cuya `external_reference` es el `orderId`. La clave secreta del webhook y la URL de notificación están configuradas en `MercadoPagoAdapter` y apuntan al endpoint del backend. |
+| **Precondición** | Existe un `Order` con `paymentMethod = MERCADOPAGO` y un `Payment` en estado PENDING cuya `external_reference` es el `orderId`. La clave secreta del webhook y la URL de notificación están configuradas en `MercadoPagoAdapter` y apuntan a la ruta del backend. |
 
 **Secuencia normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | MercadoPago envía `POST /webhook/mercadopago` con `type`, `data.id` y las cabeceras `x-signature` / `x-request-id` a `MercadoPagoWebhookController`. El endpoint está exento del límite global de peticiones. |
+| 1 | MercadoPago envía `POST /webhook/mercadopago` con `type`, `data.id` y los encabezados `x-signature` / `x-request-id` a `MercadoPagoWebhookController`. La ruta está exento del límite global de peticiones. |
 | 2 | El controlador tolera los dos formatos que usa MercadoPago para nombrar los parámetros, normaliza `type` y `dataId`, y llama `PaymentsService.verifyWebhookSignature(xSignature, xRequestId, dataId)`. |
 | 3 | `PaymentsService` delega en `PaymentGatewayPort.verifyWebhookSignature()` (implementado por `MercadoPagoAdapter`), que valida el HMAC con la clave secreta configurada. |
 | 4 | Con la firma válida, `MercadoPagoWebhookController` invoca `ConfirmPaymentUseCase.execute(type, dataId)`. |
@@ -1667,7 +1694,7 @@ CU sin pantalla propia (proceso automático del Sistema, disparado por la notifi
 | 10 | Evalúa `isTerminal(locked.status)` y si el pedido ya tiene `gatewayPaymentId` asignado; en cualquiera de los dos casos hace `commit` sin modificar nada (idempotencia ante reintentos del webhook). |
 | 11 | Si `locked.status = RESERVED`, marca `deposit_paid = true`, graba el `gatewayPaymentId` y hace `commit` sin disparar despacho: la reserva la activa el proceso programado el día agendado (CU-075). |
 | 12 | En el caso general, marca `paymentStatus = PAID`, graba el `gatewayPaymentId` y hace `commitTransaction()`. |
-| 13 | Ya fuera de la transacción, invoca `DispatchOrchestratorService.offerToNextDriver(order)` en modo best-effort, equivalente al despacho de CU-013. |
+| 13 | Ya fuera de la transacción, invoca `DispatchOrchestratorService.offerToNextDriver(order)` en modo de mejor esfuerzo, equivalente al despacho de CU-013. |
 | 14 | `MercadoPagoWebhookController` responde `200 { received: true }` a MercadoPago. |
 
 **Postcondición:** El `Payment` refleja el estado real informado por la pasarela. Si el pago fue aprobado, el `Order` quedó con `paymentStatus = PAID` y el `gatewayPaymentId` grabado —o con la seña marcada como pagada, si era una reserva— y el despacho se disparó exactamente una vez. Repetir la misma notificación no vuelve a marcar el pedido ni a despacharlo.
@@ -1682,7 +1709,7 @@ CU sin pantalla propia (proceso automático del Sistema, disparado por la notifi
 | 9 | Si el `Order` desaparece entre la lectura inicial y la toma del lock → `QueryRunner.commit()` sin efectos y se registra la advertencia. |
 | 9–12 | Ante cualquier error dentro de la transacción → `QueryRunner.rollbackTransaction()` y propagación del error; el controlador lo captura y responde 200 igual, para que MercadoPago no reintente en bucle contra un 5xx. |
 | 13 | Si el despacho falla → se registra el error; el pedido queda pagado a la espera del reintento de despacho, el pago no se revierte. |
-| 12 | Si el pago llega `rejected` o `cancelled` → el sistema únicamente lo registra en el log; no hay transición de estado sobre el `Order` (ver Comentarios). |
+| 12 | Si el pago llega `rejected` o `cancelled` → el sistema únicamente lo registra en el registro de eventos; no hay transición de estado sobre el `Order` (ver Comentarios). |
 
 | Campo | Detalle |
 |-------|---------|
@@ -1696,7 +1723,7 @@ CU sin pantalla propia (proceso automático del Sistema, disparado por la notifi
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-048 Procesar Pago con MercadoPago · crearCheckoutDePago
+    title DSD — CU-048 Procesar el Pago con MercadoPago · crearCheckoutDePago
     autonumber
     participant CRT as :CreateOrderUseCase
     participant PAG as :PaymentsService
@@ -1718,13 +1745,13 @@ sequenceDiagram
     PAG-->>-CRT: enlaceDePago
 ```
 
-**Figura 18 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago**
+**Figura 18 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago**
 
 **Clases participantes:** `CreateOrderUseCase` (el caso de uso que la invoca), `PaymentsService` (controlador de fachada del módulo de pagos), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `PaymentGatewayPort` (fabricación pura: la pasarela de pago, MercadoPago Checkout Pro).
 
 **GRASP.** *Controlador*: `PaymentsService`. *Creador*: el servicio crea el `Pago`, porque es quien lleva el registro de los intentos de cobro. *Experto*: `Pedido` sabe cuánto hay que cobrar: su total, o el monto de la seña si el cobro es de una reserva. El `Pago` nace «pendiente»; si la pasarela no devuelve el enlace, queda sin él y el pedido queda creado igual. Si el pedido ya está pago, cancelado o entregado, el servicio lo rechaza con un conflicto (409) antes de registrar ningún intento, y si no existe responde 404.
 
-**Referencias.** `crearCheckoutDePago` no es una operación del sistema: ningún actor la invoca ni tiene un endpoint propio. Es una colaboración interna que ejecuta `CreateOrderUseCase` dentro de la creación del pedido (`crearPedido`, CU-005), de la reserva (`crearReserva`, CU-072) y de la compra express (`realizarCompraExpress`, CU-147), y su resultado, el enlace de pago, viaja en la respuesta de esas operaciones. Se la diagrama aparte porque crea el `Pago`, y sus efectos figuran en las Notas del contrato de `crearPedido`. El resultado del pago llega después, por la notificación de la pasarela: es la operación `notificarResultadoDePago`, de este mismo caso de uso.
+**Referencias.** `crearCheckoutDePago` no es una operación del sistema: ningún actor la invoca ni tiene una ruta propia. Es una colaboración interna que ejecuta `CreateOrderUseCase` dentro de la creación del pedido (`crearPedido`, CU-005), de la reserva (`crearReserva`, CU-072) y de la compra express (`realizarCompraExpress`, CU-147), y su resultado, el enlace de pago, viaja en la respuesta de esas operaciones. Se la diagrama aparte porque crea el `Pago`, y sus efectos figuran en las Notas del contrato de `crearPedido`. El resultado del pago llega después, por la notificación de la pasarela: es la operación `notificarResultadoDePago`, de este mismo caso de uso.
 
 **No se dibuja:** la persistencia del `Pago` y la preferencia de pago de MercadoPago (`MercadoPagoAdapter`), que es la implementación del puerto. El estado del `Pedido` no cambia.
 
@@ -1735,14 +1762,14 @@ sequenceDiagram
 | `Pedido.getImporteACobrar(...)` | `CreateOrderUseCase.createMercadoPagoCheckout` toma `Order.totalAmount`; `CreateOrderUseCase.createDepositCheckout` toma `Order.depositAmount` |
 | `Pago.«create»` | `PaymentsService.createCheckout`: crea y guarda el `Payment` con `Payment.status` pendiente, `Payment.amount` y `Payment.isDeposit` |
 | `Pago.asignarEnlace(...)` | `PaymentsService.createCheckout`: asigna `Payment.paymentUrl` y guarda |
-| `TruckLoadGateService.choferesQuePuedenRecibir(...)` | `DispatchOrchestratorService.conCargaSiSeExige` llama a `TruckLoadGatePort.choferesQuePuedenRecibir`, que implementa `TruckLoadGateService.choferesQuePuedenRecibir` (CU-248): deja sólo a los candidatos que pueden recibir pedidos según su carga de camión |
+| `TruckLoadGateService.choferesQuePuedenRecibir(...)` | `DispatchOrchestratorService.conCargaSiSeExige` llama a `TruckLoadGatePort.choferesQuePuedenRecibir`, que implementa `TruckLoadGateService.choferesQuePuedenRecibir` (CU-248): deja solo a los candidatos que pueden recibir pedidos según su carga de camión |
 | `TruckLoadGateService.assertPuedeAceptar(...)` | `UpdateOrderStatusUseCase.execute` llama a `TruckLoadGatePort.assertPuedeAceptar`, que implementa `TruckLoadGateService.assertPuedeAceptar` (CU-248): responde 400 con el motivo si el chofer no puede recibir pedidos según su carga; no se vuelve a controlar si el chofer ya tenía aceptado el pedido |
 
 #### Clases de Diseño Participantes
 
 | Clase | Capa | Responsabilidad |
 |-------|------|------------------|
-| `MercadoPagoWebhookController` | Backend Controller | Endpoint `POST /webhook/mercadopago`, exento del rate-limit global |
+| `MercadoPagoWebhookController` | Backend Controller | Ruta de la API `POST /webhook/mercadopago`, exento del rate-limit global |
 | `PaymentsService` | Backend Service | Orquesta verificación de firma, consulta a la pasarela y actualización del ledger |
 | `PaymentGatewayPort` (impl. `MercadoPagoAdapter`) | Infrastructure | Único punto que toca el SDK de MercadoPago; sumar otra pasarela es agregar un adapter |
 | `ConfirmPaymentUseCase` | Backend Use Case | Aplica el resultado normalizado del pago sobre el `Order`, con lock pesimista |
@@ -1750,7 +1777,7 @@ sequenceDiagram
 | `Repository<Payment>` | Infrastructure | Ledger de pagos, con índice único parcial sobre `gateway_payment_id` |
 | `DispatchOrchestratorService` | Backend Service | Dispara el despacho al siguiente chofer candidato una vez pagado el pedido |
 
-**Comentarios.** La idempotencia descansa en tres mecanismos encadenados: el índice único parcial sobre `gateway_payment_id` en el ledger de pagos, un índice análogo en el `Order`, y el lock pesimista dentro de la transacción de `ConfirmPaymentUseCase`. **Limitación conocida:** el camino de pago `rejected` / `cancelled` no está implementado y el sistema se limita a registrarlo en el log, sin liberar el stock reservado ni cancelar el pedido. Quien resuelve esa situación es el proceso temporal de CU-077, que cada 30 minutos cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado y recién ahí restituye el stock. El reembolso por cancelación está planificado (CU-168, I-7); el contracargo no se contempla: el ledger sabe traducir ese estado, pero el `Order` no reacciona a él.
+**Comentarios.** La idempotencia descansa en tres mecanismos encadenados: el índice único parcial sobre `gateway_payment_id` en el ledger de pagos, un índice análogo en el `Order`, y el lock pesimista dentro de la transacción de `ConfirmPaymentUseCase`. **Limitación conocida:** el camino de pago `rejected` / `cancelled` no está implementado y el sistema se limita a registrarlo en el registro de eventos, sin liberar el stock reservado ni cancelar el pedido. Quien resuelve esa situación es el proceso temporal de CU-077, que cada 30 minutos cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado y recién ahí restituye el stock. El reembolso por cancelación está planificado (CU-168, I-7); el contracargo no se contempla: el ledger sabe traducir ese estado, pero el `Order` no reacciona a él.
 
 ---
 
@@ -1767,7 +1794,7 @@ La vista de escaneo del código QR no tiene wireframe: el diseño de pantallas n
 
 ![Seguimiento del pedido](diagramas/wireframes/D-18.png)
 
-**Figura 19 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Interfaz Gráfica**
+**Figura 19 — CU-079 Confirmar una Entrega Escaneando el QR (cliente) — Interfaz Gráfica**
 
 #### Especificación del CU Real
 
@@ -1787,7 +1814,7 @@ La vista de escaneo del código QR no tiene wireframe: el diseño de pantallas n
 |------|--------|
 | 1 | El chofer muestra en su pantalla el QR obtenido en CU-078. |
 | 2 | El cliente abre el lector de cámara desde `OrderTrackingView` y escanea el QR; la app extrae el código de diez caracteres del contenido leído. |
-| 3 | `OrderTrackingViewModel` llama `historyService.confirmDelivery(orderId, code)` → `POST /orders/:id/confirm-delivery` con `{ code }` y la cabecera `Idempotency-Key`. |
+| 3 | `OrderTrackingViewModel` llama `historyService.confirmDelivery(orderId, code)` → `POST /orders/:id/confirm-delivery` con `{ code }` y el encabezado `Idempotency-Key`. |
 | 4 | `OrderController.confirmDelivery()` invoca `OrderService.confirmDelivery(id, code, userId, role, reason)`, que delega en `ConfirmDeliveryUseCase.execute(orderId, code, userId, role, reason)`. |
 | 5 | `ConfirmDeliveryUseCase` recupera el pedido con `OrderRepositoryPort.findByIdFull(orderId)` y valida que, si el rol es CUSTOMER, `order.customer_id` sea el usuario autenticado. |
 | 6 | Verifica que el pedido esté en estado ON_THE_WAY. |
@@ -1795,8 +1822,8 @@ La vista de escaneo del código QR no tiene wireframe: el diseño de pantallas n
 | 8 | Con el código válido, delega en `UpdateOrderStatusUseCase.execute(order_id, DELIVERED)` — el mismo caso de uso que usa `PATCH /orders/:id/status` en CU-020. Si el rol es administrador, le pasa el rol, el usuario y el motivo, y el caso de uso exige entre 10 y 500 caracteres y los asienta en `order_status_history` y en la auditoría. |
 | 9 | `UpdateOrderStatusUseCase` registra `deliveredAt = now()`. No toca `paymentStatus`: un pedido en efectivo sigue pendiente de cobro (CU-292). |
 | 10 | Llama `RealtimeDispatchPort.stopTracking(driverUserId)` para cortar el seguimiento GPS en vivo del chofer. |
-| 11 | Llama `CylinderLifecyclePort.onOrderDelivered(order_id, distributor_id)`, que avanza a `CON_EL_CLIENTE` los envases despachados en el pedido, en modo best-effort: si falla, la entrega igual se completa. |
-| 12 | Persiste el `Order` vía `OrderRepositoryPort.save(order)` y emite `RealtimeDispatchPort.notifyCustomer()` / `notifyAdmins()` con `order:delivered`, además de la notificación push, todo best-effort. |
+| 11 | Llama `CylinderLifecyclePort.onOrderDelivered(order_id, distributor_id)`, que avanza a `CON_EL_CLIENTE` los envases despachados en el pedido, en modo de mejor esfuerzo: si falla, la entrega igual se completa. |
+| 12 | Persiste el `Order` vía `OrderRepositoryPort.save(order)` y emite `RealtimeDispatchPort.notifyCustomer()` / `notifyAdmins()` con `order:delivered`, además de la notificación push, todo de mejor esfuerzo. |
 | 13 | `ConfirmDeliveryUseCase` devuelve `OrderMapper.toDto(order)`; `OrderTrackingView` recibe la respuesta y actualiza el stepper a "Entregado". |
 
 **Postcondición:** El pedido queda en estado DELIVERED con `deliveredAt` registrado y evidencia de que el cliente validó la entrega con el código. Si el pago era en efectivo, sigue en `paymentStatus = PENDING`. El chofer sale del seguimiento en vivo y los envases del pedido figuran `CON_EL_CLIENTE`.
@@ -1815,7 +1842,7 @@ La vista de escaneo del código QR no tiene wireframe: el diseño de pantallas n
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | La validación del código es local y de costo despreciable; el peso está en la transición de estado y sus efectos, ya cubiertos por CU-020. Los efectos de tiempo real y notificación son best-effort y no bloquean la respuesta. |
+| **Rendimiento** | La validación del código es local y de costo despreciable; el peso está en la transición de estado y sus efectos, ya cubiertos por CU-020. Los efectos de tiempo real y notificación son de mejor esfuerzo y no bloquean la respuesta. |
 | **Frecuencia** | Una vez por pedido entregado, con pico en la franja horaria de entrega. |
 | **Estabilidad** | Alta. |
 
@@ -1823,7 +1850,7 @@ La vista de escaneo del código QR no tiene wireframe: el diseño de pantallas n
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-079 Confirmar Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
+    title DSD — CU-079 Confirmar una Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
     autonumber
     actor CLI as Cliente (ACT-01)
     participant CDU as :ConfirmDeliveryUseCase
@@ -1848,7 +1875,7 @@ sequenceDiagram
     CDU-->>-CLI: pedido
 ```
 
-**Figura 20 — CU-079 Confirmar Entrega Escaneando el QR (cliente) — Diagrama de Interacción**
+**Figura 20 — CU-079 Confirmar una Entrega Escaneando el QR (cliente) — Diagrama de Interacción**
 
 La operación del sistema es `confirmarEntregaConCodigo` (CU-079); su contrato y su tabla de implementación están en la sección 4.4.
 
@@ -1859,16 +1886,16 @@ La operación del sistema es `confirmarEntregaConCodigo` (CU-079); su contrato y
 | `OrderTrackingView` | Presentation (Flutter) | Muestra el stepper del pedido y aloja el lector de QR mientras el pedido está ON_THE_WAY |
 | `OrderTrackingViewModel` | Presentation | Orquesta el escaneo, llama al servicio y actualiza el estado local |
 | `HistoryService` | Service (Flutter) | HTTP al backend, la misma clase que persiste el historial en CU-005 |
-| `OrderController` | Backend Controller | Endpoint `POST /orders/:id/confirm-delivery` |
+| `OrderController` | Backend Controller | Ruta de la API `POST /orders/:id/confirm-delivery` |
 | `OrderService` | Backend Service | Delega en el caso de uso de confirmación |
 | `ConfirmDeliveryUseCase` | Backend Use Case | Valida pertenencia, estado y código; concentra la lógica anti-fraude |
 | `DeliveryCodeUtil` (`compareDeliveryCode`) | Domain (función pura) | Comparación de tiempo constante del código de entrega |
 | `UpdateOrderStatusUseCase` | Backend Use Case | Aplica la transición a DELIVERED y sus efectos; compartido con CU-020 |
 | `OrderRepositoryPort` | Infrastructure | Persistencia del `Order` |
 | `CylinderLifecyclePort` | Infrastructure | Avanza los envases despachados a `CON_EL_CLIENTE` |
-| `RealtimeDispatchPort` | Infrastructure | Notifica por WebSocket y FCM, y corta el tracking del chofer |
+| `RealtimeDispatchPort` | Infrastructure | Notifica por WebSocket y FCM, y corta el seguimiento del chofer |
 
-**Comentarios.** La validación vive en `ConfirmDeliveryUseCase`; los efectos de pasar a DELIVERED se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH /orders/:id/status`: cero duplicación de lógica con CU-020. La doble idempotencia (cabecera `Idempotency-Key` más el chequeo de `status === DELIVERED` dentro del caso de uso) tolera el reintento de red y el doble escaneo. El espacio del código es de 16^10 combinaciones, por lo que adivinarlo a fuerza bruta es inviable; los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte. Limitación conocida: la garantía completa de este mecanismo depende de que el pedido conserve un único chofer asignado, y aceptar un pedido no comprueba que no tenga ya un chofer (CU-015), de modo que un segundo chofer puede regenerar el `deliveryCode` e invalidar el QR que el primero ya le había mostrado al cliente.
+**Comentarios.** La validación vive en `ConfirmDeliveryUseCase`; los efectos de pasar a DELIVERED se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH /orders/:id/status`: cero duplicación de lógica con CU-020. La doble idempotencia (encabezado `Idempotency-Key` más el chequeo de `status === DELIVERED` dentro del caso de uso) tolera el reintento de red y el doble escaneo. El espacio del código es de 16^10 combinaciones, por lo que adivinarlo a fuerza bruta es inviable; los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte. Limitación conocida: la garantía completa de este mecanismo depende de que el pedido conserve un único chofer asignado, y aceptar un pedido no comprueba que no tenga ya un chofer (CU-015), de modo que un segundo chofer puede regenerar el `deliveryCode` e invalidar el QR que el primero ya le había mostrado al cliente.
 
 ---
 
@@ -1883,7 +1910,7 @@ La operación del sistema es `confirmarEntregaConCodigo` (CU-079); su contrato y
 
 ![Seguimiento del pedido con el botón Cancelar](diagramas/wireframes/D-18.png)
 
-**Figura 21 — CU-008 Cancelar Pedido (Cliente) — Interfaz Gráfica**
+**Figura 21 — CU-008 Cancelar un Pedido (Cliente) — Interfaz Gráfica**
 
 El botón «Cancelar» está en la fila de acciones junto a «Llamar», debajo de la tarjeta del chofer, y queda disponible mientras el pedido no salió hacia el domicilio.
 
@@ -1904,27 +1931,27 @@ El botón «Cancelar» está en la fila de acciones junto a «Llamar», debajo d
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente presiona "Cancelar" en `OrderTrackingView`, con la opción de ingresar un motivo en un cuadro de texto. |
-| 2 | `OrderTrackingViewModel` llama `historyService.cancelOrder(orderId, reason)` → `PATCH /orders/:id/cancel` con `{ reason }` y la cabecera `Idempotency-Key`. |
+| 2 | `OrderTrackingViewModel` llama `historyService.cancelOrder(orderId, reason)` → `PATCH /orders/:id/cancel` con `{ reason }` y el encabezado `Idempotency-Key`. |
 | 3 | `IdempotencyInterceptor.intercept()` revisa si ya hay una respuesta cacheada para esa clave; si la hay, la devuelve sin reprocesar. En la primera ejecución, deja pasar la solicitud. |
 | 4 | `OrderController` resuelve el actor desde el rol del token (`mapRoleToCancelActor(user.role)` → `customer`) e invoca `OrderService.cancelOrder(id, user.user_id, customer, body.reason)`. |
 | 5 | `OrderService` delega en `CancelOrderUseCase.execute(orderId, userId, customer, reason)`. |
-| 6 | `CancelOrderUseCase` recupera el pedido con `OrderRepositoryPort.findByIdFull(orderId)` y aplica la política de cancelación del actor `customer` dentro de `execute`, que verifica en este orden: que no esté ya DELIVERED ni CANCELLED, que no esté ON_THE_WAY y, recién entonces, que `order.customer_id` sea el usuario autenticado. |
-| 7 | Con la política aprobada, invoca la máquina de estados de dominio (`transitionOrder(order, CANCELLED)`) y setea `cancellationReason`. |
-| 8 | Abre un `QueryRunner.connect()` + `startTransaction()` propio y llama `GasCylinderService.restituirStock(queryRunner.manager, order.items)`, que bloquea cada `GasCylinder` y devuelve la cantidad de cada ítem al inventario; hace `commitTransaction()` y `release()`. |
-| 9 | Persiste el pedido cancelado con `OrderRepositoryPort.save(order)`, en una operación separada de la restitución de stock del paso anterior. |
-| 10 | Llama `notify(order, customer, previousDriverId)`: emite `RealtimeDispatchPort.notifyCustomer(customer_id, order:cancelled)`, `notifyAdmins(order:cancelled)` y, si el pedido ya tenía chofer asignado, `notifyDriverOrderCancelled(previousDriverId)`. |
-| 11 | `OrderController` mapea la respuesta con `OrderMapper.toDto(order)`; `OrderTrackingView` actualiza el stepper mostrando el pedido como cancelado. |
+| 6 | `CancelOrderUseCase` abre una única transacción con un `QueryRunner` y lee el pedido con bloqueo pesimista de escritura (`pessimistic_write`) junto con su chofer; los renglones se leen después del bloqueo, en una consulta aparte. |
+| 7 | Verifica, en este orden: que el pedido sea del cliente que lo pide (uno ajeno responde 404, como si no existiera), que no esté ya DELIVERED ni CANCELLED y que no esté ON_THE_WAY. |
+| 8 | Con la política aprobada, aplica la máquina de estados de dominio (`transitionOrder(order, CANCELLED)`), asigna `cancellationReason` y restituye el stock con `GasCylinderService.restituirStock(queryRunner.manager, items)`, que bloquea cada `GasCylinder` y devuelve la cantidad de cada ítem. |
+| 9 | Guarda el pedido cancelado con el mismo `queryRunner.manager` y confirma la transacción: el bloqueo, el cambio de estado, la restitución del stock y el guardado se confirman juntos. |
+| 10 | Después del commit, cierra la oferta de despacho (`DispatchOrchestratorService.onOrderClosed`) y llama `notify(order, previousDriverUserId, customer)`: emite `RealtimeDispatchPort.notifyCustomer(customer_id, order:cancelled)` con `cancelledBy`, `notifyAdmins(order:cancelled)` y, si el pedido ya tenía chofer asignado, `stopTracking` y `notifyDriverOrderCancelled`. |
+| 11 | `OrderController` mapea la respuesta con `OrderMapper.toDto(order)`, que incluye `cancelledBy`; `OrderTrackingView` actualiza el stepper mostrando el pedido como cancelado. |
 
-**Postcondición:** El pedido tiene estado CANCELLED con su motivo. El stock de todos los ítems fue restituido al inventario con bloqueo sobre cada `GasCylinder`. La consistencia entre ambos efectos no está protegida por una transacción única (ver Comentarios).
+**Postcondición:** El pedido tiene estado CANCELLED con su motivo. El stock de todos los ítems fue restituido al inventario con bloqueo sobre cada `GasCylinder`. Ambos efectos se confirmaron en una única transacción con bloqueo del pedido: dos cancelaciones simultáneas no devuelven el stock dos veces.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 6 | Si el pedido no existe → `NotFoundException`, "Order with ID: … not found". |
-| 6 | Si el pedido ya está DELIVERED o CANCELLED → `BadRequestException`, "No se puede cancelar un pedido finalizado". |
-| 6 | Si el pedido ya está ON_THE_WAY → `BadRequestException`, "El pedido ya está en camino, contacte al soporte". Esta comprobación corre antes que la de propiedad, de modo que un cliente que intente cancelar un pedido ajeno que ya salió recibe este mensaje y no el de falta de autorización. |
-| 6 | Si el pedido no pertenece al cliente autenticado → `BadRequestException`, "No autorizado" (código de solicitud incorrecta, no de acceso denegado). |
+| 7 | Si el pedido no pertenece al cliente autenticado → `NotFoundException`, "Order with ID: … not found": no revela que existe. Este control corre antes que el de estado. |
+| 7 | Si el pedido ya está DELIVERED o CANCELLED → `BadRequestException`, "No se puede cancelar un pedido finalizado". |
+| 7 | Si el pedido ya está ON_THE_WAY → `BadRequestException`, "El pedido ya está en camino. Contacte al soporte." |
 | 2 | Si la clave de idempotencia ya fue usada para esa solicitud → `IdempotencyInterceptor` devuelve la respuesta cacheada sin volver a ejecutar `CancelOrderUseCase`. |
 
 | Campo | Detalle |
@@ -1937,7 +1964,7 @@ El botón «Cancelar» está en la fila de acciones junto a «Llamar», debajo d
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-008 / CU-010 · cancelarPedido
+    title DSD — CU-008 Cancelar un Pedido (Cliente) · cancelarMiPedido
     autonumber
     actor CLI as Cliente (ACT-01)
     participant CAN as :CancelOrderUseCase
@@ -1947,7 +1974,7 @@ sequenceDiagram
     participant PRO as producto:Producto
     participant RT as :RealtimeDispatchPort
 
-    CLI->>+CAN: cancelarPedido(pedidoId, motivo)
+    CLI->>+CAN: cancelarMiPedido(pedidoId, motivo)
     CAN->>+COL: get(pedidoId)
     COL-->>-CAN: pedido
     CAN->>+PED: getChofer()
@@ -1969,9 +1996,9 @@ sequenceDiagram
     CAN-->>-CLI: pedido
 ```
 
-**Figura 22 — CU-008 Cancelar Pedido (Cliente) — Diagrama de Interacción**
+**Figura 22 — CU-008 Cancelar un Pedido (Cliente) — Diagrama de Interacción**
 
-La operación del sistema es `cancelarPedido` (CU-008); su contrato y su tabla de implementación están en la sección 4.2.
+La operación del sistema es `cancelarMiPedido` (CU-008); su contrato y su tabla de implementación están en la sección 4.2.
 
 #### Clases de Diseño Participantes
 
@@ -1981,17 +2008,14 @@ La operación del sistema es `cancelarPedido` (CU-008); su contrato y su tabla d
 | `OrderTrackingViewModel` | Presentation | Orquesta la acción de cancelar y actualiza el estado local |
 | `HistoryService` | Service (Flutter) | HTTP al backend, la misma clase que persiste el historial en CU-005 |
 | `IdempotencyInterceptor` | Backend Interceptor | Evita reprocesar la cancelación ante un reintento con la misma clave |
-| `OrderController` | Backend Controller | Endpoint `PATCH /orders/:id/cancel`, resuelve el actor desde el rol del token |
+| `OrderController` | Backend Controller | Ruta de la API `PATCH /orders/:id/cancel`, resuelve el actor desde el rol del token |
 | `OrderService` | Backend Service | Delega en el caso de uso de cancelación |
 | `CancelOrderUseCase` | Backend Use Case | Aplica la política de cancelación y orquesta la transición |
 | `transitionOrder` (máquina de estados de dominio) | Domain | Valida la transición de estado hacia CANCELLED |
 | `GasCylinderService` | Backend Service | Restituye el stock reservado con `restituirStock`, con bloqueo por `GasCylinder` |
-| `OrderRepositoryPort` | Infrastructure | Persistencia del `Order` |
 | `RealtimeDispatchPort` (impl. `RealtimeDispatchAdapter`) | Infrastructure | Notifica a cliente, panel y chofer por WebSocket |
 
-**Comentarios.** La restitución de stock (`GasCylinderService.restituirStock`) y el guardado del pedido cancelado (`OrderRepositoryPort.save`) corren en transacciones separadas, no en una única transacción: si el guardado falla después de restituir, el stock vuelve al inventario y el pedido sigue activo, quedando contado dos veces. Es una limitación conocida. El sistema tampoco envía notificación push al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un chofer o un cliente con la app cerrada no se entera hasta reabrirla.
-
----
+**Comentarios.** La restitución de stock (`GasCylinderService.restituirStock`) y el guardado del pedido cancelado corren en la misma transacción, con el pedido bloqueado: si algo falla, se revierte todo. El sistema no envía notificación push al cancelar: el aviso viaja solo por la conexión en tiempo real, de modo que un chofer o un cliente con la app cerrada no se entera hasta reabrirla.
 
 ## 4. Diagramas de Interacción (Nivel de Diseño)
 
@@ -2004,11 +2028,11 @@ Los objetos del dominio llevan el nombre que tienen en el modelo conceptual, en 
 #### DSD — CU-001: Iniciar Sesión
 
 
-Hay **dos** puertas de login: la de las apps (`POST /auth/login`) y la del panel
+Hay **dos** puertas de inicio de sesión: la de las apps (`POST /auth/login`) y la del panel
 (`POST /auth/login/dashboard`, que además exige ser admin y devuelve cookie httpOnly).
-Ambas son `@Public()` con throttle estricto de 8/min, pero `AuthGuard` igual corre: en la
-rama sin token valida el header `x-client-source` y que el rol del usuario corresponda a
-la app que pide (un cliente no puede loguearse por la app del chofer).
+Ambas son `@Public()` con throttle estricto de 8/min por cuenta: el `AuthGuard` no corre en
+una ruta pública, así que el ingreso no revisa el encabezado `x-client-source` ni el rol; esas
+comprobaciones corren desde la primera solicitud con token.
 
 ##### Operación: iniciarSesion(correo, contrasena)
 
@@ -2036,7 +2060,7 @@ sequenceDiagram
 
 **Clases participantes:** `AuthService` (controlador de fachada del módulo de acceso), `Firebase` (actor externo: es quien verifica la contraseña), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`. El diagrama vale igual para el Chofer y el Administrador, que inician sesión con la misma operación.
 
-**GRASP.** *Controlador*: `AuthService` recibe la operación y coordina. *Experto*: `Usuario` sabe si su cuenta está habilitada (ni bloqueada ni dada de baja), de modo que el controlador no mira sus atributos. La contraseña no la conoce el sistema: la verifica el proveedor de identidad y el controlador sólo recibe la credencial.
+**GRASP.** *Controlador*: `AuthService` recibe la operación y coordina. *Experto*: `Usuario` sabe si su cuenta está habilitada (ni bloqueada ni dada de baja), de modo que el controlador no mira sus atributos. La contraseña no la conoce el sistema: la verifica el proveedor de identidad y el controlador solo recibe la credencial.
 
 **No se dibuja:** la aplicación de origen (`X-Client-Source`) y la correspondencia del rol con esa aplicación, que comprueba `AuthGuard`; la traducción de la credencial a la sesión que se devuelve (sin el `refreshToken`); y, en el panel, la comprobación de que la cuenta tenga perfil de Administrador y la cookie de sesión (`AuthService.loginDashboard`).
 
@@ -2091,7 +2115,7 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `RegistroService` recibe la operación y coordina las dos altas. *Creador*: el controlador crea el `Usuario` y el `Cliente`, porque es quien tiene los datos con que se inicializan; el `Cliente` nace asociado al `Usuario` recién creado. *Bajo Acoplamiento*: la cuenta de acceso se pide a un puerto, no al SDK del proveedor.
 
-**No se dibuja:** la autorización del alta (`autorizarAlta`: sin sesión sólo se registra un cliente), la búsqueda del rol, la transacción que guarda las dos filas y el cupo de diez altas por minuto por origen. Tampoco el evento `usuario.registrado`, que dispara el correo de bienvenida una vez confirmada el alta. El alta común es CU-082, caso incluido.
+**No se dibuja:** la autorización del alta (`autorizarAlta`: sin sesión solo se registra un cliente), la búsqueda del rol, la transacción que guarda las dos filas y el cupo de diez altas por minuto por origen. Tampoco el evento `usuario.registrado`, que dispara el correo de bienvenida una vez confirmada el alta. El alta común es CU-082, caso incluido.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -2110,7 +2134,7 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-003: Registrar Chofer
+#### DSD — CU-003: Registrar un Chofer (Gestión de Usuarios)
 
 
 Mismo caso que CU-031, visto desde la gestión de usuarios. Lo dispara un administrador por `POST /users` con rol `delivery`, y el chofer nace atado a una distribuidora. La identidad la crea `RegistroService.registrar`, el mismo camino de todas las altas (CU-082, caso incluido).
@@ -2119,7 +2143,7 @@ Mismo caso que CU-031, visto desde la gestión de usuarios. Lo dispara un admini
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-003 / CU-031 · registrarChofer
+    title DSD — CU-003 Registrar un Chofer (Gestión de Usuarios) · registrarChofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :RegistroService
@@ -2141,7 +2165,8 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 25 — DSD CU-003: Registrar Chofer**
+**Figura 25 — DSD CU-003: Registrar un Chofer (Gestión de Usuarios) — Operación: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)**
+
 
 **Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Chofer`. El diagrama sirve a CU-003 y a CU-031: es el mismo alta visto desde la gestión de usuarios y desde la de choferes.
 
@@ -2152,14 +2177,14 @@ sequenceDiagram
 | Operación de diseño | Implementación |
 |---|---|
 | `RegistroService.registrarChofer(...)` | `RegistroController.registrar` (`POST /users`, con rol `delivery`) → `RegistroService.registrar` |
-| `RegistroService.autorizarAlta(...)` | `autorizarAlta()` (`politica-de-registro.ts`): un administrador de empresa sólo da de alta en su distribuidora (403 si pide otra); el Administrador General indica la distribuidora (400 si no hay ninguna) |
+| `RegistroService.autorizarAlta(...)` | `autorizarAlta()` (`politica-de-registro.ts`): un administrador de empresa solo da de alta en su distribuidora (403 si pide otra); el Administrador General indica la distribuidora (400 si no hay ninguna) |
 | `Map<String, Usuario>.verificarDisponibilidad(...)` | `UsersService.assertDisponible`: busca un `User` con ese `User.email` o ese `User.phoneNumber`, también entre los dados de baja; responde 409 si lo hay |
 | `Usuario.«create»` | `UsersService.crearEnTransaccion`: guarda el `User` dentro de la transacción del alta, con el rol que devuelve `RoleService.findByType` |
 | `Chofer.«create»` | `DeliveryService.crearPerfil`: guarda el `Delivery` en la misma transacción, con saldo y calificación en cero |
 
 **Observaciones de diseño**
 
-- La distribuidora la decide la política, no el cuerpo: un admin de empresa sólo puede dar de alta en la suya, que sale de su perfil y no del pedido.
+- La distribuidora la decide la política, no el cuerpo: un administrador solo puede dar de alta en la suya, que sale de su perfil y no del pedido.
 - El perfil de chofer lo crea `DeliveryService.crearPerfil`, dueño de la tabla, dentro de la transacción del alta.
 
 ---
@@ -2191,7 +2216,7 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `UsersService`. La consulta no cambia ningún estado: el `Usuario` se obtiene de la colección y se devuelve.
 
-**No se dibuja:** la comprobación de propiedad (quien no es Administrador sólo lee su propio perfil) y la carga del rol, el perfil de cliente o de chofer, los vehículos y las direcciones.
+**No se dibuja:** la comprobación de propiedad (quien no es Administrador solo lee su propio perfil) y la carga del rol, el perfil de cliente o de chofer, los vehículos y las direcciones.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -2220,7 +2245,7 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `CustomersService`. La consulta no cambia ningún estado. El `Cliente` se busca por el identificador del `Usuario` al que pertenece, porque una cuenta puede existir sin perfil de cliente.
 
-**No se dibuja:** la comprobación de propiedad: quien no es Administrador sólo lee la ficha que es suya.
+**No se dibuja:** la comprobación de propiedad: quien no es Administrador solo lee la ficha que es suya.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -2262,7 +2287,7 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `UsersService`. *Experto*: el `Usuario` es quien toma el nombre completo, el teléfono y la foto; el controlador no le asigna atributos. Cualquier otro dato que llegue se descarta antes de la operación.
 
-**No se dibuja:** la comprobación de propiedad (un usuario que no es Administrador sólo modifica el suyo, y sólo esos tres campos, que filtra `UsersController.pickSelfEditableFields`) y la transacción con que se guarda.
+**No se dibuja:** la comprobación de propiedad (un usuario que no es Administrador solo modifica el suyo, y solo esos tres campos, que filtra `UsersController.pickSelfEditableFields`) y la transacción con que se guarda.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -2276,57 +2301,18 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-047: Recuperar Contraseña
+#### DSD — CU-047: Recuperar la Contraseña
 
 
 El backend no maneja contraseñas: le pide a Firebase un link firmado *out-of-band* y lo
-manda por mail. Rate-limit y cache del link viven en Redis (no en memoria del proceso) para
+manda por mail. Rate-limit y caché del link viven en Redis (no en memoria del proceso) para
 que el límite sea real con varias instancias corriendo.
-
-##### Operación: cambiarCorreo(correoActual, correoNuevo)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-047 Recuperar Contraseña · cambiarCorreo
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :EmailService
-    participant FBA as :FirebaseAuthPort
-    participant COL as :Map#lt;String, Usuario#gt;
-    participant USR as usuario:Usuario
-    participant SND as :EmailSenderPort
-
-    CLI->>+SRV: cambiarCorreo(correoActual, correoNuevo)
-    SRV->>FBA: verifyIdToken(token)
-    SRV->>COL: verificarDisponibilidad(correoNuevo)
-    SRV->>+COL: get(correoActual)
-    COL-->>-SRV: usuario
-    SRV->>FBA: updateUser(cuenta, correoNuevo)
-    SRV->>USR: cambiarCorreo(correoNuevo)
-    SRV-)SND: send(verificacionDeCorreo)
-    SRV-->>-CLI: correoNuevo
-```
-
-**Figura 29 — DSD CU-047: Recuperar Contraseña**
-
-**Clases participantes:** `EmailService` (controlador de fachada del módulo de correo), `FirebaseAuthPort` (fabricación pura: acredita al dueño de la cuenta y cambia el correo en el proveedor de identidad), la colección `Map<String, Usuario>`, el objeto de dominio `Usuario` y `EmailSenderPort` (fabricación pura: el envío del correo de verificación). Lo inician el Cliente, el Chofer y el Administrador.
-
-**GRASP.** *Controlador*: `EmailService`. *Experto*: el `Usuario` toma el correo nuevo y pasa a no verificado. *Bajo Acoplamiento*: el correo se despacha por un puerto y la identidad se cambia por otro, de modo que el servicio no depende de ningún proveedor.
-
-**No se dibuja:** el aviso al correo anterior, la plantilla del mensaje y el hecho de que el envío es de mejor esfuerzo: si el proveedor de correo falla, el cambio ya hecho no se deshace.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `EmailService.cambiarCorreo(...)` | `EmailController.changeEmail` → `EmailService.changeEmail`, que recibe además el `idToken` de la persona |
-| `Map<String, Usuario>.verificarDisponibilidad(...)` | `EmailService.changeEmail`: busca con `UsersService.findOneByEmail`; si encuentra un `User` con el correo nuevo responde 400 |
-| `Map<String, Usuario>.get(...)` | `UsersService.findOneByEmail`: lee el `User` por su correo actual |
-| `Usuario.cambiarCorreo(...)` | `UsersService.cambiarEmail`: asigna `User.email`, normalizado, y deja `User.emailVerified` en falso |
 
 ##### Operación: solicitarRecuperacionDeClave(correo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-047 Recuperar Contraseña · solicitarRecuperacionDeClave
+    title DSD — CU-047 Recuperar la Contraseña · solicitarRecuperacionDeClave
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :EmailService
@@ -2346,11 +2332,11 @@ sequenceDiagram
     SRV-->>-CLI: mensaje
 ```
 
-**Figura 30 — DSD CU-047: Recuperar Contraseña — Operación: solicitarRecuperacionDeClave(correo)**
+**Figura 29 — DSD CU-047: Recuperar la Contraseña — Operación: solicitarRecuperacionDeClave(correo)**
 
 **Clases participantes:** `EmailService` (controlador de fachada del módulo de correo), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura: genera el enlace firmado) y `EmailSenderPort` (fabricación pura: el envío). Lo inician el Cliente, el Chofer y el Administrador.
 
-**GRASP.** *Controlador*: `EmailService`. La operación no cambia estado del dominio. La contraseña no la maneja el sistema: el proveedor de identidad genera un enlace firmado y el servicio sólo lo envía por correo.
+**GRASP.** *Controlador*: `EmailService`. La operación no cambia estado del dominio. La contraseña no la maneja el sistema: el proveedor de identidad genera un enlace firmado y el servicio solo lo envía por correo.
 
 **No se dibuja:** el límite de diez pedidos por hora y por correo y la memoria del enlace durante treinta minutos, que se llevan en Redis (`RedisService`), y la plantilla del mensaje.
 
@@ -2371,34 +2357,78 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-050: Bloquear un Usuario
+#### DSD — CU-336: Cambiar el Correo del Usuario
 
-
-Toggle bidireccional real: el mismo endpoint bloquea y desbloquea según el booleano del body. Bloquear (CU-050) y desbloquear (CU-270) son la misma operación, con el valor en verdadero o en falso.
-
-##### Operación: bloquearUsuario(usuarioId, bloquear)
+##### Operación: cambiarCorreo(correoActual, correoNuevo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-050 / CU-270 · bloquearUsuario
+    title DSD — CU-336 Cambiar el Correo del Usuario · cambiarCorreo
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :EmailService
+    participant FBA as :FirebaseAuthPort
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
+    participant SND as :EmailSenderPort
+
+    CLI->>+SRV: cambiarCorreo(correoActual, correoNuevo)
+    SRV->>FBA: verifyIdToken(token)
+    SRV->>COL: verificarDisponibilidad(correoNuevo)
+    SRV->>+COL: get(correoActual)
+    COL-->>-SRV: usuario
+    SRV->>FBA: updateUser(cuenta, correoNuevo)
+    SRV->>USR: cambiarCorreo(correoNuevo)
+    SRV-)SND: send(verificacionDeCorreo)
+    SRV-->>-CLI: correoNuevo
+```
+
+**Figura 30 — DSD CU-336: Cambiar el Correo del Usuario — Operación: cambiarCorreo(correoActual, correoNuevo)**
+
+
+**Clases participantes:** `EmailService` (controlador de fachada del módulo de correo), `FirebaseAuthPort` (fabricación pura: acredita al dueño de la cuenta y cambia el correo en el proveedor de identidad), la colección `Map<String, Usuario>`, el objeto de dominio `Usuario` y `EmailSenderPort` (fabricación pura: el envío del correo de verificación). Lo inician el Cliente, el Chofer y el Administrador.
+
+**GRASP.** *Controlador*: `EmailService`. *Experto*: el `Usuario` toma el correo nuevo y pasa a no verificado. *Bajo Acoplamiento*: el correo se despacha por un puerto y la identidad se cambia por otro, de modo que el servicio no depende de ningún proveedor.
+
+**No se dibuja:** el aviso al correo anterior, la plantilla del mensaje y el hecho de que el envío es de mejor esfuerzo: si el proveedor de correo falla, el cambio ya hecho no se deshace.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `EmailService.cambiarCorreo(...)` | `EmailController.changeEmail` → `EmailService.changeEmail`, que recibe además el `idToken` de la persona |
+| `Map<String, Usuario>.verificarDisponibilidad(...)` | `EmailService.changeEmail`: busca con `UsersService.findOneByEmail`; si encuentra un `User` con el correo nuevo responde 400 |
+| `Map<String, Usuario>.get(...)` | `UsersService.findOneByEmail`: lee el `User` por su correo actual |
+| `Usuario.cambiarCorreo(...)` | `UsersService.cambiarEmail`: asigna `User.email`, normalizado, y deja `User.emailVerified` en falso |
+
+---
+
+#### DSD — CU-050: Bloquear un Usuario
+
+Bloquear y desbloquear (CU-270) son dos operaciones del administrador que el sistema resuelve con el mismo método, `UsersService.toggleBlockUser`, con el valor de bloqueo en verdadero o en falso.
+
+##### Operación: bloquearUsuario(usuarioId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-050 Bloquear un Usuario · bloquearUsuario
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :UsersService
     participant COL as :Map#lt;String, Usuario#gt;
     participant USR as usuario:Usuario
 
-    ADM->>+SRV: bloquearUsuario(usuarioId, bloquear)
+    ADM->>+SRV: bloquearUsuario(usuarioId)
     SRV->>+COL: get(usuarioId)
     COL-->>-SRV: usuario
-    SRV->>USR: cambiarBloqueo(bloquear)
+    SRV->>USR: cambiarBloqueo(verdadero)
     SRV-->>-ADM: usuario
 ```
 
-**Figura 31 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId, bloquear)**
+**Figura 31 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId)**
+
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`.
 
-**GRASP.** *Controlador*: `UsersService`. *Experto*: el `Usuario` es quien toma el valor de su bloqueo; el mismo mensaje bloquea y desbloquea según el valor que se le pasa.
+**GRASP.** *Controlador*: `UsersService`. *Experto*: el `Usuario` es quien toma el valor de su bloqueo.
 
 **No se dibuja:** la comprobación de que el Administrador pueda operar sobre ese usuario (de su distribuidora, y no un Administrador General ni un cliente), que hace `UsersController.assertPuedeAdministrar`.
 
@@ -2412,22 +2442,56 @@ sequenceDiagram
 
 - Bloquear es la alternativa **reversible** a CU-085: la baja lógica deja al usuario fuera
   de las consultas y deshabilita su cuenta de acceso, mientras que el bloqueo lo conserva
-  visible y se levanta con la misma operación.
+  visible y se levanta con CU-270.
 
 ---
 
 #### DSD — CU-270: Desbloquear un Usuario
 
+Es la operación inversa de CU-050: el usuario recupera el acceso. El sistema la resuelve con el mismo método que el bloqueo, con el valor de bloqueo en falso.
 
-Es la misma operación que CU-050 con el valor de bloqueo en falso: el usuario recupera el acceso.
+##### Operación: desbloquearUsuario(usuarioId)
 
-##### Operación: bloquearUsuario(usuarioId, bloquear)
+```mermaid
+sequenceDiagram
+    title DSD — CU-270 Desbloquear un Usuario · desbloquearUsuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UsersService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
 
-Operación bloquearUsuario: ver el DSD de CU-050.
+    ADM->>+SRV: desbloquearUsuario(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: usuario
+    SRV->>USR: cambiarBloqueo(falso)
+    SRV-->>-ADM: usuario
+```
+
+**Figura 32 — DSD CU-270: Desbloquear un Usuario — Operación: desbloquearUsuario(usuarioId)**
+
+
+**Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`.
+
+**GRASP.** *Controlador*: `UsersService`. *Experto*: el `Usuario` es quien toma el valor de su bloqueo.
+
+**No se dibuja:** la comprobación de que el Administrador pueda operar sobre ese usuario (de su distribuidora, y no un Administrador General ni un cliente), que hace `UsersController.assertPuedeAdministrar`.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UsersService.desbloquearUsuario(...)` | `UsersController.blockUser` → `UsersService.toggleBlockUser` |
+| `Map<String, Usuario>.get(...)` | `UsersService.toggleBlockUser`: lee el `User`; responde 404 si no existe |
+| `Usuario.cambiarBloqueo(...)` | `UsersService.toggleBlockUser`: asigna `User.blocked` y guarda |
+
+**Observaciones de diseño**
+
+- Desbloquear deshace el bloqueo de CU-050, la alternativa **reversible** a CU-085: la baja lógica deja al usuario fuera
+  de las consultas y deshabilita su cuenta de acceso, mientras que el bloqueo lo conserva
+  visible y se levanta con esta operación.
 
 ---
 
-#### DSD — CU-082: Crear Usuario Base
+#### DSD — CU-082: Crear un Usuario Base
 
 El alta común de todos los usuarios, incluida por CU-002, CU-003, CU-031, CU-086 y CU-087. No lo inicia ningún actor ni tiene operación del sistema propia: el diagrama es el fragmento que realiza el caso incluido, y su primer mensaje sale del controlador del caso base (`RegistroService`, que es el de los cinco).
 
@@ -2435,7 +2499,7 @@ El alta común de todos los usuarios, incluida por CU-002, CU-003, CU-031, CU-08
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-082 Crear Usuario Base · crearUsuarioBase
+    title DSD — CU-082 Crear un Usuario Base · crearUsuarioBase
     autonumber
     participant SRV as :RegistroService
     participant COL as :Map#lt;String, Usuario#gt;
@@ -2465,7 +2529,7 @@ sequenceDiagram
     SRV-->>-SRV: usuario
 ```
 
-**Figura 32 — DSD CU-082: Crear Usuario Base**
+**Figura 33 — DSD CU-082: Crear un Usuario Base**
 
 **Clases participantes:** `RegistroService` (controlador de los casos base), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura: la cuenta de acceso en Firebase, detrás de un puerto) y los objetos de dominio `Usuario`, `Cliente`, `Chofer` y `Administrador`.
 
@@ -2476,7 +2540,7 @@ sequenceDiagram
 | Operación de diseño | Implementación |
 |---|---|
 | `RegistroService.registrar(...)` | `RegistroController.registrar` → `RegistroService.registrar`: el mismo método para los cinco casos base |
-| `RegistroService.autorizarAlta(...)` | `autorizarAlta()` (`politica-de-registro.ts`): un administrador de empresa sólo da de alta en su distribuidora (403 si pide otra); el Administrador General indica la distribuidora (400 si no hay ninguna) |
+| `RegistroService.autorizarAlta(...)` | `autorizarAlta()` (`politica-de-registro.ts`): un administrador de empresa solo da de alta en su distribuidora (403 si pide otra); el Administrador General indica la distribuidora (400 si no hay ninguna) |
 | `Map<String, Usuario>.verificarDisponibilidad(...)` | `UsersService.assertDisponible`: busca un `User` con ese `User.email` o ese `User.phoneNumber`, también entre los dados de baja; responde 409 si lo hay |
 | `Usuario.«create»` | `UsersService.crearEnTransaccion`: guarda el `User` dentro de la transacción del alta, con el rol que devuelve `RoleService.findByType` |
 | `Cliente.«create»` | `CustomersService.crearPerfil`: guarda el `Customer` en la misma transacción |
@@ -2514,13 +2578,13 @@ sequenceDiagram
     SRV-->>-ADM: usuarios, total
 ```
 
-**Figura 33 — DSD CU-083: Listar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)**
+**Figura 34 — DSD CU-083: Listar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `List<Usuario>`.
 
 **GRASP.** *Controlador*: `UsersService`. El listado no cambia estado: la colección de usuarios responde la página pedida y el total.
 
-**No se dibuja:** el alcance por distribuidora (un Administrador de empresa ve sólo a su personal y a los clientes que le compraron) y la carga del rol y de los perfiles.
+**No se dibuja:** el alcance por distribuidora (un Administrador de empresa ve solo a su personal y a los clientes que le compraron) y la carga del rol y de los perfiles.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -2554,7 +2618,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 34 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)**
+**Figura 35 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `Map<String, Usuario>`.
 
@@ -2583,7 +2647,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 35 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)**
+**Figura 36 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `Map<String, Usuario>`.
 
@@ -2599,11 +2663,11 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Asimetría deliberada del código: `findOneByEmail` lanza 404 si no encuentra (lo usa el `AuthGuard`, que necesita el fallo), mientras que `findOneByPhone` devuelve `null`.
-- `GET /users/email/:email` exige sesión: quien no es Administrador sólo consulta su propia cuenta.
+- `GET /users/email/:email` exige sesión: quien no es Administrador solo consulta su propia cuenta.
 
 ---
 
-#### DSD — CU-084: Verificar Existencia de Usuario (pre-registro)
+#### DSD — CU-084: Verificar la Existencia de un Usuario (pre-registro)
 
 
 Consulta previa al alta, para que la app avise "ese email ya está en uso" antes de mandar
@@ -2614,7 +2678,7 @@ cada uno con su propio indicador.
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-084 Verificar Existencia de Usuario (pre-registro) · verificarExistenciaDeUsuario
+    title DSD — CU-084 Verificar la Existencia de un Usuario (pre-registro) · verificarExistenciaDeUsuario
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :UsersService
@@ -2628,11 +2692,11 @@ sequenceDiagram
     SRV-->>-CLI: existe, correoUsado, telefonoUsado
 ```
 
-**Figura 36 — DSD CU-084: Verificar Existencia de Usuario (pre-registro)**
+**Figura 37 — DSD CU-084: Verificar la Existencia de un Usuario (pre-registro)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios) y la colección `Map<String, Usuario>`.
 
-**GRASP.** *Controlador*: `UsersService`. La consulta no cambia estado. Cada dato se pregunta por separado a la colección, de modo que una coincidencia sólo en el teléfono no marca el correo como usado.
+**GRASP.** *Controlador*: `UsersService`. La consulta no cambia estado. Cada dato se pregunta por separado a la colección, de modo que una coincidencia solo en el teléfono no marca el correo como usado.
 
 **No se dibuja:** que las dos preguntas corren en paralelo.
 
@@ -2643,9 +2707,9 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Endpoint `@Public()` por necesidad (corre antes de que exista sesión). Es una superficie
+- Ruta de la API `@Public()` por necesidad (corre antes de que exista sesión). Es una superficie
   de enumeración de usuarios: queda cubierto por el throttle global, no por autenticación.
-- Cada dato se consulta por su cuenta: una coincidencia sólo en el teléfono no marca el
+- Cada dato se consulta por su cuenta: una coincidencia solo en el teléfono no marca el
   correo como usado.
 - El pre-registro aplica la misma regla que el alta: una cuenta dada de baja sigue ocupando
   su correo y su teléfono, de modo que la app nunca informa «libre» un dato que el alta
@@ -2653,7 +2717,7 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-085: Eliminar Usuario (baja lógica)
+#### DSD — CU-085: Eliminar un Usuario (baja lógica)
 
 
 La baja es lógica: `softRemove` marca `deletedAt` en el usuario y, por las relaciones
@@ -2671,7 +2735,7 @@ sistema al no encontrar la cuenta.
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-085 Eliminar Usuario (baja lógica) · eliminarUsuario
+    title DSD — CU-085 Eliminar un Usuario (baja lógica) · eliminarUsuario
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :UsersService
@@ -2698,7 +2762,7 @@ sequenceDiagram
     SRV-->>-ADM: mensaje
 ```
 
-**Figura 37 — DSD CU-085: Eliminar Usuario (baja lógica)**
+**Figura 38 — DSD CU-085: Eliminar un Usuario (baja lógica)**
 
 **Clases participantes:** `UsersService` (controlador de fachada del módulo de usuarios), la colección `Map<String, Usuario>`, los objetos de dominio `Usuario`, `Chofer` y `UbicacionGPS`, y `FirebaseAuthPort` (fabricación pura: deshabilita la cuenta de acceso).
 
@@ -2729,70 +2793,15 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-091: Validar Vigencia del Token de Sesión
-
-
-Es el caso de uso más transversal del sistema: `AuthGuard.canActivate` corre en **cada**
-request no pública, y `POST /auth` lo expone como endpoint dedicado para que las apps
-pregunten "¿mi sesión sigue viva?". El handler es casi vacío a propósito: si el guard dejó
-pasar, el token es válido.
-
-##### Operación: validarSesion()
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-091 Validar Vigencia del Token de Sesión · validarSesion
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :AuthService
-    participant FBA as :FirebaseAuthPort
-    participant COL as :Map#lt;String, Usuario#gt;
-    participant USR as usuario:Usuario
-
-    CLI->>+SRV: validarSesion()
-    SRV->>+FBA: verifyIdToken(token)
-    FBA-->>-SRV: credencial
-    SRV->>+COL: get(correo)
-    COL-->>-SRV: usuario
-    SRV->>+USR: estaHabilitado()
-    USR-->>-SRV: habilitado
-    SRV-->>-CLI: sesionValida
-```
-
-**Figura 38 — DSD CU-091: Validar Vigencia del Token de Sesión**
-
-**Clases participantes:** `AuthService` (controlador de fachada del módulo de acceso), `FirebaseAuthPort` (fabricación pura: verifica el token), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`. Lo inician el Cliente, el Chofer, el Administrador y el Administrador General.
-
-**GRASP.** *Controlador*: `AuthService`. *Experto*: el `Usuario` dice si su cuenta sigue habilitada. La operación no cambia estado: la respuesta es afirmativa si la sesión es válida y un rechazo (401) si el token venció o la cuenta no está habilitada.
-
-**No se dibuja:** la lectura del token del encabezado, la correspondencia del rol con la aplicación de origen y la resolución de la distribuidora de la petición, que hace `AuthGuard` en cada petición que no es pública.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `AuthService.validarSesion()` | `AuthGuard.canActivate` valida cada petición con `AuthService.decodeToken`; `AuthController.checkToken` → `AuthService.checkIfTokenValid` sólo responde si el guard dejó pasar |
-| `Map<String, Usuario>.get(...)` | `AuthGuard.getUser`: `UsersService.findOneByEmail`; un usuario inexistente o con un rol que no es de la aplicación responde 401 |
-| `Usuario.estaHabilitado()` | `AuthGuard.assertCuentaHabilitada`: rechaza con 401 si `User.blocked` |
-
-**Observaciones de diseño**
-
-- El tenant efectivo se resuelve **acá**, una sola vez por request, y lo consumen todos los
-  controllers vía `@CurrentDistributor()`. Un staff no puede cambiarlo por header.
-- `checkIfTokenValid` devuelve un `TokenValidoResponseDto`: el valor informativo está en
-  que la request haya llegado al handler. Conserva la forma que la respuesta tenía cuando
-  el servicio devolvía una `HttpException` como cuerpo (`response`, `status` 100,
-  `message`, `name`), para no cambiarle el contrato a quien la consuma.
-
----
-
 ### 4.2 SS-02 — Gestión de Pedidos
 
-#### DSD — CU-005: Crear pedido con despacho automático
+#### DSD — CU-005: Crear un Pedido
 
 ##### Operación: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-005 / CU-044 · crearPedido
+    title DSD — CU-005 Crear un Pedido · crearPedido
     autonumber
     actor CLI as Cliente (ACT-01)
     participant CRT as :CreateOrderUseCase
@@ -2844,7 +2853,7 @@ sequenceDiagram
     CRT-->>-CLI: pedido, enlaceDePago
 ```
 
-**Figura 39 — DSD CU-005: Crear pedido con despacho automático**
+**Figura 39 — DSD CU-005: Crear un Pedido**
 
 **Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`, y `NotificationPort` (fabricación pura: el aviso al cliente). El diagrama sirve también a CU-044, que es la elección de la franja dentro de la misma operación.
 
@@ -2874,13 +2883,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-006: Consultar Detalle de Pedido
+#### DSD — CU-006: Consultar el Detalle de un Pedido
 
 ##### Operación: consultarPedido(pedidoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-006 Consultar Detalle de Pedido · consultarPedido
+    title DSD — CU-006 Consultar el Detalle de un Pedido · consultarPedido
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :OrderService
@@ -2895,13 +2904,13 @@ sequenceDiagram
     SRV-->>-CLI: pedido
 ```
 
-**Figura 40 — DSD CU-006: Consultar Detalle de Pedido**
+**Figura 40 — DSD CU-006: Consultar el Detalle de un Pedido**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
 **GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce la distribuidora y el cliente a los que pertenece, así que es quien responde si el solicitante puede verlo. Los dos controles se contestan «no encontrado», nunca «prohibido», para no revelar que el pedido existe.
 
-**No se dibuja:** la conversión del pedido a la respuesta (`OrderMapper.toDto`), que expone por renglón el precio unitario y el subtotal guardados y la `distributor_id` del pedido, y la decisión del controlador HTTP de acotar por cliente sólo cuando quien consulta es un cliente.
+**No se dibuja:** la conversión del pedido a la respuesta (`OrderMapper.toDto`), que expone por renglón el precio unitario y el subtotal guardados y la `distributor_id` del pedido, y la decisión del controlador HTTP de acotar por cliente solo cuando quien consulta es un cliente.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -2921,7 +2930,7 @@ sequenceDiagram
 
 #### DSD — CU-302: Cotizar un Pedido
 
-##### Operación: cotizarPedido(items, medioDePago, direccionId, clienteId)
+##### Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)
 
 ```mermaid
 sequenceDiagram
@@ -2932,8 +2941,16 @@ sequenceDiagram
     participant CLT as cliente:Cliente
     participant PRO as producto:Producto
     participant CRO as :CreateOrderUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
 
-    CLI->>+QOU: cotizarPedido(items, medioDePago, direccionId, clienteId)
+    CLI->>+QOU: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)
+    opt La cotización es de la edición de un pedido
+        QOU->>+PEDS: get(pedidoId)
+        PEDS-->>-QOU: pedido
+        QOU->>+PED: getRenglones()
+        PED-->>-QOU: renglonesActuales
+    end
     opt La cotización lleva dirección
         QOU->>+CLT: getDireccion(direccionId)
         CLT-->>-QOU: direccion
@@ -2952,29 +2969,31 @@ sequenceDiagram
     Note over CLI,QOU: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05)
 ```
 
-**Figura 41 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId)**
+**Figura 41 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)**
 
 **Clases participantes:** `QuoteOrderUseCase` (controlador de caso de uso de la cotización), `CreateOrderUseCase` (el que ya sabe valorizar, resolver la zona y calcular el total del alta), y los objetos de dominio `Cliente` y `Producto`.
 
 **GRASP.** *Controlador*: `QuoteOrderUseCase` recibe la operación. *Experto*: el `Cliente` conoce sus direcciones y el `Producto` conoce su stock. *Bajo Acoplamiento y no repetir reglas*: el cálculo es el del alta, de modo que la cotización y el total del pedido creado con el mismo cuerpo no pueden diferir.
 
-**No se dibuja:** la elección de la distribuidora, la validación de la franja horaria y de la reserva, la comprobación de que el cliente cotice para sí, que el producto sea de la distribuidora (se comprueba antes que el stock) y el redondeo a dos decimales.
+**No se dibuja:** la comprobación de que el pedido a editar sea del cliente y esté pendiente sin chofer ni pago en línea (409 con el mensaje del `PATCH`), la diferencia de stock contra lo ya reservado y que franja y fecha solo se validan si cambian, la elección de la distribuidora, la validación de la franja horaria y de la reserva, la comprobación de que el cliente cotice para sí, que el producto sea de la distribuidora (se comprueba antes que el stock) y el redondeo a dos decimales.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `QuoteOrderUseCase.cotizarPedido(...)` | `OrderController.quote` → `QuoteOrderUseCase.execute` |
 | `Cliente.getDireccion(...)` | `UserAddressService.buscarDelUsuario`: la dirección tiene que ser del cliente (404 si no) |
+| `Map<String, Pedido>.get(...)` | `QuoteOrderUseCase.cargarParaEditar`: lee el `Order` del `orderId`; si es ajeno, 404; si no es editable, 409 |
+| `Pedido.getRenglones()` | `QuoteOrderUseCase.cargarParaEditar`: lee los `OrderItem` para saber cuánto tiene reservado cada garrafa |
 | `Producto.tieneStock(...)` | `QuoteOrderUseCase.execute`: compara `GasCylinder.stock`, leído con `GasCylinderService.leerParaCotizar`, con la cantidad pedida (`InsufficientStockError`) |
 
 ---
 
-#### DSD — CU-007: Consultar Historial de Pedidos
+#### DSD — CU-007: Consultar el Historial de Pedidos
 
 ##### Operación: consultarHistorialDePedidos(clienteId, pagina, limite)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-007 Consultar Historial de Pedidos · consultarHistorialDePedidos
+    title DSD — CU-007 Consultar el Historial de Pedidos · consultarHistorialDePedidos
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :OrderService
@@ -2986,13 +3005,13 @@ sequenceDiagram
     SRV-->>-CLI: pedidos, total
 ```
 
-**Figura 42 — DSD CU-007: Consultar Historial de Pedidos**
+**Figura 42 — DSD CU-007: Consultar el Historial de Pedidos**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y la colección `List<Pedido>`, de la que salen los pedidos del cliente, los más recientes primero.
 
 **GRASP.** *Controlador*: `OrderService`. La colección de pedidos es la que sabe buscarlos por cliente y paginarlos; el servicio no arma la consulta.
 
-**No se dibuja:** que el cliente sólo pueda pedir su propio historial (el controlador HTTP rechaza con 403 el de otro cliente), que el personal quede acotado a su distribuidora mientras el cliente ve todo su historial aunque haya pedido a varias, y la conversión de cada pedido a la respuesta.
+**No se dibuja:** que el cliente solo pueda pedir su propio historial (el controlador HTTP rechaza con 403 el de otro cliente), que el personal quede acotado a su distribuidora mientras el cliente ve todo su historial aunque haya pedido a varias, y la conversión de cada pedido a la respuesta.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -3002,35 +3021,38 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - `scoped()` es un helper privado del adapter: agrega `distributor_id` al `where` **solo**
-  si vino tenant. Un `null` no significa "ningún tenant" sino "sin restricción".
+  si vino distribuidora. Un `null` no significa "ninguna distribuidora" sino "sin restricción".
 
 ---
 
 #### DSD — CU-169: Registrar el Cambio de Estado de un Pedido
 
-##### Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
+El registro del historial, incluido por CU-005, CU-008, CU-009, CU-010, CU-012, CU-015, CU-018, CU-020, CU-072, CU-075, CU-077, CU-079 y CU-147. No lo inicia ningún actor ni lo invoca un controlador HTTP: se dispara cuando el caso base guarda el pedido con un estado distinto, y su primer mensaje sale del caso de uso que lo guarda (aquí, `UpdateOrderStatusUseCase`, que es el de la mayoría de los casos base).
+
+##### Caso incluido: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
 
 ```mermaid
 sequenceDiagram
     title DSD — CU-169 Registrar el Cambio de Estado de un Pedido · registrarCambioDeEstado
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
+    participant UOS as :UpdateOrderStatusUseCase
     participant HIS as :OrderStatusHistorySubscriber
     participant PED as pedido:Pedido
 
-    SIS->>+HIS: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
+    Note over UOS,HIS: Caso incluido desde CU-005, CU-008, CU-009, CU-010, CU-012, CU-015, CU-018, CU-020, CU-072, CU-075, CU-077, CU-079 y CU-147
+    UOS->>+HIS: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
     HIS->>+PED: registrarCambio(estadoAnterior, estadoNuevo, autor, motivo)
     create participant CAM as :CambioEstadoPedido
     PED->>CAM: «create»(estadoAnterior, estadoNuevo, autor, motivo)
     deactivate PED
-    HIS-->>-SIS: cambio
+    HIS-->>-UOS: cambio
 ```
 
 **Figura 43 — DSD CU-169: Registrar el Cambio de Estado de un Pedido — Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)**
 
-**Clases participantes:** `OrderStatusHistorySubscriber` (controlador: el suscriptor de los guardados del pedido) y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
+**Clases participantes:** `UpdateOrderStatusUseCase` (el controlador del caso base que guarda el pedido), `OrderStatusHistorySubscriber` (el suscriptor de los guardados del pedido) y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
 
-**GRASP.** *Controlador*: `OrderStatusHistorySubscriber`. *Creador*: el `Pedido` crea sus `CambioEstadoPedido` (los contiene, composición del modelo conceptual); el suscriptor no los arma. El historial es de sólo escritura: ninguna operación modifica ni borra una fila.
+**GRASP.** *Controlador*: el del caso base, que es quien guarda el pedido; el suscriptor recibe el aviso del guardado. *Creador*: el `Pedido` crea sus `CambioEstadoPedido` (los contiene, composición del modelo conceptual); el suscriptor no los arma. El historial es de solo escritura: ninguna operación modifica ni borra una fila.
 
 **No se dibuja:** que el registro corre dentro de la transacción del cambio de estado que lo origina, para que la fila y el cambio se confirmen juntos; si la inserción falla, se revierte la transacción del llamador. Los cambios que origina un proceso programado no tienen autor.
 
@@ -3046,6 +3068,7 @@ sequenceDiagram
 - Los cambios que origina un proceso programado no tienen autor: `changed_by_user_id` queda vacío, que es lo que la tabla admite.
 - Los cobros manuales del administrador dejan una fila con el mismo estado de origen y de destino, que se escribe aparte (`CashCollectionUseCase.asentarEnElHistorial`).
 - No hay carga retroactiva de los pedidos anteriores.
+
 ---
 
 #### DSD — CU-170: Consultar el Historial de Estados de un Pedido
@@ -3057,32 +3080,41 @@ sequenceDiagram
     title DSD — CU-170 Consultar el Historial de Estados de un Pedido · consultarHistorialDeEstados
     autonumber
     actor CLI as Cliente (ACT-01)
-    participant HIS as :OrderStatusHistoryService
+    participant SRV as :OrderService
     participant COL as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
 
-    CLI->>+HIS: consultarHistorialDeEstados(pedidoId)
-    HIS->>+COL: get(pedidoId)
-    COL-->>-HIS: pedido
-    HIS->>PED: esDeLaDistribuidora(distribuidoraId)
-    HIS->>PED: esDelCliente(clienteId)
-    HIS->>+PED: getCambiosDeEstado()
-    PED-->>-HIS: cambios
-    HIS-->>-CLI: cambios
+    CLI->>+SRV: consultarHistorialDeEstados(pedidoId)
+    SRV->>+COL: get(pedidoId)
+    COL-->>-SRV: pedido
+    SRV->>PED: esDeLaDistribuidora(distribuidoraId)
+    SRV->>PED: esDelCliente(clienteId)
+    SRV->>+PED: getCambiosDeEstado()
+    PED-->>-SRV: cambios
+    SRV-->>-CLI: cambios
+    Note over CLI,SRV: También lo inician el Chofer (ACT-02), el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)
 ```
 
 **Figura 44 — DSD CU-170: Consultar el Historial de Estados de un Pedido**
 
-**Clases participantes:** `OrderStatusHistoryService` (controlador de fachada del historial, **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
+**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
-**GRASP.** *Controlador*: `OrderStatusHistoryService`. *Experto*: `Pedido` sabe a qué distribuidora y a qué cliente pertenece, y es quien entrega sus cambios de estado, del más antiguo al más reciente. El control de acceso es el de la consulta del pedido (CU-006): lo ajeno responde «no encontrado».
+**GRASP.** *Controlador*: `OrderService`, el mismo que resuelve el detalle del pedido (CU-006). *Experto*: `Pedido` sabe a qué distribuidora y a qué cliente pertenece, y es quien entrega sus cambios de estado, del más antiguo al más reciente. El control de acceso es el de la consulta del pedido: lo ajeno responde «no encontrado».
 
-**No se dibuja:** la conversión de cada cambio a la respuesta, que reemplaza el identificador del autor por su rol, y que el Administrador y el Administrador General también consultan el historial, acotados a su distribuidora.
+**No se dibuja:** que el chofer lee el historial de un pedido en las condiciones en que ve su detalle (lo tiene a cargo, se le ofreció o está en el pool que ve) y que, si lo tuvo y ya no lo tiene, recibe «ya no asignado»; la conversión de cada fila a la respuesta, que trae el identificador y el rol de quien hizo el cambio y su nombre solo para el administrador y el administrador general; y que el Administrador General tiene que indicar la distribuidora.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `OrderService.consultarHistorialDeEstados(...)` | `OrderController.statusHistory` → `OrderService.getStatusHistory` |
+| `Map<String, Pedido>.get(...)` | `OrderService.pedidoLegible` → `OrderService.findOne`: `OrderRepositoryPort.findByIdFull` trae el `Order` con todas sus relaciones |
+| `Pedido.esDeLaDistribuidora(...)` | `OrderService.pedidoLegible`: compara `Order.distributorId` con la distribuidora del contexto |
+| `Pedido.esDelCliente(...)` | `OrderService.pedidoLegible`: compara `Order.customerId` con el usuario de la sesión |
+| `Pedido.getCambiosDeEstado(...)` | `OrderService.getStatusHistory`: lee las filas de `OrderStatusHistory` del pedido, de la más antigua a la más reciente |
 
 **Observaciones de diseño**
 
-- El control de acceso es el de `GET /orders/:id`: un cliente recibe su pedido con `customerScope` igual a su identificador y el personal queda acotado a su distribuidora; el 404 no distingue entre inexistente y ajeno.
-- El mapper reemplaza el identificador del autor por su rol: el historial nunca devuelve el `user_id` de quien cambió el estado.
+- El control de acceso es el de `GET /orders/:id`: `OrderService.pedidoLegible` lo comparten el detalle y el historial, de modo que un cambio en la regla de lectura alcanza a los dos.
+- La respuesta incluye el identificador y el rol de quien hizo el cambio para todos los solicitantes, y su nombre completo solo para el personal.
 - El índice por `order_id` de la tabla alcanza para la lectura; no hay paginación porque un pedido tiene pocas filas.
 
 ---
@@ -3173,7 +3205,7 @@ sequenceDiagram
 - La estimación se guarda y no se calcula en cada consulta, porque el proceso que avisa la recompra la necesita para filtrar por rango de fecha sin recorrer todos los clientes.
 - Cada compra entregada vuelve a correr la estimación: `ConsumptionService` escucha el evento `pedido.entregado`, de modo que el campo se mantiene al día desde dos lugares (esta operación y el evento).
 - El cálculo vive en el módulo `repurchase` y no en `CustomersService`: `order` ya depende de `customer` (`CreateOrderUseCase` usa `CustomersService`) y la dependencia inversa crearía un ciclo. `CustomersService` queda como dueño de los campos: valida el rango y persiste.
-- El endpoint es `PATCH /customers/me/consumption`, que atiende `RepurchaseController` aunque la ruta sea la del cliente.
+- La ruta es `PATCH /customers/me/consumption`, que atiende `RepurchaseController` aunque la ruta sea la del cliente.
 
 ---
 
@@ -3250,7 +3282,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El listado es información comercial sobre personas: conviene que sólo lo vea el administrador de la distribuidora del cliente, no el Administrador General sin distribuidora en contexto.
+- El listado es información comercial sobre personas: conviene que solo lo vea el administrador de la distribuidora del cliente, no el Administrador General sin distribuidora en contexto.
 - La fecha estimada tiene que estar indexada (índice `customer(next_repurchase_estimate_at)`), o la consulta recorre la tabla de clientes entera.
 - Un cliente pertenece a una distribuidora desde que le compró por primera vez (`common/tenancy/pertenencia.ts`): quien declaró consumo y nunca compró no figura en ninguna, y aparece desde su primera compra. Por eso el listado consulta la última compra a la distribuidora y descarta a quien no tiene ninguna.
 
@@ -3340,7 +3372,7 @@ sequenceDiagram
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), el objeto de dominio `Cliente` y la colección `List<Chofer>`. **Colaboración propuesta:** las operaciones `OrderService.modalidadesDisponibles` y `OrderService.verificarCoberturaExpress` no existen en el código.
 
-**GRASP.** *Controlador*: `OrderService`. *Experto*: `Cliente` entrega la dirección elegida y la colección de choferes sabe cuáles están en moto, disponibles y dentro del radio express. Si hay uno, se ofrecen las dos modalidades con precio y tiempo estimado; si no, sólo la programada, con el motivo.
+**GRASP.** *Controlador*: `OrderService`. *Experto*: `Cliente` entrega la dirección elegida y la colección de choferes sabe cuáles están en moto, disponibles y dentro del radio express. Si hay uno, se ofrecen las dos modalidades con precio y tiempo estimado; si no, solo la programada, con el motivo.
 
 **No se dibuja:** que la consulta no escribe nada: la modalidad elegida se guarda al crear el pedido (CU-005) y la disponibilidad se evalúa de nuevo en ese momento.
 
@@ -3353,13 +3385,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-008: Cancelar Pedido (Cliente)
+#### DSD — CU-008: Cancelar un Pedido (Cliente)
 
-##### Operación: cancelarPedido(pedidoId, motivo)
+##### Operación: cancelarMiPedido(pedidoId, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-008 / CU-010 · cancelarPedido
+    title DSD — CU-008 Cancelar un Pedido (Cliente) · cancelarMiPedido
     autonumber
     actor CLI as Cliente (ACT-01)
     participant CAN as :CancelOrderUseCase
@@ -3369,7 +3401,7 @@ sequenceDiagram
     participant PRO as producto:Producto
     participant RT as :RealtimeDispatchPort
 
-    CLI->>+CAN: cancelarPedido(pedidoId, motivo)
+    CLI->>+CAN: cancelarMiPedido(pedidoId, motivo)
     CAN->>+COL: get(pedidoId)
     COL-->>-CAN: pedido
     CAN->>+PED: getChofer()
@@ -3391,17 +3423,18 @@ sequenceDiagram
     CAN-->>-CLI: pedido
 ```
 
-**Figura 51 — DSD CU-008: Cancelar Pedido (Cliente)**
+**Figura 51 — DSD CU-008: Cancelar un Pedido (Cliente) — Operación: cancelarMiPedido(pedidoId, motivo)**
 
-**Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido` y `Producto`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo). El mismo diagrama sirve a CU-008 (el Cliente) y a CU-010 (el Administrador): lo que cambia es el actor, que sale siempre del token y nunca del cuerpo de la solicitud.
+
+**Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido` y `Producto`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo). El actor sale siempre del token y nunca del cuerpo de la solicitud. El administrador cancela con CU-010, que sigue la misma colaboración.
 
 **GRASP.** *Controlador*: `CancelOrderUseCase` recibe la operación y coordina. *Experto*: `Pedido` sabe en qué estado está y quién es su chofer, valida la transición a «cancelado» y registra el motivo; no se le asigna el estado desde afuera. El stock vuelve a su dueño por navegación: el `Pedido` le pide a cada `ItemPedido` que restituya, y el `ItemPedido` conoce su `Producto` y su cantidad.
 
-**No se dibuja:** la transacción con bloqueo pesimista de la fila, que cubre la lectura, el cambio de estado, la restitución del stock y el guardado, de modo que dos cancelaciones simultáneas no devuelven el stock dos veces; que un cliente sólo encuentra sus pedidos y, si el pedido ya está en camino, recibe un rechazo que lo manda a contactar al soporte; que un chofer que pide cancelar no cancela sino que libera (`liberarPedido`, CU-009).
+**No se dibuja:** la transacción con bloqueo pesimista de la fila, que cubre la lectura, el cambio de estado, la restitución del stock y el guardado, de modo que dos cancelaciones simultáneas no devuelven el stock dos veces; que un cliente solo encuentra sus pedidos y, si el pedido ya está en camino, recibe un rechazo que lo manda a contactar al soporte; que un chofer que pide cancelar no cancela sino que libera (`liberarPedido`, CU-009).
 
 | Operación de diseño | Implementación |
 |---|---|
-| `CancelOrderUseCase.cancelarPedido(...)` | `OrderController.cancel` → `OrderService.cancelOrder` → `CancelOrderUseCase.execute` |
+| `CancelOrderUseCase.cancelarMiPedido(...)` | `OrderController.cancel` → `OrderService.cancelOrder` → `CancelOrderUseCase.execute` |
 | `Map<String, Pedido>.get(...)` | `CancelOrderUseCase.execute`: lee el `Order` con su chofer y sus ítems, con bloqueo pesimista de la fila (`FOR UPDATE`), dentro de una transacción |
 | `Pedido.getChofer()` | `CancelOrderUseCase.execute`: toma el usuario de `Order.delivery` antes de cambiar el estado |
 | `Pedido.cancelar(...)` | `CancelOrderUseCase.execute`: rechaza el pedido entregado o cancelado, aplica `transitionOrder()` y asigna `Order.cancellationReason`, con «Cancelado por» y el actor si no hay motivo |
@@ -3414,20 +3447,20 @@ sequenceDiagram
 - La lectura del pedido con bloqueo pesimista, la transición de estado, la restitución de stock y el
   guardado corren en **una única transacción**: dos cancelaciones simultáneas no pueden devolver el stock
   dos veces, porque la segunda lee el estado cancelado que dejó la primera y corta con 400.
-- La App Cliente debe invocar `PATCH /orders/:id/cancel`: `PATCH /orders/:id/status` está reservado al chofer y
-  al administrador (planificado, I-1).
+- La App Cliente invoca `PATCH /orders/:id/cancel`: `PATCH /orders/:id/status` está reservado al chofer y
+  al administrador y hace lo mismo por el mismo código.
 - `transitionOrder` es el único punto autorizado para mutar `order.status`; nadie asigna
   el estado a mano.
 
 ---
 
-#### DSD — CU-009: Cancelar Pedido (Chofer)
+#### DSD — CU-009: Liberar un Pedido (Chofer)
 
 ##### Operación: liberarPedido(pedidoId, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-009 Cancelar Pedido (Chofer) · liberarPedido
+    title DSD — CU-009 Liberar un Pedido (Chofer) · liberarPedido
     autonumber
     actor CHF as Chofer (ACT-02)
     participant REL as :ReleaseOrderUseCase
@@ -3455,7 +3488,7 @@ sequenceDiagram
     REL-->>-CHF: pedido
 ```
 
-**Figura 52 — DSD CU-009: Cancelar Pedido (Chofer)**
+**Figura 52 — DSD CU-009: Liberar un Pedido (Chofer)**
 
 **Clases participantes:** `ReleaseOrderUseCase` (controlador de caso de uso: el camino único de liberación), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `OfertaDespacho`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo).
 
@@ -3481,13 +3514,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-010: Cancelar Pedido (Administrador)
+#### DSD — CU-010: Cancelar un Pedido (Administrador)
 
-##### Operación: cancelarPedidoForzado(pedidoId)
+##### Operación: cancelarPedido(pedidoId, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-010 Cancelar Pedido (Administrador) · cancelarPedidoForzado
+    title DSD — CU-010 Cancelar un Pedido (Administrador) · cancelarPedido
     autonumber
     actor ADM as Administrador (ACT-03)
     participant CAN as :CancelOrderUseCase
@@ -3497,12 +3530,12 @@ sequenceDiagram
     participant PRO as producto:Producto
     participant RT as :RealtimeDispatchPort
 
-    ADM->>+CAN: cancelarPedidoForzado(pedidoId)
+    ADM->>+CAN: cancelarPedido(pedidoId, motivo)
     CAN->>+COL: get(pedidoId)
     COL-->>-CAN: pedido
     CAN->>+PED: getChofer()
     PED-->>-CAN: choferAnterior
-    CAN->>+PED: cancelar()
+    CAN->>+PED: cancelar(motivo)
     PED->>PED: validarTransicion(cancelado)
     loop Por cada item del Pedido
         PED->>+ITM: restituirStock()
@@ -3519,32 +3552,33 @@ sequenceDiagram
     CAN-->>-ADM: pedido
 ```
 
-**Figura 53 — DSD CU-010: Cancelar Pedido (Administrador)**
+**Figura 53 — DSD CU-010: Cancelar un Pedido (Administrador) — Operación: cancelarPedido(pedidoId, motivo)**
 
-**Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido` y `Producto`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo).
 
-**GRASP.** *Controlador*: `CancelOrderUseCase`. *Experto*: `Pedido` valida la transición a «cancelado» y deja el motivo por omisión, porque esta puerta no pide uno; el `ItemPedido` restituye el stock de su `Producto`. Es la misma colaboración que `cancelarPedido`, con el Administrador como único actor y sin motivo.
+**Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido` y `Producto`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo). El actor sale siempre del token y nunca del cuerpo de la solicitud. El cliente cancela con CU-008, que sigue la misma colaboración.
 
-**No se dibuja:** la transacción con bloqueo pesimista de la fila, la restitución del stock dentro de ella y el guardado; la comprobación de que el pedido sea de la distribuidora del contexto, que el controlador HTTP hace antes de invocar el caso de uso.
+**GRASP.** *Controlador*: `CancelOrderUseCase` recibe la operación y coordina. *Experto*: `Pedido` sabe en qué estado está y quién es su chofer, valida la transición a «cancelado» y registra el motivo; no se le asigna el estado desde afuera. El stock vuelve a su dueño por navegación: el `Pedido` le pide a cada `ItemPedido` que restituya, y el `ItemPedido` conoce su `Producto` y su cantidad.
+
+**No se dibuja:** la transacción con bloqueo pesimista de la fila, que cubre la lectura, el cambio de estado, la restitución del stock y el guardado, de modo que dos cancelaciones simultáneas no devuelven el stock dos veces; que el pedido sea de la distribuidora del contexto, que el controlador HTTP hace antes de invocar el caso de uso; que un chofer que pide cancelar no cancela sino que libera (`liberarPedido`, CU-009).
 
 | Operación de diseño | Implementación |
 |---|---|
-| `CancelOrderUseCase.cancelarPedidoForzado(...)` | `OrderController.cancelOrder` (`DELETE /orders/:id`) → `OrderService.cancelOrder` → `CancelOrderUseCase.execute`, con el actor administrador |
+| `CancelOrderUseCase.cancelarPedido(...)` | `OrderController.cancel` → `OrderService.cancelOrder` → `CancelOrderUseCase.execute` |
 | `Map<String, Pedido>.get(...)` | `CancelOrderUseCase.execute`: lee el `Order` con su chofer y sus ítems, con bloqueo pesimista de la fila (`FOR UPDATE`), dentro de una transacción |
 | `Pedido.getChofer()` | `CancelOrderUseCase.execute`: toma el usuario de `Order.delivery` antes de cambiar el estado |
-| `Pedido.cancelar(...)` | `CancelOrderUseCase.execute`: rechaza el pedido entregado o cancelado, aplica `transitionOrder()` y asigna `Order.cancellationReason` con el texto por omisión «Cancelado por admin» |
+| `Pedido.cancelar(...)` | `CancelOrderUseCase.execute`: rechaza el pedido entregado o cancelado, aplica `transitionOrder()` y asigna `Order.cancellationReason`, con «Cancelado por» y el actor si no hay motivo |
 | `Pedido.validarTransicion(...)` | `transitionOrder()` |
 | `ItemPedido.restituirStock()` | `GasCylinderService.restituirStock`: recorre los `Order.items` |
 | `Producto.restituir(...)` | `GasCylinderService.restituirStock`: bloquea la fila y suma `OrderItem.quantity` a `GasCylinder.stock` |
 
-Operación cancelarPedido: ver el DSD de CU-008.
-
 **Observaciones de diseño**
 
-- El administrador tiene **dos puertas**: la cancelación normal (`PATCH /orders/:id/cancel`, con motivo, que es `cancelarPedido`) y la cancelación forzada (`DELETE /orders/:id`, sin motivo, de este diagrama). Las dos terminan en el mismo caso de uso con el actor administrador, que devuelve el stock y avisa al chofer anterior.
-- La identidad del administrador sale del token (`user.user_id`), no de un identificador ficticio: la cancelación forzada queda auditable.
-- `super_admin` se mapea al mismo actor `admin` en `mapRoleToCancelActor`: la política de cancelación no distingue entre los dos.
-- La lectura con bloqueo, el cambio de estado, la restitución de stock y el guardado ocurren en una única transacción, igual que en CU-008.
+- La lectura del pedido con bloqueo pesimista, la transición de estado, la restitución de stock y el
+  guardado corren en **una única transacción**: dos cancelaciones simultáneas no pueden devolver el stock
+  dos veces, porque la segunda lee el estado cancelado que dejó la primera y corta con 400.
+- El panel invoca `PATCH /orders/:id/cancel`. La ruta `DELETE /orders/:id`, en desuso, llega al mismo caso de uso con el actor administrador y sin motivo: es una vía técnica equivalente, no una operación distinta.
+- `transitionOrder` es el único punto autorizado para mutar `order.status`; nadie asigna
+  el estado a mano.
 
 ---
 
@@ -3586,7 +3620,7 @@ sequenceDiagram
 
 **Clases participantes:** `RefundPaymentUseCase` (controlador de caso de uso, **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, `PaymentGatewayPort` (fabricación pura: la devolución por la pasarela) y `RealtimeDispatchPort` (los avisos).
 
-**GRASP.** *Controlador*: `RefundPaymentUseCase`. *Experto*: `Pedido` sabe cuáles son sus pagos aprobados y `Pago` es quien pasa a «reintegrado»; sólo lo hace si la pasarela confirmó la devolución, y si la rechaza conserva el estado «aprobado» y se avisa al panel. La pasarela queda detrás de un puerto: sumar otra es agregar un adaptador.
+**GRASP.** *Controlador*: `RefundPaymentUseCase`. *Experto*: `Pedido` sabe cuáles son sus pagos aprobados y `Pago` es quien pasa a «reintegrado»; solo lo hace si la pasarela confirmó la devolución, y si la rechaza conserva el estado «aprobado» y se avisa al panel. La pasarela queda detrás de un puerto: sumar otra es agregar un adaptador.
 
 **No se dibuja:** que el caso de uso corre después del commit de la cancelación y nunca dentro de su transacción, porque la llamada a la pasarela es de red; la clave de idempotencia, que es el identificador del pago; el disparo automático por el evento de pedido cancelado (`ReintegroListener`, Sistema Automático), que invoca la misma operación.
 
@@ -3596,6 +3630,291 @@ sequenceDiagram
 - La clave de idempotencia es el identificador del pago: si el evento se procesa dos veces o el administrador reintenta, la pasarela devuelve una sola vez.
 - El reintento manual (`POST /orders/:id/refund`, `@Auth(ADMIN, SUPER_ADMIN)`) llama al mismo `RefundPaymentUseCase.execute` luego de `OrderService.assertDeLaDistribuidora`; no hay una segunda implementación de la devolución.
 - El caso de un pedido express degradado a reparto común (CU-149) invoca `execute` con el importe del recargo, y no con el total del pago.
+
+---
+
+#### DSD — CU-292: Confirmar el Cobro en Efectivo
+
+##### Operación: confirmarCobroEnEfectivo(pedidoId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-292 Confirmar el Cobro en Efectivo · confirmarCobroEnEfectivo
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant CCU as :CashCollectionUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    CHO->>+CCU: confirmarCobroEnEfectivo(pedidoId)
+    CCU->>+PEDS: get(pedidoId)
+    PEDS-->>-CCU: pedido
+    CCU->>+PED: confirmarCobro(chofer)
+    PED->>PED: validarCobroPendiente()
+    deactivate PED
+    CCU-->>-CHO: pedido
+```
+
+**Figura 55 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)**
+
+**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro en efectivo), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
+
+**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su estado, su método de pago y su cobro, y es quien comprueba que el cobro esté pendiente y pasa a «pagado» con el momento y el chofer que lo confirmó.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, de que sea del chofer que confirma, de que esté entregado y se haya pagado en efectivo, la transacción con el bloqueo del pedido, el guardado con la entidad cargada para que la auditoría registre el cambio, y que repetir la confirmación sobre un pedido ya pagado no cambia nada.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CashCollectionUseCase.confirmarCobroEnEfectivo(...)` | `OrderController.confirmCashReceived` → `CashCollectionUseCase.confirmReceived` |
+| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista dentro de una transacción |
+| `Pedido.confirmarCobro(...)` | `CashCollectionUseCase.confirmReceived`: asigna `Order.paymentStatus` pagado, `Order.paymentConfirmedAt` y `Order.paymentConfirmedBy` |
+| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.lockPedidoDelChofer`: pertenencia al chofer (403), pedido entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.confirmReceived` (409 si ya es impago) |
+
+**Observaciones de diseño**
+
+- Entregar no es cobrar: la entrega deja el pago pendiente y esta operación lo cierra.
+- La respuesta del pedido ya pagado es la misma que la de la primera confirmación: la operación es idempotente, también por el encabezado `Idempotency-Key`.
+
+
+---
+
+#### DSD — CU-293: Informar el Cobro Impago
+
+##### Operación: informarCobroImpago(pedidoId, nota)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-293 Informar el Cobro Impago · informarCobroImpago
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SRV as :UnpaidCashService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant GW as :AdminGateway
+
+    CHO->>+SRV: informarCobroImpago(pedidoId, nota)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: informarImpago(chofer, nota)
+    PED->>PED: validarCobroPendiente()
+    opt El pedido no tiene una incidencia de cobro impago viva
+        create participant INC as :Incidencia
+        PED->>INC: «create»(chofer, nota)
+    end
+    PED-->>-SRV: incidencia
+    SRV-)GW: notifyAdmins(incidencia)
+    SRV-->>-CHO: incidencia
+```
+
+**Figura 56 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)**
+
+**Clases participantes:** `UnpaidCashService` (controlador de servicio del impago, en el módulo de incidencias), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` e `Incidencia` y `AdminGateway` (el aviso en vivo al panel).
+
+**GRASP.** *Controlador*: `UnpaidCashService` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo pasa a «impago». *Creador*: `Pedido` crea la `Incidencia` que origina (asociación `Pedido`–`Incidencia`), una sola por pedido.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora y del chofer, la transacción con el bloqueo del pedido, que repetir el aviso devuelve la incidencia existente sin duplicarla ni volver a avisar, y que el aviso a los administradores es de mejor esfuerzo y ocurre después de confirmada la transacción.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UnpaidCashService.informarCobroImpago(...)` | `UnpaidCashController.report` → `UnpaidCashService.report` |
+| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.markUnpaid`: lee el `Order` con bloqueo pesimista dentro de una transacción |
+| `Pedido.informarImpago(...)` | `CashCollectionUseCase.markUnpaid`: asigna `Order.paymentStatus` impago |
+| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.lockPedidoDelChofer`: pertenencia al chofer (403), pedido entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.markUnpaid` (409 si ya no lo está) |
+| `Incidencia.«create»` | `UnpaidCashService.report`: guarda la `Incident` de tipo `unpaid_collection`, abierta, posterior a la entrega, con la nota o el texto por defecto |
+
+**Observaciones de diseño**
+
+- Una sola incidencia de cobro impago viva por pedido, garantizada por el índice único `UQ_incident_cobro_impago`.
+- La foto de la incidencia se sube después (CU-064).
+
+
+---
+
+#### DSD — CU-294: Resolver un Cobro Impago
+
+##### Operación: resolverCobroImpago(pedidoId, resolucion, nota)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-294 Resolver un Cobro Impago · resolverCobroImpago
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CCU as :CashCollectionUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant INC as incidencia:Incidencia
+
+    ADM->>+CCU: resolverCobroImpago(pedidoId, resolucion, nota)
+    CCU->>+PEDS: get(pedidoId)
+    PEDS-->>-CCU: pedido
+    CCU->>+PED: resolverImpago(administrador, resolucion, nota)
+    PED->>PED: validarImpago()
+    PED-->>-CCU: pedido
+    CCU->>+PED: getIncidenciaDeCobro()
+    PED-->>-CCU: incidencia
+    CCU->>INC: resolver(nota)
+    CCU-->>-ADM: pedido
+```
+
+**Figura 57 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota)**
+
+**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro en efectivo), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` e `Incidencia`.
+
+**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo resuelve («pagado» o «perdido») con la nota, y quien conoce su incidencia de cobro; la `Incidencia` es quien pasa a «resuelta» con la misma nota.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, la transacción con el bloqueo del pedido, que una pérdida no llena el momento ni el usuario de la confirmación del cobro, y que repetir la resolución no toca la nota ni la incidencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CashCollectionUseCase.resolverCobroImpago(...)` | `OrderController.resolveUnpaid` → `CashCollectionUseCase.resolveUnpaid` |
+| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista dentro de una transacción |
+| `Pedido.resolverImpago(...)` | `CashCollectionUseCase.resolveUnpaid`: asigna `Order.paymentStatus`, `Order.paymentResolvedAt`, `Order.paymentResolvedBy` y `Order.paymentResolutionNote`; con `paid` también `Order.paymentConfirmedAt` y `Order.paymentConfirmedBy` |
+| `Pedido.validarImpago(...)` | `CashCollectionUseCase.resolveUnpaid`: el pago tiene que estar impago (409) |
+| `Pedido.getIncidenciaDeCobro(...)` | `CashCollectionUseCase.resolveUnpaid`: la incidencia abierta de tipo `unpaid_collection` del pedido |
+| `Incidencia.resolver(...)` | `CashCollectionUseCase.resolveUnpaid`: asigna `Incident.status` resuelta, `Incident.resolutionNote` y `Incident.resolvedAt` |
+
+**Observaciones de diseño**
+
+- La resolución es idempotente: repetirla, con el mismo administrador o con otro, responde `alreadyResolved: true`.
+
+---
+
+#### DSD — CU-299: Registrar el Cobro en Efectivo como Administrador
+
+##### Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-299 Registrar el Cobro en Efectivo como Administrador · registrarCobroEnEfectivoPorAdmin
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CCU as :CashCollectionUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    ADM->>+CCU: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
+    CCU->>+PEDS: get(pedidoId)
+    PEDS-->>-CCU: pedido
+    CCU->>+PED: registrarCobro(administrador, motivo)
+    PED->>PED: validarCobroPendiente()
+    opt El cobro estaba pendiente
+        create participant CAM as :CambioEstadoPedido
+        PED->>CAM: «create»(motivo)
+    end
+    deactivate PED
+    CCU-->>-ADM: pedido
+```
+
+**Figura 58 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)**
+
+**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
+
+**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo pasa a «pagado» con el administrador, el momento y el motivo. *Creador*: `Pedido` crea el `CambioEstadoPedido` que deja el motivo en el historial, con el mismo estado de origen y de destino.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, de que esté entregado y se haya pagado en efectivo, la transacción con el bloqueo del pedido y que repetirlo sobre un pedido ya pagado no cambia nada.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CashCollectionUseCase.registrarCobroEnEfectivoPorAdmin(...)` | `OrderController.registerCash` → `CashCollectionUseCase.registerCashByAdmin` |
+| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista, filtrado por distribuidora |
+| `Pedido.registrarCobro(...)` | `CashCollectionUseCase.registerCashByAdmin`: asigna `Order.paymentStatus` pagado, `Order.paymentConfirmedAt`, `Order.paymentConfirmedBy`, `Order.paymentResolvedAt`, `Order.paymentResolvedBy` y `Order.paymentResolutionNote` |
+| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.exigirEntregadoEnEfectivo`: entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.registerCashByAdmin` (409 si es impago) |
+| `CambioEstadoPedido.«create»` | `CashCollectionUseCase.asentarEnElHistorial`: inserta el `OrderStatusHistory` con el mismo estado de origen y destino y el motivo |
+
+---
+
+#### DSD — CU-300: Registrar el Cobro Impago como Administrador
+
+##### Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-300 Registrar el Cobro Impago como Administrador · registrarCobroImpagoPorAdmin
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :UnpaidCashService
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant GW as :AdminGateway
+
+    ADM->>+SRV: registrarCobroImpagoPorAdmin(pedidoId, motivo)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
+    SRV->>+PED: informarImpago(administrador, motivo)
+    PED->>PED: validarCobroPendiente()
+    opt El cobro estaba pendiente
+        create participant CAM as :CambioEstadoPedido
+        PED->>CAM: «create»(motivo)
+    end
+    opt El pedido no tiene una incidencia de cobro impago viva
+        create participant INC as :Incidencia
+        PED->>INC: «create»(administrador, motivo)
+    end
+    PED-->>-SRV: incidencia
+    SRV-)GW: notifyAdmins(incidencia)
+    SRV-->>-ADM: incidencia
+```
+
+**Figura 59 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)**
+
+**Clases participantes:** `UnpaidCashService` (controlador de servicio del impago, en el módulo de incidencias), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `CambioEstadoPedido` e `Incidencia` y `AdminGateway` (el aviso en vivo al panel).
+
+**GRASP.** *Controlador*: `UnpaidCashService` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo pasa a «impago». *Creador*: `Pedido` crea el `CambioEstadoPedido` con el motivo y la `Incidencia` que origina, una sola por pedido.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, entregado y en efectivo, la transacción con el bloqueo del pedido, que repetir el aviso devuelve la incidencia existente sin duplicarla ni volver a avisar, y que el aviso a los administradores es de mejor esfuerzo y ocurre después de confirmada la transacción.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UnpaidCashService.registrarCobroImpagoPorAdmin(...)` | `UnpaidCashController.registerUnpaid` → `UnpaidCashService.reportByAdmin` |
+| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista, filtrado por distribuidora |
+| `Pedido.informarImpago(...)` | `CashCollectionUseCase.pasarAImpago`: asigna `Order.paymentStatus` impago |
+| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.exigirEntregadoEnEfectivo`: entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.pasarAImpago` (409 si ya no lo está) |
+| `CambioEstadoPedido.«create»` | `CashCollectionUseCase.asentarEnElHistorial`: inserta el `OrderStatusHistory` con el mismo estado de origen y destino y el motivo |
+| `Incidencia.«create»` | `UnpaidCashService.abrirIncidencia`: guarda la `Incident` de tipo `unpaid_collection`, abierta, posterior a la entrega, reportada por el administrador |
+
+---
+
+#### DSD — CU-301: Confirmar una Transferencia
+
+##### Operación: confirmarTransferencia(pedidoId, recibida, motivo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-301 Confirmar una Transferencia · confirmarTransferencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CCU as :CashCollectionUseCase
+    participant PEDS as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+
+    ADM->>+CCU: confirmarTransferencia(pedidoId, recibida, motivo)
+    CCU->>+PEDS: get(pedidoId)
+    PEDS-->>-CCU: pedido
+    CCU->>+PED: resolverTransferencia(administrador, recibida, motivo)
+    PED->>PED: validarTransferencia(recibida)
+    opt El cobro cambia
+        create participant CAM as :CambioEstadoPedido
+        PED->>CAM: «create»(motivo)
+    end
+    deactivate PED
+    CCU-->>-ADM: pedido
+```
+
+**Figura 60 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)**
+
+**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
+
+**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su medio de pago, su estado y su cobro, y es quien valida que la decisión sea posible y pasa el cobro a «pagado» o «fallido». *Creador*: `Pedido` crea el `CambioEstadoPedido` que deja el motivo en el historial.
+
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, la transacción con el bloqueo del pedido y que repetir la misma decisión no cambia nada.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CashCollectionUseCase.confirmarTransferencia(...)` | `OrderController.confirmTransfer` → `CashCollectionUseCase.confirmTransfer` |
+| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista, filtrado por distribuidora |
+| `Pedido.resolverTransferencia(...)` | `CashCollectionUseCase.confirmTransfer`: asigna `Order.paymentStatus`, `Order.paymentResolvedAt`, `Order.paymentResolvedBy` y `Order.paymentResolutionNote`; con la transferencia recibida también `Order.paymentConfirmedAt` y `Order.paymentConfirmedBy` |
+| `Pedido.validarTransferencia(...)` | `CashCollectionUseCase.confirmTransfer`: medio transferencia y pedido no cancelado (400); transiciones del pago permitidas y pedido entregado para marcarla no recibida (409) |
+| `CambioEstadoPedido.«create»` | `CashCollectionUseCase.asentarEnElHistorial`: inserta el `OrderStatusHistory` con el mismo estado de origen y destino y el motivo |
 
 ---
 
@@ -3617,7 +3936,7 @@ sequenceDiagram
     SRV-->>-ADM: pedidos, total
 ```
 
-**Figura 55 — DSD CU-011: Listar Todos los Pedidos**
+**Figura 61 — DSD CU-011: Listar Todos los Pedidos**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y la colección `List<Pedido>`.
 
@@ -3637,13 +3956,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-046: Consultar Direcciones de Entrega del Cliente
+#### DSD — CU-046: Consultar las Direcciones de Entrega del Cliente
 
 ##### Operación: consultarDireccionesDeEntrega(usuarioId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-046 Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
+    title DSD — CU-046 Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :UserAddressService
@@ -3658,13 +3977,13 @@ sequenceDiagram
     SRV-->>-CLI: direcciones
 ```
 
-**Figura 56 — DSD CU-046: Consultar Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega**
+**Figura 62 — DSD CU-046: Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
 **GRASP.** *Controlador*: `UserAddressService`. *Experto*: `Cliente` registra sus direcciones (composición del modelo conceptual), así que es quien las entrega, con la predeterminada primera.
 
-**No se dibuja:** el control de pertenencia (un cliente sólo lee su propia libreta; si pide la de otro, el servicio responde 403) y el alcance por distribuidora del personal, que hace que el titular tenga que pertenecer a la distribuidora del contexto.
+**No se dibuja:** el control de pertenencia (un cliente solo lee su propia libreta; si pide la de otro, el servicio responde 403) y el alcance por distribuidora del personal, que hace que el titular tenga que pertenecer a la distribuidora del contexto.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -3672,11 +3991,15 @@ sequenceDiagram
 | `Map<String, Cliente>.get(...)` | `UserAddressService.findByUserId`: filtra por `UserAddress.userId`, el identificador de usuario del cliente |
 | `Cliente.getDirecciones()` | `UserAddressService.findByUserId`: lee las `UserAddress` del usuario, la predeterminada primero y luego por `UserAddress.createdAt` descendente |
 
+---
+
+#### DSD — CU-116: Registrar una Dirección de Entrega
+
 ##### Operación: registrarDireccionDeEntrega(datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-046 / CU-116 · registrarDireccionDeEntrega
+    title DSD — CU-116 Registrar una Dirección de Entrega · registrarDireccionDeEntrega
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :UserAddressService
@@ -3696,7 +4019,8 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 57 — DSD CU-046 / CU-116: Consultar Direcciones de Entrega del Cliente · registrarDireccionDeEntrega**
+**Figura 63 — DSD CU-116: Registrar una Dirección de Entrega — Operación: registrarDireccionDeEntrega(datos)**
+
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, Cliente>` y los objetos de dominio `Cliente` y `DireccionEntrega`.
 
@@ -3711,132 +4035,6 @@ sequenceDiagram
 | `Cliente.registrarDireccion(...)` | `UserAddressService.create`: arma la dirección con `UserAddress.userId` del titular |
 | `Cliente.desmarcarPredeterminadas()` | `UserAddressService.removeDefaultFromOtherAddresses`: deja `UserAddress.isDefault` en falso en las demás |
 | `DireccionEntrega.«create»` | `UserAddressService.create`: crea la `UserAddress` con `UserAddress.location` (`puntoDesdeCoordenadas()`), `UserAddress.geocodePrecision` y `UserAddress.isDefault` |
-
-##### Operación: editarDireccionDeEntrega(direccionId, cambios)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-046 / CU-118 · editarDireccionDeEntrega
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :UserAddressService
-    participant COL as :Map#lt;String, DireccionEntrega#gt;
-    participant DIR as direccion:DireccionEntrega
-
-    CLI->>+SRV: editarDireccionDeEntrega(direccionId, cambios)
-    SRV->>+COL: get(direccionId)
-    COL-->>-SRV: direccion
-    SRV->>+DIR: editar(cambios)
-    DIR->>DIR: validarCoordenadas(cambios)
-    deactivate DIR
-    SRV-->>-CLI: direccion
-```
-
-**Figura 58 — DSD CU-046 / CU-118: Consultar Direcciones de Entrega del Cliente · editarDireccionDeEntrega**
-
-**Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y el objeto de dominio `DireccionEntrega`.
-
-**GRASP.** *Controlador*: `UserAddressService`. *Experto*: `DireccionEntrega` es quien toma los valores nuevos y valida que la latitud y la longitud lleguen juntas; el servicio no le asigna atributos.
-
-**No se dibuja:** el control de pertenencia (la dirección tiene que ser del usuario de la sesión; si no, 403) y el del administrador (el titular tiene que ser de su distribuidora); el guardado; y el cambio de la marca de predeterminada que puede acompañar a la edición.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UserAddressService.editarDireccionDeEntrega(...)` | `UserAddressController.update` → `UserAddressService.update` |
-| `Map<String, DireccionEntrega>.get(...)` | `UserAddressService.findOne`: lee la `UserAddress`; 404 si no existe |
-| `DireccionEntrega.editar(...)` | `UserAddressService.update`: fusiona los cambios con `preload` y guarda |
-| `DireccionEntrega.validarCoordenadas(...)` | `UserAddressService.update`: rechaza con 400 si llega sólo la latitud o sólo la longitud |
-
-##### Operación: eliminarDireccionDeEntrega(direccionId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-046 / CU-119 · eliminarDireccionDeEntrega
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :UserAddressService
-    participant COL as :Map#lt;String, DireccionEntrega#gt;
-    participant DIR as direccion:DireccionEntrega
-    participant CLE as cliente:Cliente
-
-    CLI->>+SRV: eliminarDireccionDeEntrega(direccionId)
-    SRV->>+COL: get(direccionId)
-    COL-->>-SRV: direccion
-    SRV->>+DIR: darDeBaja()
-    opt Era la predeterminada
-        DIR->>CLE: promoverOtraPredeterminada()
-    end
-    deactivate DIR
-    SRV-->>-CLI: confirmacion
-```
-
-**Figura 59 — DSD CU-046 / CU-119: Consultar Direcciones de Entrega del Cliente · eliminarDireccionDeEntrega**
-
-**Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y los objetos de dominio `DireccionEntrega` y `Cliente`.
-
-**GRASP.** *Controlador*: `UserAddressService`. *Experto*: `DireccionEntrega` es quien se da de baja y sabe si era la predeterminada; en ese caso le pide a su `Cliente` que promueva otra, la más reciente, si tiene más direcciones. La baja es lógica: la dirección conserva su fecha de baja y los pedidos que la usaron siguen mostrándola.
-
-**No se dibuja:** el control de pertenencia (la dirección tiene que ser del usuario de la sesión; si no, 403) y el del administrador (el titular tiene que ser de su distribuidora).
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UserAddressService.eliminarDireccionDeEntrega(...)` | `UserAddressController.remove` → `UserAddressService.remove` |
-| `Map<String, DireccionEntrega>.get(...)` | `UserAddressService.findOne`: lee la `UserAddress`; 404 si no existe |
-| `DireccionEntrega.darDeBaja()` | `UserAddressService.remove`: `softRemove` marca `UserAddress.deletedAt` |
-| `Cliente.promoverOtraPredeterminada()` | `UserAddressService.promoverOtraPrincipal`: la más reciente por `UserAddress.createdAt` pasa a `UserAddress.isDefault` verdadero |
-
-##### Operación: marcarDireccionPredeterminada(direccionId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-046 / CU-120 · marcarDireccionPredeterminada
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant SRV as :UserAddressService
-    participant COL as :Map#lt;String, DireccionEntrega#gt;
-    participant DIR as direccion:DireccionEntrega
-    participant CLE as cliente:Cliente
-
-    CLI->>+SRV: marcarDireccionPredeterminada(direccionId)
-    SRV->>+COL: get(direccionId)
-    COL-->>-SRV: direccion
-    SRV->>+DIR: marcarPredeterminada()
-    DIR->>CLE: desmarcarLasDemas(direccion)
-    deactivate DIR
-    SRV-->>-CLI: direccion
-```
-
-**Figura 60 — DSD CU-046 / CU-120: Consultar Direcciones de Entrega del Cliente · marcarDireccionPredeterminada**
-
-**Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y los objetos de dominio `DireccionEntrega` y `Cliente`.
-
-**GRASP.** *Controlador*: `UserAddressService`. *Experto*: `DireccionEntrega` se marca como predeterminada y le pide a su `Cliente`, que conoce todas sus direcciones, que desmarque las demás. Así queda una sola predeterminada por cliente.
-
-**No se dibuja:** el control de pertenencia (la dirección tiene que ser del usuario de la sesión; si no, 403) y el del administrador (el titular tiene que ser de su distribuidora); el guardado de cada dirección.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UserAddressService.marcarDireccionPredeterminada(...)` | `UserAddressController.setAsDefault` → `UserAddressService.setAsDefault` |
-| `Map<String, DireccionEntrega>.get(...)` | `UserAddressService.findOne`: lee la `UserAddress`; 404 si no existe |
-| `DireccionEntrega.marcarPredeterminada()` | `UserAddressService.setAsDefault`: asigna `UserAddress.isDefault` verdadero y guarda |
-| `Cliente.desmarcarLasDemas(...)` | `UserAddressService.removeDefaultFromOtherAddresses`: deja `UserAddress.isDefault` en falso en las demás direcciones del titular |
-
-**Observaciones de diseño**
-
-- El orden lo pone la consulta, no el cliente: la dirección predeterminada sale siempre primera, así la aplicación la puede precargar sin recorrer el listado.
-- El filtro por usuario de la sesión es lo que impide leer la libreta de otro cliente, y vive en el servicio, no en el controlador.
-- CU-005 Crear Pedido consume la dirección predeterminada por CU-121, que es una lectura más directa que recorrer este listado.
-
----
-
-#### DSD — CU-116: Registrar Dirección de Entrega
-
-Operación registrarDireccionDeEntrega: ver el DSD de CU-046.
-
-**Observaciones de diseño**
-
-- El servicio pisa el titular con el usuario de la sesión antes de tocar la base: la validación de pertenencia no depende del cliente.
-- La marca de predeterminada se resuelve en dos escrituras sin transacción explícita; si la segunda falla, el cliente queda sin ninguna dirección predeterminada.
 
 ---
 
@@ -3860,7 +4058,7 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 61 — DSD CU-117: Consultar Detalle de una Dirección de Entrega**
+**Figura 64 — DSD CU-117: Consultar Detalle de una Dirección de Entrega**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y el objeto de dominio `DireccionEntrega`.
 
@@ -3881,36 +4079,133 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-118: Editar Dirección de Entrega
+#### DSD — CU-118: Editar una Dirección de Entrega
 
-Operación editarDireccionDeEntrega: ver el DSD de CU-046.
+##### Operación: editarDireccionDeEntrega(direccionId, cambios)
 
-**Observaciones de diseño**
+```mermaid
+sequenceDiagram
+    title DSD — CU-118 Editar una Dirección de Entrega · editarDireccionDeEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, DireccionEntrega#gt;
+    participant DIR as direccion:DireccionEntrega
 
-- La dirección se lee dos veces: una para el control de pertenencia y otra para fusionar los cambios. Es una lectura de más por cada edición.
-- La validación de entrada rechaza todo campo no declarado, así que no se puede cambiar el titular de la dirección por esta vía.
+    CLI->>+SRV: editarDireccionDeEntrega(direccionId, cambios)
+    SRV->>+COL: get(direccionId)
+    COL-->>-SRV: direccion
+    SRV->>+DIR: editar(cambios)
+    DIR->>DIR: validarCoordenadas(cambios)
+    deactivate DIR
+    SRV-->>-CLI: direccion
+```
+
+**Figura 65 — DSD CU-118: Editar una Dirección de Entrega — Operación: editarDireccionDeEntrega(direccionId, cambios)**
+
+
+**Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y el objeto de dominio `DireccionEntrega`.
+
+**GRASP.** *Controlador*: `UserAddressService`. *Experto*: `DireccionEntrega` es quien toma los valores nuevos y valida que la latitud y la longitud lleguen juntas; el servicio no le asigna atributos.
+
+**No se dibuja:** el control de pertenencia (la dirección tiene que ser del usuario de la sesión; si no, 403) y el del administrador (el titular tiene que ser de su distribuidora); el guardado; y el cambio de la marca de predeterminada que puede acompañar a la edición.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UserAddressService.editarDireccionDeEntrega(...)` | `UserAddressController.update` → `UserAddressService.update` |
+| `Map<String, DireccionEntrega>.get(...)` | `UserAddressService.findOne`: lee la `UserAddress`; 404 si no existe |
+| `DireccionEntrega.editar(...)` | `UserAddressService.update`: fusiona los cambios con `preload` y guarda |
+| `DireccionEntrega.validarCoordenadas(...)` | `UserAddressService.update`: rechaza con 400 si llega solo la latitud o solo la longitud |
 
 ---
 
-#### DSD — CU-119: Eliminar Dirección de Entrega
+#### DSD — CU-119: Eliminar una Dirección de Entrega
 
-Operación eliminarDireccionDeEntrega: ver el DSD de CU-046.
+##### Operación: eliminarDireccionDeEntrega(direccionId)
 
-**Observaciones de diseño**
+```mermaid
+sequenceDiagram
+    title DSD — CU-119 Eliminar una Dirección de Entrega · eliminarDireccionDeEntrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, DireccionEntrega#gt;
+    participant DIR as direccion:DireccionEntrega
+    participant CLE as cliente:Cliente
 
-- La baja es lógica: el repositorio usa `softRemove`, que marca `deletedAt`. Las consultas de pedidos leen sus relaciones con `withDeleted`, de modo que un pedido sigue mostrando la dirección donde se entregó.
-- La promoción de la nueva predeterminada elige por fecha de alta descendente, sin preguntarle al cliente.
+    CLI->>+SRV: eliminarDireccionDeEntrega(direccionId)
+    SRV->>+COL: get(direccionId)
+    COL-->>-SRV: direccion
+    SRV->>+DIR: darDeBaja()
+    opt Era la predeterminada
+        DIR->>CLE: promoverOtraPredeterminada()
+    end
+    deactivate DIR
+    SRV-->>-CLI: confirmacion
+```
+
+**Figura 66 — DSD CU-119: Eliminar una Dirección de Entrega — Operación: eliminarDireccionDeEntrega(direccionId)**
+
+
+**Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y los objetos de dominio `DireccionEntrega` y `Cliente`.
+
+**GRASP.** *Controlador*: `UserAddressService`. *Experto*: `DireccionEntrega` es quien se da de baja y sabe si era la predeterminada; en ese caso le pide a su `Cliente` que promueva otra, la más reciente, si tiene más direcciones. La baja es lógica: la dirección conserva su fecha de baja y los pedidos que la usaron siguen mostrándola.
+
+**No se dibuja:** el control de pertenencia (la dirección tiene que ser del usuario de la sesión; si no, 403) y el del administrador (el titular tiene que ser de su distribuidora).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UserAddressService.eliminarDireccionDeEntrega(...)` | `UserAddressController.remove` → `UserAddressService.remove` |
+| `Map<String, DireccionEntrega>.get(...)` | `UserAddressService.findOne`: lee la `UserAddress`; 404 si no existe |
+| `DireccionEntrega.darDeBaja()` | `UserAddressService.remove`: `softRemove` marca `UserAddress.deletedAt` |
+| `Cliente.promoverOtraPredeterminada()` | `UserAddressService.promoverOtraPrincipal`: la más reciente por `UserAddress.createdAt` pasa a `UserAddress.isDefault` verdadero |
 
 ---
 
 #### DSD — CU-120: Marcar una Dirección como Predeterminada
 
-Operación marcarDireccionPredeterminada: ver el DSD de CU-046.
+##### Operación: marcarDireccionPredeterminada(direccionId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-120 Marcar una Dirección como Predeterminada · marcarDireccionPredeterminada
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :UserAddressService
+    participant COL as :Map#lt;String, DireccionEntrega#gt;
+    participant DIR as direccion:DireccionEntrega
+    participant CLE as cliente:Cliente
+
+    CLI->>+SRV: marcarDireccionPredeterminada(direccionId)
+    SRV->>+COL: get(direccionId)
+    COL-->>-SRV: direccion
+    SRV->>+DIR: marcarPredeterminada()
+    DIR->>CLE: desmarcarLasDemas(direccion)
+    deactivate DIR
+    SRV-->>-CLI: direccion
+```
+
+**Figura 67 — DSD CU-120: Marcar una Dirección como Predeterminada — Operación: marcarDireccionPredeterminada(direccionId)**
+
+
+**Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, DireccionEntrega>` y los objetos de dominio `DireccionEntrega` y `Cliente`.
+
+**GRASP.** *Controlador*: `UserAddressService`. *Experto*: `DireccionEntrega` se marca como predeterminada y le pide a su `Cliente`, que conoce todas sus direcciones, que desmarque las demás. Así queda una sola predeterminada por cliente.
+
+**No se dibuja:** el control de pertenencia (la dirección tiene que ser del usuario de la sesión; si no, 403) y el del administrador (el titular tiene que ser de su distribuidora); el guardado de cada dirección.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UserAddressService.marcarDireccionPredeterminada(...)` | `UserAddressController.setAsDefault` → `UserAddressService.setAsDefault` |
+| `Map<String, DireccionEntrega>.get(...)` | `UserAddressService.findOne`: lee la `UserAddress`; 404 si no existe |
+| `DireccionEntrega.marcarPredeterminada()` | `UserAddressService.setAsDefault`: asigna `UserAddress.isDefault` verdadero y guarda |
+| `Cliente.desmarcarLasDemas(...)` | `UserAddressService.removeDefaultFromOtherAddresses`: deja `UserAddress.isDefault` en falso en las demás direcciones del titular |
 
 **Observaciones de diseño**
 
-- Las dos escrituras no van en una transacción: entre desmarcar las otras y marcar ésta hay una ventana en la que el cliente no tiene ninguna predeterminada.
-- No hay ninguna restricción en la base que garantice una sola dirección predeterminada por cliente; la invariante la sostiene solamente el servicio.
+- El orden lo pone la consulta, no el cliente: la dirección predeterminada sale siempre primera, así la aplicación la puede precargar sin recorrer el listado.
+- El filtro por usuario de la sesión es lo que impide leer la libreta de otro cliente, y vive en el servicio, no en el controlador.
+- CU-005 Crear un Pedido consume la dirección predeterminada por CU-121, que es una lectura más directa que recorrer este listado.
 
 ---
 
@@ -3935,13 +4230,13 @@ sequenceDiagram
     SRV-->>-CLI: direccion
 ```
 
-**Figura 62 — DSD CU-121: Consultar la Dirección Predeterminada**
+**Figura 68 — DSD CU-121: Consultar la Dirección Predeterminada**
 
 **Clases participantes:** `UserAddressService` (controlador de fachada de la libreta de direcciones), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
 **GRASP.** *Controlador*: `UserAddressService`. *Experto*: `Cliente` conoce sus direcciones y cuál es la predeterminada; si ninguna está marcada, entrega la primera de su libreta, y si no tiene ninguna, el servicio responde 404.
 
-**No se dibuja:** el control de pertenencia (un cliente sólo consulta la suya; si pide la de otro, 403) y el alcance por distribuidora del personal.
+**No se dibuja:** el control de pertenencia (un cliente solo consulta la suya; si pide la de otro, 403) y el alcance por distribuidora del personal.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -3952,17 +4247,17 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Como la invariante de una sola predeterminada no está en la base, esta lectura devuelve la primera que encuentre si por algún camino quedaran dos marcadas.
-- El caso lo consume CU-005 Crear Pedido para precargar la dirección.
+- El caso lo consume CU-005 Crear un Pedido para precargar la dirección.
 
 ---
 
-#### DSD — CU-122: Agregar Ítem al Carrito
+#### DSD — CU-122: Agregar un Ítem al Carrito
 
 ##### Operación: agregarItemAlCarrito(productoId, cantidad)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-122 Agregar Ítem al Carrito · agregarItemAlCarrito
+    title DSD — CU-122 Agregar un Ítem al Carrito · agregarItemAlCarrito
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :CartService
@@ -4002,7 +4297,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 63 — DSD CU-122: Agregar Ítem al Carrito**
+**Figura 69 — DSD CU-122: Agregar un Ítem al Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código), la colección `Map<String, Producto>` y los objetos de dominio `Cliente`, `Producto`, `Carrito` e `ItemCarrito`.
 
@@ -4043,7 +4338,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 64 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito**
+**Figura 70 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito` e `ItemCarrito`.
 
@@ -4058,13 +4353,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-124: Quitar Ítem del Carrito
+#### DSD — CU-124: Quitar un Ítem del Carrito
 
 ##### Operación: quitarItemDelCarrito(itemId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-124 Quitar Ítem del Carrito · quitarItemDelCarrito
+    title DSD — CU-124 Quitar un Ítem del Carrito · quitarItemDelCarrito
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :CartService
@@ -4084,7 +4379,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 65 — DSD CU-124: Quitar Ítem del Carrito**
+**Figura 71 — DSD CU-124: Quitar un Ítem del Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito` e `ItemCarrito`.
 
@@ -4128,7 +4423,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito, total
 ```
 
-**Figura 66 — DSD CU-125: Consultar el Carrito**
+**Figura 72 — DSD CU-125: Consultar el Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito`, `ItemCarrito` y `Producto`.
 
@@ -4139,7 +4434,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El total no se guarda en la tabla: se calcula en cada lectura sumando cantidad por el precio vigente del catálogo; la diferencia contra el precio guardado en el ítem se informa por ítem, para que el cliente la vea antes de confirmar.
-- CU-005 Crear Pedido incluye este caso: los ítems del pedido salen de acá, no de lo que mande la aplicación.
+- CU-005 Crear un Pedido incluye este caso: los ítems del pedido salen de acá, no de lo que mande la aplicación.
 
 ---
 
@@ -4169,7 +4464,7 @@ sequenceDiagram
     SRV-->>-CLI: carrito
 ```
 
-**Figura 67 — DSD CU-126: Vaciar el Carrito**
+**Figura 73 — DSD CU-126: Vaciar el Carrito**
 
 **Clases participantes:** `CartService` (controlador de fachada del módulo de carrito, **colaboración propuesta**: no existe en el código) y los objetos de dominio `Cliente`, `Carrito` e `ItemCarrito`.
 
@@ -4221,13 +4516,13 @@ sequenceDiagram
     SRV-->>-CLI: pedido
 ```
 
-**Figura 68 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido**
+**Figura 74 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>`, los objetos de dominio `Cliente`, `ZonaCobertura`, `Pedido` y `CambioDireccion`, y `RealtimeDispatchPort` (fabricación pura: el aviso en vivo al chofer). **Colaboración propuesta:** la operación `OrderService.cambiarDireccion` y el aviso `RealtimeDispatchPort.notifyDriverOrderAddressChanged` no existen en el código.
 
-**GRASP.** *Controlador*: `OrderService`. *Creador*: el `Pedido` crea sus `CambioDireccion` (los contiene, composición del modelo conceptual). *Experto*: `Cliente` entrega la dirección nueva y sólo la suya, `ZonaCobertura` dice si la cubre y cuánto recarga, y `Pedido` sabe si ya salió el repartidor y cambia su propia dirección; si el pago es en efectivo y el recargo cambió, recalcula su total. Un pedido pagado en línea cuyo recargo difiere se rechaza.
+**GRASP.** *Controlador*: `OrderService`. *Creador*: el `Pedido` crea sus `CambioDireccion` (los contiene, composición del modelo conceptual). *Experto*: `Cliente` entrega la dirección nueva y solo la suya, `ZonaCobertura` dice si la cubre y cuánto recarga, y `Pedido` sabe si ya salió el repartidor y cambia su propia dirección; si el pago es en efectivo y el recargo cambió, recalcula su total. Un pedido pagado en línea cuyo recargo difiere se rechaza.
 
-**No se dibuja:** el rechazo de un pedido ya en camino o entregado y de una dirección ajena, el guardado del cambio y del pedido, y el aviso al chofer sólo cuando hay uno asignado.
+**No se dibuja:** el rechazo de un pedido ya en camino o entregado y de una dirección ajena, el guardado del cambio y del pedido, y el aviso al chofer solo cuando hay uno asignado.
 
 **Observaciones de diseño**
 
@@ -4262,7 +4557,7 @@ sequenceDiagram
     SRV-->>-CLI: pedido
 ```
 
-**Figura 69 — DSD CU-128: Indicar Quién Recibe el Pedido**
+**Figura 75 — DSD CU-128: Indicar Quién Recibe el Pedido**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos, con la operación `indicarQuienRecibe` como **colaboración propuesta**: no existe en el código), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -4273,7 +4568,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Los datos de quien recibe son datos personales de un tercero: se conservan hasta que vence el plazo de reclamo del pedido y después se anulan con un proceso diario; no se arrastran al historial de compras.
-- El documento se agrega a `SENSIBLES` de `depurarCambios` (`audit/depurar-cambios.ts`) antes de exponer el endpoint: el registro de auditoría es inmutable y no se puede limpiar después.
+- El documento se agrega a `SENSIBLES` de `depurarCambios` (`audit/depurar-cambios.ts`) antes de exponer la ruta: el registro de auditoría es inmutable y no se puede limpiar después.
 - El chofer los ve en la misma pantalla donde escanea el código de entrega, para que el control de identidad y el de entrega ocurran juntos.
 
 ---
@@ -4308,11 +4603,11 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 70 — DSD CU-080: Consultar el Pool de Pedidos Disponibles**
+**Figura 76 — DSD CU-080: Consultar el Pool de Pedidos Disponibles**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
-**GRASP.** *Controlador*: `OrderService`. *Experto*: `Pedido` sabe si está disponible, que es estar pendiente y sin chofer asignado; la colección conserva sólo los que lo están, los más antiguos primero, y acotados a la distribuidora del chofer.
+**GRASP.** *Controlador*: `OrderService`. *Experto*: `Pedido` sabe si está disponible, que es estar pendiente y sin chofer asignado; la colección conserva solo los que lo están, los más antiguos primero, y acotados a la distribuidora del chofer.
 
 **No se dibuja:** la conversión de cada pedido a la respuesta y la lectura de las relaciones que el chofer necesita ver (cliente, ítems, dirección y franja).
 
@@ -4321,13 +4616,13 @@ sequenceDiagram
 | `OrderService.consultarPedidosDisponibles(...)` | `OrderController.findAvailableOrders` → `OrderService.findAvailableOrders` |
 | `List<Pedido>.buscarDisponibles(...)` | `OrderService.findAvailableOrders`: `OrderRepositoryPort.findAvailable` pagina con `limit` y `offset` y ordena por `Order.createdAt` ascendente |
 | `Pedido.estaDisponible()` | `OrderRepositoryPort.findAvailable`: la condición `Order.status` pendiente y `Order.deliveryId` nulo va en la consulta |
-| `TruckLoadGateService.motivoParaNoRecibir(...)` | `OrderController.findAvailableOrders` llama a `TruckLoadGatePort.motivoParaNoRecibir`, que implementa `TruckLoadGateService.motivoParaNoRecibir` (CU-248): sólo para un chofer; si hay motivo responde la lista vacía con `openLoadRequired` y el aviso |
+| `TruckLoadGateService.motivoParaNoRecibir(...)` | `OrderController.findAvailableOrders` llama a `TruckLoadGatePort.motivoParaNoRecibir`, que implementa `TruckLoadGateService.motivoParaNoRecibir` (CU-248): solo para un chofer; si hay motivo responde la lista vacía con `openLoadRequired` y el aviso |
 
 **Observaciones de diseño**
 
 - El orden es `createdAt ASC` (a diferencia de todos los demás listados, que son `DESC`):
   el pedido que más esperó se ofrece primero.
-- El pool está **acotado por tenant**: un chofer nunca ve pedidos de otra distribuidora.
+- El pool está **acotado por distribuidora**: un chofer nunca ve pedidos de otra distribuidora.
 
 ---
 
@@ -4352,13 +4647,13 @@ sequenceDiagram
     SRV-->>-CHF: pedidos, total
 ```
 
-**Figura 71 — DSD CU-081: Consultar los Pedidos Asignados al Chofer**
+**Figura 77 — DSD CU-081: Consultar los Pedidos Asignados al Chofer**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
 **GRASP.** *Controlador*: `OrderService`. La navegación sigue la asociación del modelo conceptual: el `Chofer` entrega sus pedidos y es quien los devuelve, del más reciente al más antiguo.
 
-**No se dibuja:** que un chofer sólo pueda consultar los pedidos propios (si pide los de otro, el servicio responde 403) y la conversión de cada pedido a la respuesta.
+**No se dibuja:** que un chofer solo pueda consultar los pedidos propios (si pide los de otro, el servicio responde 403) y la conversión de cada pedido a la respuesta.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -4371,14 +4666,181 @@ sequenceDiagram
 - El `deliveryId` de la ruta es el `delivery_id` (PK del perfil de chofer), **no** el
   `user_id`: es la diferencia con `updateStatus`, que resuelve el perfil a partir de la
   identidad autenticada.
-- El scope por tenant se aplica igual aunque el `deliveryId` ya sea único: defensa en
+- El scope por distribuidora se aplica igual aunque el `deliveryId` ya sea único: defensa en
   profundidad contra un id de otra empresa.
+
+---
+
+#### DSD — CU-338: Retomar el Pedido en Curso
+
+##### Operación: consultarPedidoEnCurso()
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-338 Retomar el Pedido en Curso · consultarPedidoEnCurso
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SRV as :OrderService
+    participant CHS as :Map#lt;String, Chofer#gt;
+    participant PEDS as :List#lt;Pedido#gt;
+
+    CHO->>+SRV: consultarPedidoEnCurso()
+    SRV->>+CHS: get(usuarioId)
+    CHS-->>-SRV: chofer
+    SRV->>+PEDS: getEnCursoDelChofer(chofer, inicioDelDia)
+    PEDS-->>-SRV: pedido
+    SRV-->>-CHO: pedido
+```
+
+**Figura 78 — DSD CU-338: Retomar el Pedido en Curso — Operación: consultarPedidoEnCurso()**
+
+**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Chofer>` y la colección `List<Pedido>`.
+
+**GRASP.** *Controlador*: `OrderService`. *Experto*: la colección de pedidos conoce los que están en camino, los aceptados y los entregados con cobro pendiente, y elige entre ellos con la prioridad de la operación. La consulta no cambia estado.
+
+**No se dibuja:** la distribuidora del contexto, que acota la búsqueda, la prioridad entre el pedido en camino, el aceptado más antiguo y el cobro pendiente de hoy, y la respuesta 204 cuando no hay nada.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `OrderService.consultarPedidoEnCurso()` | `OrderController.findMyActive` → `OrderService.findCurrentOfDriver` |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.buscarPorIdOUsuario`: el perfil de reparto de la cuenta |
+| `List<Pedido>.getEnCursoDelChofer(...)` | `OrderRepositoryPort.findCurrentOfDelivery`: el pedido `Order` del chofer en camino o el aceptado más antiguo y, si no hay, el entregado hoy en efectivo con el cobro pendiente |
+
+**Observaciones de diseño**
+
+- El inicio del día argentino (`inicioDelDiaArgentino`) acota el cobro pendiente al de hoy: un cobro viejo no se ofrece como pedido en curso.
+
+---
+
+#### DSD — CU-339: Modificar un Pedido Pendiente (Administrador)
+
+##### Operación: modificarPedido(pedidoId, datos)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-339 Modificar un Pedido Pendiente (Administrador) · modificarPedido
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant UOU as :UpdateOrderUseCase
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PRO as producto:Producto
+
+    ADM->>+UOU: modificarPedido(pedidoId, datos)
+    UOU->>+COL: get(pedidoId)
+    COL-->>-UOU: pedido
+    UOU->>+PED: modificar(datos)
+    PED->>PED: validarEditable()
+    opt Cambian los renglones
+        PED->>PRO: reservar(cantidad)
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+    end
+    opt Cambia la dirección
+        create participant CAM as :CambioDireccion
+        PED->>CAM: «create»(direccionOrigen, direccionNueva, autor, motivo)
+    end
+    PED->>PED: calcularTotal()
+    deactivate PED
+    UOU-->>-ADM: pedido
+    Note over ADM,UOU: También lo inicia el Administrador General (ACT-05)
+```
+
+**Figura 79 — DSD CU-339: Modificar un Pedido Pendiente (Administrador) — Operación: modificarPedido(pedidoId, datos)**
+
+**Clases participantes:** `UpdateOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `Producto`.
+
+**GRASP.** *Controlador*: `UpdateOrderUseCase`. *Experto*: el `Pedido` sabe si todavía es editable —pendiente, sin chofer y sin pago en línea—, qué renglones tiene y cuánto suma; el `Producto` sabe si le alcanza el stock.
+
+**No se dibuja:** el bloqueo de despacho del pedido y el bloqueo pesimista de la fila, el ajuste de la reserva por la diferencia neta de cada garrafa, la validación de cobertura y de cupo, el historial de direcciones, el vencimiento de las ofertas abiertas y los avisos y la reoferta posteriores al commit.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UpdateOrderUseCase.modificarPedido(...)` | `OrderController.update` (`PATCH /orders/:id`) → `UpdateOrderUseCase.execute` |
+| `Map<String, Pedido>.get(...)` | `UpdateOrderUseCase.enTransaccion`: lee el `Order` con bloqueo pesimista de la fila y comprueba que sea de la distribuidora |
+| `Pedido.modificar(...)` | `UpdateOrderUseCase.enTransaccion`: aplica la dirección, la franja, el medio de pago, las notas y los renglones y guarda |
+| `Pedido.validarEditable()` | `UpdateOrderUseCase.assertEditable`: responde 409 si el pedido no está pendiente, tiene chofer o se paga en línea |
+| `ItemPedido.«create»` | `CreateOrderUseCase.reservarRenglones`: arma cada `OrderItem` con el precio de servidor y el subtotal |
+| `CambioDireccion.«create»` | `UpdateOrderUseCase.enTransaccion`: guarda el `OrderAddressChange` con la dirección anterior, la nueva, el autor y el motivo «Edición del pedido» |
+| `Producto.reservar(...)` | `CreateOrderUseCase.reservarRenglones`: reserva cada garrafa con bloqueo y precios de servidor |
+| `Pedido.calcularTotal()` | `CreateOrderUseCase.calcularTotales`: suma el recargo de zona y el del medio de pago |
+
+**Observaciones de diseño**
+
+- La edición y el alta comparten `reservarRenglones` y `calcularTotales`: no hay una segunda copia de las reglas de precio.
+- Un PATCH que no cambia nada no escribe: ni historial, ni evento, ni reoferta.
+
+---
+
+#### DSD — CU-341: Modificar un Pedido Pendiente (Cliente)
+
+##### Operación: modificarMiPedido(pedidoId, datos)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-341 Modificar un Pedido Pendiente (Cliente) · modificarMiPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant UOU as :UpdateOrderUseCase
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PRO as producto:Producto
+
+    CLI->>+UOU: modificarMiPedido(pedidoId, datos)
+    UOU->>+COL: get(pedidoId)
+    COL-->>-UOU: pedido
+    UOU->>+PED: modificar(cliente, datos)
+    PED->>PED: validarEsDelCliente(cliente)
+    PED->>PED: validarEditable()
+    opt Cambian los renglones
+        PED->>PRO: reservar(cantidad)
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+    end
+    opt Cambia la dirección
+        create participant DIR as :CambioDireccion
+        PED->>DIR: «create»(direccionOrigen, direccionNueva, autor, motivo)
+    end
+    PED->>PED: calcularTotal()
+    opt El cambio no es vacío
+        create participant CAM as :CambioEstadoPedido
+        PED->>CAM: «create»(detalle)
+    end
+    deactivate PED
+    UOU-->>-CLI: pedido
+```
+
+**Figura 80 — DSD CU-341: Modificar un Pedido Pendiente (Cliente) — Operación: modificarMiPedido(pedidoId, datos)**
+
+**Clases participantes:** `UpdateOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Producto`, `ItemPedido`, `CambioDireccion` y `CambioEstadoPedido`.
+
+**GRASP.** *Controlador*: `UpdateOrderUseCase`. *Experto*: el `Pedido` sabe de quién es, si todavía es editable —pendiente, sin chofer y sin pago en línea—, qué renglones tiene y cuánto suma; el `Producto` sabe si le alcanza el stock; el `CambioEstadoPedido` es el renglón del historial en el que queda anotada la edición. *Alta Cohesión*: la edición del cliente comparte con CU-339 la regla de qué se puede editar y cómo se calcula el total.
+
+**No se dibuja:** el bloqueo de despacho del pedido y el bloqueo pesimista de la fila, el ajuste de la reserva por la diferencia neta de cada garrafa, la validación de cobertura y de cupo, el historial de estados con el texto de la anotación, el vencimiento de las ofertas abiertas, y los avisos y la reoferta posteriores al commit. Un cuerpo sin cambios no escribe nada y devuelve el pedido tal cual.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `UpdateOrderUseCase.modificarMiPedido(...)` | `OrderController.update` (`PATCH /orders/:id`) → `UpdateOrderUseCase.execute` con el rol de cliente |
+| `Map<String, Pedido>.get(...)` | `UpdateOrderUseCase.enTransaccion`: lee el `Order` con bloqueo pesimista de la fila |
+| `Pedido.modificar(...)` | `UpdateOrderUseCase.enTransaccion`: aplica la dirección, la franja, el medio de pago, las notas y los renglones y guarda |
+| `Pedido.validarEsDelCliente(...)` | `UpdateOrderUseCase.enTransaccion`: un pedido de otro cliente responde 404 |
+| `Pedido.validarEditable()` | `UpdateOrderUseCase.assertEditable`: responde 409 con `motivoNoEditable`; para el cliente, el mensaje del repartidor |
+| `ItemPedido.«create»` | `CreateOrderUseCase.reservarRenglones`: arma cada `OrderItem` con el precio de servidor y el subtotal |
+| `CambioDireccion.«create»` | `UpdateOrderUseCase.enTransaccion`: guarda el `OrderAddressChange` con la dirección anterior, la nueva, el autor y el motivo «Edición del pedido» |
+| `Producto.reservar(...)` | `CreateOrderUseCase.reservarRenglones`: reserva cada garrafa con bloqueo y precios de servidor |
+| `Pedido.calcularTotal()` | `CreateOrderUseCase.calcularTotales`: suma el recargo de zona y el del medio de pago |
+| `CambioEstadoPedido.«create»(...)` | `UpdateOrderUseCase.enTransaccion`: inserta en `OrderStatusHistory` la anotación `Pedido modificado por el cliente: …` con origen y destino iguales |
+
+**Observaciones de diseño**
+
+- La edición del cliente y la del administrador (CU-339) son el mismo método: cambian el rol, el control de propiedad y la anotación del historial.
+- La anotación del historial solo existe cuando el que edita es el cliente.
 
 ---
 
 ### 4.3 SS-03 — Despacho
 
-#### DSD — CU-013: Asignar Pedido Automáticamente por Proximidad (M1)
+#### DSD — CU-013: Asignar un Pedido Automáticamente por Proximidad
 
 
 Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asignación**. El pedido no se difunde a todos los choferes: se ofrece a **uno solo** por vez, el más cercano que todavía no fue contactado, con una ventana de aceptación de 30 segundos.
@@ -4387,7 +4849,7 @@ Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asign
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-013 Asignar Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
+    title DSD — CU-013 Asignar un Pedido Automáticamente por Proximidad · ofrecerAlSiguienteChofer
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :DispatchOrchestratorService
@@ -4437,13 +4899,13 @@ sequenceDiagram
     SRV-->>-SIS: chofer
 ```
 
-**Figura 72 — DSD CU-013: Ofrecer el pedido al chofer más cercano (M1) — Operación: ofrecerAlSiguienteChofer(pedidoId)**
+**Figura 81 — DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)**
 
 **Clases participantes:** `DispatchOrchestratorService` (controlador del despacho secuencial), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `RealtimeDispatchPort` (fabricación pura: el radar de choferes por cercanía y el aviso en vivo) y `NotificationsService` (fabricación pura: el aviso al dispositivo).
 
 **GRASP.** *Controlador*: `DispatchOrchestratorService` recibe la operación y coordina la búsqueda. *Experto*: `Pedido` conoce su punto de entrega, el estado de las ofertas que hizo a cada chofer (bloqueados y re-ofertables) y sus ofertas; `Chofer` sabe si puede recibir la oferta (habilitado, validado, de la distribuidora, con vehículo en uso y documentación vigente). *Creador*: el `Pedido` crea sus `OfertaDespacho`, porque las contiene (composición); el controlador no las crea. *Fabricación pura*: el radar y los avisos quedan fuera de los objetos de dominio (Bajo Acoplamiento): el orquestador no conoce Redis ni Socket.IO.
 
-**No se dibuja:** el bloqueo distribuido que serializa la oferta de cada pedido, la persistencia de la oferta, la vigencia de 30 segundos que se calcula a partir del reloj, la lectura de la configuración de radios (CU-171) y el cache de elegibilidad dentro de un mismo intento.
+**No se dibuja:** el bloqueo distribuido que serializa la oferta de cada pedido, la persistencia de la oferta, la vigencia de 30 segundos que se calcula a partir del reloj, la lectura de la configuración de radios (CU-171) y el caché de elegibilidad dentro de un mismo intento.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -4460,18 +4922,18 @@ sequenceDiagram
 
 - El orquestador **no conoce Redis ni Socket.io**: habla contra `RealtimeDispatchPort`; el `RealtimeDispatchAdapter` traduce a `RedisService` (GEO) y a los gateways.
 - La oferta es **durable** (fila en `dispatch_offer`, no una clave en memoria): sobrevive reinicios y es multi-instancia.
-- El push FCM es **complementario y best-effort** (`void`, no se espera): cubre al chofer con la app en background, donde el socket no llega.
-- Multi-tenant: `filterByDistributor` restringe los candidatos a los choferes de la distribuidora del pedido.
+- El push FCM es **complementario y de mejor esfuerzo** (`void`, no se espera): cubre al chofer con la app en background, donde el socket no llega.
+- Multidistribuidora: `filterByDistributor` restringe los candidatos a los choferes de la distribuidora del pedido.
 
 ---
 
-#### DSD — CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal)
+#### DSD — CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer
 
 ##### Operación: vencerOfertasExpiradas()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-014 Reintentar Asignación con Radio Expandido (Cron) · vencerOfertasExpiradas
+    title DSD — CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer · vencerOfertasExpiradas
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant TIK as :DispatchService
@@ -4512,7 +4974,7 @@ sequenceDiagram
     deactivate TIK
 ```
 
-**Figura 73 — DSD CU-014: Vencimiento de la oferta y re-oferta al siguiente (M1, proceso temporal) — Operación: vencerOfertasExpiradas()**
+**Figura 82 — DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()**
 
 **Clases participantes:** `DispatchService` (controlador: el reloj del proceso), `DispatchOrchestratorService`, `DispatchOfferRepositoryPort` (fabricación pura: la búsqueda de ofertas vencidas atraviesa todos los pedidos), `OrderService` (consulta de los pedidos pendientes) y los objetos de dominio `OfertaDespacho` y `Pedido`.
 
@@ -4545,7 +5007,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-015 Aceptar Pedido · aceptarPedido
+    title DSD — CU-015 Aceptar un Pedido · aceptarPedido
     autonumber
     actor CHF as Chofer (ACT-02)
     participant UCS as :UpdateOrderStatusUseCase
@@ -4577,7 +5039,7 @@ sequenceDiagram
     UCS-->>-CHF: pedido
 ```
 
-**Figura 74 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: aceptarPedido(pedidoId)**
+**Figura 83 — DSD CU-015: Aceptar un Pedido — Operación: aceptarPedido(pedidoId)**
 
 **Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `FleetDispatchLockService` (fabricación pura: reúne la documentación vencida de la flota) y `NotificationPort` (fabricación pura: el aviso al cliente).
 
@@ -4600,7 +5062,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-016 Rechazar / Ignorar Pedido · rechazarOferta
+    title DSD — CU-016 Rechazar un Pedido Ofrecido · rechazarOferta
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :OrderService
@@ -4624,7 +5086,7 @@ sequenceDiagram
     SRV-->>-CHF: rechazada
 ```
 
-**Figura 75 — DSD CU-015 / CU-016: Respuesta del chofer a la oferta (aceptar o rechazar) — Operación: rechazarOferta(pedidoId)**
+**Figura 84 — DSD CU-016: Rechazar un Pedido Ofrecido — Operación: rechazarOferta(pedidoId)**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `OfertaDespacho`.
 
@@ -4647,11 +5109,11 @@ sequenceDiagram
 
 - El rechazo explícito **no espera el timeout de 30 s**: cierra la oferta y re-ofrece de inmediato, acortando el tiempo de asignación.
 - El **código secreto de entrega** se genera acá, al aceptar, no al entregar: ya queda listo para el QR de CU-078/CU-079.
-- El cierre de la oferta al aceptar es *best-effort* (`.catch(() => undefined)`): un fallo de auditoría no debe impedir que el pedido quede asignado.
+- El cierre de la oferta al aceptar es *de mejor esfuerzo* (`.catch(() => undefined)`): un fallo de auditoría no debe impedir que el pedido quede asignado.
 
 ---
 
-#### DSD — CU-012: Asignar Chofer Manualmente
+#### DSD — CU-012: Asignar un Chofer Manualmente
 
 Es la puerta **manual** al despacho, la que usa el admin cuando el M1 (oferta secuencial
 automática) no encontró chofer, cuando hay que forzar una asignación o cuando hay que pasar
@@ -4663,7 +5125,7 @@ directo a `ACCEPTED`, todo en una transacción con bloqueo del pedido.
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-012 Asignar Chofer Manualmente · asignarChoferAPedido
+    title DSD — CU-012 Asignar un Chofer Manualmente · asignarChoferAPedido
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :OrderService
@@ -4704,7 +5166,7 @@ sequenceDiagram
     SRV-->>-ADM: pedido
 ```
 
-**Figura 76 — DSD CU-012: Asignar Chofer Manualmente**
+**Figura 85 — DSD CU-012: Asignar un Chofer Manualmente**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), `DeliveryService`, `FleetDispatchLockService`, `RealtimeDispatchPort`, la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `Chofer`.
 
@@ -4760,9 +5222,9 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Figura 77 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)**
+**Figura 86 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)**
 
-**Clases participantes:** `ModuleConfigService` (controlador de fachada; colaboración propuesta), `DispatchConfigService` (fabricación pura propuesta: entrega los parámetros al despacho con una copia en memoria) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. **Colaboración propuesta:** `ModuleConfigService` y `DispatchConfigService` no existen en el código; la entidad `ModuleConfig` y su tabla sí, sin servicio ni endpoint.
+**Clases participantes:** `ModuleConfigService` (controlador de fachada; colaboración propuesta), `DispatchConfigService` (fabricación pura propuesta: entrega los parámetros al despacho con una copia en memoria) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. **Colaboración propuesta:** `ModuleConfigService` y `DispatchConfigService` no existen en el código; la entidad `ModuleConfig` y su tabla sí, sin servicio ni ruta.
 
 **GRASP.** *Controlador*: `ModuleConfigService` recibe la operación. *Creador*: la `Distribuidora` crea su `ConfiguracionModulo`, porque la agrega (composición). *Experto*: `ConfiguracionModulo` es quien toma los valores nuevos, con el administrador y la fecha de la modificación; `ModuleConfigService.validarParametros` aplica las reglas que cruzan valores (pasos de radio estrictamente crecientes). *Alta Cohesión*: `DispatchConfigService` es el único lugar que lee los parámetros y devuelve los valores por omisión.
 
@@ -4818,7 +5280,7 @@ sequenceDiagram
     SRV-->>-SIS: asignado
 ```
 
-**Figura 78 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)**
+**Figura 87 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Chofer`, `RealtimeDispatchPort` (fabricación pura: el radar de choferes) y `NotificationsService` (fabricación pura: los avisos). **Colaboración propuesta:** el despacho express no existe en el código; el campo de modalidad de entrega (`Order.deliveryMode`) está en la entidad sin servicio que lo use.
 
@@ -4832,20 +5294,20 @@ sequenceDiagram
 
 - Reutiliza la consulta espacial y el mecanismo de ofertas de CU-013 y CU-014, con otra ventana y otra política de agotamiento.
 - La degradación a reparto común tiene que avisarle al cliente en el momento: descubrirlo cuando la garrafa no llegó en una hora es peor que no haber ofrecido la express.
-- Al degradar, el recargo express se descuenta del total del pedido; si el cliente ya pagó en línea, se reintegra sólo esa parte con `RefundPaymentUseCase` (CU-168), con el importe del recargo y no el del pago completo.
+- Al degradar, el recargo express se descuenta del total del pedido; si el cliente ya pagó en línea, se reintegra solo esa parte con `RefundPaymentUseCase` (CU-168), con el importe del recargo y no el del pago completo.
 - La ventana de aceptación y el radio express son parámetros por distribuidora, no constantes del programa: es lo mismo que el documento 3 sección 10 pide para el despacho normal.
 
 ---
 
 ### 4.4 SS-04 — Seguimiento
 
-#### DSD — CU-017: Actualización de la ubicación del chofer
+#### DSD — CU-017: Actualizar la Ubicación GPS del Chofer
 
 ##### Operación: actualizarUbicacion(usuarioId, latitud, longitud)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-017 Actualizar Ubicación GPS del Chofer · actualizarUbicacion
+    title DSD — CU-017 Actualizar la Ubicación GPS del Chofer · actualizarUbicacion
     autonumber
     actor CHF as Chofer (ACT-02)
     participant GW as :DriversGateway
@@ -4872,7 +5334,7 @@ sequenceDiagram
     deactivate GW
 ```
 
-**Figura 79 — DSD CU-017: Actualización de la ubicación del chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)**
+**Figura 88 — DSD CU-017: Actualizar la Ubicación GPS del Chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)**
 
 **Clases participantes:** `DriversGateway` (controlador: recibe el evento del chofer y coordina), los objetos de dominio `Chofer` y `UbicacionGPS`, `CustomersGateway` y `AdminGateway` (fabricación pura: el reenvío en vivo al cliente y al panel).
 
@@ -4890,7 +5352,7 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-020: Confirmar Entrega Manualmente
+#### DSD — CU-020: Confirmar una Entrega Manualmente
 
 El administrador da por entregado el pedido y deja el motivo. La variante con código QR, en la que confirma el cliente, está en el diagrama 4.9.
 
@@ -4898,7 +5360,7 @@ El administrador da por entregado el pedido y deja el motivo. La variante con c�
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-020 Confirmar Entrega Manualmente · confirmarEntrega
+    title DSD — CU-020 Confirmar una Entrega Manualmente · confirmarEntrega
     autonumber
     actor ADM as Administrador (ACT-03)
     participant UCS as :UpdateOrderStatusUseCase
@@ -4934,13 +5396,13 @@ sequenceDiagram
     Note over ADM,UCS: Si lo pide un chofer, la operación se rechaza: la entrega<br/>la confirma el cliente con el código (CU-079)
 ```
 
-**Figura 80 — DSD CU-020: Confirmar Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)**
+**Figura 89 — DSD CU-020: Confirmar una Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)**
 
 **Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), los objetos de dominio `Pedido`, `CambioEstadoPedido`, `Chofer`, `UbicacionGPS` y `Envase`, `StockDeliveryService` (el adaptador del stock que el pedido invoca: es el caso incluido CU-220) y `NotificationPort` (fabricación pura: el aviso al cliente).
 
 **GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación. *Experto*: `Pedido` es quien pasa a «entregado» y registra el momento de la entrega, y entrega su `Chofer`, sus `Envase` y su `Cliente` (el controlador no los busca por su cuenta); cada `Envase` despachado en el pedido es quien pasa a estar en poder del cliente y registra su `MovimientoEnvase`; el cierre del seguimiento lo hace la `UbicacionGPS` del `Chofer` que entregó. *Creador*: `Pedido` crea el `CambioEstadoPedido` con el motivo de la entrega manual, porque es quien registra sus cambios de estado. El pago no se toca: la entrega de un pedido en efectivo lo deja pendiente y lo cobra el chofer con otra operación (CU-292). La confirmación con código del cliente es otra operación, `confirmarEntregaConCodigo` (CU-079).
 
-**No se dibuja:** que la operación se rechaza si la pide un chofer, la verificación de que el pedido sea de la distribuidora y la longitud del motivo, la transacción con el bloqueo del pedido, el guardado, la auditoría de datos del motivo, los eventos en vivo al cliente y al panel, y que la entrega de los envases es un efecto best-effort: si falla, la entrega igual se confirma.
+**No se dibuja:** que la operación se rechaza si la pide un chofer, la verificación de que el pedido sea de la distribuidora y la longitud del motivo, la transacción con el bloqueo del pedido, el guardado, la auditoría de datos del motivo, los eventos en vivo al cliente y al panel, y que la entrega de los envases es un efecto de mejor esfuerzo: si falla, la entrega igual se confirma.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -4985,7 +5447,7 @@ sequenceDiagram
     SRV-->>-CHF: codigo
 ```
 
-**Figura 81 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: obtenerCodigoDeEntrega(pedidoId)**
+**Figura 90 — DSD CU-078: Obtener el Código de Entrega (QR del chofer) — Operación: obtenerCodigoDeEntrega(pedidoId)**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -5004,7 +5466,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-079 Confirmar Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
+    title DSD — CU-079 Confirmar una Entrega Escaneando el QR (cliente) · confirmarEntregaConCodigo
     autonumber
     actor CLI as Cliente (ACT-01)
     participant CDU as :ConfirmDeliveryUseCase
@@ -5029,11 +5491,11 @@ sequenceDiagram
     CDU-->>-CLI: pedido
 ```
 
-**Figura 82 — DSD CU-078 / CU-079: Entrega verificada por QR (prueba anti-fraude) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)**
+**Figura 91 — DSD CU-079: Confirmar una Entrega Escaneando el QR (cliente) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)**
 
 **Clases participantes:** `ConfirmDeliveryUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `CambioEstadoPedido`, `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: los avisos).
 
-**GRASP.** *Controlador*: `ConfirmDeliveryUseCase` recibe la operación. *Experto*: `Pedido` conoce su código de entrega y es quien lo compara con el que escaneó el cliente y pasa a «entregado». La comparación se hace en tiempo constante y la operación es idempotente: un pedido ya entregado se devuelve sin reprocesar. *Creador*: `Pedido` crea el `CambioEstadoPedido` de la transición a «entregado», siempre; sólo el motivo depende de quién confirma: lo trae el administrador y el cliente no lo manda (CU-020). El pago no se toca: un pedido en efectivo sigue pendiente de cobro (CU-292).
+**GRASP.** *Controlador*: `ConfirmDeliveryUseCase` recibe la operación. *Experto*: `Pedido` conoce su código de entrega y es quien lo compara con el que escaneó el cliente y pasa a «entregado». La comparación se hace en tiempo constante y la operación es idempotente: un pedido ya entregado se devuelve sin reprocesar. *Creador*: `Pedido` crea el `CambioEstadoPedido` de la transición a «entregado», siempre; solo el motivo depende de quién confirma: lo trae el administrador y el cliente no lo manda (CU-020). El pago no se toca: un pedido en efectivo sigue pendiente de cobro (CU-292).
 
 **Referencias.** El cierre del seguimiento del chofer, el paso de los envases a poder del cliente y el descuento del stock (CU-220) son los mismos de la operación `confirmarEntrega` (CU-020), que tiene su propio diagrama.
 
@@ -5054,293 +5516,8 @@ sequenceDiagram
 - Es el camino de la entrega en el que confirma quien recibe, no quien entrega. El código lo posee el chofer; que el cliente lo conozca prueba que el chofer estuvo presente.
 - `compareDeliveryCode` usa `timingSafeEqual` (comparación de tiempo constante) para no filtrar el secreto por timing.
 - La **validación** vive en `ConfirmDeliveryUseCase`; los **efectos** de pasar a `DELIVERED` se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH :id/status`: cero duplicación de lógica.
-- Doble idempotencia: el header `Idempotency-Key` (`IdempotencyInterceptor`, que responde 422 si la misma clave llega con otros datos) y el chequeo de `status === DELIVERED` dentro del caso de uso.
+- Doble idempotencia: el encabezado `Idempotency-Key` (`IdempotencyInterceptor`, que responde 422 si la misma clave llega con otros datos) y el chequeo de `status === DELIVERED` dentro del caso de uso.
 
-
----
-
-#### DSD — CU-292: Confirmar el Cobro en Efectivo
-
-##### Operación: confirmarCobroEnEfectivo(pedidoId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-292 Confirmar el Cobro en Efectivo · confirmarCobroEnEfectivo
-    autonumber
-    actor CHO as Chofer (ACT-02)
-    participant CCU as :CashCollectionUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-
-    CHO->>+CCU: confirmarCobroEnEfectivo(pedidoId)
-    CCU->>+PEDS: get(pedidoId)
-    PEDS-->>-CCU: pedido
-    CCU->>+PED: confirmarCobro(chofer)
-    PED->>PED: validarCobroPendiente()
-    deactivate PED
-    CCU-->>-CHO: pedido
-```
-
-**Figura 83 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)**
-
-**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro en efectivo), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
-
-**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su estado, su método de pago y su cobro, y es quien comprueba que el cobro esté pendiente y pasa a «pagado» con el momento y el chofer que lo confirmó.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, de que sea del chofer que confirma, de que esté entregado y se haya pagado en efectivo, la transacción con el bloqueo del pedido, el guardado con la entidad cargada para que la auditoría registre el cambio, y que repetir la confirmación sobre un pedido ya pagado no cambia nada.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CashCollectionUseCase.confirmarCobroEnEfectivo(...)` | `OrderController.confirmCashReceived` → `CashCollectionUseCase.confirmReceived` |
-| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista dentro de una transacción |
-| `Pedido.confirmarCobro(...)` | `CashCollectionUseCase.confirmReceived`: asigna `Order.paymentStatus` pagado, `Order.paymentConfirmedAt` y `Order.paymentConfirmedBy` |
-| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.lockPedidoDelChofer`: pertenencia al chofer (403), pedido entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.confirmReceived` (409 si ya es impago) |
-
-**Observaciones de diseño**
-
-- Entregar no es cobrar: la entrega deja el pago pendiente y esta operación lo cierra.
-- La respuesta del pedido ya pagado es la misma que la de la primera confirmación: la operación es idempotente, también por la cabecera `Idempotency-Key`.
-
-
----
-
-#### DSD — CU-293: Informar el Cobro Impago
-
-##### Operación: informarCobroImpago(pedidoId, nota)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-293 Informar el Cobro Impago · informarCobroImpago
-    autonumber
-    actor CHO as Chofer (ACT-02)
-    participant SRV as :UnpaidCashService
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant GW as :AdminGateway
-
-    CHO->>+SRV: informarCobroImpago(pedidoId, nota)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
-    SRV->>+PED: informarImpago(chofer, nota)
-    PED->>PED: validarCobroPendiente()
-    opt El pedido no tiene una incidencia de cobro impago viva
-        create participant INC as :Incidencia
-        PED->>INC: «create»(chofer, nota)
-    end
-    PED-->>-SRV: incidencia
-    SRV-)GW: notifyAdmins(incidencia)
-    SRV-->>-CHO: incidencia
-```
-
-**Figura 84 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)**
-
-**Clases participantes:** `UnpaidCashService` (controlador de servicio del impago, en el módulo de incidencias), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` e `Incidencia` y `AdminGateway` (el aviso en vivo al panel).
-
-**GRASP.** *Controlador*: `UnpaidCashService` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo pasa a «impago». *Creador*: `Pedido` crea la `Incidencia` que origina (asociación `Pedido`–`Incidencia`), una sola por pedido.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora y del chofer, la transacción con el bloqueo del pedido, que repetir el aviso devuelve la incidencia existente sin duplicarla ni volver a avisar, y que el aviso a los administradores es best-effort y ocurre después de confirmada la transacción.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UnpaidCashService.informarCobroImpago(...)` | `UnpaidCashController.report` → `UnpaidCashService.report` |
-| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.markUnpaid`: lee el `Order` con bloqueo pesimista dentro de una transacción |
-| `Pedido.informarImpago(...)` | `CashCollectionUseCase.markUnpaid`: asigna `Order.paymentStatus` impago |
-| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.lockPedidoDelChofer`: pertenencia al chofer (403), pedido entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.markUnpaid` (409 si ya no lo está) |
-| `Incidencia.«create»` | `UnpaidCashService.report`: guarda la `Incident` de tipo `unpaid_collection`, abierta, posterior a la entrega, con la nota o el texto por defecto |
-
-**Observaciones de diseño**
-
-- Una sola incidencia de cobro impago viva por pedido, garantizada por el índice único `UQ_incident_cobro_impago`.
-- La foto de la incidencia se sube después (CU-064).
-
-
----
-
-#### DSD — CU-294: Resolver un Cobro Impago
-
-##### Operación: resolverCobroImpago(pedidoId, resolucion, nota)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-294 Resolver un Cobro Impago · resolverCobroImpago
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant CCU as :CashCollectionUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant INC as incidencia:Incidencia
-
-    ADM->>+CCU: resolverCobroImpago(pedidoId, resolucion, nota)
-    CCU->>+PEDS: get(pedidoId)
-    PEDS-->>-CCU: pedido
-    CCU->>+PED: resolverImpago(administrador, resolucion, nota)
-    PED->>PED: validarImpago()
-    PED-->>-CCU: pedido
-    CCU->>+PED: getIncidenciaDeCobro()
-    PED-->>-CCU: incidencia
-    CCU->>INC: resolver(nota)
-    CCU-->>-ADM: pedido
-```
-
-**Figura 85 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota)**
-
-**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro en efectivo), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` e `Incidencia`.
-
-**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo resuelve («pagado» o «perdido») con la nota, y quien conoce su incidencia de cobro; la `Incidencia` es quien pasa a «resuelta» con la misma nota.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, la transacción con el bloqueo del pedido, que una pérdida no llena el momento ni el usuario de la confirmación del cobro, y que repetir la resolución no toca la nota ni la incidencia.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CashCollectionUseCase.resolverCobroImpago(...)` | `OrderController.resolveUnpaid` → `CashCollectionUseCase.resolveUnpaid` |
-| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista dentro de una transacción |
-| `Pedido.resolverImpago(...)` | `CashCollectionUseCase.resolveUnpaid`: asigna `Order.paymentStatus`, `Order.paymentResolvedAt`, `Order.paymentResolvedBy` y `Order.paymentResolutionNote`; con `paid` también `Order.paymentConfirmedAt` y `Order.paymentConfirmedBy` |
-| `Pedido.validarImpago(...)` | `CashCollectionUseCase.resolveUnpaid`: el pago tiene que estar impago (409) |
-| `Pedido.getIncidenciaDeCobro(...)` | `CashCollectionUseCase.resolveUnpaid`: la incidencia abierta de tipo `unpaid_collection` del pedido |
-| `Incidencia.resolver(...)` | `CashCollectionUseCase.resolveUnpaid`: asigna `Incident.status` resuelta, `Incident.resolutionNote` y `Incident.resolvedAt` |
-
-**Observaciones de diseño**
-
-- La resolución es idempotente: repetirla, con el mismo administrador o con otro, responde `alreadyResolved: true`.
-
----
-
-#### DSD — CU-299: Registrar el Cobro en Efectivo como Administrador
-
-##### Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-299 Registrar el Cobro en Efectivo como Administrador · registrarCobroEnEfectivoPorAdmin
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant CCU as :CashCollectionUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-
-    ADM->>+CCU: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
-    CCU->>+PEDS: get(pedidoId)
-    PEDS-->>-CCU: pedido
-    CCU->>+PED: registrarCobro(administrador, motivo)
-    PED->>PED: validarCobroPendiente()
-    opt El cobro estaba pendiente
-        create participant CAM as :CambioEstadoPedido
-        PED->>CAM: «create»(motivo)
-    end
-    deactivate PED
-    CCU-->>-ADM: pedido
-```
-
-**Figura 86 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)**
-
-**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
-
-**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo pasa a «pagado» con el administrador, el momento y el motivo. *Creador*: `Pedido` crea el `CambioEstadoPedido` que deja el motivo en el historial, con el mismo estado de origen y de destino.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, de que esté entregado y se haya pagado en efectivo, la transacción con el bloqueo del pedido y que repetirlo sobre un pedido ya pagado no cambia nada.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CashCollectionUseCase.registrarCobroEnEfectivoPorAdmin(...)` | `OrderController.registerCash` → `CashCollectionUseCase.registerCashByAdmin` |
-| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista, filtrado por distribuidora |
-| `Pedido.registrarCobro(...)` | `CashCollectionUseCase.registerCashByAdmin`: asigna `Order.paymentStatus` pagado, `Order.paymentConfirmedAt`, `Order.paymentConfirmedBy`, `Order.paymentResolvedAt`, `Order.paymentResolvedBy` y `Order.paymentResolutionNote` |
-| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.exigirEntregadoEnEfectivo`: entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.registerCashByAdmin` (409 si es impago) |
-| `CambioEstadoPedido.«create»` | `CashCollectionUseCase.asentarEnElHistorial`: inserta el `OrderStatusHistory` con el mismo estado de origen y destino y el motivo |
-
----
-
-#### DSD — CU-300: Registrar el Cobro Impago como Administrador
-
-##### Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-300 Registrar el Cobro Impago como Administrador · registrarCobroImpagoPorAdmin
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :UnpaidCashService
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-    participant GW as :AdminGateway
-
-    ADM->>+SRV: registrarCobroImpagoPorAdmin(pedidoId, motivo)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
-    SRV->>+PED: informarImpago(administrador, motivo)
-    PED->>PED: validarCobroPendiente()
-    opt El cobro estaba pendiente
-        create participant CAM as :CambioEstadoPedido
-        PED->>CAM: «create»(motivo)
-    end
-    opt El pedido no tiene una incidencia de cobro impago viva
-        create participant INC as :Incidencia
-        PED->>INC: «create»(administrador, motivo)
-    end
-    PED-->>-SRV: incidencia
-    SRV-)GW: notifyAdmins(incidencia)
-    SRV-->>-ADM: incidencia
-```
-
-**Figura 87 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)**
-
-**Clases participantes:** `UnpaidCashService` (controlador de servicio del impago, en el módulo de incidencias), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `CambioEstadoPedido` e `Incidencia` y `AdminGateway` (el aviso en vivo al panel).
-
-**GRASP.** *Controlador*: `UnpaidCashService` recibe la operación. *Experto*: `Pedido` conoce su cobro y es quien lo pasa a «impago». *Creador*: `Pedido` crea el `CambioEstadoPedido` con el motivo y la `Incidencia` que origina, una sola por pedido.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, entregado y en efectivo, la transacción con el bloqueo del pedido, que repetir el aviso devuelve la incidencia existente sin duplicarla ni volver a avisar, y que el aviso a los administradores es best-effort y ocurre después de confirmada la transacción.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `UnpaidCashService.registrarCobroImpagoPorAdmin(...)` | `UnpaidCashController.registerUnpaid` → `UnpaidCashService.reportByAdmin` |
-| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista, filtrado por distribuidora |
-| `Pedido.informarImpago(...)` | `CashCollectionUseCase.pasarAImpago`: asigna `Order.paymentStatus` impago |
-| `Pedido.validarCobroPendiente(...)` | `CashCollectionUseCase.exigirEntregadoEnEfectivo`: entregado y en efectivo (400); el pago pendiente lo comprueba `CashCollectionUseCase.pasarAImpago` (409 si ya no lo está) |
-| `CambioEstadoPedido.«create»` | `CashCollectionUseCase.asentarEnElHistorial`: inserta el `OrderStatusHistory` con el mismo estado de origen y destino y el motivo |
-| `Incidencia.«create»` | `UnpaidCashService.abrirIncidencia`: guarda la `Incident` de tipo `unpaid_collection`, abierta, posterior a la entrega, reportada por el administrador |
-
----
-
-#### DSD — CU-301: Confirmar una Transferencia
-
-##### Operación: confirmarTransferencia(pedidoId, recibida, motivo)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-301 Confirmar una Transferencia · confirmarTransferencia
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant CCU as :CashCollectionUseCase
-    participant PEDS as :Map#lt;String, Pedido#gt;
-    participant PED as pedido:Pedido
-
-    ADM->>+CCU: confirmarTransferencia(pedidoId, recibida, motivo)
-    CCU->>+PEDS: get(pedidoId)
-    PEDS-->>-CCU: pedido
-    CCU->>+PED: resolverTransferencia(administrador, recibida, motivo)
-    PED->>PED: validarTransferencia(recibida)
-    opt El cobro cambia
-        create participant CAM as :CambioEstadoPedido
-        PED->>CAM: «create»(motivo)
-    end
-    deactivate PED
-    CCU-->>-ADM: pedido
-```
-
-**Figura 88 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)**
-
-**Clases participantes:** `CashCollectionUseCase` (controlador de caso de uso del cobro), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
-
-**GRASP.** *Controlador*: `CashCollectionUseCase` recibe la operación. *Experto*: `Pedido` conoce su medio de pago, su estado y su cobro, y es quien valida que la decisión sea posible y pasa el cobro a «pagado» o «fallido». *Creador*: `Pedido` crea el `CambioEstadoPedido` que deja el motivo en el historial.
-
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, la transacción con el bloqueo del pedido y que repetir la misma decisión no cambia nada.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CashCollectionUseCase.confirmarTransferencia(...)` | `OrderController.confirmTransfer` → `CashCollectionUseCase.confirmTransfer` |
-| `Map<String, Pedido>.get(...)` | `CashCollectionUseCase.lock`: lee el `Order` con bloqueo pesimista, filtrado por distribuidora |
-| `Pedido.resolverTransferencia(...)` | `CashCollectionUseCase.confirmTransfer`: asigna `Order.paymentStatus`, `Order.paymentResolvedAt`, `Order.paymentResolvedBy` y `Order.paymentResolutionNote`; con la transferencia recibida también `Order.paymentConfirmedAt` y `Order.paymentConfirmedBy` |
-| `Pedido.validarTransferencia(...)` | `CashCollectionUseCase.confirmTransfer`: medio transferencia y pedido no cancelado (400); transiciones del pago permitidas y pedido entregado para marcarla no recibida (409) |
-| `CambioEstadoPedido.«create»` | `CashCollectionUseCase.asentarEnElHistorial`: inserta el `OrderStatusHistory` con el mismo estado de origen y destino y el motivo |
 
 ---
 
@@ -5371,7 +5548,7 @@ sequenceDiagram
     Note over CHO,SRV: También lo inicia el Cliente (ACT-01), con el pedido en camino
 ```
 
-**Figura 89 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)**
+**Figura 92 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)**
 
 **Clases participantes:** `RoutesService` (controlador de servicio de rutas) y los objetos de dominio `Pedido`, `Chofer` y `UbicacionGPS`.
 
@@ -5389,11 +5566,11 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-018: Marcar Pedido "En Camino"
+#### DSD — CU-018: Marcar un Pedido "En Camino"
 
 
 Transición `ACCEPTED → ON_THE_WAY`. El efecto de diseño relevante no es el cambio de
-estado sino el **encendido del tracking**: se escribe en Redis el mapping
+estado sino el **encendido del seguimiento**: se escribe en Redis la correspondencia
 chofer → (pedido, cliente), que es lo que después hace que `DriversGateway` reenvíe cada
 posición GPS al cliente correcto (CU-017).
 
@@ -5401,7 +5578,7 @@ posición GPS al cliente correcto (CU-017).
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-018 Marcar Pedido "En Camino" · marcarPedidoEnCamino
+    title DSD — CU-018 Marcar un Pedido "En Camino" · marcarPedidoEnCamino
     autonumber
     actor CHF as Chofer (ACT-02)
     participant UCS as :UpdateOrderStatusUseCase
@@ -5428,7 +5605,7 @@ sequenceDiagram
     UCS-->>-CHF: pedido
 ```
 
-**Figura 90 — DSD CU-018: Marcar Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)**
+**Figura 93 — DSD CU-018: Marcar un Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)**
 
 **Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `UbicacionGPS`, y `NotificationPort` (fabricación pura: el aviso al cliente).
 
@@ -5450,7 +5627,7 @@ sequenceDiagram
 
 - El evento por estado sale de la tabla `STATUS_EVENT`, no de un `switch` disperso: para
   `ON_THE_WAY` es `order:on-the-way`.
-- Tanto el socket como el push son best-effort y están envueltos en `try/catch`: si el
+- Tanto el socket como el push son de mejor esfuerzo y están envueltos en `try/catch`: si el
   cliente tiene la app cerrada, el pedido igual avanza.
 - Los eventos al panel usan el valor del enum (`order:on_the_way`), que es lo que escucha
   la campana del panel; el evento al cliente usa el slug con guiones. Son deliberadamente
@@ -5458,7 +5635,7 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-019: Avisar Llegada al Cliente
+#### DSD — CU-019: Avisar la Llegada al Cliente
 
 
 El único caso del ciclo del pedido que **no** cambia el estado: es un aviso puro. Por eso
@@ -5468,7 +5645,7 @@ no pasa por la máquina de estados ni por el use-case de transición.
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-019 Avisar Llegada al Cliente · avisarLlegada
+    title DSD — CU-019 Avisar la Llegada al Cliente · avisarLlegada
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :OrderService
@@ -5491,7 +5668,7 @@ sequenceDiagram
     SRV-->>-CHF: aviso
 ```
 
-**Figura 91 — DSD CU-019: Avisar Llegada al Cliente — Operación: avisarLlegada(pedidoId)**
+**Figura 94 — DSD CU-019: Avisar la Llegada al Cliente — Operación: avisarLlegada(pedidoId)**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>`, el objeto de dominio `Pedido`, `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: el aviso en vivo y el aviso al dispositivo).
 
@@ -5509,64 +5686,12 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El `driverName` sale de `order.delivery.user.full_name` con fallback a "El repartidor":
-  el payload no depende de que la relación esté cargada.
+- El `driverName` sale de `order.delivery.user.full_name` con "El repartidor" como valor alternativo:
+  el contenido no depende de que la relación esté cargada.
 - `assertPedidoDelChofer` controla que quien avisa sea el chofer asignado a *ese* pedido
   (403 si no); al administrador no se le aplica.
-- La notificación al dispositivo es best-effort: sin token registrado no se envía, y un
-  fallo de FCM queda en el log sin cambiar la respuesta al chofer.
-
----
-
-#### DSD — CU-021: Recibir Notificaciones en Tiempo Real
-
-
-Hay **dos canales complementarios** y este DSD los muestra juntos porque el CU los necesita
-a los dos: el WebSocket (app abierta) y el push FCM (app en background). El push depende de
-una precondición técnica que el CU documentado no menciona: el token FCM tiene que estar
-registrado antes (`POST /notifications/token`).
-
-##### Operación: suscribirseAlSeguimiento(clienteId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-021 Recibir Notificaciones en Tiempo Real · suscribirseAlSeguimiento
-    autonumber
-    actor CLI as Cliente (ACT-01)
-    participant GW as :CustomersGateway
-    participant IDN as :SocketIdentityService
-    participant CLE as cliente:Cliente
-
-    CLI->>+GW: suscribirseAlSeguimiento(clienteId)
-    GW->>+IDN: obtener(conexion)
-    IDN-->>-GW: identidad
-    GW->>CLE: unirseASala()
-    GW-->>-CLI: confirmacion
-```
-
-**Figura 92 — DSD CU-021: Recibir Notificaciones en Tiempo Real — Operación: suscribirseAlSeguimiento(clienteId)**
-
-**Clases participantes:** `CustomersGateway` (controlador: recibe el evento del cliente), `SocketIdentityService` (fabricación pura: resuelve la identidad del handshake) y el objeto de dominio `Cliente`.
-
-**GRASP.** *Controlador*: `CustomersGateway` recibe la operación. *Experto*: el `Cliente` es quien se suscribe a su propia sala, de modo que sólo recibe los eventos de sus pedidos. *Alta Cohesión*: la identidad la resuelve `SocketIdentityService`; el identificador del cuerpo del mensaje se ignora, porque si se le creyera al cliente cualquiera podría escuchar los pedidos de otro.
-
-**No se dibuja:** la desconexión de la conexión sin identidad válida, el registro del token de notificaciones del dispositivo (`NotificationsController.saveToken`), que es el otro canal del caso de uso, y el envío de los eventos, que sale de las operaciones de cambio de estado del pedido.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `CustomersGateway.suscribirseAlSeguimiento(...)` | `CustomersGateway.handleCustomerJoin`: evento `customer:join` |
-| `Cliente.unirseASala()` | `CustomersGateway.handleCustomerJoin`: une la conexión a la sala `customer_` con el identificador de la identidad y responde con `server:ack` |
-
-**Observaciones de diseño**
-
-- **Anti-secuestro de token:** un no-admin solo puede registrar *su* token; el `userId` del
-  body se ignora. Sin eso, un usuario podría desviarse los push de otro.
-- La autenticación del socket es propia del gateway (`handleConnection` + `decodeToken`),
-  no del `AuthGuard` HTTP: son dos superficies distintas con el mismo `AuthService`.
-- El mismo endpoint `POST /notifications/token` sirve a la app cliente y a la del chofer:
-  el service busca primero como `Customer` y después como `Delivery`.
-- `NotificationsService.sendOrderConfirmation` **nunca lanza**: devuelve
-  `{ success: false, error }` y deja que el use-case siga.
+- La notificación al dispositivo es de mejor esfuerzo: sin token registrado no se envía, y un
+  fallo de FCM queda en el registro de eventos sin cambiar la respuesta al chofer.
 
 ---
 
@@ -5577,11 +5702,11 @@ Ponerse offline tiene dos efectos que hay que mantener sincronizados: el bit en 
 la salida del **radar GEO de Redis**. Si solo se hiciera lo primero, el chofer desconectado
 seguiría recibiendo ofertas del despacho. Activar y desactivar la disponibilidad (CU-022 y CU-266) son la misma operación, con el valor en verdadero o en falso.
 
-##### Operación: cambiarDisponibilidad(usuarioId, disponible)
+##### Operación: activarDisponibilidad(usuarioId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-022 / CU-266 · cambiarDisponibilidad
+    title DSD — CU-022 Activar la Disponibilidad · activarDisponibilidad
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :DeliveryService
@@ -5589,10 +5714,10 @@ sequenceDiagram
     participant CHO as chofer:Chofer
     participant UBI as ubicacion:UbicacionGPS
 
-    CHF->>+SRV: cambiarDisponibilidad(usuarioId, disponible)
+    CHF->>+SRV: activarDisponibilidad(usuarioId)
     SRV->>+CHOS: get(usuarioId)
     CHOS-->>-SRV: chofer
-    SRV->>+CHO: cambiarDisponibilidad(disponible)
+    SRV->>+CHO: activarDisponibilidad(verdadero)
     CHO->>CHO: validarHabilitacion()
     deactivate CHO
     opt El chofer quedó no disponible
@@ -5603,7 +5728,8 @@ sequenceDiagram
     SRV-->>-CHF: disponibilidad
 ```
 
-**Figura 93 — DSD CU-022: Activar la Disponibilidad — Operación: cambiarDisponibilidad(usuarioId, disponible)**
+**Figura 95 — DSD CU-022: Activar la Disponibilidad — Operación: activarDisponibilidad(usuarioId)**
+
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `UbicacionGPS`.
 
@@ -5613,9 +5739,9 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `DeliveryService.cambiarDisponibilidad(...)` | `DeliveryController.toggleAvailability` → `DeliveryService.toggleAvailability` |
+| `DeliveryService.activarDisponibilidad(...)` | `DeliveryController.toggleAvailability` → `DeliveryService.toggleAvailability` |
 | `Map<String, Chofer>.get(...)` | `DeliveryService.toggleAvailability`: busca el `Delivery` por `Delivery.userId` |
-| `Chofer.cambiarDisponibilidad(...)` | `DeliveryService.toggleAvailability`: asigna `Delivery.isAvailable` |
+| `Chofer.activarDisponibilidad(...)` | `DeliveryService.toggleAvailability`: asigna `Delivery.isAvailable` |
 | `Chofer.validarHabilitacion()` | `DeliveryService.toggleAvailability`: al ponerse en línea exige `Delivery.isEnabled` y `Delivery.validated` |
 | `Chofer.getUbicacion()` | `Delivery.userId`: la ubicación se indexa por el usuario del chofer |
 | `UbicacionGPS.eliminar()` | `RedisService.removeDriver`: saca al chofer del índice `drivers:locations` |
@@ -5625,42 +5751,89 @@ sequenceDiagram
 - El `member` del set GEO es el **`user_id`**, no el `delivery_id`: lo escribe
   `driver:update-location` vía `updateDriverLocation(userId, ...)`. Sacarlo por
   `delivery_id` era un `ZREM` no-op y dejaba choferes fantasma recibiendo ofertas.
-- Ponerse online **no** vuelve a insertar al chofer en el radar: eso pasa recién con el
+- Ponerse en línea **no** vuelve a insertar al chofer en el radar: eso pasa recién con el
   primer `driver:update-location` que mande la app.
 - Ponerse en línea exige estar habilitado (`isEnabled`) y validado: es un campo
   (`isAvailable`) distinto del que usa CU-033 (alta/baja administrativa, `isEnabled`), así
   que un chofer deshabilitado por el admin ya no puede "reactivarse" solo con este
-  endpoint. Desconectarse siempre se permite, esté habilitado o no.
+  ruta. Desconectarse siempre se permite, esté habilitado o no.
 
 ---
 
 #### DSD — CU-266: Desactivar la Disponibilidad
 
+Es la operación inversa de CU-022: el chofer queda fuera de línea y sale del radar de despacho. El sistema la resuelve con el mismo método, con la disponibilidad en falso.
 
-Es la misma operación que CU-022 con la disponibilidad en falso: el chofer queda fuera de línea y sale del radar de despacho.
+##### Operación: desactivarDisponibilidad(usuarioId)
 
-##### Operación: cambiarDisponibilidad(usuarioId, disponible)
+```mermaid
+sequenceDiagram
+    title DSD — CU-266 Desactivar la Disponibilidad · desactivarDisponibilidad
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :DeliveryService
+    participant CHOS as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
 
-Operación cambiarDisponibilidad: ver el DSD de CU-022.
+    CHF->>+SRV: desactivarDisponibilidad(usuarioId)
+    SRV->>+CHOS: get(usuarioId)
+    CHOS-->>-SRV: chofer
+    SRV->>+CHO: desactivarDisponibilidad(falso)
+    CHO->>CHO: validarHabilitacion()
+    deactivate CHO
+    opt El chofer quedó no disponible
+        SRV->>+CHO: getUbicacion()
+        CHO-->>-SRV: ubicacion
+        SRV->>UBI: eliminar()
+    end
+    SRV-->>-CHF: disponibilidad
+```
+
+**Figura 96 — DSD CU-266: Desactivar la Disponibilidad — Operación: desactivarDisponibilidad(usuarioId)**
+
+
+**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `UbicacionGPS`.
+
+**GRASP.** *Controlador*: `DeliveryService` recibe la operación. *Experto*: `Chofer` conoce su habilitación, su validación y su disponibilidad: al ponerse en línea verifica que esté habilitado y validado, y desconectarse siempre se permite. Al quedar no disponible, su `UbicacionGPS` se elimina, para que el despacho no le ofrezca pedidos. La disponibilidad es independiente de la activación administrativa (CU-033) y de la validación (CU-032).
+
+**No se dibuja:** el control de que el chofer sea de la distribuidora del contexto, el guardado y la salida del chofer del radar cuando se cae la conexión (`DriversGateway.handleDisconnect`).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DeliveryService.desactivarDisponibilidad(...)` | `DeliveryController.toggleAvailability` → `DeliveryService.toggleAvailability` |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.toggleAvailability`: busca el `Delivery` por `Delivery.userId` |
+| `Chofer.desactivarDisponibilidad(...)` | `DeliveryService.toggleAvailability`: asigna `Delivery.isAvailable` |
+| `Chofer.validarHabilitacion()` | `DeliveryService.toggleAvailability`: al ponerse en línea exige `Delivery.isEnabled` y `Delivery.validated` |
+| `Chofer.getUbicacion()` | `Delivery.userId`: la ubicación se indexa por el usuario del chofer |
+| `UbicacionGPS.eliminar()` | `RedisService.removeDriver`: saca al chofer del índice `drivers:locations` |
 
 **Observaciones de diseño**
 
-- Desconectarse siempre se permite, esté habilitado o no.
+- El `member` del set GEO es el **`user_id`**, no el `delivery_id`: lo escribe
+  `driver:update-location` vía `updateDriverLocation(userId, ...)`. Sacarlo por
+  `delivery_id` era un `ZREM` no-op y dejaba choferes fantasma recibiendo ofertas.
+- Ponerse en línea **no** vuelve a insertar al chofer en el radar: eso pasa recién con el
+  primer `driver:update-location` que mande la app.
+- Ponerse en línea exige estar habilitado (`isEnabled`) y validado: es un campo
+  (`isAvailable`) distinto del que usa CU-033 (alta/baja administrativa, `isEnabled`), así
+  que un chofer deshabilitado por el admin ya no puede "reactivarse" solo con este
+  ruta. Desconectarse siempre se permite, esté habilitado o no.
 
 ---
 
 ### 4.5 SS-05 — Reclamos
 
-#### DSD — CU-023: Registrar Reclamo
+#### DSD — CU-023: Registrar un Reclamo
 
 
-El controller **fuerza la identidad del reclamante** cuando quien llama es un cliente (anti-impersonación) y el servicio **denormaliza la distribuidora desde el pedido reclamado**: el cliente no elige tenant, lo hereda de la orden.
+El controller **fuerza la identidad del reclamante** cuando quien llama es un cliente (anti-impersonación) y el servicio **denormaliza la distribuidora desde el pedido reclamado**: el cliente no elige distribuidora, lo hereda de la orden.
 
 ##### Operación: registrarReclamo(pedidoId, motivo, evidencia)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-023 Registrar Reclamo · registrarReclamo
+    title DSD — CU-023 Registrar un Reclamo · registrarReclamo
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :ClaimsService
@@ -5680,7 +5853,7 @@ sequenceDiagram
     SRV-->>-CLI: reclamo
 ```
 
-**Figura 94 — DSD CU-023: Registrar Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)**
+**Figura 97 — DSD CU-023: Registrar un Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Cliente` y `Reclamo`.
 
@@ -5698,19 +5871,19 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El `distributor_id` del reclamo **no sale del header `X-Distributor`**: se copia de `order.distributor_id`. Un reclamo siempre queda en el tenant del pedido, aunque el cliente esté navegando otra distribuidora.
-- `ClaimStatus.PENDING` es el `default` de la columna (`claim.entity.ts`), no lo setea el servicio.
+- El `distributor_id` del reclamo **no sale del encabezado `X-Distributor`**: se copia de `order.distributor_id`. Un reclamo siempre queda en la distribuidora del pedido, aunque el cliente esté navegando otra distribuidora.
+- `ClaimStatus.PENDING` es el `default` de la columna (`claim.entity.ts`), no lo asigna el servicio.
 - La validación de pertenencia (`order.customer_id !== dto.customerId`) es redundante para un CUSTOMER (el controller ya forzó el id) pero **necesaria** para el camino ADMIN, donde el body sí manda.
 
 ---
 
-#### DSD — CU-024: Listar Reclamos
+#### DSD — CU-024: Listar los Reclamos
 
 ##### Operación: listarReclamos()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-024 Listar Reclamos · listarReclamos
+    title DSD — CU-024 Listar los Reclamos · listarReclamos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ClaimsService
@@ -5726,7 +5899,7 @@ sequenceDiagram
     SRV-->>-ADM: reclamos
 ```
 
-**Figura 95 — DSD CU-024: Listar Reclamos — Operación: listarReclamos()**
+**Figura 98 — DSD CU-024: Listar los Reclamos — Operación: listarReclamos()**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
@@ -5742,18 +5915,18 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El scope multi-tenant es **opcional por diseño**: un `super_admin` sin header `X-Distributor` recibe `null` y ve el consolidado de todas las distribuidoras. El mismo patrón se repite en reportes y catálogo.
+- El scope multidistribuidora es **opcional por diseño**: un `super_admin` sin encabezado `X-Distributor` recibe `null` y ve el consolidado de todas las distribuidoras. El mismo patrón se repite en reportes y catálogo.
 - Las relaciones `order` y `customer` se traen con *eager join explícito* para que el panel muestre número de pedido y nombre del cliente sin N+1.
 
 ---
 
-#### DSD — CU-025: Resolver Reclamo
+#### DSD — CU-025: Resolver un Reclamo
 
 ##### Operación: resolverReclamo(reclamoId, resolucion, estadoFinal)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-025 Resolver Reclamo · resolverReclamo
+    title DSD — CU-025 Resolver un Reclamo · resolverReclamo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ClaimsService
@@ -5769,7 +5942,7 @@ sequenceDiagram
     SRV-->>-ADM: reclamo
 ```
 
-**Figura 96 — DSD CU-025: Resolver Reclamo**
+**Figura 99 — DSD CU-025: Resolver un Reclamo**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
@@ -5787,10 +5960,10 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El servicio lee el reclamo con bloqueo pesimista de la fila (`FOR UPDATE`) dentro de una transacción: dos administradores que resuelven, toman o reabren el mismo reclamo a la vez se serializan, y el segundo valida la transición contra el estado que dejó el primero y no contra una lectura vieja.
-- La lectura filtra por la distribuidora (**guardia de tenant**): un admin de otra distribuidora recibe 404 (no 403), para no filtrar la existencia del reclamo.
+- La lectura filtra por la distribuidora (**guardia de distribuidora**): un admin de otra distribuidora recibe 404 (no 403), para no filtrar la existencia del reclamo.
 - El Administrador General debe indicar la distribuidora con `X-Distributor`; sin ella recibe 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".
-- El `ResolveClaimDto` valida `resolution` con `@TextoNoVacio`: un texto hecho sólo de espacios cuenta como vacío y responde 400.
-- El `ResolveClaimDto` acepta sólo `resolved` y `rejected` en `status` **antes** de llegar al servicio (`@IsIn`): pasar a en proceso es `take` (CU-166). Así el `save` nunca escribe un estado inválido.
+- El `ResolveClaimDto` valida `resolution` con `@TextoNoVacio`: un texto hecho solo de espacios cuenta como vacío y responde 400.
+- El `ResolveClaimDto` acepta solo `resolved` y `rejected` en `status` **antes** de llegar al servicio (`@IsIn`): pasar a en proceso es `take` (CU-166). Así el `save` nunca escribe un estado inválido.
 - La máquina de estados tampoco admite repetir el estado actual ni volver a pendiente: la segunda rechaza `assertClaimTransition` con 400.
 - `assertClaimTransition` (`claim-status.machine.ts`) es la única regla de negocio del módulo, extraída del servicio: `resolve` no acepta cualquier `status` del enum: valida el estado de partida.
 
@@ -5818,11 +5991,11 @@ sequenceDiagram
     SRV-->>-ADM: reclamo
 ```
 
-**Figura 97 — DSD CU-166: Tomar un Reclamo Pendiente**
+**Figura 100 — DSD CU-166: Tomar un Reclamo Pendiente**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
-**GRASP.** *Controlador*: `ClaimsService`. *Experto*: `Reclamo` sabe que sólo un reclamo pendiente se puede tomar y es quien pasa a «en proceso»; la nota de resolución no se toca.
+**GRASP.** *Controlador*: `ClaimsService`. *Experto*: `Reclamo` sabe que solo un reclamo pendiente se puede tomar y es quien pasa a «en proceso»; la nota de resolución no se toca.
 
 **No se dibuja:** la transacción con bloqueo de la fila y el guardado (`ClaimsService.modificar`).
 
@@ -5837,7 +6010,7 @@ sequenceDiagram
 
 - El servicio lee el reclamo con bloqueo pesimista de la fila (`FOR UPDATE`) dentro de una transacción: dos administradores que resuelven, toman o reabren el mismo reclamo a la vez se serializan, y el segundo valida la transición contra el estado que dejó el primero y no contra una lectura vieja.
 - La lectura filtra por la distribuidora: un administrador de otra distribuidora recibe 404, no 403.
-- Tomar no pide nota; es lo que lo distingue de `resolve`, que exige la nota de resolución. El estado en proceso sólo se fija desde `take`: `resolve` ya no lo acepta.
+- Tomar no pide nota; es lo que lo distingue de `resolve`, que exige la nota de resolución. El estado en proceso solo se fija desde `take`: `resolve` ya no lo acepta.
 - Pueden operar el Administrador y el Administrador General (`@Auth(ADMIN, SUPER_ADMIN)`); el Administrador General debe indicar la distribuidora con el encabezado `X-Distributor`, y sin ella recibe 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".
 
 ---
@@ -5864,11 +6037,11 @@ sequenceDiagram
     SRV-->>-ADM: reclamo
 ```
 
-**Figura 98 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)**
+**Figura 101 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>` y el objeto de dominio `Reclamo`.
 
-**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` conoce su estado y es quien se reabre: valida la transición, pasa a «en proceso» y toma el motivo como nota; el controlador no le asigna atributos. Reabrir y resolver comparten la máquina de estados, que es una regla del propio `Reclamo`: un reclamo resuelto o rechazado sólo cambia reabriéndolo, y nunca vuelve a «pendiente».
+**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` conoce su estado y es quien se reabre: valida la transición, pasa a «en proceso» y toma el motivo como nota; el controlador no le asigna atributos. Reabrir y resolver comparten la máquina de estados, que es una regla del propio `Reclamo`: un reclamo resuelto o rechazado solo cambia reabriéndolo, y nunca vuelve a «pendiente».
 
 **No se dibuja:** la transacción con bloqueo de la fila y el guardado, que resuelve `ClaimsService.modificar`; la distribuidora del contexto filtra la lectura, y un reclamo de otra distribuidora no se encuentra.
 
@@ -5881,7 +6054,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El `ReopenClaimDto` valida que `reason` no esté vacío antes de llegar al servicio (`@TextoNoVacio`): un texto hecho sólo de espacios cuenta como vacío y responde 400.
+- El `ReopenClaimDto` valida que `reason` no esté vacío antes de llegar al servicio (`@TextoNoVacio`): un texto hecho solo de espacios cuenta como vacío y responde 400.
 - El servicio lee el reclamo con bloqueo pesimista de la fila (`FOR UPDATE`) dentro de una transacción: dos administradores que resuelven, toman o reabren el mismo reclamo a la vez se serializan, y el segundo valida la transición contra el estado que dejó el primero y no contra una lectura vieja.
 - Reabrir y resolver comparten la misma máquina de estados (`claim-status.machine.ts`): es la única regla de negocio del módulo.
 - Pueden operar el Administrador y el Administrador General (`@Auth(ADMIN, SUPER_ADMIN)`); el Administrador General debe indicar la distribuidora con el encabezado `X-Distributor`, y sin ella recibe 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".
@@ -5917,26 +6090,26 @@ sequenceDiagram
     SRV-->>-CLI: reclamo
 ```
 
-**Figura 99 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)**
+**Figura 102 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo`, `S3Service` (fabricación pura: el cliente de Amazon S3) y `S3CleanupService` (fabricación pura: la cola de borrados). Son las mismas que usan los adjuntos de flota.
 
-**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` sabe si es del cliente que lo modifica y es quien guarda la referencia a la fotografía y devuelve la anterior. *Bajo Acoplamiento*: el reclamo no conoce a S3: sólo `S3Service` lo conoce. La imagen anterior se borra recién después de guardar la referencia nueva.
+**GRASP.** *Controlador*: `ClaimsService` recibe la operación. *Experto*: `Reclamo` sabe si es del cliente que lo modifica y es quien guarda la referencia a la fotografía y devuelve la anterior. *Bajo Acoplamiento*: el reclamo no conoce a S3: solo `S3Service` lo conoce. La imagen anterior se borra recién después de guardar la referencia nueva.
 
 **No se dibuja:** la validación del archivo (presente, JPG, PNG o WEBP según su contenido, de hasta 10 MB), la comprobación de que el reclamo no esté cerrado (409), la reserva de la clave antes de subir y su confirmación en la transacción que guarda la referencia (`S3CleanupService.reserveUpload` y `S3CleanupService.confirmUpload`), la clave del objeto, que incluye la distribuidora y el reclamo y no el nombre original, la anotación de la imagen anterior en la misma transacción (`S3CleanupService.scheduleRemoval`) y el borrado de la imagen recién subida si falla guardar la referencia.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `ClaimsService.adjuntarFotoAlReclamo(...)` | `ClaimsService.uploadPhoto`: valida el archivo, reserva la clave, la sube y actualiza el reclamo bajo bloqueo |
-| `Map<String, Reclamo>.get(...)` | `ClaimsService.findOne` (y `ClaimsService.findForPhoto` para el cliente, que sólo accede a sus reclamos): lee el reclamo por su identificador |
-| `Reclamo.esDelCliente(...)` | `ClaimsService.findForPhoto`: el cliente sólo accede a sus propios reclamos; lo demás es 404 |
+| `Map<String, Reclamo>.get(...)` | `ClaimsService.findOne` (y `ClaimsService.findForPhoto` para el cliente, que solo accede a sus reclamos): lee el reclamo por su identificador |
+| `Reclamo.esDelCliente(...)` | `ClaimsService.findForPhoto`: el cliente solo accede a sus propios reclamos; lo demás es 404 |
 | `Reclamo.adjuntarFoto(...)` | `ClaimsService.uploadPhoto`: guarda `photoKey`, vacía `photoUrl` y devuelve la clave anterior; falla con 409 si el reclamo está resuelto o rechazado (`ClaimsService.assertAbierto`) |
 
 **Observaciones de diseño**
 
-- `ClaimsService` habla con S3 sólo a través de `S3Service`, el mismo que usa `FleetAttachmentService`; la imagen anterior se borra en segundo plano con `S3CleanupService`, con reintentos.
+- `ClaimsService` habla con S3 solo a través de `S3Service`, el mismo que usa `FleetAttachmentService`; la imagen anterior se borra en segundo plano con `S3CleanupService`, con reintentos.
 - La clave incluye la distribuidora y el reclamo, no el nombre original del archivo: dos fotografías con el mismo nombre no colisionan.
-- Si el reclamo ya tenía una fotografía, se borra la anterior sólo después de guardar la referencia nueva: un fallo en el medio deja la fotografía anterior intacta.
+- Si el reclamo ya tenía una fotografía, se borra la anterior solo después de guardar la referencia nueva: un fallo en el medio deja la fotografía anterior intacta.
 - El cliente ve un 404 y no un 403 sobre un reclamo ajeno, igual que en el resto de los reclamos.
 
 ---
@@ -5966,7 +6139,7 @@ sequenceDiagram
         SRV->>+S3: getSignedDownload(clave)
         S3-->>-SRV: direccion
         SRV-->>CLI: direccion
-    else sólo tiene una dirección externa http(s)
+    else solo tiene una dirección externa http(s)
         SRV-->>CLI: direccionExterna
     else no tiene fotografía
         SRV-->>CLI: sinFotografia
@@ -5974,7 +6147,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 100 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)**
+**Figura 103 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)**
 
 **Clases participantes:** `ClaimsService` (controlador de fachada del módulo de reclamos), la colección `Map<String, Reclamo>`, el objeto de dominio `Reclamo` y `S3Service` (fabricación pura: el cliente de Amazon S3). La operación es `ClaimsService.getPhotoLink` (el enlace en JSON) y `ClaimsService.getPhotoFile` (la dirección a la que se redirige).
 
@@ -5986,7 +6159,7 @@ sequenceDiagram
 |---|---|
 | `ClaimsService.consultarFotoDelReclamo(...)` | `ClaimsService.getPhotoLink` (el enlace) y `ClaimsService.getPhotoFile` (el archivo) |
 | `Map<String, Reclamo>.get(...)` | `ClaimsService.findOne` (y `ClaimsService.findForPhoto` para el cliente): lee el reclamo por su identificador |
-| `Reclamo.esDelCliente(...)` | `ClaimsService.findForPhoto`: el cliente sólo accede a sus propios reclamos; lo demás es 404 |
+| `Reclamo.esDelCliente(...)` | `ClaimsService.findForPhoto`: el cliente solo accede a sus propios reclamos; lo demás es 404 |
 | `Reclamo.getFoto()` | `ClaimsService.getPhotoLink`: lee la clave de la fotografía guardada (`photoKey`) o, si no hay, la dirección externa http(s) (`photoUrl`); sin ninguna, el enlace es nulo |
 
 **Observaciones de diseño**
@@ -5997,15 +6170,15 @@ sequenceDiagram
 
 ---
 
-### 4.6 SS-06 — Reportes y Dashboard
+### 4.6 SS-06 — Reportes y Tablero
 
-#### DSD — CU-026: Ver Dashboard General
+#### DSD — CU-026: Ver el Tablero General
 
 ##### Operación: consultarResumenDePedidos()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-026 Ver Dashboard General · consultarResumenDePedidos
+    title DSD — CU-026 Ver el Tablero General · consultarResumenDePedidos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :OrderService
@@ -6031,7 +6204,7 @@ sequenceDiagram
     SRV-->>-ADM: resumen
 ```
 
-**Figura 101 — DSD CU-026: Ver Dashboard General · consultarResumenDePedidos**
+**Figura 104 — DSD CU-026: Ver el Tablero General · consultarResumenDePedidos**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y las colecciones `List<Pedido>` y `List<Chofer>`.
 
@@ -6054,7 +6227,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-026 Ver Dashboard General · consultarGraficoDeVentas
+    title DSD — CU-026 Ver el Tablero General · consultarGraficoDeVentas
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :OrderService
@@ -6067,7 +6240,7 @@ sequenceDiagram
     SRV-->>-ADM: serie
 ```
 
-**Figura 102 — DSD CU-026: Ver Dashboard General · consultarGraficoDeVentas**
+**Figura 105 — DSD CU-026: Ver el Tablero General · consultarGraficoDeVentas**
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos) y la colección `List<Pedido>`.
 
@@ -6091,13 +6264,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-027: Ver Reporte de Ventas por Chofer
+#### DSD — CU-027: Ver el Reporte de Ventas por Chofer
 
 ##### Operación: consultarVentasPorChofer(fechaDesde, fechaHasta)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-027 Ver Reporte de Ventas por Chofer · consultarVentasPorChofer
+    title DSD — CU-027 Ver el Reporte de Ventas por Chofer · consultarVentasPorChofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ReportsService
@@ -6115,7 +6288,7 @@ sequenceDiagram
     SRV-->>-ADM: ventasPorChofer
 ```
 
-**Figura 103 — DSD CU-027: Ver Reporte de Ventas por Chofer**
+**Figura 106 — DSD CU-027: Ver el Reporte de Ventas por Chofer**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -6139,13 +6312,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-028: Ver Reporte de Ventas por Producto
+#### DSD — CU-028: Ver el Reporte de Ventas por Producto
 
 ##### Operación: consultarVentasPorProducto(fechaDesde, fechaHasta)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-028 Ver Reporte de Ventas por Producto · consultarVentasPorProducto
+    title DSD — CU-028 Ver el Reporte de Ventas por Producto · consultarVentasPorProducto
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ReportsService
@@ -6164,7 +6337,7 @@ sequenceDiagram
     SRV-->>-ADM: ventasPorProducto
 ```
 
-**Figura 104 — DSD CU-028: Ver Reporte de Ventas por Producto**
+**Figura 107 — DSD CU-028: Ver el Reporte de Ventas por Producto**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `ItemPedido`.
 
@@ -6184,19 +6357,19 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El `innerJoin` (no `leftJoin`) implica que un pedido sin ítems no aparece; correcto para un reporte de producto.
-- La agregación ocurre **en PostgreSQL**, y el servicio sólo castea con `Number` — el resultado vuelve como string desde el driver.
+- La agregación ocurre **en PostgreSQL**, y el servicio solo castea con `Number` — el resultado vuelve como string desde el driver.
 - Se agrupa por `type` **y** `description` porque `description` no es funcionalmente dependiente de `type` en el modelo actual y Postgres lo exigiría en el `GROUP BY`.
 - Suma `OrderItem.subtotal`, el valor guardado en cada renglón al crear el pedido, y no el precio vigente del catálogo ni el total del pedido: queda fuera el recargo de zona y el del método de pago, que sí suman los reportes por chofer, por método de pago y de evolución.
 
 ---
 
-#### DSD — CU-029: Ver Reporte por Método de Pago
+#### DSD — CU-029: Ver el Reporte por Método de Pago
 
 ##### Operación: consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-029 Ver Reporte por Método de Pago · consultarVentasPorMetodoDePago
+    title DSD — CU-029 Ver el Reporte por Método de Pago · consultarVentasPorMetodoDePago
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ReportsService
@@ -6214,7 +6387,7 @@ sequenceDiagram
     SRV-->>-ADM: ventasPorMetodoDePago
 ```
 
-**Figura 105 — DSD CU-029: Ver Reporte por Método de Pago**
+**Figura 108 — DSD CU-029: Ver el Reporte por Método de Pago**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -6233,17 +6406,17 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Es el reporte más barato del módulo: una sola pasada agregada sin joins.
-- Sólo cuenta pedidos `DELIVERED`; los pagos aprobados de pedidos cancelados no aparecen acá (para eso está la conciliación de pagos, fuera de este subsistema).
+- Solo cuenta pedidos `DELIVERED`; los pagos aprobados de pedidos cancelados no aparecen acá (para eso está la conciliación de pagos, fuera de este subsistema).
 
 ---
 
-#### DSD — CU-030: Ver Gráfico de Ventas
+#### DSD — CU-030: Ver el Gráfico de Ventas (últimos 7 días)
 
 ##### Operación: consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-030 Ver Gráfico de Ventas (últimos 7 días) · consultarEvolucionDeVentas
+    title DSD — CU-030 Ver el Gráfico de Ventas (últimos 7 días) · consultarEvolucionDeVentas
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ReportsService
@@ -6261,7 +6434,7 @@ sequenceDiagram
     SRV-->>-ADM: evolucion
 ```
 
-**Figura 106 — DSD CU-030: Ver Gráfico de Ventas**
+**Figura 109 — DSD CU-030: Ver el Gráfico de Ventas (últimos 7 días)**
 
 **Clases participantes:** `ReportsService` (controlador de fachada del módulo de reportes), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -6279,8 +6452,8 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Este caso de uso se resuelve **dos veces**, por dos caminos distintos: el reporte parametrizable de `ReportsService`, que es el de este diagrama, y el gráfico fijo de siete días del dashboard en `OrderService` (`consultarGraficoDeVentas`, CU-026).
-- El reporte parametrizable es estrictamente más general (rango libre y granularidad día, semana o mes). El gráfico del dashboard se mantiene porque el panel lo consume sin parámetros: es una duplicación funcional conocida.
+- Este caso de uso se resuelve **dos veces**, por dos caminos distintos: el reporte parametrizable de `ReportsService`, que es el de este diagrama, y el gráfico fijo de siete días del tablero en `OrderService` (`consultarGraficoDeVentas`, CU-026).
+- El reporte parametrizable es estrictamente más general (rango libre y granularidad día, semana o mes). El gráfico del tablero se mantiene porque el panel lo consume sin parámetros: es una duplicación funcional conocida.
 - Ambos caminos hacen **una sola consulta agregada** (`date_trunc` y `GROUP BY`), no una por período.
 
 ---
@@ -6296,21 +6469,27 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SRV as :ReportsService
     participant PEDS as :List#lt;Pedido#gt;
+    participant PED as pedido:Pedido
+    participant CAM as cambio:CambioEstadoPedido
 
     ADM->>+SRV: consultarCobrosPendientes(desde, hasta)
     SRV->>+PEDS: getConCobroPendiente(desde, hasta)
     PEDS-->>-SRV: cobros
     SRV->>+PEDS: getCanceladosYPagados(desde, hasta)
+    PEDS->>+PED: getFechaDeCancelacion()
+    PED->>+CAM: getUltimoHaciaCancelado()
+    CAM-->>-PED: fecha
+    PED-->>-PEDS: fecha
     PEDS-->>-SRV: reintegros
     SRV-->>-ADM: cobrosPendientes
     Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 107 — DSD CU-304: Ver los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)**
+**Figura 110 — DSD CU-304: Ver los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)**
 
-**Clases participantes:** `ReportsService` (controlador de servicio de los reportes) y la colección `List<Pedido>`.
+**Clases participantes:** `ReportsService` (controlador de servicio de los reportes), la colección `List<Pedido>` y los objetos de dominio `Pedido` y `CambioEstadoPedido`.
 
-**GRASP.** *Controlador*: `ReportsService` recibe la operación. *Experto*: la colección de `Pedido` reúne los pedidos entregados con el cobro pendiente, impago, perdido o fallido, y los cancelados ya pagados.
+**GRASP.** *Controlador*: `ReportsService` recibe la operación. *Experto*: la colección de `Pedido` reúne los pedidos entregados con el cobro pendiente, impago, perdido o fallido, y los cancelados ya pagados; cada `Pedido` sabe cuándo se canceló, porque su último `CambioEstadoPedido` hacia «cancelado» lleva la fecha.
 
 **No se dibuja:** el agrupado por medio de pago y estado, el límite de la fecha `to` inclusivo en hora argentina y el alcance por distribuidora.
 
@@ -6318,25 +6497,65 @@ sequenceDiagram
 |---|---|
 | `ReportsService.consultarCobrosPendientes(...)` | `ReportsController.getCollections` → `ReportsService.getCollections` |
 | `List<Pedido>.getConCobroPendiente(...)` | `ReportsService.getCollections`: agrupa por `Order.paymentMethod` y `Order.paymentStatus` los pedidos entregados del rango |
-| `List<Pedido>.getCanceladosYPagados(...)` | `ReportsService.getCollections`: cuenta los pedidos cancelados con el pago pagado, por `Order.updatedAt` |
+| `List<Pedido>.getCanceladosYPagados(...)` | `ReportsService.getCollections`: cuenta los pedidos cancelados con el pago pagado y suma su `Order.totalAmount`, ubicados por la fecha de cancelación |
+| `Pedido.getFechaDeCancelacion()` | `ReportsService.getCollections`: la fecha de la última transición a cancelado del historial (`OrderStatusHistory`), o `Order.updatedAt` si el pedido es anterior al historial |
+| `CambioEstadoPedido.getUltimoHaciaCancelado()` | `ReportsService.getCollections`: toma el máximo de la fecha de cambio de las filas del historial del pedido con destino cancelado |
 
 ---
 
 ### 4.7 SS-07 — Choferes y Vehículos
 
-#### DSD — CU-031: Registrar Chofer
+#### DSD — CU-031: Registrar un Chofer (Gestión de la Flota)
 
 Alta de un chofer desde el panel: `POST /users` con rol `delivery`. Es el mismo alta que CU-003 visto desde la gestión de choferes, y la identidad la crea el caso incluido CU-082.
 
-##### Operación: registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)
+##### Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)
 
-Operación registrarChofer: ver el DSD de CU-003.
+```mermaid
+sequenceDiagram
+    title DSD — CU-031 Registrar un Chofer (Gestión de la Flota) · registrarChoferEnLaFlota
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :RegistroService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant FBA as :FirebaseAuthPort
+
+    ADM->>+SRV: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)
+    SRV->>SRV: autorizarAlta(solicitante, rolChofer, distribuidoraId)
+    SRV->>COL: verificarDisponibilidad(correo, telefono)
+    SRV->>+FBA: createUserSafe(correo, contrasena, nombreCompleto, telefono)
+    FBA-->>-SRV: cuenta
+    create participant USR as usuario:Usuario
+    SRV->>USR: «create»(datosPersonales, rolChofer, cuenta)
+    create participant CHO as chofer:Chofer
+    SRV->>CHO: «create»(usuario, distribuidoraId, datosDelChofer)
+    opt La persistencia falla
+        SRV->>FBA: deleteUserSafe(cuenta)
+    end
+    SRV-->>-ADM: usuario
+```
+
+**Figura 111 — DSD CU-031: Registrar un Chofer (Gestión de la Flota) — Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)**
+
+
+**Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Chofer`. El diagrama sirve a CU-003 y a CU-031: es el mismo alta visto desde la gestión de usuarios y desde la de choferes.
+
+**GRASP.** *Controlador*: `RegistroService`. *Creador*: el controlador crea el `Usuario` y el `Chofer` con los datos de la operación; el `Chofer` nace sin validar, sin vehículo en uso y asociado a la distribuidora que decide la política de alta. La regla de quién puede crear a quién no está en el `Chofer` ni en el controlador sino en `autorizarAlta`, una función de dominio sin estado.
+
+**No se dibuja:** la búsqueda del rol, la transacción que guarda las dos filas, la comprobación de que la distribuidora esté activa y el evento `usuario.registrado`, que dispara el correo de bienvenida. El alta común es CU-082, caso incluido.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RegistroService.registrarChoferEnLaFlota(...)` | `RegistroController.registrar` (`POST /users`, con rol `delivery`) → `RegistroService.registrar` |
+| `RegistroService.autorizarAlta(...)` | `autorizarAlta()` (`politica-de-registro.ts`): un administrador de empresa solo da de alta en su distribuidora (403 si pide otra); el Administrador General indica la distribuidora (400 si no hay ninguna) |
+| `Map<String, Usuario>.verificarDisponibilidad(...)` | `UsersService.assertDisponible`: busca un `User` con ese `User.email` o ese `User.phoneNumber`, también entre los dados de baja; responde 409 si lo hay |
+| `Usuario.«create»` | `UsersService.crearEnTransaccion`: guarda el `User` dentro de la transacción del alta, con el rol que devuelve `RoleService.findByType` |
+| `Chofer.«create»` | `DeliveryService.crearPerfil`: guarda el `Delivery` en la misma transacción, con saldo y calificación en cero |
 
 **Observaciones de diseño**
 
-- **Una sola regla de autorización** para todas las altas: `autorizarAlta` recibe quién pide y qué rol pide, y devuelve la distribuidora del perfil o rechaza. Un admin de empresa no puede indicar otra distribuidora (403); el super admin indica la que quiera, que tiene que existir y estar activa (404 si no).
-- `DeliveryService.crearPerfil` recibe el `EntityManager` de la transacción del alta: el módulo dueño de la tabla escribe su fila sin que `registro` conozca la entidad `Delivery`.
-- No existe el auto-registro de choferes: la puerta pública siempre crea clientes.
+- La distribuidora la decide la política, no el cuerpo: un administrador solo puede dar de alta en la suya, que sale de su perfil y no del pedido.
+- El perfil de chofer lo crea `DeliveryService.crearPerfil`, dueño de la tabla, dentro de la transacción del alta.
 
 ---
 
@@ -6361,7 +6580,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 108 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)**
+**Figura 112 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -6377,8 +6596,8 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `validated` es **independiente** de `isEnabled`: un chofer puede estar validado y deshabilitado, o habilitado y sin validar. El panel y el despacho sólo cuentan como disponible al que cumple las tres condiciones: habilitado, validado y en línea.
-- Un administrador de empresa sólo opera sobre los choferes de su distribuidora: el controlador lo verifica antes de escribir y uno ajeno responde 404 (CU-096, CU-097 y CU-033 usan la misma verificación).
+- `validated` es **independiente** de `isEnabled`: un chofer puede estar validado y deshabilitado, o habilitado y sin validar. El panel y el despacho solo cuentan como disponible al que cumple las tres condiciones: habilitado, validado y en línea.
+- Un administrador de empresa solo opera sobre los choferes de su distribuidora: el controlador lo verifica antes de escribir y uno ajeno responde 404 (CU-096, CU-097 y CU-033 usan la misma verificación).
 
 ---
 
@@ -6403,7 +6622,7 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 109 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)**
+**Figura 113 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -6419,21 +6638,20 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `validated` es **independiente** de `isEnabled`: un chofer puede estar validado y deshabilitado, o habilitado y sin validar. El panel y el despacho sólo cuentan como disponible al que cumple las tres condiciones: habilitado, validado y en línea.
-- Un administrador de empresa sólo opera sobre los choferes de su distribuidora: el controlador lo verifica antes de escribir y uno ajeno responde 404 (CU-096, CU-097 y CU-033 usan la misma verificación).
+- `validated` es **independiente** de `isEnabled`: un chofer puede estar validado y deshabilitado, o habilitado y sin validar. El panel y el despacho solo cuentan como disponible al que cumple las tres condiciones: habilitado, validado y en línea.
+- Un administrador de empresa solo opera sobre los choferes de su distribuidora: el controlador lo verifica antes de escribir y uno ajeno responde 404 (CU-096, CU-097 y CU-033 usan la misma verificación).
 
 ---
 
 #### DSD — CU-033: Activar un Chofer
 
+Activar y desactivar a un chofer (CU-267) son dos operaciones del administrador que el sistema resuelve con el mismo método, con el estado de actividad en verdadero o en falso.
 
-Activar y desactivar a un chofer (CU-033 y CU-267) son la misma operación, con el estado de actividad en verdadero o en falso.
-
-##### Operación: cambiarEstadoDelChofer(choferId, activo)
+##### Operación: activarChofer(choferId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-033 / CU-267 · cambiarEstadoDelChofer
+    title DSD — CU-033 Activar un Chofer · activarChofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :DeliveryService
@@ -6441,10 +6659,10 @@ sequenceDiagram
     participant CHO as chofer:Chofer
     participant UBI as ubicacion:UbicacionGPS
 
-    ADM->>+SRV: cambiarEstadoDelChofer(choferId, activo)
+    ADM->>+SRV: activarChofer(choferId)
     SRV->>+COL: get(choferId)
     COL-->>-SRV: chofer
-    SRV->>+CHO: cambiarEstado(activo)
+    SRV->>+CHO: cambiarEstado(verdadero)
     opt activo es falso
         CHO->>CHO: desconectar()
     end
@@ -6455,7 +6673,8 @@ sequenceDiagram
     SRV-->>-ADM: chofer
 ```
 
-**Figura 110 — DSD CU-033: Activar un Chofer — Operación: cambiarEstadoDelChofer(choferId, activo)**
+**Figura 114 — DSD CU-033: Activar un Chofer — Operación: activarChofer(choferId)**
+
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `UbicacionGPS`.
 
@@ -6465,7 +6684,7 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `DeliveryService.cambiarEstadoDelChofer(...)` | `DeliveryController.toggleStatus` → `DeliveryService.toggleActiveStatus` |
+| `DeliveryService.activarChofer(...)` | `DeliveryController.toggleStatus` → `DeliveryService.toggleActiveStatus` |
 | `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` con su `User` y su `Role`; responde 404 si no existe |
 | `Chofer.cambiarEstado(...)` | `DeliveryService.toggleActiveStatus`: asigna `Delivery.isEnabled` |
 | `Chofer.desconectar()` | `DeliveryService.toggleActiveStatus`: asigna `Delivery.isAvailable` en falso |
@@ -6474,28 +6693,71 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - `isEnabled` es la habilitación **administrativa** y `isAvailable` la presencia en línea que pone el propio chofer (CU-022): son columnas separadas. Al deshabilitar, el chofer también queda fuera de línea y sale del radar de despacho, y no puede volver a ponerse en línea desde su app hasta que un administrador lo habilite.
-- `isActive` en la respuesta es un alias deprecado de `isEnabled`, que se conserva por compatibilidad con los clientes anteriores.
+- `isActive` en la respuesta es un alias en desuso de `isEnabled`, que se conserva por compatibilidad con los clientes anteriores.
 
 ---
 
 #### DSD — CU-267: Desactivar un Chofer
 
+Es la operación inversa de CU-033: el chofer queda deshabilitado, fuera de línea y fuera del radar de despacho. El sistema la resuelve con el mismo método, con el estado de actividad en falso.
 
-Es la misma operación que CU-033 con el estado de actividad en falso: el chofer queda deshabilitado, fuera de línea y fuera del radar de despacho.
+##### Operación: desactivarChofer(choferId)
 
-##### Operación: cambiarEstadoDelChofer(choferId, activo)
+```mermaid
+sequenceDiagram
+    title DSD — CU-267 Desactivar un Chofer · desactivarChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
 
-Operación cambiarEstadoDelChofer: ver el DSD de CU-033.
+    ADM->>+SRV: desactivarChofer(choferId)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: cambiarEstado(falso)
+    opt activo es falso
+        CHO->>CHO: desconectar()
+    end
+    deactivate CHO
+    opt activo es falso
+        SRV->>UBI: eliminar()
+    end
+    SRV-->>-ADM: chofer
+```
+
+**Figura 115 — DSD CU-267: Desactivar un Chofer — Operación: desactivarChofer(choferId)**
+
+
+**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `UbicacionGPS`.
+
+**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` conoce su habilitación y su presencia: al quedar inactivo se desconecta él mismo. `UbicacionGPS` es quien deja de figurar en el radar de despacho.
+
+**No se dibuja:** la verificación previa de que el chofer es de la distribuidora del contexto (`DeliveryService.assertAlcance`), el guardado del perfil y el armado de la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DeliveryService.desactivarChofer(...)` | `DeliveryController.toggleStatus` → `DeliveryService.toggleActiveStatus` |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` con su `User` y su `Role`; responde 404 si no existe |
+| `Chofer.cambiarEstado(...)` | `DeliveryService.toggleActiveStatus`: asigna `Delivery.isEnabled` |
+| `Chofer.desconectar()` | `DeliveryService.toggleActiveStatus`: asigna `Delivery.isAvailable` en falso |
+| `UbicacionGPS.eliminar()` | `RedisService.removeDriver`: saca al chofer del radar de despacho |
+
+**Observaciones de diseño**
+
+- `isEnabled` es la habilitación **administrativa** y `isAvailable` la presencia en línea que pone el propio chofer (CU-022): son columnas separadas. Al deshabilitar, el chofer también queda fuera de línea y sale del radar de despacho, y no puede volver a ponerse en línea desde su app hasta que un administrador lo habilite.
+- `isActive` en la respuesta es un alias en desuso de `isEnabled`, que se conserva por compatibilidad con los clientes anteriores.
 
 ---
 
-#### DSD — CU-034: Registrar Vehículo del Chofer
+#### DSD — CU-034: Registrar un Vehículo del Chofer
 
 ##### Operación: registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-034 Registrar Vehículo del Chofer · registrarVehiculo
+    title DSD — CU-034 Registrar un Vehículo del Chofer · registrarVehiculo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CarService
@@ -6512,7 +6774,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo
 ```
 
-**Figura 111 — DSD CU-034: Registrar Vehículo del Chofer**
+**Figura 116 — DSD CU-034: Registrar un Vehículo del Chofer**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `Vehiculo`.
 
@@ -6529,12 +6791,12 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La unicidad de patente es **global**, no por distribuidora: el `findOne` de verificación no filtra por `distributor_id`. Es la decisión correcta a nivel dominio (una patente es única en el mundo real) y contrasta con la unicidad **por tenant** del `type` de garrafa (CU-036).
-- El `distributor_id` del vehículo se toma del header (`@CurrentDistributor({ required: true })`), no del body.
+- La unicidad de patente es **global**, no por distribuidora: el `findOne` de verificación no filtra por `distributor_id`. Es la decisión correcta a nivel dominio (una patente es única en el mundo real) y contrasta con la unicidad **por distribuidora** del `type` de garrafa (CU-036).
+- El `distributor_id` del vehículo se toma del encabezado (`@CurrentDistributor({ required: true })`), no del body.
 
 ---
 
-#### DSD — CU-035: Consultar Listado de Choferes
+#### DSD — CU-035: Consultar el Listado de Choferes
 
 Cuatro vistas distintas del mismo agregado, resueltas por el mismo servicio.
 
@@ -6542,7 +6804,7 @@ Cuatro vistas distintas del mismo agregado, resueltas por el mismo servicio.
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-035 Consultar Listado de Choferes · listarChoferes
+    title DSD — CU-035 Consultar el Listado de Choferes · listarChoferes
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :DeliveryService
@@ -6554,13 +6816,13 @@ sequenceDiagram
     SRV-->>-ADM: choferes
 ```
 
-**Figura 112 — DSD CU-035: Consultar Listado de Choferes**
+**Figura 117 — DSD CU-035: Consultar el Listado de Choferes**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes) y el objeto de dominio `Distribuidora`.
 
 **GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Distribuidora` emplea a sus choferes (asociación del modelo conceptual) y es quien los entrega, paginados.
 
-**No se dibuja:** los filtros opcionales por texto y por grupo (habilitados, deshabilitados, en línea, sin validar), el total que viaja en una cabecera y el alcance del Administrador General sin distribuidora elegida, que ve los de todas.
+**No se dibuja:** los filtros opcionales por texto y por grupo (habilitados, deshabilitados, en línea, sin validar), el total que viaja en un encabezado y el alcance del Administrador General sin distribuidora elegida, que ve los de todas.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -6571,7 +6833,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-035 Consultar Listado de Choferes · listarChoferesActivos
+    title DSD — CU-035 Consultar el Listado de Choferes · listarChoferesActivos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :DeliveryService
@@ -6587,13 +6849,13 @@ sequenceDiagram
     SRV-->>-ADM: choferes
 ```
 
-**Figura 113 — DSD CU-035: Consultar Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)**
+**Figura 118 — DSD CU-035: Consultar el Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), y los objetos de dominio `Distribuidora` y `Chofer`.
 
 **GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` sabe si está activo, es decir habilitado, validado y en línea; `Distribuidora` reúne a los que lo están.
 
-**No se dibuja:** los filtros opcionales por texto, el total que viaja en una cabecera y la paginación de la consulta.
+**No se dibuja:** los filtros opcionales por texto, el total que viaja en un encabezado y la paginación de la consulta.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -6601,92 +6863,17 @@ sequenceDiagram
 | `Distribuidora.getChoferesActivos(...)` | `DeliveryService.findActiveDeliveries`: consulta los `Delivery` de la distribuidora con `Delivery.isEnabled`, `Delivery.validated` y `Delivery.isAvailable` |
 | `Chofer.estaActivo()` | la misma condición, evaluada en la consulta: `Delivery.isEnabled`, `Delivery.validated` y `Delivery.isAvailable` verdaderos |
 
-##### Operación: consultarDetalleDelChofer(choferId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-035 / CU-109 · consultarDetalleDelChofer
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :DeliveryService
-    participant COL as :Map#lt;String, Chofer#gt;
-    participant CHO as chofer:Chofer
-    participant USR as usuario:Usuario
-
-    ADM->>+SRV: consultarDetalleDelChofer(choferId)
-    SRV->>+COL: get(choferId)
-    COL-->>-SRV: chofer
-    SRV->>+CHO: getUsuario()
-    CHO-->>-SRV: usuario
-    SRV->>+USR: getRol()
-    USR-->>-SRV: rol
-    SRV-->>-ADM: chofer, usuario, rol
-```
-
-**Figura 114 — DSD CU-035: Consultar Listado de Choferes — Operación: consultarDetalleDelChofer(choferId)**
-
-**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `Usuario`.
-
-**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` conoce a su `Usuario` y éste a su `Rol`: la ficha se arma navegando las asociaciones del modelo conceptual.
-
-**No se dibuja:** la verificación de que el chofer es de la distribuidora del contexto o, si lo pide el propio chofer, de que la ficha es la suya (`DeliveryService.assertAlcance`), y el armado de la respuesta.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `DeliveryService.consultarDetalleDelChofer(...)` | `DeliveryController.findOne` → `DeliveryService.findOne` |
-| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` por `Delivery.deliveryId` con sus relaciones; responde 404 si no existe |
-| `Chofer.getUsuario()` | `Delivery.user`, cargada con la lectura |
-| `Usuario.getRol()` | `User.role`, cargada con la lectura |
-
-**Observaciones de diseño**
-
-- Las cuatro vistas (`GET /delivery`, `GET /delivery/active`, `GET /delivery/:id` y `GET /delivery/user/:userId`) acotan por la distribuidora del contexto; el propio chofer sólo puede leer su ficha.
-- «Activo» significa habilitado, validado y en línea (`isEnabled && validated && isAvailable`): son los que el despacho considera disponibles ahora mismo.
-- `findOneByUserId` es la vista que consume la app del chofer para armar su propio perfil (ver CU-049).
-
 ---
 
-#### DSD — CU-049: Consultar Balance / Ganancias del Chofer
+#### DSD — CU-049: Consultar las Ganancias del Chofer
 
-No existe un endpoint dedicado de **consulta** de balance: el chofer lo lee dentro de su perfil, y el admin lo ajusta con un delta.
-
-##### Operación: ajustarSaldoDelChofer(choferId, monto)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-049 Consultar Balance / Ganancias del Chofer · ajustarSaldoDelChofer
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :DeliveryService
-    participant COL as :Map#lt;String, Chofer#gt;
-    participant CHO as chofer:Chofer
-
-    ADM->>+SRV: ajustarSaldoDelChofer(choferId, monto)
-    SRV->>+COL: get(choferId)
-    COL-->>-SRV: chofer
-    SRV->>CHO: ajustarSaldo(monto)
-    SRV-->>-ADM: chofer
-```
-
-**Figura 115 — DSD CU-049: Consultar Balance / Ganancias del Chofer**
-
-**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
-
-**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` conoce su saldo y es quien lo ajusta; el monto es un delta, positivo o negativo.
-
-**No se dibuja:** la verificación previa de la distribuidora, el guardado y el armado de la respuesta.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `DeliveryService.ajustarSaldoDelChofer(...)` | `DeliveryController.updateBalance` → `DeliveryService.updateBalance` |
-| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` con su `User` y su `Role`; responde 404 si no existe |
-| `Chofer.ajustarSaldo(...)` | `DeliveryService.updateBalance`: suma el monto a `Delivery.balance` |
+No existe una ruta dedicada de **consulta** de balance: el chofer lo lee dentro de su perfil, y el admin lo ajusta con un delta.
 
 ##### Operación: consultarPerfilDelChofer(usuarioId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-049 Consultar Balance / Ganancias del Chofer · consultarPerfilDelChofer
+    title DSD — CU-049 Consultar las Ganancias del Chofer · consultarPerfilDelChofer
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :DeliveryService
@@ -6704,7 +6891,7 @@ sequenceDiagram
     SRV-->>-CHF: chofer, saldo
 ```
 
-**Figura 116 — DSD CU-049: Consultar Balance / Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)**
+**Figura 119 — DSD CU-049: Consultar las Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)**
 
 **Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Usuario>` y los objetos de dominio `Usuario` y `Chofer`.
 
@@ -6727,13 +6914,50 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-051: Consultar Listado de Vehículos
+#### DSD — CU-337: Ajustar el Saldo del Chofer
+
+##### Operación: ajustarSaldoDelChofer(choferId, monto)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-337 Ajustar el Saldo del Chofer · ajustarSaldoDelChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+
+    ADM->>+SRV: ajustarSaldoDelChofer(choferId, monto)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>CHO: ajustarSaldo(monto)
+    SRV-->>-ADM: chofer
+```
+
+**Figura 120 — DSD CU-337: Ajustar el Saldo del Chofer — Operación: ajustarSaldoDelChofer(choferId, monto)**
+
+
+**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
+
+**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` conoce su saldo y es quien lo ajusta; el monto es un delta, positivo o negativo.
+
+**No se dibuja:** la verificación previa de la distribuidora, el guardado y el armado de la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DeliveryService.ajustarSaldoDelChofer(...)` | `DeliveryController.updateBalance` → `DeliveryService.updateBalance` |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` con su `User` y su `Role`; responde 404 si no existe |
+| `Chofer.ajustarSaldo(...)` | `DeliveryService.updateBalance`: suma el monto a `Delivery.balance` |
+
+---
+
+#### DSD — CU-051: Consultar el Listado de Vehículos
 
 ##### Operación: listarVehiculos()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-051 Consultar Listado de Vehículos · listarVehiculos
+    title DSD — CU-051 Consultar el Listado de Vehículos · listarVehiculos
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CarService
@@ -6745,7 +6969,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculos
 ```
 
-**Figura 117 — DSD CU-051: Consultar Listado de Vehículos**
+**Figura 121 — DSD CU-051: Consultar el Listado de Vehículos**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos) y la colección `List<Vehiculo>` de la flota.
 
@@ -6758,40 +6982,202 @@ sequenceDiagram
 | `CarService.listarVehiculos(...)` | `CarController.findAll` → `CarService.findAll` |
 | `List<Vehiculo>.getVehiculosDe(...)` | `CarService.findAll`: los `Car` con `Car.distributorId`, con su `User` y el perfil de chofer (`User.delivery`) |
 
-##### Operación: buscarVehiculoPorPatente(patente)
+---
+
+#### DSD — CU-096: Actualizar el Perfil del Chofer
+
+##### Operación: actualizarPerfilDelChofer(choferId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-051 / CU-114 · buscarVehiculoPorPatente
+    title DSD — CU-096 Actualizar el Perfil del Chofer · actualizarPerfilDelChofer
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :CarService
-    participant COL as :Map#lt;String, Vehiculo#gt;
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
 
-    ADM->>+SRV: buscarVehiculoPorPatente(patente)
-    SRV->>+COL: get(patente)
-    COL-->>-SRV: vehiculo
-    SRV-->>-ADM: vehiculo
+    ADM->>+SRV: actualizarPerfilDelChofer(choferId, datos)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>CHO: actualizarPerfil(datos)
+    SRV-->>-ADM: chofer
 ```
 
-**Figura 118 — DSD CU-051: Consultar Listado de Vehículos — Operación: buscarVehiculoPorPatente(patente)**
+**Figura 122 — DSD CU-096: Actualizar el Perfil del Chofer**
 
-**Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos) y la colección `Map<String, Vehiculo>`, indexada por patente.
+**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
-**GRASP.** *Controlador*: `CarService`. La patente identifica al vehículo, así que la colección lo entrega directamente: no hace falta navegar desde otro objeto.
+**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` es quien toma los valores del perfil que le llegan; los demás atributos no se tocan.
 
-**No se dibuja:** la normalización de la patente, la condición de distribuidora y el armado de la respuesta; si no hay un vehículo con esa patente la respuesta no tiene cuerpo.
+**No se dibuja:** la verificación previa de la distribuidora, el guardado y la lectura final del perfil con su usuario y su rol.
 
 | Operación de diseño | Implementación |
 |---|---|
-| `CarService.buscarVehiculoPorPatente(...)` | `CarController.findByPatent` → `CarService.findByPatent` |
-| `Map<String, Vehiculo>.get(...)` | `CarService.findByPatent`: busca el `Car` por `Car.carPatent`, normalizada con `normalizarPatente()`, y devuelve nulo si no existe |
+| `DeliveryService.actualizarPerfilDelChofer(...)` | `DeliveryController.update` → `DeliveryService.update` |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.update`: con distribuidora en contexto, lee el `Delivery` y responde 404 si es de otra |
+| `Chofer.actualizarPerfil(...)` | `DeliveryService.update`: fusiona con `preload` los campos del `UpdateDeliveryDto` (solo `Delivery.validated`) y guarda |
+
+**Observaciones de diseño**
+
+- El `save` se hace sobre el resultado del `preload`, que es una **fusión parcial**: los campos ausentes del DTO conservan su valor en base. Es el mismo patrón que `GasCylinderService.update` y `CarService.update`.
+- El `findOne(id)` posterior no es redundante: recarga las relaciones `user` y `user.role` que el `preload` no trae, para devolverle al panel el perfil completo.
+- La ruta es solo de `ADMIN` y `SUPER_ADMIN`, y el `UpdateDeliveryDto` acepta únicamente `validated`: cualquier otra propiedad se rechaza con 400. La habilitación se cambia por CU-033 y CU-267.
+
+---
+
+#### DSD — CU-097: Eliminar un Chofer (baja lógica)
+
+##### Operación: eliminarChofer(choferId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-097 Eliminar un Chofer (baja lógica) · eliminarChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant USR as usuario:Usuario
+    participant ASG as asignacion:AsignacionVehiculo
+    participant UBI as ubicacion:UbicacionGPS
+
+    ADM->>+SRV: eliminarChofer(choferId)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: darDeBaja()
+    CHO->>CHO: assertSinPedidosEnCurso()
+    CHO->>USR: darDeBaja()
+    CHO->>ASG: cerrar()
+    deactivate CHO
+    SRV->>UBI: eliminar()
+    SRV-->>-ADM: confirmacion
+```
+
+**Figura 123 — DSD CU-097: Eliminar un Chofer (baja lógica)**
+
+**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer`, `Usuario`, `AsignacionVehiculo` y `UbicacionGPS`.
+
+**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` sabe si tiene pedidos en curso y da de baja su cuenta de `Usuario`; la `AsignacionVehiculo` abierta es quien se cierra; `UbicacionGPS` es quien deja el radar. La baja es lógica: nada se borra.
+
+**No se dibuja:** la transacción de la baja con el chofer bloqueado, el aviso del evento `chofer.dado-de-baja` que dispara el cierre de la asignación (`VehicleReleaseOnBajaListener`), la deshabilitación de la cuenta de Firebase y el 409 si hay pedidos en curso.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DeliveryService.eliminarChofer(...)` | `DeliveryController.remove` → `DeliveryService.remove` |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` con su `User` y su `Role`; responde 404 si no existe |
+| `Chofer.darDeBaja()` | `DeliveryService.remove`: delega en `UsersService.remove`, que baja la cuenta con su perfil en una transacción |
+| `Chofer.assertSinPedidosEnCurso()` | `UsersService.remove`: con el chofer bloqueado, cuenta sus pedidos en curso con `OrderLookupService.countActiveByDelivery` y rechaza con 409 |
+| `Usuario.darDeBaja()` | `UsersService.remove`: `softRemove` del `User`, que sella `User.deletedAt` y el de su perfil (`Delivery.deletedAt`) |
+| `AsignacionVehiculo.cerrar()` | `VehicleAssignmentService.liberarSiTieneUno`: asigna `VehicleAssignment.releasedAt` de la asignación abierta, si la hay |
+| `UbicacionGPS.eliminar()` | `RedisService.removeDriver`: lo saca del radar de despacho una vez confirmada la baja |
+
+**Observaciones de diseño**
+
+- Es **baja lógica**: la fila se sella con `deletedAt` y sale de las consultas siguientes, sin romper las claves foráneas de los pedidos históricos entregados por ese chofer. Es la razón por la que los reportes de CU-027 siguen resolviendo `delivery.user`.
+- Un chofer es de una sola distribuidora, así que la baja delega en `UsersService.remove` (CU-085): se da de baja la cuenta con su perfil y se deshabilita la cuenta de Firebase. Borrar solo el perfil dejaba al usuario vivo y sin rol utilizable.
+- Se rechaza con 409 si el chofer tiene pedidos aceptados o en camino. Se lo retira del radar recién con la baja confirmada: si la baja falla, el chofer sigue vigente y dentro del despacho; si Redis falla, la baja ya está hecha y el error se registra, sin revertirla.
+- Los vehículos no se dan de baja; el vehículo en uso se libera dentro de la transacción de la baja de la cuenta (CU-085), por el evento `chofer.dado-de-baja`; la deshabilitación de la cuenta de Firebase y el retiro del radar ocurren después de la confirmación.
+
+---
+
+#### DSD — CU-109: Consultar el Detalle del Chofer
+
+##### Operación: consultarDetalleDelChofer(choferId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-109 Consultar el Detalle del Chofer · consultarDetalleDelChofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant USR as usuario:Usuario
+
+    ADM->>+SRV: consultarDetalleDelChofer(choferId)
+    SRV->>+COL: get(choferId)
+    COL-->>-SRV: chofer
+    SRV->>+CHO: getUsuario()
+    CHO-->>-SRV: usuario
+    SRV->>+USR: getRol()
+    USR-->>-SRV: rol
+    SRV-->>-ADM: chofer, usuario, rol
+```
+
+**Figura 124 — DSD CU-109: Consultar el Detalle del Chofer — Operación: consultarDetalleDelChofer(choferId)**
+
+
+**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `Usuario`.
+
+**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` conoce a su `Usuario` y éste a su `Rol`: la ficha se arma navegando las asociaciones del modelo conceptual.
+
+**No se dibuja:** la verificación de que el chofer es de la distribuidora del contexto o, si lo pide el propio chofer, de que la ficha es la suya (`DeliveryService.assertAlcance`), y el armado de la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DeliveryService.consultarDetalleDelChofer(...)` | `DeliveryController.findOne` → `DeliveryService.findOne` |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` por `Delivery.deliveryId` con sus relaciones; responde 404 si no existe |
+| `Chofer.getUsuario()` | `Delivery.user`, cargada con la lectura |
+| `Usuario.getRol()` | `User.role`, cargada con la lectura |
+
+**Observaciones de diseño**
+
+- Las cuatro vistas (`GET /delivery`, `GET /delivery/active`, `GET /delivery/:id` y `GET /delivery/user/:userId`) acotan por la distribuidora del contexto; el propio chofer solo puede leer su ficha.
+- «Activo» significa habilitado, validado y en línea (`isEnabled && validated && isAvailable`): son los que el despacho considera disponibles ahora mismo.
+- `findOneByUserId` es la vista que consume la app del chofer para armar su propio perfil (ver CU-049).
+
+---
+
+#### DSD — CU-110: Buscar un Chofer por Usuario
+
+##### Operación: buscarChoferPorUsuario(usuarioId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-110 Buscar un Chofer por Usuario · buscarChoferPorUsuario
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :DeliveryService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
+
+    ADM->>+SRV: buscarChoferPorUsuario(usuarioId)
+    SRV->>+COL: get(usuarioId)
+    COL-->>-SRV: usuario
+    SRV->>+USR: getChofer()
+    USR-->>-SRV: chofer
+    SRV-->>-ADM: chofer
+```
+
+**Figura 125 — DSD CU-110: Buscar un Chofer por Usuario**
+
+**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`.
+
+**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Usuario` conoce su perfil de chofer (relación uno a uno del modelo conceptual).
+
+**No se dibuja:** la verificación de alcance (`DeliveryService.assertAlcance`) y el armado de la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DeliveryService.buscarChoferPorUsuario(...)` | `DeliveryController.findOneByUserId` → `DeliveryService.findOneByUserId` |
+| `Map<String, Usuario>.get(...)` | `DeliveryService.findOneByUserId`: una sola consulta que resuelve al usuario y a su perfil por `Delivery.userId`; responde 404 si el usuario no es chofer |
+| `Usuario.getChofer()` | `User.delivery`, cargada con la lectura |
+
+**Observaciones de diseño**
+
+- Es la relación uno a uno entre la cuenta de usuario y el perfil operativo del chofer.
+- La incluyen el resto de las operaciones del ABM del chofer, que parten del usuario y no del perfil.
+
+---
+
+#### DSD — CU-111: Editar un Vehículo
 
 ##### Operación: editarVehiculo(vehiculoId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-051 / CU-111 · editarVehiculo
+    title DSD — CU-111 Editar un Vehículo · editarVehiculo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CarService
@@ -6812,7 +7198,8 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo
 ```
 
-**Figura 119 — DSD CU-051: Consultar Listado de Vehículos — Operación: editarVehiculo(vehiculoId, datos)**
+**Figura 126 — DSD CU-111: Editar un Vehículo — Operación: editarVehiculo(vehiculoId, datos)**
+
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -6826,13 +7213,17 @@ sequenceDiagram
 | `Map<String, Vehiculo>.get(...)` | `CarService.findOne`: lee el `Car` con `Car.carId` y `Car.distributorId`; responde 404 si no existe o es de otra distribuidora |
 | `Vehiculo.editar(...)` | `CarService.update`: fusiona con `preload` las columnas que trae el pedido (`columnasDelAuto()`) y guarda |
 | `Vehiculo.assertPatenteUnica(...)` | `CarService.update`: busca otro `Car` con la misma `Car.carPatent` normalizada y rechaza con 400 |
-| `Vehiculo.assertLibre()` | `CarService.update` pregunta a `VehicleAssignmentService.assertVehiculoLibre` sólo si cambia la patente o el tipo: responde 409 "El vehículo está en uso: liberalo primero" si algún chofer lo tiene asignado |
+| `Vehiculo.assertLibre()` | `CarService.update` pregunta a `VehicleAssignmentService.assertVehiculoLibre` solo si cambia la patente o el tipo: responde 409 "El vehículo está en uso: liberalo primero" si algún chofer lo tiene asignado |
+
+---
+
+#### DSD — CU-112: Eliminar un Vehículo
 
 ##### Operación: eliminarVehiculo(vehiculoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-051 / CU-112 · eliminarVehiculo
+    title DSD — CU-112 Eliminar un Vehículo · eliminarVehiculo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CarService
@@ -6848,7 +7239,8 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 120 — DSD CU-051: Consultar Listado de Vehículos — Operación: eliminarVehiculo(vehiculoId)**
+**Figura 127 — DSD CU-112: Eliminar un Vehículo — Operación: eliminarVehiculo(vehiculoId)**
+
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -6871,193 +7263,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-096: Actualizar Perfil del Chofer
-
-##### Operación: actualizarPerfilDelChofer(choferId, datos)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-096 Actualizar Perfil del Chofer · actualizarPerfilDelChofer
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :DeliveryService
-    participant COL as :Map#lt;String, Chofer#gt;
-    participant CHO as chofer:Chofer
-
-    ADM->>+SRV: actualizarPerfilDelChofer(choferId, datos)
-    SRV->>+COL: get(choferId)
-    COL-->>-SRV: chofer
-    SRV->>CHO: actualizarPerfil(datos)
-    SRV-->>-ADM: chofer
-```
-
-**Figura 121 — DSD CU-096: Actualizar Perfil del Chofer**
-
-**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
-
-**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` es quien toma los valores del perfil que le llegan; los demás atributos no se tocan.
-
-**No se dibuja:** la verificación previa de la distribuidora, el guardado y la lectura final del perfil con su usuario y su rol.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `DeliveryService.actualizarPerfilDelChofer(...)` | `DeliveryController.update` → `DeliveryService.update` |
-| `Map<String, Chofer>.get(...)` | `DeliveryService.update`: con distribuidora en contexto, lee el `Delivery` y responde 404 si es de otra |
-| `Chofer.actualizarPerfil(...)` | `DeliveryService.update`: fusiona con `preload` los campos del `UpdateDeliveryDto` (sólo `Delivery.validated`) y guarda |
-
-**Observaciones de diseño**
-
-- El `save` se hace sobre el resultado del `preload`, que es una **fusión parcial**: los campos ausentes del DTO conservan su valor en base. Es el mismo patrón que `GasCylinderService.update` y `CarService.update`.
-- El `findOne(id)` posterior no es redundante: recarga las relaciones `user` y `user.role` que el `preload` no trae, para devolverle al panel el perfil completo.
-- El endpoint es sólo de `ADMIN` y `SUPER_ADMIN`, y el `UpdateDeliveryDto` acepta únicamente `validated`: cualquier otra propiedad se rechaza con 400. La habilitación se cambia por CU-033 y CU-267.
-
----
-
-#### DSD — CU-097: Eliminar Chofer (baja lógica)
-
-##### Operación: eliminarChofer(choferId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-097 Eliminar Chofer (baja lógica) · eliminarChofer
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :DeliveryService
-    participant COL as :Map#lt;String, Chofer#gt;
-    participant CHO as chofer:Chofer
-    participant USR as usuario:Usuario
-    participant ASG as asignacion:AsignacionVehiculo
-    participant UBI as ubicacion:UbicacionGPS
-
-    ADM->>+SRV: eliminarChofer(choferId)
-    SRV->>+COL: get(choferId)
-    COL-->>-SRV: chofer
-    SRV->>+CHO: darDeBaja()
-    CHO->>CHO: assertSinPedidosEnCurso()
-    CHO->>USR: darDeBaja()
-    CHO->>ASG: cerrar()
-    deactivate CHO
-    SRV->>UBI: eliminar()
-    SRV-->>-ADM: confirmacion
-```
-
-**Figura 122 — DSD CU-097: Eliminar Chofer (baja lógica)**
-
-**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer`, `Usuario`, `AsignacionVehiculo` y `UbicacionGPS`.
-
-**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Chofer` sabe si tiene pedidos en curso y da de baja su cuenta de `Usuario`; la `AsignacionVehiculo` abierta es quien se cierra; `UbicacionGPS` es quien deja el radar. La baja es lógica: nada se borra.
-
-**No se dibuja:** la transacción de la baja con el chofer bloqueado, el aviso del evento `chofer.dado-de-baja` que dispara el cierre de la asignación (`VehicleReleaseOnBajaListener`), la deshabilitación de la cuenta de Firebase y el 409 si hay pedidos en curso.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `DeliveryService.eliminarChofer(...)` | `DeliveryController.remove` → `DeliveryService.remove` |
-| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`: lee el `Delivery` con su `User` y su `Role`; responde 404 si no existe |
-| `Chofer.darDeBaja()` | `DeliveryService.remove`: delega en `UsersService.remove`, que baja la cuenta con su perfil en una transacción |
-| `Chofer.assertSinPedidosEnCurso()` | `UsersService.remove`: con el chofer bloqueado, cuenta sus pedidos en curso con `OrderLookupService.countActiveByDelivery` y rechaza con 409 |
-| `Usuario.darDeBaja()` | `UsersService.remove`: `softRemove` del `User`, que sella `User.deletedAt` y el de su perfil (`Delivery.deletedAt`) |
-| `AsignacionVehiculo.cerrar()` | `VehicleAssignmentService.liberarSiTieneUno`: asigna `VehicleAssignment.releasedAt` de la asignación abierta, si la hay |
-| `UbicacionGPS.eliminar()` | `RedisService.removeDriver`: lo saca del radar de despacho una vez confirmada la baja |
-
-**Observaciones de diseño**
-
-- Es **baja lógica**: la fila se sella con `deletedAt` y sale de las consultas siguientes, sin romper las claves foráneas de los pedidos históricos entregados por ese chofer. Es la razón por la que los reportes de CU-027 siguen resolviendo `delivery.user`.
-- Un chofer es de una sola distribuidora, así que la baja delega en `UsersService.remove` (CU-085): se da de baja la cuenta con su perfil y se deshabilita la cuenta de Firebase. Borrar sólo el perfil dejaba al usuario vivo y sin rol utilizable.
-- Se rechaza con 409 si el chofer tiene pedidos aceptados o en camino. Se lo retira del radar recién con la baja confirmada: si la baja falla, el chofer sigue vigente y dentro del despacho; si Redis falla, la baja ya está hecha y el error se registra, sin revertirla.
-- Los vehículos no se dan de baja; el vehículo en uso se libera dentro de la transacción de la baja de la cuenta (CU-085), por el evento `chofer.dado-de-baja`; la deshabilitación de la cuenta de Firebase y el retiro del radar ocurren después de la confirmación.
-
----
-
-#### DSD — CU-109: Consultar Detalle del Chofer
-
-##### Operación: consultarDetalleDelChofer(choferId)
-
-Operación consultarDetalleDelChofer: ver el DSD de CU-035.
-
-**Observaciones de diseño**
-
-- La misma lectura la reutilizan la edición (CU-096) y la baja (CU-097) antes de escribir.
-- La ficha la pueden leer el administrador, el Administrador General y el propio chofer, que sólo ve la suya; un administrador de empresa que pide la de un chofer de otra distribuidora recibe 404.
-
----
-
-#### DSD — CU-110: Buscar Chofer por Usuario
-
-##### Operación: buscarChoferPorUsuario(usuarioId)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-110 Buscar Chofer por Usuario · buscarChoferPorUsuario
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :DeliveryService
-    participant COL as :Map#lt;String, Usuario#gt;
-    participant USR as usuario:Usuario
-
-    ADM->>+SRV: buscarChoferPorUsuario(usuarioId)
-    SRV->>+COL: get(usuarioId)
-    COL-->>-SRV: usuario
-    SRV->>+USR: getChofer()
-    USR-->>-SRV: chofer
-    SRV-->>-ADM: chofer
-```
-
-**Figura 123 — DSD CU-110: Buscar Chofer por Usuario**
-
-**Clases participantes:** `DeliveryService` (controlador de fachada del módulo de choferes), la colección `Map<String, Usuario>` y el objeto de dominio `Usuario`.
-
-**GRASP.** *Controlador*: `DeliveryService`. *Experto*: `Usuario` conoce su perfil de chofer (relación uno a uno del modelo conceptual).
-
-**No se dibuja:** la verificación de alcance (`DeliveryService.assertAlcance`) y el armado de la respuesta.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `DeliveryService.buscarChoferPorUsuario(...)` | `DeliveryController.findOneByUserId` → `DeliveryService.findOneByUserId` |
-| `Map<String, Usuario>.get(...)` | `DeliveryService.findOneByUserId`: una sola consulta que resuelve al usuario y a su perfil por `Delivery.userId`; responde 404 si el usuario no es chofer |
-| `Usuario.getChofer()` | `User.delivery`, cargada con la lectura |
-
-**Observaciones de diseño**
-
-- Es la relación uno a uno entre la cuenta de usuario y el perfil operativo del chofer.
-- La incluyen el resto de las operaciones del ABM del chofer, que parten del usuario y no del perfil.
-
----
-
-#### DSD — CU-111: Editar Vehículo
-
-##### Operación: editarVehiculo(vehiculoId, datos)
-
-Operación editarVehiculo: ver el DSD de CU-051.
-
-**Observaciones de diseño**
-
-- El `findOne` previo no es redundante: es el que acota la escritura a la distribuidora del panel.
-- El `preload` fusiona: los campos que el DTO no trae conservan su valor en base, igual que en el chofer (CU-096).
-
----
-
-#### DSD — CU-112: Eliminar Vehículo
-
-##### Operación: eliminarVehiculo(vehiculoId)
-
-Operación eliminarVehiculo: ver el DSD de CU-051.
-
-**Observaciones de diseño**
-
-- La baja es lógica: `Car` tiene `@DeleteDateColumn` y `softRemove` sólo marca `deletedAt`, así que la historia que lo referencia conserva el vehículo.
-- El control de libre y la baja corren en una sola transacción, con la fila del vehículo bloqueada con el mismo bloqueo que toma `VehicleAssignmentService.ponerEnUso`: una asignación concurrente no puede colarse entre la comprobación y la baja.
-- La patente es única sólo entre los vehículos vigentes (índice parcial `UQ_car_patente_vigente`, con `deletedAt IS NULL`): dar de baja un vehículo libera su patente.
-- Un vehículo en uso no se da de baja: `CarService` le pregunta a `VehicleAssignmentService.assertVehiculoLibre` y responde 409 "El vehículo está en uso: liberalo primero". Uno ya liberado sí se puede dar de baja y su historial de uso sigue consultable (CU-165).
-
----
-
-#### DSD — CU-113: Consultar Detalle del Vehículo
+#### DSD — CU-113: Consultar el Detalle del Vehículo
 
 ##### Operación: consultarDetalleDelVehiculo(vehiculoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-113 Consultar Detalle del Vehículo · consultarDetalleDelVehiculo
+    title DSD — CU-113 Consultar el Detalle del Vehículo · consultarDetalleDelVehiculo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CarService
@@ -7072,7 +7284,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo, chofer
 ```
 
-**Figura 124 — DSD CU-113: Consultar Detalle del Vehículo**
+**Figura 128 — DSD CU-113: Consultar el Detalle del Vehículo**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -7093,26 +7305,47 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-114: Buscar Vehículo por Patente
+#### DSD — CU-114: Buscar un Vehículo por Patente
 
 ##### Operación: buscarVehiculoPorPatente(patente)
 
-Operación buscarVehiculoPorPatente: ver el DSD de CU-051.
+```mermaid
+sequenceDiagram
+    title DSD — CU-114 Buscar un Vehículo por Patente · buscarVehiculoPorPatente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COL as :Map#lt;String, Vehiculo#gt;
 
-**Observaciones de diseño**
+    ADM->>+SRV: buscarVehiculoPorPatente(patente)
+    SRV->>+COL: get(patente)
+    COL-->>-SRV: vehiculo
+    SRV-->>-ADM: vehiculo
+```
 
-- Busca por igualdad exacta de patente, no por coincidencia parcial.
-- Es el caso que incluyen la edición y la baja del vehículo cuando el operador parte de la patente y no del identificador.
+**Figura 129 — DSD CU-114: Buscar un Vehículo por Patente — Operación: buscarVehiculoPorPatente(patente)**
+
+
+**Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos) y la colección `Map<String, Vehiculo>`, indexada por patente.
+
+**GRASP.** *Controlador*: `CarService`. La patente identifica al vehículo, así que la colección lo entrega directamente: no hace falta navegar desde otro objeto.
+
+**No se dibuja:** la normalización de la patente, la condición de distribuidora y el armado de la respuesta; si no hay un vehículo con esa patente la respuesta no tiene cuerpo.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CarService.buscarVehiculoPorPatente(...)` | `CarController.findByPatent` → `CarService.findByPatent` |
+| `Map<String, Vehiculo>.get(...)` | `CarService.findByPatent`: busca el `Car` por `Car.carPatent`, normalizada con `normalizarPatente()`, y devuelve nulo si no existe |
 
 ---
 
-#### DSD — CU-115: Consultar Vehículos de un Chofer
+#### DSD — CU-115: Consultar los Vehículos de un Chofer
 
 ##### Operación: consultarVehiculosDelChofer(usuarioId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-115 Consultar Vehículos de un Chofer · consultarVehiculosDelChofer
+    title DSD — CU-115 Consultar los Vehículos de un Chofer · consultarVehiculosDelChofer
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CarService
@@ -7127,7 +7360,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculos
 ```
 
-**Figura 125 — DSD CU-115: Consultar Vehículos de un Chofer**
+**Figura 130 — DSD CU-115: Consultar los Vehículos de un Chofer**
 
 **Clases participantes:** `CarService` (controlador de fachada del módulo de vehículos), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
@@ -7150,11 +7383,11 @@ sequenceDiagram
 
 #### DSD — CU-136: Registrar el Seguro del Vehículo
 
-##### Operación: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
+##### Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-136 / CU-137 / CU-138 / CU-140 / CU-197 · crearTareaDeFlota
+    title DSD — CU-136 Registrar el Seguro del Vehículo · registrarSeguroDelVehiculo
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :FleetTaskService
@@ -7163,7 +7396,7 @@ sequenceDiagram
     participant COC as :Map#lt;String, Chofer#gt;
     participant PLN as plan:PlanMantenimiento
 
-    ADM->>+SRV: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
+    ADM->>+SRV: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)
     SRV->>+COP: get(planId)
     COP-->>-SRV: plan
     alt El plan es de un vehículo
@@ -7181,7 +7414,8 @@ sequenceDiagram
     SRV-->>-ADM: tarea
 ```
 
-**Figura 126 — DSD CU-136: Registrar el Seguro del Vehículo**
+**Figura 131 — DSD CU-136: Registrar el Seguro del Vehículo — Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)**
+
 
 **Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), las colecciones `Map<String, PlanMantenimiento>`, `Map<String, Vehiculo>` y `Map<String, Chofer>`, y los objetos de dominio `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al seguro del vehículo (CU-136), la verificación técnica (CU-137), la licencia del chofer (CU-138) el mantenimiento programado (CU-140) y la habilitación para transportar mercancías peligrosas (CU-197): cambia el plan y el tipo de recurso.
 
@@ -7191,7 +7425,7 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `FleetTaskService.crearTareaDeFlota(...)` | `FleetTaskController.create` → `FleetTaskService.create` |
+| `FleetTaskService.registrarSeguroDelVehiculo(...)` | `FleetTaskController.create` → `FleetTaskService.create` |
 | `Map<String, PlanMantenimiento>.get(...)` | `FleetTaskService.findPlanOrThrow`: lee el `MaintenancePlan` de la distribuidora; responde 404 si no existe |
 | `Map<String, Vehiculo>.get(...)` | `CarService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
 | `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
@@ -7209,27 +7443,121 @@ sequenceDiagram
 
 #### DSD — CU-137: Registrar la Verificación Técnica Vehicular
 
-##### Operación: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
+##### Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)
 
-Operación crearTareaDeFlota: ver el DSD de CU-136.
+```mermaid
+sequenceDiagram
+    title DSD — CU-137 Registrar la Verificación Técnica Vehicular · registrarVerificacionTecnica
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant COC as :Map#lt;String, Chofer#gt;
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    alt El plan es de un vehículo
+        SRV->>+COV: get(recursoId)
+        COV-->>-SRV: vehiculo
+    else El plan es de un chofer
+        SRV->>+COC: get(recursoId)
+        COC-->>-SRV: chofer
+    end
+    SRV->>+PLN: crearTarea(recurso, vencimiento, detalle)
+    PLN->>PLN: assertSujetoCoherente(recurso)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(recurso, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea
+```
+
+**Figura 132 — DSD CU-137: Registrar la Verificación Técnica Vehicular — Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)**
+
+
+**Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), las colecciones `Map<String, PlanMantenimiento>`, `Map<String, Vehiculo>` y `Map<String, Chofer>`, y los objetos de dominio `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al seguro del vehículo (CU-136), la verificación técnica (CU-137), la licencia del chofer (CU-138) el mantenimiento programado (CU-140) y la habilitación para transportar mercancías peligrosas (CU-197): cambia el plan y el tipo de recurso.
+
+**GRASP.** *Controlador*: `FleetTaskService`. *Creador*: `PlanMantenimiento` crea las `TareaMantenimiento` que genera (asociación «genera» del modelo conceptual) y sabe si su sujeto es un vehículo o un chofer, de modo que él valida la coherencia del recurso.
+
+**No se dibuja:** la fecha de calendario del vencimiento (se normaliza a medianoche UTC), el guardado y el cálculo de la habilitación, que no se guarda: se deriva en cada respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `FleetTaskService.registrarVerificacionTecnica(...)` | `FleetTaskController.create` → `FleetTaskService.create` |
+| `Map<String, PlanMantenimiento>.get(...)` | `FleetTaskService.findPlanOrThrow`: lee el `MaintenancePlan` de la distribuidora; responde 404 si no existe |
+| `Map<String, Vehiculo>.get(...)` | `CarService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `PlanMantenimiento.crearTarea(...)` | `FleetTaskService.create`: arma la tarea con `MaintenanceTask.planId`, `MaintenanceTask.carId` o `MaintenanceTask.deliveryId` y `MaintenanceTask.status` programada |
+| `PlanMantenimiento.assertSujetoCoherente(...)` | `FleetTaskService.assertSujetoCoherente`: compara `MaintenancePlan.subject` con el recurso recibido; responde 400 si no coincide |
+| `TareaMantenimiento.«create»` | `FleetTaskService.create`: `tasks.create` con `MaintenanceTask.dueAt`, normalizada con `normalizarFechaCalendario()` |
 
 **Observaciones de diseño**
 
-- Es la misma operación genérica de crear una tarea de flota (`POST /fleet/tasks`) que usa CU-136, apuntada a otro plan: no hay una entidad ni un endpoint propio de "verificación técnica".
-- Comparte la evaluación de habilitación con el seguro (CU-136) y la licencia del chofer (CU-138): un vehículo queda inhabilitado si tiene alguna tarea bloqueante vencida, sin importar de qué plan.
+- La habilitación no se guarda como campo: se deriva de `dueAt`, `leadTimeDays` y `criticality` en cada respuesta, para que no quede desactualizada cuando una tarea vence sola.
+- El número de póliza se guarda en `referenceNumber`, un campo genérico que comparten el seguro, la VTV y la licencia: el sistema construido no distingue «número de póliza» de «número de licencia» a nivel de columna.
+- El despacho consulta esta misma regla (`FleetDispatchLockService`) antes de ofrecer o asignar un pedido: un vehículo o un chofer inhabilitado no recibe pedidos.
 
 ---
 
 #### DSD — CU-138: Registrar la Licencia de Conducir del Chofer
 
-##### Operación: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
+##### Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)
 
-Operación crearTareaDeFlota: ver el DSD de CU-136.
+```mermaid
+sequenceDiagram
+    title DSD — CU-138 Registrar la Licencia de Conducir del Chofer · registrarLicenciaDeConducir
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant COC as :Map#lt;String, Chofer#gt;
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    alt El plan es de un vehículo
+        SRV->>+COV: get(recursoId)
+        COV-->>-SRV: vehiculo
+    else El plan es de un chofer
+        SRV->>+COC: get(recursoId)
+        COC-->>-SRV: chofer
+    end
+    SRV->>+PLN: crearTarea(recurso, vencimiento, detalle)
+    PLN->>PLN: assertSujetoCoherente(recurso)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(recurso, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea
+```
+
+**Figura 133 — DSD CU-138: Registrar la Licencia de Conducir del Chofer — Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)**
+
+
+**Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), las colecciones `Map<String, PlanMantenimiento>`, `Map<String, Vehiculo>` y `Map<String, Chofer>`, y los objetos de dominio `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al seguro del vehículo (CU-136), la verificación técnica (CU-137), la licencia del chofer (CU-138) el mantenimiento programado (CU-140) y la habilitación para transportar mercancías peligrosas (CU-197): cambia el plan y el tipo de recurso.
+
+**GRASP.** *Controlador*: `FleetTaskService`. *Creador*: `PlanMantenimiento` crea las `TareaMantenimiento` que genera (asociación «genera» del modelo conceptual) y sabe si su sujeto es un vehículo o un chofer, de modo que él valida la coherencia del recurso.
+
+**No se dibuja:** la fecha de calendario del vencimiento (se normaliza a medianoche UTC), el guardado y el cálculo de la habilitación, que no se guarda: se deriva en cada respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `FleetTaskService.registrarLicenciaDeConducir(...)` | `FleetTaskController.create` → `FleetTaskService.create` |
+| `Map<String, PlanMantenimiento>.get(...)` | `FleetTaskService.findPlanOrThrow`: lee el `MaintenancePlan` de la distribuidora; responde 404 si no existe |
+| `Map<String, Vehiculo>.get(...)` | `CarService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `PlanMantenimiento.crearTarea(...)` | `FleetTaskService.create`: arma la tarea con `MaintenanceTask.planId`, `MaintenanceTask.carId` o `MaintenanceTask.deliveryId` y `MaintenanceTask.status` programada |
+| `PlanMantenimiento.assertSujetoCoherente(...)` | `FleetTaskService.assertSujetoCoherente`: compara `MaintenancePlan.subject` con el recurso recibido; responde 400 si no coincide |
+| `TareaMantenimiento.«create»` | `FleetTaskService.create`: `tasks.create` con `MaintenanceTask.dueAt`, normalizada con `normalizarFechaCalendario()` |
 
 **Observaciones de diseño**
 
-- La licencia es una tarea del chofer (`deliveryId`), no del vehículo: lo sigue si cambia de unidad.
-- No existe ninguna tabla de equivalencias entre categoría de licencia y tipo de vehículo: el sistema guarda `category` como texto libre y no lo compara contra nada, de modo que la verificación de compatibilidad no está implementada.
+- La habilitación no se guarda como campo: se deriva de `dueAt`, `leadTimeDays` y `criticality` en cada respuesta, para que no quede desactualizada cuando una tarea vence sola.
+- El número de póliza se guarda en `referenceNumber`, un campo genérico que comparten el seguro, la VTV y la licencia: el sistema construido no distingue «número de póliza» de «número de licencia» a nivel de columna.
+- El despacho consulta esta misma regla (`FleetDispatchLockService`) antes de ofrecer o asignar un pedido: un vehículo o un chofer inhabilitado no recibe pedidos.
 
 ---
 
@@ -7263,7 +7591,7 @@ sequenceDiagram
     SRV-->>-ADM: vencimientos por vehiculo y por chofer
 ```
 
-**Figura 127 — DSD CU-139: Consultar los Vencimientos de la Flota**
+**Figura 134 — DSD CU-139: Consultar los Vencimientos de la Flota**
 
 **Clases participantes:** `FleetExpirationsService` (controlador de fachada de los vencimientos), la colección `List<TareaMantenimiento>` y los objetos de dominio `TareaMantenimiento`, `Vehiculo` y `Chofer`.
 
@@ -7288,14 +7616,61 @@ sequenceDiagram
 
 #### DSD — CU-140: Programar un Mantenimiento de Vehículo
 
-##### Operación: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
+##### Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)
 
-Operación crearTareaDeFlota: ver el DSD de CU-136.
+```mermaid
+sequenceDiagram
+    title DSD — CU-140 Programar un Mantenimiento de Vehículo · programarMantenimientoDeVehiculo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant COC as :Map#lt;String, Chofer#gt;
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    alt El plan es de un vehículo
+        SRV->>+COV: get(recursoId)
+        COV-->>-SRV: vehiculo
+    else El plan es de un chofer
+        SRV->>+COC: get(recursoId)
+        COC-->>-SRV: chofer
+    end
+    SRV->>+PLN: crearTarea(recurso, vencimiento, detalle)
+    PLN->>PLN: assertSujetoCoherente(recurso)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(recurso, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea
+```
+
+**Figura 135 — DSD CU-140: Programar un Mantenimiento de Vehículo — Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)**
+
+
+**Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), las colecciones `Map<String, PlanMantenimiento>`, `Map<String, Vehiculo>` y `Map<String, Chofer>`, y los objetos de dominio `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al seguro del vehículo (CU-136), la verificación técnica (CU-137), la licencia del chofer (CU-138) el mantenimiento programado (CU-140) y la habilitación para transportar mercancías peligrosas (CU-197): cambia el plan y el tipo de recurso.
+
+**GRASP.** *Controlador*: `FleetTaskService`. *Creador*: `PlanMantenimiento` crea las `TareaMantenimiento` que genera (asociación «genera» del modelo conceptual) y sabe si su sujeto es un vehículo o un chofer, de modo que él valida la coherencia del recurso.
+
+**No se dibuja:** la fecha de calendario del vencimiento (se normaliza a medianoche UTC), el guardado y el cálculo de la habilitación, que no se guarda: se deriva en cada respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `FleetTaskService.programarMantenimientoDeVehiculo(...)` | `FleetTaskController.create` → `FleetTaskService.create` |
+| `Map<String, PlanMantenimiento>.get(...)` | `FleetTaskService.findPlanOrThrow`: lee el `MaintenancePlan` de la distribuidora; responde 404 si no existe |
+| `Map<String, Vehiculo>.get(...)` | `CarService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `PlanMantenimiento.crearTarea(...)` | `FleetTaskService.create`: arma la tarea con `MaintenanceTask.planId`, `MaintenanceTask.carId` o `MaintenanceTask.deliveryId` y `MaintenanceTask.status` programada |
+| `PlanMantenimiento.assertSujetoCoherente(...)` | `FleetTaskService.assertSujetoCoherente`: compara `MaintenancePlan.subject` con el recurso recibido; responde 400 si no coincide |
+| `TareaMantenimiento.«create»` | `FleetTaskService.create`: `tasks.create` con `MaintenanceTask.dueAt`, normalizada con `normalizarFechaCalendario()` |
 
 **Observaciones de diseño**
 
-- El sistema no avisa al chofer asignado al crear la tarea, ni excluye al vehículo del despacho mientras el mantenimiento está agendado: ambas cosas quedan para el planificador de flota (CU-105), planificado (I-10).
-- No hay validación de que `scheduledAt` sea una fecha futura: el sistema la acepta igual.
+- La habilitación no se guarda como campo: se deriva de `dueAt`, `leadTimeDays` y `criticality` en cada respuesta, para que no quede desactualizada cuando una tarea vence sola.
+- El número de póliza se guarda en `referenceNumber`, un campo genérico que comparten el seguro, la VTV y la licencia: el sistema construido no distingue «número de póliza» de «número de licencia» a nivel de columna.
+- El despacho consulta esta misma regla (`FleetDispatchLockService`) antes de ofrecer o asignar un pedido: un vehículo o un chofer inhabilitado no recibe pedidos.
 
 ---
 
@@ -7321,7 +7696,7 @@ sequenceDiagram
     SRV-->>-ADM: tarea
 ```
 
-**Figura 128 — DSD CU-141: Registrar un Mantenimiento Realizado**
+**Figura 136 — DSD CU-141: Registrar un Mantenimiento Realizado**
 
 **Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), la colección `Map<String, TareaMantenimiento>` y el objeto de dominio `TareaMantenimiento`.
 
@@ -7338,18 +7713,18 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `close` no controla que el kilometraje cargado sea mayor al del último mantenimiento del vehículo, ni actualiza el kilometraje en la ficha del vehículo (`Car`): el dato queda sólo en la tarea. El control de retroceso y la actualización del odómetro no están implementados.
+- `close` no controla que el kilometraje cargado sea mayor al del último mantenimiento del vehículo, ni actualiza el kilometraje en la ficha del vehículo (`Car`): el dato queda solo en la tarea. El control de retroceso y la actualización del odómetro no están implementados.
 - El costo por vehículo, si se necesita, hay que sumarlo recorriendo las tareas cerradas: no hay un total acumulado persistido.
 
 ---
 
 #### DSD — CU-142: Avisar los Vencimientos Próximos de la Flota
 
-##### Operación: avisarVencimientosPendientes()
+##### Operación: avisarVencimientosDeLaFlota()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-142 / CU-188 · avisarVencimientosPendientes
+    title DSD — CU-142 Avisar los Vencimientos Próximos de la Flota · avisarVencimientosDeLaFlota
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant CRN as :FleetAlertsCron
@@ -7359,7 +7734,7 @@ sequenceDiagram
     participant DIS as distribuidora:Distribuidora
     participant MAI as :EmailSenderPort
 
-    SIS->>+CRN: avisarVencimientosPendientes()
+    SIS->>+CRN: avisarVencimientosDeLaFlota()
     CRN->>+LST: getSinAvisar()
     LST-->>-CRN: tareas
     loop Por cada tarea sin avisar
@@ -7379,7 +7754,8 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 129 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota**
+**Figura 137 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota — Operación: avisarVencimientosDeLaFlota()**
+
 
 **Clases participantes:** `FleetAlertsCron` (controlador del proceso temporal), la colección `List<TareaMantenimiento>`, los objetos de dominio `TareaMantenimiento`, `Empleado` y `Distribuidora`, y `EmailSenderPort` (fabricación pura: el envío del correo, detrás de un puerto).
 
@@ -7389,6 +7765,7 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
+| `FleetAlertsCron.avisarVencimientosDeLaFlota(...)` | `FleetAlertsCron.avisarVencimientosPendientes`: la tarea programada diaria (`@Cron`, a las 8) que recorre las tareas de la flota sin avisar |
 | `List<TareaMantenimiento>.getSinAvisar()` | `FleetAlertsCron.tareasSinAvisar`: las `MaintenanceTask` abiertas con `MaintenanceTask.dueAt` y sin `MaintenanceTask.alertedAt` |
 | `TareaMantenimiento.getEstadoDeVencimiento()` | `calcularEstadoDeVencimiento()`; se conservan las que están por vencer o vencidas |
 | `Distribuidora.getAdministradores()` | `AdminService.findAll`: los `Admin` de la distribuidora con su `User`, de donde sale el correo |
@@ -7397,18 +7774,18 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es una tarea programada más, no un proceso automatizado: no decide, sólo avisa. Su frecuencia (una vez por día, a las 8) queda fija en el código con `@Cron`, sin ninguna pantalla para configurarla.
+- Es una tarea programada más, no un proceso automatizado: no decide, solo avisa. Su frecuencia (una vez por día, a las 8) queda fija en el código con `@Cron`, sin ninguna pantalla para configurarla.
 - La anticipación no es una ventana configurable por distribuidora: es `leadTimeDays`, un atributo de **cada plan**. Si falla el envío de una distribuidora, sus tareas no se marcan como avisadas y se reintentan al día siguiente; si una distribuidora no tiene ningún administrador con correo, se marcan igual, porque no hay a quién reintentarle.
 
 ---
 
-#### DSD — CU-155: Adjuntar Archivo a una Tarea de Flota
+#### DSD — CU-155: Adjuntar un Archivo a una Tarea de Flota
 
 ##### Operación: adjuntarArchivoALaTarea(tareaId, archivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-155 Adjuntar Archivo a una Tarea de Flota · adjuntarArchivoALaTarea
+    title DSD — CU-155 Adjuntar un Archivo a una Tarea de Flota · adjuntarArchivoALaTarea
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :FleetAttachmentService
@@ -7428,7 +7805,7 @@ sequenceDiagram
     SRV-->>-ADM: adjunto
 ```
 
-**Figura 130 — DSD CU-155: Adjuntar Archivo a una Tarea de Flota**
+**Figura 138 — DSD CU-155: Adjuntar un Archivo a una Tarea de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos) y los objetos de dominio `TareaMantenimiento` y `AdjuntoTarea`.
 
@@ -7452,13 +7829,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-156: Consultar Adjuntos de una Tarea de Flota
+#### DSD — CU-156: Consultar los Adjuntos de una Tarea de Flota
 
 ##### Operación: consultarAdjuntosDeLaTarea(tareaId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-156 Consultar Adjuntos de una Tarea de Flota · consultarAdjuntosDeLaTarea
+    title DSD — CU-156 Consultar los Adjuntos de una Tarea de Flota · consultarAdjuntosDeLaTarea
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :FleetAttachmentService
@@ -7473,7 +7850,7 @@ sequenceDiagram
     SRV-->>-ADM: adjuntos
 ```
 
-**Figura 131 — DSD CU-156: Consultar Adjuntos de una Tarea de Flota**
+**Figura 139 — DSD CU-156: Consultar los Adjuntos de una Tarea de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>` y el objeto de dominio `TareaMantenimiento`.
 
@@ -7489,7 +7866,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `GET /fleet/tasks/:id` ya arma este mismo listado al traer el detalle de la tarea: este endpoint existe para refrescar sólo los adjuntos.
+- `GET /fleet/tasks/:id` ya arma este mismo listado al traer el detalle de la tarea: esta ruta existe para refrescar solo los adjuntos.
 
 ---
 
@@ -7517,7 +7894,7 @@ sequenceDiagram
     SRV-->>-ADM: enlace
 ```
 
-**Figura 132 — DSD CU-157: Descargar un Adjunto de Flota**
+**Figura 140 — DSD CU-157: Descargar un Adjunto de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos).
 
@@ -7561,7 +7938,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 133 — DSD CU-158: Eliminar un Adjunto de Flota**
+**Figura 141 — DSD CU-158: Eliminar un Adjunto de Flota**
 
 **Clases participantes:** `FleetAttachmentService` (controlador de fachada de los adjuntos de flota), la colección `Map<String, TareaMantenimiento>` y el objeto de dominio `TareaMantenimiento`. No participa S3: la baja es lógica y el archivo se conserva.
 
@@ -7577,11 +7954,11 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La baja es lógica (`Repository.softRemove`): la fila queda con fecha de baja y el archivo se conserva en S3 como respaldo; no se anota nada en `storage_orphan`. La cola de borrados con reintentos (1, 5 y 30 segundos y después una tarea horaria) se usa sólo para los archivos que quedan sin referencia: una subida cuyo registro falla o la foto reemplazada de un reclamo.
+- La baja es lógica (`Repository.softRemove`): la fila queda con fecha de baja y el archivo se conserva en S3 como respaldo; no se anota nada en `storage_orphan`. La cola de borrados con reintentos (1, 5 y 30 segundos y después una tarea horaria) se usa solo para los archivos que quedan sin referencia: una subida cuyo registro falla o la foto reemplazada de un reclamo.
 
 ---
 
-#### DSD — CU-159: Almacenar Archivo
+#### DSD — CU-159: Almacenar un Archivo
 
 Caso incluido desde CU-155 y CU-174: no tiene operación del sistema propia, el diagrama es el fragmento que realiza el caso incluido y su primer mensaje sale del controlador del caso base.
 
@@ -7590,7 +7967,7 @@ Caso incluido desde CU-155 y CU-174: no tiene operación del sistema propia, el 
 ```mermaid
 %%{init: {"sequence": {"actorMargin": 190}}}%%
 sequenceDiagram
-    title DSD — CU-159 Almacenar Archivo · almacenarArchivo
+    title DSD — CU-159 Almacenar un Archivo · almacenarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
     participant S3 as :S3Service
@@ -7601,13 +7978,13 @@ sequenceDiagram
     deactivate S3
 ```
 
-**Figura 134 — DSD CU-159: Almacenar Archivo**
+**Figura 142 — DSD CU-159: Almacenar un Archivo**
 
 **Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-155; en CU-174 es `ClaimsService`) y `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos). No hay objeto de dominio: el archivo todavía no tiene registro, y el `AdjuntoTarea` que lo describe lo crea el caso base después de guardarlo.
 
 **GRASP.** *Controlador*: el del caso base. *Bajo Acoplamiento*: el servicio nunca habla con el SDK de S3: lo hace `S3Service`, que concentra el bucket, la región, las credenciales y el cifrado. *Fabricación pura*: `S3Service` no es un concepto del dominio; existe para que ninguna otra clase conozca a AWS.
 
-**No se dibuja:** la lectura de la configuración (`AWS_S3_BUCKET`, `AWS_REGION`, y las credenciales o el endpoint de MinIO en desarrollo), que se hace una sola vez al arrancar.
+**No se dibuja:** la lectura de la configuración (`AWS_S3_BUCKET`, `AWS_REGION`, y las credenciales o la ruta de MinIO en desarrollo), que se hace una sola vez al arrancar.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -7621,7 +7998,7 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-160: Recuperar Archivo
+#### DSD — CU-160: Recuperar un Archivo
 
 Caso incluido desde CU-157 y CU-175: no tiene operación del sistema propia, el diagrama es el fragmento que realiza el caso incluido y su primer mensaje sale del controlador del caso base.
 
@@ -7630,7 +8007,7 @@ Caso incluido desde CU-157 y CU-175: no tiene operación del sistema propia, el 
 ```mermaid
 %%{init: {"sequence": {"actorMargin": 190}}}%%
 sequenceDiagram
-    title DSD — CU-160 Recuperar Archivo · recuperarArchivo
+    title DSD — CU-160 Recuperar un Archivo · recuperarArchivo
     autonumber
     participant SRV as :FleetAttachmentService
     participant S3 as :S3Service
@@ -7641,7 +8018,7 @@ sequenceDiagram
     S3-->>-SRV: enlace
 ```
 
-**Figura 135 — DSD CU-160: Recuperar Archivo**
+**Figura 143 — DSD CU-160: Recuperar un Archivo**
 
 **Clases participantes:** `FleetAttachmentService` (controlador del caso base CU-157; en CU-175 es `ClaimsService`) y `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos). No hay objeto de dominio: el caso base le pasa la clave que ya leyó del `AdjuntoTarea`.
 
@@ -7697,7 +8074,7 @@ sequenceDiagram
     SRV-->>-ADM: asignacion
 ```
 
-**Figura 136 — DSD CU-161: Poner un Vehículo en Uso para un Chofer**
+**Figura 144 — DSD CU-161: Poner un Vehículo en Uso para un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), las colecciones `Map<String, Chofer>`, `Map<String, Vehiculo>` y `List<AsignacionVehiculo>`, `FleetTaskService` (fabricación pura: la regla de habilitación de la flota) y los objetos de dominio `Chofer` y `AsignacionVehiculo`. En el código, la comprobación de flota la hace `DeliveryVehicleController.ponerEnUso` antes de llamar al servicio, porque el módulo de vehículos no puede depender del de flota.
 
@@ -7723,7 +8100,7 @@ sequenceDiagram
 - El cierre de la asignación del chofer y de la del vehículo es **una sola sentencia** `UPDATE` con las dos condiciones: dos sentencias separadas bloqueaban filas en orden cruzado y dos transacciones simultáneas podían caer en un deadlock. Los índices únicos parciales `UQ_vehicle_assignment_car_abierta` y `UQ_vehicle_assignment_delivery_abierta` son la última defensa si dos requests chocan de verdad.
 - Poner el mismo vehículo que el chofer ya tiene en uso es **idempotente**: devuelve la asignación abierta y no cierra ni abre nada, de modo que el historial no crece.
 - Todo corre en una transacción que bloquea la fila del vehículo y las de los choferes involucrados, siempre en orden de id, antes de mirar si hay un viaje en curso: así dos llamadas cruzadas no se bloquean entre sí. Un deadlock se reintenta hasta tres intentos en total, dos reintentos (`withTransactionRetry`), y, si persiste, responde 409; un choque de unicidad (23505) responde 409 de inmediato.
-- El 400 "No se puede asignar" por documentación vencida lo lanza el controlador, a través de `FleetTaskService.assertVehiculoHabilitado`, antes de llamar al servicio de asignaciones; el servicio sólo responde 404 si el vehículo no existe o es de otra distribuidora.
+- El 400 "No se puede asignar" por documentación vencida lo lanza el controlador, a través de `FleetTaskService.assertVehiculoHabilitado`, antes de llamar al servicio de asignaciones; el servicio solo responde 404 si el vehículo no existe o es de otra distribuidora.
 - El controlador está en el módulo de flota y no en el del vehículo porque necesita `FleetTaskService`, que ya depende del módulo del vehículo: la dependencia inversa sería un ciclo.
 - Pueden operar el Administrador y el Administrador General (`@Auth(ADMIN, SUPER_ADMIN)`); el Administrador General debe indicar la distribuidora con el encabezado `X-Distributor`, y sin ella recibe 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".
 
@@ -7754,7 +8131,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 137 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer**
+**Figura 145 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer` y `AsignacionVehiculo`.
 
@@ -7805,7 +8182,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo, inhabilitado
 ```
 
-**Figura 138 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer**
+**Figura 146 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>`, el objeto de dominio `Chofer` y `FleetTaskService` (fabricación pura: la regla de habilitación de la flota). En el código, el cálculo de la inhabilitación lo pide `DeliveryVehicleController` después de leer la asignación.
 
@@ -7843,7 +8220,7 @@ sequenceDiagram
     SRV-->>-CHF: vehiculo, inhabilitado
 ```
 
-**Figura 139 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()**
+**Figura 147 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>`, el objeto de dominio `Chofer` y `FleetTaskService` (fabricación pura: la regla de habilitación de la flota).
 
@@ -7887,13 +8264,13 @@ sequenceDiagram
     SRV-->>-ADM: asignaciones
 ```
 
-**Figura 140 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer**
+**Figura 148 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Chofer>` y el objeto de dominio `Chofer`.
 
 **GRASP.** *Controlador*: `VehicleAssignmentService`. *Experto*: `Chofer` conoce sus asignaciones y es quien entrega las de su historial, la más reciente primero.
 
-**No se dibuja:** la verificación de que el chofer es de la distribuidora, el total que viaja en una cabecera y el armado de la respuesta.
+**No se dibuja:** la verificación de que el chofer es de la distribuidora, el total que viaja en un encabezado y el armado de la respuesta.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -7903,7 +8280,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El total viaja en una cabecera y no en el cuerpo para no cambiar el contrato de los listados que ya consumen las aplicaciones: un arreglo de filas.
+- El total viaja en un encabezado y no en el cuerpo para no cambiar el contrato de los listados que ya consumen las aplicaciones: un arreglo de filas.
 - Pueden operar el Administrador y el Administrador General (`@Auth(ADMIN, SUPER_ADMIN)`); el Administrador General debe indicar la distribuidora con el encabezado `X-Distributor`, y sin ella recibe 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".
 
 ---
@@ -7929,13 +8306,13 @@ sequenceDiagram
     SRV-->>-ADM: asignaciones
 ```
 
-**Figura 141 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo**
+**Figura 149 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo**
 
 **Clases participantes:** `VehicleAssignmentService` (controlador de fachada de las asignaciones de vehículo), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`.
 
 **GRASP.** *Controlador*: `VehicleAssignmentService`. *Experto*: `Vehiculo` conoce sus asignaciones y es quien entrega las de su historial, la más reciente primero.
 
-**No se dibuja:** el total que viaja en una cabecera y el armado de la respuesta.
+**No se dibuja:** el total que viaja en un encabezado y el armado de la respuesta.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -7986,24 +8363,28 @@ sequenceDiagram
     SRV-->>-ADM: cargaCombustible
 ```
 
-**Figura 142 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)**
+**Figura 150 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)**
 
 **Clases participantes (colaboración propuesta):** `FuelLoadService` (controlador del módulo de gastos de la flota, que no existe en el código y se construye en la iteración I-12), la colección `Map<String, Vehiculo>`, `FuelConsumptionCalculator` (fabricación pura propuesta), `EmailSenderPort` (existente) y los objetos de dominio `Vehiculo` y `CargaCombustible`.
 
 **GRASP.** *Controlador*: `FuelLoadService`. *Creador*: `Vehiculo` crea sus `CargaCombustible`, porque las registra (composición del modelo conceptual). *Experto*: `Vehiculo` conoce su última carga y su capacidad de tanque, de modo que es quien valida que el kilometraje no retroceda y que los litros entren, y quien actualiza su propio kilometraje. *Fabricación pura*: `FuelConsumptionCalculator` calcula el consumo del tramo y su desvío respecto del promedio, sin acceder a la base, para que el mismo cálculo sirva a CU-196.
 
-**No se dibuja:** el chofer que registra con su vehículo en uso (`POST /fleet/fuel-loads/mine`), que entra por el mismo servicio con el vehículo ya resuelto; la comprobación del importe contra los litros por el precio; la corrección del kilometraje con `odometerCorrection`, sólo del administrador; la transacción con el bloqueo del vehículo y el guardado.
+**No se dibuja:** el chofer que registra con su vehículo en uso (`POST /fleet/fuel-loads/mine`), que entra por el mismo servicio con el vehículo ya resuelto; la comprobación del importe contra los litros por el precio; la corrección del kilometraje con `odometerCorrection`, solo del administrador; la transacción con el bloqueo del vehículo y el guardado.
 
 **Observaciones de diseño**
 
 - El kilometraje del vehículo se actualiza desde un único método que toma el mayor entre el valor vigente y el de la carga, de modo que la carga de combustible y el cierre de las tareas de mantenimiento no se pisan.
 - El aviso al administrador sale por `EmailSenderPort` después de guardar la carga, fuera de la transacción: un fallo del correo no deshace la carga.
 
+---
+
+#### DSD — CU-320: Modificar una Carga de Combustible
+
 ##### Operación: modificarCargaDeCombustible(cargaId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-195 Registrar una Carga de Combustible · modificarCargaDeCombustible
+    title DSD — CU-320 Modificar una Carga de Combustible · modificarCargaDeCombustible
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :FuelLoadService
@@ -8022,7 +8403,8 @@ sequenceDiagram
     SRV-->>-ADM: cargaCombustible
 ```
 
-**Figura 143 — DSD CU-195: Registrar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)**
+**Figura 151 — DSD CU-320: Modificar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)**
+
 
 **Clases participantes (colaboración propuesta):** `FuelLoadService`, la colección `Map<String, CargaCombustible>` y los objetos de dominio `CargaCombustible` y `Vehiculo`.
 
@@ -8033,13 +8415,17 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Modificar no recalcula la marca de anomalía: se decide al registrar la carga.
-- El kilometraje del vehículo sólo sube: si la carga modificada ya no es la última, el kilometraje del vehículo no cambia.
+- El kilometraje del vehículo solo sube: si la carga modificada ya no es la última, el kilometraje del vehículo no cambia.
+
+---
+
+#### DSD — CU-321: Anular una Carga de Combustible
 
 ##### Operación: anularCargaDeCombustible(cargaId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-195 Registrar una Carga de Combustible · anularCargaDeCombustible
+    title DSD — CU-321 Anular una Carga de Combustible · anularCargaDeCombustible
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :FuelLoadService
@@ -8057,7 +8443,8 @@ sequenceDiagram
     SRV-->>-ADM: cargaCombustible
 ```
 
-**Figura 144 — DSD CU-195: Registrar una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)**
+**Figura 152 — DSD CU-321: Anular una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)**
+
 
 **Clases participantes (colaboración propuesta):** `FuelLoadService`, la colección `Map<String, CargaCombustible>` y los objetos de dominio `CargaCombustible` y `Vehiculo`.
 
@@ -8069,11 +8456,15 @@ sequenceDiagram
 
 - Una carga anulada no entra en los cálculos de consumo ni de costo, y no se puede volver a anular.
 
+---
+
+#### DSD — CU-322: Consultar las Cargas de Combustible
+
 ##### Operación: consultarCargasDeCombustible(filtros)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-195 Registrar una Carga de Combustible · consultarCargasDeCombustible
+    title DSD — CU-322 Consultar las Cargas de Combustible · consultarCargasDeCombustible
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :FuelLoadService
@@ -8085,11 +8476,12 @@ sequenceDiagram
     SRV-->>-ADM: cargas
 ```
 
-**Figura 145 — DSD CU-195: Registrar una Carga de Combustible — Operación: consultarCargasDeCombustible(filtros)**
+**Figura 153 — DSD CU-322: Consultar las Cargas de Combustible — Operación: consultarCargasDeCombustible(filtros)**
+
 
 **Clases participantes (colaboración propuesta):** `FuelLoadService`, la colección `List<CargaCombustible>`.
 
-**GRASP.** *Controlador*: `FuelLoadService`. *Experto*: la colección de cargas sabe filtrarse por vehículo, empleado, fechas y anomalía, y entrega sólo las vigentes.
+**GRASP.** *Controlador*: `FuelLoadService`. *Experto*: la colección de cargas sabe filtrarse por vehículo, empleado, fechas y anomalía, y entrega solo las vigentes.
 
 **No se dibuja:** la paginación, el total y el armado de la respuesta.
 
@@ -8123,7 +8515,7 @@ sequenceDiagram
     SRV-->>-ADM: consumo
 ```
 
-**Figura 146 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)**
+**Figura 154 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)**
 
 **Clases participantes (colaboración propuesta):** `FuelLoadService`, la colección `Map<String, Vehiculo>`, `FuelConsumptionCalculator` (fabricación pura propuesta) y el objeto de dominio `Vehiculo`.
 
@@ -8139,9 +8531,61 @@ sequenceDiagram
 
 #### DSD — CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas
 
-##### Operación: crearTareaDeFlota(planId, recursoId, vencimiento, detalle)
+##### Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)
 
-Operación crearTareaDeFlota: ver el DSD de CU-136.
+```mermaid
+sequenceDiagram
+    title DSD — CU-197 Registrar la Habilitación para Transportar Mercancías Peligrosas · registrarHabilitacionDeMercanciasPeligrosas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant COC as :Map#lt;String, Chofer#gt;
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    alt El plan es de un vehículo
+        SRV->>+COV: get(recursoId)
+        COV-->>-SRV: vehiculo
+    else El plan es de un chofer
+        SRV->>+COC: get(recursoId)
+        COC-->>-SRV: chofer
+    end
+    SRV->>+PLN: crearTarea(recurso, vencimiento, detalle)
+    PLN->>PLN: assertSujetoCoherente(recurso)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(recurso, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea
+```
+
+**Figura 155 — DSD CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas — Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)**
+
+
+**Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota), las colecciones `Map<String, PlanMantenimiento>`, `Map<String, Vehiculo>` y `Map<String, Chofer>`, y los objetos de dominio `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al seguro del vehículo (CU-136), la verificación técnica (CU-137), la licencia del chofer (CU-138) el mantenimiento programado (CU-140) y la habilitación para transportar mercancías peligrosas (CU-197): cambia el plan y el tipo de recurso.
+
+**GRASP.** *Controlador*: `FleetTaskService`. *Creador*: `PlanMantenimiento` crea las `TareaMantenimiento` que genera (asociación «genera» del modelo conceptual) y sabe si su sujeto es un vehículo o un chofer, de modo que él valida la coherencia del recurso.
+
+**No se dibuja:** la fecha de calendario del vencimiento (se normaliza a medianoche UTC), el guardado y el cálculo de la habilitación, que no se guarda: se deriva en cada respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `FleetTaskService.registrarHabilitacionDeMercanciasPeligrosas(...)` | `FleetTaskController.create` → `FleetTaskService.create` |
+| `Map<String, PlanMantenimiento>.get(...)` | `FleetTaskService.findPlanOrThrow`: lee el `MaintenancePlan` de la distribuidora; responde 404 si no existe |
+| `Map<String, Vehiculo>.get(...)` | `CarService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `Map<String, Chofer>.get(...)` | `DeliveryService.findOne`, desde `FleetTaskService.assertSujetoCoherente`: responde 404 si no existe o es de otra distribuidora |
+| `PlanMantenimiento.crearTarea(...)` | `FleetTaskService.create`: arma la tarea con `MaintenanceTask.planId`, `MaintenanceTask.carId` o `MaintenanceTask.deliveryId` y `MaintenanceTask.status` programada |
+| `PlanMantenimiento.assertSujetoCoherente(...)` | `FleetTaskService.assertSujetoCoherente`: compara `MaintenancePlan.subject` con el recurso recibido; responde 400 si no coincide |
+| `TareaMantenimiento.«create»` | `FleetTaskService.create`: `tasks.create` con `MaintenanceTask.dueAt`, normalizada con `normalizarFechaCalendario()` |
+
+**Observaciones de diseño**
+
+- La habilitación no se guarda como campo: se deriva de `dueAt`, `leadTimeDays` y `criticality` en cada respuesta, para que no quede desactualizada cuando una tarea vence sola.
+- El número de póliza se guarda en `referenceNumber`, un campo genérico que comparten el seguro, la VTV y la licencia: el sistema construido no distingue «número de póliza» de «número de licencia» a nivel de columna.
+- El despacho consulta esta misma regla (`FleetDispatchLockService`) antes de ofrecer o asignar un pedido: un vehículo o un chofer inhabilitado no recibe pedidos.
 
 ---
 
@@ -8176,7 +8620,7 @@ sequenceDiagram
     SRV-->>-ADM: multaTransito
 ```
 
-**Figura 147 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)**
+**Figura 156 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)**
 
 **Clases participantes (colaboración propuesta):** `TrafficFineService` (controlador del módulo de gastos de la flota, propuesto), `VehicleAssignmentService` (existente), las colecciones `Map<String, Vehiculo>` y `Map<String, MultaTransito>` y los objetos de dominio `Vehiculo`, `Empleado` y `MultaTransito`.
 
@@ -8187,13 +8631,17 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El acta es única por distribuidora y jurisdicción: la restricción está también en la base, para que dos altas simultáneas no la dupliquen.
-- `VehicleAssignmentService.getEmpleadoAl(vehiculo, fechaYHora)` es una operación nueva sobre el servicio existente; hoy el servicio responde sólo la asignación abierta.
+- `VehicleAssignmentService.getEmpleadoAl(vehiculo, fechaYHora)` es una operación nueva sobre el servicio existente; hoy el servicio responde solo la asignación abierta.
+
+---
+
+#### DSD — CU-323: Modificar una Multa de Tránsito
 
 ##### Operación: modificarMultaDeTransito(multaId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-198 Registrar una Multa de Tránsito · modificarMultaDeTransito
+    title DSD — CU-323 Modificar una Multa de Tránsito · modificarMultaDeTransito
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TrafficFineService
@@ -8210,7 +8658,8 @@ sequenceDiagram
     SRV-->>-ADM: multaTransito
 ```
 
-**Figura 148 — DSD CU-198: Registrar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)**
+**Figura 157 — DSD CU-323: Modificar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)**
+
 
 **Clases participantes (colaboración propuesta):** `TrafficFineService`, la colección `Map<String, MultaTransito>` y el objeto de dominio `MultaTransito`.
 
@@ -8222,11 +8671,15 @@ sequenceDiagram
 
 - El pago, la anulación y la imputación al chofer no se hacen por esta operación: tienen la suya (CU-199, la anulación de este caso y CU-200).
 
+---
+
+#### DSD — CU-324: Anular una Multa de Tránsito
+
 ##### Operación: anularMultaDeTransito(multaId, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-198 Registrar una Multa de Tránsito · anularMultaDeTransito
+    title DSD — CU-324 Anular una Multa de Tránsito · anularMultaDeTransito
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TrafficFineService
@@ -8242,7 +8695,8 @@ sequenceDiagram
     SRV-->>-ADM: multaTransito
 ```
 
-**Figura 149 — DSD CU-198: Registrar una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)**
+**Figura 158 — DSD CU-324: Anular una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)**
+
 
 **Clases participantes (colaboración propuesta):** `TrafficFineService`, la colección `Map<String, MultaTransito>` y el objeto de dominio `MultaTransito`.
 
@@ -8254,11 +8708,15 @@ sequenceDiagram
 
 - El motivo es obligatorio. Una multa pagada o anulada no se puede anular. La multa anulada se conserva para el historial.
 
+---
+
+#### DSD — CU-325: Consultar las Multas de Tránsito
+
 ##### Operación: consultarMultasDeTransito(filtros)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-198 Registrar una Multa de Tránsito · consultarMultasDeTransito
+    title DSD — CU-325 Consultar las Multas de Tránsito · consultarMultasDeTransito
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TrafficFineService
@@ -8270,7 +8728,8 @@ sequenceDiagram
     SRV-->>-ADM: multas
 ```
 
-**Figura 150 — DSD CU-198: Registrar una Multa de Tránsito — Operación: consultarMultasDeTransito(filtros)**
+**Figura 159 — DSD CU-325: Consultar las Multas de Tránsito — Operación: consultarMultasDeTransito(filtros)**
+
 
 **Clases participantes (colaboración propuesta):** `TrafficFineService` y la colección `List<MultaTransito>`.
 
@@ -8282,11 +8741,15 @@ sequenceDiagram
 
 - La lectura por identificador (`GET /fleet/fines/:id`) es el mismo caso con un único resultado.
 
+---
+
+#### DSD — CU-326: Avisar las Multas por Vencer
+
 ##### Operación: avisarMultasPorVencer()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-198 Registrar una Multa de Tránsito · avisarMultasPorVencer
+    title DSD — CU-326 Avisar las Multas por Vencer · avisarMultasPorVencer
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant CRN as :FleetExpenseAlertsCron
@@ -8311,7 +8774,8 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 151 — DSD CU-198: Registrar una Multa de Tránsito — Operación: avisarMultasPorVencer()**
+**Figura 160 — DSD CU-326: Avisar las Multas por Vencer — Operación: avisarMultasPorVencer()**
+
 
 **Clases participantes (colaboración propuesta):** `FleetExpenseAlertsCron` (tarea programada propuesta), la colección `List<MultaTransito>`, `EmailSenderPort` (existente) y los objetos de dominio `MultaTransito` y `Distribuidora`.
 
@@ -8322,7 +8786,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Corre a las 08:00 hora argentina, una vez por día, como el aviso de vencimientos de la flota (CU-142); marca cada multa para no repetir el aviso.
-- La multa se marca como avisada sólo si el correo se envió: si falla, el aviso se reintenta en el ciclo siguiente.
+- La multa se marca como avisada solo si el correo se envió: si falla, el aviso se reintenta en el ciclo siguiente.
 
 ---
 
@@ -8348,7 +8812,7 @@ sequenceDiagram
     SRV-->>-ADM: multaTransito
 ```
 
-**Figura 152 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)**
+**Figura 161 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)**
 
 **Clases participantes (colaboración propuesta):** `TrafficFineService`, la colección `Map<String, MultaTransito>` y el objeto de dominio `MultaTransito`.
 
@@ -8387,7 +8851,7 @@ sequenceDiagram
     SRV-->>-ADM: multaTransito
 ```
 
-**Figura 153 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)**
+**Figura 162 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)**
 
 **Clases participantes (colaboración propuesta):** `TrafficFineService`, las colecciones `Map<String, MultaTransito>` y `Map<String, Empleado>` y los objetos de dominio `MultaTransito` y `Empleado`.
 
@@ -8397,7 +8861,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Mientras no exista el módulo de caja, la imputación es sólo una marca: el descuento en la liquidación del empleado se arma con ese módulo.
+- Mientras no exista el módulo de caja, la imputación es solo una marca: el descuento en la liquidación del empleado se arma con ese módulo.
 
 ---
 
@@ -8438,7 +8902,7 @@ sequenceDiagram
     SRV-->>-ADM: siniestro
 ```
 
-**Figura 154 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)**
+**Figura 163 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)**
 
 **Clases participantes (colaboración propuesta):** `VehicleAccidentService` (controlador del módulo de gastos de la flota, propuesto), las colecciones `Map<String, Vehiculo>` y `List<AsignacionVehiculo>`, `EmailSenderPort` (existente) y los objetos de dominio `Vehiculo`, `Siniestro` y `AsignacionVehiculo`.
 
@@ -8451,11 +8915,15 @@ sequenceDiagram
 - El aviso por derrame de gas sale por `EmailSenderPort` fuera de la transacción: un fallo del correo no deshace el siniestro.
 - El siniestro nace en estado `reported`; `Vehiculo.ponerFueraDeServicio()` es la misma operación que usa el planificador de flota (CU-105): pone el vehículo en `grounded`.
 
+---
+
+#### DSD — CU-327: Modificar un Siniestro
+
 ##### Operación: modificarSiniestro(siniestroId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-201 Registrar un Siniestro · modificarSiniestro
+    title DSD — CU-327 Modificar un Siniestro · modificarSiniestro
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :VehicleAccidentService
@@ -8481,7 +8949,8 @@ sequenceDiagram
     SRV-->>-ADM: siniestro
 ```
 
-**Figura 155 — DSD CU-201: Registrar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)**
+**Figura 164 — DSD CU-327: Modificar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)**
+
 
 **Clases participantes (colaboración propuesta):** `VehicleAccidentService`, la colección `Map<String, Siniestro>`, la colección `List<AsignacionVehiculo>` y los objetos de dominio `Siniestro`, `Vehiculo` y `AsignacionVehiculo`.
 
@@ -8494,11 +8963,15 @@ sequenceDiagram
 - Si la modificación declara el vehículo inutilizable, el vehículo pasa a fuera de servicio igual que al registrar.
 - El cierre no se hace por esta operación: es el caso CU-202.
 
+---
+
+#### DSD — CU-328: Consultar los Siniestros
+
 ##### Operación: consultarSiniestros(filtros)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-201 Registrar un Siniestro · consultarSiniestros
+    title DSD — CU-328 Consultar los Siniestros · consultarSiniestros
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :VehicleAccidentService
@@ -8510,7 +8983,8 @@ sequenceDiagram
     SRV-->>-ADM: siniestros
 ```
 
-**Figura 156 — DSD CU-201: Registrar un Siniestro — Operación: consultarSiniestros(filtros)**
+**Figura 165 — DSD CU-328: Consultar los Siniestros — Operación: consultarSiniestros(filtros)**
+
 
 **Clases participantes (colaboración propuesta):** `VehicleAccidentService` y la colección `List<Siniestro>`.
 
@@ -8546,7 +9020,7 @@ sequenceDiagram
     SRV-->>-ADM: siniestro
 ```
 
-**Figura 157 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)**
+**Figura 166 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)**
 
 **Clases participantes (colaboración propuesta):** `VehicleAccidentService`, la colección `Map<String, Siniestro>` y el objeto de dominio `Siniestro`.
 
@@ -8607,7 +9081,7 @@ sequenceDiagram
     SRV-->>-ADM: costoDelVehiculo
 ```
 
-**Figura 158 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)**
+**Figura 167 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)**
 
 **Clases participantes (colaboración propuesta):** `FleetCostReportService` (modelo de lectura del módulo de reportes, propuesto), la colección `Map<String, Vehiculo>` y los objetos de dominio `Vehiculo`, `TareaMantenimiento`, `CargaCombustible`, `MultaTransito` y `Siniestro`.
 
@@ -8649,7 +9123,7 @@ sequenceDiagram
     SRV-->>-ADM: costos
 ```
 
-**Figura 159 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)**
+**Figura 168 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)**
 
 **Clases participantes (colaboración propuesta):** `FleetCostReportService`, la colección `List<Vehiculo>` y el objeto de dominio `Vehiculo`.
 
@@ -8686,7 +9160,7 @@ sequenceDiagram
     SRV-->>-ADM: neumatico
 ```
 
-**Figura 160 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)**
+**Figura 169 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)**
 
 **Clases participantes (colaboración propuesta):** `TireService` (controlador del módulo de gastos de la flota, propuesto), la colección `Map<String, Neumatico>` y los objetos de dominio `Distribuidora` y `Neumatico`. Funcionalidad opcional.
 
@@ -8729,7 +9203,7 @@ sequenceDiagram
     SRV-->>-ADM: movimientoNeumatico
 ```
 
-**Figura 161 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)**
+**Figura 170 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)**
 
 **Clases participantes (colaboración propuesta):** `TireService`, las colecciones `Map<String, Neumatico>` y `Map<String, Vehiculo>` y los objetos de dominio `Neumatico` y `MovimientoNeumatico`. Funcionalidad opcional.
 
@@ -8768,7 +9242,7 @@ sequenceDiagram
     SRV-->>-ADM: vehiculo
 ```
 
-**Figura 162 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)**
+**Figura 171 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)**
 
 **Clases participantes (colaboración propuesta):** `CarService` (existente), `FleetTaskService` (existente), la colección `Map<String, Vehiculo>` y el objeto de dominio `Vehiculo`. Colaboración propuesta (I-12): el servicio no tiene la operación de reactivar.
 
@@ -8785,14 +9259,14 @@ sequenceDiagram
 
 ### 4.8 SS-08 — Catálogo de Productos
 
-#### DSD — CU-036: Crear Producto (Garrafa)
+#### DSD — CU-036: Crear un Producto (Garrafa)
 
 
 ##### Operación: crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-036 Crear Producto (Garrafa) · crearProducto
+    title DSD — CU-036 Crear un Producto (Garrafa) · crearProducto
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :GasCylinderService
@@ -8812,7 +9286,7 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 163 — DSD CU-036: Crear Producto (Garrafa)**
+**Figura 172 — DSD CU-036: Crear un Producto (Garrafa)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), y los objetos de dominio `Distribuidora`, `Producto` y `Promocion`.
 
@@ -8830,29 +9304,29 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La unicidad de `type` es **por distribuidora**: dos tenants pueden tener cada uno su "Garrafa 10kg". Contrasta con la unicidad global de patente (CU-034).
+- La unicidad de `type` es **por distribuidora**: dos distribuidoras pueden tener cada uno su "Garrafa 10kg". Contrasta con la unicidad global de patente (CU-034).
 - `handleDBExceptions` es la red de seguridad para la carrera entre el `findOne` de verificación y el `save`: si dos altas concurrentes pasan el chequeo, la restricción única de la base devuelve `23505` y se traduce a un 400 legible.
-- El `distributor_id` viene del header con `{ required: true }`: no hay alta de producto sin tenant explícito.
+- El `distributor_id` viene del encabezado con `{ required: true }`: no hay alta de producto sin distribuidora explícito.
 
 ---
 
-#### DSD — CU-037: Actualizar Precio de Producto
+#### DSD — CU-037: Actualizar el Precio de un Producto
 
 
-No existe un endpoint dedicado al precio: se usa el `PATCH` general del producto.
+No existe una ruta dedicada al precio: se usa el `PATCH` general del producto.
 
-##### Operación: actualizarProducto(productoId, datos)
+##### Operación: actualizarPrecioDelProducto(productoId, precio)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-037 / CU-039 · actualizarProducto
+    title DSD — CU-037 Actualizar el Precio de un Producto · actualizarPrecioDelProducto
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :GasCylinderService
     participant COL as :Map#lt;String, Producto#gt;
     participant PRO as producto:Producto
 
-    ADM->>+SRV: actualizarProducto(productoId, datos)
+    ADM->>+SRV: actualizarPrecioDelProducto(productoId, precio)
     SRV->>+COL: get(productoId)
     COL-->>-SRV: producto
     opt Cambia el precio
@@ -8870,7 +9344,8 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 164 — DSD CU-037: Actualizar Precio de Producto**
+**Figura 173 — DSD CU-037: Actualizar el Precio de un Producto — Operación: actualizarPrecioDelProducto(productoId, precio)**
+
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y los objetos de dominio `Producto` y `Promocion`. El diagrama sirve a CU-037, el cambio de precio, y a CU-039, el reemplazo de las promociones por cantidad: es una sola operación.
 
@@ -8880,7 +9355,7 @@ sequenceDiagram
 
 | Operación de diseño | Implementación |
 |---|---|
-| `GasCylinderService.actualizarProducto(...)` | `GasCylinderController.update` → `GasCylinderService.update` |
+| `GasCylinderService.actualizarPrecioDelProducto(...)` | `GasCylinderController.update` → `GasCylinderService.update` |
 | `Map<String, Producto>.get(...)` | `GasCylinderService.findOne`, con la distribuidora del contexto: lee el `GasCylinder` con sus promociones; responde 404 si no existe o es de otra distribuidora |
 | `Producto.actualizarPrecio(...)` | `GasCylinderService.update`: `preload` fusiona los datos recibidos, entre ellos `GasCylinder.price`, y guarda |
 | `Producto.reemplazarPromociones(...)` | `GasCylinderService.update`: `preload` sustituye `GasCylinder.promotions` por la lista enviada y el guardado elimina las que no figuran |
@@ -8890,17 +9365,17 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El cambio de precio **no versiona ni historiza**: se pisa el valor. Los pedidos ya creados no se ven afectados porque el precio unitario se congela en `OrderItem.unitPrice` al momento de crear el pedido (ver CU-039).
-- El doble chequeo (`findOne` + `preload`) es deliberado: el primero valida el tenant, el segundo arma la fusión parcial. Sin el primero, un admin podría editar el producto de otra distribuidora.
+- El doble chequeo (`findOne` + `preload`) es deliberado: el primero valida la distribuidora, el segundo arma la fusión parcial. Sin el primero, un admin podría editar el producto de otra distribuidora.
 
 ---
 
-#### DSD — CU-038: Actualizar Stock de Producto
+#### DSD — CU-038: Actualizar el Stock de un Producto
 
 ##### Operación: actualizarStock(productoId, variacion)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-038 Actualizar Stock de Producto · actualizarStock
+    title DSD — CU-038 Actualizar el Stock de un Producto · actualizarStock
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CatalogStockAdjustmentUseCase
@@ -8919,7 +9394,7 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 165 — DSD CU-038: Actualizar Stock de Producto — Operación: actualizarStock(productoId, variacion)**
+**Figura 174 — DSD CU-038: Actualizar el Stock de un Producto — Operación: actualizarStock(productoId, variacion)**
 
 **Clases participantes:** `CatalogStockAdjustmentUseCase` (controlador: el caso de uso del catálogo sobre el stock), `StockAdjustmentUseCase` (el caso de uso que registra el ajuste), la colección `Map<String, Producto>` y el objeto de dominio `Distribuidora`.
 
@@ -8941,19 +9416,61 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-039: Configurar Promociones por Cantidad
+#### DSD — CU-039: Configurar las Promociones por Cantidad
+
+No existe una ruta dedicada a las promociones: se usa el `PATCH` general del producto, que reemplaza el conjunto de promociones.
+
+##### Operación: configurarPromocionesDelProducto(productoId, promociones)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-039 Configurar las Promociones por Cantidad · configurarPromocionesDelProducto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :GasCylinderService
+    participant COL as :Map#lt;String, Producto#gt;
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: configurarPromocionesDelProducto(productoId, promociones)
+    SRV->>+COL: get(productoId)
+    COL-->>-SRV: producto
+    opt Cambia el precio
+        SRV->>PRO: actualizarPrecio(precio)
+    end
+    opt Cambian las promociones
+        SRV->>+PRO: reemplazarPromociones(promociones)
+        PRO->>PRO: validarSinRepetir(promociones)
+        loop Por cada promocion de promociones
+            create participant PRM as :Promocion
+            PRO->>PRM: «create»(cantidad, descuento)
+        end
+        deactivate PRO
+    end
+    SRV-->>-ADM: producto
+```
+
+**Figura 175 — DSD CU-039: Configurar las Promociones por Cantidad — Operación: configurarPromocionesDelProducto(productoId, promociones)**
 
 
-La **configuración** de las promociones es parte de la modificación del producto: el administrador envía la lista completa de promociones y reemplaza a las anteriores. La **aplicación** (al reservar el stock se leen las promociones después del bloqueo y el dominio elige la mejor al precificar un ítem del pedido) es parte de `crearPedido` (CU-005).
+**Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y los objetos de dominio `Producto` y `Promocion`. El diagrama sirve a CU-037, el cambio de precio, y a CU-039, el reemplazo de las promociones por cantidad: es una sola operación.
 
-Operación actualizarProducto: ver el DSD de CU-037.
+**GRASP.** *Controlador*: `GasCylinderService`. *Experto*: el `Producto` toma su precio nuevo, valida que no haya dos promociones para la misma cantidad y reemplaza las que tenía. *Creador*: el `Producto` crea las `Promocion` nuevas, porque las contiene. Los `ItemPedido` ya registrados no se tocan: conservan el precio con que se compró.
+
+**No se dibuja:** la comprobación de que el producto sea de la distribuidora del Administrador, la baja de las promociones anteriores (el guardado elimina las que no están en la lista) y la red de seguridad con que la base rechaza un tipo repetido (409).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `GasCylinderService.configurarPromocionesDelProducto(...)` | `GasCylinderController.update` → `GasCylinderService.update` |
+| `Map<String, Producto>.get(...)` | `GasCylinderService.findOne`, con la distribuidora del contexto: lee el `GasCylinder` con sus promociones; responde 404 si no existe o es de otra distribuidora |
+| `Producto.actualizarPrecio(...)` | `GasCylinderService.update`: `preload` fusiona los datos recibidos, entre ellos `GasCylinder.price`, y guarda |
+| `Producto.reemplazarPromociones(...)` | `GasCylinderService.update`: `preload` sustituye `GasCylinder.promotions` por la lista enviada y el guardado elimina las que no figuran |
+| `Producto.validarSinRepetir(...)` | `assertPromocionesSinRepetir()`: responde 400 si dos promociones tienen la misma `GasCylinderPromotion.quantity` |
+| `Promocion.«create»` | `GasCylinderService.update`: el guardado en cascada crea cada `GasCylinderPromotion` nuevo |
 
 **Observaciones de diseño**
 
-- Cuando varias promociones aplican, el código toma la de **mayor umbral alcanzado** (`sort` descendente por `quantity` + `find`), es decir la más favorable al cliente. El CU documentado no definía este criterio de desempate.
-- `OrderPricingService` es **dominio puro**: sin I/O, sin repositorios, testeable en aislamiento. Recibe el precio de la fila bloqueada por `GasCylinderService.reservarStock` y las promociones que ese método lee de `GasCylinderPromotion` después del lock.
-- Todos los montos se calculan en `Decimal` y se convierten con `toNumber()` recién al construir el `OrderItem` — requisito de precisión NFR-08.
-- La promoción se aplica **sobre el precio unitario**, no sobre el subtotal, de modo que `OrderItem.unitPrice` queda persistido ya con el descuento: el pedido histórico es autoexplicativo aunque después cambie la promo.
+- El cambio de precio **no versiona ni historiza**: se pisa el valor. Los pedidos ya creados no se ven afectados porque el precio unitario se congela en `OrderItem.unitPrice` al momento de crear el pedido (ver CU-039).
+- El doble chequeo (`findOne` + `preload`) es deliberado: el primero valida la distribuidora, el segundo arma la fusión parcial. Sin el primero, un admin podría editar el producto de otra distribuidora.
 
 ---
 
@@ -8980,7 +9497,7 @@ sequenceDiagram
     SRV-->>-ADM: mensaje
 ```
 
-**Figura 166 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)**
+**Figura 176 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y el objeto de dominio `Producto`.
 
@@ -9024,7 +9541,7 @@ sequenceDiagram
     SRV-->>-ADM: producto
 ```
 
-**Figura 167 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)**
+**Figura 177 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Producto>` y el objeto de dominio `Producto`. Colaboración propuesta (I-1): la reactivación no está construida.
 
@@ -9065,7 +9582,7 @@ sequenceDiagram
     SRV-->>-ADM: productos
 ```
 
-**Figura 168 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()**
+**Figura 178 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos) y la colección `List<Producto>`. Colaboración propuesta (I-1): el listado de inactivos no está construido.
 
@@ -9076,7 +9593,7 @@ sequenceDiagram
 | Operación de diseño | Implementación |
 |---|---|
 | `GasCylinderService.consultarProductosInactivos()` | Colaboración propuesta (I-1): `GasCylinderController` no tiene la ruta del listado y `GasCylinderService` no tiene la operación |
-| `List<Producto>.buscarInactivos()` | Colaboración propuesta (I-1): las lecturas del catálogo (`GasCylinderService.findAll`, `GasCylinderService.getAvailableCylinders`) sólo traen los activos |
+| `List<Producto>.buscarInactivos()` | Colaboración propuesta (I-1): las lecturas del catálogo (`GasCylinderService.findAll`, `GasCylinderService.getAvailableCylinders`) solo traen los activos |
 
 **Observaciones de diseño**
 
@@ -9084,16 +9601,16 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-041: Consultar Catálogo de Productos
+#### DSD — CU-041: Consultar el Catálogo de Productos
 
 
-Tres vistas del catálogo. Las públicas resuelven la distribuidora desde el query `?distributor=` porque el guard de distribuidora no corre en rutas `@Public`.
+Tres vistas del catálogo. Las públicas resuelven la distribuidora desde la cadena de consulta `?distributor=` porque el guard de distribuidora no corre en rutas `@Public`.
 
 ##### Operación: consultarCatalogo(pagina, limite, distribuidora)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-041 Consultar Catálogo de Productos · consultarCatalogo
+    title DSD — CU-041 Consultar el Catálogo de Productos · consultarCatalogo
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :GasCylinderService
@@ -9108,7 +9625,7 @@ sequenceDiagram
     SRV-->>-CLI: productos, total
 ```
 
-**Figura 169 — DSD CU-041: Consultar Catálogo de Productos**
+**Figura 179 — DSD CU-041: Consultar el Catálogo de Productos**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -9126,7 +9643,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-041 Consultar Catálogo de Productos · consultarProducto
+    title DSD — CU-041 Consultar el Catálogo de Productos · consultarProducto
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :GasCylinderService
@@ -9138,7 +9655,7 @@ sequenceDiagram
     SRV-->>-CLI: producto
 ```
 
-**Figura 170 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProducto(productoId)**
+**Figura 180 — DSD CU-041: Consultar el Catálogo de Productos — Operación: consultarProducto(productoId)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos) y la colección `Map<String, Producto>`.
 
@@ -9155,7 +9672,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-041 Consultar Catálogo de Productos · consultarProductosDisponibles
+    title DSD — CU-041 Consultar el Catálogo de Productos · consultarProductosDisponibles
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :GasCylinderService
@@ -9170,7 +9687,7 @@ sequenceDiagram
     SRV-->>-CLI: productos, mediosDePago
 ```
 
-**Figura 171 — DSD CU-041: Consultar Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)**
+**Figura 181 — DSD CU-041: Consultar el Catálogo de Productos — Operación: consultarProductosDisponibles(distribuidora)**
 
 **Clases participantes:** `GasCylinderService` (controlador de fachada del módulo de productos), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -9186,7 +9703,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `resolveDistributor` es el punto de entrada del multi-tenant en las rutas públicas: acepta **slug o uuid** y, si no viene nada, cae a la distribuidora por defecto en vez de mezclar catálogos. Es compatibilidad hacia atrás con la app previa al multi-tenant.
+- `resolveDistributor` es el punto de entrada del multidistribuidora en las rutas públicas: acepta **slug o uuid** y, si no viene nada, cae a la distribuidora por defecto en vez de mezclar catálogos. Es compatibilidad hacia atrás con la app previa al multidistribuidora.
 - `findOne` por id es la **única vista que no filtra `isActive`**, deliberadamente: permite consultar un producto dado de baja (CU-040) desde un pedido histórico.
 - `getAvailableCylinders` devuelve además los **métodos de pago con su recargo** (Efectivo 0 %, MercadoPago/Transferencia 10 %), para que la app cliente pueda mostrar el total final sin una segunda llamada. Ese 10 % duplica en literal la constante `ONLINE_SURCHARGE_FACTOR` de `OrderPricingService`.
 
@@ -9194,14 +9711,14 @@ sequenceDiagram
 
 ### 4.9 SS-09 — Franjas Horarias
 
-#### DSD — CU-042: Crear Franja Horaria
+#### DSD — CU-042: Crear una Franja Horaria
 
 
 ##### Operación: crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-042 Crear Franja Horaria · crearFranjaHoraria
+    title DSD — CU-042 Crear una Franja Horaria · crearFranjaHoraria
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TimeSlotService
@@ -9215,7 +9732,7 @@ sequenceDiagram
     SRV-->>-ADM: franja
 ```
 
-**Figura 172 — DSD CU-042: Crear Franja Horaria**
+**Figura 182 — DSD CU-042: Crear una Franja Horaria**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas) y los objetos de dominio `Distribuidora` y `FranjaHoraria`.
 
@@ -9232,22 +9749,43 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Es el alta más simple del sistema: **sin validaciones de negocio en el servicio**. No se verifica solapamiento de horarios, ni que `startTime` sea anterior a `endTime`, ni unicidad de nombre dentro de la distribuidora. Toda la validación es sintáctica, en el `CreateTimeSlotDto`.
-- El `distributor_id` viene del header con `{ required: true }`: no hay franja sin tenant.
-- El campo `capacity` se fija **acá y sólo acá**: no existe camino de escritura posterior (ver la sección final, CU-043).
+- El `distributor_id` viene del encabezado con `{ required: true }`: no hay franja sin distribuidora.
+- El campo `capacity` se fija acá y se cambia después con `PATCH /time-slot/:id` (CU-043).
 
 ---
 
-#### DSD — CU-044: Seleccionar Franja Horaria al Crear Pedido
+#### DSD — CU-044: Seleccionar una Franja Horaria al Crear un Pedido
 
 La validación de cupo corre **dentro de la transacción del pedido y con lock pesimista sobre la fila de la franja**. Es la pieza que impide sobreventa de cupos bajo concurrencia.
 
-##### Operación: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
+##### Operación: validarFranjaDelPedido(franjaId, fecha)
 
-Operación crearPedido: ver el DSD de CU-005.
+```mermaid
+sequenceDiagram
+    title DSD — CU-044 Seleccionar una Franja Horaria al Crear un Pedido · validarFranjaDelPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :TimeSlotService
+    participant FRA as franja:FranjaHoraria
 
-##### Operación: consultarDisponibilidadDeFranjas(fecha, distribuidora)
+    CLI->>+SRV: validarFranjaDelPedido(franjaId, fecha)
+    SRV->>+FRA: tieneCupo(fecha)
+    FRA-->>-SRV: hayCupo
+    SRV-->>-CLI: franja
+```
 
-Operación consultarDisponibilidadDeFranjas: ver el DSD de CU-045.
+**Figura 183 — DSD CU-044: Seleccionar una Franja Horaria al Crear un Pedido — Operación: validarFranjaDelPedido(franjaId, fecha)**
+
+**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas) y el objeto de dominio `FranjaHoraria`.
+
+**GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `FranjaHoraria` conoce su capacidad y, con los pedidos de esa fecha que no están cancelados, sabe si todavía tiene cupo.
+
+**No se dibuja:** la lectura de la franja con bloqueo pesimista, que se hace dentro de la transacción que crea el pedido (CU-005), y el rechazo de una fecha anterior a hoy.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TimeSlotService.validarFranjaDelPedido(...)` | `CreateOrderUseCase.execute` y `QuoteOrderUseCase.execute` → `TimeSlotService.assertSlotAvailableTx` |
+| `FranjaHoraria.tieneCupo(...)` | `TimeSlotService.assertSlotAvailableTx`: toma la fila de `TimeSlot` con bloqueo pesimista y cuenta los pedidos de esa franja y fecha que no están cancelados contra `TimeSlot.capacity` |
 
 **Observaciones de diseño**
 
@@ -9259,14 +9797,14 @@ Operación consultarDisponibilidadDeFranjas: ver el DSD de CU-045.
 
 ---
 
-#### DSD — CU-045: Consultar Franjas Horarias Disponibles
+#### DSD — CU-045: Consultar las Franjas Horarias Disponibles
 
 
 ##### Operación: listarFranjas(distribuidora)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-045 Consultar Franjas Horarias Disponibles · listarFranjas
+    title DSD — CU-045 Consultar las Franjas Horarias Disponibles · listarFranjas
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :TimeSlotService
@@ -9281,9 +9819,9 @@ sequenceDiagram
     SRV-->>-CLI: franjas
 ```
 
-**Figura 173 — DSD CU-045: Consultar Franjas Horarias Disponibles**
+**Figura 184 — DSD CU-045: Consultar las Franjas Horarias Disponibles**
 
-**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`. La disponibilidad por fecha es otra operación, `consultarDisponibilidadDeFranjas` (CU-044 y CU-045).
+**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`. La disponibilidad por fecha es otra operación, `consultarDisponibilidadDeFranjas` (CU-045).
 
 **GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `Distribuidora` sabe qué franjas tiene activas. La consulta no cambia estado.
 
@@ -9299,7 +9837,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-044 / CU-045 · consultarDisponibilidadDeFranjas
+    title DSD — CU-045 Consultar las Franjas Horarias Disponibles · consultarDisponibilidadDeFranjas
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :TimeSlotService
@@ -9319,7 +9857,7 @@ sequenceDiagram
     SRV-->>-CLI: disponibilidad
 ```
 
-**Figura 174 — DSD CU-044 / CU-045: Consultar Franjas Horarias Disponibles**
+**Figura 185 — DSD CU-045: Consultar las Franjas Horarias Disponibles**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, Distribuidora>` y los objetos de dominio `Distribuidora` y `FranjaHoraria`.
 
@@ -9336,21 +9874,21 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El conteo de ocupación es **N+1 por diseño**: un `count` por franja dentro del loop. Es aceptable porque el número de franjas activas por distribuidora es de un dígito, pero es el candidato natural a una sola query agregada con `GROUP BY time_slot_id` si el catálogo de franjas crece.
+- El conteo de ocupación es **N+1 por diseño**: un `count` por franja dentro del loop. Es aceptable porque el número de franjas activas por distribuidora es de un dígito, pero es el candidato natural a una sola consulta agregada con `GROUP BY time_slot_id` si el catálogo de franjas crece.
 - `remaining` se satura en 0 (`Math.max(0, ...)`): si por un ajuste manual de capacidad hubiera más reservas que cupo, la app cliente ve 0 y no un número negativo.
-- La ruta es `@Public`: el cliente puede ver disponibilidad **antes de loguearse**, por eso el tenant llega por query en lugar de por header.
+- La ruta es `@Public`: el cliente puede ver disponibilidad **antes de loguearse**, por eso la distribuidora llega por parámetro de la dirección en lugar de por encabezado.
 - La misma regla que en CU-044: los pedidos cancelados no ocupan cupo, así que lo que se muestra es la ocupación efectiva.
 
 ---
 
-#### DSD — CU-103: Eliminar Franja Horaria
+#### DSD — CU-103: Eliminar una Franja Horaria
 
 
 ##### Operación: eliminarFranjaHoraria(franjaId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-103 Eliminar Franja Horaria · eliminarFranjaHoraria
+    title DSD — CU-103 Eliminar una Franja Horaria · eliminarFranjaHoraria
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TimeSlotService
@@ -9364,7 +9902,7 @@ sequenceDiagram
     SRV-->>-ADM: franja
 ```
 
-**Figura 175 — DSD CU-103: Eliminar Franja Horaria**
+**Figura 186 — DSD CU-103: Eliminar una Franja Horaria**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`.
 
@@ -9382,18 +9920,18 @@ sequenceDiagram
 
 - Pese al verbo `DELETE` y al nombre `remove`, es una **desactivación lógica** (`isActive = false`), igual que en el producto (CU-040). Los pedidos ya agendados a esa franja conservan su `time_slot_id`.
 - Efecto inmediato: `findAll`, `getAvailability` y `assertSlotAvailableTx` filtran por `isActive: true`, así que la franja desaparece del agendamiento pero los pedidos históricos siguen resolviendo la relación.
-- **Asimetría del subsistema:** el código permite *borrar* una franja pero no *modificarla*. Combinado con CU-043 (abajo), la única forma de cambiar la capacidad de una franja es desactivarla y crear una nueva — lo que le hace perder el vínculo con los pedidos ya agendados.
+- Desactivar no es modificar: la capacidad, el nombre y el rango de una franja se cambian con CU-043, que además reactiva una franja desactivada.
 
 ---
 
-#### DSD — CU-154: Consultar Listado de Franjas Horarias
+#### DSD — CU-154: Consultar el Listado de Franjas Horarias
 
 
 ##### Operación: consultarFranjasHorarias()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-154 Consultar Listado de Franjas Horarias · consultarFranjasHorarias
+    title DSD — CU-154 Consultar el Listado de Franjas Horarias · consultarFranjasHorarias
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TimeSlotService
@@ -9405,7 +9943,7 @@ sequenceDiagram
     SRV-->>-ADM: franjas
 ```
 
-**Figura 176 — DSD CU-154: Consultar Listado de Franjas Horarias**
+**Figura 187 — DSD CU-154: Consultar el Listado de Franjas Horarias**
 
 **Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas) y el objeto de dominio `Distribuidora`.
 
@@ -9420,23 +9958,19 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El endpoint `GET /time-slot` es el listado administrativo del que parten CU-043 y CU-103: sin él no hay franja que modificar o eliminar.
-- El listado no admite `limit`, `offset` ni `term` (responde 400 "should not exist" ante cualquiera de los tres) y trae sólo las franjas vigentes: filtra por `isActive`.
+- La ruta `GET /time-slot` es el listado administrativo del que parten CU-043 y CU-103: sin él no hay franja que modificar o eliminar.
+- El listado no admite `limit`, `offset` ni `term` (responde 400 "should not exist" ante cualquiera de los tres) y trae solo las franjas vigentes: filtra por `isActive`.
 
 ---
 
-#### Planificado (I-1) · DSD — CU-043: Modificar Capacidad de Franja Horaria
+#### DSD — CU-043: Modificar una Franja Horaria
 
-
-> Colaboración **propuesta**. Las piezas marcadas como propuestas no existen en el código:
-> `TimeSlotController` no declara una operación de modificación y no hay `UpdateTimeSlotDto`.
-> Las clases `TimeSlotController`, `TimeSlotService` y el repositorio de `TimeSlot` sí existen.
 
 ##### Operación: modificarFranjaHoraria(franjaId, nombre, horaInicio, horaFin, capacidad)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-043 Modificar Capacidad de Franja Horaria · modificarFranjaHoraria
+    title DSD — CU-043 Modificar una Franja Horaria · modificarFranjaHoraria
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TimeSlotService
@@ -9447,49 +9981,131 @@ sequenceDiagram
     SRV->>+COL: get(franjaId)
     COL-->>-SRV: franja
     SRV->>+FRA: modificar(nombre, horaInicio, horaFin, capacidad)
+    FRA->>FRA: validarRango()
     FRA->>FRA: validarCapacidad(capacidad)
     deactivate FRA
     SRV-->>-ADM: franja
 ```
 
-**Figura 177 — DSD CU-043: Modificar Capacidad de Franja Horaria**
+**Figura 188 — DSD CU-043: Modificar una Franja Horaria**
 
-**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`. Colaboración propuesta (I-1): `TimeSlotController` no declara una operación de modificación.
+**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`.
 
-**GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `FranjaHoraria` toma sus valores nuevos y valida que la capacidad sea mayor que cero. Los pedidos ya agendados se conservan aunque superen la capacidad nueva; los que se agenden después se validan contra el límite nuevo.
+**GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `FranjaHoraria` toma sus valores nuevos, valida que el inicio sea anterior al fin y que la capacidad nueva no quede por debajo de lo que ya tiene agendado en un mismo día desde hoy. Los pedidos ya agendados se conservan; los que se agenden después se validan contra el límite nuevo.
 
-**No se dibuja:** la comprobación de que la franja sea de la distribuidora del Administrador y la advertencia en la respuesta si para alguna fecha próxima la franja ya excede la capacidad nueva.
+**No se dibuja:** la comprobación de que la franja sea de la distribuidora del administrador, el bloqueo de la fila de la franja durante la operación y el conteo de los pedidos agendados (`OrderLookupService.maxBookedFrom`).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TimeSlotService.modificarFranjaHoraria(...)` | `TimeSlotController.update` (`PATCH /time-slot/:id`) → `TimeSlotService.update` |
+| `Map<String, FranjaHoraria>.get(...)` | `TimeSlotService.update`: busca la `TimeSlot` por `TimeSlot.timeSlotId` y `TimeSlot.distributorId`, con bloqueo de escritura; responde 404 si no existe |
+| `FranjaHoraria.modificar(...)` | `TimeSlotService.update`: asigna `TimeSlot.name`, `TimeSlot.startTime`, `TimeSlot.endTime` y `TimeSlot.capacity` y guarda |
+| `FranjaHoraria.validarRango()` | `TimeSlotService.update`: responde 400 si `aMinutos` del inicio no es menor que el del fin |
+| `FranjaHoraria.validarCapacidad(...)` | `TimeSlotService.update`: compara la capacidad nueva con `OrderLookupService.maxBookedFrom`; responde 409 si es menor |
 
 **Observaciones de diseño**
 
-- Si la capacidad nueva es menor que lo comprometido para alguna fecha, el cambio se guarda y la respuesta lo advierte; no se responde 400 ni se tocan los pedidos ya agendados (decisión del Documento 1, CU-043, Comentarios).
-- La misma regla de capacidad mayor a cero se agrega al alta (`CreateTimeSlotDto`), para que las dos operaciones compartan la validación.
+- Si la capacidad nueva es menor que lo comprometido para alguna fecha desde hoy, se responde 409 y no se guarda nada: ningún pedido agendado queda sin cupo.
+- La franja se lee con bloqueo de escritura, el mismo que usa `assertSlotAvailableTx` al agendar un pedido: una reserva en curso y una baja de capacidad no se pisan.
+- El mismo `PATCH` reactiva una franja desactivada (`isActive: true`); `UpdateTimeSlotDto` es el `CreateTimeSlotDto` con todos los campos opcionales más `isActive`.
+
+---
+
+#### DSD — CU-342: Activar una Franja Horaria
+
+##### Operación: activarFranjaHoraria(franjaId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-342 Activar una Franja Horaria · activarFranjaHoraria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TimeSlotService
+    participant COL as :Map#lt;String, FranjaHoraria#gt;
+    participant FRA as franja:FranjaHoraria
+
+    ADM->>+SRV: activarFranjaHoraria(franjaId)
+    SRV->>+COL: get(franjaId)
+    COL-->>-SRV: franja
+    SRV->>FRA: activar()
+    SRV-->>-ADM: franja
+```
+
+**Figura 189 — DSD CU-342: Activar una Franja Horaria — Operación: activarFranjaHoraria(franjaId)**
+
+**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`.
+
+**GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `FranjaHoraria` es quien toma el valor de su indicador de actividad.
+
+**No se dibuja:** la comprobación de que la franja sea de la distribuidora del administrador y el bloqueo de la fila durante la operación.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TimeSlotService.activarFranjaHoraria(...)` | `TimeSlotController.update` (`PATCH /time-slot/:id`) → `TimeSlotService.update` |
+| `Map<String, FranjaHoraria>.get(...)` | `TimeSlotService.update`: busca la `TimeSlot` por `TimeSlot.timeSlotId` y `TimeSlot.distributorId`, con bloqueo de escritura; responde 404 si no existe |
+| `FranjaHoraria.activar()` | `TimeSlotService.update`: asigna `TimeSlot.isActive` en verdadero y guarda |
+
+---
+
+#### DSD — CU-343: Desactivar una Franja Horaria
+
+##### Operación: desactivarFranjaHoraria(franjaId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-343 Desactivar una Franja Horaria · desactivarFranjaHoraria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TimeSlotService
+    participant COL as :Map#lt;String, FranjaHoraria#gt;
+    participant FRA as franja:FranjaHoraria
+
+    ADM->>+SRV: desactivarFranjaHoraria(franjaId)
+    SRV->>+COL: get(franjaId)
+    COL-->>-SRV: franja
+    SRV->>FRA: desactivar()
+    SRV-->>-ADM: franja
+```
+
+**Figura 190 — DSD CU-343: Desactivar una Franja Horaria — Operación: desactivarFranjaHoraria(franjaId)**
+
+**Clases participantes:** `TimeSlotService` (controlador de fachada del módulo de franjas), la colección `Map<String, FranjaHoraria>` y el objeto de dominio `FranjaHoraria`.
+
+**GRASP.** *Controlador*: `TimeSlotService`. *Experto*: la `FranjaHoraria` es quien toma el valor de su indicador de actividad.
+
+**No se dibuja:** la comprobación de que la franja sea de la distribuidora del administrador y el bloqueo de la fila durante la operación.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `TimeSlotService.desactivarFranjaHoraria(...)` | `TimeSlotController.update` (`PATCH /time-slot/:id`) → `TimeSlotService.update` |
+| `Map<String, FranjaHoraria>.get(...)` | `TimeSlotService.update`: busca la `TimeSlot` por `TimeSlot.timeSlotId` y `TimeSlot.distributorId`, con bloqueo de escritura; responde 404 si no existe |
+| `FranjaHoraria.desactivar()` | `TimeSlotService.update`: asigna `TimeSlot.isActive` en falso y guarda |
 
 ---
 
 ### 4.10 SS-10 — Multi-Distribuidora (Multi-Tenancy)
 
 `DistributorController` es el **único** controlador del sistema que NO usa
-`@CurrentDistributor`: administrar tenants es una operación de *plataforma*, no
-de tenant. Por eso lleva `@Roles(RoleType.SUPER_ADMIN)` a nivel de clase y el `RolesGuard` global lo
+`@CurrentDistributor`: administrar distribuidoras es una operación de *plataforma*, no
+de distribuidora. Por eso lleva `@Roles(RoleType.SUPER_ADMIN)` a nivel de clase y el `RolesGuard` global lo
 resuelve leyendo la metadata de la clase con `getAllAndOverride`.
 
 #### Resolución de la distribuidora en cada solicitud
 
-En todas las rutas no públicas, la guarda de autenticación resuelve la distribuidora efectiva de la solicitud antes de que el controlador exista y la deja en la propia solicitud. El decorador de parámetro `@CurrentDistributor()` sólo **lee** ese valor; con `{ required: true }` lanza `BadRequestException` si no hay distribuidora. La regla de resolución es:
+En todas las rutas no públicas, la guarda de autenticación resuelve la distribuidora efectiva de la solicitud antes de que el controlador exista y la deja en la propia solicitud. El decorador de parámetro `@CurrentDistributor()` solo **lee** ese valor; con `{ required: true }` lanza `BadRequestException` si no hay distribuidora. La regla de resolución es:
 
 - **ADMIN / DELIVERY**: la distribuidora se **deriva del perfil** (dato confiable del servidor) y se ignora el encabezado `X-Distributor`, de modo que el personal de una distribuidora nunca puede operar otra.
 - **CUSTOMER / SUPER_ADMIN**: se toma del encabezado `X-Distributor` (slug o uuid), validado contra una distribuidora activa; sin encabezado resulta `null` (el super administrador opera entre distribuidoras).
 
 Para no repetir esta cadena en cada diagrama, se modela en el primer diagrama de cada subsistema que la use y se abrevia en los siguientes.
 
-#### DSD — CU-052: Registrar Distribuidora
+#### DSD — CU-052: Registrar una Distribuidora
 
 ##### Operación: registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-052 Registrar Distribuidora · registrarDistribuidora
+    title DSD — CU-052 Registrar una Distribuidora · registrarDistribuidora
     autonumber
     actor AGE as Administrador General (ACT-05)
     participant SRV as :DistributorService
@@ -9503,7 +10119,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidora
 ```
 
-**Figura 178 — DSD — CU-052: Registrar Distribuidora**
+**Figura 191 — DSD — CU-052: Registrar Distribuidora**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -9519,18 +10135,18 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El `slug` es la **clave de negocio** del tenant: es lo que después viaja en el header `X-Distributor` y lo que el guard de autenticación traduce a `distributor_id`. Por eso su unicidad se valida acá y no se delega sólo al índice de la base.
+- El `slug` es la **clave de negocio** de la distribuidora: es lo que después viaja en el encabezado `X-Distributor` y lo que el guard de autenticación traduce a `distributor_id`. Por eso su unicidad se valida acá y no se delega solo al índice de la base.
 - La autorización es **declarativa** (`@Auth(SUPER_ADMIN)` en la clase): el servicio no contiene ninguna verificación de rol.
 
 ---
 
-#### DSD — CU-053: Consultar Distribuidoras
+#### DSD — CU-053: Consultar las Distribuidoras
 
 ##### Operación: listarDistribuidoras()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-053 Consultar Distribuidoras · listarDistribuidoras
+    title DSD — CU-053 Consultar las Distribuidoras · listarDistribuidoras
     autonumber
     actor AGE as Administrador General (ACT-05)
     participant SRV as :DistributorService
@@ -9542,7 +10158,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidoras
 ```
 
-**Figura 179 — DSD — CU-053: Consultar Distribuidoras**
+**Figura 192 — DSD — CU-053: Consultar Distribuidoras**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras) y la colección `List<Distribuidora>`.
 
@@ -9559,7 +10175,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-053 Consultar Distribuidoras · consultarDistribuidora
+    title DSD — CU-053 Consultar las Distribuidoras · consultarDistribuidora
     autonumber
     actor AGE as Administrador General (ACT-05)
     participant SRV as :DistributorService
@@ -9571,7 +10187,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidora
 ```
 
-**Figura 180 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)**
+**Figura 193 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras) y la colección `Map<String, Distribuidora>`.
 
@@ -9587,17 +10203,17 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - `findOne` es el **punto único de resolución por id** del servicio: `update` y `remove` lo reutilizan, de modo que el 404 se define una sola vez.
-- `DistributorService` expone además `findBySlug`, `getDefault` y `assertActive`, que **no** son endpoints: los consume `AuthGuard` para resolver el tenant y `CreateOrderUseCase` para el fallback single-tenant.
+- `DistributorService` expone además `findBySlug`, `getDefault` y `assertActive`, que **no** son rutas: los consume `AuthGuard` para resolver la distribuidora y `CreateOrderUseCase` para la distribuidora alternativa del esquema de una sola distribuidora.
 
 ---
 
-#### DSD — CU-054: Modificar Datos de la Distribuidora
+#### DSD — CU-054: Modificar los Datos de una Distribuidora
 
 ##### Operación: modificarDistribuidora(distribuidoraId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-054 Modificar Datos de la Distribuidora · modificarDistribuidora
+    title DSD — CU-054 Modificar los Datos de una Distribuidora · modificarDistribuidora
     autonumber
     actor AGE as Administrador General (ACT-05)
     participant SRV as :DistributorService
@@ -9611,7 +10227,7 @@ sequenceDiagram
     SRV-->>-AGE: distribuidora
 ```
 
-**Figura 181 — DSD — CU-054: Modificar Datos de la Distribuidora**
+**Figura 194 — DSD — CU-054: Modificar Datos de la Distribuidora**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -9627,8 +10243,8 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El `UpdateDistributorDto` es un `PartialType` del DTO de creación: la actualización es **parcial** y `Object.assign` sólo pisa los campos presentes.
-- Cambiar `status` a `SUSPENDED` por esta vía tiene un efecto colateral en cascada: `assertActive` empezará a rechazar a los clientes que manden ese tenant en `X-Distributor`, y el `AuthGuard` devolverá `UnauthorizedException`.
+- El `UpdateDistributorDto` es un `PartialType` del DTO de creación: la actualización es **parcial** y `Object.assign` solo pisa los campos presentes.
+- Cambiar `status` a `SUSPENDED` por esta vía tiene un efecto colateral en cascada: `assertActive` empezará a rechazar a los clientes que manden esa distribuidora en `X-Distributor`, y el `AuthGuard` devolverá `UnauthorizedException`.
 
 ---
 
@@ -9652,7 +10268,7 @@ sequenceDiagram
     SRV-->>-AGE: confirmacion
 ```
 
-**Figura 182 — DSD — CU-055: Dar de Baja una Distribuidora**
+**Figura 195 — DSD — CU-055: Dar de Baja una Distribuidora**
 
 **Clases participantes:** `DistributorService` (controlador de fachada del módulo de distribuidoras), la colección `Map<String, Distribuidora>` y el objeto de dominio `Distribuidora`.
 
@@ -9669,7 +10285,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Es una **baja lógica** (`softRemove`, no `delete`): los pedidos, envases y calificaciones históricos conservan su `distributor_id` y la trazabilidad no se rompe.
-- Después de la baja, `getDefault` deja de poder elegir esa distribuidora como fallback porque el `find` de TypeORM excluye las filas con `deletedAt`.
+- Después de la baja, `getDefault` deja de poder elegir esa distribuidora como alternativa porque el `find` de TypeORM excluye las filas con `deletedAt`.
 
 ---
 
@@ -9682,7 +10298,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-058 Validar Cobertura de una Dirección · validarCobertura
+    title DSD — CU-058 Validar la Cobertura de una Dirección · validarCobertura
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :CoverageZoneService
@@ -9709,7 +10325,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 183 — DSD CU-058 / CU-005: Validación de zona de cobertura al crear un pedido**
+**Figura 196 — DSD CU-058: Validar la Cobertura de una Dirección**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y los objetos de dominio `Distribuidora` y `ZonaCobertura`. La operación la usa también la creación del pedido (`crearPedido`, CU-005), que le pregunta por la dirección elegida.
 
@@ -9728,20 +10344,20 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - La cobertura se valida **antes de reservar stock**: un pedido fuera de zona no llega a bloquear inventario.
-- La zona aporta además un **recargo por lejanía** que se suma al subtotal de los ítems **antes** del recargo por método de pago (+10 % en pagos online).
+- La zona aporta además un **recargo por lejanía** que se suma al subtotal de los ítems **antes** del recargo por método de pago (+10 % en pagos en línea).
 - Regla de compatibilidad: una distribuidora **sin zonas cargadas** no queda bloqueada — `checkCoverage` devuelve `covered: true, surcharge: 0`.
 - La consulta geoespacial es un `ST_Contains` de PostGIS resuelto en la base, no en memoria; se elige la zona de **mayor prioridad** y, a igual prioridad, la de **menor área** entre las que contienen el punto.
 
 ---
 
-#### DSD — CU-056: Definir Zona de Cobertura
+#### DSD — CU-056: Crear un Polígono de Cobertura
 
 
 ##### Operación: definirZonaDeCobertura(nombre, poligono, recargo, activa)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-056 Definir Zona de Cobertura · definirZonaDeCobertura
+    title DSD — CU-056 Crear un Polígono de Cobertura · definirZonaDeCobertura
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CoverageZoneService
@@ -9757,7 +10373,7 @@ sequenceDiagram
     SRV-->>-ADM: zona
 ```
 
-**Figura 184 — DSD — CU-056: Definir Zona de Cobertura**
+**Figura 197 — DSD — CU-056: Crear un Polígono de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y los objetos de dominio `Distribuidora` y `ZonaCobertura`.
 
@@ -9775,19 +10391,19 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El `distributor_id` de la zona **nunca viene del body**: lo inyecta el decorador desde el contexto de la request. Un admin no puede crear zonas en otra distribuidora aunque manipule el payload.
+- El `distributor_id` de la zona **nunca viene del body**: lo inyecta el decorador desde el contexto de la solicitud. Un admin no puede crear zonas en otra distribuidora aunque manipule el cuerpo de la petición.
 - `toGeoJsonPolygon` es una **transformación de dominio** dentro del servicio: normaliza el anillo abierto que manda el cliente al `Polygon` cerrado que exige GeoJSON/PostGIS. La validación de forma ocurre antes de tocar la base.
 
 ---
 
-#### DSD — CU-057: Consultar Zonas de Cobertura
+#### DSD — CU-057: Consultar los Polígonos de Cobertura
 
 
 ##### Operación: listarZonasDeCobertura()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-057 Consultar Zonas de Cobertura · listarZonasDeCobertura
+    title DSD — CU-057 Consultar los Polígonos de Cobertura · listarZonasDeCobertura
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CoverageZoneService
@@ -9799,7 +10415,7 @@ sequenceDiagram
     SRV-->>-ADM: zonas
 ```
 
-**Figura 185 — DSD — CU-057: Consultar Zonas de Cobertura**
+**Figura 198 — DSD — CU-057: Consultar los Polígonos de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y el objeto de dominio `Distribuidora`.
 
@@ -9814,19 +10430,19 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El filtro por `distributor_id` es **obligatorio** en esta consulta (`{ required: true }`): a diferencia de otros listados administrativos, acá no existe la variante cross-tenant para el super_admin sin header.
-- Las zonas se devuelven **incluidas las inactivas** (`isActive false`), porque el panel necesita poder reactivarlas; el filtrado por actividad sólo ocurre en `checkCoverage`.
+- El filtro por `distributor_id` es **obligatorio** en esta consulta (`{ required: true }`): a diferencia de otros listados administrativos, acá no existe la variante cross-distribuidora para el super_admin sin encabezado.
+- Por omisión se devuelven solo las zonas activas; con `includeInactive=true` también las inactivas, que es lo que pide el panel para poder reactivarlas. Las dadas de baja no se devuelven nunca. `checkCoverage` aplica además la vigencia.
 
 ---
 
-#### DSD — CU-059: Eliminar Zona de Cobertura
+#### DSD — CU-059: Dar de Baja un Polígono de Cobertura
 
 
 ##### Operación: eliminarZonaDeCobertura(zonaId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-059 Eliminar Zona de Cobertura · eliminarZonaDeCobertura
+    title DSD — CU-059 Dar de Baja un Polígono de Cobertura · eliminarZonaDeCobertura
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CoverageZoneService
@@ -9840,7 +10456,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 186 — DSD — CU-059: Eliminar Zona de Cobertura**
+**Figura 199 — DSD — CU-059: Dar de Baja un Polígono de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura), la colección `Map<String, ZonaCobertura>` y el objeto de dominio `ZonaCobertura`.
 
@@ -9856,8 +10472,178 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La condición de tenant se aplica **en el `WHERE` de la búsqueda**, no como chequeo posterior: una zona de otra distribuidora es indistinguible de una inexistente y devuelve 404, sin filtrar la existencia del recurso ajeno.
+- La condición de distribuidora se aplica **en el `WHERE` de la búsqueda**, no como chequeo posterior: una zona de otra distribuidora es indistinguible de una inexistente y devuelve 404, sin filtrar la existencia del recurso ajeno.
 - La baja es **lógica** (`softRemove`): la zona queda con `deletedAt` y se conserva. La validación de cobertura (CU-058) la ignora, porque el conteo de zonas excluye las dadas de baja y la consulta de `ST_Contains` filtra `"deletedAt" IS NULL`.
+
+---
+
+#### DSD — CU-305: Modificar un Polígono de Cobertura
+
+##### Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-305 Modificar un Polígono de Cobertura · modificarZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant COL as :Map#lt;String, ZonaCobertura#gt;
+    participant ZON as zona:ZonaCobertura
+
+    ADM->>+SRV: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)
+    SRV->>+COL: get(zonaId)
+    COL-->>-SRV: zona
+    SRV->>+ZON: modificar(nombre, poligono, recargo)
+    ZON->>ZON: validarPoligono()
+    ZON->>ZON: validarRecargo()
+    deactivate ZON
+    SRV-->>-ADM: zona
+    Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)
+```
+
+**Figura 200 — DSD CU-305: Modificar un Polígono de Cobertura — Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)**
+
+**Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura), la colección `Map<String, ZonaCobertura>` y el objeto de dominio `ZonaCobertura`.
+
+**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la `ZonaCobertura` valida su propio polígono y su recargo, de modo que ni el controlador ni la colección conocen esas reglas; el recargo se valida sobre el estado ya fusionado con lo que no se envió.
+
+**No se dibuja:** que la distribuidora sale del contexto de la petición, la normalización del polígono que manda el cliente, los campos que no cambian (prioridad, etiqueta, color) y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CoverageZoneService.modificarZonaDeCobertura(...)` | `CoverageZoneController.update` (`PATCH /coverage-zones/:id`) → `CoverageZoneService.update` |
+| `Map<String, ZonaCobertura>.get(...)` | `CoverageZoneService.findOne`, con la distribuidora del contexto; responde 404 si no existe o es de otra distribuidora |
+| `ZonaCobertura.modificar(...)` | `CoverageZoneService.update`: reúne solo los campos enviados (`sinIndefinidos`), asigna `CoverageZone.name`, `CoverageZone.area` y el recargo, y guarda |
+| `ZonaCobertura.validarPoligono()` | `CoverageZoneService.validarPoligono`: cierra el anillo y consulta a PostGIS si el polígono es válido; responde 400 si no lo es |
+| `ZonaCobertura.validarRecargo()` | `CoverageZoneService.validarRecargo`: un recargo no es negativo y, si es porcentual, no pasa de 100, sobre el estado fusionado |
+
+**Observaciones de diseño**
+
+- `PATCH` es parcial: un campo ausente no cambia. Enviar el tipo o el valor del recargo en `null` se rechaza, porque la columna no admite nulos.
+- La condición de distribuidora viaja en el `WHERE` de la búsqueda: una zona ajena responde 404 y no revela que existe.
+- Cambiar el polígono no recalcula ningún pedido: el pedido guarda su total.
+
+---
+
+#### DSD — CU-306: Consultar un Polígono de Cobertura
+
+##### Operación: consultarZonaDeCobertura(zonaId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-306 Consultar un Polígono de Cobertura · consultarZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant COL as :Map#lt;String, ZonaCobertura#gt;
+
+    ADM->>+SRV: consultarZonaDeCobertura(zonaId)
+    SRV->>+COL: get(zonaId)
+    COL-->>-SRV: zona
+    SRV-->>-ADM: zona
+    Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)
+```
+
+**Figura 201 — DSD CU-306: Consultar un Polígono de Cobertura — Operación: consultarZonaDeCobertura(zonaId)**
+
+**Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura) y la colección `Map<String, ZonaCobertura>`.
+
+**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la colección de `ZonaCobertura` de la distribuidora es quien encuentra la zona. La consulta no cambia estado.
+
+**No se dibuja:** que la distribuidora es obligatoria en el contexto, sin variante entre distribuidoras para el Administrador General, y la conversión de la zona a la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CoverageZoneService.consultarZonaDeCobertura(...)` | `CoverageZoneController.findOne` → `CoverageZoneService.findOne` |
+| `Map<String, ZonaCobertura>.get(...)` | `CoverageZoneService.findOne`: busca por `CoverageZone.coverageZoneId` y `CoverageZone.distributorId`; responde 404 si no existe o es de otra distribuidora |
+
+**Observaciones de diseño**
+
+- La búsqueda por identificador excluye las zonas dadas de baja, porque el borrado es lógico y el repositorio no las devuelve.
+
+---
+
+#### DSD — CU-307: Activar un Polígono de Cobertura
+
+##### Operación: activarZonaDeCobertura(zonaId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-307 Activar un Polígono de Cobertura · activarZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant COL as :Map#lt;String, ZonaCobertura#gt;
+    participant ZON as zona:ZonaCobertura
+
+    ADM->>+SRV: activarZonaDeCobertura(zonaId)
+    SRV->>+COL: get(zonaId)
+    COL-->>-SRV: zona
+    SRV->>ZON: activar()
+    SRV-->>-ADM: zona
+    Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)
+```
+
+**Figura 202 — DSD CU-307: Activar un Polígono de Cobertura — Operación: activarZonaDeCobertura(zonaId)**
+
+**Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura), la colección `Map<String, ZonaCobertura>` y el objeto de dominio `ZonaCobertura`.
+
+**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la `ZonaCobertura` es quien se activa; la cobertura la considera o la ignora según ese atributo.
+
+**No se dibuja:** que la distribuidora sale del contexto de la petición y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CoverageZoneService.activarZonaDeCobertura(...)` | `CoverageZoneController.update` (`PATCH /coverage-zones/:id`) → `CoverageZoneService.update` |
+| `Map<String, ZonaCobertura>.get(...)` | `CoverageZoneService.findOne`, con la distribuidora del contexto; responde 404 si no existe o es de otra distribuidora |
+| `ZonaCobertura.activar()` | `CoverageZoneService.update`: asigna `CoverageZone.isActive` en verdadero y guarda |
+
+**Observaciones de diseño**
+
+- No hay una ruta aparte: `isActive` es un campo más de `UpdateCoverageZoneDto`, y el panel lo envía solo desde el interruptor de la lista.
+- Una zona activa sigue sujeta a su vigencia: `checkCoverage` solo la considera dentro de ella.
+
+---
+
+#### DSD — CU-308: Desactivar un Polígono de Cobertura
+
+##### Operación: desactivarZonaDeCobertura(zonaId)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-308 Desactivar un Polígono de Cobertura · desactivarZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant COL as :Map#lt;String, ZonaCobertura#gt;
+    participant ZON as zona:ZonaCobertura
+
+    ADM->>+SRV: desactivarZonaDeCobertura(zonaId)
+    SRV->>+COL: get(zonaId)
+    COL-->>-SRV: zona
+    SRV->>ZON: desactivar()
+    SRV-->>-ADM: zona
+    Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)
+```
+
+**Figura 203 — DSD CU-308: Desactivar un Polígono de Cobertura — Operación: desactivarZonaDeCobertura(zonaId)**
+
+**Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura), la colección `Map<String, ZonaCobertura>` y el objeto de dominio `ZonaCobertura`.
+
+**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la `ZonaCobertura` es quien se desactiva; la cobertura la considera o la ignora según ese atributo.
+
+**No se dibuja:** que la distribuidora sale del contexto de la petición y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CoverageZoneService.desactivarZonaDeCobertura(...)` | `CoverageZoneController.update` (`PATCH /coverage-zones/:id`) → `CoverageZoneService.update` |
+| `Map<String, ZonaCobertura>.get(...)` | `CoverageZoneService.findOne`, con la distribuidora del contexto; responde 404 si no existe o es de otra distribuidora |
+| `ZonaCobertura.desactivar()` | `CoverageZoneService.update`: asigna `CoverageZone.isActive` en falso y guarda |
+
+**Observaciones de diseño**
+
+- No hay una ruta aparte: `isActive` es un campo más de `UpdateCoverageZoneDto`, y el panel lo envía solo desde el interruptor de la lista.
+- Desactivar no es dar de baja: la baja (CU-059) es lógica y la zona deja de listarse; la desactivación solo la excluye de la cobertura.
 
 ---
 
@@ -9869,7 +10655,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-064 Calificar Pedido (cliente↔chofer) · calificarPedido
+    title DSD — CU-064 Calificar un Pedido (cliente↔chofer) · calificarPedido
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :RatingService
@@ -9895,7 +10681,7 @@ sequenceDiagram
     SRV-->>-CLI: calificacion
 ```
 
-**Figura 187 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: calificarPedido(pedidoId, estrellas, comentario)**
+**Figura 204 — DSD CU-064: Calificar un Pedido (cliente↔chofer) — Operación: calificarPedido(pedidoId, estrellas, comentario)**
 
 **Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Usuario`, `Calificacion` y `Chofer`.
 
@@ -9917,7 +10703,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-065 Consultar Promedio de Calificaciones de un Usuario · consultarResumenDeCalificaciones
+    title DSD — CU-065 Consultar el Promedio de Calificaciones de un Usuario · consultarResumenDeCalificaciones
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :RatingService
@@ -9934,7 +10720,7 @@ sequenceDiagram
     SRV-->>-CLI: resumen
 ```
 
-**Figura 188 — DSD CU-064 / CU-065: Calificación bidireccional y recálculo del promedio — Operación: consultarResumenDeCalificaciones(usuarioId)**
+**Figura 205 — DSD CU-065: Consultar el Promedio de Calificaciones de un Usuario — Operación: consultarResumenDeCalificaciones(usuarioId)**
 
 **Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones) y los objetos de dominio `Usuario` y `Calificacion`.
 
@@ -9958,13 +10744,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-060: Registrar Incidencia de Entrega
+#### DSD — CU-060: Registrar una Incidencia de Entrega
 
 ##### Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-060 Registrar Incidencia de Entrega · registrarIncidencia
+    title DSD — CU-060 Registrar una Incidencia de Entrega · registrarIncidencia
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :IncidentService
@@ -9983,37 +10769,37 @@ sequenceDiagram
     SRV-->>-CHF: incidencia
 ```
 
-**Figura 189 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)**
+**Figura 206 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` e `Incidencia`.
 
 **GRASP.** *Controlador*: `IncidentService` recibe la operación. *Experto*: `Pedido` sabe si lo tiene asignado el chofer que reporta y de qué distribuidora es. *Creador*: el `Pedido` registra y crea su `Incidencia`, que nace abierta y hereda la distribuidora del pedido y no la de quien la reporta.
 
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora del contexto, que el chequeo de asignación se aplica sólo cuando reporta un chofer, la validación del tipo y la descripción, y la persistencia.
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora del contexto, que el chequeo de asignación se aplica solo cuando reporta un chofer, la validación del tipo y la descripción, y la persistencia.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `IncidentService.registrarIncidencia(...)` | `IncidentController.create` → `IncidentService.create` |
 | `Map<String, Pedido>.get(...)` | `OrderService.findById`: si el pedido no existe o es de otra distribuidora, responde recurso no encontrado |
-| `Pedido.esDelChofer(...)` | `OrderService.assertAsignadoAlChofer`: compara `Order.deliveryId` con el chofer que reporta |
+| `Pedido.esDelChofer(...)` | `OrderService.assertPedidoPropioDelChofer`: compara `Order.deliveryId` con el chofer que reporta; un pedido ajeno o sin chofer responde 404 y el que el chofer tuvo y ya no es suyo, 410 |
 | `Pedido.registrarIncidencia(...)` | `IncidentService.create`: arma la `Incident` con `Incident.orderId`, `Incident.distributorId` copiado de `Order.distributorId` y `Incident.reportedBy` |
 | `Incidencia.«create»` | `IncidentService.create`: crea la `Incident` con `Incident.type`, `Incident.description` y `Incident.photoUrl`; `Incident.status` queda abierta |
 
 **Observaciones de diseño**
 
-- **El tenant no se toma del contexto de la request sino del pedido**: `incident.distributor_id = order.distributor_id`. Es la decisión correcta porque la incidencia pertenece al pedido, no a quien la reporta; así una incidencia nunca puede quedar colgada de una distribuidora equivocada.
+- **La distribuidora no se toma del contexto de la solicitud sino del pedido**: `incident.distributor_id = order.distributor_id`. Es la decisión correcta porque la incidencia pertenece al pedido, no a quien la reporta; así una incidencia nunca puede quedar colgada de una distribuidora equivocada.
 - `reported_by` sale **del token** (`@CurrentUser()`), nunca del body: la autoría de la incidencia no es falsificable.
 - La incidencia **nace en `OPEN`** por construcción; no hay forma de crearla ya resuelta.
 
 ---
 
-#### DSD — CU-061: Listar Incidencias
+#### DSD — CU-061: Listar las Incidencias
 
 ##### Operación: listarIncidencias()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-061 Listar Incidencias · listarIncidencias
+    title DSD — CU-061 Listar las Incidencias · listarIncidencias
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :IncidentService
@@ -10029,7 +10815,7 @@ sequenceDiagram
     SRV-->>-ADM: incidencias
 ```
 
-**Figura 190 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()**
+**Figura 207 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Incidencia>` y el objeto de dominio `Incidencia`.
 
@@ -10045,18 +10831,18 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El *scoping* se construye con **spread condicional** sobre el `where`: `...(distributorId ? { distributor_id } : {})`. Un solo método sirve a la vista de tenant y a la vista cross-tenant del super_admin, sin ramas duplicadas de consulta.
-- Las relaciones `order` y `order.customer` se traen **eager en la consulta** para que el panel muestre a quién afecta cada incidencia sin N+1 llamadas; es aceptable porque el endpoint es admin-only y de bajo volumen.
+- El *scoping* se construye con **spread condicional** sobre el `where`: `...(distributorId ? { distributor_id } : {})`. Un solo método sirve a la vista de distribuidora y a la vista cross-distribuidora del super_admin, sin ramas duplicadas de consulta.
+- Las relaciones `order` y `order.customer` se traen **eager en la consulta** para que el panel muestre a quién afecta cada incidencia sin N+1 llamadas; es aceptable porque la ruta es admin-only y de bajo volumen.
 
 ---
 
-#### DSD — CU-062: Consultar Incidencias de un Pedido
+#### DSD — CU-062: Consultar las Incidencias de un Pedido
 
 ##### Operación: consultarIncidenciasDelPedido(pedidoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-062 Consultar Incidencias de un Pedido · consultarIncidenciasDelPedido
+    title DSD — CU-062 Consultar las Incidencias de un Pedido · consultarIncidenciasDelPedido
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :IncidentService
@@ -10071,7 +10857,7 @@ sequenceDiagram
     SRV-->>-CHF: incidencias
 ```
 
-**Figura 191 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)**
+**Figura 208 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -10087,18 +10873,18 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El chofer está entre los roles permitidos: necesita releer las incidencias que él mismo cargó durante el reparto. El filtro por tenant lo acota igual a su propia distribuidora, derivada de su perfil por el `AuthGuard`.
+- El chofer está entre los roles permitidos: necesita releer las incidencias que él mismo cargó durante el reparto. El filtro por distribuidora lo acota igual a su propia distribuidora, derivada de su perfil por el `AuthGuard`.
 - A diferencia de `findAll`, acá **no** se cargan relaciones: el consumidor ya tiene el pedido en pantalla.
 
 ---
 
-#### DSD — CU-063: Resolver Incidencia
+#### DSD — CU-063: Resolver una Incidencia
 
 ##### Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-063 Resolver Incidencia · resolverIncidencia
+    title DSD — CU-063 Resolver una Incidencia · resolverIncidencia
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :IncidentService
@@ -10112,7 +10898,7 @@ sequenceDiagram
     SRV-->>-ADM: incidencia
 ```
 
-**Figura 192 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)**
+**Figura 209 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)**
 
 **Clases participantes:** `IncidentService` (controlador de fachada del módulo de incidencias), la colección `Map<String, Incidencia>` y el objeto de dominio `Incidencia`.
 
@@ -10128,18 +10914,18 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La resolución exige tenant (`{ required: true }`) aunque leer no lo exija: **escribir siempre pertenece a una distribuidora**, mientras que leer admite la vista cross-tenant del super_admin. Es el mismo criterio que en `CoverageZoneController` y `CylinderController`.
+- La resolución exige distribuidora (`{ required: true }`) aunque leer no lo exija: **escribir siempre pertenece a una distribuidora**, mientras que leer admite la vista cross-distribuidora del super_admin. Es el mismo criterio que en `CoverageZoneController` y `CylinderController`.
 - No hay máquina de estados: la transición `OPEN → RESOLVED` es unidireccional y de un solo salto, así que se resuelve con asignación directa. Reabrir una incidencia no está contemplado en el diseño actual.
 
 ---
 
-#### DSD — CU-066: Consultar Historial de Calificaciones Recibidas
+#### DSD — CU-066: Consultar el Historial de Calificaciones Recibidas
 
 ##### Operación: consultarHistorialDeCalificaciones(usuarioId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-066 Consultar Historial de Calificaciones Recibidas · consultarHistorialDeCalificaciones
+    title DSD — CU-066 Consultar el Historial de Calificaciones Recibidas · consultarHistorialDeCalificaciones
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :RatingService
@@ -10151,7 +10937,7 @@ sequenceDiagram
     SRV-->>-ADM: calificaciones
 ```
 
-**Figura 193 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)**
+**Figura 210 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)**
 
 **Clases participantes:** `RatingService` (controlador de fachada del módulo de calificaciones) y el objeto de dominio `Usuario`.
 
@@ -10167,7 +10953,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - La consulta se hace por `to_user_id` y **no** filtra por `from_role`: el historial es simétrico y sirve igual para un chofer (calificado por clientes) que para un cliente (calificado por choferes).
-- Se carga la relación `fromUser` para que el panel muestre **quién** calificó; el comentario libre y la identidad del emisor sólo son visibles para roles administrativos, no para el calificado.
+- Se carga la relación `fromUser` para que el panel muestre **quién** calificó; el comentario libre y la identidad del emisor solo son visibles para roles administrativos, no para el calificado.
 - Es el complemento agregado de `getSummaryForUser` (CU-065): uno devuelve el promedio, este el detalle que lo sustenta.
 
 ---
@@ -10180,7 +10966,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-068 Asignar Envases a un Pedido · asignarEnvasesAPedido
+    title DSD — CU-068 Asignar los Envases a un Pedido · asignarEnvasesAPedido
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :CylinderService
@@ -10204,7 +10990,7 @@ sequenceDiagram
     SRV-->>-CHF: envases
 ```
 
-**Figura 194 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)**
+**Figura 211 — DSD CU-068: Asignar los Envases a un Pedido — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), las colecciones `Map<String, Pedido>` y `Map<String, Envase>` y los objetos de dominio `Envase` y `MovimientoEnvase`.
 
@@ -10227,7 +11013,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-070 Registrar Movimiento de Envase (cambio de estado) · registrarMovimientoDeEnvase
+    title DSD — CU-070 Registrar un Movimiento de Envase (cambio de estado) · registrarMovimientoDeEnvase
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :CylinderService
@@ -10253,7 +11039,7 @@ sequenceDiagram
     SRV-->>-CHF: envase
 ```
 
-**Figura 195 — DSD CU-068 / CU-070: Ciclo de vida del envase físico — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)**
+**Figura 212 — DSD CU-070: Registrar un Movimiento de Envase (cambio de estado) — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), las colecciones `Map<String, Envase>` y `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Envase` y `MovimientoEnvase`.
 
@@ -10266,7 +11052,7 @@ sequenceDiagram
 | `CylinderService.registrarMovimientoDeEnvase(...)` | `CylinderController.transition` → `CylinderService.transition` |
 | `Map<String, Envase>.get(...)` | `CylinderService.findOne` |
 | `Map<String, Pedido>.get(...)` | `OrderLookupService.findRef`: si el pedido no existe en la distribuidora, responde recurso no encontrado |
-| `Pedido.getCliente()` | `Order.customerId`, que `CylinderService.transition` usa sólo si el destino es «en poder del cliente» |
+| `Pedido.getCliente()` | `Order.customerId`, que `CylinderService.transition` usa solo si el destino es «en poder del cliente» |
 | `Envase.pasarA(...)` | `CylinderService.recordTransition`: asigna `Cylinder.state` y `Cylinder.currentCustomerId` |
 | `Envase.validarTransicion(...)` | `assertTransition()` |
 | `MovimientoEnvase.«create»` | `CylinderService.recordTransition`: guarda el `CylinderMovement` con `CylinderMovement.fromState`, `CylinderMovement.toState`, `CylinderMovement.orderId`, `CylinderMovement.actorUserId` y `CylinderMovement.note` |
@@ -10275,7 +11061,7 @@ sequenceDiagram
 
 - `CylinderMovement` es una bitácora **append-only**: cada transición deja rastro con `from_state`, `to_state`, `order_id`, `actor_user_id` y nota. Es la base de la trazabilidad de envases (SS-13).
 - El pedido **no conoce el módulo de envases**: habla contra `CylinderLifecyclePort`, y `CylinderLifecycleAdapter` delega en `CylinderService`.
-- El avance automático es **best-effort dentro de un `try/catch`** en `UpdateOrderStatusUseCase`: si falla, se loguea pero la entrega del pedido no se rompe.
+- El avance automático es **de mejor esfuerzo dentro de un `try/catch`** en `UpdateOrderStatusUseCase`: si falla, se loguea pero la entrega del pedido no se rompe.
 - El serial es único **por distribuidora** (índice compuesto): dos empresas pueden tener envases con el mismo serial de fábrica.
 
 ---
@@ -10302,7 +11088,7 @@ sequenceDiagram
     SRV-->>-ADM: envase
 ```
 
-**Figura 196 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)**
+**Figura 213 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases) y los objetos de dominio `Distribuidora`, `Envase` y `MovimientoEnvase`.
 
@@ -10321,7 +11107,7 @@ sequenceDiagram
 
 - El alta **es en sí misma un movimiento**: se registra un `CylinderMovement` con `from_state = null`, de modo que el historial (CU-071) arranca desde el ingreso del envase al parque y no queda un hueco inicial.
 - El serial es único **por distribuidora**, no globalmente: el índice es compuesto `(distributor_id, serial)`, porque dos empresas pueden tener envases con el mismo serial de fábrica. El `23505` se traduce a un 409 con mensaje de negocio.
-- Este alta **no** pasa por `assertTransition`: no hay estado previo desde el cual transicionar. La máquina de estados sólo gobierna los cambios posteriores (`recordTransition`).
+- Este alta **no** pasa por `assertTransition`: no hay estado previo desde el cual transicionar. La máquina de estados solo gobierna los cambios posteriores (`recordTransition`).
 
 ---
 
@@ -10345,7 +11131,7 @@ sequenceDiagram
     SRV-->>-ADM: envase
 ```
 
-**Figura 197 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)**
+**Figura 214 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), la colección `Map<String, Envase>` y el objeto de dominio `Envase`.
 
@@ -10379,7 +11165,7 @@ sequenceDiagram
     SRV-->>-ADM: envases
 ```
 
-**Figura 198 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)**
+**Figura 215 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), la colección `Map<String, Envase>` y el objeto de dominio `Envase`.
 
@@ -10395,19 +11181,19 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El filtro `state` es opcional y se compone con el de tenant en el mismo objeto `where`: es la consulta que alimenta el tablero de inventario por estado (cuántos `IN_DEPOT`, cuántos `WITH_CUSTOMER`, etc.).
+- El filtro `state` es opcional y se compone con el de distribuidora en el mismo objeto `where`: es la consulta que alimenta el tablero de inventario por estado (cuántos `IN_DEPOT`, cuántos `WITH_CUSTOMER`, etc.).
 - `findOne` admite al rol `DELIVERY` pero `findAll` no: el chofer puede consultar **un** envase concreto (el que tiene en la mano, escaneado), no enumerar el parque completo de la empresa.
-- `findOne` es también el guardián de tenant que reutilizan `transition`, `getHistory` y `assignToOrder`: la verificación de pertenencia está escrita una sola vez.
+- `findOne` es también el guardián de distribuidora que reutilizan `transition`, `getHistory` y `assignToOrder`: la verificación de pertenencia está escrita una sola vez.
 
 ---
 
-#### DSD — CU-071: Consultar Historial de Movimientos de un Envase
+#### DSD — CU-071: Consultar el Historial de Movimientos de un Envase
 
 ##### Operación: consultarHistorialDelEnvase(envaseId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-071 Consultar Historial de Movimientos de un Envase · consultarHistorialDelEnvase
+    title DSD — CU-071 Consultar el Historial de Movimientos de un Envase · consultarHistorialDelEnvase
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CylinderService
@@ -10422,7 +11208,7 @@ sequenceDiagram
     SRV-->>-ADM: movimientos
 ```
 
-**Figura 199 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)**
+**Figura 216 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases), la colección `Map<String, Envase>` y el objeto de dominio `Envase`.
 
@@ -10438,9 +11224,9 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La validación de tenant se hace **sobre el envase, antes de listar los movimientos**: la consulta al repositorio de movimientos filtra sólo por `cylinder_id`, pero es inalcanzable si el envase no pertenece al tenant. Evita duplicar el criterio de aislamiento en dos tablas.
+- La validación de distribuidora se hace **sobre el envase, antes de listar los movimientos**: la consulta al repositorio de movimientos filtra solo por `cylinder_id`, pero es inalcanzable si el envase no pertenece a la distribuidora. Evita duplicar el criterio de aislamiento en dos tablas.
 - El orden es `createdAt ASC` (cronológico ascendente), al revés que los listados de incidencias y calificaciones: un historial se lee **hacia adelante**, desde el alta hasta el estado actual.
-- `CylinderMovement` es una tabla **append-only**: `recordTransition` sólo inserta, nunca actualiza ni borra. Es la evidencia de trazabilidad exigida por el caso de uso.
+- `CylinderMovement` es una tabla **append-only**: `recordTransition` solo inserta, nunca actualiza ni borra. Es la evidencia de trazabilidad exigida por el caso de uso.
 
 ---
 
@@ -10472,7 +11258,7 @@ sequenceDiagram
     SRV-->>-ADM: envase
 ```
 
-**Figura 200 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)**
+**Figura 217 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y los objetos de dominio `Envase` y `RevisionEnvase`. **Colaboración propuesta:** `CylinderService.registrarRevision` no existe en el código; las columnas `Cylinder.lastInspectionAt` y `Cylinder.expiresAt` sí.
 
@@ -10483,7 +11269,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Las dos fechas se copian del historial a la ficha del envase a propósito: el despacho las consulta en cada pedido y no puede pagar el costo de recorrer el historial.
-- El historial se conserva completo aunque la ficha guarde sólo la última revisión: es lo que permite probar ante una inspección que el envase estuvo siempre en regla.
+- El historial se conserva completo aunque la ficha guarde solo la última revisión: es lo que permite probar ante una inspección que el envase estuvo siempre en regla.
 - Las dos escrituras tienen que ir en una transacción, o la ficha puede quedar diciendo una vigencia que el historial no respalda.
 - Con resultado de rechazo, `expires_at` se fija en la fecha de la revisión: el envase queda vencido desde ese momento y el bloqueo de CU-135 lo alcanza sin una regla propia.
 
@@ -10511,7 +11297,7 @@ sequenceDiagram
     SRV-->>-ADM: vigencia
 ```
 
-**Figura 201 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)**
+**Figura 218 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y el objeto de dominio `Envase`. **Colaboración propuesta:** `CylinderService.consultarVigencia` no existe en el código.
 
@@ -10548,7 +11334,7 @@ sequenceDiagram
     SRV-->>-ADM: envases
 ```
 
-**Figura 202 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)**
+**Figura 219 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y el objeto de dominio `Envase`. **Colaboración propuesta:** `CylinderService.proximosAVencer` no existe en el código.
 
@@ -10586,7 +11372,7 @@ sequenceDiagram
     SRV-->>-SIS: vencidas
 ```
 
-**Figura 203 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)**
+**Figura 220 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)**
 
 **Clases participantes:** `CylinderService` (controlador de fachada del módulo de envases; colaboración propuesta), la colección `Map<String, Envase>` y el objeto de dominio `Envase`. **Colaboración propuesta:** la verificación no existe en el código.
 
@@ -10605,13 +11391,13 @@ sequenceDiagram
 
 ### 4.14 SS-14 — Pagos y Conciliación
 
-#### DSD — CU-048: Pago con pasarela y confirmación por webhook
+#### DSD — CU-048: Procesar el Pago con MercadoPago
 
 ##### Operación: crearCheckoutDePago(pedidoId, medioDePago)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-048 Procesar Pago con MercadoPago · crearCheckoutDePago
+    title DSD — CU-048 Procesar el Pago con MercadoPago · crearCheckoutDePago
     autonumber
     actor CLI as Cliente (ACT-01)
     participant PAG as :PaymentsService
@@ -10632,13 +11418,13 @@ sequenceDiagram
     PAG-->>-CLI: enlaceDePago
 ```
 
-**Figura 204 — DSD CU-048: Procesar Pago con MercadoPago · crearCheckoutDePago**
+**Figura 221 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago**
 
 **Clases participantes:** `CreateOrderUseCase` (el caso de uso que la invoca), `PaymentsService` (controlador de fachada del módulo de pagos), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `PaymentGatewayPort` (fabricación pura: la pasarela de pago, MercadoPago Checkout Pro).
 
 **GRASP.** *Controlador*: `PaymentsService`. *Creador*: el servicio crea el `Pago`, porque es quien lleva el registro de los intentos de cobro. *Experto*: `Pedido` sabe cuánto hay que cobrar: su total, o el monto de la seña si el cobro es de una reserva. El `Pago` nace «pendiente»; si la pasarela no devuelve el enlace, queda sin él y el pedido queda creado igual. Si el pedido ya está pago, cancelado o entregado, el servicio lo rechaza con un conflicto (409) antes de registrar ningún intento, y si no existe responde 404.
 
-**Referencias.** `crearCheckoutDePago` no es una operación del sistema: ningún actor la invoca ni tiene un endpoint propio. Es una colaboración interna que ejecuta `CreateOrderUseCase` dentro de la creación del pedido (`crearPedido`, CU-005), de la reserva (`crearReserva`, CU-072) y de la compra express (`realizarCompraExpress`, CU-147), y su resultado, el enlace de pago, viaja en la respuesta de esas operaciones. Se la diagrama aparte porque crea el `Pago`, y sus efectos figuran en las Notas del contrato de `crearPedido`. El resultado del pago llega después, por la notificación de la pasarela: es la operación `notificarResultadoDePago`, de este mismo caso de uso.
+**Referencias.** `crearCheckoutDePago` no es una operación del sistema: ningún actor la invoca ni tiene una ruta propia. Es una colaboración interna que ejecuta `CreateOrderUseCase` dentro de la creación del pedido (`crearPedido`, CU-005), de la reserva (`crearReserva`, CU-072) y de la compra express (`realizarCompraExpress`, CU-147), y su resultado, el enlace de pago, viaja en la respuesta de esas operaciones. Se la diagrama aparte porque crea el `Pago`, y sus efectos figuran en las Notas del contrato de `crearPedido`. El resultado del pago llega después, por la notificación de la pasarela: es la operación `notificarResultadoDePago`, de este mismo caso de uso.
 
 **No se dibuja:** la persistencia del `Pago` y la preferencia de pago de MercadoPago (`MercadoPagoAdapter`), que es la implementación del puerto. El estado del `Pedido` no cambia.
 
@@ -10654,7 +11440,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-048 Procesar Pago con MercadoPago · notificarResultadoDePago
+    title DSD — CU-048 Procesar el Pago con MercadoPago · notificarResultadoDePago
     autonumber
     actor MPG as MercadoPago (ACT-06)
     participant CNF as :ConfirmPaymentUseCase
@@ -10690,7 +11476,7 @@ sequenceDiagram
     CNF-->>-MPG: recibido
 ```
 
-**Figura 205 — DSD CU-048: Procesar Pago con MercadoPago · notificarResultadoDePago**
+**Figura 222 — DSD CU-048: Procesar el Pago con MercadoPago · notificarResultadoDePago**
 
 **Clases participantes:** `ConfirmPaymentUseCase` (controlador de caso de uso), `PaymentGatewayPort` (fabricación pura: la pasarela de pago), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `Pago`, y `RealtimeDispatchPort` y `NotificationPort` (fabricaciones puras: el aviso al Cliente por tiempo real y por notificación push).
 
@@ -10710,28 +11496,28 @@ sequenceDiagram
 | `Pago.registrarResultado(...)` | `PaymentsService.confirmFromGateway`: asigna `Payment.gatewayPaymentId` y `Payment.status`, traducido del estado de la pasarela |
 | `Pedido.confirmarSenia()` | `ConfirmPaymentUseCase.handleApproved`: asigna `Order.depositPaid` y `Order.gatewayPaymentId` |
 | `Pedido.marcarPagado(...)` | `ConfirmPaymentUseCase.handleApproved`: asigna `Order.paymentStatus` pagado y `Order.gatewayPaymentId` |
-| `RealtimeDispatchPort.notifyCustomer(...)` | `ConfirmPaymentUseCase.handleApproved`, después del commit: emite al Cliente el evento `order:payment-approved`; sólo en la primera confirmación, no en los reintentos de la pasarela |
+| `RealtimeDispatchPort.notifyCustomer(...)` | `ConfirmPaymentUseCase.handleApproved`, después del commit: emite al Cliente el evento `order:payment-approved`; solo en la primera confirmación, no en los reintentos de la pasarela |
 | `NotificationPort.sendPaymentApprovedPush(...)` | `ConfirmPaymentUseCase.notificarPagoAprobado`, después del commit y del despacho: el push al Cliente («pago recibido» o «seña recibida»), una sola vez; un fallo se registra y no revierte el pago |
 
 **Observaciones de diseño**
 
 - El dominio de pedidos **no conoce MercadoPago**: `ConfirmPaymentUseCase` consume el resultado *normalizado* de `PaymentsService`, y solo `MercadoPagoAdapter` toca el SDK. Sumar otra pasarela es agregar un adapter, no tocar `order`.
-- El sistema **nunca confía en el payload del webhook**: valida la firma HMAC y después consulta el pago real con `getPayment`.
+- El sistema **nunca confía en el contenido del webhook**: valida la firma HMAC y después consulta el pago real con `getPayment`.
 - Idempotencia por triple guarda: firma, `gateway_payment_id` ya asignado en el ledger, y lock pesimista sobre el `Order` antes de marcar `PAID`. Nunca se despacha dos veces el mismo pedido.
 - El webhook **siempre responde 200**, incluso ante firma inválida o error interno, para que MercadoPago no entre en bucle de reintentos con 5xx.
-- El camino de pago `rejected` / `cancelled` no libera el stock ni cancela el pedido: sólo deja registro en el log; el pedido queda pendiente y lo cancela el proceso de CU-077 al vencer el plazo. Es una limitación del sistema y no una funcionalidad.
+- El camino de pago `rejected` / `cancelled` no libera el stock ni cancela el pedido: solo deja registro en el registro de eventos; el pedido queda pendiente y lo cancela el proceso de CU-077 al vencer el plazo. Es una limitación del sistema y no una funcionalidad.
 
 ---
 
 ### 4.15 SS-15 — Reservas Programadas
 
-#### DSD — CU-072: Crear reserva programada con seña
+#### DSD — CU-072: Crear una Reserva Programada con Seña
 
 ##### Operación: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-072 Crear Reserva Programada con Seña · crearReserva
+    title DSD — CU-072 Crear una Reserva Programada con Seña · crearReserva
     autonumber
     actor CLI as Cliente (ACT-01)
     participant CRT as :CreateOrderUseCase
@@ -10774,7 +11560,7 @@ sequenceDiagram
     CRT-->>-CLI: reserva, enlaceDePago
 ```
 
-**Figura 206 — DSD CU-072: Crear reserva programada con seña**
+**Figura 223 — DSD CU-072: Crear una Reserva Programada con Seña**
 
 **Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`. Es la misma colaboración que `crearPedido` (CU-005), con la fecha agendada obligatoria y el monto de la seña; la diferencia está en el estado con que nace el `Pedido` y en que no se despacha.
 
@@ -10815,7 +11601,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-075 Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia
+    title DSD — CU-075 Activar las Reservas Vencidas Automáticamente · activarReservasDelDia
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :ReservationService
@@ -10834,7 +11620,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 207 — DSD CU-075: Activar Reservas Vencidas Automaticamente (Cron) · activarReservasDelDia**
+**Figura 224 — DSD CU-075: Activar las Reservas Vencidas Automáticamente · activarReservasDelDia**
 
 **Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -10855,7 +11641,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-076 Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia
+    title DSD — CU-076 Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :ReservationService
@@ -10880,7 +11666,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 208 — DSD CU-076: Expirar Reservas sin Seña Pagada (Cron) · expirarReservasSinSenia**
+**Figura 225 — DSD CU-076: Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia**
 
 **Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y los objetos de dominio `Pedido`, `ItemPedido` y `Producto`.
 
@@ -10901,7 +11687,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-077 Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar
+    title DSD — CU-077 Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :ReservationService
@@ -10930,7 +11716,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 209 — DSD CU-077: Expirar Pedidos de MercadoPago sin Pagar (Cron) · expirarPedidosSinPagar**
+**Figura 226 — DSD CU-077: Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar**
 
 **Clases participantes:** `ReservationService` (controlador del proceso automático), la colección `List<Pedido>` y los objetos de dominio `Pedido`, `ItemPedido` y `Producto`.
 
@@ -10957,13 +11743,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-073: Listar Reservas y Estado de la Seña
+#### DSD — CU-073: Listar las Reservas y el Estado de la Seña
 
 ##### Operación: listarReservas()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-073 Listar Reservas y Estado de la Seña · listarReservas
+    title DSD — CU-073 Listar las Reservas y el Estado de la Seña · listarReservas
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ReservationService
@@ -10980,11 +11766,11 @@ sequenceDiagram
     SRV-->>-ADM: reservas
 ```
 
-**Figura 210 — DSD — CU-073: Listar Reservas y Estado de la Seña**
+**Figura 227 — DSD — CU-073: Listar Reservas y Estado de la Seña**
 
 **Clases participantes:** `ReservationService` (controlador de fachada del módulo de reservas), la colección `List<Pedido>` y el objeto de dominio `Pedido` en estado «reservado».
 
-**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` conoce su total, su seña y si la seña está paga, así que es quien calcula el saldo pendiente: el total menos la seña, sólo si la seña está paga. La colección devuelve las reservas de la distribuidora, las más próximas a su fecha agendada primero.
+**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` conoce su total, su seña y si la seña está paga, así que es quien calcula el saldo pendiente: el total menos la seña, solo si la seña está paga. La colección devuelve las reservas de la distribuidora, las más próximas a su fecha agendada primero.
 
 **No se dibuja:** la proyección que arma el servicio para el panel (cliente, teléfono, fecha agendada, método de pago y los ítems) y el alcance por la distribuidora del contexto, que decide el controlador HTTP.
 
@@ -10992,23 +11778,23 @@ sequenceDiagram
 |---|---|
 | `ReservationService.listarReservas(...)` | `OrderController.findReservations` → `ReservationService.findReservations` |
 | `List<Pedido>.buscarReservas(...)` | `ReservationService.findReservations`: lee los `Order` con `Order.status` reservado, junto con su cliente y sus ítems, ordenados por `Order.scheduledDate` ascendente |
-| `Pedido.calcularSaldo()` | `ReservationService.findReservations`: resta `Order.depositAmount` de `Order.totalAmount` sólo si `Order.depositPaid` es verdadero |
+| `Pedido.calcularSaldo()` | `ReservationService.findReservations`: resta `Order.depositAmount` de `Order.totalAmount` solo si `Order.depositPaid` es verdadero |
 
 **Observaciones de diseño**
 
-- El servicio **no devuelve la entidad `Order`** sino una proyección armada a mano para el panel: el `remainingBalance` es un dato **derivado** (total menos seña sólo si la seña está paga), no una columna. Calcularlo en el servidor evita que dos clientes distintos lo computen de forma divergente.
+- El servicio **no devuelve la entidad `Order`** sino una proyección armada a mano para el panel: el `remainingBalance` es un dato **derivado** (total menos seña solo si la seña está paga), no una columna. Calcularlo en el servidor evita que dos clientes distintos lo computen de forma divergente.
 - El orden por `scheduled_date ASC` pone primero las reservas más próximas a vencer: es la agenda operativa del día, no un listado histórico.
 - Es la contracara de lectura de los tres crons documentados en la sección 4.15 del Documento 3: lo que el admin ve acá es exactamente el conjunto sobre el que `activateDueReservations` y `expireUnpaidReservations` van a actuar.
 
 ---
 
-#### DSD — CU-074: Confirmar Seña Cobrada en Efectivo
+#### DSD — CU-074: Confirmar la Seña Cobrada en Efectivo
 
 ##### Operación: confirmarSenia(pedidoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-074 Confirmar Seña Cobrada en Efectivo · confirmarSenia
+    title DSD — CU-074 Confirmar la Seña Cobrada en Efectivo · confirmarSenia
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :ReservationService
@@ -11024,7 +11810,7 @@ sequenceDiagram
     SRV-->>-ADM: reserva
 ```
 
-**Figura 211 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo**
+**Figura 228 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo**
 
 **Clases participantes:** `ReservationService` (controlador de fachada del módulo de reservas), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
@@ -11041,22 +11827,22 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es **la única acción humana** de todo el subsistema de reservas: la seña pagada por MercadoPago la marca sola `ConfirmPaymentUseCase` desde el webhook. Este endpoint existe sólo para el camino en efectivo.
-- El efecto es **habilitante, no ejecutivo**: `deposit_paid = true` no despacha nada; sólo hace que la reserva entre en el conjunto que el cron `activateDueReservations` levantará el día agendado (ver `3-Diseño.md` §4.8). El diseño separa deliberadamente la decisión humana del momento de ejecución.
+- Es **la única acción humana** de todo el subsistema de reservas: la seña pagada por MercadoPago la marca sola `ConfirmPaymentUseCase` desde el webhook. Este ruta existe solo para el camino en efectivo.
+- El efecto es **habilitante, no ejecutivo**: `deposit_paid = true` no despacha nada; solo hace que la reserva entre en el conjunto que la tarea programada `activateDueReservations` levantará el día agendado (ver `3-Diseño.md` §4.8). El diseño separa deliberadamente la decisión humana del momento de ejecución.
 - La guarda `status !== RESERVED` impide confirmar la seña de un pedido ya activado o cancelado, que sería un cobro sin efecto.
 
 ---
 
 ### 4.16 SS-16 — Administración de Cuentas y Roles
 
-#### DSD — CU-086: Registrar Administrador
+#### DSD — CU-086: Registrar un Administrador
 
 
 ##### Operación: registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rol, distribuidoraId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-086 Registrar Administrador · registrarAdministrador
+    title DSD — CU-086 Registrar un Administrador · registrarAdministrador
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :RegistroService
@@ -11078,7 +11864,7 @@ sequenceDiagram
     SRV-->>-ADM: usuario
 ```
 
-**Figura 212 — DSD — CU-086: Registrar Administrador**
+**Figura 229 — DSD — CU-086: Registrar Administrador**
 
 **Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Administrador`.
 
@@ -11089,35 +11875,35 @@ sequenceDiagram
 | Operación de diseño | Implementación |
 |---|---|
 | `RegistroService.registrarAdministrador(...)` | `RegistroController.registrar` (`POST /users`, con rol `admin` o `super_admin`) → `RegistroService.registrar` |
-| `RegistroService.autorizarAlta(...)` | `autorizarAlta()` (`politica-de-registro.ts`): un administrador de empresa sólo da de alta en su distribuidora y nunca un Administrador General (403); el Administrador General indica la distribuidora (400 si falta) |
+| `RegistroService.autorizarAlta(...)` | `autorizarAlta()` (`politica-de-registro.ts`): un administrador de empresa solo da de alta en su distribuidora y nunca un Administrador General (403); el Administrador General indica la distribuidora (400 si falta) |
 | `Map<String, Usuario>.verificarDisponibilidad(...)` | `UsersService.assertDisponible`: busca un `User` con ese `User.email` o ese `User.phoneNumber`, también entre los dados de baja; responde 409 si lo hay |
 | `Usuario.«create»` | `UsersService.crearEnTransaccion`: guarda el `User` dentro de la transacción del alta, con el rol que devuelve `RoleService.findByType` |
 | `Administrador.«create»` | `AdminService.crearPerfil`: guarda el `Admin` en la misma transacción, con la distribuidora o sin ella si es Administrador General |
 
 **Observaciones de diseño**
 
-- La regla de quién crea a quién es la misma función que en todas las altas (`autorizarAlta`): un admin de empresa no crea super admins ni admins de otra distribuidora.
-- Un admin de empresa siempre tiene distribuidora; `distributor_id = null` queda reservado al super admin. Antes se podía crear un admin sin distribuidora que después no podía entrar.
+- La regla de quién crea a quién es la misma función que en todas las altas (`autorizarAlta`): un administrador no crea super admins ni admins de otra distribuidora.
+- Un administrador siempre tiene distribuidora; `distributor_id = null` queda reservado al super admin. Antes se podía crear un admin sin distribuidora que después no podía entrar.
 - El alta es atómica (usuario y perfil en una transacción), con la compensación de CU-082.
 
 ---
 
-#### DSD — CU-087: Crear el Primer Super Administrador (bootstrap)
+#### DSD — CU-087: Crear el Primer Administrador General
 
 
 ##### Operación: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-087 Crear el Primer Super Administrador (bootstrap) · crearPrimerSuperAdministrador
+    title DSD — CU-087 Crear el Primer Administrador General · crearPrimerSuperAdministrador
     autonumber
-    actor AGN as Administrador General (ACT-05)
+    actor OPE as Operador Técnico (ACT-10)
     participant SRV as :RegistroService
     participant LST as :List#lt;Administrador#gt;
     participant COL as :Map#lt;String, Usuario#gt;
     participant FBA as :FirebaseAuthPort
 
-    AGN->>+SRV: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
+    OPE->>+SRV: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
     SRV->>+LST: existeAdministradorGeneral()
     LST-->>-SRV: existe
     SRV->>COL: verificarDisponibilidad(correo, telefono)
@@ -11130,12 +11916,12 @@ sequenceDiagram
     opt La persistencia falla
         SRV->>FBA: deleteUserSafe(cuenta)
     end
-    SRV-->>-AGN: usuario
+    SRV-->>-OPE: usuario
 ```
 
-**Figura 213 — DSD — CU-087: Crear el Primer Super Administrador (bootstrap)**
+**Figura 230 — DSD — CU-087: Crear el Primer Administrador General**
 
-**Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `List<Administrador>`, la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Administrador`. Lo inicia el Administrador General desde el servidor, con el comando `crear-superadmin`: no hay endpoint.
+**Clases participantes:** `RegistroService` (controlador de fachada del alta de usuarios), la colección `List<Administrador>`, la colección `Map<String, Usuario>`, `FirebaseAuthPort` (fabricación pura) y los objetos de dominio `Usuario` y `Administrador`. Lo inicia el Administrador General desde el servidor, con el comando `crear-superadmin`: no hay ruta.
 
 **GRASP.** *Controlador*: `RegistroService`. *Creador*: el controlador crea el `Usuario` y el `Administrador`, este último sin distribuidora porque el Administrador General no pertenece a ninguna. La colección de administradores es quien sabe si ya hay un Administrador General: si lo hay, no se crea nada.
 
@@ -11151,20 +11937,20 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- No hay endpoint: el arranque lo hace quien tiene acceso al servidor. Un endpoint público que sólo sirve una vez queda expuesto toda la vida del sistema.
+- No hay ruta: el arranque lo hace quien tiene acceso al servidor. Un ruta pública que solo sirve una vez queda expuesto toda la vida del sistema.
 - La contraseña no viaja como argumento, para que no quede en el historial de la terminal.
 - El comando usa el mismo `RegistroService` que el panel, con el solicitante `sistema`: no hay un segundo camino de alta que mantener.
 
 ---
 
-#### DSD — CU-088: Consultar Administradores
+#### DSD — CU-088: Consultar los Administradores
 
 
 ##### Operación: listarAdministradores()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-088 Consultar Administradores · listarAdministradores
+    title DSD — CU-088 Consultar los Administradores · listarAdministradores
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :AdminService
@@ -11176,7 +11962,7 @@ sequenceDiagram
     SRV-->>-ADM: administradores
 ```
 
-**Figura 214 — DSD — CU-088: Consultar Administradores**
+**Figura 231 — DSD — CU-088: Consultar Administradores**
 
 **Clases participantes:** `AdminService` (controlador de fachada del módulo de administradores) y la colección `List<Administrador>`.
 
@@ -11193,7 +11979,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-088 Consultar Administradores · buscarAdministrador
+    title DSD — CU-088 Consultar los Administradores · buscarAdministrador
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :AdminService
@@ -11205,7 +11991,7 @@ sequenceDiagram
     SRV-->>-ADM: administrador
 ```
 
-**Figura 215 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)**
+**Figura 232 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)**
 
 **Clases participantes:** `AdminService` (controlador de fachada del módulo de administradores) y la colección `Map<String, Administrador>`.
 
@@ -11220,7 +12006,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `findAdminByTerm` implementa un **buscador polimórfico**: `isUUID(term)` decide contra qué columna se resuelve, evitando dos endpoints casi idénticos. El costo es que el `term` no puede ser un `ParseUUIDPipe` y llega como string crudo.
+- `findAdminByTerm` implementa un **buscador polimórfico**: `isUUID(term)` decide contra qué columna se resuelve, evitando dos rutas casi idénticos. El costo es que el `term` no puede ser un `ParseUUIDPipe` y llega como string crudo.
 - La búsqueda por término está acotada por distribuidora igual que `findAll`: con distribuidora en contexto, un admin de otra responde 404 como si no existiera.
 - `AdminMapper.toVista` aplana `Admin`, `User` y `Role` en un objeto único para el panel, en vez de exponer el grafo de entidades, y no incluye el identificador de Firebase.
 
@@ -11245,7 +12031,7 @@ sequenceDiagram
     SRV-->>-AGN: roles
 ```
 
-**Figura 216 — DSD CU-089: Consultar los Roles — Operación: listarRoles()**
+**Figura 233 — DSD CU-089: Consultar los Roles — Operación: listarRoles()**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles) y la colección `List<Rol>`.
 
@@ -11260,7 +12046,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es un CRUD **exclusivo de plataforma**: `@Roles(RoleType.SUPER_ADMIN)` está declarado a nivel de clase, así que ningún admin de empresa puede tocar el catálogo de roles. Es coherente con que el `role_id` sea el insumo de la comprobación anti-escalada de CU-086.
+- Es un CRUD **exclusivo de plataforma**: `@Roles(RoleType.SUPER_ADMIN)` está declarado a nivel de clase, así que ningún administrador puede tocar el catálogo de roles. Es coherente con que el `role_id` sea el insumo de la comprobación anti-escalada de CU-086.
 
 ---
 
@@ -11282,7 +12068,7 @@ sequenceDiagram
     SRV-->>-AGN: rol
 ```
 
-**Figura 217 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)**
+**Figura 234 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles) y el objeto de dominio `Rol`.
 
@@ -11320,7 +12106,7 @@ sequenceDiagram
     SRV-->>-AGN: rol
 ```
 
-**Figura 218 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)**
+**Figura 235 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles), la colección `Map<String, Rol>` y el objeto de dominio `Rol`.
 
@@ -11377,7 +12163,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 219 — DSD CU-254: Eliminar un Rol — Operación: eliminarRol(rolId)**
+**Figura 236 — DSD CU-254: Eliminar un Rol — Operación: eliminarRol(rolId)**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles), la colección `Map<String, Rol>` y el objeto de dominio `Rol`.
 
@@ -11424,7 +12210,7 @@ sequenceDiagram
     SRV-->>-AGN: mensaje
 ```
 
-**Figura 220 — DSD — CU-090: Sembrar los Roles Iniciales**
+**Figura 237 — DSD — CU-090: Sembrar los Roles Iniciales**
 
 **Clases participantes:** `RoleService` (controlador de fachada del módulo de roles), la colección `Map<String, Rol>` y el objeto de dominio `Rol`.
 
@@ -11446,14 +12232,14 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-092: Consultar Listado de Clientes
+#### DSD — CU-092: Consultar el Listado de Clientes
 
 
 ##### Operación: listarClientes(pagina, limite)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-092 Consultar Listado de Clientes · listarClientes
+    title DSD — CU-092 Consultar el Listado de Clientes · listarClientes
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CustomersService
@@ -11465,36 +12251,36 @@ sequenceDiagram
     SRV-->>-ADM: clientes, total
 ```
 
-**Figura 221 — DSD — CU-092: Consultar Listado de Clientes**
+**Figura 238 — DSD — CU-092: Consultar Listado de Clientes**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes) y la colección `List<Cliente>`.
 
 **GRASP.** *Controlador*: `CustomersService`. El listado no cambia estado. Los clientes no pertenecen a una distribuidora: son de quien alguna vez les vendió, de modo que el alcance es una relación y no un atributo.
 
-**No se dibuja:** el alcance por distribuidora, que deja sólo a los clientes que le hicieron algún pedido, y la carga del usuario y las direcciones.
+**No se dibuja:** el alcance por distribuidora, que deja solo a los clientes que le hicieron algún pedido, y la carga del usuario y las direcciones.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `CustomersService.listarClientes(...)` | `CustomersController.findAll` → `CustomersService.findAll` |
-| `List<Cliente>.buscar(...)` | `CustomersService.findAll`: consulta los `Customer` con su usuario, ordenados por alta y paginados; con distribuidora en contexto, sólo los que le compraron (`clienteDeLaDistribuidora()`) |
+| `List<Cliente>.buscar(...)` | `CustomersService.findAll`: consulta los `Customer` con su usuario, ordenados por alta y paginados; con distribuidora en contexto, solo los que le compraron (`clienteDeLaDistribuidora()`) |
 
 **Observaciones de diseño**
 
-- Es el caso de **scoping multi-tenant más complejo del sistema**: los clientes son entidades **globales** (una misma persona puede pedirle a varias distribuidoras), así que `Customer` no tiene columna `distributor_id`. La pertenencia al tenant no es un atributo sino una **relación**, y se expresa como un `EXISTS` sobre `Order`.
-- La consecuencia de diseño es que "cliente de la distribuidora X" significa exactamente "cliente que alguna vez le pidió a X". Un cliente registrado que nunca pidió no aparece en ningún panel de tenant.
-- Por eso este endpoint usa `createQueryBuilder` y no el `find` declarativo que usan el resto de los listados: la subconsulta correlacionada no se puede expresar con `FindOptionsWhere`.
+- Es el caso de **scoping multidistribuidora más complejo del sistema**: los clientes son entidades **globales** (una misma persona puede pedirle a varias distribuidoras), así que `Customer` no tiene columna `distributor_id`. La pertenencia a la distribuidora no es un atributo sino una **relación**, y se expresa como un `EXISTS` sobre `Order`.
+- La consecuencia de diseño es que "cliente de la distribuidora X" significa exactamente "cliente que alguna vez le pidió a X". Un cliente registrado que nunca pidió no aparece en ningún panel de distribuidora.
+- Por eso esta ruta usa `createQueryBuilder` y no el `find` declarativo que usan el resto de los listados: la subconsulta correlacionada no se puede expresar con `FindOptionsWhere`.
 - `GET /customers?term=` filtra por nombre o correo y `GET /customers` informa el total real en el encabezado `X-Total-Count` (`informarTotal`).
 
 ---
 
-#### DSD — CU-094: Actualizar Ubicación del Cliente
+#### DSD — CU-094: Actualizar la Ubicación del Cliente
 
 
 ##### Operación: actualizarUbicacionDelCliente(clienteId, coordenadas)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-094 Actualizar Ubicación del Cliente · actualizarUbicacionDelCliente
+    title DSD — CU-094 Actualizar la Ubicación del Cliente · actualizarUbicacionDelCliente
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :CustomersService
@@ -11508,13 +12294,13 @@ sequenceDiagram
     SRV-->>-CLI: cliente
 ```
 
-**Figura 222 — DSD — CU-094: Actualizar Ubicación del Cliente**
+**Figura 239 — DSD — CU-094: Actualizar Ubicación del Cliente**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`. La inicia el Cliente sobre su propia ficha y, con el mismo diagrama, el Administrador sobre la de sus clientes.
 
 **GRASP.** *Controlador*: `CustomersService`. *Experto*: el `Cliente` toma sus coordenadas. Es una ubicación propia del cliente, distinta de la dirección de entrega de cada pedido.
 
-**No se dibuja:** la comprobación de propiedad (un Cliente sólo modifica la suya; un Administrador, la de los clientes de su distribuidora) y la conversión del texto «latitud,longitud» a un punto geográfico.
+**No se dibuja:** la comprobación de propiedad (un Cliente solo modifica la suya; un Administrador, la de los clientes de su distribuidora) y la conversión del texto «latitud,longitud» a un punto geográfico.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -11530,14 +12316,14 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-095: Eliminar Cliente (baja lógica)
+#### DSD — CU-095: Eliminar un Cliente (baja lógica)
 
 
 ##### Operación: eliminarCliente(clienteId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-095 Eliminar Cliente (baja lógica) · eliminarCliente
+    title DSD — CU-095 Eliminar un Cliente (baja lógica) · eliminarCliente
     autonumber
     actor AGN as Administrador General (ACT-05)
     participant SRV as :CustomersService
@@ -11551,7 +12337,7 @@ sequenceDiagram
     SRV-->>-AGN: mensaje
 ```
 
-**Figura 223 — DSD — CU-095: Eliminar Cliente (baja lógica)**
+**Figura 240 — DSD — CU-095: Eliminar Cliente (baja lógica)**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
@@ -11573,14 +12359,14 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-129: Consultar Detalle del Cliente
+#### DSD — CU-129: Consultar el Detalle del Cliente
 
 
 ##### Operación: consultarDetalleDelCliente(clienteId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-129 Consultar Detalle del Cliente · consultarDetalleDelCliente
+    title DSD — CU-129 Consultar el Detalle del Cliente · consultarDetalleDelCliente
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CustomersService
@@ -11592,7 +12378,7 @@ sequenceDiagram
     SRV-->>-ADM: cliente
 ```
 
-**Figura 224 — DSD CU-129: Consultar Detalle del Cliente**
+**Figura 241 — DSD CU-129: Consultar el Detalle del Cliente**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes) y la colección `Map<String, Cliente>`.
 
@@ -11612,14 +12398,14 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-130: Buscar Cliente por Usuario
+#### DSD — CU-130: Buscar un Cliente por Usuario
 
 
 ##### Operación: buscarClientePorUsuario(usuarioId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-130 Buscar Cliente por Usuario · buscarClientePorUsuario
+    title DSD — CU-130 Buscar un Cliente por Usuario · buscarClientePorUsuario
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CustomersService
@@ -11631,7 +12417,7 @@ sequenceDiagram
     SRV-->>-ADM: cliente
 ```
 
-**Figura 225 — DSD CU-130: Buscar Cliente por Usuario**
+**Figura 242 — DSD CU-130: Buscar un Cliente por Usuario**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes) y la colección `Map<String, Cliente>`.
 
@@ -11651,14 +12437,14 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-131: Editar Datos del Cliente
+#### DSD — CU-131: Editar los Datos del Cliente
 
 
 ##### Operación: editarDatosDelCliente(clienteId, cambios)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-131 Editar Datos del Cliente · editarDatosDelCliente
+    title DSD — CU-131 Editar los Datos del Cliente · editarDatosDelCliente
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CustomersService
@@ -11672,7 +12458,7 @@ sequenceDiagram
     SRV-->>-ADM: cliente
 ```
 
-**Figura 226 — DSD CU-131: Editar Datos del Cliente**
+**Figura 243 — DSD CU-131: Editar los Datos del Cliente**
 
 **Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
 
@@ -11689,7 +12475,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - `preload` no trae las relaciones: la ficha que se guarda queda sin el usuario asociado, y el panel tiene que volver a leerla si necesita mostrarlo.
-- La marca de validación y la ubicación tienen sus propios endpoints y no se pueden tocar por esta vía, que es lo que mantiene separadas las tres operaciones.
+- La marca de validación y la ubicación tienen sus propios rutas y no se pueden tocar por esta vía, que es lo que mantiene separadas las tres operaciones.
 
 ---
 
@@ -11724,13 +12510,13 @@ sequenceDiagram
     SRV-->>-CLI: resultado
 ```
 
-**Figura 227 — DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo**
+**Figura 244 — DSD — CU-098: Registrar el Token de Notificaciones del Dispositivo**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones), las colecciones `Map<String, Cliente>` y `Map<String, Chofer>` y los objetos de dominio `Cliente` y `Chofer`. Una sola operación sirve a las dos aplicaciones móviles.
 
 **GRASP.** *Controlador*: `NotificationsService`. *Experto*: el `Cliente` o el `Chofer` es quien toma el token y reemplaza al anterior: cada perfil guarda uno solo, de modo que un usuario con dos dispositivos recibe en el último que registró. El servicio resuelve el perfil por descarte, primero Cliente y después Chofer.
 
-**No se dibuja:** que el usuario es el del token de la petición (sólo el Administrador General registra el de otro), que impide `NotificationsController.saveToken`, y que el resultado se informa como dato (éxito o error) y no como excepción.
+**No se dibuja:** que el usuario es el del token de la petición (solo el Administrador General registra el de otro), que impide `NotificationsController.saveToken`, y que el resultado se informa como dato (éxito o error) y no como excepción.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -11738,12 +12524,12 @@ sequenceDiagram
 | `Map<String, Cliente>.get(...)` | `CustomersService.saveNotificationToken`: busca el `Customer` por `Customer.userId`; devuelve falso si no hay perfil de cliente |
 | `Cliente.registrarToken(...)` | `CustomersService.saveNotificationToken`: asigna `Customer.notificationToken` y guarda |
 | `Map<String, Chofer>.get(...)` | `DeliveryService.saveNotificationToken`: busca el `Delivery` por `Delivery.userId`; devuelve falso si no hay perfil de chofer |
-| `Chofer.registrarToken(...)` | `DeliveryService.saveNotificationToken`: asigna `Delivery.notificationToken` y guarda. La plataforma sólo queda en el registro de eventos: ningún perfil la guarda |
+| `Chofer.registrarToken(...)` | `DeliveryService.saveNotificationToken`: asigna `Delivery.notificationToken` y guarda. La plataforma solo queda en el registro de eventos: ningún perfil la guarda |
 
 **Observaciones de diseño**
 
-- El control **anti-secuestro** vive en el controlador: sólo el super administrador puede registrar el token de otro usuario porque el `userId` del body se descarta y se fuerza el del token. Sin esa línea, un usuario A podría apuntar su dispositivo al perfil de B y quedarse con sus push (o dejar a B sin notificaciones).
-- **Un único endpoint sirve a las dos apps.** El servicio resuelve el perfil por descarte: primero `Customer`, después `Delivery`. El precio es una consulta extra para los choferes; el beneficio es que las dos apps Flutter comparten exactamente el mismo cliente HTTP.
+- El control **anti-secuestro** vive en el controlador: solo el super administrador puede registrar el token de otro usuario porque el `userId` del body se descarta y se fuerza el del token. Sin esa línea, un usuario A podría apuntar su dispositivo al perfil de B y quedarse con sus push (o dejar a B sin notificaciones).
+- **Un único ruta sirve a las dos apps.** El servicio resuelve el perfil por descarte: primero `Customer`, después `Delivery`. El precio es una consulta extra para los choferes; el beneficio es que las dos apps Flutter comparten exactamente el mismo cliente HTTP.
 - El servicio **nunca lanza**: devuelve `{ success: false, error }`. Registrar un token es una operación auxiliar y su fallo no debe romper el arranque de la app.
 - Es la **precondición técnica** de todo el subsistema de push: sin este token, `FcmPort.sendToToken` no tiene destino y CU-100, CU-101 y `sendOfferPushToDriver` (sección 4.3 del Documento 3) son no-ops.
 
@@ -11771,13 +12557,13 @@ sequenceDiagram
     SRV-->>-CLI: tokens
 ```
 
-**Figura 228 — DSD — CU-099: Consultar los Tokens de un Usuario**
+**Figura 245 — DSD — CU-099: Consultar los Tokens de un Usuario**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`. La inician el Cliente, el Chofer, el Administrador y el Administrador General.
 
 **GRASP.** *Controlador*: `NotificationsService`. *Experto*: el `Cliente` es quien conoce su token. La consulta no cambia estado. La respuesta es una lista aunque el perfil guarde un solo token, para no cambiar el contrato cuando haya varios dispositivos.
 
-**No se dibuja:** la comprobación de propiedad (sólo el Administrador General lee los tokens de otro usuario) y que la lista queda vacía si el usuario no tiene perfil de cliente o no registró ningún dispositivo: un Chofer no obtiene su token por esta vía.
+**No se dibuja:** la comprobación de propiedad (solo el Administrador General lee los tokens de otro usuario) y que la lista queda vacía si el usuario no tiene perfil de cliente o no registró ningún dispositivo: un Chofer no obtiene su token por esta vía.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -11787,20 +12573,20 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Misma guarda de propiedad que CU-098, pero aplicada **a la lectura**: sólo el super administrador lee los tokens de otro usuario (un administrador de empresa no: los tokens de usuarios de otra distribuidora no le corresponden).
-- Asimetría deliberada respecto de CU-098: la **escritura** resuelve `Customer` y `Delivery`, la **lectura** consulta sólo `Customer`. Un chofer que consulte sus propios tokens obtiene `{ tokens: [] }` aunque tenga uno guardado.
+- Misma guarda de propiedad que CU-098, pero aplicada **a la lectura**: solo el super administrador lee los tokens de otro usuario (un administrador de empresa no: los tokens de usuarios de otra distribuidora no le corresponden).
+- Asimetría deliberada respecto de CU-098: la **escritura** resuelve `Customer` y `Delivery`, la **lectura** consulta solo `Customer`. Un chofer que consulte sus propios tokens obtiene `{ tokens: [] }` aunque tenga uno guardado.
 - La forma de respuesta es un **arreglo** (`tokens`) aunque el modelo guarde una sola columna `notification_token`: el contrato queda preparado para multi-dispositivo sin cambiar el cliente.
 
 ---
 
-#### DSD — CU-100: Enviar Notificación de Prueba
+#### DSD — CU-100: Enviar una Notificación de Prueba
 
 
 ##### Operación: enviarNotificacionDePrueba(token, titulo, mensaje)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-100 Enviar Notificación de Prueba · enviarNotificacionDePrueba
+    title DSD — CU-100 Enviar una Notificación de Prueba · enviarNotificacionDePrueba
     autonumber
     actor AGN as Administrador General (ACT-05)
     participant SRV as :NotificationsService
@@ -11811,7 +12597,7 @@ sequenceDiagram
     SRV-->>-AGN: resultado
 ```
 
-**Figura 229 — DSD — CU-100: Enviar Notificación de Prueba**
+**Figura 246 — DSD — CU-100: Enviar Notificación de Prueba**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones) y `FcmPort` (fabricación pura: el puerto hacia el proveedor de notificaciones push). La operación recibe el token del dispositivo, no al usuario, y por eso no navega ningún objeto de dominio.
 
@@ -11825,20 +12611,20 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es un endpoint de **diagnóstico**, no de tráfico de usuario final: el push real de un pedido lo dispara internamente `CreateOrderUseCase` / `UpdateOrderStatusUseCase`. Por eso lo restringe `@Auth(RoleType.SUPER_ADMIN)`: sólo el Administrador General puede mandar un push arbitrario.
+- Es una ruta de **diagnóstico**, no de tráfico de usuario final: el push real de un pedido lo dispara internamente `CreateOrderUseCase` / `UpdateOrderStatusUseCase`. Por eso lo restringe `@Auth(RoleType.SUPER_ADMIN)`: solo el Administrador General puede mandar un push arbitrario.
 - El servicio **captura el error y lo devuelve como dato** (`{ success: false, error }`) en lugar de propagarlo: el resultado del diagnóstico *es* la respuesta, incluido el fallo, y un 500 daría menos información que un 200 con el mensaje de FCM.
 - `NotificationsService` depende de `FcmPort`, no del SDK de Firebase: el módulo de notificaciones es testeable con un doble y el proveedor de push es sustituible sin tocar esta clase.
 
 ---
 
-#### DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+#### DSD — CU-101: Reenviar la Notificación de Confirmación de Pedido
 
 
 ##### Operación: reenviarConfirmacionDePedido(usuarioId, pedidoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-101 Reenviar Notificación de Confirmación de Pedido · reenviarConfirmacionDePedido
+    title DSD — CU-101 Reenviar la Notificación de Confirmación de Pedido · reenviarConfirmacionDePedido
     autonumber
     actor AGN as Administrador General (ACT-05)
     participant SRV as :NotificationsService
@@ -11855,7 +12641,7 @@ sequenceDiagram
     SRV-->>-AGN: resultado
 ```
 
-**Figura 230 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
+**Figura 247 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 **Clases participantes:** `NotificationsService` (controlador de fachada del módulo de notificaciones), la colección `Map<String, Cliente>`, el objeto de dominio `Cliente` y `FcmPort` (fabricación pura: el puerto hacia el proveedor de notificaciones push).
 
@@ -11871,17 +12657,17 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es un **reenvío manual de soporte**: el push de confirmación normal lo dispara `CreateOrderUseCase` al crear el pedido. Este endpoint existe para el caso en que el cliente no lo recibió (dispositivo apagado, token vencido, app reinstalada).
+- Es un **reenvío manual de soporte**: el push de confirmación normal lo dispara `CreateOrderUseCase` al crear el pedido. Este ruta existe para el caso en que el cliente no lo recibió (dispositivo apagado, token vencido, app reinstalada).
 - El `token` del body es un **override opcional** que precede al almacenado: permite al soporte probar contra un dispositivo concreto sin pisar el token guardado del cliente.
 - Los tres modos de falla (cliente inexistente, sin token, error de FCM) se devuelven como resultado con `success: false`, nunca como excepción, por la misma razón que en CU-100.
-- El mismo método lo invoca `UpdateOrderStatusUseCase` cuando el chofer acepta el pedido (ver la sección 4.3 del Documento 3): el endpoint es una **segunda puerta** a una lógica ya usada internamente, no una implementación paralela.
+- El mismo método lo invoca `UpdateOrderStatusUseCase` cuando el chofer acepta el pedido (ver la sección 4.3 del Documento 3): la ruta es una **segunda puerta** a una lógica ya usada internamente, no una implementación paralela.
 
 ---
 
 #### DSD — CU-102: Probar el Servicio de Correo
 
 
-Endpoint de diagnóstico: manda un correo real y genera un enlace de restablecimiento para la dirección que se le pasa (`POST /email/test`). Sólo lo usa el Administrador General.
+Ruta de la API de diagnóstico: manda un correo real y genera un enlace de restablecimiento para la dirección que se le pasa (`POST /email/test`). Solo lo usa el Administrador General.
 
 ##### Operación: probarServicioDeCorreo(destinatario)
 
@@ -11901,7 +12687,7 @@ sequenceDiagram
     SRV-->>-AGN: resultado
 ```
 
-**Figura 231 — DSD — CU-102: Probar el Servicio de Correo**
+**Figura 248 — DSD — CU-102: Probar el Servicio de Correo**
 
 **Clases participantes:** `EmailService` (controlador de fachada del módulo de correo), `FirebaseAuthPort` (fabricación pura: genera el enlace de prueba) y `EmailSenderPort` (fabricación pura: el envío). La inicia el Administrador General, el único que puede invocarla.
 
@@ -11915,22 +12701,22 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- **Es un endpoint de diagnóstico restringido al Administrador General** (`@Auth(RoleType.SUPER_ADMIN)`): manda un correo real a una dirección arbitraria del cuerpo, y por eso no se deja abierto. A diferencia de `POST /email/password-reset`, **este camino no pasa por el límite de pedidos** (`checkRateLimit`) del servicio.
-- La prueba está bien construida como diagnóstico: llama a `generatePasswordResetLink` **dos veces a propósito** y devuelve `resetLinksEqual` en `cacheStats`. Si los dos links son iguales, la cache de Redis funciona; si difieren, no está guardando. Verifica Firebase, Redis, el motor de plantillas y Resend en una sola llamada.
-- `sendEmail` es **best-effort por diseño** (captura y sólo loguea): por eso el resultado distingue `emailSent` de `success`. El test puede tener éxito como diagnóstico y reportar a la vez que el envío falló.
+- **Es una ruta de diagnóstico restringido al Administrador General** (`@Auth(RoleType.SUPER_ADMIN)`): manda un correo real a una dirección arbitraria del cuerpo, y por eso no se deja abierto. A diferencia de `POST /email/password-reset`, **este camino no pasa por el límite de pedidos** (`checkRateLimit`) del servicio.
+- La prueba está bien construida como diagnóstico: llama a `generatePasswordResetLink` **dos veces a propósito** y devuelve `resetLinksEqual` en `cacheStats`. Si los dos links son iguales, la caché de Redis funciona; si difieren, no está guardando. Verifica Firebase, Redis, el motor de plantillas y Resend en una sola llamada.
+- `sendEmail` es **de mejor esfuerzo por diseño** (captura y solo loguea): por eso el resultado distingue `emailSent` de `success`. El test puede tener éxito como diagnóstico y reportar a la vez que el envío falló.
 - `EmailService` habla con `EmailSenderPort` y `FirebaseAuthPort`, no con los SDKs: es el mismo patrón de puertos y adaptadores que en el resto del backend.
 
 ---
 
 ### 4.18 SS-18 — Observabilidad y Operación
 
-#### DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+#### DSD — CU-104: Verificar la Salud del Sistema (vida y disponibilidad)
 
 ##### Operación: verificarVida()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarVida
+    title DSD — CU-104 Verificar la Salud del Sistema (vida y disponibilidad) · verificarVida
     autonumber
     actor SIS as Plataforma de despliegue (ACT-09)
     participant HCS as :HealthCheckService
@@ -11939,23 +12725,23 @@ sequenceDiagram
     HCS-->>-SIS: estado ok, marca de tiempo
 ```
 
-**Figura 232 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
+**Figura 249 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
 
 **Clases participantes:** `HealthCheckService` (controlador de fachada de la verificación de salud: el servicio de Terminus que ejecuta los indicadores).
 
-**GRASP.** *Controlador*: `HealthCheckService`. La prueba de vida no consulta ninguna dependencia: sólo confirma que el proceso responde, de modo que no participa ningún objeto de dominio ni ningún indicador.
+**GRASP.** *Controlador*: `HealthCheckService`. La prueba de vida no consulta ninguna dependencia: solo confirma que el proceso responde, de modo que no participa ningún objeto de dominio ni ningún indicador.
 
 **No se dibuja:** el armado de la respuesta y la exención del límite de peticiones, que el balanceador de carga necesita para sondear cada pocos segundos.
 
 | Operación de diseño | Implementación |
 |---|---|
-| `HealthCheckService.verificarVida()` | `HealthController.live`: responde `status` y `timestamp` sin consultar dependencias |
+| `HealthCheckService.verificarVida()` | `HealthController.live`: responde `status` y `marca de tiempo` sin consultar dependencias |
 
 ##### Operación: verificarDisponibilidad()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarDisponibilidad
+    title DSD — CU-104 Verificar la Salud del Sistema (vida y disponibilidad) · verificarDisponibilidad
     autonumber
     actor SIS as Plataforma de despliegue (ACT-09)
     participant HCS as :HealthCheckService
@@ -11971,11 +12757,11 @@ sequenceDiagram
     HCS-->>-SIS: estado por componente
 ```
 
-**Figura 233 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()**
+**Figura 250 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()**
 
 **Clases participantes:** `HealthCheckService` (controlador de fachada de la verificación de salud: el servicio de Terminus que ejecuta los indicadores), `RedisHealthIndicator` y `RedisService`. La prueba de PostgreSQL la hace el indicador de TypeORM de Terminus, que no se dibuja para no repetir la misma colaboración.
 
-**GRASP.** *Controlador*: `HealthCheckService`. *Bajo Acoplamiento*: `RedisHealthIndicator` traduce el booleano de `RedisService.ping` al contrato de Terminus, de modo que agregar un componente no cambia el flujo. La disponibilidad sólo mira las dependencias críticas: si falla, el balanceador saca la instancia de rotación sin reiniciarla.
+**GRASP.** *Controlador*: `HealthCheckService`. *Bajo Acoplamiento*: `RedisHealthIndicator` traduce el booleano de `RedisService.ping` al contrato de Terminus, de modo que agregar un componente no cambia el flujo. La disponibilidad solo mira las dependencias críticas: si falla, el balanceador saca la instancia de rotación sin reiniciarla.
 
 **No se dibuja:** el armado de la respuesta (200 si todo está sano, 503 con el detalle por componente si algo falla) y la exención del límite de peticiones.
 
@@ -11987,7 +12773,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-104 Verificar la Salud del Sistema (liveness / readiness) · verificarSalud
+    title DSD — CU-104 Verificar la Salud del Sistema (vida y disponibilidad) · verificarSalud
     autonumber
     actor SIS as Plataforma de despliegue (ACT-09)
     participant HCS as :HealthCheckService
@@ -12003,7 +12789,7 @@ sequenceDiagram
     HCS-->>-SIS: estado por componente
 ```
 
-**Figura 234 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()**
+**Figura 251 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()**
 
 **Clases participantes:** `HealthCheckService` (controlador de fachada de la verificación de salud: el servicio de Terminus que ejecuta los indicadores), `RedisHealthIndicator` y `RedisService`. Las pruebas de PostgreSQL, de memoria (RSS bajo el umbral configurado) y de disco (menos del 90 % de uso) las hacen indicadores de Terminus que no se dibujan para no repetir la misma colaboración.
 
@@ -12018,7 +12804,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - **Tres rutas, tres semánticas distintas**, y la separación es el aporte de diseño:
-  - `/health/live` (**liveness**) no toca ninguna dependencia: sólo prueba que el proceso Node responde. Si fallara, el orquestador debe **reiniciar** el contenedor.
+  - `/health/live` (**liveness**) no toca ninguna dependencia: solo prueba que el proceso Node responde. Si fallara, el orquestador debe **reiniciar** el contenedor.
   - `/health/ready` (**readiness**) chequea PostgreSQL y Redis: si falla, el balanceador debe **sacar la instancia de rotación** sin reiniciarla, porque el problema es externo al proceso.
   - `/health` (**completo**) agrega memoria (RSS bajo el umbral `HEALTH_MEMORY_RSS_THRESHOLD_MB`) y disco (menos del 90 % de uso) para monitoreo externo y alertas de capacidad.
 - Confundir las tres provoca el modo de falla clásico: una base caída reiniciaría en bucle todas las réplicas sanas. El diseño lo evita explícitamente.
@@ -12028,14 +12814,14 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-150: Programar la Vigencia de una Zona de Cobertura
+#### DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura
 
 
 ##### Operación: programarVigenciaDeZona(zonaId, vigenteHasta)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-150 Programar la Vigencia de una Zona de Cobertura · programarVigenciaDeZona
+    title DSD — CU-150 Programar la Vigencia de un Polígono de Cobertura · programarVigenciaDeZona
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CoverageZoneService
@@ -12051,11 +12837,11 @@ sequenceDiagram
     SRV-->>-ADM: zona
 ```
 
-**Figura 235 — DSD — CU-150: Programar la Vigencia de una Zona de Cobertura**
+**Figura 252 — DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura**
 
 **Clases participantes:** `CoverageZoneService` (controlador de fachada del módulo de cobertura), la colección `Map<String, ZonaCobertura>` y el objeto de dominio `ZonaCobertura`.
 
-**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la `ZonaCobertura` toma su vigencia y valida que el fin sea posterior al comienzo, comparándolo con el comienzo que ya tenía si no se envía uno nuevo. La vigencia no cambia cómo se calcula el recargo, sólo hasta cuándo se aplica; la cobertura considera la zona sólo dentro de ese período.
+**GRASP.** *Controlador*: `CoverageZoneService`. *Experto*: la `ZonaCobertura` toma su vigencia y valida que el fin sea posterior al comienzo, comparándolo con el comienzo que ya tenía si no se envía uno nuevo. La vigencia no cambia cómo se calcula el recargo, solo hasta cuándo se aplica; la cobertura considera la zona solo dentro de ese período.
 
 **No se dibuja:** que el comienzo de la vigencia se programa con la misma operación, que enviar nulo quita ese límite, y que el cambio no desactiva la zona aunque la fecha ya haya pasado: eso es `desactivarZonasVencidas`.
 
@@ -12068,24 +12854,24 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- No hay un endpoint aparte para la vigencia: `validFrom` y `validUntil` son dos campos más de `UpdateCoverageZoneDto`, y se programan con el mismo `PATCH /coverage-zones/:id` con que se edita el resto de la zona. La zona nace con ellos (`POST`) o se los cambia después.
-- La condición de tenant viaja **en el `WHERE`**, igual que en CU-059: una zona ajena responde 404 y no revela que existe.
-- La coherencia de la vigencia se valida sobre el estado **fusionado** con lo que no vino en el cuerpo: si sólo se manda `validUntil`, se lo compara con el `validFrom` que la zona ya tenía. La única regla es que `validUntil` sea posterior a `validFrom`; no se exige que la fecha sea futura.
+- No hay una ruta aparte para la vigencia: `validFrom` y `validUntil` son dos campos más de `UpdateCoverageZoneDto`, y se programan con el mismo `PATCH /coverage-zones/:id` con que se edita el resto de la zona. La zona nace con ellos (`POST`) o se los cambia después.
+- La condición de distribuidora viaja **en el `WHERE`**, igual que en CU-059: una zona ajena responde 404 y no revela que existe.
+- La coherencia de la vigencia se valida sobre el estado **fusionado** con lo que no vino en el cuerpo: si solo se manda `validUntil`, se lo compara con el `validFrom` que la zona ya tenía. La única regla es que `validUntil` sea posterior a `validFrom`; no se exige que la fecha sea futura.
 - Quitar la vigencia es el mismo `PATCH` con la fecha en `null`: `parseFechaVigencia` traduce `null` o vacío a «sin límite», porque `new Date(null)` daría 1970-01-01.
-- El `PATCH` **no desactiva** la zona aunque la fecha ya haya pasado. La vigencia se aplica al consultar: `CoverageZoneService.checkCoverage` sólo considera las zonas activas con `valid_from` nulo o pasado y `valid_until` nulo o futuro. Desactivar de verdad la zona vencida es CU-151, propuesto.
+- El `PATCH` **no desactiva** la zona aunque la fecha ya haya pasado. La vigencia se aplica al consultar: `CoverageZoneService.checkCoverage` solo considera las zonas activas con `valid_from` nulo o pasado y `valid_until` nulo o futuro. Desactivar de verdad la zona vencida es CU-151, propuesto.
 
 ---
 
-#### DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+#### DSD — CU-151: Desactivar los Polígonos de Cobertura Vencidos
 
 
-**Colaboración propuesta:** `CoverageZoneCronService` no existe en el código. Una zona vencida deja de aplicarse porque `CoverageZoneService.checkCoverage` sólo considera las zonas con `valid_until` nulo o posterior a ahora; ningún proceso pone `isActive` en falso.
+**Colaboración propuesta:** `CoverageZoneCronService` no existe en el código. Una zona vencida deja de aplicarse porque `CoverageZoneService.checkCoverage` solo considera las zonas con `valid_until` nulo o posterior a ahora; ningún proceso pone `isActive` en falso.
 
 ##### Operación: desactivarZonasVencidas()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-151 Desactivar las Zonas de Cobertura Vencidas · desactivarZonasVencidas
+    title DSD — CU-151 Desactivar los Polígonos de Cobertura Vencidos · desactivarZonasVencidas
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :CoverageZoneCronService
@@ -12102,7 +12888,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 236 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
+**Figura 253 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
 
 **Clases participantes:** `CoverageZoneCronService` (controlador del proceso programado; colaboración propuesta), la colección `List<ZonaCobertura>` y el objeto de dominio `ZonaCobertura`. La inicia el Sistema Automático cada cinco minutos.
 
@@ -12113,7 +12899,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El barrido es **un solo `UPDATE` condicional**, no leer las zonas y guardarlas una por una: la condición de vencimiento se evalúa en la base, dentro de la misma sentencia que escribe, y así no hay ventana entre leer y escribir.
-- El cerrojo se libera en un `finally`, de modo que una ejecución que falle no deje bloqueadas a las siguientes. Su vencimiento es **menor que el intervalo del cron**, por la misma razón que en CU-014: una instancia que caiga sin liberarlo no puede frenar el proceso más de un ciclo.
+- El cerrojo se libera en un `finally`, de modo que una ejecución que falle no deje bloqueadas a las siguientes. Su vencimiento es **menor que el intervalo de la tarea programada**, por la misma razón que en CU-014: una instancia que caiga sin liberarlo no puede frenar el proceso más de un ciclo.
 - La zona se marca inactiva y **no se da de baja**, a diferencia de CU-059: sigue a la vista del administrador, que puede reactivarla. Los pedidos que se cobraron con ese recargo tienen que poder explicarse después.
 - La consulta del barrido va por un índice parcial sobre `valid_until` con `WHERE isActive`, que forma parte de la migración del caso: sin él recorrería la tabla de zonas entera.
 - El interceptor de auditoría (CU-153) registra las escrituras HTTP y no las de un proceso programado: el rastro de qué zonas se desactivaron queda en el registro de eventos de la aplicación.
@@ -12140,11 +12926,11 @@ sequenceDiagram
     SRV-->>-ADM: asientos, total
 ```
 
-**Figura 237 — DSD — CU-152: Consultar el Registro de Auditoría**
+**Figura 254 — DSD — CU-152: Consultar el Registro de Auditoría**
 
 **Clases participantes:** `AuditService` (controlador de fachada del módulo de auditoría) y la colección `List<AsientoAuditoria>`.
 
-**GRASP.** *Controlador*: `AuditService`. *Experto*: la colección de asientos es quien sabe filtrarlos y ordenarlos, del más reciente al más viejo. El registro es de sólo lectura: la operación no modifica nada.
+**GRASP.** *Controlador*: `AuditService`. *Experto*: la colección de asientos es quien sabe filtrarlos y ordenarlos, del más reciente al más viejo. El registro es de solo lectura: la operación no modifica nada.
 
 **No se dibuja:** la restricción por distribuidora, que se aplica en la condición de la consulta, y el armado de la respuesta con el total para paginar.
 
@@ -12155,11 +12941,11 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `AuditController` expone **sólo lectura**: un único `@Get()`, sin `@Post`, `@Patch` ni `@Delete`. La API no tiene cómo modificar un asiento, y además la base lo impide con el trigger de CU-153.
+- `AuditController` expone **solo lectura**: un único `@Get()`, sin `@Post`, `@Patch` ni `@Delete`. La API no tiene cómo modificar un asiento, y además la base lo impide con el disparador de CU-153.
 - La restricción por distribuidora se aplica **en el `where` de la consulta**, igual que en el resto del sistema: un asiento de otra distribuidora no aparece, en vez de aparecer y ser rechazado después. El `distributorId` lo resuelve `AuthGuard`: la distribuidora del perfil para el administrador de empresa, la del encabezado `X-Distributor` para el Administrador General con "ver como", y ninguna —todas— para el Administrador General sin ese encabezado.
-- Los filtros los valida el `ValidationPipe` global contra `ConsultarAuditoriaDto` (`limit` entre 1 y 200, `offset` desde 0, `result` sólo `success` o `failure`, fechas válidas, sin parámetros no declarados). Un período con `desde` posterior a `hasta` no se rechaza: el `Between` no encuentra asientos y la respuesta es vacía.
+- Los filtros los valida el `ValidationPipe` global contra `ConsultarAuditoriaDto` (`limit` entre 1 y 200, `offset` desde 0, `result` solo `success` o `failure`, fechas válidas, sin parámetros no declarados). Un período con `desde` posterior a `hasta` no se rechaza: el `Between` no encuentra asientos y la respuesta es vacía.
 - La respuesta sale por `AuditMapper` como `RegistroDeAuditoriaDto`: `items` con los asientos y `total` con la cantidad de coincidencias, para paginar.
-- La consulta **no** genera asiento propio: es un `GET`, y el interceptor de CU-153 sólo registra escrituras.
+- La consulta **no** genera asiento propio: es un `GET`, y el interceptor de CU-153 solo registra escrituras.
 
 ##### Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
 
@@ -12182,7 +12968,7 @@ sequenceDiagram
     SRV-->>-ADM: auditorias, total
 ```
 
-**Figura 238 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)**
+**Figura 255 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)**
 
 **Clases participantes:** `DataAuditService` (controlador de fachada de la consulta de la auditoría de datos), la colección `List<Auditoria>` y el objeto de dominio `Auditoria`, que conoce sus `DetalleAuditoria`.
 
@@ -12198,8 +12984,8 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- `DataAuditController` expone **sólo lectura**: tres `@Get` —`entries`, `entries/:id` y `action-types`— para el Administrador y el Administrador General, y ninguna escritura. Además la base lo impide: un trigger rechaza todo `UPDATE` y `DELETE` sobre `audit` y `audit_detail`.
-- La restricción por distribuidora se aplica **en el `where` de la consulta** (`Audit.distributorId`), con la misma regla que la bitácora: la distribuidora del perfil para el administrador de empresa, la del encabezado `X-Distributor` para el Administrador General con "ver como" y todas para el Administrador General sin ese encabezado. Los registros de la persona o globales (usuarios, clientes, direcciones, roles) se guardan sin distribuidora y por eso sólo los ve el Administrador General sin "ver como".
+- `DataAuditController` expone **solo lectura**: tres `@Get` —`entries`, `entries/:id` y `action-types`— para el Administrador y el Administrador General, y ninguna escritura. Además la base lo impide: un disparador rechaza todo `UPDATE` y `DELETE` sobre `audit` y `audit_detail`.
+- La restricción por distribuidora se aplica **en el `where` de la consulta** (`Audit.distributorId`), con la misma regla que la bitácora: la distribuidora del perfil para el administrador de empresa, la del encabezado `X-Distributor` para el Administrador General con "ver como" y todas para el Administrador General sin ese encabezado. Los registros de la persona o globales (usuarios, clientes, direcciones, roles) se guardan sin distribuidora y por eso solo los ve el Administrador General sin "ver como".
 - `GET /audit/entries/:id` devuelve 404 "Auditoría no encontrada" si no existe o es de otra distribuidora: no distingue los casos.
 - Los filtros los valida `QueryAuditEntriesDto`: `actionType` entre 1 y 5, `limit` entre 1 y 200 y `page` desde 1. Es paginación por página, a diferencia de la bitácora, que usa `limit` y `offset`.
 - La consulta trae al usuario aunque ya se lo haya dado de baja (`withDeleted`), con la marca `deleted`: la auditoría tiene que poder decir quién fue.
@@ -12225,7 +13011,7 @@ sequenceDiagram
     deactivate AUD
 ```
 
-**Figura 239 — DSD — CU-153: Registrar Toda Operación de Escritura**
+**Figura 256 — DSD — CU-153: Registrar Toda Operación de Escritura**
 
 **Clases participantes:** `AuditService` (controlador de fachada del módulo de auditoría) y el objeto de dominio `AsientoAuditoria`. Lo dispara el sistema después de cada escritura, exitosa o rechazada; ningún usuario lo pide.
 
@@ -12245,10 +13031,10 @@ sequenceDiagram
 - El interceptor corre **después de los guards**: conoce al usuario y a su distribuidora, y lo que `AuthGuard`, `RolesGuard` o el límite de peticiones rechazan no llega a él ni se registra. Corre **antes de los pipes**, de modo que una petición rechazada por el `ValidationPipe` (400) sí queda registrada como `failure`.
 - El autor, su rol y la distribuidora salen de `request.user` y `request.distributorId`, que resolvió la autenticación, **nunca del cuerpo**: es la misma regla que se aplicó a las salas de tiempo real y a la pertenencia de los pedidos.
 - `resource` es el primer segmento de la ruta después de `/api`; `resourceId`, el parámetro `:id` o, si la ruta no lo tiene, el primero de sus parámetros; `path` guarda el **patrón** de la ruta (`request.route.path`), no la ruta concreta, para que un correo o un teléfono que viaje en ella no quede escrito en el registro. `clientSource` sale del encabezado `X-Client-Source`.
-- `registrar` se invoca sin esperarla (`void`): la escritura del asiento **no demora** la respuesta. Y `registrar` no lanza: si la base rechaza el asiento, `AuditService` lo deja completo en el log con `logger.error` y la operación del usuario sigue su curso. Que la auditoría falle no puede impedir que se trabaje.
+- `registrar` se invoca sin esperarla (`void`): la escritura del asiento **no demora** la respuesta. Y `registrar` no lanza: si la base rechaza el asiento, `AuditService` lo deja completo en el registro de eventos con `logger.error` y la operación del usuario sigue su curso. Que la auditoría falle no puede impedir que se trabaje.
 - En la rama de error, `catchError` registra el asiento `failure` con el código que va a devolver el filtro global de excepciones y el mensaje del error, y **re-lanza el error original**: el usuario recibe la misma respuesta que sin auditoría.
 - La depuración de credenciales es un paso propio y obligatorio: el acceso es una operación de escritura y su cuerpo lleva la contraseña. `depurarCambios` reemplaza por `"[depurado]"` los valores de `password`, `newPassword`, `currentPassword`, `token`, `idToken`, `accessToken`, `refreshToken`, `notification_token`, `code` (el código de entrega), `deliveryCode` y `secret`, en cualquier nivel y sin distinguir mayúsculas; recorta los textos de más de 500 caracteres y lo anidado a más de cuatro niveles.
-- La inmutabilidad no depende sólo de que la API no tenga rutas de edición: el trigger `audit_log_inmutable` (`BEFORE UPDATE OR DELETE`) rechaza cualquier modificación o borrado de un asiento. Sólo deja pasar el `UPDATE` que la propia base hace por `ON DELETE SET NULL` al borrarse el usuario autor o la distribuidora, que vacía esa referencia y nada más.
+- La inmutabilidad no depende solo de que la API no tenga rutas de edición: el disparador `audit_log_inmutable` (`BEFORE UPDATE OR DELETE`) rechaza cualquier modificación o borrado de un asiento. Solo deja pasar el `UPDATE` que la propia base hace por `ON DELETE SET NULL` al borrarse el usuario autor o la distribuidora, que vacía esa referencia y nada más.
 - Las notificaciones del proveedor de pagos y las demás operaciones públicas también se registran, sin autor cuando la petición no trae credencial. Las verificaciones de estado son `GET` y no generan asiento.
 
 ##### Operación: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)
@@ -12272,7 +13058,7 @@ sequenceDiagram
     deactivate SUB
 ```
 
-**Figura 240 — DSD CU-153: Registrar Toda Operación de Escritura — Operación: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)**
+**Figura 257 — DSD CU-153: Registrar Toda Operación de Escritura — Operación: registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)**
 
 **Clases participantes:** `DataAuditSubscriber` (controlador: recibe el aviso de la capa de datos con cada alta, modificación, baja lógica, reactivación o baja física y coordina el registro) y los objetos de dominio `Auditoria` y `DetalleAuditoria`. Lo dispara el sistema, ningún usuario lo pide.
 
@@ -12284,19 +13070,19 @@ sequenceDiagram
 |---|---|
 | `DataAuditSubscriber.registrarAuditoriaDeDato(...)` | `DataAuditSubscriber.afterInsert`, `DataAuditSubscriber.afterUpdate`, `DataAuditSubscriber.afterSoftRemove`, `DataAuditSubscriber.afterRecover` o `DataAuditSubscriber.afterRemove` → `DataAuditSubscriber.registrar`: según el aviso fija el tipo de acción y arma los campos que cambiaron |
 | `Auditoria.«create»` | `AuditoriaDeDatos.registrar`: un `INSERT` en `audit` con `Audit.actionTypeId`, `Audit.userId`, `Audit.distributorId`, `Audit.entity`, `Audit.recordId` y `Audit.ip`, con el `manager` del propio cambio |
-| `Auditoria.agregarDetalle(...)` | `AuditoriaDeDatos.registrar`: por cada campo, una fila de `audit_detail` (`AuditDetail.field`, `AuditDetail.oldValue` y `AuditDetail.newValue`), en la misma sentencia que la cabecera |
+| `Auditoria.agregarDetalle(...)` | `AuditoriaDeDatos.registrar`: por cada campo, una fila de `audit_detail` (`AuditDetail.field`, `AuditDetail.oldValue` y `AuditDetail.newValue`), en la misma sentencia que el encabezado |
 | `DetalleAuditoria.«create»` | `AuditoriaDeDatos.registrar`: la fila de `audit_detail` del campo |
 
 **Observaciones de diseño**
 
 - Es un **subscriber global de TypeORM** (`afterInsert`, `afterUpdate`, `afterSoftRemove`, `afterRecover` y `afterRemove`) y no un interceptor ni código en cada servicio: así alcanza a toda escritura, incluidas las de los procesos programados y las siembras, que no pasan por una petición. Lo que TypeORM no anuncia (`update()`, `softDelete()`, `delete()` y los query builders) se audita llamando a `AuditoriaDeDatos.registrar` con el mismo `manager`.
-- Escribe con el `manager` del evento, o sea **dentro de la transacción del cambio**: si ésta se deshace, la auditoría también. A diferencia de la bitácora (`audit_log`), que se escribe aparte y registra también los rechazos, la auditoría de datos sólo existe si el cambio se confirmó.
+- Escribe con el `manager` del evento, o sea **dentro de la transacción del cambio**: si ésta se deshace, la auditoría también. A diferencia de la bitácora (`audit_log`), que se escribe aparte y registra también los rechazos, la auditoría de datos solo existe si el cambio se confirmó.
 - El usuario, la dirección de red y la distribuidora salen del contexto que abre `AuditContextInterceptor`, un interceptor global que corre **después de los guards**; nunca del cuerpo. Fuera de una petición —tareas programadas, siembras, notificaciones sin usuario— el usuario queda vacío.
 - **Alta:** un detalle por campo con valor, con el anterior vacío. **Modificación:** un detalle por columna realmente cambiada; si nada cambió, no se escribe nada. **Baja lógica y reactivación:** el detalle del campo `deletedAt`. **Baja física** (`afterRemove`): una auditoría de tipo 5 con los valores que tenía (anterior igual al valor, nuevo vacío); la regla sigue siendo que nada se borra físicamente, y esto es la red de seguridad.
 - Los valores se guardan como texto: fechas ISO, números y decimales como cadena, booleanos `true` y `false`, jsonb y puntos como JSON, relaciones por su identificador. Los campos secretos —contraseñas, hashes, tokens, claves y el código de entrega— quedan como `[oculto]`; el DNI, el CUIL y el CBU sí se auditan.
 - La distribuidora de la auditoría es la columna propia del registro; las entidades de una distribuidora que no tienen columna (renglón de pedido, promoción) toman la de la petición; las de la persona o globales quedan sin distribuidora.
-- Una sola lista, con el porqué de cada línea, dice qué **no** se audita (`audit-exclusions.ts`): las propias tablas de auditoría y `audit_log`, la secuencia de documentos, la cola de archivos pendientes, las ofertas de despacho, los tres historiales que sólo se agregan, el carrito y sus renglones, la posición del chofer y la marca de aviso de mantenimiento.
-- Un insert por query builder que llega sin identificador no escribe una auditoría vacía: se deja un aviso en el registro de eventos y se omite.
+- Una sola lista, con el porqué de cada línea, dice qué **no** se audita (`audit-exclusions.ts`): las propias tablas de auditoría y `audit_log`, la secuencia de documentos, la cola de archivos pendientes, las ofertas de despacho, los tres historiales que solo se agregan, el carrito y sus renglones, la posición del chofer y la marca de aviso de mantenimiento.
+- Un insert por parámetro de la dirección builder que llega sin identificador no escribe una auditoría vacía: se deja un aviso en el registro de eventos y se omite.
 
 ---
 
@@ -12329,7 +13115,7 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Figura 241 — DSD CU-172: Configurar los Parámetros de un Proceso Automático**
+**Figura 258 — DSD CU-172: Configurar los Parámetros de un Proceso Automático**
 
 **Clases participantes (colaboración propuesta):** `ModuleConfigService` (controlador del módulo de configuración de procesos, que no existe en el código y se construye en la iteración I-1) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. La tabla de configuración ya existe, sin servicio ni punto de entrada.
 
@@ -12378,7 +13164,7 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Figura 242 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas**
+**Figura 259 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas**
 
 **Clases participantes (colaboración propuesta):** `ModuleConfigService` y `ScheduledTaskGate` (controlador y fabricación pura del módulo de configuración, que no existen en el código y se construyen en la iteración I-1), `RedisService` (existente) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
 
@@ -12419,7 +13205,7 @@ sequenceDiagram
     SRV-->>-ADM: puestos con su categoría y su cantidad de empleados activos
 ```
 
-**Figura 243 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()**
+**Figura 260 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()**
 
 **Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal) y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
 
@@ -12438,8 +13224,6 @@ sequenceDiagram
 - Es la consulta que alimenta el selector de puesto del alta de un empleado (CU-177) y del filtro del listado (CU-180).
 - El conteo no se hace puesto por puesto: una consulta agrupada cuenta a los empleados activos de toda la distribuidora y el servicio reparte los totales entre los puestos.
 - La lista incluye los puestos inactivos, con su marca de activo.
-
----
 
 ---
 
@@ -12465,7 +13249,7 @@ sequenceDiagram
     SRV-->>-ADM: puesto
 ```
 
-**Figura 244 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)**
+**Figura 261 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)**
 
 **Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal) y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
 
@@ -12484,8 +13268,6 @@ sequenceDiagram
 
 - El control del nombre se hace antes de guardar, y la base lo refuerza con un índice único funcional sobre el nombre en minúsculas entre los puestos vigentes: si dos altas simultáneas coinciden, la base rechaza la segunda.
 - Los cinco puestos iniciales no pasan por esta operación: se siembran con el alta de la distribuidora.
-
----
 
 ---
 
@@ -12514,7 +13296,7 @@ sequenceDiagram
     SRV-->>-ADM: puesto
 ```
 
-**Figura 245 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)**
+**Figura 262 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)**
 
 **Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal), la colección `Map<String, PuestoDeTrabajo>` y los objetos de dominio `Distribuidora` y `PuestoDeTrabajo`.
 
@@ -12532,9 +13314,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Todo ocurre en una transacción que bloquea, en orden, los puestos de la distribuidora de categoría chofer o administración (`JobPositionService.bloquearPuestos`): dos cambios simultáneos no pueden dejar a la distribuidora sin su último puesto activo de esa categoría.
-- Desactivar un puesto no toca a quienes lo ocupan: sólo impide asignarlo a legajos nuevos.
-
----
+- Desactivar un puesto no toca a quienes lo ocupan: solo impide asignarlo a legajos nuevos.
 
 ---
 
@@ -12563,7 +13343,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmación
 ```
 
-**Figura 246 — DSD CU-257: Eliminar un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)**
+**Figura 263 — DSD CU-257: Eliminar un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)**
 
 **Clases participantes:** `JobPositionService` (controlador de fachada del módulo de personal), la colección `Map<String, PuestoDeTrabajo>` y el objeto de dominio `PuestoDeTrabajo`.
 
@@ -12612,7 +13392,7 @@ sequenceDiagram
     SRV-->>-ADM: empleado
 ```
 
-**Figura 246.1 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)**
+**Figura 264 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)**
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, PuestoDeTrabajo>` y los objetos de dominio `Distribuidora` y `Empleado`.
 
@@ -12662,7 +13442,7 @@ sequenceDiagram
     SRV-->>-ADM: empleado
 ```
 
-**Figura 246.2 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)**
+**Figura 265 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)**
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y los objetos de dominio `Distribuidora` y `Empleado`.
 
@@ -12686,11 +13466,13 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-311: Eliminar el Legajo de un Empleado
+
 ##### Operación: eliminarEmpleado(empleadoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-178 Modificar el Legajo de un Empleado · eliminarEmpleado
+    title DSD — CU-311 Eliminar el Legajo de un Empleado · eliminarEmpleado
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :EmployeeService
@@ -12706,7 +13488,8 @@ sequenceDiagram
     SRV-->>-ADM: confirmación
 ```
 
-**Figura 246.3 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)**
+**Figura 266 — DSD CU-311: Eliminar el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)**
+
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y el objeto de dominio `Empleado`.
 
@@ -12723,7 +13506,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es la única baja lógica del legajo y sólo sirve para una alta equivocada: una persona que trabajó se da de baja con el egreso (CU-181), que conserva el legajo.
+- Es la única baja lógica del legajo y solo sirve para una alta equivocada: una persona que trabajó se da de baja con el egreso (CU-181), que conserva el legajo.
 - Planificado (I-11): las jornadas y la documentación del personal registrarán su regla en `EmployeeRulesRegistry` y entonces también impedirán la baja.
 - Hoy un legajo egresado y sin cuenta puede eliminarse; el sistema no exige que nunca haya trabajado.
 
@@ -12758,13 +13541,13 @@ sequenceDiagram
     SRV-->>-ADM: legajo con su puesto, su cuenta y su ficha de chofer
 ```
 
-**Figura 246.4 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)**
+**Figura 267 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)**
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado`, `PuestoDeTrabajo` y `Usuario`.
 
 **GRASP.** *Controlador*: `EmployeeService`. *Experto*: `Empleado` conoce sus datos, su puesto y su cuenta, y se los pide a `PuestoDeTrabajo` y a `Usuario`; `Usuario` sabe si su perfil es el de chofer.
 
-**No se dibuja:** el armado de la respuesta con el puesto, el filtro por distribuidora y la ausencia del documento y los datos de contacto en las demás consultas: sólo la ficha los entrega.
+**No se dibuja:** el armado de la respuesta con el puesto, el filtro por distribuidora y la ausencia del documento y los datos de contacto en las demás consultas: solo la ficha los entrega.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -12772,7 +13555,7 @@ sequenceDiagram
 | `Map<String, Empleado>.get(...)` | `EmployeeService.findOne`: lee el `Employee` de la distribuidora con su puesto; 404 si no existe |
 | `Empleado.getLegajo(...)` | `EmployeeMapper.toDto`: arma la ficha con los datos personales, el estado y las fechas |
 | `PuestoDeTrabajo.getNombre(...)` | `Employee.position`: el puesto viene cargado con el legajo y el mapper lo incluye en la ficha |
-| `Empleado.getCuenta(...)` | `EmployeeService.deliveryIdDe`: sólo si el legajo tiene `Employee.userId` |
+| `Empleado.getCuenta(...)` | `EmployeeService.deliveryIdDe`: solo si el legajo tiene `Employee.userId` |
 | `Usuario.getPerfilDeChofer(...)` | `DeliveryService.findDeliveryIdsByUserIds`: el identificador del perfil de reparto de ese usuario, si lo tiene |
 
 **Observaciones de diseño**
@@ -12801,7 +13584,7 @@ sequenceDiagram
     SRV-->>-ADM: página de empleados, sin datos personales sensibles
 ```
 
-**Figura 246.5 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)**
+**Figura 268 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)**
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal) y la colección `List<Empleado>`.
 
@@ -12818,7 +13601,7 @@ sequenceDiagram
 
 - El listado no trae el documento, el CUIL, el domicilio ni el contacto de emergencia: cada fila tiene el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta.
 - La página tiene diez empleados por omisión y hasta cien; un límite o una página fuera de rango responden 400.
-- Planificado (I-11): el estado de la documentación se calculará sólo para los empleados de la página, y filtrar por «documentación vencida» exigirá el mismo cálculo sobre el total, resuelto con una consulta sobre las tareas abiertas y no empleado por empleado. Hasta entonces el parámetro `documentStatus` se acepta y se ignora.
+- Planificado (I-11): el estado de la documentación se calculará solo para los empleados de la página, y filtrar por «documentación vencida» exigirá el mismo cálculo sobre el total, resuelto con una consulta sobre las tareas abiertas y no empleado por empleado. Hasta entonces el parámetro `documentStatus` se acepta y se ignora.
 
 ---
 
@@ -12858,7 +13641,7 @@ sequenceDiagram
     UC-->>-ADM: empleado
 ```
 
-**Figura 246.6 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)**
+**Figura 269 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)**
 
 **Clases participantes:** `TerminateEmployeeUseCase` (controlador de caso de uso), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado`, `Usuario`, `Chofer` y `AsignacionVehiculo`.
 
@@ -12888,11 +13671,13 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-312: Reingresar a un Empleado
+
 ##### Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-181 Registrar el Egreso de un Empleado · reingresarEmpleado
+    title DSD — CU-312 Reingresar a un Empleado · reingresarEmpleado
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :EmployeeService
@@ -12908,7 +13693,8 @@ sequenceDiagram
     SRV-->>-ADM: empleado
 ```
 
-**Figura 246.7 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)**
+**Figura 270 — DSD CU-312: Reingresar a un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)**
+
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal), la colección `Map<String, Empleado>` y el objeto de dominio `Empleado`.
 
@@ -12959,7 +13745,7 @@ sequenceDiagram
     UC-->>-ADM: empleado
 ```
 
-**Figura 246.8 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)**
+**Figura 271 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)**
 
 **Clases participantes:** `GrantEmployeeAccountUseCase` (controlador de caso de uso), la colección `Map<String, Empleado>`, los objetos de dominio `Empleado` y `PuestoDeTrabajo`, y `RegistroService` (el servicio de registro de usuarios).
 
@@ -12972,12 +13758,12 @@ sequenceDiagram
 | `GrantEmployeeAccountUseCase.otorgarCuentaDeAcceso(...)` | `EmployeeAccountController.grantAccount` → `GrantEmployeeAccountUseCase.execute` |
 | `Map<String, Empleado>.get(...)` | `EmployeeService.findOne`: lee el `Employee` de la distribuidora con su puesto; 404 si no existe |
 | `Empleado.getPuesto(...)` | `Employee.position`: el puesto viene cargado con el legajo |
-| `PuestoDeTrabajo.getRolDeAcceso(...)` | `rolDeAcceso()` y `puedeOtorgarseCuenta()`: hoy sólo la categoría `driver` admite cuenta, con el rol chofer; otra categoría responde 400 |
+| `PuestoDeTrabajo.getRolDeAcceso(...)` | `rolDeAcceso()` y `puedeOtorgarseCuenta()`: hoy solo la categoría `driver` admite cuenta, con el rol chofer; otra categoría responde 400 |
 | `Empleado.vincularCuenta(...)` | `EmployeeService.vincularUsuario`: bloquea el legajo y le asigna `Employee.userId`; lo invoca `RegistroService` dentro de la transacción del alta |
 
 **Observaciones de diseño**
 
-- Es la regla D1 del diseño del módulo: no hay roles nuevos. Hoy sólo el puesto de categoría `driver` admite cuenta por esta operación; los administrativos reciben su cuenta de administrador con el alta del usuario (CU-082), que crea o vincula su legajo, y ayudantes, depósito y vendedores son legajos sin acceso.
+- Es la regla D1 del diseño del módulo: no hay roles nuevos. Hoy solo el puesto de categoría `driver` admite cuenta por esta operación; los administrativos reciben su cuenta de administrador con el alta del usuario (CU-082), que crea o vincula su legajo, y ayudantes, depósito y vendedores son legajos sin acceso.
 - El módulo de personal no depende de `RegistroService` sino al revés: el caso de uso vive en el módulo de registro, que importa `EmployeeModule`; el alta de un chofer llama a `EmployeeService`, y esta operación llama a `RegistroService`, sin ciclo.
 - Los datos de acceso son el correo, la contraseña inicial y el teléfono, que si falta se toma del legajo.
 
@@ -12985,11 +13771,11 @@ sequenceDiagram
 
 #### DSD — CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado
 
-##### Operación: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)
+##### Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-183 / CU-184 / CU-185 · crearTareaDelEmpleado
+    title DSD — CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado · registrarCursoDeMercanciasPeligrosas
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :FleetTaskService
@@ -12998,7 +13784,7 @@ sequenceDiagram
     participant EMP as empleado:Empleado
     participant PLN as plan:PlanMantenimiento
 
-    ADM->>+SRV: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)
+    ADM->>+SRV: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)
     SRV->>+COP: get(planId)
     COP-->>-SRV: plan
     SRV->>+COE: get(empleadoId)
@@ -13013,7 +13799,8 @@ sequenceDiagram
     SRV-->>-ADM: tarea
 ```
 
-**Figura 246.9 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)**
+**Figura 272 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)**
+
 
 **Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota, que existe en el código y pasa a aceptar al empleado como dueño), las colecciones `Map<String, PlanMantenimiento>` y `Map<String, Empleado>`, y los objetos de dominio `Empleado`, `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al curso de mercancías peligrosas (CU-183), al examen psicofísico (CU-184) y al alta en la ART (CU-185): cambia el plan y el detalle de la tarea.
 
@@ -13023,7 +13810,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es la misma operación genérica que `crearTareaDeFlota` (CU-136, CU-137, CU-138, CU-140): la documentación del personal reutiliza los planes, las tareas, los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; sólo cambia el dueño de la tarea.
+- Es la misma operación genérica que `crearTareaDeFlota` (CU-136, CU-137, CU-138, CU-140): la documentación del personal reutiliza los planes, las tareas, los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; solo cambia el dueño de la tarea.
 - Los tres planes de este diagrama se siembran como planes base: «Curso de transporte de mercancías peligrosas (GLP)» y «Examen psicofísico» (de fecha fija y bloqueantes, para la categoría chofer) y «Alta en ART» (no bloqueante, para todas las categorías).
 - El nombre «mantenimiento» de la clase es histórico: para el personal se documenta como «plan de control o de habilitación».
 
@@ -13031,25 +13818,95 @@ sequenceDiagram
 
 #### DSD — CU-184: Registrar el Examen Psicofísico del Empleado
 
-##### Operación: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)
+##### Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)
 
-Operación crearTareaDelEmpleado: ver el DSD de CU-183.
+```mermaid
+sequenceDiagram
+    title DSD — CU-184 Registrar el Examen Psicofísico del Empleado · registrarExamenPsicofisico
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>EMP: assertActivo()
+    SRV->>+PLN: crearTarea(empleado, vencimiento, detalle)
+    PLN->>PLN: assertSujetoEmpleado()
+    PLN->>PLN: assertAplicaA(empleado)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(empleado, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea
+```
+
+**Figura 273 — DSD CU-184: Registrar el Examen Psicofísico del Empleado — Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)**
+
+
+**Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota, que existe en el código y pasa a aceptar al empleado como dueño), las colecciones `Map<String, PlanMantenimiento>` y `Map<String, Empleado>`, y los objetos de dominio `Empleado`, `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al curso de mercancías peligrosas (CU-183), al examen psicofísico (CU-184) y al alta en la ART (CU-185): cambia el plan y el detalle de la tarea.
+
+**GRASP.** *Controlador*: `FleetTaskService`. *Creador*: `PlanMantenimiento` crea las `TareaMantenimiento` que genera (asociación «genera» del modelo conceptual). *Experto*: el plan sabe que su sujeto es el empleado y a qué categorías de puesto aplica, y es él quien comprueba que el empleado le corresponde; el `Empleado` sabe si está activo.
+
+**No se dibuja:** la forma del detalle de cada tipo de documento, que valida un esquema propio de cada plan, la fecha de calendario del vencimiento (se normaliza a medianoche UTC), el guardado y el cálculo de la habilitación, que no se guarda: se deriva en cada respuesta.
 
 **Observaciones de diseño**
 
-- Es la misma operación genérica de CU-183, apuntada al plan «Examen psicofísico», bloqueante y para la categoría chofer; no hay una entidad ni un endpoint propio del examen.
+- Es la misma operación genérica que `crearTareaDeFlota` (CU-136, CU-137, CU-138, CU-140): la documentación del personal reutiliza los planes, las tareas, los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; solo cambia el dueño de la tarea.
+- Los tres planes de este diagrama se siembran como planes base: «Curso de transporte de mercancías peligrosas (GLP)» y «Examen psicofísico» (de fecha fija y bloqueantes, para la categoría chofer) y «Alta en ART» (no bloqueante, para todas las categorías).
+- El nombre «mantenimiento» de la clase es histórico: para el personal se documenta como «plan de control o de habilitación».
 
 ---
 
 #### DSD — CU-185: Registrar el Alta en la ART del Empleado
 
-##### Operación: crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)
+##### Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)
 
-Operación crearTareaDelEmpleado: ver el DSD de CU-183.
+```mermaid
+sequenceDiagram
+    title DSD — CU-185 Registrar el Alta en la ART del Empleado · registrarAltaEnLaART
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COE as :Map#lt;String, Empleado#gt;
+    participant EMP as empleado:Empleado
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    SRV->>+COE: get(empleadoId)
+    COE-->>-SRV: empleado
+    SRV->>EMP: assertActivo()
+    SRV->>+PLN: crearTarea(empleado, vencimiento, detalle)
+    PLN->>PLN: assertSujetoEmpleado()
+    PLN->>PLN: assertAplicaA(empleado)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(empleado, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea
+```
+
+**Figura 274 — DSD CU-185: Registrar el Alta en la ART del Empleado — Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)**
+
+
+**Clases participantes:** `FleetTaskService` (controlador de fachada de las tareas de flota, que existe en el código y pasa a aceptar al empleado como dueño), las colecciones `Map<String, PlanMantenimiento>` y `Map<String, Empleado>`, y los objetos de dominio `Empleado`, `PlanMantenimiento` y `TareaMantenimiento`. El mismo diagrama sirve al curso de mercancías peligrosas (CU-183), al examen psicofísico (CU-184) y al alta en la ART (CU-185): cambia el plan y el detalle de la tarea.
+
+**GRASP.** *Controlador*: `FleetTaskService`. *Creador*: `PlanMantenimiento` crea las `TareaMantenimiento` que genera (asociación «genera» del modelo conceptual). *Experto*: el plan sabe que su sujeto es el empleado y a qué categorías de puesto aplica, y es él quien comprueba que el empleado le corresponde; el `Empleado` sabe si está activo.
+
+**No se dibuja:** la forma del detalle de cada tipo de documento, que valida un esquema propio de cada plan, la fecha de calendario del vencimiento (se normaliza a medianoche UTC), el guardado y el cálculo de la habilitación, que no se guarda: se deriva en cada respuesta.
 
 **Observaciones de diseño**
 
-- Es la misma operación genérica de CU-183, apuntada al plan «Alta en ART», no bloqueante y para todas las categorías; entra en los vencimientos y en el aviso diario, pero no inhabilita para el despacho.
+- Es la misma operación genérica que `crearTareaDeFlota` (CU-136, CU-137, CU-138, CU-140): la documentación del personal reutiliza los planes, las tareas, los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; solo cambia el dueño de la tarea.
+- Los tres planes de este diagrama se siembran como planes base: «Curso de transporte de mercancías peligrosas (GLP)» y «Examen psicofísico» (de fecha fija y bloqueantes, para la categoría chofer) y «Alta en ART» (no bloqueante, para todas las categorías).
+- El nombre «mantenimiento» de la clase es histórico: para el personal se documenta como «plan de control o de habilitación».
 
 ---
 
@@ -13078,7 +13935,7 @@ sequenceDiagram
     SRV-->>-ADM: adjuntoNuevo
 ```
 
-**Figura 246.10 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)**
+**Figura 275 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)**
 
 **Clases participantes:** `AttachmentService` (controlador de fachada del módulo de adjuntos), la colección `Map<String, Empleado>`, `S3Service` (fabricación pura: el cliente de Amazon S3, el único proveedor de archivos) y los objetos de dominio `Empleado` y `Adjunto`.
 
@@ -13129,7 +13986,7 @@ sequenceDiagram
     SRV-->>-ADM: vencimientos por empleado
 ```
 
-**Figura 246.11 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)**
+**Figura 276 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)**
 
 **Clases participantes:** `FleetExpirationsService` (controlador de fachada de los vencimientos de flota, que existe en el código y pasa a aceptar el sujeto empleado), la colección `List<TareaMantenimiento>` y los objetos de dominio `TareaMantenimiento` y `Empleado`.
 
@@ -13171,7 +14028,7 @@ sequenceDiagram
     SRV-->>-ADM: tareas, planes faltantes y marca de inhabilitado
 ```
 
-**Figura 246.12 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)**
+**Figura 277 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)**
 
 **Clases participantes:** `EmployeeService` (controlador de fachada, colaboración propuesta), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado` y `TareaMantenimiento`.
 
@@ -13187,13 +14044,62 @@ sequenceDiagram
 
 #### DSD — CU-188: Avisar los Vencimientos Próximos del Personal
 
-##### Operación: avisarVencimientosPendientes()
+##### Operación: avisarVencimientosDelPersonal()
 
-Operación avisarVencimientosPendientes: ver el DSD de CU-142.
+```mermaid
+sequenceDiagram
+    title DSD — CU-188 Avisar los Vencimientos Próximos del Personal · avisarVencimientosDelPersonal
+    autonumber
+    actor SIS as Sistema Automático (ACT-04)
+    participant CRN as :FleetAlertsCron
+    participant LST as :List#lt;TareaMantenimiento#gt;
+    participant TAR as tarea:TareaMantenimiento
+    participant EMP as empleado:Empleado
+    participant DIS as distribuidora:Distribuidora
+    participant MAI as :EmailSenderPort
+
+    SIS->>+CRN: avisarVencimientosDelPersonal()
+    CRN->>+LST: getSinAvisar()
+    LST-->>-CRN: tareas
+    loop Por cada tarea sin avisar
+        CRN->>TAR: getEstadoDeVencimiento()
+    end
+    opt Planificado (I-11): hay empleados activos de categoría chofer
+        loop Por cada empleado activo de categoría chofer
+            CRN->>EMP: getPlanesFaltantes()
+        end
+    end
+    loop Por cada distribuidora con vencimientos, o con documentos faltantes (planificado, I-11)
+        CRN->>+DIS: getAdministradores()
+        DIS-->>-CRN: administradores
+        CRN->>MAI: send(administrador, vencimientos)
+        CRN->>TAR: marcarAvisada(ahora)
+    end
+    deactivate CRN
+```
+
+**Figura 278 — DSD CU-188: Avisar los Vencimientos Próximos del Personal — Operación: avisarVencimientosDelPersonal()**
+
+
+**Clases participantes:** `FleetAlertsCron` (controlador del proceso temporal), la colección `List<TareaMantenimiento>`, los objetos de dominio `TareaMantenimiento`, `Empleado` y `Distribuidora`, y `EmailSenderPort` (fabricación pura: el envío del correo, detrás de un puerto).
+
+**GRASP.** *Controlador*: `FleetAlertsCron`, que el planificador del sistema dispara una vez por día. *Experto*: `TareaMantenimiento` conoce su vencimiento y su marca de aviso, y es quien queda avisada; `Distribuidora` conoce a sus administradores. *Bajo Acoplamiento*: el correo sale por un puerto.
+
+**No se dibuja:** el armado del cuerpo del correo, el reintento al día siguiente si el envío falla (en ese caso la tarea no se marca) y la distribuidora sin ningún administrador con correo, cuyas tareas se marcan igual porque no hay a quién avisarles.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `FleetAlertsCron.avisarVencimientosDelPersonal(...)` | `FleetAlertsCron.avisarVencimientosPendientes`: la misma tarea programada, que también revisa los vencimientos del personal (planificado, I-11) |
+| `List<TareaMantenimiento>.getSinAvisar()` | `FleetAlertsCron.tareasSinAvisar`: las `MaintenanceTask` abiertas con `MaintenanceTask.dueAt` y sin `MaintenanceTask.alertedAt` |
+| `TareaMantenimiento.getEstadoDeVencimiento()` | `calcularEstadoDeVencimiento()`; se conservan las que están por vencer o vencidas |
+| `Distribuidora.getAdministradores()` | `AdminService.findAll`: los `Admin` de la distribuidora con su `User`, de donde sale el correo |
+| `TareaMantenimiento.marcarAvisada(...)` | `FleetAlertsCron.avisarDistribuidora`: asigna `MaintenanceTask.alertedAt` con el instante del envío |
+| `Empleado.getPlanesFaltantes()` | Planificado (I-11, CU-188): los planes activos que aplican a la categoría de su puesto y para los que no tiene tarea abierta |
 
 **Observaciones de diseño**
 
-- Es el mismo aviso diario de vencimientos de la flota (CU-142), con la consulta ampliada a las tareas de los empleados y un renglón más con los documentos faltantes; no hay un proceso nuevo.
+- Es una tarea programada más, no un proceso automatizado: no decide, solo avisa. Su frecuencia (una vez por día, a las 8) queda fija en el código con `@Cron`, sin ninguna pantalla para configurarla.
+- La anticipación no es una ventana configurable por distribuidora: es `leadTimeDays`, un atributo de **cada plan**. Si falla el envío de una distribuidora, sus tareas no se marcan como avisadas y se reintentan al día siguiente; si una distribuidora no tiene ningún administrador con correo, se marcan igual, porque no hay a quién reintentarle.
 
 ---
 
@@ -13222,7 +14128,7 @@ sequenceDiagram
     SRV-->>-ADM: jornada
 ```
 
-**Figura 246.13 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)**
+**Figura 279 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)**
 
 **Clases participantes:** `AttendanceService` (controlador de fachada de la asistencia, **colaboración propuesta**), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado` y `JornadaDeTrabajo`.
 
@@ -13237,11 +14143,13 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-313: Corregir la Asistencia de un Empleado
+
 ##### Operación: corregirAsistencia(asistenciaId, datos, nota)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-189 Registrar la Asistencia de un Empleado · corregirAsistencia
+    title DSD — CU-313 Corregir la Asistencia de un Empleado · corregirAsistencia
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :AttendanceService
@@ -13257,7 +14165,8 @@ sequenceDiagram
     SRV-->>-ADM: jornada
 ```
 
-**Figura 246.14 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)**
+**Figura 280 — DSD CU-313: Corregir la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)**
+
 
 **Clases participantes:** `AttendanceService` (controlador de fachada, colaboración propuesta), la colección `Map<String, JornadaDeTrabajo>` y el objeto de dominio `JornadaDeTrabajo`.
 
@@ -13267,15 +14176,17 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La nota es obligatoria y reemplaza la observación anterior; el valor previo de la jornada queda sólo en el registro de auditoría (CU-153).
+- La nota es obligatoria y reemplaza la observación anterior; el valor previo de la jornada queda solo en el registro de auditoría (CU-153).
 
 ---
+
+#### DSD — CU-314: Consultar la Asistencia de los Empleados
 
 ##### Operación: consultarAsistencias(desde, hasta)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-189 Registrar la Asistencia de un Empleado · consultarAsistencias
+    title DSD — CU-314 Consultar la Asistencia de los Empleados · consultarAsistencias
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :AttendanceService
@@ -13291,7 +14202,8 @@ sequenceDiagram
     SRV-->>-ADM: jornadas con su duración, incluidas las abiertas
 ```
 
-**Figura 246.15 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: consultarAsistencias(desde, hasta)**
+**Figura 281 — DSD CU-314: Consultar la Asistencia de los Empleados — Operación: consultarAsistencias(desde, hasta)**
+
 
 **Clases participantes:** `AttendanceService` (controlador de fachada, colaboración propuesta), la colección `List<JornadaDeTrabajo>` y el objeto de dominio `JornadaDeTrabajo`.
 
@@ -13305,13 +14217,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-190: Registrar el Inicio y el Fin de la Jornada
+#### DSD — CU-190: Registrar el Inicio de la Jornada
 
 ##### Operación: registrarInicioDeJornada()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-190 Registrar el Inicio y el Fin de la Jornada · registrarInicioDeJornada
+    title DSD — CU-190 Registrar el Inicio de la Jornada · registrarInicioDeJornada
     autonumber
     actor CHO as Chofer (ACT-02)
     participant SRV as :AttendanceService
@@ -13329,7 +14241,7 @@ sequenceDiagram
     SRV-->>-CHO: jornada abierta
 ```
 
-**Figura 246.16 — DSD CU-190: Registrar el Inicio y el Fin de la Jornada — Operación: registrarInicioDeJornada()**
+**Figura 282 — DSD CU-190: Registrar el Inicio de la Jornada — Operación: registrarInicioDeJornada()**
 
 **Clases participantes:** `AttendanceService` (controlador de fachada, colaboración propuesta) y los objetos de dominio `Usuario`, `Empleado` y `JornadaDeTrabajo`.
 
@@ -13344,11 +14256,13 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-315: Registrar el Fin de la Jornada
+
 ##### Operación: registrarFinDeJornada()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-190 Registrar el Inicio y el Fin de la Jornada · registrarFinDeJornada
+    title DSD — CU-315 Registrar el Fin de la Jornada · registrarFinDeJornada
     autonumber
     actor CHO as Chofer (ACT-02)
     participant SRV as :AttendanceService
@@ -13366,7 +14280,8 @@ sequenceDiagram
     SRV-->>-CHO: jornada cerrada
 ```
 
-**Figura 246.17 — DSD CU-190: Registrar el Inicio y el Fin de la Jornada — Operación: registrarFinDeJornada()**
+**Figura 283 — DSD CU-315: Registrar el Fin de la Jornada — Operación: registrarFinDeJornada()**
+
 
 **Clases participantes:** `AttendanceService` (controlador de fachada, colaboración propuesta) y los objetos de dominio `Usuario`, `Empleado` y `JornadaDeTrabajo`.
 
@@ -13405,7 +14320,7 @@ sequenceDiagram
     SRV-->>-ADM: licencia
 ```
 
-**Figura 246.18 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)**
+**Figura 284 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)**
 
 **Clases participantes:** `LeaveService` (controlador de fachada de las licencias, **colaboración propuesta**), la colección `Map<String, Empleado>` y los objetos de dominio `Empleado` y `LicenciaLaboral`.
 
@@ -13416,15 +14331,17 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - La licencia nace solicitada aunque la cargue el administrador: aprobarla es una decisión explícita (CU-192).
-- La restricción de exclusión (`btree_gist`) hace imposible, a nivel de base, que dos licencias solicitadas o aprobadas de un empleado se superpongan; la comprobación del objeto sólo da un mensaje claro antes de llegar a ese error.
+- La restricción de exclusión (`btree_gist`) hace imposible, a nivel de base, que dos licencias solicitadas o aprobadas de un empleado se superpongan; la comprobación del objeto solo da un mensaje claro antes de llegar a ese error.
 
 ---
+
+#### DSD — CU-316: Modificar una Licencia o Ausencia
 
 ##### Operación: modificarLicencia(licenciaId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-191 Registrar una Licencia o Ausencia · modificarLicencia
+    title DSD — CU-316 Modificar una Licencia o Ausencia · modificarLicencia
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :LeaveService
@@ -13444,25 +14361,28 @@ sequenceDiagram
     SRV-->>-ADM: licencia
 ```
 
-**Figura 246.19 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)**
+**Figura 285 — DSD CU-316: Modificar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)**
+
 
 **Clases participantes:** `LeaveService` (controlador de fachada, colaboración propuesta), la colección `Map<String, LicenciaLaboral>` y los objetos de dominio `LicenciaLaboral` y `Empleado`.
 
-**GRASP.** *Controlador*: `LeaveService`. *Experto*: `LicenciaLaboral` conoce a su empleado y sólo se deja modificar mientras está solicitada, y recalcula sus días; `Empleado`, que conoce las demás licencias, comprueba la superposición excluyendo a la que se está modificando.
+**GRASP.** *Controlador*: `LeaveService`. *Experto*: `LicenciaLaboral` conoce a su empleado y solo se deja modificar mientras está solicitada, y recalcula sus días; `Empleado`, que conoce las demás licencias, comprueba la superposición excluyendo a la que se está modificando.
 
 **No se dibuja:** el guardado y el recálculo de los días corridos.
 
 **Observaciones de diseño**
 
-- Sólo una licencia solicitada se modifica: una aprobada se cancela (CU-191) y se registra otra, para que la decisión del administrador siempre sea sobre lo que ve.
+- Solo una licencia solicitada se modifica: una aprobada se cancela (CU-191) y se registra otra, para que la decisión del administrador siempre sea sobre lo que ve.
 
 ---
+
+#### DSD — CU-317: Cancelar una Licencia o Ausencia
 
 ##### Operación: cancelarLicencia(licenciaId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-191 Registrar una Licencia o Ausencia · cancelarLicencia
+    title DSD — CU-317 Cancelar una Licencia o Ausencia · cancelarLicencia
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :LeaveService
@@ -13479,7 +14399,8 @@ sequenceDiagram
     SRV-->>-ADM: licencia
 ```
 
-**Figura 246.20 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)**
+**Figura 286 — DSD CU-317: Cancelar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)**
+
 
 **Clases participantes:** `LeaveService` (controlador de fachada, colaboración propuesta), la colección `Map<String, LicenciaLaboral>` y el objeto de dominio `LicenciaLaboral`.
 
@@ -13493,47 +14414,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-192: Resolver una Solicitud de Licencia
-
-##### Operación: consultarLicencias(estado, desde, hasta)
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-192 Resolver una Solicitud de Licencia · consultarLicencias
-    autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :LeaveService
-    participant LST as :List#lt;LicenciaLaboral#gt;
-    participant LIC as licencia:LicenciaLaboral
-
-    ADM->>+SRV: consultarLicencias(estado, desde, hasta)
-    SRV->>+LST: filtrar(estado, desde, hasta)
-    LST-->>-SRV: licencias
-    loop Por cada licencia
-        SRV->>LIC: getEmpleado()
-    end
-    SRV-->>-ADM: licencias con el nombre del empleado
-```
-
-**Figura 246.21 — DSD CU-192: Resolver una Solicitud de Licencia — Operación: consultarLicencias(estado, desde, hasta)**
-
-**Clases participantes:** `LeaveService` (controlador de fachada, colaboración propuesta), la colección `List<LicenciaLaboral>` y el objeto de dominio `LicenciaLaboral`.
-
-**GRASP.** *Controlador*: `LeaveService`. *Experto*: cada `LicenciaLaboral` conoce al empleado que la solicitó.
-
-**No se dibuja:** la paginación, el filtro por tipo y por empleado, y el orden por fecha de inicio.
-
-**Observaciones de diseño**
-
-- Con el estado «solicitada» es la bandeja de pendientes del panel (`/leaves`).
-
----
+#### DSD — CU-192: Aprobar una Solicitud de Licencia
 
 ##### Operación: aprobarLicencia(licenciaId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-192 Resolver una Solicitud de Licencia · aprobarLicencia
+    title DSD — CU-192 Aprobar una Solicitud de Licencia · aprobarLicencia
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :LeaveService
@@ -13549,11 +14436,11 @@ sequenceDiagram
     SRV-->>-ADM: licencia
 ```
 
-**Figura 246.22 — DSD CU-192: Resolver una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)**
+**Figura 287 — DSD CU-192: Aprobar una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)**
 
 **Clases participantes:** `LeaveService` (controlador de fachada, colaboración propuesta), la colección `Map<String, LicenciaLaboral>` y el objeto de dominio `LicenciaLaboral`.
 
-**GRASP.** *Controlador*: `LeaveService`. *Experto*: `LicenciaLaboral` valida la transición a «aprobada», que sólo parte de «solicitada», y asienta quién la decidió y cuándo.
+**GRASP.** *Controlador*: `LeaveService`. *Experto*: `LicenciaLaboral` valida la transición a «aprobada», que solo parte de «solicitada», y asienta quién la decidió y cuándo.
 
 **No se dibuja:** el guardado, la identidad del administrador, que sale del token, y el efecto sobre el despacho: la licencia aprobada que cubre el día de hoy la lee la consulta del bloqueo de despacho, no se propaga con un mensaje.
 
@@ -13563,11 +14450,13 @@ sequenceDiagram
 
 ---
 
+#### DSD — CU-318: Rechazar una Solicitud de Licencia
+
 ##### Operación: rechazarLicencia(licenciaId, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-192 Resolver una Solicitud de Licencia · rechazarLicencia
+    title DSD — CU-318 Rechazar una Solicitud de Licencia · rechazarLicencia
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :LeaveService
@@ -13584,7 +14473,8 @@ sequenceDiagram
     SRV-->>-ADM: licencia
 ```
 
-**Figura 246.23 — DSD CU-192: Resolver una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)**
+**Figura 288 — DSD CU-318: Rechazar una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)**
+
 
 **Clases participantes:** `LeaveService` (controlador de fachada, colaboración propuesta), la colección `Map<String, LicenciaLaboral>` y el objeto de dominio `LicenciaLaboral`.
 
@@ -13595,6 +14485,43 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El motivo es obligatorio porque es lo único que explica al empleado por qué no se le concede el período.
+
+---
+
+#### DSD — CU-319: Consultar las Licencias
+
+##### Operación: consultarLicencias(estado, desde, hasta)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-319 Consultar las Licencias · consultarLicencias
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :LeaveService
+    participant LST as :List#lt;LicenciaLaboral#gt;
+    participant LIC as licencia:LicenciaLaboral
+
+    ADM->>+SRV: consultarLicencias(estado, desde, hasta)
+    SRV->>+LST: filtrar(estado, desde, hasta)
+    LST-->>-SRV: licencias
+    loop Por cada licencia
+        SRV->>LIC: getEmpleado()
+    end
+    SRV-->>-ADM: licencias con el nombre del empleado
+```
+
+**Figura 289 — DSD CU-319: Consultar las Licencias — Operación: consultarLicencias(estado, desde, hasta)**
+
+
+**Clases participantes:** `LeaveService` (controlador de fachada, colaboración propuesta), la colección `List<LicenciaLaboral>` y el objeto de dominio `LicenciaLaboral`.
+
+**GRASP.** *Controlador*: `LeaveService`. *Experto*: cada `LicenciaLaboral` conoce al empleado que la solicitó.
+
+**No se dibuja:** la paginación, el filtro por tipo y por empleado, y el orden por fecha de inicio.
+
+**Observaciones de diseño**
+
+- Con el estado «solicitada» es la bandeja de pendientes del panel (`/leaves`).
 
 ---
 
@@ -13628,7 +14555,7 @@ sequenceDiagram
     SRV-->>-ADM: saldoDeVacaciones
 ```
 
-**Figura 246.24 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)**
+**Figura 290 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)**
 
 **Clases participantes:** `EmployeeService` (controlador de fachada, colaboración propuesta), la colección `Map<String, Empleado>`, los objetos de dominio `Empleado` y `LicenciaLaboral`, y `VacationPolicy` (fabricación pura propuesta: la regla de los días de vacaciones por antigüedad, una función sin base).
 
@@ -13666,11 +14593,11 @@ sequenceDiagram
     SRV-->>-ADM: activos por puesto, presentes, de licencia y documentos por estado
 ```
 
-**Figura 246.25 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()**
+**Figura 291 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()**
 
 **Clases participantes:** `PersonnelDashboardService` (controlador de fachada del tablero, **colaboración propuesta**) y las colecciones `List<Empleado>`, `List<JornadaDeTrabajo>`, `List<LicenciaLaboral>` y `List<TareaMantenimiento>`.
 
-**GRASP.** *Controlador*: `PersonnelDashboardService`. *Experto*: cada colección conoce a los elementos que cuenta; el servicio sólo reúne las cuatro cifras. *Alta Cohesión*: el tablero no tiene lógica de negocio propia.
+**GRASP.** *Controlador*: `PersonnelDashboardService`. *Experto*: cada colección conoce a los elementos que cuenta; el servicio solo reúne las cuatro cifras. *Alta Cohesión*: el tablero no tiene lógica de negocio propia.
 
 **No se dibuja:** los conteos agrupados que resuelve la base, el cálculo de «hoy» en el día argentino y el filtro por distribuidora.
 
@@ -13716,7 +14643,7 @@ sequenceDiagram
     FLK-->>-SRV: habilitado
 ```
 
-**Figura 246.26 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)**
+**Figura 292 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)**
 
 **Clases participantes:** `FleetDispatchLockService` (el gate de despacho de la flota, que existe en el código y se amplía) y los objetos de dominio `Chofer`, `Empleado`, `LicenciaLaboral` y `TareaMantenimiento`. El primer mensaje sale de `DispatchOrchestratorService`, que es el controlador de CU-013; los de CU-012 (`OrderService`) y CU-015 (`UpdateOrderStatusUseCase`) lo invocan igual.
 
@@ -13727,12 +14654,12 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - Un chofer queda inhabilitado si su legajo no está activo, si tiene una licencia aprobada que cubre hoy o si tiene una tarea abierta vencida de un plan bloqueante cuyo dueño es su empleado; se suma a las condiciones vigentes (vehículo en uso y vencimientos del chofer y del vehículo).
-- Un chofer sin legajo conserva el comportamiento vigente: sólo cuentan sus propias tareas. La migración `BackfillDeEmpleados` creó un legajo por cada chofer y administrador existente, de modo que el caso no debería darse.
+- Un chofer sin legajo conserva el comportamiento vigente: solo cuentan sus propias tareas. La migración `BackfillDeEmpleados` creó un legajo por cada chofer y administrador existente, de modo que el caso no debería darse.
 - Planificado (I-11): no reescribe los diagramas de CU-012, CU-013 y CU-015, que siguen describiendo lo construido.
 
 ---
 
-### 4.20 SS-08 y SS-20 — Stock físico, compras y carga del camión (CU-207 a CU-224, CU-248, CU-249, CU-258 a CU-263 y CU-273 a CU-304)
+### 4.20 SS-08 y SS-20 — Stock físico, compras y carga del camión (CU-207 a CU-224, CU-248, CU-249, CU-258 a CU-263 y CU-273 a CU-301 y CU-304)
 
 El **stock físico** está construido: los diagramas muestran la colaboración real, con las clases del módulo `stock` (`WarehouseService`, `StockQueryService`, `StockLocationService`, `StockThresholdService`, `InitialCountUseCase`, `StockTransferUseCase`, `ReverseBatchUseCase`, `StockAdjustmentUseCase`, `ReconciliationAdjustmentUseCase`, `ReapplyDeliveriesUseCase`, `StockDeliveryService`, `StockLedgerService`, `StockLowCron`, `StockReconciliationCron`, `StockReconciliationService` y `StockAdminNotifier`) y la tabla que dice con qué código se implementa cada mensaje. Las **compras** también están construidas: sus diagramas muestran la colaboración real, con las clases del módulo `purchase` (`SupplierService`, `PurchaseOrderService`, `PurchaseReceiptService`, `PurchaseQueryService`, `ReceivePurchaseUseCase` y `VoidPurchaseReceiptUseCase`) y la tabla que dice con qué código se implementa cada mensaje. La **carga del camión** también está construida: sus diagramas muestran la colaboración real, con las clases del módulo `truck-load` (`OpenTruckLoadUseCase`, `UpdateTruckLoadItemsUseCase`, `DepartTruckLoadUseCase`, `ReloadTruckLoadUseCase`, `ReturnTruckLoadUseCase`, `CloseTruckLoadUseCase`, `CancelTruckLoadUseCase`, `TruckLoadQueryService`, `StockControlSettingsService` y `TruckLoadGateService`) y la tabla que dice con qué código se implementa cada mensaje.
 
@@ -13760,7 +14687,7 @@ sequenceDiagram
     SRV-->>-ADM: depositos
 ```
 
-**Figura 247 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)**
+**Figura 293 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)**
 
 **Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock) y los objetos de dominio `Distribuidora` y `Deposito`.
 
@@ -13803,7 +14730,7 @@ sequenceDiagram
     SRV-->>-ADM: depositoDeStock, saldos
 ```
 
-**Figura 248 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)**
+**Figura 294 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)**
 
 **Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>`, el objeto de dominio `Deposito` y `StockQueryService` (fabricación pura: las lecturas de saldos del módulo).
 
@@ -13819,7 +14746,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El detalle trae los saldos con cantidad cero sólo si se piden; por omisión, los que hay.
+- El detalle trae los saldos con cantidad cero solo si se piden; por omisión, los que hay.
 
 ---
 
@@ -13849,7 +14776,7 @@ sequenceDiagram
     SRV-->>-ADM: depositoCreado
 ```
 
-**Figura 249 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)**
+**Figura 295 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)**
 
 **Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock) y los objetos de dominio `Distribuidora`, `Deposito` y `UbicacionDeStock`.
 
@@ -13869,7 +14796,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El primer depósito de la distribuidora es siempre el predeterminado; si el pedido lo indica, el nuevo reemplaza al anterior.
-- El código se guarda en mayúsculas y es único sólo entre los depósitos vigentes.
+- El código se guarda en mayúsculas y es único solo entre los depósitos vigentes.
 
 ---
 
@@ -13896,7 +14823,7 @@ sequenceDiagram
     SRV-->>-ADM: depositoDeStock
 ```
 
-**Figura 250 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)**
+**Figura 296 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)**
 
 **Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>` y el objeto de dominio `Deposito`.
 
@@ -13914,7 +14841,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Sólo cambian los campos que llegan en el pedido.
+- Solo cambian los campos que llegan en el pedido.
 - Cambiar el depósito predeterminado es otro caso (CU-273): acá la marca no se toca.
 
 ---
@@ -13946,7 +14873,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 251 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)**
+**Figura 297 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)**
 
 **Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>` y los objetos de dominio `Deposito` y `UbicacionDeStock`.
 
@@ -13999,7 +14926,7 @@ sequenceDiagram
     SRV-->>-ADM: depositoElegido
 ```
 
-**Figura 252 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)**
+**Figura 298 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)**
 
 **Clases participantes:** `WarehouseService` (controlador de fachada del módulo de stock), la colección `Map<String, Deposito>` y los objetos de dominio `Distribuidora` y `Deposito` (el anterior y el elegido).
 
@@ -14061,7 +14988,7 @@ sequenceDiagram
     SRV-->>-ADM: ajuste
 ```
 
-**Figura 253 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)**
+**Figura 299 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)**
 
 **Clases participantes:** `InitialCountUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, Deposito>` y los objetos de dominio `Deposito`, `UbicacionDeStock`, `AjusteDeStock` y `ItemAjusteDeStock`.
 
@@ -14112,7 +15039,7 @@ sequenceDiagram
     SRV-->>-ADM: saldos
 ```
 
-**Figura 254 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)**
+**Figura 300 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)**
 
 **Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `Map<String, UbicacionDeStock>` y los objetos de dominio `UbicacionDeStock` y `SaldoDeStock`.
 
@@ -14149,7 +15076,7 @@ sequenceDiagram
     SRV-->>-ADM: ubicacionesDeStock
 ```
 
-**Figura 255 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()**
+**Figura 301 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()**
 
 **Clases participantes:** `StockLocationService` (controlador de fachada de las ubicaciones del módulo de stock) y el objeto de dominio `Distribuidora`.
 
@@ -14197,7 +15124,7 @@ sequenceDiagram
     SRV-->>-ADM: resumen
 ```
 
-**Figura 256 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()**
+**Figura 302 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()**
 
 **Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock) y las colecciones `List<Producto>`, `List<UbicacionDeStock>`, `List<Pedido>` y `List<UmbralDeStock>`.
 
@@ -14241,7 +15168,7 @@ sequenceDiagram
     SRV-->>-ADM: movimientos, cantidadDeMovimientos
 ```
 
-**Figura 257 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)**
+**Figura 303 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)**
 
 **Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `List<MovimientoDeStock>` y el objeto de dominio `MovimientoDeStock`.
 
@@ -14257,7 +15184,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El libro es de sólo agregado: lo que se corrige se contraasienta (CU-276) y las dos filas quedan a la vista.
+- El libro es de solo agregado: lo que se corrige se contraasienta (CU-276) y las dos filas quedan a la vista.
 
 ---
 
@@ -14298,7 +15225,7 @@ sequenceDiagram
     SRV-->>-ADM: umbrales
 ```
 
-**Figura 258 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)**
+**Figura 304 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)**
 
 **Clases participantes:** `StockThresholdService` (controlador de fachada de los mínimos del módulo de stock), las colecciones `Map<String, Deposito>` y `Map<String, Producto>` y los objetos de dominio `Deposito` y `UmbralDeStock`.
 
@@ -14319,7 +15246,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Un mínimo en cero equivale a no controlar ese par; los mínimos controlan sólo las llenas.
+- Un mínimo en cero equivale a no controlar ese par; los mínimos controlan solo las llenas.
 - Todo el lote se valida antes de escribir: si un depósito o una garrafa no existe, no se guarda ninguno.
 
 ---
@@ -14346,7 +15273,7 @@ sequenceDiagram
     SRV-->>-ADM: umbrales
 ```
 
-**Figura 259 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()**
+**Figura 305 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()**
 
 **Clases participantes:** `StockThresholdService` (controlador de fachada de los mínimos del módulo de stock), la colección `List<UmbralDeStock>` y el objeto de dominio `UmbralDeStock`.
 
@@ -14400,7 +15327,7 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 260 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()**
+**Figura 306 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()**
 
 **Clases participantes:** `StockLowCron` (proceso temporal, controlador de fachada del módulo de stock), `StockAdminNotifier` (fabricación pura: envía el correo a los administradores de la distribuidora), la colección `List<UmbralDeStock>` y los objetos de dominio `UmbralDeStock` y `Deposito`.
 
@@ -14457,7 +15384,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 261 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)**
+**Figura 307 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)**
 
 **Clases participantes:** `StockTransferUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, UbicacionDeStock>` y el objeto de dominio `UbicacionDeStock`.
 
@@ -14510,7 +15437,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 262 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)**
+**Figura 308 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)**
 
 **Clases participantes:** `ReverseBatchUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `List<MovimientoDeStock>` y el objeto de dominio `MovimientoDeStock`.
 
@@ -14567,7 +15494,7 @@ sequenceDiagram
     SRV-->>-ADM: ajuste
 ```
 
-**Figura 263 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)**
+**Figura 309 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)**
 
 **Clases participantes:** `StockAdjustmentUseCase` (controlador: el caso de uso del módulo de stock), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, UbicacionDeStock>` y los objetos de dominio `UbicacionDeStock`, `AjusteDeStock` e `ItemAjusteDeStock`.
 
@@ -14613,7 +15540,7 @@ sequenceDiagram
     SRV-->>-ADM: ajustes, cantidadDeAjustes
 ```
 
-**Figura 264 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)**
+**Figura 310 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)**
 
 **Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `List<AjusteDeStock>` y el objeto de dominio `AjusteDeStock`.
 
@@ -14652,7 +15579,7 @@ sequenceDiagram
     SRV-->>-ADM: ajuste, renglonesDeAjuste
 ```
 
-**Figura 265 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)**
+**Figura 311 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)**
 
 **Clases participantes:** `StockQueryService` (controlador de fachada de las lecturas del módulo de stock), la colección `Map<String, AjusteDeStock>` y el objeto de dominio `AjusteDeStock`.
 
@@ -14706,13 +15633,13 @@ sequenceDiagram
     SRV-->>-ADM: carga
 ```
 
-**Figura 266 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)**
+**Figura 312 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)**
 
 **Clases participantes:** `OpenTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), las colecciones `Map<String, Vehiculo>`, `Map<String, Chofer>` y `Map<String, Deposito>` y los objetos de dominio `Vehiculo`, `Chofer`, `CargaDeCamion` e `ItemCarga`.
 
 **GRASP.** *Controlador*: `OpenTruckLoadUseCase`. *Creador*: el caso de uso crea la `CargaDeCamion`, que inicializa con los datos de la operación, y ésta crea sus `ItemCarga` (composición). *Experto*: el `Vehiculo` sabe qué chofer lo tiene en uso, por la asignación de vehículo, y si ya tiene una carga abierta; el `Chofer` sabe si ya tiene una.
 
-**No se dibuja:** el administrador que opera, que es el autor del registro y no se dibuja como objeto, el ayudante, que es un legajo que sólo se comprueba que exista, el número correlativo, el día de negocio, los dos índices únicos parciales que respaldan que el vehículo y el chofer tengan una sola carga abierta, el bloqueo del vehículo, del chofer y de las garrafas y la transacción con reintento. Esta operación no mueve stock..
+**No se dibuja:** el administrador que opera, que es el autor del registro y no se dibuja como objeto, el ayudante, que es un legajo que solo se comprueba que exista, el número correlativo, el día de negocio, los dos índices únicos parciales que respaldan que el vehículo y el chofer tengan una sola carga abierta, el bloqueo del vehículo, del chofer y de las garrafas y la transacción con reintento. Esta operación no mueve stock..
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -14759,7 +15686,7 @@ sequenceDiagram
     SRV-->>-ADM: carga
 ```
 
-**Figura 267 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)**
+**Figura 313 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)**
 
 **Clases participantes:** `UpdateTruckLoadItemsUseCase` (controlador: el caso de uso del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
@@ -14820,7 +15747,7 @@ sequenceDiagram
     SRV-->>-ADM: carga
 ```
 
-**Figura 268 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)**
+**Figura 314 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)**
 
 **Clases participantes:** `ReloadTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
@@ -14840,7 +15767,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Sólo se repone con la carga en ruta, sólo llenas y desde el depósito de origen de la carga. Repetir la reposición suma otra vez, por eso la clave de idempotencia es obligatoria.
+- Solo se repone con la carga en ruta, solo llenas y desde el depósito de origen de la carga. Repetir la reposición suma otra vez, por eso la clave de idempotencia es obligatoria.
 
 ---
 
@@ -14866,7 +15793,7 @@ sequenceDiagram
     SRV-->>-ADM: carga
 ```
 
-**Figura 269 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)**
+**Figura 315 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)**
 
 **Clases participantes:** `CancelTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y el objeto de dominio `CargaDeCamion`.
 
@@ -14883,7 +15810,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Cancelar libera al vehículo y al chofer porque deja de contar como carga abierta (los índices únicos parciales sólo alcanzan a las cargas en carga, en ruta o devueltas).
+- Cancelar libera al vehículo y al chofer porque deja de contar como carga abierta (los índices únicos parciales solo alcanzan a las cargas en carga, en ruta o devueltas).
 
 ---
 
@@ -14927,7 +15854,7 @@ sequenceDiagram
     Note over CHO,SRV: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 270 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)**
+**Figura 316 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)**
 
 **Clases participantes:** `DepartTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` y `UbicacionDeStock`.
 
@@ -15001,13 +15928,13 @@ sequenceDiagram
     deactivate ENT
 ```
 
-**Figura 271 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)**
+**Figura 317 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)**
 
 **Clases participantes:** `UpdateOrderStatusUseCase` (controlador del caso base: el que confirma la entrega), `StockDeliveryService` (el adaptador del stock que el pedido invoca), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos) y los objetos de dominio `Pedido`, `Vehiculo`, `Distribuidora` y `Deposito`.
 
 **GRASP.** *Controlador*: el del caso base. *Experto*: el `Pedido` conoce sus ítems y sabe qué garrafas ya tienen su movimiento de entrega; el `Vehiculo` y el `Deposito` saben si tienen llenas suficientes en su ubicación; la `Distribuidora` conoce su depósito predeterminado. *Fabricación pura*: `StockLedgerService` descuenta las llenas, acredita las vacías y no toca el stock vendible.
 
-**No se dibuja:** el punto de control propio dentro de la transacción del pedido, que se intenta 3 veces en total ante un bloqueo cruzado o un saldo que otra operación vació entre la lectura y el libro, releyendo los saldos en cada intento (se descuentan las garrafas que alcanzan y se omite sólo la que no), la lectura de las llenas sin bloqueo (la validación firme la hace el libro) y la idempotencia, que sostienen la revisión previa y un índice único parcial por pedido, garrafa y motivo.
+**No se dibuja:** el punto de control propio dentro de la transacción del pedido, que se intenta 3 veces en total ante un bloqueo cruzado o un saldo que otra operación vació entre la lectura y el libro, releyendo los saldos en cada intento (se descuentan las garrafas que alcanzan y se omite solo la que no), la lectura de las llenas sin bloqueo (la validación firme la hace el libro) y la idempotencia, que sostienen la revisión previa y un índice único parcial por pedido, garrafa y motivo.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -15061,7 +15988,7 @@ sequenceDiagram
     Note over CHO,SRV: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 272 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)**
+**Figura 318 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)**
 
 **Clases participantes:** `ReturnTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion`, `Chofer` e `ItemCarga`.
 
@@ -15131,7 +16058,7 @@ sequenceDiagram
     SRV-->>-ADM: carga
 ```
 
-**Figura 273 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)**
+**Figura 319 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)**
 
 **Clases participantes:** `CloseTruckLoadUseCase` (controlador: el caso de uso del módulo de carga de camiones), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
@@ -15193,7 +16120,7 @@ sequenceDiagram
     SRV-->>-CHO: carga, exigida
 ```
 
-**Figura 274 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()**
+**Figura 320 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()**
 
 **Clases participantes:** `TruckLoadQueryService` (controlador de las lecturas del módulo de carga de camiones), la colección `Map<String, Chofer>` y los objetos de dominio `Chofer`, `Distribuidora`, `CargaDeCamion` e `ItemCarga`.
 
@@ -15238,7 +16165,7 @@ sequenceDiagram
     SRV-->>-ADM: cargas
 ```
 
-**Figura 275 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)**
+**Figura 321 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)**
 
 **Clases participantes:** `TruckLoadQueryService` (controlador de las lecturas del módulo de carga de camiones), la colección `List<CargaDeCamion>` y el objeto de dominio `CargaDeCamion`.
 
@@ -15287,10 +16214,10 @@ sequenceDiagram
     SRV->>+CAR: previsualizarCierre()
     CAR-->>-SRV: hayDiferencia
     SRV-->>-ADM: carga
-    Note over ADM,SRV: También lo inicia el Chofer (ACT-02), sólo de su carga
+    Note over ADM,SRV: También lo inicia el Chofer (ACT-02), solo de su carga
 ```
 
-**Figura 276 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)**
+**Figura 322 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)**
 
 **Clases participantes:** `TruckLoadQueryService` (controlador de las lecturas del módulo de carga de camiones), la colección `Map<String, CargaDeCamion>` y los objetos de dominio `CargaDeCamion` e `ItemCarga`.
 
@@ -15353,11 +16280,11 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 277 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()**
+**Figura 323 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()**
 
 **Clases participantes:** `StockReconciliationCron` (proceso temporal, controlador de fachada del módulo de stock), `StockReconciliationService` (fabricación pura: el cálculo de la conciliación), `StockAdminNotifier` (fabricación pura: envía el correo), las colecciones `List<Producto>` y `List<Pedido>` y el objeto de dominio `Producto`.
 
-**GRASP.** *Controlador*: `StockReconciliationCron`. *Experto*: el `Producto` conoce su stock vendible y calcula la diferencia contra las llenas físicas y lo reservado; el cron guarda la firma de la última diferencia avisada (`stock_reconciliation_alert`, una tabla técnica) y decide si una nueva coincide con ella. *Fabricación pura*: `StockReconciliationService` hace el cálculo en una lectura consistente, que comparte con la consulta del administrador (CU-224, `consultarConciliacionDeStock`).
+**GRASP.** *Controlador*: `StockReconciliationCron`. *Experto*: el `Producto` conoce su stock vendible y calcula la diferencia contra las llenas físicas y lo reservado; la tarea programada guarda la firma de la última diferencia avisada (`stock_reconciliation_alert`, una tabla técnica) y decide si una nueva coincide con ella. *Fabricación pura*: `StockReconciliationService` hace el cálculo en una lectura consistente, que comparte con la consulta del administrador (CU-224, `consultarConciliacionDeStock`).
 
 **No se dibuja:** el disparo diario a las 03:00 en la zona argentina, el recorrido de todas las distribuidoras con depósitos, la lectura en `REPEATABLE READ` y el manejo del fallo del envío, que deja el aviso sin guardar para reintentar al día siguiente.
 
@@ -15373,7 +16300,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El caso no corrige nada: sólo avisa. La salida de un desvío es CU-277 y la de una entrega sin descuento, CU-278.
+- El caso no corrige nada: solo avisa. La salida de un desvío es CU-277 y la de una entrega sin descuento, CU-278.
 
 ---
 
@@ -15401,7 +16328,7 @@ sequenceDiagram
     SRV-->>-ADM: motivoConciliacion
 ```
 
-**Figura 278 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()**
+**Figura 324 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()**
 
 **Clases participantes:** `StockReconciliationService` (controlador de fachada de la conciliación del módulo de stock), las colecciones `List<Producto>` y `List<Pedido>` y el objeto de dominio `Producto`.
 
@@ -15454,7 +16381,7 @@ sequenceDiagram
     SRV-->>-ADM: ajuste
 ```
 
-**Figura 279 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)**
+**Figura 325 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)**
 
 **Clases participantes:** `ReconciliationAdjustmentUseCase` (controlador: el caso de uso del módulo de stock), la colección `Map<String, Producto>` y los objetos de dominio `Producto`, `Distribuidora`, `UbicacionDeStock`, `AjusteDeStock` e `ItemAjusteDeStock`.
 
@@ -15476,7 +16403,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - La corrección es una variación del vendible, no un movimiento físico: por eso el ajuste no tiene movimientos en el libro y no se contraasienta.
-- Se aplica sobre el depósito predeterminado sólo para dar una ubicación al documento.
+- Se aplica sobre el depósito predeterminado solo para dar una ubicación al documento.
 
 ---
 
@@ -15506,7 +16433,7 @@ sequenceDiagram
     SRV-->>-ADM: resumenDeReaplicacion
 ```
 
-**Figura 280 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()**
+**Figura 326 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()**
 
 **Clases participantes:** `ReapplyDeliveriesUseCase` (controlador: el caso de uso del módulo de stock), `StockDeliveryService` (fabricación pura: el descuento de la entrega), la colección `List<Pedido>` y el objeto de dominio `Pedido`.
 
@@ -15565,7 +16492,7 @@ sequenceDiagram
     deactivate TLG
 ```
 
-**Figura 281 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)**
+**Figura 327 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)**
 
 **Clases participantes:** `TruckLoadGateService` (controlador: la regla de quién recibe pedidos según su carga) y los objetos de dominio `Distribuidora`, `Chofer` y `CargaDeCamion`. El que lo incluye es `DispatchOrchestratorService`, `OrderService` o `UpdateOrderStatusUseCase`, según el caso base.
 
@@ -15578,11 +16505,11 @@ sequenceDiagram
 | `TruckLoadGateService.verificarCargaDeCamionAbierta(...)` | `DispatchOrchestratorService.conCargaSiSeExige` → `TruckLoadGateService.choferesQuePuedenRecibir` para las ofertas; `UpdateOrderStatusUseCase` → `TruckLoadGateService.assertPuedeAceptar` para la aceptación; `OrderService.assignDelivery` → `TruckLoadGateService.assertPuedeAsignar` para la asignación manual; `OrderController.findAvailableOrders` → `TruckLoadGateService.motivoParaNoRecibir` para el pool |
 | `Distribuidora.getExigirCargaDeCamionAbierta(...)` | `StockControlSettingsService.obtener`: devuelve el parámetro `requireOpenTruckLoad` |
 | `Chofer.getCargaAbierta(...)` | `TruckLoadGateService.leer`: une `truck_load` abierta (en carga, en ruta o devuelta) con la `vehicle_assignment` sin liberar del chofer |
-| `CargaDeCamion.estaEnRutaCon(...)` | `motivoSinPedidos`: rechaza si la carga no está en ruta, o si el vehículo en uso no es el de la carga; sin carga, rechaza sólo si la distribuidora exige tenerla |
+| `CargaDeCamion.estaEnRutaCon(...)` | `motivoSinPedidos`: rechaza si la carga no está en ruta, o si el vehículo en uso no es el de la carga; sin carga, rechaza solo si la distribuidora exige tenerla |
 
 **Observaciones de diseño**
 
-- Con una carga abierta el chofer sólo recibe en ruta, con o sin el control de la distribuidora: en carga todavía no salió el stock y devuelta ya declaró la vuelta.
+- Con una carga abierta el chofer solo recibe en ruta, con o sin el control de la distribuidora: en carga todavía no salió el stock y devuelta ya declaró la vuelta.
 
 ---
 
@@ -15613,7 +16540,7 @@ sequenceDiagram
     SRV-->>-ADM: configuracion
 ```
 
-**Figura 282 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)**
+**Figura 328 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)**
 
 **Clases participantes:** `StockControlSettingsService` (controlador: los parámetros del control de stock), `ModuleConfigService` (fabricación pura: guarda los parámetros por distribuidora y proceso), los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
 
@@ -15656,7 +16583,7 @@ sequenceDiagram
     SRV-->>-ADM: exigida
 ```
 
-**Figura 283 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()**
+**Figura 329 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()**
 
 **Clases participantes:** `StockControlSettingsService` (controlador: los parámetros del control de stock), los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
 
@@ -15724,7 +16651,7 @@ sequenceDiagram
     deactivate LED
 ```
 
-**Figura 284 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)**
+**Figura 330 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)**
 
 **Clases participantes:** `StockTransferUseCase` (controlador del caso base; el mismo papel lo cumplen los demás casos de uso y servicios que lo invocan), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos) y los objetos de dominio `Producto`, `Deposito`, `UbicacionDeStock`, `SaldoDeStock` y `MovimientoDeStock`.
 
@@ -15778,7 +16705,7 @@ sequenceDiagram
     SRV-->>-ADM: proveedores
 ```
 
-**Figura 285 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)**
+**Figura 331 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)**
 
 **Clases participantes:** `SupplierService` (controlador: el servicio del módulo de compras que administra los proveedores) y los objetos de dominio `Distribuidora` y `Proveedor`.
 
@@ -15812,7 +16739,7 @@ sequenceDiagram
     SRV-->>-ADM: proveedor
 ```
 
-**Figura 286 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)**
+**Figura 332 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)**
 
 **Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores) y la colección `Map<String, Proveedor>`.
 
@@ -15848,7 +16775,7 @@ sequenceDiagram
     SRV-->>-ADM: proveedor
 ```
 
-**Figura 287 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)**
+**Figura 333 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)**
 
 **Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores) y los objetos de dominio `Distribuidora` y `Proveedor`.
 
@@ -15891,7 +16818,7 @@ sequenceDiagram
     SRV-->>-ADM: proveedor
 ```
 
-**Figura 288 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)**
+**Figura 334 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)**
 
 **Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
 
@@ -15903,11 +16830,11 @@ sequenceDiagram
 |---|---|
 | `SupplierService.actualizarProveedor(...)` | `SupplierController.update` → `SupplierService.update` |
 | `Map<String, Proveedor>.get(...)` | `SupplierService.findOne`: lee el `Supplier` de la distribuidora; responde 404 si no existe |
-| `Proveedor.actualizar(...)` | `SupplierService.update`: asigna sólo los campos enviados (`Supplier.businessName`, `Supplier.cuit`, `Supplier.kind`, `Supplier.isActive`, el contacto y `Supplier.paymentTermsDays`) y guarda |
+| `Proveedor.actualizar(...)` | `SupplierService.update`: asigna solo los campos enviados (`Supplier.businessName`, `Supplier.cuit`, `Supplier.kind`, `Supplier.isActive`, el contacto y `Supplier.paymentTermsDays`) y guarda |
 
 **Observaciones de diseño**
 
-- Sólo cambian los campos enviados.
+- Solo cambian los campos enviados.
 - Desactivar a un proveedor (`Supplier.isActive` en falso) no es darlo de baja: sigue en el padrón pero no admite órdenes ni recepciones nuevas.
 
 ---
@@ -15934,7 +16861,7 @@ sequenceDiagram
     SRV-->>-ADM: confirmacion
 ```
 
-**Figura 289 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)**
+**Figura 335 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)**
 
 **Clases participantes:** `SupplierService` (controlador del módulo de compras para los proveedores), la colección `Map<String, Proveedor>` y el objeto de dominio `Proveedor`.
 
@@ -15981,7 +16908,7 @@ sequenceDiagram
     SRV-->>-ADM: historial
 ```
 
-**Figura 290 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)**
+**Figura 336 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)**
 
 **Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, Proveedor>` y los objetos de dominio `Proveedor` y `RecepcionDeCompra`.
 
@@ -15998,7 +16925,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Los totales cuentan sólo las recepciones confirmadas; el listado trae también las anuladas, con su estado.
+- Los totales cuentan solo las recepciones confirmadas; el listado trae también las anuladas, con su estado.
 
 ---
 
@@ -16032,7 +16959,7 @@ sequenceDiagram
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 291 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)**
+**Figura 337 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)**
 
 **Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes) y los objetos de dominio `Distribuidora`, `Proveedor`, `OrdenDeCompra` e `ItemOrdenDeCompra`.
 
@@ -16086,7 +17013,7 @@ sequenceDiagram
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 292 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)**
+**Figura 338 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)**
 
 **Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra` e `ItemOrdenDeCompra`.
 
@@ -16131,7 +17058,7 @@ sequenceDiagram
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 293 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)**
+**Figura 339 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)**
 
 **Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
 
@@ -16144,7 +17071,7 @@ sequenceDiagram
 | `PurchaseOrderService.enviarOrdenDeCompra(...)` | `PurchaseOrderController.send` → `PurchaseOrderService.send` |
 | `Map<String, OrdenDeCompra>.get(...)` | `PurchaseOrderService.bloquear`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
 | `OrdenDeCompra.enviar(...)` | `PurchaseOrderService.send`: pasa `PurchaseOrder.status` a enviada y registra `PurchaseOrder.issuedAt` con `PurchaseOrderService.cambiarEstado` |
-| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: sólo se pasa de borrador a enviada; responde 400 desde cualquier otro estado |
+| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: solo se pasa de borrador a enviada; responde 400 desde cualquier otro estado |
 
 **Observaciones de diseño**
 
@@ -16175,7 +17102,7 @@ sequenceDiagram
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 294 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)**
+**Figura 340 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)**
 
 **Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
 
@@ -16188,8 +17115,8 @@ sequenceDiagram
 | `PurchaseOrderService.cancelarOrdenDeCompra(...)` | `PurchaseOrderController.cancel` → `PurchaseOrderService.cancel` |
 | `Map<String, OrdenDeCompra>.get(...)` | `PurchaseOrderService.bloquear`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
 | `OrdenDeCompra.cancelar(...)` | `PurchaseOrderService.cancel`: pasa `PurchaseOrder.status` a cancelada y guarda `PurchaseOrder.cancelReason` con `PurchaseOrderService.cambiarEstado` |
-| `OrdenDeCompra.validarSinRecepciones(...)` | `PurchaseOrderService.recepcionesConfirmadas`: cuenta las `PurchaseReceipt` confirmadas de la orden, aunque sean sólo de vacíos; responde 409 si hay alguna |
-| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: sólo se cancela desde borrador o enviada; responde 400 desde cualquier otro estado |
+| `OrdenDeCompra.validarSinRecepciones(...)` | `PurchaseOrderService.recepcionesConfirmadas`: cuenta las `PurchaseReceipt` confirmadas de la orden, aunque sean solo de vacíos; responde 409 si hay alguna |
+| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: solo se cancela desde borrador o enviada; responde 400 desde cualquier otro estado |
 
 **Observaciones de diseño**
 
@@ -16220,7 +17147,7 @@ sequenceDiagram
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 295 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)**
+**Figura 341 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)**
 
 **Clases participantes:** `PurchaseOrderService` (controlador del módulo de compras para las órdenes), la colección `Map<String, OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
 
@@ -16233,7 +17160,7 @@ sequenceDiagram
 | `PurchaseOrderService.cerrarOrdenDeCompraConFaltante(...)` | `PurchaseOrderController.closeShort` → `PurchaseOrderService.closeShort` |
 | `Map<String, OrdenDeCompra>.get(...)` | `PurchaseOrderService.bloquear`: lee el `PurchaseOrder` de la distribuidora con `FOR UPDATE`; responde 404 si no existe |
 | `OrdenDeCompra.cerrarConFaltante(...)` | `PurchaseOrderService.closeShort`: pasa `PurchaseOrder.status` a cerrada con faltante y guarda `PurchaseOrder.closeReason` con `PurchaseOrderService.cambiarEstado` |
-| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: sólo se cierra con faltante desde parcialmente recibida; responde 400 desde cualquier otro estado |
+| `OrdenDeCompra.validarTransicion(...)` | `validarTransicion()`: solo se cierra con faltante desde parcialmente recibida; responde 400 desde cualquier otro estado |
 
 **Observaciones de diseño**
 
@@ -16264,7 +17191,7 @@ sequenceDiagram
     SRV-->>-ADM: ordenes
 ```
 
-**Figura 296 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)**
+**Figura 342 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)**
 
 **Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `List<OrdenDeCompra>` y el objeto de dominio `OrdenDeCompra`.
 
@@ -16307,7 +17234,7 @@ sequenceDiagram
     SRV-->>-ADM: ordenDeCompra
 ```
 
-**Figura 297 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)**
+**Figura 343 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)**
 
 **Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra` e `ItemOrdenDeCompra`.
 
@@ -16346,7 +17273,7 @@ sequenceDiagram
     SRV-->>-ADM: pendiente
 ```
 
-**Figura 298 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)**
+**Figura 344 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)**
 
 **Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra` e `ItemOrdenDeCompra`.
 
@@ -16422,7 +17349,7 @@ sequenceDiagram
     SRV-->>-ADM: recepcion
 ```
 
-**Figura 299 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)**
+**Figura 345 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)**
 
 **Clases participantes:** `ReceivePurchaseUseCase` (controlador: el caso de uso del módulo de compras), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, OrdenDeCompra>` y los objetos de dominio `OrdenDeCompra`, `RecepcionDeCompra`, `ItemRecepcion` y `Producto`.
 
@@ -16500,11 +17427,11 @@ sequenceDiagram
     SRV-->>-ADM: recepcion
 ```
 
-**Figura 300 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)**
+**Figura 346 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)**
 
 **Clases participantes:** `VoidPurchaseReceiptUseCase` (controlador: el caso de uso del módulo de compras), `StockLedgerService` (fabricación pura: el único punto de escritura de saldos y movimientos), la colección `Map<String, RecepcionDeCompra>` y los objetos de dominio `RecepcionDeCompra`, `ItemRecepcion`, `OrdenDeCompra` y `Producto`.
 
-**GRASP.** *Controlador*: `VoidPurchaseReceiptUseCase`. *Experto*: la `RecepcionDeCompra` conoce su estado, su orden y sus renglones, valida que pueda anularse y cambia el suyo; cada `ItemRecepcion` conoce su garrafa; la `OrdenDeCompra` recupera lo que la recepción había recibido y el `Producto` restituye su costo promedio. *Fabricación pura*: `StockLedgerService` (CU-250) asienta el contraasiento, sólo si el depósito todavía tiene lo ingresado.
+**GRASP.** *Controlador*: `VoidPurchaseReceiptUseCase`. *Experto*: la `RecepcionDeCompra` conoce su estado, su orden y sus renglones, valida que pueda anularse y cambia el suyo; cada `ItemRecepcion` conoce su garrafa; la `OrdenDeCompra` recupera lo que la recepción había recibido y el `Producto` restituye su costo promedio. *Fabricación pura*: `StockLedgerService` (CU-250) asienta el contraasiento, solo si el depósito todavía tiene lo ingresado.
 
 **No se dibuja:** el bloqueo de la orden antes que el de la recepción, el de las garrafas, los depósitos y los saldos que toma el libro, la explicación de dónde están hoy las llenas, que arma el 409, la transacción con reintento y la clave de idempotencia.
 
@@ -16548,7 +17475,7 @@ sequenceDiagram
     SRV-->>-ADM: recepcion
 ```
 
-**Figura 301 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)**
+**Figura 347 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)**
 
 **Clases participantes:** `PurchaseReceiptService` (controlador del módulo de compras para los cambios del remito que no mueven stock), la colección `Map<String, RecepcionDeCompra>` y el objeto de dominio `RecepcionDeCompra`.
 
@@ -16565,7 +17492,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Es sólo una marca: no genera un egreso de caja. Cuando exista el módulo de caja, completará `PurchaseReceipt.cashMovementId`, que hoy queda vacío.
+- Es solo una marca: no genera un egreso de caja. Cuando exista el módulo de caja, completará `PurchaseReceipt.cashMovementId`, que hoy queda vacío.
 
 ---
 
@@ -16591,7 +17518,7 @@ sequenceDiagram
     SRV-->>-ADM: recepciones
 ```
 
-**Figura 302 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)**
+**Figura 348 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)**
 
 **Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `List<RecepcionDeCompra>` y el objeto de dominio `RecepcionDeCompra`.
 
@@ -16633,13 +17560,13 @@ sequenceDiagram
     SRV-->>-ADM: recepcion
 ```
 
-**Figura 303 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)**
+**Figura 349 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)**
 
 **Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `Map<String, RecepcionDeCompra>` y los objetos de dominio `RecepcionDeCompra` e `ItemRecepcion`.
 
 **GRASP.** *Controlador*: `PurchaseQueryService`. *Experto*: la `RecepcionDeCompra` contiene sus renglones y cada `ItemRecepcion` calcula su subtotal.
 
-**No se dibuja:** el nombre del tipo de garrafa y de cada dato de cabecera.
+**No se dibuja:** el nombre del tipo de garrafa y de cada dato de encabezado.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -16672,7 +17599,7 @@ sequenceDiagram
     SRV-->>-ADM: costos
 ```
 
-**Figura 304 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()**
+**Figura 350 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()**
 
 **Clases participantes:** `PurchaseQueryService` (controlador de las lecturas del módulo de compras), la colección `List<Producto>` y el objeto de dominio `Producto`.
 
@@ -16688,13 +17615,13 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Sólo una compra cambia el costo promedio: las ventas, las mermas y los ajustes no.
+- Solo una compra cambia el costo promedio: las ventas, las mermas y los ajustes no.
 
 ---
 
 ### 4.21 SS-21 — Caja, Rendiciones y Cuentas Corrientes
 
-Diagramas de interacción de los veintiún casos del módulo de caja y rendición (iteración I-14). Son colaboración propuesta: las clases de servicio no existen en el código y viven en los módulos `cash`, `driver-settlement`, `customer-account` y `commission`. Todo movimiento de dinero pasa por la misma operación de `Caja`, y los tres libros —caja, cuenta corriente y comisiones— son de sólo agregar.
+Diagramas de interacción de los veintiún casos del módulo de caja y rendición (iteración I-14). Son colaboración propuesta: las clases de servicio no existen en el código y viven en los módulos `cash`, `driver-settlement`, `customer-account` y `commission`. Todo movimiento de dinero pasa por la misma operación de `Caja`, y los tres libros —caja, cuenta corriente y comisiones— son de solo agregar.
 
 #### DSD — CU-225: Crear una Caja
 
@@ -16718,7 +17645,7 @@ sequenceDiagram
     SRV-->>-ADM: caja
 ```
 
-**Figura 305 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)**
+**Figura 351 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)**
 
 **Clases participantes:** `CashBoxService` (controlador de fachada del módulo `cash`) y los objetos de dominio `Distribuidora` y `Caja`. **Colaboración propuesta:** `CashBoxService` no existe en el código; se construye en la iteración I-14.
 
@@ -16728,9 +17655,9 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El saldo no es un dato que el administrador cargue: nace en cero y sólo cambia por movimientos del libro (CU-228). Una caja de efectivo con saldo negativo es inválida por una restricción `CHECK` de la tabla.
+- El saldo no es un dato que el administrador cargue: nace en cero y solo cambia por movimientos del libro (CU-228). Una caja de efectivo con saldo negativo es inválida por una restricción `CHECK` de la tabla.
 - Las cajas de banco y de billetera no exigen sesión por omisión: no tienen arqueo físico. La marca `requiere_sesion` se puede forzar en una caja de efectivo para que no se opere sin una sesión abierta.
-- La unicidad del nombre es por distribuidora y sólo entre las cajas vigentes: una caja dada de baja libera su nombre.
+- La unicidad del nombre es por distribuidora y solo entre las cajas vigentes: una caja dada de baja libera su nombre.
 
 ---
 
@@ -16757,7 +17684,7 @@ sequenceDiagram
     SRV-->>-ADM: caja
 ```
 
-**Figura 306 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)**
+**Figura 352 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)**
 
 **Clases participantes:** `CashBoxService` (controlador de fachada), la colección `Map<String, Caja>` y el objeto de dominio `Caja`. **Colaboración propuesta:** `CashBoxService` no existe en el código.
 
@@ -16797,12 +17724,12 @@ sequenceDiagram
     opt El monto inicial difiere del saldo de la caja
         SRV->>+LDG: registrarMovimientoDeCaja(cajaId, sentido, diferencia, diferenciaDeCaja, enEfectivo)
         LDG-->>-SRV: movimiento
-        Note over SRV,LDG: El sentido sale del signo de la diferencia. Ajuste: ver DSD de<br/>registrarMovimientoDeCaja (CU-228). Crea el MovimientoDeCaja<br/>con la categoría de sistema diferencia de caja
+        Note over SRV,LDG: El sentido sale del signo de la diferencia. Ajuste: ver DSD de<br/>registrarEntradaDeDinero (CU-228) o registrarSalidaDeDinero (CU-309). Crea el MovimientoDeCaja<br/>con la categoría de sistema diferencia de caja
     end
     SRV-->>-ADM: sesionDeCaja
 ```
 
-**Figura 307 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)**
+**Figura 353 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)**
 
 **Clases participantes:** `CashBoxService` (controlador de fachada), la colección `Map<String, Caja>` y los objetos de dominio `Caja` y `SesionDeCaja`. **Colaboración propuesta:** `CashBoxService` no existe en el código.
 
@@ -16812,7 +17739,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La unicidad de la sesión abierta no depende sólo de la validación: un índice único parcial sobre `cash_box_id` con `WHERE status = 'open'` hace que dos aperturas simultáneas no puedan convivir; la segunda recibe un conflicto.
+- La unicidad de la sesión abierta no depende solo de la validación: un índice único parcial sobre `cash_box_id` con `WHERE status = 'open'` hace que dos aperturas simultáneas no puedan convivir; la segunda recibe un conflicto.
 - El monto inicial lo declara el administrador y el libro tiene su propio saldo: cuando no coinciden, la apertura asienta la diferencia como un ajuste, para que la sesión arranque con un saldo igual a lo contado y el arqueo del cierre compare contra el saldo de la caja y no contra un monto inicial desactualizado.
 
 ---
@@ -16840,7 +17767,7 @@ sequenceDiagram
     CAJ-->>-SRV: diferencia
     opt La diferencia no es cero
         SRV->>+CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
-        Note over SRV,CAJ: Ajuste: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>El importe es la diferencia. Crea el MovimientoDeCaja con<br/>la categoría de sistema diferencia de caja
+        Note over SRV,CAJ: Ajuste: ver DSD de registrarEntradaDeDinero (CU-228) o registrarSalidaDeDinero (CU-309).<br/>El importe es la diferencia. Crea el MovimientoDeCaja con<br/>la categoría de sistema diferencia de caja
         deactivate CAJ
     end
     SRV->>+SES: cerrar(montoContado, diferencia, administrador)
@@ -16849,9 +17776,9 @@ sequenceDiagram
     SRV-->>-ADM: sesionDeCaja
 ```
 
-**Figura 308 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)**
+**Figura 354 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)**
 
-**Clases participantes:** `CashBoxService` (controlador de fachada), la colección `Map<String, SesionDeCaja>` y los objetos de dominio `SesionDeCaja` y `Caja`. El movimiento de ajuste lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `CashBoxService` no existe en el código.
+**Clases participantes:** `CashBoxService` (controlador de fachada), la colección `Map<String, SesionDeCaja>` y los objetos de dominio `SesionDeCaja` y `Caja`. El movimiento de ajuste lo crea `registrarEntradaDeDinero` o `registrarSalidaDeDinero`, según el signo de la diferencia, cuyos diagramas se remiten. **Colaboración propuesta:** `CashBoxService` no existe en el código.
 
 **GRASP.** *Controlador*: `CashBoxService`. *Experto*: la `Caja` conoce su saldo teórico y es quien calcula la diferencia contra lo contado; la `SesionDeCaja` es quien pasa a «cerrada» con los tres montos. *Alta cohesión*: el asiento del ajuste es la misma operación del libro que usan los demás casos de uso.
 
@@ -16866,13 +17793,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-228: Registrar un Ingreso o Egreso de Caja
+#### DSD — CU-228: Registrar una Entrada de Dinero en la Caja
 
-##### Operación: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)
+##### Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-228 Registrar un Ingreso o Egreso de Caja · registrarMovimientoDeCaja
+    title DSD — CU-228 Registrar una Entrada de Dinero en la Caja · registrarEntradaDeDinero
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CashLedgerService
@@ -16880,7 +17807,52 @@ sequenceDiagram
     participant CATS as :Map#lt;String, CategoriaDeCaja#gt;
     participant CAJ as caja:Caja
 
-    ADM->>+SRV: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)
+    ADM->>+SRV: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+    SRV->>+CAJS: get(cajaId)
+    CAJS-->>-SRV: caja
+    SRV->>+CATS: get(categoriaId)
+    CATS-->>-SRV: categoria
+    SRV->>+CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
+    CAJ->>CAJ: validarSesionAbierta()
+    create participant NMO as nuevo:MovimientoDeCaja
+    CAJ->>NMO: «create»(sentido, importe, categoria, medio, descripcion, referencia)
+    CAJ->>CAJ: actualizarSaldo(sentido, importe)
+    CAJ-->>-SRV: movimiento
+    SRV-->>-ADM: movimiento
+```
+
+**Figura 355 — DSD CU-228: Registrar una Entrada de Dinero en la Caja — Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)**
+
+**Clases participantes:** `CashLedgerService` (controlador de fachada del libro), las colecciones `Map<String, Caja>` y `Map<String, CategoriaDeCaja>` y los objetos de dominio `Caja` y `MovimientoDeCaja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código; es el punto único por el que pasa todo movimiento.
+
+**GRASP.** *Controlador*: `CashLedgerService`. *Creador*: `Caja` crea los `MovimientoDeCaja` de su libro (composición del modelo conceptual). *Experto*: la `Caja` conoce su saldo y su sesión, y por eso valida que la sesión esté abierta, y actualiza el saldo. *Alta cohesión*: los casos de uso que mueven dinero delegan en esta misma operación en vez de escribir cada uno su propio asiento.
+
+**No se dibuja:** el bloqueo de la fila de la caja (`FOR UPDATE`), la comprobación de que el sentido de la categoría coincida con el de la entrada, el administrador que registra el movimiento, la clave de idempotencia y el guardado.
+
+**Observaciones de diseño**
+
+- `registrarMovimiento` es la única operación que escribe `cash_box.balance`; la entrada es el mismo mensaje con el sentido que corresponde. La invariante `balance = Σ entradas − Σ salidas` se comprueba por un proceso de conciliación; si difiere, avisa y no corrige a ciegas.
+- La caja se bloquea con `FOR UPDATE` dentro de la transacción. En el orden global de bloqueos la caja va después de la rendición y antes de la cuenta corriente.
+- El monto es siempre positivo y el sentido dice si entra o sale: una cantidad negativa no es una salida, es un error de carga.
+- `@Idempotent()` con el encabezado `Idempotency-Key`: si la app reintenta el `POST` por un corte de red, el segundo intento devuelve el movimiento ya asentado.
+
+---
+
+#### DSD — CU-309: Registrar una Salida de Dinero de la Caja
+
+##### Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-309 Registrar una Salida de Dinero de la Caja · registrarSalidaDeDinero
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashLedgerService
+    participant CAJS as :Map#lt;String, Caja#gt;
+    participant CATS as :Map#lt;String, CategoriaDeCaja#gt;
+    participant CAJ as caja:Caja
+
+    ADM->>+SRV: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)
     SRV->>+CAJS: get(cajaId)
     CAJS-->>-SRV: caja
     SRV->>+CATS: get(categoriaId)
@@ -16895,26 +17867,31 @@ sequenceDiagram
     SRV-->>-ADM: movimiento
 ```
 
-**Figura 309 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)**
+**Figura 356 — DSD CU-309: Registrar una Salida de Dinero de la Caja — Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)**
 
 **Clases participantes:** `CashLedgerService` (controlador de fachada del libro), las colecciones `Map<String, Caja>` y `Map<String, CategoriaDeCaja>` y los objetos de dominio `Caja` y `MovimientoDeCaja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código; es el punto único por el que pasa todo movimiento.
 
-**GRASP.** *Controlador*: `CashLedgerService`. *Creador*: `Caja` crea los `MovimientoDeCaja` de su libro (composición del modelo conceptual). *Experto*: la `Caja` conoce su saldo y su sesión, y por eso valida que la sesión esté abierta y que el egreso no la deje en negativo, y actualiza el saldo. *Alta cohesión*: los casos de uso que mueven plata (CU-233, CU-237, CU-243) delegan en esta misma operación en vez de escribir cada uno su propio asiento.
+**GRASP.** *Controlador*: `CashLedgerService`. *Creador*: `Caja` crea los `MovimientoDeCaja` de su libro (composición del modelo conceptual). *Experto*: la `Caja` conoce su saldo y su sesión, y por eso valida que la sesión esté abierta y que la salida no la deje en negativo, y actualiza el saldo. *Alta cohesión*: los casos de uso que mueven dinero delegan en esta misma operación en vez de escribir cada uno su propio asiento.
 
-**No se dibuja:** el bloqueo de la fila de la caja (`FOR UPDATE`), la comprobación de que el sentido de la categoría coincida con el del movimiento, la clave de idempotencia y el guardado.
+**No se dibuja:** el bloqueo de la fila de la caja (`FOR UPDATE`), la comprobación de que el sentido de la categoría coincida con el de la salida, el administrador que registra el movimiento, la clave de idempotencia y el guardado.
 
 **Observaciones de diseño**
 
-- `registrarMovimiento` es la única operación que escribe `cash_box.balance`. La invariante `balance = Σ ingresos − Σ egresos` se comprueba por un proceso de conciliación; si difiere, avisa y no corrige a ciegas.
-- La caja se bloquea con `FOR UPDATE` dentro de la transacción. En el orden global de bloqueos la caja va después de la rendición y antes de la cuenta corriente, para que ningún caso de uso que toque las tres cosas pueda trabarse con otro.
-- El importe es siempre positivo y el sentido dice si entra o sale: una cantidad negativa no es un egreso, es un error de carga.
-- `@Idempotent()` con la cabecera `Idempotency-Key`: si la app reintenta el `POST` por un corte de red, el segundo intento devuelve el movimiento ya asentado.
+- `registrarMovimiento` es la única operación que escribe `cash_box.balance`; la salida es el mismo mensaje con el sentido que corresponde. La invariante `balance = Σ entradas − Σ salidas` se comprueba por un proceso de conciliación; si difiere, avisa y no corrige a ciegas.
+- La caja se bloquea con `FOR UPDATE` dentro de la transacción. En el orden global de bloqueos la caja va después de la rendición y antes de la cuenta corriente.
+- El monto es siempre positivo y el sentido dice si entra o sale: una cantidad negativa no es una salida, es un error de carga.
+- Una salida de una caja de efectivo no puede dejar el saldo en negativo: la restricción existe también en la base.
+- `@Idempotent()` con el encabezado `Idempotency-Key`: si la app reintenta el `POST` por un corte de red, el segundo intento devuelve el movimiento ya asentado.
+
+---
+
+#### DSD — CU-310: Transferir Fondos entre Cajas
 
 ##### Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-228 Registrar un Ingreso o Egreso de Caja · transferirEntreCajas
+    title DSD — CU-310 Transferir Fondos entre Cajas · transferirEntreCajas
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CashLedgerService
@@ -16943,18 +17920,19 @@ sequenceDiagram
     SRV-->>-ADM: movimientos
 ```
 
-**Figura 310 — DSD CU-228: Registrar un Ingreso o Egreso de Caja — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)**
+**Figura 357 — DSD CU-310: Transferir Fondos entre Cajas — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)**
+
 
 **Clases participantes:** `CashLedgerService` (controlador de fachada del libro), las colecciones `Map<String, Caja>` y `Map<String, CategoriaDeCaja>` y los objetos de dominio `Caja` y `MovimientoDeCaja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código.
 
-**GRASP.** *Controlador*: `CashLedgerService`. *Creador*: cada `Caja` crea el `MovimientoDeCaja` de su propio libro. *Experto*: cada caja actualiza su saldo; el servicio no toca ningún saldo. Es la misma operación `registrarMovimiento` de CU-228, llamada una vez por cada extremo.
+**GRASP.** *Controlador*: `CashLedgerService`. *Creador*: cada `Caja` crea el `MovimientoDeCaja` de su propio libro. *Experto*: cada caja actualiza su saldo; el servicio no toca ningún saldo. Es la misma operación `registrarMovimiento` de CU-228 y CU-309, llamada una vez por cada extremo.
 
 **No se dibuja:** la validación de que origen y destino sean cajas distintas, el bloqueo de las dos cajas en orden de identificador, la sesión de cada una y el guardado en una sola transacción.
 
 **Observaciones de diseño**
 
 - Las dos cajas se bloquean en orden de identificador, no de origen y destino: dos transferencias cruzadas (A a B y B a A) toman los bloqueos en el mismo orden y no producen un abrazo mortal.
-- Los dos asientos y la categoría de sistema comparten transacción: si el ingreso falla —porque la caja de destino exige sesión y no la tiene abierta—, se deshace también el egreso y no queda plata en tránsito.
+- Los dos asientos y la categoría de sistema comparten transacción: si el ingreso falla —porque la caja de destino exige sesión y no la tiene abierta—, se deshace también el egreso y no queda dinero en tránsito.
 - Una transferencia no cambia el total de la distribuidora: es un movimiento de ida y otro de vuelta, y por eso se distingue de un ingreso y un egreso manuales en los reportes.
 
 ---
@@ -16987,7 +17965,7 @@ sequenceDiagram
     SRV-->>-ADM: contraasiento
 ```
 
-**Figura 311 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)**
+**Figura 358 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)**
 
 **Clases participantes:** `CashLedgerService` (controlador de fachada del libro), la colección `Map<String, MovimientoDeCaja>` y los objetos de dominio `MovimientoDeCaja` y `Caja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código.
 
@@ -17000,6 +17978,36 @@ sequenceDiagram
 - Anular no borra ni modifica: un disparador de la base rechaza todo `UPDATE` y todo `DELETE` sobre `cash_movement`, igual que sobre el registro de auditoría. La corrección es otro asiento.
 - `reverses_movement_id` es único: dos anulaciones simultáneas del mismo movimiento no pueden convivir; la segunda recibe un conflicto.
 - Un movimiento que nació de otro caso de uso (una rendición aprobada, un pago de liquidación) también se puede anular desde acá, pero la entidad de origen no se entera: corregir la rendición o la liquidación es una decisión aparte, que se toma con el contraasiento a la vista.
+
+---
+
+#### DSD — CU-340: Consultar los Movimientos de Caja
+
+##### Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-340 Consultar los Movimientos de Caja · consultarMovimientosDeCaja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CashLedgerService
+    participant CAJS as :Map#lt;String, Caja#gt;
+    participant CAJ as caja:Caja
+
+    ADM->>+SRV: consultarMovimientosDeCaja(cajaId, desde, hasta)
+    SRV->>+CAJS: get(cajaId)
+    CAJS-->>-SRV: caja
+    SRV->>+CAJ: getMovimientos(desde, hasta)
+    CAJ-->>-SRV: movimientos
+    SRV-->>-ADM: movimientos
+    Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)
+```
+
+**Figura 359 — DSD CU-340: Consultar los Movimientos de Caja — Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)**
+
+**Clases participantes:** `CashLedgerService` (controlador de fachada del libro), la colección `Map<String, Caja>` y el objeto de dominio `Caja`. **Colaboración propuesta:** `CashLedgerService` no existe en el código.
+
+**GRASP.** *Controlador*: `CashLedgerService`. *Experto*: la `Caja` conoce los movimientos de su libro y los entrega por período. La consulta no cambia estado.
 
 ---
 
@@ -17025,7 +18033,7 @@ sequenceDiagram
     SRV-->>-ADM: categoria
 ```
 
-**Figura 312 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)**
+**Figura 360 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)**
 
 **Clases participantes:** `CashCategoryService` (controlador de fachada) y los objetos de dominio `Distribuidora` y `CategoriaDeCaja`. **Colaboración propuesta:** `CashCategoryService` no existe en el código.
 
@@ -17035,7 +18043,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Una categoría tiene un sentido —ingreso o egreso— y un movimiento sólo puede usar una categoría de su mismo sentido: sin eso, un reporte de gastos por categoría mezclaría entradas.
+- Una categoría tiene un sentido —ingreso o egreso— y un movimiento solo puede usar una categoría de su mismo sentido: sin eso, un reporte de gastos por categoría mezclaría entradas.
 - Las categorías de sistema (`system_code` no nulo) las busca el código por su código, no por su nombre: por eso no se pueden crear, renombrar ni desactivar desde el panel.
 
 ---
@@ -17063,7 +18071,7 @@ sequenceDiagram
     SRV-->>-ADM: categoria
 ```
 
-**Figura 313 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)**
+**Figura 361 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)**
 
 **Clases participantes:** `CashCategoryService` (controlador de fachada), la colección `Map<String, CategoriaDeCaja>` y el objeto de dominio `CategoriaDeCaja`. **Colaboración propuesta:** `CashCategoryService` no existe en el código.
 
@@ -17127,7 +18135,7 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 314 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()**
+**Figura 362 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()**
 
 **Clases participantes:** `DriverSettlementCron` (controlador del proceso programado), las colecciones `List<Chofer>`, `List<Pedido>` y `List<AsientoCuentaCorriente>` y los objetos de dominio `Chofer`, `RendicionChofer`, `PedidoRendido` y `AsientoCuentaCorriente`. **Colaboración propuesta:** `DriverSettlementCron` no existe en el código; vive en el módulo `driver-settlement`.
 
@@ -17173,18 +18181,18 @@ sequenceDiagram
     SRV-->>-CHF: rendicion
 ```
 
-**Figura 315 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)**
+**Figura 363 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)**
 
 **Clases participantes:** `DriverSettlementService` (controlador de fachada del módulo `driver-settlement`), la colección `Map<String, RendicionChofer>` y los objetos de dominio `RendicionChofer` y `GastoDeRendicion`. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
 
 **GRASP.** *Controlador*: `DriverSettlementService`. *Creador*: `RendicionChofer` crea sus `GastoDeRendicion` (composición del modelo conceptual). *Experto*: la rendición conoce sus pedidos, sus cobros y sus gastos, y es quien recalcula el efectivo esperado, calcula la diferencia y pasa a «presentada».
 
-**No se dibuja:** el bloqueo de la rendición, la comprobación de que un chofer sólo presente la suya, el enlace de un gasto de combustible con su carga y el guardado.
+**No se dibuja:** el bloqueo de la rendición, la comprobación de que un chofer solo presente la suya, el enlace de un gasto de combustible con su carga y el guardado.
 
 **Observaciones de diseño**
 
 - La rendición se presenta una vez. El recálculo del esperado bajo bloqueo evita que lo que el chofer declaró contra una cifra vieja quede mal comparado si entró una entrega mientras tanto.
-- La diferencia es `declarado + gastos − esperado`. Los gastos entran sumando porque el chofer los pagó con plata que debía entregar: si cargó combustible con la cobranza, ese importe no llega a la caja pero tampoco es un faltante.
+- La diferencia es `declarado + gastos − esperado`. Los gastos entran sumando porque el chofer los pagó con dinero que debía entregar: si cargó combustible con la cobranza, ese importe no llega a la caja pero tampoco es un faltante.
 - El mismo diagrama sirve para el chofer desde la App Chofer y para el administrador desde el panel: lo único que cambia es la comprobación de pertenencia, que para el chofer exige que la rendición sea la suya.
 
 ---
@@ -17214,7 +18222,7 @@ sequenceDiagram
     SRV->>+REN: aprobar(caja, resolucionDeDiferencia)
     REN->>REN: validarPresentada()
     REN->>CAJ: registrarMovimiento(sentido, importe, categoria, medio, descripcion, referencia)
-    Note over REN,CAJ: Ingreso: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>El importe es el efectivo declarado. Crea el MovimientoDeCaja<br/>con la categoría de sistema rendición de chofer
+    Note over REN,CAJ: Entrada: ver DSD de registrarEntradaDeDinero (CU-228).<br/>El importe es el efectivo declarado. Crea el MovimientoDeCaja<br/>con la categoría de sistema rendición de chofer
     alt La diferencia es un faltante a cargo del chofer
         REN->>+CHF: getEmpleado()
         CHF-->>-REN: empleado
@@ -17229,9 +18237,9 @@ sequenceDiagram
     SRV-->>-ADM: rendicion
 ```
 
-**Figura 316 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)**
+**Figura 364 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)**
 
-**Clases participantes:** `DriverSettlementService` (controlador de fachada), las colecciones `Map<String, RendicionChofer>` y `Map<String, Caja>` y los objetos de dominio `RendicionChofer`, `Chofer`, `Empleado`, `Caja` y `AsientoComision`. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
+**Clases participantes:** `DriverSettlementService` (controlador de fachada), las colecciones `Map<String, RendicionChofer>` y `Map<String, Caja>` y los objetos de dominio `RendicionChofer`, `Chofer`, `Empleado`, `Caja` y `AsientoComision`. El movimiento de caja lo crea `registrarEntradaDeDinero`, cuyo diagrama se remite. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
 
 **GRASP.** *Controlador*: `DriverSettlementService`. *Experto*: la `RendicionChofer` conoce su estado y su diferencia, y es quien se aprueba y decide qué hacer con ella; el `Chofer` conoce a su empleado. *Creador*: el `Empleado` crea el `AsientoComision` de su libro de comisiones (composición del modelo conceptual).
 
@@ -17244,11 +18252,15 @@ sequenceDiagram
 - El efectivo que entra es el declarado, no el esperado: lo que no llegó a la caja no se registra como ingreso. Incluye lo cobrado en la calle de cuentas corrientes, que recién ahora llega a una caja.
 - Una rendición aprobada no se reabre. Si se aprobó mal, se anula el movimiento de caja (CU-229) y se corrige la deducción del empleado con un ajuste.
 
+---
+
+#### DSD — CU-330: Reabrir la Rendición del Chofer
+
 ##### Operación: reabrirRendicion(rendicionId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-233 Aprobar la Rendición del Chofer · reabrirRendicion
+    title DSD — CU-330 Reabrir la Rendición del Chofer · reabrirRendicion
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :DriverSettlementService
@@ -17264,7 +18276,8 @@ sequenceDiagram
     SRV-->>-ADM: rendicion
 ```
 
-**Figura 317 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)**
+**Figura 365 — DSD CU-330: Reabrir la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)**
+
 
 **Clases participantes:** `DriverSettlementService` (controlador de fachada), la colección `Map<String, RendicionChofer>` y el objeto de dominio `RendicionChofer`. **Colaboración propuesta:** `DriverSettlementService` no existe en el código.
 
@@ -17275,7 +18288,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - La reapertura conserva lo declarado: el chofer o el administrador lo corrigen y la rendición se vuelve a presentar. El recálculo del efectivo esperado ocurre otra vez al presentar.
-- La máquina de estados de la rendición sólo admite `abierta → presentada → aprobada` y `presentada → abierta`: `aprobada` es final.
+- La máquina de estados de la rendición solo admite `abierta → presentada → aprobada` y `presentada → abierta`: `aprobada` es final.
 
 ---
 
@@ -17309,7 +18322,7 @@ sequenceDiagram
     deactivate CRN
 ```
 
-**Figura 318 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()**
+**Figura 366 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()**
 
 **Clases participantes:** `SettlementOverdueCron` (controlador del proceso programado), la colección `List<RendicionChofer>`, `EmailSenderPort` (fabricación pura: el envío de correo detrás de un puerto) y los objetos de dominio `RendicionChofer` y `Distribuidora`. **Colaboración propuesta:** `SettlementOverdueCron` no existe en el código; sigue el patrón de `FleetAlertsCron`.
 
@@ -17319,7 +18332,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Una rendición sin cerrar es plata en la calle: el aviso existe para que el administrador la reclame, no para informar. Por eso se repite cada día hasta que se aprueba, con una marca de aviso por rendición para no mandar el mismo correo dos veces el mismo día.
+- Una rendición sin cerrar es dinero en la calle: el aviso existe para que el administrador la reclame, no para informar. Por eso se repite cada día hasta que se aprueba, con una marca de aviso por rendición para no mandar el mismo correo dos veces el mismo día.
 - La marca se pone después de enviar: si el envío falla, la rendición queda sin marcar y el proceso de la mañana siguiente la incluye. Es el mismo criterio que `FleetAlertsCron`.
 - El correo agrupa por distribuidora, no por rendición: un administrador recibe un solo aviso con la lista.
 
@@ -17351,7 +18364,7 @@ sequenceDiagram
     SRV-->>-ADM: cuentaCorriente
 ```
 
-**Figura 319 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)**
+**Figura 367 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada del módulo `customer-account`), la colección `Map<String, Cliente>` y los objetos de dominio `Cliente`, `Distribuidora` y `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -17363,13 +18376,17 @@ sequenceDiagram
 
 - La cuenta no vive en el cliente: el cliente de SPLG es una persona compartida entre distribuidoras, y la deuda, el límite y el plazo son de cada relación comercial. Por eso la cuenta lleva la distribuidora y la clave única es `(distributor_id, customer_user_id)` entre las cuentas vigentes.
 - La razón social y el CUIT se piden acá y no en el perfil del cliente porque son datos comerciales de esta relación: la misma persona puede facturarse a nombre distinto en otra distribuidora.
-- El estado «bloqueada» y el cierre se manejan con CU-235 (modificarCuentaCorriente): habilitar es sólo el alta.
+- El estado «bloqueada» y el cierre se manejan con CU-235 (modificarCuentaCorriente): habilitar es solo el alta.
+
+---
+
+#### DSD — CU-331: Modificar la Cuenta Corriente de un Cliente
 
 ##### Operación: modificarCuentaCorriente(cuentaId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-235 Habilitar la Cuenta Corriente de un Cliente · modificarCuentaCorriente
+    title DSD — CU-331 Modificar la Cuenta Corriente de un Cliente · modificarCuentaCorriente
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CustomerAccountService
@@ -17385,11 +18402,12 @@ sequenceDiagram
     SRV-->>-ADM: cuentaCorriente
 ```
 
-**Figura 320 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)**
+**Figura 368 — DSD CU-331: Modificar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)**
+
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), la colección `Map<String, CuentaCorriente>` y el objeto de dominio `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
-**GRASP.** *Controlador*: `CustomerAccountService`. *Experto*: la `CuentaCorriente` conoce su saldo y su estado, y por eso valida que se pueda cerrar sólo con saldo cero.
+**GRASP.** *Controlador*: `CustomerAccountService`. *Experto*: la `CuentaCorriente` conoce su saldo y su estado, y por eso valida que se pueda cerrar solo con saldo cero.
 
 **No se dibuja:** la comprobación de que la cuenta sea de la distribuidora del solicitante y el guardado.
 
@@ -17427,7 +18445,7 @@ sequenceDiagram
     UCS-->>-ADM: pedido
 ```
 
-**Figura 321 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)**
+**Figura 369 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)**
 
 **Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso, que ya existe en el código) y los objetos de dominio `Cliente`, `Pedido` y `CuentaCorriente`. **Colaboración propuesta:** la verificación del crédito la hace `CuentaCorriente`, a la que `CreateOrderUseCase` llega por un puerto `CustomerAccountPort` que se agrega en `order/domain/ports` y que implementa el módulo `customer-account`, con el mismo patrón que `CylinderLifecyclePort`.
 
@@ -17442,11 +18460,15 @@ sequenceDiagram
 - El medio de pago «cuenta corriente» se agrega a las dos enumeraciones del pedido, `paymentMethod` y `paymentType`, en migraciones separadas: PostgreSQL no permite usar un valor de enumeración nuevo en la misma transacción en que se lo agrega.
 - La modificación afecta también a los reportes de ventas por medio de pago, que suman el medio «cuenta corriente».
 
+---
+
+#### DSD — CU-332: Asentar el Cargo de una Venta a Cuenta Corriente
+
 ##### Operación: registrarCargoDeCuentaCorriente(pedidoId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-236 Vender a Cuenta Corriente · registrarCargoDeCuentaCorriente
+    title DSD — CU-332 Asentar el Cargo de una Venta a Cuenta Corriente · registrarCargoDeCuentaCorriente
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant SRV as :CustomerAccountService
@@ -17471,7 +18493,8 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 322 — DSD CU-236: Vender a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)**
+**Figura 370 — DSD CU-332: Asentar el Cargo de una Venta a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)**
+
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada, que escucha el evento «pedido entregado»), la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Cliente`, `CuentaCorriente` y `AsientoCuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código, y el evento de dominio «pedido entregado» se construye en la tanda de cimientos del plan de construcción.
 
@@ -17509,7 +18532,7 @@ sequenceDiagram
     alt El cobro entra a una caja
         SRV->>+LDG: registrarMovimientoDeCaja(cajaId, ingreso, importe, cobroDeCuentaCorriente, medio)
         LDG-->>-SRV: movimiento
-        Note over SRV,LDG: Caja: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>Crea el MovimientoDeCaja
+        Note over SRV,LDG: Caja: ver DSD de registrarEntradaDeDinero (CU-228).<br/>Crea el MovimientoDeCaja
     else El cobro lo registra un chofer en la calle
         SRV->>+RENS: get(usuarioId)
         RENS-->>-SRV: rendicion
@@ -17532,9 +18555,9 @@ sequenceDiagram
     SRV-->>-ADM: asiento
 ```
 
-**Figura 323 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)**
+**Figura 371 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)**
 
-**Clases participantes:** `CustomerAccountService` (controlador de fachada), las colecciones `Map<String, CuentaCorriente>` y `Map<String, RendicionChofer>` (la rendición abierta de cada chofer) y los objetos de dominio `CuentaCorriente`, `AsientoCuentaCorriente`, `ImputacionCuentaCorriente`, `Chofer` y `RendicionChofer`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite.
+**Clases participantes:** `CustomerAccountService` (controlador de fachada), las colecciones `Map<String, CuentaCorriente>` y `Map<String, RendicionChofer>` (la rendición abierta de cada chofer) y los objetos de dominio `CuentaCorriente`, `AsientoCuentaCorriente`, `ImputacionCuentaCorriente`, `Chofer` y `RendicionChofer`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código. El movimiento de caja lo crea `registrarEntradaDeDinero`, cuyo diagrama se remite.
 
 **GRASP.** *Controlador*: `CustomerAccountService`. *Creador*: `CuentaCorriente` crea los `AsientoCuentaCorriente` de su libro y las `ImputacionCuentaCorriente` que aplican un pago a sus cargos. *Experto*: la cuenta conoce sus cargos impagos y su antigüedad, y por eso reparte el pago entre ellos y actualiza su saldo; el `Chofer` conoce su rendición abierta, que suma el cobro a lo que debe entregar.
 
@@ -17542,16 +18565,20 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Hay una sola puerta para la plata de la calle: un cobro de cuenta corriente que hace el chofer no genera movimiento de caja al registrarse; queda vinculado a su rendición abierta y entra a la caja cuando se aprueba esa rendición (CU-233). Si entrara dos veces, la misma plata se contaría dos veces.
+- Hay una sola puerta para el dinero de la calle: un cobro de cuenta corriente que hace el chofer no genera movimiento de caja al registrarse; queda vinculado a su rendición abierta y entra a la caja cuando se aprueba esa rendición (CU-233). Si entrara dos veces, la mismo dinero se contaría dos veces.
 - La imputación es automática y por orden de antigüedad (FIFO): el pago cancela primero el cargo más viejo. La tabla de imputaciones es lo que alimenta la antigüedad de la deuda (CU-239) y la lista de comprobantes impagos.
 - Se bloquean primero la caja y después la cuenta, que es el orden global del módulo; invertirlo expondría a un abrazo mortal con la aprobación de una rendición.
 - Un pago mayor que la deuda no se rechaza: el saldo queda negativo, a favor del cliente, y se aplica solo al siguiente cargo.
+
+---
+
+#### DSD — CU-329: Registrar un Ajuste de Cuenta Corriente
 
 ##### Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-237 Registrar un Pago de Cuenta Corriente · registrarAjusteDeCuentaCorriente
+    title DSD — CU-329 Registrar un Ajuste de Cuenta Corriente · registrarAjusteDeCuentaCorriente
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CustomerAccountService
@@ -17576,7 +18603,8 @@ sequenceDiagram
     SRV-->>-ADM: asiento
 ```
 
-**Figura 324 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)**
+**Figura 372 — DSD CU-329: Registrar un Ajuste de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)**
+
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), la colección `Map<String, CuentaCorriente>` y los objetos de dominio `CuentaCorriente`, `AsientoCuentaCorriente` e `ImputacionCuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -17586,7 +18614,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El ajuste es la forma de corregir un asiento equivocado: el libro es de sólo agregar y un disparador de la base rechaza todo `UPDATE` y todo `DELETE` sobre `customer_account_entry`.
+- El ajuste es la forma de corregir un asiento equivocado: el libro es de solo agregar y un disparador de la base rechaza todo `UPDATE` y todo `DELETE` sobre `customer_account_entry`.
 - También reemplaza al ajuste manual del saldo del chofer que hoy hace el administrador sobre `delivery.balance`: ese saldo pasa a ser la suma de los asientos del libro de comisiones (CU-241) y el ajuste se vuelve un asiento más.
 
 ---
@@ -17615,7 +18643,7 @@ sequenceDiagram
     SRV-->>-ADM: asientosDeLaCuenta, saldoInicial
 ```
 
-**Figura 325 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)**
+**Figura 373 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), las colecciones `Map<String, CuentaCorriente>` y `List<AsientoCuentaCorriente>` y el objeto de dominio `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -17652,7 +18680,7 @@ sequenceDiagram
     SRV-->>-ADM: antiguedad, total
 ```
 
-**Figura 326 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()**
+**Figura 374 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()**
 
 **Clases participantes:** `CustomerAccountService` (controlador de fachada), la colección `List<CuentaCorriente>` y el objeto de dominio `CuentaCorriente`. **Colaboración propuesta:** `CustomerAccountService` no existe en el código.
 
@@ -17667,13 +18695,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-240: Configurar las Comisiones por Entrega
+#### DSD — CU-240: Crear una Regla de Comisión por Entrega
 
 ##### Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-240 Configurar las Comisiones por Entrega · crearReglaDeComision
+    title DSD — CU-240 Crear una Regla de Comisión por Entrega · crearReglaDeComision
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CommissionService
@@ -17698,7 +18726,7 @@ sequenceDiagram
     SRV-->>-ADM: regla
 ```
 
-**Figura 327 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)**
+**Figura 375 — DSD CU-240: Crear una Regla de Comisión por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada del módulo `commission`), las colecciones `Map<String, Empleado>` y `Map<String, Producto>` y los objetos de dominio `Distribuidora` y `ReglaComision`. **Colaboración propuesta:** `CommissionService` no existe en el código. `Empleado` es el legajo del módulo de personal, ya construido.
 
@@ -17712,11 +18740,15 @@ sequenceDiagram
 - La regla aplicable a una entrega se elige por precedencia: chofer y producto, chofer, producto, general. El orden está en `registrarComisionDeEntrega` y no se repite acá.
 - Una regla sin chofer vale para todos los choferes de la distribuidora, y sin producto, para todos los productos. La más específica gana aunque la general sea más reciente.
 
+---
+
+#### DSD — CU-333: Modificar una Regla de Comisión por Entrega
+
 ##### Operación: modificarReglaDeComision(reglaId, datos)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-240 Configurar las Comisiones por Entrega · modificarReglaDeComision
+    title DSD — CU-333 Modificar una Regla de Comisión por Entrega · modificarReglaDeComision
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CommissionService
@@ -17732,7 +18764,8 @@ sequenceDiagram
     SRV-->>-ADM: regla
 ```
 
-**Figura 328 — DSD CU-240: Configurar las Comisiones por Entrega — Operación: modificarReglaDeComision(reglaId, datos)**
+**Figura 376 — DSD CU-333: Modificar una Regla de Comisión por Entrega — Operación: modificarReglaDeComision(reglaId, datos)**
+
 
 **Clases participantes:** `CommissionService` (controlador de fachada), la colección `Map<String, ReglaComision>` y el objeto de dominio `ReglaComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -17783,7 +18816,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 329 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)**
+**Figura 377 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada, que escucha el evento «pedido entregado»), las colecciones `Map<String, Pedido>` y `List<ReglaComision>` y los objetos de dominio `Pedido`, `Chofer`, `Empleado`, `ReglaComision` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código, y el evento de dominio «pedido entregado» se construye en la tanda de cimientos del plan de construcción.
 
@@ -17795,7 +18828,7 @@ sequenceDiagram
 
 - Aritmética decimal en el dominio: el importe de un porcentaje se calcula con `decimal.js` y se redondea a dos decimales; la suma de mil asientos tiene que dar lo mismo que la suma de los importes redondeados, y es un caso de prueba de borde.
 - La precedencia no se escribe en cada caso: `getAplicable` entrega la regla más específica vigente en la fecha de entrega, que es `deliveredAt` y no la fecha en que corre el proceso.
-- Las multas imputadas al chofer (módulo de flota) y los faltantes de rendición entran como asientos negativos de este mismo libro; este caso de uso sólo genera las comisiones positivas.
+- Las multas imputadas al chofer (módulo de flota) y los faltantes de rendición entran como asientos negativos de este mismo libro; este caso de uso solo genera las comisiones positivas.
 - El saldo que hoy lleva `delivery.balance` pasa a ser la suma de los asientos de este libro: la migración carga un asiento de «saldo heredado» por cada chofer con saldo distinto de cero, y el campo deja de escribirse.
 
 ---
@@ -17833,7 +18866,7 @@ sequenceDiagram
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 330 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)**
+**Figura 378 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), las colecciones `Map<String, Empleado>` y `List<AsientoComision>` y los objetos de dominio `Empleado`, `LiquidacionComisiones` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -17847,11 +18880,15 @@ sequenceDiagram
 - El número de la liquidación sale de la tabla de numeración correlativa por distribuidora, que se bloquea al final del orden global de bloqueos, para que no haya huecos salvo que la transacción se deshaga.
 - El neto puede ser cero o negativo: se decide al aprobar la liquidación (CU-242, aprobarLiquidacion), que la cierra sin pago y, si el neto es negativo, deja un asiento de arrastre para la liquidación siguiente.
 
+---
+
+#### DSD — CU-334: Aprobar una Liquidación de Comisiones
+
 ##### Operación: aprobarLiquidacion(liquidacionId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-242 Liquidar las Comisiones de un Chofer · aprobarLiquidacion
+    title DSD — CU-334 Aprobar una Liquidación de Comisiones · aprobarLiquidacion
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CommissionService
@@ -17879,7 +18916,8 @@ sequenceDiagram
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 331 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: aprobarLiquidacion(liquidacionId)**
+**Figura 379 — DSD CU-334: Aprobar una Liquidación de Comisiones — Operación: aprobarLiquidacion(liquidacionId)**
+
 
 **Clases participantes:** `CommissionService` (controlador de fachada), la colección `Map<String, LiquidacionComisiones>` y los objetos de dominio `LiquidacionComisiones`, `Empleado` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -17889,15 +18927,19 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- La aprobación es la decisión humana que separa el cálculo del pago: el administrador revisa los asientos y las deducciones antes de comprometer plata.
+- La aprobación es la decisión humana que separa el cálculo del pago: el administrador revisa los asientos y las deducciones antes de comprometer dinero.
 - Con neto cero no hay nada que pagar y la liquidación se cierra. Con neto negativo —las deducciones superaron a las comisiones— tampoco se paga, y el saldo deudor no se pierde: queda como un asiento de arrastre que resta en la liquidación siguiente.
 - La máquina de estados de la liquidación es `borrador → aprobada → pagada`, con `cerrada` alcanzable desde `borrador` cuando el neto no es positivo, y `anulada` alcanzable desde `borrador` y desde `aprobada`.
+
+---
+
+#### DSD — CU-335: Anular una Liquidación de Comisiones
 
 ##### Operación: anularLiquidacion(liquidacionId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-242 Liquidar las Comisiones de un Chofer · anularLiquidacion
+    title DSD — CU-335 Anular una Liquidación de Comisiones · anularLiquidacion
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CommissionService
@@ -17917,7 +18959,8 @@ sequenceDiagram
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 332 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: anularLiquidacion(liquidacionId)**
+**Figura 380 — DSD CU-335: Anular una Liquidación de Comisiones — Operación: anularLiquidacion(liquidacionId)**
+
 
 **Clases participantes:** `CommissionService` (controlador de fachada), la colección `Map<String, LiquidacionComisiones>` y los objetos de dominio `LiquidacionComisiones` y `AsientoComision`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -17927,8 +18970,8 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Anular libera los asientos, no los borra: el libro de comisiones es de sólo agregar y los asientos vuelven a estar disponibles para la próxima liquidación.
-- Una liquidación pagada no se anula desde acá porque el pago ya sacó plata de una caja: la corrección pasa primero por anular el movimiento de caja.
+- Anular libera los asientos, no los borra: el libro de comisiones es de solo agregar y los asientos vuelven a estar disponibles para la próxima liquidación.
+- Una liquidación pagada no se anula desde acá porque el pago ya sacó dinero de una caja: la corrección pasa primero por anular el movimiento de caja.
 
 ---
 
@@ -17957,13 +19000,13 @@ sequenceDiagram
     LIQ-->>-SRV: total
     SRV->>+LDG: registrarMovimientoDeCaja(cajaId, egreso, total, pagoDeComisiones, enEfectivo)
     LDG-->>-SRV: movimiento
-    Note over SRV,LDG: Egreso: ver DSD de registrarMovimientoDeCaja (CU-228).<br/>Crea el MovimientoDeCaja con la categoría de sistema<br/>pago de comisiones
+    Note over SRV,LDG: Salida: ver DSD de registrarSalidaDeDinero (CU-309).<br/>Crea el MovimientoDeCaja con la categoría de sistema<br/>pago de comisiones
     SRV-->>-ADM: liquidacion
 ```
 
-**Figura 333 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)**
+**Figura 381 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)**
 
-**Clases participantes:** `CommissionService` (controlador de fachada), las colecciones `Map<String, LiquidacionComisiones>` y `Map<String, Caja>` y el objeto de dominio `LiquidacionComisiones`. El movimiento de caja lo crea `registrarMovimientoDeCaja`, cuyo diagrama se remite. **Colaboración propuesta:** `CommissionService` no existe en el código.
+**Clases participantes:** `CommissionService` (controlador de fachada), las colecciones `Map<String, LiquidacionComisiones>` y `Map<String, Caja>` y el objeto de dominio `LiquidacionComisiones`. El movimiento de caja lo crea `registrarSalidaDeDinero`, cuyo diagrama se remite. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
 **GRASP.** *Controlador*: `CommissionService`. *Experto*: la `LiquidacionComisiones` conoce su estado y su neto, y es quien se paga. *Alta cohesión*: el egreso lo asienta la misma operación del libro que usan los demás casos de uso.
 
@@ -17972,7 +19015,7 @@ sequenceDiagram
 **Observaciones de diseño**
 
 - El pago reutiliza `registrarMovimiento`: ni la liquidación ni este servicio escriben un saldo. Si la caja de efectivo no alcanza, el egreso falla y la liquidación sigue aprobada, sin pagar.
-- Pagar es la única operación de este módulo que saca plata de una caja por una decisión del administrador sobre una persona: por eso exige la liquidación aprobada antes y deja el movimiento asociado a ella.
+- Pagar es la única operación de este módulo que saca dinero de una caja por una decisión del administrador sobre una persona: por eso exige la liquidación aprobada antes y deja el movimiento asociado a ella.
 
 ---
 
@@ -18000,7 +19043,7 @@ sequenceDiagram
     SRV-->>-CHF: comisiones, saldo
 ```
 
-**Figura 334 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)**
+**Figura 382 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)**
 
 **Clases participantes:** `CommissionService` (controlador de fachada), las colecciones `Map<String, Empleado>` y `List<AsientoComision>` y el objeto de dominio `Empleado`. **Colaboración propuesta:** `CommissionService` no existe en el código.
 
@@ -18010,7 +19053,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El chofer ve sólo su libro: el chofer se resuelve por el usuario de la sesión y no por un identificador del cuerpo, de modo que no puede consultar el de otro. Es la regla de pertenencia que ya usan sus demás pantallas.
+- El chofer ve solo su libro: el chofer se resuelve por el usuario de la sesión y no por un identificador del cuerpo, de modo que no puede consultar el de otro. Es la regla de pertenencia que ya usan sus demás pantallas.
 - Las comisiones aparecen con su pedido y con la regla que las originó; las deducciones, con el motivo —faltante de una rendición, multa—, para que el chofer entienda su saldo.
 
 ---
@@ -18042,31 +19085,31 @@ sequenceDiagram
     SRV-->>-ADM: tablero
 ```
 
-**Figura 335 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)**
+**Figura 383 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)**
 
 **Clases participantes:** `FinanceDashboardService` (controlador de fachada), las colecciones `List<Caja>`, `List<RendicionChofer>`, `List<CuentaCorriente>` y `List<AsientoComision>`. **Colaboración propuesta:** `FinanceDashboardService` no existe en el código; vive en el módulo `cash`.
 
-**GRASP.** *Controlador*: `FinanceDashboardService`. *Alta cohesión*: sólo arma una vista a partir de cuatro colecciones y no decide nada. Es una consulta: ningún objeto cambia.
+**GRASP.** *Controlador*: `FinanceDashboardService`. *Alta cohesión*: solo arma una vista a partir de cuatro colecciones y no decide nada. Es una consulta: ningún objeto cambia.
 
 **No se dibuja:** la suma de los saldos por caja, el total de la deuda y de la deuda vencida y los filtros por distribuidora, que se resuelven al armar la respuesta.
 
 **Observaciones de diseño**
 
 - El tablero reúne lo que el administrador mira cada mañana: saldo por caja, rendiciones que faltan cerrar, deuda total y vencida de las cuentas corrientes y comisiones sin liquidar.
-- Es sólo lectura sobre los saldos guardados; no recalcula el libro. Si el proceso de conciliación detecta que un saldo difiere de la suma de su libro, lo avisa por correo y no lo corrige en silencio.
+- Es solo lectura sobre los saldos guardados; no recalcula el libro. Si el proceso de conciliación detecta que un saldo difiere de la suma de su libro, lo avisa por correo y no lo corrige en silencio.
 
 ### 4.22 Módulos inteligentes en diseño (CU-105 a CU-108)
 
 Colaboración propuesta para los módulos planificados. Las clases marcadas
 como propuestas no existen aún en el código.
 
-#### DSD — CU-105: Planificar el mantenimiento y las habilitaciones de la flota
+#### DSD — CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota
 
 ##### Operación: planificarMantenimientoDeFlota()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-105 Planificar el mantenimiento y las habilitaciones de la flota · planificarMantenimientoDeFlota
+    title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · planificarMantenimientoDeFlota
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant PLN as :FleetMaintenancePlannerService
@@ -18103,7 +19146,7 @@ sequenceDiagram
     deactivate PLN
 ```
 
-**Figura 336 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota**
+**Figura 384 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del proceso temporal), `DemandForecastService` y `FleetCoverageService` (fabricaciones puras: la demanda proyectada por franja y el mínimo de vehículos por zona), `NotificationsService` (existente: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`. Ninguna de las tres clases de servicio existe en el código: se construyen en la iteración I-10.
 
@@ -18115,7 +19158,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-105 Planificar el mantenimiento y las habilitaciones de la flota · aceptarVentanaDeMantenimiento
+    title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · aceptarVentanaDeMantenimiento
     autonumber
     actor CHF as Chofer (ACT-02)
     participant PLN as :FleetMaintenancePlannerService
@@ -18133,7 +19176,7 @@ sequenceDiagram
     PLN-->>-CHF: propuesta
 ```
 
-**Figura 337 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
+**Figura 385 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, PropuestaVentanaTaller>` y los objetos de dominio `PropuestaVentanaTaller` y `TareaMantenimiento`.
 
@@ -18145,7 +19188,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-105 Planificar el mantenimiento y las habilitaciones de la flota · confirmarVentanaDeTaller
+    title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · confirmarVentanaDeTaller
     autonumber
     actor ADM as Administrador (ACT-03)
     participant PLN as :FleetMaintenancePlannerService
@@ -18161,7 +19204,7 @@ sequenceDiagram
     PLN-->>-ADM: tarea
 ```
 
-**Figura 338 — DSD CU-105: Planificar el mantenimiento y las habilitaciones de la flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
+**Figura 386 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
 
 **Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `FleetAvailabilityPort` (fabricación pura: el puerto con el que el despacho sabe qué vehículos están aptos).
 
@@ -18171,13 +19214,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-106: Anticipar la recompra por consumo estimado
+#### DSD — CU-106: Anticipar la Recompra por Consumo Estimado
 
 ##### Operación: aceptarInvitacionDeRecompra(invitacionId)
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-106 Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra
+    title DSD — CU-106 Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra
     autonumber
     actor CLI as Cliente (ACT-01)
     participant RFS as :RepurchaseForecastService
@@ -18195,7 +19238,7 @@ sequenceDiagram
     RFS-->>-CLI: pedido
 ```
 
-**Figura 339 — DSD CU-106: Anticipar la recompra por consumo estimado · aceptarInvitacionDeRecompra**
+**Figura 387 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra**
 
 **Clases participantes:** `RepurchaseForecastService` (controlador del módulo de recompra, **colaboración propuesta**: no existe en el código), la colección `Map<String, InvitacionRecompra>` y el objeto de dominio `InvitacionRecompra`.
 
@@ -18209,7 +19252,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-106 Anticipar la recompra por consumo estimado · anticiparRecompras
+    title DSD — CU-106 Anticipar la Recompra por Consumo Estimado · anticiparRecompras
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant RFS as :RepurchaseForecastService
@@ -18236,7 +19279,7 @@ sequenceDiagram
     deactivate RFS
 ```
 
-**Figura 340 — DSD CU-106: Anticipar la recompra por consumo estimado · anticiparRecompras**
+**Figura 388 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · anticiparRecompras**
 
 **Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario, **colaboración propuesta**: no existe en el código), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), `NotificationsService` (fabricación pura: el aviso al cliente), las colecciones `List<InvitacionRecompra>` y `List<Cliente>`, y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
 
@@ -18251,13 +19294,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-107: Agrupar pedidos por recorrido
+#### DSD — CU-107: Agrupar Pedidos por Recorrido
 
 ##### Operación: agruparPedidosPorRecorrido()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-107 Agrupar pedidos por recorrido · agruparPedidosPorRecorrido
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · agruparPedidosPorRecorrido
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant PLN as :RouteBatchPlannerService
@@ -18296,7 +19339,7 @@ sequenceDiagram
     deactivate PLN
 ```
 
-**Figura 341 — DSD CU-107: Agrupar pedidos por recorrido — Operación: agruparPedidosPorRecorrido()**
+**Figura 389 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()**
 
 **Clases participantes:** `RouteBatchPlannerService` (controlador del proceso temporal; colaboración propuesta), `OrderRepositoryPort` (fabricación pura: la búsqueda de los pedidos programados atraviesa todos los pedidos), `NotificationsService` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido`, `ParadaLote`, `OfertaLote` y `Chofer`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; `OrderRepositoryPort` y `NotificationsService` sí. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
 
@@ -18310,7 +19353,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-107 Agrupar pedidos por recorrido · aceptarRecorrido
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · aceptarRecorrido
     autonumber
     actor CHF as Chofer (ACT-02)
     participant SRV as :RouteBatchPlannerService
@@ -18336,7 +19379,7 @@ sequenceDiagram
     SRV-->>-CHF: pedidos
 ```
 
-**Figura 342 — DSD CU-107: Agrupar pedidos por recorrido — Operación: aceptarRecorrido(recorridoId)**
+**Figura 390 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: aceptarRecorrido(recorridoId)**
 
 **Clases participantes:** `RouteBatchPlannerService` (controlador; colaboración propuesta), la colección `Map<String, LoteRecorrido>` y los objetos de dominio `LoteRecorrido`, `OfertaLote`, `ParadaLote` y `Pedido`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recorridos (I-9).
 
@@ -18346,13 +19389,13 @@ sequenceDiagram
 
 ---
 
-#### DSD — CU-108: Recuperar envases no devueltos
+#### DSD — CU-108: Recuperar Envases No Devueltos
 
 ##### Operación: gestionarEnvasesNoDevueltos()
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-108 Recuperar envases no devueltos · gestionarEnvasesNoDevueltos
+    title DSD — CU-108 Recuperar Envases No Devueltos · gestionarEnvasesNoDevueltos
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :CylinderRecoveryService
@@ -18390,7 +19433,7 @@ sequenceDiagram
     deactivate SRV
 ```
 
-**Figura 343 — DSD CU-108: Recuperar envases no devueltos — Operación: gestionarEnvasesNoDevueltos()**
+**Figura 391 — DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal; colaboración propuesta), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código, ni las consultas que el recupero le pide al puerto del ciclo de envase (`findHeldByCustomer`); el puerto sí existe, y es el mismo que registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
 
@@ -18404,7 +19447,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-108 Recuperar envases no devueltos · aceptarRetiroEnLaEntrega
+    title DSD — CU-108 Recuperar Envases No Devueltos · aceptarRetiroEnLaEntrega
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SRV as :CylinderRecoveryService
@@ -18426,7 +19469,7 @@ sequenceDiagram
     SRV-->>-CLI: retiro
 ```
 
-**Figura 344 — DSD CU-108: Recuperar envases no devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
+**Figura 392 — DSD CU-108: Recuperar Envases No Devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, AvisoRecupero>` y los objetos de dominio `AvisoRecupero`, `Pedido` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recupero de envases (I-8).
 
@@ -18438,7 +19481,7 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-108 Recuperar envases no devueltos · resolverCasoDeRecupero
+    title DSD — CU-108 Recuperar Envases No Devueltos · resolverCasoDeRecupero
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :CylinderRecoveryService
@@ -18460,7 +19503,7 @@ sequenceDiagram
     SRV-->>-ADM: caso
 ```
 
-**Figura 345 — DSD CU-108: Recuperar envases no devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
+**Figura 393 — DSD CU-108: Recuperar Envases No Devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
 
 **Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, CasoRecupero>`, `DepositLedgerService` (fabricación pura propuesta: registra la decisión y el importe) y los objetos de dominio `CasoRecupero` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` y `DepositLedgerService` no existen en el código.
 
@@ -18487,13 +19530,13 @@ sequenceDiagram
 Cuatro patrones de diseño se repiten en los diagramas de los subsistemas y conviene
 enunciarlos una sola vez:
 
-1. **Aislamiento multi-tenant en dos tiempos.** El `AuthGuard` resuelve el tenant una vez por request y lo deja en `request.distributorId`; el decorador `@CurrentDistributor()` sólo lo lee. Ningún servicio deduce el tenant por su cuenta y ningún `distributor_id` llega desde el body del cliente. La única excepción justificada es `IncidentService.create`, que lo denormaliza **del pedido** porque la incidencia pertenece al pedido y no a quien la reporta.
+1. **Aislamiento multidistribuidora en dos tiempos.** El `AuthGuard` resuelve la distribuidora una vez por solicitud y lo deja en `request.distributorId`; el decorador `@CurrentDistributor()` solo lo lee. Ningún servicio deduce la distribuidora por su cuenta y ningún `distributor_id` llega desde el body del cliente. La única excepción justificada es `IncidentService.create`, que lo denormaliza **del pedido** porque la incidencia pertenece al pedido y no a quien la reporta.
 
-2. **Escribir exige tenant, leer no.** Las escrituras usan `@CurrentDistributor({ required: true })` y fallan con 400 si no hay tenant; las lecturas admiten `null` y construyen el `where` con spread condicional, habilitando la vista cross-tenant del super_admin sin duplicar consultas.
+2. **Escribir exige distribuidora, leer no.** Las escrituras usan `@CurrentDistributor({ required: true })` y fallan con 400 si no hay distribuidora; las lecturas admiten `null` y construyen el `where` con spread condicional, habilitando la vista cross-distribuidora del super_admin sin duplicar consultas.
 
-3. **404 en lugar de 403 para recursos de otro tenant.** El filtro por `distributor_id` se aplica dentro del `WHERE`, no como comprobación posterior. Un recurso ajeno es indistinguible de uno inexistente y no se filtra su existencia.
+3. **404 en lugar de 403 para recursos de otra distribuidora.** El filtro por `distributor_id` se aplica dentro del `WHERE`, no como comprobación posterior. Un recurso ajeno es indistinguible de uno inexistente y no se filtra su existencia.
 
-4. **Best-effort explícito en los caminos auxiliares.** Notificaciones y correo devuelven `{ success: false, error }` en vez de lanzar: un push o un mail que no sale nunca debe tumbar el flujo de negocio que lo disparó. Esta decisión es la contracara de la que se toma en pedidos y pagos, donde el fallo sí es terminal.
+4. **De mejor esfuerzo explícito en los caminos auxiliares.** Notificaciones y correo devuelven `{ success: false, error }` en vez de lanzar: un push o un mail que no sale nunca debe tumbar el flujo de negocio que lo disparó. Esta decisión es la contracara de la que se toma en pedidos y pagos, donde el fallo sí es terminal.
 
 ---
 
@@ -18506,150 +19549,156 @@ modifican el modelo conceptual, con precondiciones y postcondiciones, están en 
 Documento 2 · §2.2; el diagrama de interacción que muestra cómo se resuelve por dentro
 está en las secciones 4.1 a 4.23 de este documento.
 
-Son **341 operaciones**. **341** tienen su diagrama de interacción y
-**210** tienen contrato: son las que cambian el estado del sistema.
+Son **362 operaciones**. **362** tienen su diagrama de interacción y
+**229** tienen contrato: son las que cambian el estado del sistema.
 
 | Operación | Caso de uso | Actor que la invoca | Diagrama de interacción | Contrato |
 |---|---|---|---|---|
 | `abrirCaja(cajaId identificador, montoInicial moneda)` | CU-226 | Administrador (ACT-03) | sí | sí |
-| `aceptarInvitacionDeRecompra(invitacionId identificador)` | CU-106 | Cliente (ACT-01) | sí | sí |
+| `aceptarInvitacionDeRecompra(invitacionId identificador)` | CU-106 | Cliente (ACT-01), Sistema Automático (ACT-04) | sí | sí |
 | `aceptarPedido(pedidoId identificador)` | CU-015 | Chofer (ACT-02) | sí | sí |
-| `aceptarRecorrido(recorridoId identificador)` | CU-107 | Chofer (ACT-02) | sí | sí |
-| `aceptarRetiroEnLaEntrega(ofertaId identificador)` | CU-108 | Cliente (ACT-01) | sí | sí |
-| `aceptarVentanaDeMantenimiento(propuestaId identificador)` | CU-105 | Chofer (ACT-02) | sí | sí |
+| `aceptarRecorrido(recorridoId identificador)` | CU-107 | Chofer (ACT-02), Sistema Automático (ACT-04) | sí | sí |
+| `aceptarRetiroEnLaEntrega(ofertaId identificador)` | CU-108 | Cliente (ACT-01), Administrador (ACT-03), Sistema Automático (ACT-04) | sí | sí |
+| `aceptarVentanaDeMantenimiento(propuestaId identificador)` | CU-105 | Chofer (ACT-02), Administrador (ACT-03), Sistema Automático (ACT-04) | sí | sí |
+| `activarChofer(choferId identificador)` | CU-033 | Administrador (ACT-03) | sí | sí |
+| `activarDisponibilidad(usuarioId identificador)` | CU-022 | Chofer (ACT-02) | sí | sí |
+| `activarFranjaHoraria(franjaId identificador)` | CU-342 | Administrador (ACT-03) | sí | sí |
 | `activarReservasDelDia()` | CU-075 | Sistema Automático (ACT-04) | sí | sí |
+| `activarZonaDeCobertura(zonaId identificador)` | CU-307 | Administrador (ACT-03) | sí | sí |
 | `actualizarConsumoPromedio(cantidadPorMes decimal)` | CU-144 | Cliente (ACT-01) | sí | sí |
 | `actualizarDeposito(depositoId identificador, datos registro)` | CU-259 | Administrador (ACT-03) | sí | sí |
 | `actualizarPerfil(usuarioId identificador, datos registro)` | CU-251 | Cliente (ACT-01), Chofer (ACT-02) | sí | sí |
 | `actualizarPerfilDelChofer(choferId identificador, datos registro)` | CU-096 | Administrador (ACT-03) | sí | sí |
-| `actualizarProducto(productoId identificador, datos registro)` | CU-037 / CU-039 | Administrador (ACT-03) | sí | sí |
+| `actualizarPrecioDelProducto(productoId identificador, precio moneda)` | CU-037 | Administrador (ACT-03) | sí | sí |
 | `actualizarProveedor(proveedorId identificador, datos registro)` | CU-262 | Administrador (ACT-03) | sí | sí |
 | `actualizarRol(rolId identificador, datos registro)` | CU-253 | Administrador General (ACT-05) | sí | sí |
 | `actualizarStock(productoId identificador, variacion entero)` | CU-038 | Administrador (ACT-03) | sí | sí |
 | `actualizarUbicacion(usuarioId identificador, latitud decimal, longitud decimal)` | CU-017 | Chofer (ACT-02) | sí | sí |
-| `actualizarUbicacionDelCliente(clienteId identificador, coordenadas coordenada)` | CU-094 | Cliente (ACT-01) | sí | sí |
+| `actualizarUbicacionDelCliente(clienteId identificador, coordenadas coordenada)` | CU-094 | Cliente (ACT-01), Administrador (ACT-03) | sí | sí |
 | `adjuntarArchivoALaTarea(tareaId identificador, archivo archivo)` | CU-155 | Administrador (ACT-03) | sí | sí |
 | `adjuntarArchivoAlLegajo(empleadoId identificador, archivo archivo, etiqueta cadena)` | CU-186 | Administrador (ACT-03) | sí | sí |
-| `adjuntarFotoAlReclamo(reclamoId identificador, imagen archivo)` | CU-174 | Cliente (ACT-01) | sí | sí |
+| `adjuntarFotoAlReclamo(reclamoId identificador, imagen archivo)` | CU-174 | Cliente (ACT-01), Administrador (ACT-03) | sí | sí |
 | `agregarItemAlCarrito(productoId identificador, cantidad entero)` | CU-122 | Cliente (ACT-01) | sí | sí |
-| `agruparPedidosPorRecorrido()` | CU-107 | Sistema Automático (ACT-04) | sí | sí |
-| `ajustarSaldoDelChofer(choferId identificador, monto moneda)` | CU-049 | Administrador (ACT-03) | sí | sí |
-| `anticiparRecompras()` | CU-106 | Sistema Automático (ACT-04) | sí | sí |
-| `anularCargaDeCombustible(cargaId identificador)` | CU-195 | Administrador (ACT-03) | sí | sí |
-| `anularLiquidacion(liquidacionId identificador)` | CU-242 | Administrador (ACT-03) | sí | sí |
+| `agruparPedidosPorRecorrido()` | CU-107 | Chofer (ACT-02), Sistema Automático (ACT-04) | sí | sí |
+| `ajustarSaldoDelChofer(choferId identificador, monto moneda)` | CU-337 | Administrador (ACT-03) | sí | sí |
+| `anticiparRecompras()` | CU-106 | Cliente (ACT-01), Sistema Automático (ACT-04) | sí | sí |
+| `anularCargaDeCombustible(cargaId identificador)` | CU-321 | Administrador (ACT-03) | sí | sí |
+| `anularLiquidacion(liquidacionId identificador)` | CU-335 | Administrador (ACT-03) | sí | sí |
 | `anularMovimientoDeCaja(movimientoId identificador, motivo cadena)` | CU-229 | Administrador (ACT-03) | sí | sí |
-| `anularMultaDeTransito(multaId identificador, motivo cadena)` | CU-198 | Administrador (ACT-03) | sí | sí |
+| `anularMultaDeTransito(multaId identificador, motivo cadena)` | CU-324 | Administrador (ACT-03) | sí | sí |
 | `anularRecepcionDeCompra(recepcionId identificador, motivo cadena)` | CU-280 | Administrador (ACT-03) | sí | sí |
 | `anularTransferenciaDeStock(loteId identificador, nota cadena)` | CU-276 | Administrador (ACT-03) | sí | sí |
 | `aprobarLicencia(licenciaId identificador)` | CU-192 | Administrador (ACT-03) | sí | sí |
-| `aprobarLiquidacion(liquidacionId identificador)` | CU-242 | Administrador (ACT-03) | sí | sí |
+| `aprobarLiquidacion(liquidacionId identificador)` | CU-334 | Administrador (ACT-03) | sí | sí |
 | `aprobarRendicion(rendicionId identificador, cajaDestinoId identificador, resolucionDeDiferencia cadena)` | CU-233 | Administrador (ACT-03) | sí | sí |
 | `asignarChoferAPedido(pedidoId identificador, choferId identificador)` | CU-012 | Administrador (ACT-03) | sí | sí |
-| `asignarEnvasesAPedido(pedidoId identificador, numerosDeSerie lista)` | CU-068 | Chofer (ACT-02) | sí | sí |
+| `asignarEnvasesAPedido(pedidoId identificador, numerosDeSerie lista)` | CU-068 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `avisarLlegada(pedidoId identificador)` | CU-019 | Chofer (ACT-02) | sí | — |
-| `avisarMultasPorVencer()` | CU-198 | Sistema Automático (ACT-04) | sí | sí |
+| `avisarMultasPorVencer()` | CU-326 | Sistema Automático (ACT-04) | sí | sí |
 | `avisarRendicionesSinCerrar()` | CU-234 | Sistema Automático (ACT-04) | sí | sí |
 | `avisarStockBajo()` | CU-211 | Sistema Automático (ACT-04) | sí | sí |
-| `avisarVencimientosPendientes()` | CU-142 / CU-188 | Sistema Automático (ACT-04) | sí | sí |
-| `bloquearUsuario(usuarioId identificador, bloquear booleano)` | CU-050 / CU-270 | Administrador (ACT-03) | sí | sí |
+| `avisarVencimientosDeLaFlota()` | CU-142 | Sistema Automático (ACT-04) | sí | sí |
+| `avisarVencimientosDelPersonal()` | CU-188 | Sistema Automático (ACT-04) | sí | sí |
+| `bloquearUsuario(usuarioId identificador)` | CU-050 | Administrador (ACT-03) | sí | sí |
 | `buscarAdministrador(termino cadena)` | CU-088 | Administrador (ACT-03) | sí | — |
 | `buscarChoferPorUsuario(usuarioId identificador)` | CU-110 | Administrador (ACT-03) | sí | — |
 | `buscarClientePorUsuario(usuarioId identificador)` | CU-130 | Administrador (ACT-03) | sí | — |
 | `buscarUsuarioPorCorreo(correo cadena)` | CU-272 | Administrador (ACT-03) | sí | — |
 | `buscarUsuarioPorTelefono(telefono cadena)` | CU-272 | Administrador (ACT-03) | sí | — |
-| `buscarVehiculoPorPatente(patente cadena)` | CU-051 / CU-114 | Administrador (ACT-03) | sí | — |
-| `calificarPedido(pedidoId identificador, estrellas entero, comentario cadena)` | CU-064 | Cliente (ACT-01) | sí | sí |
-| `cambiarCorreo(correoActual cadena, correoNuevo cadena)` | CU-047 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
+| `buscarVehiculoPorPatente(patente cadena)` | CU-114 | Administrador (ACT-03) | sí | — |
+| `calificarPedido(pedidoId identificador, estrellas entero, comentario cadena)` | CU-064 | Cliente (ACT-01), Chofer (ACT-02) | sí | sí |
+| `cambiarCorreo(correoActual cadena, correoNuevo cadena)` | CU-336 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `cambiarDireccionDeEntrega(pedidoId identificador, direccionId identificador, motivo cadena)` | CU-127 | Cliente (ACT-01) | sí | sí |
-| `cambiarDisponibilidad(usuarioId identificador, disponible booleano)` | CU-022 / CU-266 | Chofer (ACT-02) | sí | sí |
-| `cambiarEstadoDelChofer(choferId identificador, activo booleano)` | CU-033 / CU-267 | Administrador (ACT-03) | sí | sí |
 | `cancelarCargaDelCamion(cargaId identificador, motivo cadena)` | CU-289 | Administrador (ACT-03) | sí | sí |
-| `cancelarLicencia(licenciaId identificador)` | CU-191 | Administrador (ACT-03) | sí | sí |
+| `cancelarLicencia(licenciaId identificador)` | CU-317 | Administrador (ACT-03) | sí | sí |
+| `cancelarMiPedido(pedidoId identificador, motivo cadena)` | CU-008 | Cliente (ACT-01) | sí | sí |
 | `cancelarOrdenDeCompra(ordenId identificador, motivo cadena)` | CU-216 | Administrador (ACT-03) | sí | sí |
-| `cancelarPedido(pedidoId identificador, motivo cadena)` | CU-008 / CU-010 | Cliente (ACT-01), Administrador (ACT-03) | sí | sí |
-| `cancelarPedidoForzado(pedidoId identificador)` | CU-010 | Administrador (ACT-03) | sí | sí |
+| `cancelarPedido(pedidoId identificador, motivo cadena)` | CU-010 | Administrador (ACT-03) | sí | sí |
 | `cerrarCajaConArqueo(sesionId identificador, montoContado moneda)` | CU-227 | Administrador (ACT-03) | sí | sí |
 | `cerrarOrdenDeCompraConFaltante(ordenId identificador, motivo cadena)` | CU-282 | Administrador (ACT-03) | sí | sí |
 | `cerrarRendicionDeStock(cargaId identificador, nota cadena)` | CU-222 | Administrador (ACT-03) | sí | sí |
 | `cerrarSiniestro(siniestroId identificador, costoDeReparacion moneda, reintegroDelSeguro moneda, franquicia moneda)` | CU-202 | Administrador (ACT-03) | sí | sí |
 | `cerrarTareaDeFlota(tareaId identificador, fecha fecha, kilometraje entero, costo moneda, observacion cadena)` | CU-141 | Administrador (ACT-03) | sí | sí |
-| `conciliarStock()` | CU-224 | Sistema Automático (ACT-04) | sí | — |
+| `conciliarStock()` | CU-224 | Administrador (ACT-03), Sistema Automático (ACT-04) | sí | — |
 | `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta booleano)` | CU-249 | Administrador (ACT-03) | sí | sí |
 | `configurarDiasDeAviso(dias entero)` | CU-145 | Cliente (ACT-01) | sí | sí |
 | `configurarFrecuenciaDeTareas(intervalos registro)` | CU-173 | Administrador (ACT-03) | sí | sí |
 | `configurarParametrosDeDespacho(radiosKm lista, ventanaDeAceptacion entero)` | CU-171 | Administrador (ACT-03) | sí | sí |
 | `configurarParametrosDeProceso(proceso cadena, parametros registro)` | CU-172 | Administrador (ACT-03) | sí | sí |
+| `configurarPromocionesDelProducto(productoId identificador, promociones lista)` | CU-039 | Administrador (ACT-03) | sí | sí |
 | `configurarStockMinimo(minimos lista)` | CU-210 | Administrador (ACT-03) | sí | sí |
 | `confirmarCobroEnEfectivo(pedidoId identificador)` | CU-292 | Chofer (ACT-02) | sí | sí |
-| `confirmarEntrega(pedidoId identificador, motivo cadena)` | CU-020 | Administrador (ACT-03), Administrador General (ACT-05) | sí | sí |
-| `confirmarEntregaConCodigo(pedidoId identificador, codigo cadena, motivo cadena)` | CU-079 | Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05) | sí | sí |
+| `confirmarEntrega(pedidoId identificador, motivo cadena)` | CU-020 | Administrador (ACT-03) | sí | sí |
+| `confirmarEntregaConCodigo(pedidoId identificador, codigo cadena, motivo cadena)` | CU-079 | Cliente (ACT-01), Administrador (ACT-03) | sí | sí |
 | `confirmarSenia(pedidoId identificador)` | CU-074 | Administrador (ACT-03) | sí | sí |
-| `confirmarTransferencia(pedidoId identificador, recibida booleano, motivo cadena)` | CU-301 | Administrador (ACT-03), Administrador General (ACT-05) | sí | sí |
-| `confirmarVentanaDeTaller(tareaId identificador, ventanaElegida registro, gastoEstimado moneda)` | CU-105 | Administrador (ACT-03) | sí | sí |
+| `confirmarTransferencia(pedidoId identificador, recibida booleano, motivo cadena)` | CU-301 | Administrador (ACT-03) | sí | sí |
+| `confirmarVentanaDeTaller(tareaId identificador, ventanaElegida registro, gastoEstimado moneda)` | CU-105 | Chofer (ACT-02), Administrador (ACT-03), Sistema Automático (ACT-04) | sí | sí |
 | `consultarAdjuntosDeLaTarea(tareaId identificador)` | CU-156 | Administrador (ACT-03) | sí | — |
 | `consultarAjusteDeStock(ajusteId identificador)` | CU-275 | Administrador (ACT-03) | sí | — |
 | `consultarAjustesDeStock(desde fechaHora, hasta fechaHora, motivo cadena)` | CU-275 | Administrador (ACT-03) | sí | — |
 | `consultarAntiguedadDeDeuda()` | CU-239 | Administrador (ACT-03) | sí | — |
-| `consultarAsistencias(desde fecha, hasta fecha)` | CU-189 | Administrador (ACT-03) | sí | — |
+| `consultarAsistencias(desde fecha, hasta fecha)` | CU-314 | Administrador (ACT-03) | sí | — |
 | `consultarAuditoria(autor identificador, tipoDeRecurso cadena, recurso cadena, desde fechaHora, hasta fechaHora, resultado cadena, limite entero, desplazamiento entero)` | CU-152 | Administrador (ACT-03) | sí | — |
-| `consultarAuditoriaDeDatos(entidad cadena, registro cadena, autor identificador, tipoDeAccion entero, desde fechaHora, hasta fechaHora, pagina entero, limite entero)` | CU-152 | Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
+| `consultarAuditoriaDeDatos(entidad cadena, registro cadena, autor identificador, tipoDeAccion entero, desde fechaHora, hasta fechaHora, pagina entero, limite entero)` | CU-152 | Administrador (ACT-03) | sí | — |
 | `consultarCargaActual()` | CU-223 | Chofer (ACT-02) | sí | — |
 | `consultarCargaDelCamion(cargaId identificador)` | CU-291 | Administrador (ACT-03), Chofer (ACT-02) | sí | — |
-| `consultarCargasDeCombustible(filtros registro)` | CU-195 | Administrador (ACT-03) | sí | — |
+| `consultarCargasDeCombustible(filtros registro)` | CU-322 | Administrador (ACT-03) | sí | — |
 | `consultarCargasDelCamion(estado cadena, desde fecha, hasta fecha, vehiculoId identificador, choferId identificador)` | CU-290 | Administrador (ACT-03) | sí | — |
 | `consultarCarrito()` | CU-125 | Cliente (ACT-01) | sí | — |
-| `consultarCatalogo(pagina entero, limite entero, distribuidora cadena)` | CU-041 | Cliente (ACT-01) | sí | — |
-| `consultarCobrosPendientes(desde fecha, hasta fecha)` | CU-304 | Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
-| `consultarConciliacionDeStock()` | CU-224 | Administrador (ACT-03) | sí | — |
+| `consultarCatalogo(pagina entero, limite entero, distribuidora cadena)` | CU-041 | Cliente (ACT-01), Administrador (ACT-03) | sí | — |
+| `consultarCobrosPendientes(desde fecha, hasta fecha)` | CU-304 | Administrador (ACT-03) | sí | — |
+| `consultarConciliacionDeStock()` | CU-224 | Administrador (ACT-03), Sistema Automático (ACT-04) | sí | — |
 | `consultarConsumoDeCombustible(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-196 | Administrador (ACT-03) | sí | — |
 | `consultarControlDeCargaAbierta()` | CU-298 | Administrador (ACT-03) | sí | — |
 | `consultarCostoDeUnVehiculo(vehiculoId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-203 | Administrador (ACT-03) | sí | — |
 | `consultarCostoPromedio()` | CU-285 | Administrador (ACT-03) | sí | — |
 | `consultarDeposito(depositoId identificador)` | CU-207 | Administrador (ACT-03) | sí | — |
 | `consultarDepositos(incluirInactivos booleano)` | CU-207 | Administrador (ACT-03) | sí | — |
-| `consultarDetalleDelChofer(choferId identificador)` | CU-035 / CU-109 | Administrador (ACT-03) | sí | — |
+| `consultarDetalleDelChofer(choferId identificador)` | CU-109 | Administrador (ACT-03) | sí | — |
 | `consultarDetalleDelCliente(clienteId identificador)` | CU-129 | Administrador (ACT-03) | sí | — |
 | `consultarDetalleDelVehiculo(vehiculoId identificador)` | CU-113 | Administrador (ACT-03) | sí | — |
 | `consultarDireccionDeEntrega(direccionId identificador)` | CU-117 | Cliente (ACT-01) | sí | — |
 | `consultarDireccionesDeEntrega(usuarioId identificador)` | CU-046 | Cliente (ACT-01) | sí | — |
 | `consultarDireccionPredeterminada(usuarioId identificador)` | CU-121 | Cliente (ACT-01) | sí | — |
-| `consultarDisponibilidadDeFranjas(fecha fecha, distribuidora cadena)` | CU-044 / CU-045 | Cliente (ACT-01) | sí | — |
+| `consultarDisponibilidadDeFranjas(fecha fecha, distribuidora cadena)` | CU-045 | Cliente (ACT-01) | sí | — |
 | `consultarDistribuidora(distribuidoraId identificador)` | CU-053 | Administrador General (ACT-05) | sí | — |
 | `consultarDocumentacionDelEmpleado(empleadoId identificador)` | CU-187 | Administrador (ACT-03) | sí | — |
-| `consultarEmpleado(empleadoId identificador)` | CU-179 | Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
-| `consultarEmpleados(filtros registro)` | CU-180 | Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
+| `consultarEmpleado(empleadoId identificador)` | CU-179 | Administrador (ACT-03) | sí | — |
+| `consultarEmpleados(filtros registro)` | CU-180 | Administrador (ACT-03) | sí | — |
 | `consultarEnvase(envaseId identificador)` | CU-069 | Administrador (ACT-03) | sí | — |
 | `consultarEnvasesProximosAVencer(dias entero)` | CU-134 | Administrador (ACT-03) | sí | — |
 | `consultarEstadoDeCuenta(cuentaId identificador, fechaDesde fecha, fechaHasta fecha)` | CU-238 | Administrador (ACT-03) | sí | — |
 | `consultarEvolucionDeVentas(fechaDesde fecha, fechaHasta fecha, granularidad cadena)` | CU-030 | Administrador (ACT-03) | sí | — |
-| `consultarFotoDelReclamo(reclamoId identificador)` | CU-175 | Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
+| `consultarFotoDelReclamo(reclamoId identificador)` | CU-175 | Cliente (ACT-01), Administrador (ACT-03) | sí | — |
 | `consultarFranjasHorarias()` | CU-154 | Administrador (ACT-03) | sí | — |
 | `consultarGraficoDeVentas()` | CU-026 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDeCalificaciones(usuarioId identificador)` | CU-066 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDeChoferesDelVehiculo(vehiculoId identificador, pagina entero)` | CU-165 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDeCompras(proveedorId identificador, desde fecha, hasta fecha)` | CU-286 | Administrador (ACT-03) | sí | — |
-| `consultarHistorialDeEstados(pedidoId identificador)` | CU-170 | Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
+| `consultarHistorialDeEstados(pedidoId identificador)` | CU-170 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `consultarHistorialDelEnvase(envaseId identificador)` | CU-071 | Administrador (ACT-03) | sí | — |
 | `consultarHistorialDePedidos(clienteId identificador, pagina entero, limite entero)` | CU-007 | Cliente (ACT-01) | sí | — |
 | `consultarHistorialDeVehiculosDelChofer(choferId identificador, pagina entero)` | CU-164 | Administrador (ACT-03) | sí | — |
-| `consultarIncidenciasDelPedido(pedidoId identificador)` | CU-062 | Chofer (ACT-02) | sí | — |
-| `consultarLicencias(estado cadena, desde fecha, hasta fecha)` | CU-192 | Administrador (ACT-03) | sí | — |
+| `consultarIncidenciasDelPedido(pedidoId identificador)` | CU-062 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
+| `consultarLicencias(estado cadena, desde fecha, hasta fecha)` | CU-319 | Administrador (ACT-03) | sí | — |
 | `consultarMisComisiones(fechaDesde fecha, fechaHasta fecha)` | CU-244 | Chofer (ACT-02) | sí | — |
-| `consultarMiVehiculoEnUso()` | CU-163 | Chofer (ACT-02) | sí | — |
+| `consultarMiVehiculoEnUso()` | CU-163 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `consultarModalidadesDeEntrega(direccionId identificador)` | CU-148 | Cliente (ACT-01) | sí | — |
+| `consultarMovimientosDeCaja(cajaId identificador, desde fecha, hasta fecha)` | CU-340 | Administrador (ACT-03) | sí | — |
 | `consultarMovimientosDeStock(productoId identificador, ubicacionId identificador, motivo cadena, desde fechaHora, hasta fechaHora, pagina entero)` | CU-209 | Administrador (ACT-03) | sí | — |
-| `consultarMultasDeTransito(filtros registro)` | CU-198 | Administrador (ACT-03) | sí | — |
+| `consultarMultasDeTransito(filtros registro)` | CU-325 | Administrador (ACT-03) | sí | — |
 | `consultarOrdenDeCompra(ordenId identificador)` | CU-283 | Administrador (ACT-03) | sí | — |
 | `consultarOrdenesDeCompra(estado cadena, proveedorId identificador, desde fecha, hasta fecha)` | CU-283 | Administrador (ACT-03) | sí | — |
-| `consultarPedido(pedidoId identificador)` | CU-006 | Cliente (ACT-01) | sí | — |
-| `consultarPedidosAsignados(choferId identificador, pagina entero, limite entero)` | CU-081 | Chofer (ACT-02) | sí | — |
-| `consultarPedidosDisponibles(pagina entero, limite entero)` | CU-080 | Chofer (ACT-02) | sí | — |
+| `consultarPedido(pedidoId identificador)` | CU-006 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | — |
+| `consultarPedidoEnCurso()` | CU-338 | Chofer (ACT-02) | sí | — |
+| `consultarPedidosAsignados(choferId identificador, pagina entero, limite entero)` | CU-081 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
+| `consultarPedidosDisponibles(pagina entero, limite entero)` | CU-080 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `consultarPendienteDeRecibir(ordenId identificador)` | CU-283 | Administrador (ACT-03) | sí | — |
-| `consultarPerfil(usuarioId identificador)` | CU-004 | Cliente (ACT-01) | sí | — |
-| `consultarPerfilCliente(usuarioId identificador)` | CU-004 | Cliente (ACT-01) | sí | — |
-| `consultarPerfilDelChofer(usuarioId identificador)` | CU-049 | Chofer (ACT-02) | sí | — |
-| `consultarProducto(productoId identificador)` | CU-041 | Cliente (ACT-01) | sí | — |
-| `consultarProductosDisponibles(distribuidora cadena)` | CU-041 | Cliente (ACT-01) | sí | — |
+| `consultarPerfil(usuarioId identificador)` | CU-004 | Cliente (ACT-01), Chofer (ACT-02) | sí | — |
+| `consultarPerfilCliente(usuarioId identificador)` | CU-004 | Cliente (ACT-01), Chofer (ACT-02) | sí | — |
+| `consultarPerfilDelChofer(usuarioId identificador)` | CU-049 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
+| `consultarProducto(productoId identificador)` | CU-041 | Cliente (ACT-01), Administrador (ACT-03) | sí | — |
+| `consultarProductosDisponibles(distribuidora cadena)` | CU-041 | Cliente (ACT-01), Administrador (ACT-03) | sí | — |
 | `consultarProductosInactivos()` | CU-269 | Administrador (ACT-03) | sí | — |
 | `consultarProveedor(proveedorId identificador)` | CU-214 | Administrador (ACT-03) | sí | — |
 | `consultarProveedores(termino cadena, tipo cadena, incluirInactivos booleano)` | CU-214 | Administrador (ACT-03) | sí | — |
@@ -18657,42 +19706,41 @@ Son **341 operaciones**. **341** tienen su diagrama de interacción y
 | `consultarRecepcionDeCompra(recepcionId identificador)` | CU-284 | Administrador (ACT-03) | sí | — |
 | `consultarRecepcionesDeCompra(proveedorId identificador, ordenId identificador, estadoDePago cadena, estado cadena, desde fecha, hasta fecha)` | CU-284 | Administrador (ACT-03) | sí | — |
 | `consultarRecomprasEstimadas(dias entero)` | CU-146 | Administrador (ACT-03) | sí | — |
-| `consultarResumenDeCalificaciones(usuarioId identificador)` | CU-065 | Cliente (ACT-01) | sí | — |
+| `consultarResumenDeCalificaciones(usuarioId identificador)` | CU-065 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `consultarResumenDePedidos()` | CU-026 | Administrador (ACT-03) | sí | — |
 | `consultarResumenDeStock()` | CU-279 | Administrador (ACT-03) | sí | — |
 | `consultarRutaDelPedido(pedidoId identificador, desde cadena)` | CU-303 | Chofer (ACT-02), Cliente (ACT-01) | sí | — |
 | `consultarSaldoDeVacaciones(empleadoId identificador, anio entero)` | CU-193 | Administrador (ACT-03) | sí | — |
-| `consultarSiniestros(filtros registro)` | CU-201 | Administrador (ACT-03) | sí | — |
+| `consultarSiniestros(filtros registro)` | CU-328 | Administrador (ACT-03) | sí | — |
 | `consultarStockMinimo()` | CU-297 | Administrador (ACT-03) | sí | — |
 | `consultarStockPorUbicacion(ubicacionId identificador, productoId identificador)` | CU-208 | Administrador (ACT-03) | sí | — |
 | `consultarTableroDeCostosDeLaFlota(fechaDesde fecha, fechaHasta fecha)` | CU-204 | Administrador (ACT-03) | sí | — |
 | `consultarTableroDePersonal()` | CU-194 | Administrador (ACT-03) | sí | — |
 | `consultarTableroFinanciero(fecha fecha)` | CU-245 | Administrador (ACT-03) | sí | — |
-| `consultarTokensDelUsuario(usuarioId identificador)` | CU-099 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
+| `consultarTokensDelUsuario(usuarioId identificador)` | CU-099 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `consultarUbicacionesDeStock()` | CU-208 | Administrador (ACT-03) | sí | — |
-| `consultarVehiculoEnUso(choferId identificador)` | CU-163 | Administrador (ACT-03) | sí | — |
-| `consultarVehiculosDelChofer(usuarioId identificador)` | CU-115 | Administrador (ACT-03) | sí | — |
+| `consultarVehiculoEnUso(choferId identificador)` | CU-163 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
+| `consultarVehiculosDelChofer(usuarioId identificador)` | CU-115 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `consultarVencimientosDeLaFlota(dias entero)` | CU-139 | Administrador (ACT-03) | sí | — |
 | `consultarVencimientosDelPersonal(dias entero, categoria cadena)` | CU-187 | Administrador (ACT-03) | sí | — |
 | `consultarVentasPorChofer(fechaDesde fecha, fechaHasta fecha)` | CU-027 | Administrador (ACT-03) | sí | — |
 | `consultarVentasPorMetodoDePago(fechaDesde fecha, fechaHasta fecha)` | CU-029 | Administrador (ACT-03) | sí | — |
 | `consultarVentasPorProducto(fechaDesde fecha, fechaHasta fecha)` | CU-028 | Administrador (ACT-03) | sí | — |
 | `consultarVigenciaDelEnvase(envaseId identificador)` | CU-133 | Administrador (ACT-03) | sí | — |
-| `corregirAsistencia(asistenciaId identificador, datos registro, nota cadena)` | CU-189 | Administrador (ACT-03) | sí | sí |
+| `consultarZonaDeCobertura(zonaId identificador)` | CU-306 | Administrador (ACT-03) | sí | — |
+| `corregirAsistencia(asistenciaId identificador, datos registro, nota cadena)` | CU-313 | Administrador (ACT-03) | sí | sí |
 | `corregirRenglonesDeLaCarga(cargaId identificador, items lista)` | CU-295 | Administrador (ACT-03) | sí | sí |
-| `cotizarPedido(items lista, medioDePago cadena, direccionId identificador, clienteId identificador)` | CU-302 | Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
+| `cotizarPedido(items lista, medioDePago cadena, direccionId identificador, clienteId identificador, pedidoId identificador)` | CU-302 | Cliente (ACT-01), Administrador (ACT-03) | sí | — |
 | `crearCaja(nombre cadena, tipo cadena, requiereSesion booleano)` | CU-225 | Administrador (ACT-03) | sí | sí |
 | `crearCategoriaDeCaja(nombre cadena, sentido cadena)` | CU-230 | Administrador (ACT-03) | sí | sí |
 | `crearFranjaHoraria(nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-042 | Administrador (ACT-03) | sí | sí |
-| `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | CU-005 / CU-044 | Cliente (ACT-01) | sí | sí |
-| `crearPrimerSuperAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena)` | CU-087 | Administrador General (ACT-05) | sí | sí |
+| `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | CU-005 | Cliente (ACT-01) | sí | sí |
+| `crearPrimerSuperAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena)` | CU-087 | Operador Técnico (ACT-10) | sí | sí |
 | `crearProducto(tipo cadena, peso decimal, precio moneda, stockInicial entero, descripcion cadena, promociones lista)` | CU-036 | Administrador (ACT-03) | sí | sí |
 | `crearPuestoDeTrabajo(nombre cadena, categoria cadena)` | CU-255 | Administrador (ACT-03) | sí | sí |
 | `crearReglaDeComision(empleadoId identificador, productoId identificador, base cadena, valor decimal, vigenteDesde fecha)` | CU-240 | Administrador (ACT-03) | sí | sí |
-| `crearReserva(items lista, direccionId identificador, fechaAgendada fecha, franjaId identificador, metodoDePago cadena, montoDeLaSenia moneda)` | CU-072 | Cliente (ACT-01) | sí | sí |
+| `crearReserva(items lista, direccionId identificador, fechaAgendada fecha, franjaId identificador, metodoDePago cadena, montoDeLaSenia moneda)` | CU-072 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `crearRol(tipo cadena)` | CU-252 | Administrador General (ACT-05) | sí | sí |
-| `crearTareaDeFlota(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)` | CU-136 / CU-137 / CU-138 / CU-140 / CU-197 | Administrador (ACT-03) | sí | sí |
-| `crearTareaDelEmpleado(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)` | CU-183 / CU-184 / CU-185 | Administrador (ACT-03) | sí | sí |
 | `darDeAltaEnvase(numeroDeSerie cadena, tipoDeProducto cadena, deposito cadena)` | CU-067 | Administrador (ACT-03) | sí | sí |
 | `darDeBajaDeposito(depositoId identificador)` | CU-260 | Administrador (ACT-03) | sí | sí |
 | `darDeBajaDistribuidora(distribuidoraId identificador)` | CU-055 | Administrador General (ACT-05) | sí | sí |
@@ -18700,23 +19748,28 @@ Son **341 operaciones**. **341** tienen su diagrama de interacción y
 | `declararConsumoPromedio(tipoGarrafa cadena, cantidadPorMes decimal)` | CU-143 | Cliente (ACT-01) | sí | sí |
 | `declararEfectivoRendido(rendicionId identificador, efectivoDeclarado moneda, gastos lista)` | CU-232 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `definirZonaDeCobertura(nombre cadena, poligono poligono, recargo moneda, activa booleano)` | CU-056 | Administrador (ACT-03) | sí | sí |
+| `desactivarChofer(choferId identificador)` | CU-267 | Administrador (ACT-03) | sí | sí |
+| `desactivarDisponibilidad(usuarioId identificador)` | CU-266 | Chofer (ACT-02) | sí | sí |
+| `desactivarFranjaHoraria(franjaId identificador)` | CU-343 | Administrador (ACT-03) | sí | sí |
 | `desactivarProducto(productoId identificador)` | CU-040 | Administrador (ACT-03) | sí | sí |
+| `desactivarZonaDeCobertura(zonaId identificador)` | CU-308 | Administrador (ACT-03) | sí | sí |
 | `desactivarZonasVencidas()` | CU-151 | Sistema Automático (ACT-04) | sí | sí |
+| `desbloquearUsuario(usuarioId identificador)` | CU-270 | Administrador (ACT-03) | sí | sí |
 | `descargarAdjunto(tareaId identificador, adjuntoId identificador)` | CU-157 | Administrador (ACT-03) | sí | — |
 | `despacharPedidoExpress(pedidoId identificador)` | CU-149 | Sistema Automático (ACT-04) | sí | sí |
 | `editarDatosDelCliente(clienteId identificador, cambios registro)` | CU-131 | Administrador (ACT-03) | sí | sí |
-| `editarDireccionDeEntrega(direccionId identificador, cambios registro)` | CU-046 / CU-118 | Cliente (ACT-01) | sí | sí |
-| `editarVehiculo(vehiculoId identificador, datos registro)` | CU-051 / CU-111 | Administrador (ACT-03) | sí | sí |
+| `editarDireccionDeEntrega(direccionId identificador, cambios registro)` | CU-118 | Cliente (ACT-01) | sí | sí |
+| `editarVehiculo(vehiculoId identificador, datos registro)` | CU-111 | Administrador (ACT-03) | sí | sí |
 | `eliminarAdjunto(tareaId identificador, adjuntoId identificador)` | CU-158 | Administrador (ACT-03) | sí | sí |
 | `eliminarChofer(choferId identificador)` | CU-097 | Administrador (ACT-03) | sí | sí |
 | `eliminarCliente(clienteId identificador)` | CU-095 | Administrador General (ACT-05) | sí | sí |
-| `eliminarDireccionDeEntrega(direccionId identificador)` | CU-046 / CU-119 | Cliente (ACT-01) | sí | sí |
-| `eliminarEmpleado(empleadoId identificador)` | CU-178 | Administrador (ACT-03) | sí | sí |
+| `eliminarDireccionDeEntrega(direccionId identificador)` | CU-119 | Cliente (ACT-01) | sí | sí |
+| `eliminarEmpleado(empleadoId identificador)` | CU-311 | Administrador (ACT-03) | sí | sí |
 | `eliminarFranjaHoraria(franjaId identificador)` | CU-103 | Administrador (ACT-03) | sí | sí |
 | `eliminarPuestoDeTrabajo(puestoId identificador)` | CU-257 | Administrador (ACT-03) | sí | sí |
 | `eliminarRol(rolId identificador)` | CU-254 | Administrador General (ACT-05) | sí | sí |
 | `eliminarUsuario(usuarioId identificador)` | CU-085 | Administrador (ACT-03) | sí | sí |
-| `eliminarVehiculo(vehiculoId identificador)` | CU-051 / CU-112 | Administrador (ACT-03) | sí | sí |
+| `eliminarVehiculo(vehiculoId identificador)` | CU-112 | Administrador (ACT-03) | sí | sí |
 | `eliminarZonaDeCobertura(zonaId identificador)` | CU-059 | Administrador (ACT-03) | sí | sí |
 | `emitirOrdenDeCompra(proveedorId identificador, depositoId identificador, items lista, fechaEsperada fecha)` | CU-215 | Administrador (ACT-03) | sí | sí |
 | `enviarNotificacionDePrueba(token cadena, titulo cadena, mensaje cadena)` | CU-100 | Administrador General (ACT-05) | sí | — |
@@ -18724,7 +19777,7 @@ Son **341 operaciones**. **341** tienen su diagrama de interacción y
 | `expirarPedidosSinPagar()` | CU-077 | Sistema Automático (ACT-04) | sí | sí |
 | `expirarReservasSinSenia()` | CU-076 | Sistema Automático (ACT-04) | sí | sí |
 | `generarRendicionesDelDia()` | CU-231 | Sistema Automático (ACT-04) | sí | sí |
-| `gestionarEnvasesNoDevueltos()` | CU-108 | Sistema Automático (ACT-04) | sí | sí |
+| `gestionarEnvasesNoDevueltos()` | CU-108 | Cliente (ACT-01), Administrador (ACT-03), Sistema Automático (ACT-04) | sí | sí |
 | `habilitarCuentaCorriente(clienteId identificador, razonSocial cadena, cuit cadena, condicionFiscal cadena, limiteDeCredito moneda, plazoEnDias entero)` | CU-235 | Administrador (ACT-03) | sí | sí |
 | `imputarMultaAlChofer(multaId identificador, empleadoId identificador)` | CU-200 | Administrador (ACT-03) | sí | sí |
 | `indicarQuienRecibe(pedidoId identificador, nombre cadena, documento cadena, relacion cadena)` | CU-128 | Cliente (ACT-01) | sí | sí |
@@ -18750,68 +19803,77 @@ Son **341 operaciones**. **341** tienen su diagrama de interacción y
 | `listarVehiculos()` | CU-051 | Administrador (ACT-03) | sí | — |
 | `listarZonasDeCobertura()` | CU-057 | Administrador (ACT-03) | sí | — |
 | `marcarDepositoPredeterminado(depositoId identificador)` | CU-273 | Administrador (ACT-03) | sí | sí |
-| `marcarDireccionPredeterminada(direccionId identificador)` | CU-046 / CU-120 | Cliente (ACT-01) | sí | sí |
+| `marcarDireccionPredeterminada(direccionId identificador)` | CU-120 | Cliente (ACT-01) | sí | sí |
 | `marcarPagoDeRecepcion(recepcionId identificador, estadoDePago cadena)` | CU-281 | Administrador (ACT-03) | sí | sí |
 | `marcarPedidoEnCamino(pedidoId identificador)` | CU-018 | Chofer (ACT-02) | sí | sí |
 | `modificarCaja(cajaId identificador, datos registro)` | CU-264 | Administrador (ACT-03) | sí | sí |
 | `modificarCantidadDelItem(itemId identificador, cantidad entero)` | CU-123 | Cliente (ACT-01) | sí | sí |
-| `modificarCargaDeCombustible(cargaId identificador, datos registro)` | CU-195 | Administrador (ACT-03) | sí | sí |
+| `modificarCargaDeCombustible(cargaId identificador, datos registro)` | CU-320 | Administrador (ACT-03) | sí | sí |
 | `modificarCategoriaDeCaja(categoriaId identificador, datos registro)` | CU-265 | Administrador (ACT-03) | sí | sí |
-| `modificarCuentaCorriente(cuentaId identificador, datos registro)` | CU-235 | Administrador (ACT-03) | sí | sí |
+| `modificarCuentaCorriente(cuentaId identificador, datos registro)` | CU-331 | Administrador (ACT-03) | sí | sí |
 | `modificarDistribuidora(distribuidoraId identificador, datos registro)` | CU-054 | Administrador General (ACT-05) | sí | sí |
 | `modificarEmpleado(empleadoId identificador, datos registro)` | CU-178 | Administrador (ACT-03) | sí | sí |
 | `modificarFranjaHoraria(franjaId identificador, nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-043 | Administrador (ACT-03) | sí | sí |
-| `modificarLicencia(licenciaId identificador, datos registro)` | CU-191 | Administrador (ACT-03) | sí | sí |
-| `modificarMultaDeTransito(multaId identificador, datos registro)` | CU-198 | Administrador (ACT-03) | sí | sí |
+| `modificarLicencia(licenciaId identificador, datos registro)` | CU-316 | Administrador (ACT-03) | sí | sí |
+| `modificarMiPedido(pedidoId identificador, datos registro)` | CU-341 | Cliente (ACT-01) | sí | sí |
+| `modificarMultaDeTransito(multaId identificador, datos registro)` | CU-323 | Administrador (ACT-03) | sí | sí |
 | `modificarOrdenDeCompra(ordenId identificador, datos registro)` | CU-287 | Administrador (ACT-03) | sí | sí |
+| `modificarPedido(pedidoId identificador, datos registro)` | CU-339 | Administrador (ACT-03) | sí | sí |
 | `modificarPuestoDeTrabajo(puestoId identificador, datos registro)` | CU-256 | Administrador (ACT-03) | sí | sí |
-| `modificarReglaDeComision(reglaId identificador, datos registro)` | CU-240 | Administrador (ACT-03) | sí | sí |
-| `modificarSiniestro(siniestroId identificador, datos registro)` | CU-201 | Administrador (ACT-03) | sí | sí |
+| `modificarReglaDeComision(reglaId identificador, datos registro)` | CU-333 | Administrador (ACT-03) | sí | sí |
+| `modificarSiniestro(siniestroId identificador, datos registro)` | CU-327 | Administrador (ACT-03) | sí | sí |
+| `modificarZonaDeCobertura(zonaId identificador, nombre cadena, poligono poligono, recargo moneda)` | CU-305 | Administrador (ACT-03) | sí | sí |
 | `notificarResultadoDePago(tipoDeNotificacion cadena, identificadorDelPago cadena, firma cadena)` | CU-048 | MercadoPago (ACT-06) | sí | sí |
-| `obtenerCodigoDeEntrega(pedidoId identificador)` | CU-078 | Chofer (ACT-02) | sí | — |
+| `obtenerCodigoDeEntrega(pedidoId identificador)` | CU-078 | Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `ofrecerAlSiguienteChofer(pedidoId identificador)` | CU-013 | Sistema Automático (ACT-04) | sí | sí |
 | `otorgarCuentaDeAcceso(empleadoId identificador, datosDeAcceso registro)` | CU-182 | Administrador (ACT-03) | sí | sí |
 | `pagarLiquidacion(liquidacionId identificador, cajaId identificador)` | CU-243 | Administrador (ACT-03) | sí | sí |
-| `planificarMantenimientoDeFlota()` | CU-105 | Sistema Automático (ACT-04) | sí | sí |
+| `planificarMantenimientoDeFlota()` | CU-105 | Chofer (ACT-02), Administrador (ACT-03), Sistema Automático (ACT-04) | sí | sí |
 | `ponerVehiculoEnUso(choferId identificador, vehiculoId identificador, nota cadena)` | CU-161 | Administrador (ACT-03) | sí | sí |
 | `probarServicioDeCorreo(destinatario cadena)` | CU-102 | Administrador General (ACT-05) | sí | — |
+| `programarMantenimientoDeVehiculo(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)` | CU-140 | Administrador (ACT-03) | sí | sí |
 | `programarVigenciaDeZona(zonaId identificador, vigenteHasta fechaHora)` | CU-150 | Administrador (ACT-03) | sí | sí |
 | `quitarItemDelCarrito(itemId identificador)` | CU-124 | Cliente (ACT-01) | sí | sí |
 | `reabrirReclamo(reclamoId identificador, motivo cadena)` | CU-167 | Administrador (ACT-03) | sí | sí |
-| `reabrirRendicion(rendicionId identificador)` | CU-233 | Administrador (ACT-03) | sí | sí |
+| `reabrirRendicion(rendicionId identificador)` | CU-330 | Administrador (ACT-03) | sí | sí |
 | `reactivarProducto(productoId identificador)` | CU-268 | Administrador (ACT-03) | sí | sí |
 | `reactivarVehiculo(vehiculoId identificador)` | CU-247 | Administrador (ACT-03) | sí | sí |
 | `realizarCompraExpress(tipoGarrafa cadena, medioDePago cadena)` | CU-147 | Cliente (ACT-01) | sí | sí |
 | `reaplicarEntregasDeStock()` | CU-278 | Administrador (ACT-03) | sí | sí |
-| `rechazarLicencia(licenciaId identificador, motivo cadena)` | CU-192 | Administrador (ACT-03) | sí | sí |
+| `rechazarLicencia(licenciaId identificador, motivo cadena)` | CU-318 | Administrador (ACT-03) | sí | sí |
 | `rechazarOferta(pedidoId identificador)` | CU-016 | Chofer (ACT-02) | sí | sí |
 | `reenviarConfirmacionDePedido(usuarioId identificador, pedidoId identificador)` | CU-101 | Administrador General (ACT-05) | sí | — |
 | `registrarAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena, rol cadena, distribuidoraId identificador)` | CU-086 | Administrador (ACT-03) | sí | sí |
 | `registrarAjusteDeConciliacion(productoId identificador, nota cadena, diferenciaEsperada entero)` | CU-277 | Administrador (ACT-03) | sí | sí |
-| `registrarAjusteDeCuentaCorriente(cuentaId identificador, tipo cadena, importe moneda, motivo cadena)` | CU-237 | Administrador (ACT-03) | sí | sí |
+| `registrarAjusteDeCuentaCorriente(cuentaId identificador, tipo cadena, importe moneda, motivo cadena)` | CU-329 | Administrador (ACT-03) | sí | sí |
 | `registrarAjusteDeStock(ubicacionId identificador, motivo cadena, nota cadena, items lista)` | CU-213 | Administrador (ACT-03) | sí | sí |
+| `registrarAltaEnLaART(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)` | CU-185 | Administrador (ACT-03) | sí | sí |
 | `registrarAsistencia(empleadoId identificador, ingreso fechaHora, egreso fechaHora)` | CU-189 | Administrador (ACT-03) | sí | sí |
 | `registrarAuditoriaDeDato(autor identificador, ip cadena, distribuidoraId identificador, entidad cadena, registro cadena, tipoDeAccion entero, detalles lista)` | CU-153 | Sistema Automático (ACT-04) | sí | sí |
-| `registrarCambioDeEstado(pedidoId identificador, estadoAnterior cadena, estadoNuevo cadena, autor identificador, motivo cadena)` | CU-169 | Sistema Automático (ACT-04) | sí | sí |
 | `registrarCargaDeCombustible(vehiculoId identificador, datos registro)` | CU-195 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `registrarCargaDelCamion(vehiculoId identificador, choferId identificador, depositoId identificador, ayudanteId identificador, items lista)` | CU-218 | Administrador (ACT-03) | sí | sí |
-| `registrarCargoDeCuentaCorriente(pedidoId identificador)` | CU-236 | Sistema Automático (ACT-04) | sí | sí |
-| `registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)` | CU-003 / CU-031 | Administrador (ACT-03) | sí | sí |
-| `registrarCobroEnEfectivoPorAdmin(pedidoId identificador, motivo cadena)` | CU-299 | Administrador (ACT-03), Administrador General (ACT-05) | sí | sí |
-| `registrarCobroImpagoPorAdmin(pedidoId identificador, motivo cadena)` | CU-300 | Administrador (ACT-03), Administrador General (ACT-05) | sí | sí |
+| `registrarCargoDeCuentaCorriente(pedidoId identificador)` | CU-332 | Sistema Automático (ACT-04) | sí | sí |
+| `registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)` | CU-003 | Administrador (ACT-03) | sí | sí |
+| `registrarChoferEnLaFlota(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)` | CU-031 | Administrador (ACT-03) | sí | sí |
+| `registrarCobroEnEfectivoPorAdmin(pedidoId identificador, motivo cadena)` | CU-299 | Administrador (ACT-03) | sí | sí |
+| `registrarCobroImpagoPorAdmin(pedidoId identificador, motivo cadena)` | CU-300 | Administrador (ACT-03) | sí | sí |
 | `registrarComisionDeEntrega(pedidoId identificador)` | CU-241 | Sistema Automático (ACT-04) | sí | sí |
 | `registrarConteoInicial(depositoId identificador, items lista, nota cadena)` | CU-274 | Administrador (ACT-03) | sí | sí |
+| `registrarCursoDeMercanciasPeligrosas(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)` | CU-183 | Administrador (ACT-03) | sí | sí |
 | `registrarDeposito(nombre cadena, codigo cadena, tipo cadena, direccion cadena)` | CU-258 | Administrador (ACT-03) | sí | sí |
-| `registrarDireccionDeEntrega(datos registro)` | CU-046 / CU-116 | Cliente (ACT-01) | sí | sí |
+| `registrarDireccionDeEntrega(datos registro)` | CU-116 | Cliente (ACT-01) | sí | sí |
 | `registrarDistribuidora(nombre cadena, identificadorCorto cadena, razonSocial cadena, cuit cadena, correo cadena, telefono cadena, logo archivo, plan cadena)` | CU-052 | Administrador General (ACT-05) | sí | sí |
 | `registrarEgresoDelEmpleado(empleadoId identificador, fechaDeEgreso fecha, motivo cadena)` | CU-181 | Administrador (ACT-03) | sí | sí |
 | `registrarEmpleado(datos registro)` | CU-177 | Administrador (ACT-03) | sí | sí |
-| `registrarFinDeJornada()` | CU-190 | Chofer (ACT-02) | sí | sí |
-| `registrarIncidencia(pedidoId identificador, tipo cadena, descripcion cadena, foto archivo)` | CU-060 | Chofer (ACT-02) | sí | sí |
+| `registrarEntradaDeDinero(cajaId identificador, importe moneda, categoriaId identificador, medio cadena, motivo cadena)` | CU-228 | Administrador (ACT-03) | sí | sí |
+| `registrarExamenPsicofisico(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)` | CU-184 | Administrador (ACT-03) | sí | sí |
+| `registrarFinDeJornada()` | CU-315 | Chofer (ACT-02) | sí | sí |
+| `registrarHabilitacionDeMercanciasPeligrosas(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)` | CU-197 | Administrador (ACT-03) | sí | sí |
+| `registrarIncidencia(pedidoId identificador, tipo cadena, descripcion cadena, foto archivo)` | CU-060 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `registrarInicioDeJornada()` | CU-190 | Chofer (ACT-02) | sí | sí |
 | `registrarLicencia(empleadoId identificador, tipo cadena, desde fecha, hasta fecha, motivo cadena)` | CU-191 | Administrador (ACT-03) | sí | sí |
-| `registrarMovimientoDeCaja(cajaId identificador, sentido cadena, importe moneda, categoriaId identificador, medio cadena, descripcion cadena)` | CU-228 | Administrador (ACT-03) | sí | sí |
-| `registrarMovimientoDeEnvase(envaseId identificador, estadoDestino cadena, pedidoId identificador, observacion cadena)` | CU-070 | Chofer (ACT-02) | sí | sí |
+| `registrarLicenciaDeConducir(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)` | CU-138 | Administrador (ACT-03) | sí | sí |
+| `registrarMovimientoDeEnvase(envaseId identificador, estadoDestino cadena, pedidoId identificador, observacion cadena)` | CU-070 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `registrarMovimientoDeNeumatico(neumaticoId identificador, datos registro)` | CU-206 | Administrador (ACT-03) | sí | sí |
 | `registrarMultaDeTransito(vehiculoId identificador, datos registro)` | CU-198 | Administrador (ACT-03) | sí | sí |
 | `registrarNeumatico(datos registro)` | CU-205 | Administrador (ACT-03) | sí | sí |
@@ -18823,32 +19885,34 @@ Son **341 operaciones**. **341** tienen su diagrama de interacción y
 | `registrarReclamo(pedidoId identificador, motivo cadena, evidencia archivo)` | CU-023 | Cliente (ACT-01) | sí | sí |
 | `registrarRegresoDelCamion(cargaId identificador, devueltos lista)` | CU-221 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `registrarRevisionDeEnvase(envaseId identificador, fecha fecha, resultado cadena, vencimiento fecha)` | CU-132 | Administrador (ACT-03) | sí | sí |
+| `registrarSalidaDeDinero(cajaId identificador, importe moneda, categoriaId identificador, medio cadena, motivo cadena)` | CU-309 | Administrador (ACT-03) | sí | sí |
 | `registrarSalidaDelCamion(cargaId identificador)` | CU-219 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `registrarse(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena, datosDelCliente registro)` | CU-002 | Cliente (ACT-01) | sí | sí |
+| `registrarSeguroDelVehiculo(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)` | CU-136 | Administrador (ACT-03) | sí | sí |
 | `registrarSiniestro(vehiculoId identificador, datos registro)` | CU-201 | Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
-| `registrarTokenDeNotificaciones(usuarioId identificador, token cadena, plataforma cadena)` | CU-098 | Cliente (ACT-01) | sí | sí |
+| `registrarTokenDeNotificaciones(usuarioId identificador, token cadena, plataforma cadena)` | CU-098 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | sí |
 | `registrarVehiculo(usuarioId identificador, tipo cadena, capacidad decimal, patente cadena, marca cadena, modelo cadena, anio entero, color cadena)` | CU-034 | Administrador (ACT-03) | sí | sí |
-| `reingresarEmpleado(empleadoId identificador, fechaDeIngreso fecha)` | CU-181 | Administrador (ACT-03) | sí | sí |
+| `registrarVerificacionTecnica(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)` | CU-137 | Administrador (ACT-03) | sí | sí |
+| `reingresarEmpleado(empleadoId identificador, fechaDeIngreso fecha)` | CU-312 | Administrador (ACT-03) | sí | sí |
 | `reintegrarPagoDelPedido(pedidoId identificador, importe moneda)` | CU-168 | Administrador (ACT-03), Sistema Automático (ACT-04) | sí | sí |
 | `reponerCargaDelCamion(cargaId identificador, items lista)` | CU-296 | Administrador (ACT-03) | sí | sí |
-| `resolverCasoDeRecupero(casoId identificador, decision cadena)` | CU-108 | Administrador (ACT-03) | sí | sí |
-| `resolverCobroImpago(pedidoId identificador, resolucion cadena, nota cadena)` | CU-294 | Administrador (ACT-03), Administrador General (ACT-05) | sí | sí |
+| `resolverCasoDeRecupero(casoId identificador, decision cadena)` | CU-108 | Cliente (ACT-01), Administrador (ACT-03), Sistema Automático (ACT-04) | sí | sí |
+| `resolverCobroImpago(pedidoId identificador, resolucion cadena, nota cadena)` | CU-294 | Administrador (ACT-03) | sí | sí |
 | `resolverIncidencia(incidenciaId identificador, notaDeResolucion cadena)` | CU-063 | Administrador (ACT-03) | sí | sí |
 | `resolverReclamo(reclamoId identificador, resolucion cadena, estadoFinal cadena)` | CU-025 | Administrador (ACT-03) | sí | sí |
 | `sembrarRolesIniciales()` | CU-090 | Administrador General (ACT-05) | sí | sí |
 | `solicitarRecuperacionDeClave(correo cadena)` | CU-047 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | — |
-| `suscribirseAlSeguimiento(clienteId identificador)` | CU-021 | Cliente (ACT-01) | sí | — |
 | `tomarReclamo(reclamoId identificador)` | CU-166 | Administrador (ACT-03) | sí | sí |
-| `transferirEntreCajas(cajaOrigenId identificador, cajaDestinoId identificador, importe moneda)` | CU-228 | Administrador (ACT-03) | sí | sí |
+| `transferirEntreCajas(cajaOrigenId identificador, cajaDestinoId identificador, importe moneda)` | CU-310 | Administrador (ACT-03) | sí | sí |
 | `transferirStock(origenId identificador, destinoId identificador, items lista, nota cadena)` | CU-212 | Administrador (ACT-03) | sí | sí |
 | `vaciarCarrito()` | CU-126 | Cliente (ACT-01) | sí | sí |
 | `validarChofer(choferId identificador)` | CU-032 | Administrador (ACT-03) | sí | sí |
-| `validarCobertura(latitud decimal, longitud decimal)` | CU-058 | Cliente (ACT-01) | sí | — |
-| `validarSesion()` | CU-091 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05) | sí | — |
+| `validarCobertura(latitud decimal, longitud decimal)` | CU-058 | Cliente (ACT-01), Administrador (ACT-03) | sí | — |
+| `validarFranjaDelPedido(franjaId identificador, fecha fecha)` | CU-044 | Cliente (ACT-01) | sí | — |
 | `vencerOfertasExpiradas()` | CU-014 | Sistema Automático (ACT-04) | sí | sí |
 | `venderACuentaCorriente(clienteId identificador, direccionId identificador, items lista)` | CU-236 | Administrador (ACT-03) | sí | sí |
 | `verificarDisponibilidad()` | CU-104 | Plataforma de despliegue (ACT-09) | sí | — |
-| `verificarExistenciaDeUsuario(correo cadena, telefono cadena)` | CU-084 | Cliente (ACT-01) | sí | — |
+| `verificarExistenciaDeUsuario(correo cadena, telefono cadena)` | CU-084 | Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03) | sí | — |
 | `verificarSalud()` | CU-104 | Plataforma de despliegue (ACT-09) | sí | — |
 | `verificarVida()` | CU-104 | Plataforma de despliegue (ACT-09) | sí | — |
 | `verificarVigenciaAlAsignar(pedidoId identificador, series lista)` | CU-135 | Sistema Automático (ACT-04) | sí | — |
@@ -18856,7 +19920,7 @@ Son **341 operaciones**. **341** tienen su diagrama de interacción y
 <!-- dc:inicio -->
 ## 5. Diagrama de Clases de Diseño
 
-El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del §4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se mandan mensajes decide la relación que los une. Se construye a partir de los 349 diagramas de interacción en la notación de Larman y del modelo conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de ellos.
+El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del §4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se mandan mensajes decide la relación que los une. Se construye a partir de los 372 diagramas de interacción en la notación de Larman y del modelo conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de ellos.
 
 **Cómo se deriva.**
 
@@ -18868,8 +19932,8 @@ El diagrama de clases de diseño **se deriva de los diagramas de interacción** 
 | Un objeto de dominio que llega por parámetro o variable local (controlador a objeto, objeto a objeto sin asociación) | **Dependencia** (línea punteada) |
 | Servicio, puerto o colección que colabora con otro | Asociación navegable de multiplicidad 1: el colaborador se inyecta como atributo. Si el código real no lo inyecta, dependencia |
 | Primer receptor del mensaje del actor | `«controlador»` (clase `…UseCase` del módulo) o `«fachada»` (servicio fachada del módulo): el controlador de aplicación |
-| Objeto de infraestructura que sólo recibe mensajes de otros | `«fabricación pura»` |
-| Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con `..|>` sólo si aparece en un DSD |
+| Objeto de infraestructura que solo recibe mensajes de otros | `«fabricación pura»` |
+| Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con `..|>` solo si aparece en un DSD |
 | `:Map<String, X>` y `:List<X>` | `«colección»` agregada a su clase `X` (el DSD las usa para buscar por identificador) |
 
 **Notación.** Atributos `- nombre: Tipo` (privados; `/` marca un atributo derivado); operaciones `+ nombre(parametro: Tipo): Retorno`; `X[*]` es una colección de `X`; una línea sin punta no dice nada de la navegabilidad o es navegable en los dos sentidos (la composición se dibuja así cuando los DSD la recorren en ambos). Los nombres están en el idioma del DSD: las clases de dominio son las del modelo conceptual (`Pedido`, `ItemPedido`) y los controladores, fabricaciones puras y puertos llevan su nombre real (`CreateOrderUseCase`, `OrderPricingService`, `NotificationPort`). Una operación sin retorno es una que el DSD no muestra devolviendo nada. Una operación tiene un solo retorno: cuando el DSD devuelve varios valores, el primero es el retorno y los demás son parámetros de salida (`out nombre: Tipo`).
@@ -18942,87 +20006,87 @@ En total el diagrama tiene **301 clases** y **1293 operaciones**: 83 clases de d
 
 ### 5.1 Clases del Dominio
 
-Las clases del modelo conceptual, con sus atributos tipados y las operaciones que reciben en los DSD. La vista general no lleva miembros; las vistas por área llevan todos y dibujan en gris, sólo como referencia, las clases de otra área. Cada asociación del modelo conceptual está en alguna vista, con su multiplicidad.
+Las clases del modelo conceptual, con sus atributos tipados y las operaciones que reciben en los DSD. La vista general no lleva miembros; las vistas por área llevan todos y dibujan en gris, solo como referencia, las clases de otra área. Cada asociación del modelo conceptual está en alguna vista, con su multiplicidad.
 
 ![Clases de dominio: vista general](diagramas/clases-diseno/DC_General.png)
 
-**Figura 346 — Diagrama de Clases de Dominio**
+**Figura 394 — Diagrama de Clases de Dominio**
 
 ![Clases de dominio: organización y acceso](diagramas/clases-diseno/DC_Organizacion-y-acceso.png)
 
-**Figura 346.1 — Clases de dominio: organización y acceso**
+**Figura 395 — Clases de dominio: organización y acceso**
 
 ![Clases de dominio: clientes](diagramas/clases-diseno/DC_Clientes.png)
 
-**Figura 346.2 — Clases de dominio: clientes**
+**Figura 396 — Clases de dominio: clientes**
 
 ![Clases de dominio: pedido, líneas y pago](diagramas/clases-diseno/DC_Pedido.png)
 
-**Figura 346.3 — Clases de dominio: pedido, líneas y pago**
+**Figura 397 — Clases de dominio: pedido, líneas y pago**
 
 ![Clases de dominio: carrito, franjas y cobertura](diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png)
 
-**Figura 346.4 — Clases de dominio: carrito, franjas y cobertura**
+**Figura 398 — Clases de dominio: carrito, franjas y cobertura**
 
 ![Clases de dominio: despacho y propuestas con vigencia](diagramas/clases-diseno/DC_Despacho.png)
 
-**Figura 346.5 — Clases de dominio: despacho y propuestas con vigencia**
+**Figura 399 — Clases de dominio: despacho y propuestas con vigencia**
 
 ![Clases de dominio: choferes y vehículos](diagramas/clases-diseno/DC_Choferes-y-vehiculos.png)
 
-**Figura 346.6 — Clases de dominio: choferes y vehículos**
+**Figura 400 — Clases de dominio: choferes y vehículos**
 
 ![Clases de dominio: mantenimiento de la flota](diagramas/clases-diseno/DC_Mantenimiento.png)
 
-**Figura 346.7 — Clases de dominio: mantenimiento de la flota**
+**Figura 401 — Clases de dominio: mantenimiento de la flota**
 
 ![Clases de dominio: productos y envases](diagramas/clases-diseno/DC_Productos-y-envases.png)
 
-**Figura 346.8 — Clases de dominio: productos y envases**
+**Figura 402 — Clases de dominio: productos y envases**
 
 ![Clases de dominio: personal](diagramas/clases-diseno/DC_Personal.png)
 
-**Figura 346.9 — Clases de dominio: personal**
+**Figura 403 — Clases de dominio: personal**
 
 ![Clases de dominio: recupero de envases](diagramas/clases-diseno/DC_Recupero.png)
 
-**Figura 346.10 — Clases de dominio: recupero de envases**
+**Figura 404 — Clases de dominio: recupero de envases**
 
 ![Clases de dominio: posventa](diagramas/clases-diseno/DC_Posventa.png)
 
-**Figura 346.11 — Clases de dominio: posventa**
+**Figura 405 — Clases de dominio: posventa**
 
 ![Clases de dominio: gastos de la flota](diagramas/clases-diseno/DC_Gastos-de-flota.png)
 
-**Figura 346.12 — Clases de dominio: gastos de la flota**
+**Figura 406 — Clases de dominio: gastos de la flota**
 
 ![Clases de dominio: stock físico](diagramas/clases-diseno/DC_Stock-fisico.png)
 
-**Figura 346.13 — Clases de dominio: stock físico**
+**Figura 407 — Clases de dominio: stock físico**
 
 ![Clases de dominio: carga del camión](diagramas/clases-diseno/DC_Carga-del-camion.png)
 
-**Figura 346.14 — Clases de dominio: carga del camión**
+**Figura 408 — Clases de dominio: carga del camión**
 
 ![Clases de dominio: compras](diagramas/clases-diseno/DC_Compras.png)
 
-**Figura 346.15 — Clases de dominio: compras**
+**Figura 409 — Clases de dominio: compras**
 
 ![Clases de dominio: caja y movimientos](diagramas/clases-diseno/DC_Caja.png)
 
-**Figura 346.16 — Clases de dominio: caja y movimientos**
+**Figura 410 — Clases de dominio: caja y movimientos**
 
 ![Clases de dominio: rendición del chofer](diagramas/clases-diseno/DC_Rendicion.png)
 
-**Figura 346.17 — Clases de dominio: rendición del chofer**
+**Figura 411 — Clases de dominio: rendición del chofer**
 
 ![Clases de dominio: cuentas corrientes](diagramas/clases-diseno/DC_Cuentas-corrientes.png)
 
-**Figura 346.18 — Clases de dominio: cuentas corrientes**
+**Figura 412 — Clases de dominio: cuentas corrientes**
 
 ![Clases de dominio: comisiones y liquidaciones](diagramas/clases-diseno/DC_Comisiones.png)
 
-**Figura 346.19 — Clases de dominio: comisiones y liquidaciones**
+**Figura 413 — Clases de dominio: comisiones y liquidaciones**
 
 ### 5.2 Clases de Diseño, por módulo
 
@@ -19033,126 +20097,126 @@ Los controladores, las fabricaciones puras, los puertos y las colecciones de los
 | `«colección»` | `List<Administrador>`, `List<AjusteDeStock>`, `List<AsientoAuditoria>`, `List<AsientoComision>`, `List<AsientoCuentaCorriente>`, `List<AsignacionVehiculo>`, `List<Auditoria>`, `List<Caja>`, `List<CargaCombustible>`, `List<CargaDeCamion>`, `List<Chofer>`, `List<Cliente>`, `List<CuentaCorriente>`, `List<Distribuidora>`, `List<Empleado>`, `List<InvitacionRecompra>`, `List<JornadaDeTrabajo>`, `List<LicenciaLaboral>`, `List<MovimientoDeStock>`, `List<MultaTransito>`, `List<OrdenDeCompra>`, `List<Pedido>`, `List<Producto>`, `List<RecepcionDeCompra>`, `List<ReglaComision>`, `List<RendicionChofer>`, `List<Rol>`, `List<Siniestro>`, `List<TareaMantenimiento>`, `List<UbicacionDeStock>`, `List<UmbralDeStock>`, `List<Usuario>`, `List<Vehiculo>`, `List<ZonaCobertura>`, `Map<String, Administrador>`, `Map<String, AjusteDeStock>`, `Map<String, AvisoRecupero>`, `Map<String, Caja>`, `Map<String, CargaCombustible>`, `Map<String, CargaDeCamion>`, `Map<String, CasoRecupero>`, `Map<String, CategoriaDeCaja>`, `Map<String, Chofer>`, `Map<String, Cliente>`, `Map<String, CuentaCorriente>`, `Map<String, Deposito>`, `Map<String, DireccionEntrega>`, `Map<String, Distribuidora>`, `Map<String, Empleado>`, `Map<String, Envase>`, `Map<String, FranjaHoraria>`, `Map<String, Incidencia>`, `Map<String, InvitacionRecompra>`, `Map<String, JornadaDeTrabajo>`, `Map<String, LicenciaLaboral>`, `Map<String, LiquidacionComisiones>`, `Map<String, LoteRecorrido>`, `Map<String, MovimientoDeCaja>`, `Map<String, MultaTransito>`, `Map<String, Neumatico>`, `Map<String, OrdenDeCompra>`, `Map<String, Pedido>`, `Map<String, PlanMantenimiento>`, `Map<String, Producto>`, `Map<String, PropuestaVentanaTaller>`, `Map<String, Proveedor>`, `Map<String, PuestoDeTrabajo>`, `Map<String, RecepcionDeCompra>`, `Map<String, Reclamo>`, `Map<String, ReglaComision>`, `Map<String, RendicionChofer>`, `Map<String, Rol>`, `Map<String, SesionDeCaja>`, `Map<String, Siniestro>`, `Map<String, TareaMantenimiento>`, `Map<String, UbicacionDeStock>`, `Map<String, Usuario>`, `Map<String, Vehiculo>`, `Map<String, ZonaCobertura>` |
 | `«controlador»` | `CancelOrderUseCase`, `CancelTruckLoadUseCase`, `CashCollectionUseCase`, `CatalogStockAdjustmentUseCase`, `CloseTruckLoadUseCase`, `ConfirmDeliveryUseCase`, `ConfirmPaymentUseCase`, `CreateOrderUseCase`, `DepartTruckLoadUseCase`, `GrantEmployeeAccountUseCase`, `InitialCountUseCase`, `OpenTruckLoadUseCase`, `QuoteOrderUseCase`, `ReapplyDeliveriesUseCase`, `ReceivePurchaseUseCase`, `ReconciliationAdjustmentUseCase`, `RefundPaymentUseCase`, `ReleaseOrderUseCase`, `ReloadTruckLoadUseCase`, `ReturnTruckLoadUseCase`, `ReverseBatchUseCase`, `StockAdjustmentUseCase`, `StockTransferUseCase`, `TerminateEmployeeUseCase`, `UpdateOrderStatusUseCase`, `UpdateTruckLoadItemsUseCase`, `VoidPurchaseReceiptUseCase` |
 | `«fabricación pura»` | `AdminGateway`, `ConsumptionEstimatorService`, `DemandForecastService`, `DepositLedgerService`, `DispatchConfigService`, `FleetCoverageService`, `FuelConsumptionCalculator`, `RedisHealthIndicator`, `RedisService`, `S3CleanupService`, `S3Service`, `ScheduledTaskGate`, `SocketIdentityService`, `StockAdminNotifier`, `VacationPolicy` |
-| `«fachada»` | `AdminService`, `AttachmentService`, `AttendanceService`, `AuditService`, `AuthService`, `CarService`, `CartService`, `CashBoxService`, `CashCategoryService`, `CashLedgerService`, `ClaimsService`, `CommissionService`, `ConsumptionService`, `CoverageZoneCronService`, `CoverageZoneService`, `CustomerAccountService`, `CustomersGateway`, `CustomersService`, `CylinderRecoveryService`, `CylinderService`, `DataAuditService`, `DataAuditSubscriber`, `DeliveryService`, `DispatchOrchestratorService`, `DispatchService`, `DistributorService`, `DriverSettlementCron`, `DriverSettlementService`, `DriversGateway`, `EmailService`, `EmployeeService`, `FinanceDashboardService`, `FleetAlertsCron`, `FleetAttachmentService`, `FleetCostReportService`, `FleetDispatchLockService`, `FleetExpenseAlertsCron`, `FleetExpirationsService`, `FleetMaintenancePlannerService`, `FleetTaskService`, `FuelLoadService`, `GasCylinderService`, `HealthCheckService`, `IncidentService`, `JobPositionService`, `LeaveService`, `ModuleConfigService`, `NotificationsService`, `OrderService`, `OrderStatusHistoryService`, `OrderStatusHistorySubscriber`, `PaymentsService`, `PersonnelDashboardService`, `PurchaseOrderService`, `PurchaseQueryService`, `PurchaseReceiptService`, `RatingService`, `RegistroService`, `ReportsService`, `RepurchaseEstimatesService`, `RepurchaseForecastService`, `ReservationService`, `RoleService`, `RouteBatchPlannerService`, `RoutesService`, `SettlementOverdueCron`, `StockControlSettingsService`, `StockDeliveryService`, `StockLedgerService`, `StockLocationService`, `StockLowCron`, `StockQueryService`, `StockReconciliationCron`, `StockReconciliationService`, `StockThresholdService`, `SupplierService`, `TimeSlotService`, `TireService`, `TrafficFineService`, `TruckLoadGateService`, `TruckLoadQueryService`, `UnpaidCashService`, `UserAddressService`, `UsersService`, `VehicleAccidentService`, `VehicleAssignmentService`, `WarehouseService` |
+| `«fachada»` | `AdminService`, `AttachmentService`, `AttendanceService`, `AuditService`, `AuthService`, `CarService`, `CartService`, `CashBoxService`, `CashCategoryService`, `CashLedgerService`, `ClaimsService`, `CommissionService`, `ConsumptionService`, `CoverageZoneCronService`, `CoverageZoneService`, `CustomerAccountService`, `CustomersGateway`, `CustomersService`, `CylinderRecoveryService`, `CylinderService`, `DataAuditService`, `DataAuditSubscriber`, `DeliveryService`, `DispatchOrchestratorService`, `DispatchService`, `DistributorService`, `DriverSettlementCron`, `DriverSettlementService`, `DriversGateway`, `EmailService`, `EmployeeService`, `FinanceDashboardService`, `FleetAlertsCron`, `FleetAttachmentService`, `FleetCostReportService`, `FleetDispatchLockService`, `FleetExpenseAlertsCron`, `FleetExpirationsService`, `FleetMaintenancePlannerService`, `FleetTaskService`, `FuelLoadService`, `GasCylinderService`, `HealthCheckService`, `IncidentService`, `JobPositionService`, `LeaveService`, `ModuleConfigService`, `NotificationsService`, `OrderService`, `OrderStatusHistorySubscriber`, `PaymentsService`, `PersonnelDashboardService`, `PurchaseOrderService`, `PurchaseQueryService`, `PurchaseReceiptService`, `RatingService`, `RegistroService`, `ReportsService`, `RepurchaseEstimatesService`, `RepurchaseForecastService`, `ReservationService`, `RoleService`, `RouteBatchPlannerService`, `RoutesService`, `SettlementOverdueCron`, `StockControlSettingsService`, `StockDeliveryService`, `StockLedgerService`, `StockLocationService`, `StockLowCron`, `StockQueryService`, `StockReconciliationCron`, `StockReconciliationService`, `StockThresholdService`, `SupplierService`, `TimeSlotService`, `TireService`, `TrafficFineService`, `TruckLoadGateService`, `TruckLoadQueryService`, `UnpaidCashService`, `UserAddressService`, `UsersService`, `VehicleAccidentService`, `VehicleAssignmentService`, `WarehouseService` |
 | `«puerto»` | `CylinderLifecyclePort`, `DispatchOfferRepositoryPort`, `EmailSenderPort`, `FcmPort`, `FirebaseAuthPort`, `FleetAvailabilityPort`, `NotificationPort`, `OrderRepositoryPort`, `PaymentGatewayPort`, `RealtimeDispatchPort` |
 
 Ningún DSD llega hasta un adaptador (los diagramas terminan en el puerto), así que el diagrama no dibuja realizaciones; cuando un DSD nombre un adaptador, la realización `..|>` se dibuja sola.
 
 ![Clases de diseño: sesión, registro e identidad](diagramas/clases-diseno/DC_Mod_Sesion-y-registro.png)
 
-**Figura 347 — Clases de diseño: sesión, registro e identidad**
+**Figura 414 — Clases de diseño: sesión, registro e identidad**
 
 ![Clases de diseño: usuarios, roles, administradores y auditoría](diagramas/clases-diseno/DC_Mod_Usuarios.png)
 
-**Figura 348 — Clases de diseño: usuarios, roles, administradores y auditoría**
+**Figura 415 — Clases de diseño: usuarios, roles, administradores y auditoría**
 
 ![Clases de diseño: clientes y direcciones de entrega](diagramas/clases-diseno/DC_Mod_Clientes.png)
 
-**Figura 349 — Clases de diseño: clientes y direcciones de entrega**
+**Figura 416 — Clases de diseño: clientes y direcciones de entrega**
 
 ![Clases de diseño: carrito y recompra](diagramas/clases-diseno/DC_Mod_Carrito-y-recompra.png)
 
-**Figura 350 — Clases de diseño: carrito y recompra**
+**Figura 417 — Clases de diseño: carrito y recompra**
 
 ![Clases de diseño: productos y franjas horarias](diagramas/clases-diseno/DC_Mod_Productos-y-franjas.png)
 
-**Figura 351 — Clases de diseño: productos y franjas horarias**
+**Figura 418 — Clases de diseño: productos y franjas horarias**
 
 ![Clases de diseño: cobertura y distribuidoras](diagramas/clases-diseno/DC_Mod_Cobertura-y-distribuidoras.png)
 
-**Figura 352 — Clases de diseño: cobertura y distribuidoras**
+**Figura 419 — Clases de diseño: cobertura y distribuidoras**
 
 ![Clases de diseño: pedidos: alta y cancelación](diagramas/clases-diseno/DC_Mod_Pedidos-alta.png)
 
-**Figura 353 — Clases de diseño: pedidos: alta y cancelación**
+**Figura 420 — Clases de diseño: pedidos: alta y cancelación**
 
 ![Clases de diseño: pedidos: consulta y estado](diagramas/clases-diseno/DC_Mod_Pedidos-estado.png)
 
-**Figura 354 — Clases de diseño: pedidos: consulta y estado**
+**Figura 421 — Clases de diseño: pedidos: consulta y estado**
 
 ![Clases de diseño: pagos y reservas](diagramas/clases-diseno/DC_Mod_Pagos.png)
 
-**Figura 355 — Clases de diseño: pagos y reservas**
+**Figura 422 — Clases de diseño: pagos y reservas**
 
 ![Clases de diseño: despacho de pedidos](diagramas/clases-diseno/DC_Mod_Despacho.png)
 
-**Figura 356 — Clases de diseño: despacho de pedidos**
+**Figura 423 — Clases de diseño: despacho de pedidos**
 
 ![Clases de diseño: seguimiento en tiempo real](diagramas/clases-diseno/DC_Mod_Tiempo-real.png)
 
-**Figura 357 — Clases de diseño: seguimiento en tiempo real**
+**Figura 424 — Clases de diseño: seguimiento en tiempo real**
 
 ![Clases de diseño: choferes y vehículos](diagramas/clases-diseno/DC_Mod_Choferes-y-vehiculos.png)
 
-**Figura 358 — Clases de diseño: choferes y vehículos**
+**Figura 425 — Clases de diseño: choferes y vehículos**
 
 ![Clases de diseño: flota: tareas, adjuntos y vencimientos](diagramas/clases-diseno/DC_Mod_Flota-tareas.png)
 
-**Figura 359 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
+**Figura 426 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
 
 ![Clases de diseño: flota: planificador de mantenimiento](diagramas/clases-diseno/DC_Mod_Flota-planificador.png)
 
-**Figura 360 — Clases de diseño: flota: planificador de mantenimiento**
+**Figura 427 — Clases de diseño: flota: planificador de mantenimiento**
 
 ![Clases de diseño: personal: puestos, legajos, jornadas y licencias](diagramas/clases-diseno/DC_Mod_Personal.png)
 
-**Figura 361 — Clases de diseño: personal: puestos, legajos, jornadas y licencias**
+**Figura 428 — Clases de diseño: personal: puestos, legajos, jornadas y licencias**
 
 ![Clases de diseño: adjuntos](diagramas/clases-diseno/DC_Mod_Adjuntos.png)
 
-**Figura 362 — Clases de diseño: adjuntos**
+**Figura 429 — Clases de diseño: adjuntos**
 
 ![Clases de diseño: envases](diagramas/clases-diseno/DC_Mod_Envases.png)
 
-**Figura 363 — Clases de diseño: envases**
+**Figura 430 — Clases de diseño: envases**
 
 ![Clases de diseño: recupero de envases](diagramas/clases-diseno/DC_Mod_Recupero.png)
 
-**Figura 364 — Clases de diseño: recupero de envases**
+**Figura 431 — Clases de diseño: recupero de envases**
 
 ![Clases de diseño: flota: gastos, multas y siniestros](diagramas/clases-diseno/DC_Mod_Flota-gastos.png)
 
-**Figura 365 — Clases de diseño: flota: gastos, multas y siniestros**
+**Figura 432 — Clases de diseño: flota: gastos, multas y siniestros**
 
 ![Clases de diseño: reclamos, incidencias y calificaciones](diagramas/clases-diseno/DC_Mod_Posventa.png)
 
-**Figura 366 — Clases de diseño: reclamos, incidencias y calificaciones**
+**Figura 433 — Clases de diseño: reclamos, incidencias y calificaciones**
 
 ![Clases de diseño: notificaciones y correo](diagramas/clases-diseno/DC_Mod_Notificaciones.png)
 
-**Figura 367 — Clases de diseño: notificaciones y correo**
+**Figura 434 — Clases de diseño: notificaciones y correo**
 
 ![Clases de diseño: reportes, salud y almacenamiento](diagramas/clases-diseno/DC_Mod_Soporte.png)
 
-**Figura 368 — Clases de diseño: reportes, salud y almacenamiento**
+**Figura 435 — Clases de diseño: reportes, salud y almacenamiento**
 
 ![Clases de diseño: stock](diagramas/clases-diseno/DC_Mod_Stock.png)
 
-**Figura 369 — Clases de diseño: stock**
+**Figura 436 — Clases de diseño: stock**
 
 ![Clases de diseño: compras](diagramas/clases-diseno/DC_Mod_Compras.png)
 
-**Figura 370 — Clases de diseño: compras**
+**Figura 437 — Clases de diseño: compras**
 
 ![Clases de diseño: carga del camión](diagramas/clases-diseno/DC_Mod_Carga-del-camion.png)
 
-**Figura 371 — Clases de diseño: carga del camión**
+**Figura 438 — Clases de diseño: carga del camión**
 
 ![Clases de diseño: caja: cajas, sesiones y libro](diagramas/clases-diseno/DC_Mod_Caja.png)
 
-**Figura 372 — Clases de diseño: caja: cajas, sesiones y libro**
+**Figura 439 — Clases de diseño: caja: cajas, sesiones y libro**
 
 ![Clases de diseño: rendición del chofer](diagramas/clases-diseno/DC_Mod_Rendicion.png)
 
-**Figura 373 — Clases de diseño: rendición del chofer**
+**Figura 440 — Clases de diseño: rendición del chofer**
 
 ![Clases de diseño: cuentas corrientes](diagramas/clases-diseno/DC_Mod_Cuentas-corrientes.png)
 
-**Figura 374 — Clases de diseño: cuentas corrientes**
+**Figura 441 — Clases de diseño: cuentas corrientes**
 
 ![Clases de diseño: comisiones y liquidaciones](diagramas/clases-diseno/DC_Mod_Comisiones.png)
 
-**Figura 375 — Clases de diseño: comisiones y liquidaciones**
+**Figura 442 — Clases de diseño: comisiones y liquidaciones**
 
 ### 5.3 Dependencias entre módulos
 
@@ -19160,7 +20224,7 @@ Un módulo depende de otro cuando alguna de sus clases le manda un mensaje, en a
 
 ![Dependencias entre módulos](diagramas/clases-diseno/DC_Paquetes.png)
 
-**Figura 376 — Dependencias entre módulos**
+**Figura 443 — Dependencias entre módulos**
 
 | Módulo | Depende de |
 |---|---|
@@ -19284,7 +20348,7 @@ LocationService (ListenableServiceMixin)
 | CasoRecupero | `CylinderRecoveryCase` | `cylinder_recovery_case` | `cylinder` |
 | AvisoRecupero | `CylinderRecoveryNotice` | `cylinder_recovery_notice` | `cylinder` |
 | Carrito | `Cart` | `cart` | _(sin service ni controller — ver §5.7)_ |
-| ItemCarrito | `CartItem` | `cart_item` | _(idem)_ |
+| ItemCarrito | `CartItem` | `cart_item` | _(ídem)_ |
 | Pedido | `Order` | `order` | `order` |
 | ItemPedido | `OrderItem` | `order_item` | `order` |
 | CambioEstadoPedido | `OrderStatusHistory` | `order_status_history` | `order` |
@@ -19295,8 +20359,8 @@ LocationService (ListenableServiceMixin)
 | PropuestaConVigencia | _(sin clase en el código: cada especialización declara su propio `status`; el diagrama la dibuja como clase abstracta, §5.1)_ | — | — |
 | OfertaDespacho | `DispatchOffer` | `order_dispatch_offer` | `order` |
 | LoteRecorrido | `RouteBatch` | `route_batch` | _(entidad sin service propio — ver §5.7)_ |
-| ParadaLote | `RouteBatchStop` | `route_batch_stop` | _(idem)_ |
-| OfertaLote | `RouteBatchOffer` | `route_batch_offer` | _(idem)_ |
+| ParadaLote | `RouteBatchStop` | `route_batch_stop` | _(ídem)_ |
+| OfertaLote | `RouteBatchOffer` | `route_batch_offer` | _(ídem)_ |
 | Chofer | `Delivery` | `delivery` | `delivery` |
 | Vehiculo | `Car` | `car` | `car` |
 | AsignacionVehiculo | `VehicleAssignment` | `vehicle_assignment` | `car` / `fleet` |
@@ -19364,7 +20428,7 @@ para las dos direcciones.
 Cada mensaje `Origen->>Destino: operación(argumentos)` de un diagrama de interacción tiene su
 clase y su operación en el diagrama de clases de diseño, y cada clase del diagrama corresponde a
 una clase del código o a una colaboración propuesta, como lo dice la tabla de implementación de
-cada diagrama. Los 349 diagramas de interacción en la notación de Larman se cruzan contra las
+cada diagrama. Los 372 diagramas de interacción en la notación de Larman se cruzan contra las
 clases de diseño que se derivan de ellos (las del diagrama de §5.1 y §5.2).
 
 | | |
@@ -19421,7 +20485,6 @@ No toda clase del diagrama es una clase del código con ese nombre. Son de tres 
     `FleetExpirationsService`, `FleetAlertsCron`, `RegistroService` y `S3Service`, que existen;
   - la configuración de procesos y de tareas (CU-171 a CU-173): `ModuleConfigController`,
     `ModuleConfigService`, `DispatchConfigService` y `ScheduledTaskGate`;
-  - el historial de estados del pedido (CU-169 y CU-170): `OrderStatusHistoryService`;
   - el reintegro de pagos (CU-168): `ReintegroListener` y `RefundPaymentUseCase`, más las
     operaciones nuevas de `PaymentsService` y `PaymentGatewayPort`;
   - las operaciones nuevas sobre clases que existen: cambio de dirección, quién recibe y
@@ -19470,10 +20533,10 @@ compromete dinero.**
 
 | Relación | Casos de uso |
 |---|---|
-| Lo dispara | CU-005 Crear Pedido |
-| Se alimenta de | CU-058 Validar Cobertura de una Dirección, CU-035 Consultar Listado de Choferes, CU-109 Consultar Detalle del Chofer |
-| Alternativa manual | CU-012 Asignar Chofer Manualmente |
-| Desemboca en | CU-081 Consultar los Pedidos Asignados al Chofer, CU-017 Actualizar Ubicación GPS del Chofer, CU-018 Marcar Pedido "En Camino" |
+| Lo dispara | CU-005 Crear un Pedido |
+| Se alimenta de | CU-058 Validar la Cobertura de una Dirección, CU-035 Consultar el Listado de Choferes, CU-109 Consultar el Detalle del Chofer |
+| Alternativa manual | CU-012 Asignar un Chofer Manualmente |
+| Desemboca en | CU-081 Consultar los Pedidos Asignados al Chofer, CU-017 Actualizar la Ubicación GPS del Chofer, CU-018 Marcar un Pedido "En Camino" |
 | Comparte mecánica con | CU-149 Despachar un Pedido Express a un Chofer en Moto |
 
 **Componentes:** `DispatchOrchestratorService` (orquestador), `DispatchService` (proceso temporal) y la entidad `DispatchOffer`.
@@ -19497,7 +20560,7 @@ en paralelo y queda auditable.
 - Pedido recién creado en estado `PENDING` sin chofer asignado — creación del pedido (CU-005)
 - Choferes ya contactados para el pedido — tabla `dispatch_offer`
 - Choferes activos y su posición — índice geoespacial (GEORADIUS)
-- Distribuidora dueña del pedido — filtro de aislamiento multi-tenant
+- Distribuidora dueña del pedido — filtro de aislamiento multidistribuidora
 - Pasos de radio de búsqueda y vigencia de la oferta — parámetros configurados (`RADIUS_STEPS_KM`, `OFFER_TTL_SECONDS`)
 
 #### Algoritmo — `offerToNextDriver(order)`
@@ -19509,7 +20572,7 @@ en paralelo y queda auditable.
 2. Buscar el siguiente candidato:
      Para cada radio en [5, 10, 15, 20] km:
          a. GEORADIUS sobre el índice de choferes activos  → ordenados por cercanía ASC
-         b. Filtrar por distribuidora del pedido            → aislamiento multi-tenant
+         b. Filtrar por distribuidora del pedido            → aislamiento multidistribuidora
          c. Descartar los ya contactados
          d. Si queda alguno → es el candidato; cortar la búsqueda
      Si ningún radio arroja candidato → no hacer nada (el proceso temporal reintentará)
@@ -19518,7 +20581,7 @@ en paralelo y queda auditable.
 
 4. Notificar al chofer:
      · WebSocket  'NEW_ORDER'  con el detalle del pedido y la hora de vencimiento
-     · Push FCM complementario (best-effort, por si la app está cerrada)
+     · Push FCM complementario (de mejor esfuerzo, por si la app está cerrada)
 ```
 
 #### Algoritmo — `handleExpiredOffers()` — proceso temporal cada 15 s
@@ -19555,7 +20618,7 @@ agotados los candidatos, se avisa una vez a los administradores con `order:no-dr
 - Pedido asignado (`delivery_id` cargado) cuando el chofer acepta
 - Pedido `PENDING` a la espera de asignación manual del administrador si se agotan los radios sin candidatos
 
-#### Aislamiento multi-tenant
+#### Aislamiento multidistribuidora
 
 `filterByDistributor()` restringe los candidatos a los choferes de la distribuidora
 dueña del pedido, preservando el orden por cercanía. Un chofer nunca recibe ofertas
@@ -19628,7 +20691,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 377 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
+**Figura 444 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
 
 ---
 
@@ -19641,10 +20704,10 @@ sequenceDiagram
 
 | Relación | Casos de uso |
 |---|---|
-| Se alimenta de | CU-136 Registrar el Seguro del Vehículo, CU-137 Registrar la Verificación Técnica Vehicular, CU-138 Registrar la Licencia de Conducir del Chofer, CU-141 Registrar un Mantenimiento Realizado, CU-051 Consultar Listado de Vehículos, CU-113 Consultar Detalle del Vehículo |
+| Se alimenta de | CU-136 Registrar el Seguro del Vehículo, CU-137 Registrar la Verificación Técnica Vehicular, CU-138 Registrar la Licencia de Conducir del Chofer, CU-141 Registrar un Mantenimiento Realizado, CU-051 Consultar el Listado de Vehículos, CU-113 Consultar el Detalle del Vehículo |
 | Consulta | CU-139 Consultar los Vencimientos de la Flota |
 | Desemboca en | CU-140 Programar un Mantenimiento de Vehículo |
-| Condiciona | CU-013 Asignar Pedido Automáticamente por Proximidad |
+| Condiciona | CU-013 Asignar un Pedido Automáticamente por Proximidad |
 | Convive con | CU-142 Avisar los Vencimientos Próximos de la Flota |
 
 #### Descripción
@@ -19812,8 +20875,8 @@ async negotiateWindow(task: MaintenanceTask): Promise<void> {
 **Extensión opcional — cotización a talleres.** Antes de confirmar, el sistema
 puede solicitar presupuesto a una lista de talleres registrados y presentarle
 al administrador el cuadro comparativo. Es el ejemplo de presupuestos a
-proveedores de la catedra, aplicado a flota. El sistema reune la informacion;
-la contratacion la decide una persona.
+proveedores de la cátedra, aplicado a flota. El sistema reúne la información;
+la contratación la decide una persona.
 
 **Estados del flujo:** `PROPOSED -> ACCEPTED | REJECTED | EXPIRED -> ESCALATED`
 
@@ -19825,7 +20888,7 @@ abstract class FleetAvailabilityPort {
   abstract isVehicleFit(vehicleId: string, at: Date): Promise<boolean>;
 }
 
-// En DispatchOrchestratorService.findNearestAvailable(), junto al filtro de tenant:
+// En DispatchOrchestratorService.findNearestAvailable(), junto al filtro por distribuidora:
 const eligible = await this.filterByDistributor(drivers, distributorId);
 const fit = await this.filterByVehicleFitness(eligible);   // ← nuevo
 ```
@@ -19878,7 +20941,7 @@ Todos estos valores son editables por el administrador de la distribuidora:
 |---|---|---|
 | Cron diario | 03:00 | Recalcula predicciones y replanifica |
 | Evento `order.delivered` | Por entrega | Acumula km del viaje en `VehicleUsageLog` |
-| Evento `maintenance.completed` | Por tarea | Resetea contador y proyecta la siguiente |
+| Evento `maintenance.completed` | Por tarea | Reinicia contador y proyecta la siguiente |
 
 **Grado de automatización:** autónomo con supervisión. El sistema planifica
 solo; el administrador confirma o reprograma la ventana propuesta.
@@ -19917,7 +20980,7 @@ opciones y lo presenta; la contratación la asume siempre una persona.
 
 #### Diagrama de secuencia
 
-Diagrama de secuencia del sistema: **DSS — CU-105**, documento 2 seccion 2.1.  
+Diagrama de secuencia del sistema: **DSS — CU-105**, documento 2 sección 2.1.  
 Diagrama de interacción de diseño: **DSD — CU-105**, sección 4.22 de este documento.
 
 ### 6.3 Módulo M3 — Anticipación de recompra por consumo estimado
@@ -19929,10 +20992,10 @@ Diagrama de interacción de diseño: **DSD — CU-105**, sección 4.22 de este d
 
 | Relación | Casos de uso |
 |---|---|
-| Se alimenta de | CU-143 Declarar el Consumo Promedio al Registrarse, CU-144 Actualizar el Consumo Promedio Declarado, CU-007 Consultar Historial de Pedidos, CU-041 Consultar Catálogo de Productos |
+| Se alimenta de | CU-143 Declarar el Consumo Promedio al Registrarse, CU-144 Actualizar el Consumo Promedio Declarado, CU-007 Consultar el Historial de Pedidos, CU-041 Consultar el Catálogo de Productos |
 | Respeta | CU-145 Configurar los Días de Aviso Previo a la Recompra |
 | Se consulta por | CU-146 Consultar la Fecha Estimada de Recompra |
-| Desemboca en | CU-005 Crear Pedido |
+| Desemboca en | CU-005 Crear un Pedido |
 
 #### Descripción
 
@@ -20021,7 +21084,7 @@ El cliente recibió una invitación a reponer con vigencia limitada y el pedido 
 
 #### Diagrama de secuencia
 
-Diagrama de secuencia del sistema: **DSS — CU-106**, documento 2 seccion 2.1.  
+Diagrama de secuencia del sistema: **DSS — CU-106**, documento 2 sección 2.1.  
 Diagrama de interacción de diseño: **DSD — CU-106**, sección 4.22 de este documento.
 
 ### 6.4 Módulo M4 — Agrupación inteligente de pedidos por recorrido
@@ -20033,9 +21096,9 @@ Diagrama de interacción de diseño: **DSD — CU-106**, sección 4.22 de este d
 
 | Relación | Casos de uso |
 |---|---|
-| Se alimenta de | CU-011 Listar Todos los Pedidos, CU-045 Consultar Franjas Horarias Disponibles, CU-057 Consultar Zonas de Cobertura, CU-051 Consultar Listado de Vehículos, CU-113 Consultar Detalle del Vehículo |
-| Comparte mecánica con | CU-015 Aceptar Pedido, CU-016 Rechazar / Ignorar Pedido |
-| Devuelve a | CU-013 Asignar Pedido Automáticamente por Proximidad |
+| Se alimenta de | CU-011 Listar Todos los Pedidos, CU-045 Consultar las Franjas Horarias Disponibles, CU-057 Consultar los Polígonos de Cobertura, CU-051 Consultar el Listado de Vehículos, CU-113 Consultar el Detalle del Vehículo |
+| Comparte mecánica con | CU-015 Aceptar un Pedido, CU-016 Rechazar un Pedido Ofrecido |
+| Devuelve a | CU-013 Asignar un Pedido Automáticamente por Proximidad |
 
 #### Descripción
 
@@ -20112,7 +21175,7 @@ Quedó ofrecido al chofer un recorrido como lote ordenado por secuencia de entre
 
 #### Diagrama de secuencia
 
-Diagrama de secuencia del sistema: **DSS — CU-107**, documento 2 seccion 2.1.  
+Diagrama de secuencia del sistema: **DSS — CU-107**, documento 2 sección 2.1.  
 Diagrama de interacción de diseño: **DSD — CU-107**, sección 4.22 de este documento.
 
 ### 6.5 Módulo M5 — Recuperación de envases no devueltos
@@ -20124,7 +21187,7 @@ Diagrama de interacción de diseño: **DSD — CU-107**, sección 4.22 de este d
 
 | Relación | Casos de uso |
 |---|---|
-| Se alimenta de | CU-067 Dar de Alta un Envase Físico, CU-068 Asignar Envases a un Pedido, CU-070 Registrar Movimiento de Envase (cambio de estado), CU-071 Consultar Historial de Movimientos de un Envase, CU-069 Consultar el Parque de Envases |
+| Se alimenta de | CU-067 Dar de Alta un Envase Físico, CU-068 Asignar los Envases a un Pedido, CU-070 Registrar un Movimiento de Envase (cambio de estado), CU-071 Consultar el Historial de Movimientos de un Envase, CU-069 Consultar el Parque de Envases |
 | Ofrece la devolución en | CU-081 Consultar los Pedidos Asignados al Chofer |
 | Escala a | CU-011 Listar Todos los Pedidos |
 
@@ -20222,7 +21285,7 @@ El cliente recibió el paso de gestión que le correspondía en la secuencia esc
 
 #### Diagrama de secuencia
 
-Diagrama de secuencia del sistema: **DSS — CU-108**, documento 2 seccion 2.1.  
+Diagrama de secuencia del sistema: **DSS — CU-108**, documento 2 sección 2.1.  
 Diagrama de interacción de diseño: **DSD — CU-108**, sección 4.22 de este documento.
 
 ## 7. Pantallas UI — Wireframes y Diagramas
@@ -20237,12 +21300,12 @@ El diseño comprende **9 pantallas**: seis en teléfono móvil (App Cliente y Ap
 |----|----------|-----|------------|-------|
 | **D-16** | Catálogo de Productos | App Cliente | CU-041 | Móvil |
 | **D-17** | Checkout (carrito + franja + pago) | App Cliente | CU-005 | Móvil |
-| **D-18** | Seguimiento en Tiempo Real | App Cliente | CU-017, CU-021 | Móvil |
+| **D-18** | Seguimiento en Tiempo Real | App Cliente | CU-017 | Móvil |
 | **D-19** | Login y Registro | App Cliente / App Chofer / Admin | CU-001, CU-002 | Móvil |
 | **D-20** | Home del Chofer (toggle disponibilidad) | App Chofer | CU-022 | Móvil |
 | **D-21** | Pedido Entrante (bottom sheet) | App Chofer | CU-015 | Móvil |
 | **D-22** | En Ruta (mapa + confirmar entrega) | App Chofer | CU-018, CU-020 | Móvil |
-| **D-23** | Dashboard del Admin | Panel Admin | CU-026 | Escritorio |
+| **D-23** | tablero del Admin | Panel Admin | CU-026 | Escritorio |
 | **D-24** | Listado de Pedidos (Admin) | Panel Admin | CU-011 | Escritorio |
 
 #### D-16 — Catálogo de Productos (App Cliente)
@@ -20251,7 +21314,7 @@ UI App Cliente. Lista de garrafas disponibles con precio, stock y selector de ca
 
 ![D-16 Catálogo de Productos (App Cliente)](diagramas/wireframes/D-16.png)
 
-**Figura 378 — D-16 — Catálogo de Productos (App Cliente)**
+**Figura 445 — D-16 — Catálogo de Productos (App Cliente)**
 
 #### D-17 — Checkout (App Cliente)
 
@@ -20259,7 +21322,7 @@ UI App Cliente. Formulario de confirmación del pedido con resumen, dirección, 
 
 ![D-17 Checkout (App Cliente)](diagramas/wireframes/D-17.png)
 
-**Figura 379 — D-17 — Checkout (App Cliente)**
+**Figura 446 — D-17 — Checkout (App Cliente)**
 
 #### D-18 — Seguimiento en Tiempo Real (App Cliente)
 
@@ -20267,7 +21330,7 @@ UI más importante de la app. Mapa con pin del chofer en movimiento + stepper de
 
 ![D-18 Seguimiento en Tiempo Real (App Cliente)](diagramas/wireframes/D-18.png)
 
-**Figura 380 — D-18 — Seguimiento en Tiempo Real (App Cliente)**
+**Figura 447 — D-18 — Seguimiento en Tiempo Real (App Cliente)**
 
 #### D-19 — Login y Registro (App Cliente + Chofer)
 
@@ -20275,7 +21338,7 @@ UI de autenticación compartida por App Cliente y App Chofer.
 
 ![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19a.png)
 
-**Figura 381 — D-19 — Login y Registro (App Cliente + Chofer)**
+**Figura 448 — D-19 — Login y Registro (App Cliente + Chofer)**
 
 ![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19b.png)
 
@@ -20285,7 +21348,7 @@ UI principal del chofer. Mapa con su posición actual + toggle grande de disponi
 
 ![D-20 Home del Chofer (App Chofer)](diagramas/wireframes/D-20.png)
 
-**Figura 382 — D-20 — Home del Chofer (App Chofer)**
+**Figura 449 — D-20 — Home del Chofer (App Chofer)**
 
 #### D-21 — Pedido Entrante Bottom Sheet (App Chofer)
 
@@ -20293,7 +21356,7 @@ UI de pedido entrante. Bottom sheet que sube desde abajo con datos del pedido, d
 
 ![D-21 Pedido Entrante Bottom Sheet (App Chofer)](diagramas/wireframes/D-21.png)
 
-**Figura 383 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)**
+**Figura 450 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)**
 
 #### D-22 — En Ruta (App Chofer)
 
@@ -20301,29 +21364,29 @@ UI del chofer navegando hacia el cliente. Mapa con ruta trazada + botones Avisar
 
 ![D-22 En Ruta (App Chofer)](diagramas/wireframes/D-22.png)
 
-**Figura 384 — D-22 — En Ruta (App Chofer)**
+**Figura 451 — D-22 — En Ruta (App Chofer)**
 
-#### D-23 — Dashboard Administrador (Panel Web)
+#### D-23 — tablero Administrador (Panel Web)
 
-UI Panel Web. Dashboard con KPIs del día, choferes activos y gráfico de ventas últimos 7 días.
+UI Panel Web. tablero con KPIs del día, choferes activos y gráfico de ventas últimos 7 días.
 
-![D-23 Dashboard Administrador (Panel Web)](diagramas/wireframes/D-23.png)
+![D-23 tablero Administrador (Panel Web)](diagramas/wireframes/D-23.png)
 
-**Figura 385 — D-23 — Dashboard Administrador (Panel Web)**
+**Figura 452 — D-23 — tablero Administrador (Panel Web)**
 
 #### D-24 — Listado de Pedidos Admin (Panel Web)
 
-UI Panel Web. Tabla paginada con todos los pedidos, filtros y badges de estado de colores.
+UI Panel Web. Tabla paginada con todos los pedidos, filtros e insignias de estado de colores.
 
 ![D-24 Listado de Pedidos Admin (Panel Web)](diagramas/wireframes/D-24.png)
 
-**Figura 386 — D-24 — Listado de Pedidos Admin (Panel Web)**
+**Figura 453 — D-24 — Listado de Pedidos Admin (Panel Web)**
 
 ---
 
 ### 7.2 Referencia de UX: Rappi / PedidosYa
 
-Los wireframes siguen el patrón visual de las apps líderes del segmento (Rappi, PedidosYa). Coincidencias clave del sistema con su flujo de tracking:
+Los wireframes siguen el patrón visual de las apps líderes del segmento (Rappi, PedidosYa). Coincidencias clave del sistema con su flujo de seguimiento:
 
 ```
 [App Cliente — SPLG / Rappi / PedidosYa]
@@ -20393,14 +21456,14 @@ hizo; el modelo conceptual no se ve afectado porque nombra los atributos en leng
 
 | Contexto | Tabla | Columnas | Qué guarda |
 |---|---|:-:|---|
-| Organización y acceso | `distributor` | 14 | El tenant: la distribuidora. |
+| Organización y acceso | `distributor` | 14 | La distribuidora: la distribuidora. |
 | Organización y acceso | `role` | 5 | Catálogo de roles del sistema. |
 | Organización y acceso | `user` | 13 | Cuenta global de usuario, base de los tres perfiles. |
 | Organización y acceso | `admin` | 4 | Perfil de administrador (de una distribuidora, o superadministrador sin ninguna). |
 | Organización y acceso | `module_config` | 6 | Parámetros de cada proceso automático, por distribuidora. |
-| Organización y acceso | `audit_log` | 15 | Un asiento por operación de escritura, éxitosa o fallida. |
-| Organización y acceso | `audit` | 8 | Auditoria: una fila por registro de negocio que se dio de alta, se modificó, se dio de baja o se reactivó (entidad afectada, id del registro, usuario, distribuidora, dirección de red, fecha y hora). De sólo escritura. |
-| Organización y acceso | `audit_detail` | 5 | DetalleAuditoria: un campo que cambió en una auditoría, con su valor anterior y el nuevo. De sólo escritura. |
+| Organización y acceso | `audit_log` | 15 | Un asiento por operación de escritura, exitosa o fallida. |
+| Organización y acceso | `audit` | 8 | Auditoria: una fila por registro de negocio que se dio de alta, se modificó, se dio de baja o se reactivó (entidad afectada, id del registro, usuario, distribuidora, dirección de red, fecha y hora). De solo escritura. |
+| Organización y acceso | `audit_detail` | 5 | DetalleAuditoria: un campo que cambió en una auditoría, con su valor anterior y el nuevo. De solo escritura. |
 | Organización y acceso | `audit_action_type` | 2 | TipoAccionAuditoria: catálogo fijo de las acciones (1 Alta, 2 Modificación, 3 Baja lógica, 4 Reactivación, 5 Baja física). |
 | Clientes | `customer` | 10 | Perfil de cliente y sus datos de recompra declarados. |
 | Clientes | `user_address` | 16 | Dirección de entrega de un usuario. |
@@ -20442,7 +21505,7 @@ hizo; el modelo conceptual no se ve afectado porque nombra los atributos en leng
 | Stock físico y carga del camión | `warehouse` | 11 | Depósito o sucursal de la distribuidora donde se guarda el stock físico; baja lógica y uno solo predeterminado. |
 | Stock físico y carga del camión | `stock_location` | 6 | Lugar donde puede haber stock: un depósito o un vehículo. Concentra saldos y movimientos. |
 | Stock físico y carga del camión | `stock_balance` | 7 | Cantidad de un tipo de garrafa en una condición (llena, vacía, defectuosa) dentro de una ubicación; nunca negativa. |
-| Stock físico y carga del camión | `stock_movement` | 17 | Libro de movimientos de stock, de sólo agregado (un disparador impide modificarlo); lo corrige un contraasiento. |
+| Stock físico y carga del camión | `stock_movement` | 17 | Libro de movimientos de stock, de solo agregado (un disparador impide modificarlo); lo corrige un contraasiento. |
 | Stock físico y carga del camión | `stock_threshold` | 8 | Mínimo de llenas de un tipo de garrafa en un depósito, para avisar cuando baja. |
 | Stock físico y carga del camión | `stock_adjustment` | 9 | Ajuste de stock numerado, con su motivo y una nota obligatoria. |
 | Stock físico y carga del camión | `stock_adjustment_item` | 5 | Diferencia de un tipo de garrafa y condición dentro de un ajuste. |
@@ -20461,7 +21524,7 @@ La base completa en una sola lámina: las 63 tablas implementadas agrupadas por 
 
 ![Modelo físico de la base de datos: vista general](diagramas/base-de-datos/fisico/SPLG-fisico-00-general.png)
 
-**Figura 387 — Modelo físico de la base de datos: vista general**
+**Figura 454 — Modelo físico de la base de datos: vista general**
 
 #### 7.4.2 Diagrama Entidad-Relación (Mermaid)
 
@@ -20496,17 +21559,17 @@ erDiagram
         varchar logo_url "nullable"
         enum status
         varchar plan "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
         varchar logo_key "nullable"
     }
     ROLE {
         uuid role_id PK
         text type
-        timestamptz createdAt "nullable"
-        timestamptz updatedAt "nullable"
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt "nullable"
+        marca de tiempotz updatedAt "nullable"
+        marca de tiempotz deletedAt "nullable"
     }
     USER {
         uuid user_id PK
@@ -20519,15 +21582,15 @@ erDiagram
         boolean phone_verified
         boolean email_verified
         boolean blocked
-        timestamptz createdAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz deletedAt "nullable"
         varchar photo_key "nullable"
     }
     ADMIN {
         uuid admin_id PK
         uuid distributor_id FK "nullable"
         uuid user_id FK, UK
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     AUDIT {
         uuid audit_id PK
@@ -20537,7 +21600,7 @@ erDiagram
         varchar entity
         varchar record_id
         varchar ip "nullable"
-        timestamptz created_at
+        marca de tiempotz created_at
     }
     AUDIT_LOG {
         uuid audit_id PK
@@ -20554,14 +21617,14 @@ erDiagram
         int status_code
         jsonb changes "nullable"
         text error_message "nullable"
-        timestamptz created_at
+        marca de tiempotz created_at
     }
     MODULE_CONFIG {
         uuid config_id PK
         uuid distributor_id FK
         enum module
         jsonb params
-        timestamptz updated_at
+        marca de tiempotz updated_at
         uuid updated_by_user_id FK "nullable"
     }
     AUDIT_DETAIL {
@@ -20573,7 +21636,7 @@ erDiagram
     }
 ```
 
-**Figura 388 — Organización y acceso**
+**Figura 455 — Organización y acceso**
 
 ##### Clientes
 
@@ -20585,13 +21648,13 @@ erDiagram
         uuid customer_id PK
         uuid user_id FK, UK
         text notification_token "nullable"
-        timestamptz createdAt "nullable"
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt "nullable"
+        marca de tiempotz deletedAt "nullable"
         geometry location "nullable"
         decimal avg_monthly_consumption_kg "nullable"
         uuid declared_cylinder_type_id FK "nullable"
         int repurchase_notice_days "nullable"
-        timestamptz next_repurchase_estimate_at "nullable"
+        marca de tiempotz next_repurchase_estimate_at "nullable"
     }
     USER_ADDRESS {
         uuid address_id PK
@@ -20602,9 +21665,9 @@ erDiagram
         text formattedAddress "nullable"
         boolean isDefault
         text additionalInstructions "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
         varchar floor "nullable"
         varchar apartment "nullable"
         geometry location "nullable"
@@ -20616,17 +21679,17 @@ erDiagram
         uuid distributor_id FK
         uuid user_id FK
         uuid address_id FK "nullable"
-        timestamptz projected_depletion_at
+        marca de tiempotz projected_depletion_at
         jsonb suggested_items
         enum status
-        timestamptz expires_at
-        timestamptz responded_at "nullable"
+        marca de tiempotz expires_at
+        marca de tiempotz responded_at "nullable"
         uuid order_id FK "nullable"
-        timestamptz created_at
+        marca de tiempotz created_at
     }
 ```
 
-**Figura 389 — Clientes**
+**Figura 456 — Clientes**
 
 ##### Catálogo e inventario de envases
 
@@ -20648,8 +21711,8 @@ erDiagram
         int stock
         text description "nullable"
         boolean isActive
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
         varchar photo_key "nullable"
         decimal average_unit_cost "nullable"
     }
@@ -20658,7 +21721,7 @@ erDiagram
         uuid gas_cylinder_id FK
         int quantity
         decimal discount_percentage
-        timestamptz deletedAt "nullable"
+        marca de tiempotz deletedAt "nullable"
     }
     CYLINDER {
         uuid cylinder_id PK
@@ -20669,19 +21732,19 @@ erDiagram
         uuid current_customer_id FK "nullable"
         uuid current_order_id FK "nullable"
         decimal deposit
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz manufactured_at "nullable"
-        timestamptz last_inspection_at "nullable"
-        timestamptz expires_at "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz manufactured_at "nullable"
+        marca de tiempotz last_inspection_at "nullable"
+        marca de tiempotz expires_at "nullable"
     }
     CYLINDER_INSPECTION {
         uuid inspection_id PK
         uuid cylinder_id FK
         uuid distributor_id FK
-        timestamptz inspected_at
+        marca de tiempotz inspected_at
         enum result
-        timestamptz next_due_at "nullable"
+        marca de tiempotz next_due_at "nullable"
         text notes "nullable"
     }
     CYLINDER_MOVEMENT {
@@ -20693,19 +21756,19 @@ erDiagram
         uuid order_id FK "nullable"
         uuid actor_user_id FK "nullable"
         text note "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     CYLINDER_RECOVERY_CASE {
         uuid case_id PK
         uuid distributor_id FK
         uuid cylinder_id FK
         uuid user_id FK
-        timestamptz delivered_at
+        marca de tiempotz delivered_at
         decimal deposit_amount
         int step
         enum status
-        timestamptz opened_at
-        timestamptz closed_at "nullable"
+        marca de tiempotz opened_at
+        marca de tiempotz closed_at "nullable"
         uuid resolved_by_user_id FK "nullable"
         text resolution_note "nullable"
     }
@@ -20715,12 +21778,12 @@ erDiagram
         int step
         enum kind
         enum status "nullable"
-        timestamptz sent_at
-        timestamptz expires_at
+        marca de tiempotz sent_at
+        marca de tiempotz expires_at
     }
 ```
 
-**Figura 390 — Catálogo e inventario de envases**
+**Figura 457 — Catálogo e inventario de envases**
 
 ##### Venta y pedidos
 
@@ -20740,15 +21803,15 @@ erDiagram
         geometry area
         decimal surcharge_value
         boolean isActive
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
         enum surcharge_type
         varchar label "nullable"
         varchar color "nullable"
-        timestamptz valid_until "nullable"
+        marca de tiempotz valid_until "nullable"
         int priority
-        timestamptz valid_from "nullable"
+        marca de tiempotz valid_from "nullable"
     }
     TIME_SLOT {
         uuid time_slot_id PK
@@ -20758,14 +21821,14 @@ erDiagram
         time endTime
         int capacity
         boolean isActive
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     CART {
         uuid cart_id PK
         uuid user_id FK
         uuid distributor_id FK
-        timestamptz updated_at
+        marca de tiempotz updated_at
     }
     CART_ITEM {
         uuid cart_item_id PK
@@ -20791,11 +21854,11 @@ erDiagram
         decimal totalAmount
         text notes "nullable"
         text deliveryInstructions "nullable"
-        timestamptz acceptedAt "nullable"
-        timestamptz onTheWayAt "nullable"
-        timestamptz deliveredAt "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz acceptedAt "nullable"
+        marca de tiempotz onTheWayAt "nullable"
+        marca de tiempotz deliveredAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
         text cancellationReason "nullable"
         varchar gatewayPaymentId "nullable"
         varchar deliveryCode "nullable"
@@ -20814,10 +21877,10 @@ erDiagram
         varchar vehicle_patent "nullable"
         varchar vehicle_brand "nullable"
         varchar vehicle_model "nullable"
-        timestamptz payment_confirmed_at "nullable"
+        marca de tiempotz payment_confirmed_at "nullable"
         uuid payment_confirmed_by "nullable"
         text payment_resolution_note "nullable"
-        timestamptz payment_resolved_at "nullable"
+        marca de tiempotz payment_resolved_at "nullable"
         uuid payment_resolved_by "nullable"
     }
     ORDER_ADDRESS_CHANGE {
@@ -20826,7 +21889,7 @@ erDiagram
         uuid from_address_id FK
         uuid to_address_id FK
         uuid changed_by_user_id FK
-        timestamptz changed_at
+        marca de tiempotz changed_at
         text reason "nullable"
     }
     ORDER_ITEM {
@@ -20844,11 +21907,11 @@ erDiagram
         enum to_status
         uuid changed_by_user_id FK "nullable"
         text reason "nullable"
-        timestamptz changed_at
+        marca de tiempotz changed_at
     }
 ```
 
-**Figura 391 — Venta y pedidos**
+**Figura 458 — Venta y pedidos**
 
 ##### Pagos
 
@@ -20870,12 +21933,12 @@ erDiagram
         text payment_url "nullable"
         boolean is_deposit
         jsonb metadata "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
 ```
 
-**Figura 392 — Pagos**
+**Figura 459 — Pagos**
 
 ##### Despacho y logística
 
@@ -20890,7 +21953,7 @@ erDiagram
         enum status
         decimal total_weight_kg
         uuid delivery_id FK "nullable"
-        timestamptz created_at
+        marca de tiempotz created_at
     }
     ORDER_DISPATCH_OFFER {
         uuid offer_id PK
@@ -20898,16 +21961,16 @@ erDiagram
         uuid order_id FK
         uuid driver_id FK
         enum status
-        timestamptz expiresAt
-        timestamptz offeredAt
+        marca de tiempotz expiresAt
+        marca de tiempotz offeredAt
     }
     ROUTE_BATCH_OFFER {
         uuid offer_id PK
         uuid batch_id FK
         uuid delivery_id FK
         enum status
-        timestamptz expires_at
-        timestamptz responded_at "nullable"
+        marca de tiempotz expires_at
+        marca de tiempotz responded_at "nullable"
     }
     ROUTE_BATCH_STOP {
         uuid stop_id PK
@@ -20917,7 +21980,7 @@ erDiagram
     }
 ```
 
-**Figura 393 — Despacho y logística**
+**Figura 460 — Despacho y logística**
 
 ##### Flota y choferes
 
@@ -20957,14 +22020,14 @@ erDiagram
         varchar car_model "nullable"
         int car_year "nullable"
         varchar car_color "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
         decimal tare_weight_kg "nullable"
         decimal max_load_kg "nullable"
         int odometer_km "nullable"
         enum fleet_status
-        timestamptz in_service_since "nullable"
+        marca de tiempotz in_service_since "nullable"
         varchar photo_key "nullable"
     }
     DELIVERY {
@@ -20978,8 +22041,8 @@ erDiagram
         boolean isActive
         text notification_token "nullable"
         float balance
-        timestamptz createdAt "nullable"
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt "nullable"
+        marca de tiempotz deletedAt "nullable"
         geometry location "nullable"
         boolean isEnabled
         boolean isAvailable
@@ -20991,17 +22054,17 @@ erDiagram
         uuid car_id FK "nullable"
         uuid delivery_id FK "nullable"
         enum status
-        timestamptz due_at "nullable"
+        marca de tiempotz due_at "nullable"
         int due_km "nullable"
-        timestamptz predicted_due_at "nullable"
-        timestamptz scheduled_at "nullable"
-        timestamptz performed_at "nullable"
+        marca de tiempotz predicted_due_at "nullable"
+        marca de tiempotz scheduled_at "nullable"
+        marca de tiempotz performed_at "nullable"
         int odometer_km "nullable"
         decimal cost "nullable"
         varchar provider "nullable"
         varchar reference_number "nullable"
         varchar category "nullable"
-        timestamptz alerted_at "nullable"
+        marca de tiempotz alerted_at "nullable"
         text notes "nullable"
     }
     VEHICLE_ASSIGNMENT {
@@ -21009,8 +22072,8 @@ erDiagram
         uuid distributor_id FK
         uuid car_id FK
         uuid delivery_id FK
-        timestamptz assigned_at
-        timestamptz released_at "nullable"
+        marca de tiempotz assigned_at
+        marca de tiempotz released_at "nullable"
         uuid assigned_by_user_id FK "nullable"
         uuid released_by_user_id FK "nullable"
         text note "nullable"
@@ -21033,23 +22096,23 @@ erDiagram
         varchar mime_type
         int size_bytes
         uuid uploaded_by_user_id FK
-        timestamptz uploaded_at
-        timestamptz deleted_at "nullable"
+        marca de tiempotz uploaded_at
+        marca de tiempotz deleted_at "nullable"
     }
     MAINTENANCE_WINDOW_PROPOSAL {
         uuid proposal_id PK
         uuid task_id FK
         uuid delivery_id FK
-        timestamptz window_start
-        timestamptz window_end
+        marca de tiempotz window_start
+        marca de tiempotz window_end
         int rank
         enum status
-        timestamptz expires_at
-        timestamptz responded_at "nullable"
+        marca de tiempotz expires_at
+        marca de tiempotz responded_at "nullable"
     }
 ```
 
-**Figura 394 — Flota y choferes**
+**Figura 461 — Flota y choferes**
 
 ##### Posventa
 
@@ -21066,7 +22129,7 @@ erDiagram
         varchar photoUrl "nullable"
         enum status
         text resolutionNote "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
         varchar photo_key "nullable"
     }
     INCIDENT {
@@ -21079,8 +22142,8 @@ erDiagram
         varchar photo_url "nullable"
         enum status
         text resolution_note "nullable"
-        timestamptz createdAt
-        timestamptz resolvedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz resolvedAt "nullable"
         enum moment "nullable"
         varchar photo_key "nullable"
     }
@@ -21093,15 +22156,15 @@ erDiagram
         enum from_role
         int stars
         text comment "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
         boolean hidden
         text hidden_reason "nullable"
-        timestamptz hidden_at "nullable"
+        marca de tiempotz hidden_at "nullable"
         uuid hidden_by_user_id FK "nullable"
     }
 ```
 
-**Figura 395 — Posventa**
+**Figura 462 — Posventa**
 
 ##### Personal (en parte planificado)
 
@@ -21117,9 +22180,9 @@ erDiagram
         varchar name
         enum category
         boolean is_active
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
     }
     ATTACHMENT {
         uuid attachment_id PK
@@ -21132,8 +22195,8 @@ erDiagram
         varchar mime_type
         int size_bytes
         uuid uploaded_by_user_id FK
-        timestamptz uploaded_at
-        timestamptz deleted_at "nullable"
+        marca de tiempotz uploaded_at
+        marca de tiempotz deleted_at "nullable"
     }
     EMPLOYEE {
         uuid employee_id PK
@@ -21163,9 +22226,9 @@ erDiagram
         enum status
         varchar bank_cbu "nullable"
         text notes "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
         varchar photo_key "nullable"
     }
     EMPLOYEE_ATTENDANCE {
@@ -21173,13 +22236,13 @@ erDiagram
         uuid distributor_id FK
         uuid employee_id FK
         date work_date
-        timestamptz check_in_at
-        timestamptz check_out_at "nullable"
+        marca de tiempotz check_in_at
+        marca de tiempotz check_out_at "nullable"
         attendance_source_enum source
         uuid recorded_by_user_id FK "nullable"
         text notes "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     EMPLOYEE_LEAVE {
         uuid leave_id PK
@@ -21194,13 +22257,13 @@ erDiagram
         text rejection_reason "nullable"
         uuid requested_by_user_id FK "nullable"
         uuid decided_by_user_id FK "nullable"
-        timestamptz decided_at "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz decided_at "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
 ```
 
-**Figura 396 — Personal (en parte planificado)**
+**Figura 463 — Personal (en parte planificado)**
 
 ##### Gastos de la flota (planificado)
 
@@ -21213,7 +22276,7 @@ erDiagram
         uuid distributor_id FK
         uuid car_id FK
         uuid employee_id FK "nullable"
-        timestamptz loaded_at
+        marca de tiempotz loaded_at
         fuel_type_enum fuel_type
         decimal liters
         decimal unit_price
@@ -21227,9 +22290,9 @@ erDiagram
         boolean anomaly
         text notes "nullable"
         uuid created_by_user_id FK "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
     }
     TIRE {
         uuid tire_id PK
@@ -21242,15 +22305,15 @@ erDiagram
         tire_status_enum status
         varchar position "nullable"
         int mounted_odometer_km "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     TRAFFIC_FINE {
         uuid fine_id PK
         uuid distributor_id FK
         uuid car_id FK
         uuid employee_id FK "nullable"
-        timestamptz occurred_at
+        marca de tiempotz occurred_at
         varchar jurisdiction
         varchar act_number
         text infraction
@@ -21258,21 +22321,21 @@ erDiagram
         decimal voluntary_payment_amount "nullable"
         date due_date "nullable"
         traffic_fine_status_enum status
-        timestamptz paid_at "nullable"
+        marca de tiempotz paid_at "nullable"
         decimal paid_amount "nullable"
         boolean charged_to_employee
         uuid cash_movement_id "nullable"
         text void_reason "nullable"
-        timestamptz alerted_at "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz alerted_at "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     VEHICLE_ACCIDENT {
         uuid accident_id PK
         uuid distributor_id FK
         uuid car_id FK
         uuid employee_id FK "nullable"
-        timestamptz occurred_at
+        marca de tiempotz occurred_at
         geometry location "nullable"
         text address "nullable"
         text description
@@ -21286,9 +22349,9 @@ erDiagram
         decimal repair_cost "nullable"
         decimal insurer_reimbursement "nullable"
         decimal deductible_amount "nullable"
-        timestamptz closed_at "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz closed_at "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     TIRE_EVENT {
         uuid event_id PK
@@ -21298,12 +22361,12 @@ erDiagram
         tire_event_type_enum event_type
         int odometer_km
         varchar position "nullable"
-        timestamptz occurred_at
+        marca de tiempotz occurred_at
         uuid created_by_user_id FK "nullable"
     }
 ```
 
-**Figura 397 — Gastos de la flota (planificado)**
+**Figura 464 — Gastos de la flota (planificado)**
 
 ##### Stock físico y carga del camión
 
@@ -21329,9 +22392,9 @@ erDiagram
         text address "nullable"
         boolean is_default
         boolean is_active
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
     }
     STOCK_THRESHOLD {
         uuid threshold_id PK
@@ -21339,9 +22402,9 @@ erDiagram
         uuid warehouse_id FK
         uuid gas_cylinder_id FK
         int min_full
-        timestamptz alerted_at "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz alerted_at "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     STOCK_LOCATION {
         uuid location_id PK
@@ -21349,7 +22412,7 @@ erDiagram
         enum kind
         uuid warehouse_id FK, UK "nullable"
         uuid car_id FK, UK "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     STOCK_ADJUSTMENT {
         uuid adjustment_id PK
@@ -21360,7 +22423,7 @@ erDiagram
         text notes
         uuid batch_id
         uuid created_by_user_id FK
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     STOCK_BALANCE {
         uuid balance_id PK
@@ -21369,7 +22432,7 @@ erDiagram
         uuid gas_cylinder_id FK
         enum condition
         int quantity
-        timestamptz updatedAt
+        marca de tiempotz updatedAt
     }
     STOCK_MOVEMENT {
         uuid movement_id PK
@@ -21387,8 +22450,8 @@ erDiagram
         uuid reversed_movement_id FK "nullable"
         varchar notes "nullable"
         uuid actor_user_id FK "nullable"
-        timestamptz occurred_at
-        timestamptz createdAt
+        marca de tiempotz occurred_at
+        marca de tiempotz createdAt
     }
     TRUCK_LOAD {
         uuid load_id PK
@@ -21400,17 +22463,17 @@ erDiagram
         uuid origin_location_id FK
         date business_date
         enum status
-        timestamptz opened_at
-        timestamptz departed_at "nullable"
-        timestamptz returned_at "nullable"
-        timestamptz closed_at "nullable"
+        marca de tiempotz opened_at
+        marca de tiempotz departed_at "nullable"
+        marca de tiempotz returned_at "nullable"
+        marca de tiempotz closed_at "nullable"
         uuid opened_by_user_id FK
         uuid closed_by_user_id FK "nullable"
         text difference_note "nullable"
         text cancel_reason "nullable"
         text notes "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     STOCK_ADJUSTMENT_ITEM {
         uuid item_id PK
@@ -21437,7 +22500,7 @@ erDiagram
     }
 ```
 
-**Figura 398 — Stock físico y carga del camión**
+**Figura 465 — Stock físico y carga del camión**
 
 ##### Compras
 
@@ -21461,9 +22524,9 @@ erDiagram
         text address "nullable"
         int payment_terms_days "nullable"
         boolean is_active
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
     }
     PURCHASE_ORDER {
         uuid purchase_order_id PK
@@ -21472,14 +22535,14 @@ erDiagram
         uuid supplier_id FK
         uuid destination_warehouse_id FK
         enum status
-        timestamptz issued_at "nullable"
+        marca de tiempotz issued_at "nullable"
         date expected_date "nullable"
         decimal total_amount
         text cancel_reason "nullable"
         text notes "nullable"
         uuid created_by_user_id FK
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
         text close_reason "nullable"
     }
     PURCHASE_ORDER_ITEM {
@@ -21500,20 +22563,20 @@ erDiagram
         uuid warehouse_id FK
         enum supplier_document_type
         varchar supplier_document_number
-        timestamptz received_at
+        marca de tiempotz received_at
         uuid received_by_user_id FK
         decimal total_amount
         enum payment_status
         uuid cash_movement_id "nullable"
         enum status
         text void_reason "nullable"
-        timestamptz voided_at "nullable"
+        marca de tiempotz voided_at "nullable"
         uuid voided_by_user_id "nullable"
         uuid batch_id
         uuid void_batch_id "nullable"
         text notes "nullable"
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     PURCHASE_RECEIPT_ITEM {
         uuid item_id PK
@@ -21527,7 +22590,7 @@ erDiagram
     }
 ```
 
-**Figura 399 — Compras**
+**Figura 466 — Compras**
 
 
 ![Modelo físico: compras](diagramas/base-de-datos/fisico/SPLG-fisico-12-compras.png)
@@ -21542,11 +22605,11 @@ erDiagram
         varchar storage_key UK
         int attempts
         text last_error "nullable"
-        timestamptz created_at
-        timestamptz updated_at
+        marca de tiempotz created_at
+        marca de tiempotz updated_at
         varchar kind
         varchar status
-        timestamptz next_attempt_at
+        marca de tiempotz next_attempt_at
     }
     DOCUMENT_SEQUENCE {
         uuid distributor_id PK
@@ -21556,11 +22619,11 @@ erDiagram
     STOCK_RECONCILIATION_ALERT {
         uuid distributor_id PK
         varchar signature
-        timestamptz alerted_at
+        marca de tiempotz alerted_at
     }
 ```
 
-**Figura 400 — Modelo físico: compras**
+**Figura 467 — Modelo físico: compras**
 
 ##### Caja y finanzas (planificado)
 
@@ -21595,9 +22658,9 @@ erDiagram
         decimal balance
         boolean requires_session
         boolean is_active
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
     }
     CASH_CATEGORY {
         uuid category_id PK
@@ -21606,18 +22669,18 @@ erDiagram
         cash_direction_enum direction
         cash_system_code_enum system_code "nullable"
         boolean is_active
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     CASH_SESSION {
         uuid session_id PK
         uuid distributor_id FK
         uuid cash_box_id FK
         cash_session_status_enum status
-        timestamptz opened_at
+        marca de tiempotz opened_at
         uuid opened_by_user_id FK
         decimal opening_amount
-        timestamptz closed_at "nullable"
+        marca de tiempotz closed_at "nullable"
         uuid closed_by_user_id FK "nullable"
         decimal expected_amount "nullable"
         decimal counted_amount "nullable"
@@ -21635,9 +22698,9 @@ erDiagram
         int payment_terms_days
         customer_account_status_enum status
         decimal balance
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
+        marca de tiempotz deletedAt "nullable"
     }
     CASH_MOVEMENT {
         uuid movement_id PK
@@ -21648,13 +22711,13 @@ erDiagram
         decimal amount
         uuid category_id FK
         cash_method_enum method
-        timestamptz occurred_at
+        marca de tiempotz occurred_at
         varchar description "nullable"
         cash_reference_type_enum reference_type
         uuid reference_id "nullable"
         uuid reverses_movement_id FK "nullable"
         uuid created_by_user_id FK
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     COMMISSION_RULE {
         uuid rule_id PK
@@ -21666,8 +22729,8 @@ erDiagram
         date valid_from
         date valid_to "nullable"
         boolean is_active
-        timestamptz createdAt
-        timestamptz updatedAt
+        marca de tiempotz createdAt
+        marca de tiempotz updatedAt
     }
     DRIVER_LIQUIDATION {
         uuid liquidation_id PK
@@ -21680,11 +22743,11 @@ erDiagram
         decimal deductions
         decimal net
         driver_liquidation_status_enum status
-        timestamptz approved_at "nullable"
+        marca de tiempotz approved_at "nullable"
         uuid approved_by_user_id FK "nullable"
-        timestamptz paid_at "nullable"
+        marca de tiempotz paid_at "nullable"
         uuid cash_movement_id FK "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     DRIVER_SETTLEMENT {
         uuid settlement_id PK
@@ -21700,13 +22763,13 @@ erDiagram
         settlement_difference_resolution_enum difference_resolution "nullable"
         uuid destination_cash_box_id FK "nullable"
         uuid cash_movement_id FK "nullable"
-        timestamptz submitted_at "nullable"
+        marca de tiempotz submitted_at "nullable"
         uuid submitted_by_user_id FK "nullable"
-        timestamptz approved_at "nullable"
+        marca de tiempotz approved_at "nullable"
         uuid approved_by_user_id FK "nullable"
-        timestamptz alerted_at "nullable"
+        marca de tiempotz alerted_at "nullable"
         text notes "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     COMMISSION_ENTRY {
         uuid entry_id PK
@@ -21720,9 +22783,9 @@ erDiagram
         uuid settlement_id FK "nullable"
         uuid liquidation_id FK "nullable"
         varchar description "nullable"
-        timestamptz occurred_at
+        marca de tiempotz occurred_at
         uuid created_by_user_id FK "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     CUSTOMER_ACCOUNT_ENTRY {
         uuid entry_id PK
@@ -21738,9 +22801,9 @@ erDiagram
         uuid settlement_id FK "nullable"
         uuid reverses_entry_id FK "nullable"
         varchar description "nullable"
-        timestamptz occurred_at
+        marca de tiempotz occurred_at
         uuid created_by_user_id FK "nullable"
-        timestamptz createdAt
+        marca de tiempotz createdAt
     }
     DRIVER_SETTLEMENT_EXPENSE {
         uuid expense_id PK
@@ -21764,7 +22827,7 @@ erDiagram
     }
 ```
 
-**Figura 401 — Caja y finanzas (planificado)**
+**Figura 468 — Caja y finanzas (planificado)**
 
 ##### Relaciones entre contextos
 
@@ -21868,7 +22931,7 @@ erDiagram
     CYLINDER_RECOVERY_NOTICE }o--o| ORDER : "order_id"
 ```
 
-**Figura 402 — Relaciones entre contextos**
+**Figura 469 — Relaciones entre contextos**
 
 #### 7.4.3 Diccionario de Datos
 
@@ -21882,12 +22945,12 @@ entidad de TypeORM que la define; las columnas sin comentario en el código figu
 
 **52 tipos enumerados**. El detalle de los
 valores de cada uno está en la sección «Tipos enumerados» de
-`SPLG-modelo-de-datos.md`; acá sólo la lista, para no duplicar un dato que cambia con cada
+`SPLG-modelo-de-datos.md`; acá solo la lista, para no duplicar un dato que cambia con cada
 migración:
 
 `address_geocode_precision_enum`, `attachment_owner_type_enum`, `audit_result_enum`, `claims_status_enum`, `configurable_process_enum`, `coverage_zone_surcharge_type_enum`, `cylinder_inspection_result_enum`, `cylinder_movement_from_state_enum`, `cylinder_movement_to_state_enum`, `cylinder_state_enum`, `distributor_status_enum`, `employee_document_type_enum`, `employee_status_enum`, `employee_termination_reason_enum`, `employment_type_enum`, `fleet_status_enum`, `incident_moment_enum`, `incident_status_enum`, `incident_type_enum`, `job_position_category_enum`, `maintenance_criticality_enum`, `maintenance_subject_enum`, `maintenance_task_status_enum`, `maintenance_trigger_enum`, `order_delivery_mode_enum`, `order_dispatch_offer_status_enum`, `order_paymentmethod_enum`, `order_paymentstatus_enum`, `order_paymenttype_enum`, `order_status_enum`, `order_zone_surcharge_type_enum`, `payment_gateway_enum`, `payment_integration_enum`, `payment_status_enum`, `proposal_status_enum`, `purchase_order_status_enum`, `purchase_payment_status_enum`, `purchase_receipt_status_enum`, `rating_from_role_enum`, `recovery_case_status_enum`, `recovery_notice_kind_enum`, `repurchase_invitation_status_enum`, `route_batch_status_enum`, `stock_adjustment_reason_enum`, `stock_condition_enum`, `stock_location_kind_enum`, `stock_movement_reason_enum`, `stock_movement_reference_type_enum`, `supplier_document_type_enum`, `supplier_kind_enum`, `warehouse_kind_enum`.
 
-#### 7.4.5 Multi-tenant
+#### 7.4.5 Multidistribuidora
 
 **43 de las 63 tablas tienen `distributor_id` directo:** todo lo que es catálogo, flota,
 despacho o transacción de una distribuidora concreta (`order`, `payment`, `cylinder`,
@@ -21901,10 +22964,10 @@ recupero, entre otras).
 - **Son globales de verdad** (comparten el mismo registro entre distribuidoras):
   `user`, `customer`, `user_address`, `role` y el catálogo `audit_action_type`. Un cliente puede comprarle a varias
   distribuidoras con la misma cuenta y las mismas direcciones; el rol es del sistema, no de
-  una empresa. El acotamiento por tenant, cuando hace falta, lo resuelve la aplicación
+  una empresa. El acotamiento por distribuidora, cuando hace falta, lo resuelve la aplicación
   (`common/tenancy/pertenencia.ts`): para una distribuidora, sus clientes son los que le
   compraron al menos una vez.
-- **Son detalle de otra tabla que sí tiene tenant** (alcanzan el aislamiento uniéndose a su
+- **Son detalle de otra tabla que sí tiene distribuidora** (alcanzan el aislamiento uniéndose a su
   padre, nunca por columna propia): `order_item`, `order_status_history`,
   `order_address_change` (de `order`), `cart_item` (de `cart`), `gas_cylinder_promotion`
   (de `gas_cylinder`), `route_batch_stop`, `route_batch_offer` (de `route_batch`),
@@ -21914,28 +22977,28 @@ recupero, entre otras).
   de las consultas sin filtro de distribuidora.
 - **Es técnica y no pertenece a ninguna distribuidora:** `storage_orphan`, la cola de archivos pendientes de borrar del almacenamiento; guarda la clave del archivo y no sabe de quién es.
 
-`admin.distributor_id` es la columna de tenant **anulable** de un perfil: el
-superadministrador (`role.type = 'superadmin'`) no tiene distribuidora. También lo son la de `audit_log` y la de `audit`, que quedan vacías si se borra la distribuidora para conservar el registro; en `audit`, además, lo que es de la persona o global (usuarios, clientes, direcciones, roles) se registra sin distribuidora y sólo lo ve el Administrador General.
+`admin.distributor_id` es la columna de distribuidora **anulable** de un perfil: el
+superadministrador (`role.type = 'superadmin'`) no tiene distribuidora. También lo son la de `audit_log` y la de `audit`, que quedan vacías si se borra la distribuidora para conservar el registro; en `audit`, además, lo que es de la persona o global (usuarios, clientes, direcciones, roles) se registra sin distribuidora y solo lo ve el Administrador General.
 
 #### 7.4.6 Decisiones de modelado y deuda técnica documentada
 
 Esto es sobre el **esquema real** de la base, no sobre esta documentación. Son puntos que
 un profesor marcaría como mejora del modelo físico; no se tocó el backend para corregirlos
-(está fuera del alcance de esta tarea: la base es de sólo lectura) y quedan anotados acá
+(está fuera del alcance de esta tarea: la base es de solo lectura) y quedan anotados acá
 como deuda, con su corrección concreta:
 
 - **Faltan `CHECK` de rango.** `rating.stars` dice «de 1 a 5» en la descripción pero nada
   lo impide en la base (correspondería `CHECK (stars BETWEEN 1 AND 5)`); lo mismo
   `order_item.quantity > 0`, montos `>= 0` y `time_slot."endTime" > "startTime"` con
-  `capacity > 0`. Sólo hay `CHECK` en `gas_cylinder_promotion` (2), `coverage_zone` (1), `employee` (2), las tablas de stock (`stock_threshold`, `stock_location`, `stock_movement`, `stock_balance` y `stock_adjustment_item`) y los renglones de compra (`purchase_order_item` y `purchase_receipt_item`, de cantidades y costos no negativos).
+  `capacity > 0`. Solo hay `CHECK` en `gas_cylinder_promotion` (2), `coverage_zone` (1), `employee` (2), las tablas de stock (`stock_threshold`, `stock_location`, `stock_movement`, `stock_balance` y `stock_adjustment_item`) y los renglones de compra (`purchase_order_item` y `purchase_receipt_item`, de cantidades y costos no negativos).
 - **Faltan `UNIQUE` de negocio.** `distributor.tax_id` (CUIT) no es único: hay 136
-  filas con CUIT y sólo 5 valores distintos—, ni `user_address` tiene
+  filas con CUIT y solo 5 valores distintos—, ni `user_address` tiene
   `UNIQUE (user_id) WHERE "isDefault"`, ni `time_slot` tiene
   `UNIQUE (distributor_id, name)`.
 - **`car.type_car` es texto libre.** En la base conviven «Camión», «camioneta», «Camioneta»,
   «moto», «Moto», «Utilitario» para lo que el dominio modela como tres valores
   (§1.4 del Documento 2). Correspondería un tipo enumerado o un `CHECK`.
-- **Fechas con zona horaria.** Todas las columnas de fecha y hora son `timestamptz`, incluidas `order.acceptedAt`, `order.onTheWayAt`, `order.deliveredAt` y `claims.createdAt`: no queda ninguna `timestamp without time zone`, y no hay deuda en este punto.
+- **Fechas con zona horaria.** Todas las columnas de fecha y hora son `marca de tiempotz`, incluidas `order.acceptedAt`, `order.onTheWayAt`, `order.deliveredAt` y `claims.createdAt`: no queda ninguna `marca de tiempo without time zone`, y no hay deuda en este punto.
 - **Montos en punto flotante en vez de `numeric`:** `delivery.balance` (`double precision`)
   y `delivery."cancelledCharge"` (`real`). El resto del esquema usa `numeric(10,2)`.
 - **Nombres de columna mezclados** entre `camelCase` (`createdAt`, `isActive`) y
@@ -22060,67 +23123,67 @@ los atributos también se comprueba contra la base.
 
 ![DER conceptual: vista general](diagramas/base-de-datos/conceptual/SPLG-der-00-general.png)
 
-**Figura 403 — Modelo entidad-relación conceptual: vista general**
+**Figura 470 — Modelo entidad-relación conceptual: vista general**
 
 ![DER conceptual: usuarios y cuentas](diagramas/base-de-datos/conceptual/SPLG-der-01-usuarios-y-cuentas.png)
 
-**Figura 404 — Modelo entidad-relación conceptual: usuarios y cuentas**
+**Figura 471 — Modelo entidad-relación conceptual: usuarios y cuentas**
 
 ![DER conceptual: pedidos y pagos](diagramas/base-de-datos/conceptual/SPLG-der-02-pedidos-y-pagos.png)
 
-**Figura 405 — Modelo entidad-relación conceptual: pedidos y pagos**
+**Figura 472 — Modelo entidad-relación conceptual: pedidos y pagos**
 
 ![DER conceptual: despacho y propuestas con vigencia](diagramas/base-de-datos/conceptual/SPLG-der-03-despacho-y-propuestas-con-vigencia.png)
 
-**Figura 406 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
+**Figura 473 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
 
 ![DER conceptual: flota y choferes](diagramas/base-de-datos/conceptual/SPLG-der-04-flota-y-choferes.png)
 
-**Figura 407 — Modelo entidad-relación conceptual: flota y choferes**
+**Figura 474 — Modelo entidad-relación conceptual: flota y choferes**
 
 ![DER conceptual: envases y catálogo](diagramas/base-de-datos/conceptual/SPLG-der-05-envases-y-catalogo.png)
 
-**Figura 408 — Modelo entidad-relación conceptual: envases y catálogo**
+**Figura 475 — Modelo entidad-relación conceptual: envases y catálogo**
 
 ![DER conceptual: personal](diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png)
 
-**Figura 409 — Modelo entidad-relación conceptual: personal**
+**Figura 476 — Modelo entidad-relación conceptual: personal**
 
 ![DER conceptual: posventa](diagramas/base-de-datos/conceptual/SPLG-der-07-posventa.png)
 
-**Figura 410 — Modelo entidad-relación conceptual: posventa**
+**Figura 477 — Modelo entidad-relación conceptual: posventa**
 
 ![DER conceptual: gastos de la flota](diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png)
 
-**Figura 411 — Modelo entidad-relación conceptual: gastos de la flota**
+**Figura 478 — Modelo entidad-relación conceptual: gastos de la flota**
 
 ![DER conceptual: stock físico](diagramas/base-de-datos/conceptual/SPLG-der-09-stock-fisico.png)
 
-**Figura 412 — Modelo entidad-relación conceptual: stock físico**
+**Figura 479 — Modelo entidad-relación conceptual: stock físico**
 
 ![DER conceptual: carga del camión](diagramas/base-de-datos/conceptual/SPLG-der-10-carga-del-camion.png)
 
-**Figura 413 — Modelo entidad-relación conceptual: carga del camión**
+**Figura 480 — Modelo entidad-relación conceptual: carga del camión**
 
 ![DER conceptual: compras](diagramas/base-de-datos/conceptual/SPLG-der-11-compras.png)
 
-**Figura 414 — Modelo entidad-relación conceptual: compras**
+**Figura 481 — Modelo entidad-relación conceptual: compras**
 
 ![DER conceptual: caja y movimientos](diagramas/base-de-datos/conceptual/SPLG-der-12-caja-y-movimientos.png)
 
-**Figura 415 — Modelo entidad-relación conceptual: caja y movimientos**
+**Figura 482 — Modelo entidad-relación conceptual: caja y movimientos**
 
 ![DER conceptual: rendiciones de choferes](diagramas/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png)
 
-**Figura 416 — Modelo entidad-relación conceptual: rendiciones de choferes**
+**Figura 483 — Modelo entidad-relación conceptual: rendiciones de choferes**
 
 ![DER conceptual: cuentas corrientes](diagramas/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png)
 
-**Figura 417 — Modelo entidad-relación conceptual: cuentas corrientes**
+**Figura 484 — Modelo entidad-relación conceptual: cuentas corrientes**
 
 ![DER conceptual: comisiones y liquidaciones](diagramas/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png)
 
-**Figura 418 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
+**Figura 485 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
 
 #### 7.4.8 Tablas planificadas
 
@@ -22141,11 +23204,11 @@ Además agrega a `maintenance_plan` el documento que controla y las categorías 
 
 ![Modelo físico: personal](diagramas/base-de-datos/fisico/SPLG-fisico-09-personal.png)
 
-**Figura 419 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)**
+**Figura 486 — Modelo físico: personal (puestos y legajos construidos; jornadas y licencias planificadas)**
 
 ![DER conceptual: personal](diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png)
 
-**Figura 420 — Modelo entidad-relación conceptual: personal**
+**Figura 487 — Modelo entidad-relación conceptual: personal**
 
 ##### 7.4.8.2 Flota ampliada (iteración I-12)
 
@@ -22175,11 +23238,11 @@ Tipos enumerados nuevos:
 
 ![Modelo físico: gastos de la flota](diagramas/base-de-datos/fisico/SPLG-fisico-10-gastos-de-la-flota.png)
 
-**Figura 421 — Modelo físico: gastos de la flota (planificado)**
+**Figura 488 — Modelo físico: gastos de la flota (planificado)**
 
 ![DER conceptual: gastos de la flota](diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png)
 
-**Figura 422 — Modelo entidad-relación conceptual: gastos de la flota**
+**Figura 489 — Modelo entidad-relación conceptual: gastos de la flota**
 
 **Decisiones de modelado.** (1) La carga, la multa y el siniestro son registros propios del vehículo y no
 columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo.
@@ -22192,7 +23255,7 @@ y el número de serie de un neumático es único por distribuidora: ambas restri
 
 ##### 7.4.8.3 Caja, rendición, cuentas corrientes y comisiones (iteración I-14)
 
-El módulo de caja y rendición agrega **trece tablas** y catorce tipos enumerados nuevos, más el valor `account` en los dos tipos enumerados del medio de pago del pedido. No están en la base: figuran en el modelo propuesto (`diagramas/base-de-datos/SPLG-base-de-datos-propuesta.sql`) y se dibujan con el estereotipo «propuesto». Tres tablas son libros de sólo agregar —`cash_movement`, `customer_account_entry` y `commission_entry`— y rechazan todo `UPDATE` y todo `DELETE` por un disparador, como `audit_log`; el saldo de `cash_box` y de `customer_account` es una copia del libro que sólo cambia por el punto único de escritura. Dos índices únicos parciales no se dibujan: una sesión abierta por caja y una cuenta vigente por cliente y distribuidora. Las comisiones se anclan en `employee` (el legajo del módulo de personal) y se asientan con `employee_id`. La rendición no tiene columnas hacia la hoja de carga del camión ni hacia la carga de combustible, que son de los módulos de stock y de flota: queda como relación pendiente entre módulos.
+El módulo de caja y rendición agrega **trece tablas** y catorce tipos enumerados nuevos, más el valor `account` en los dos tipos enumerados del medio de pago del pedido. No están en la base: figuran en el modelo propuesto (`diagramas/base-de-datos/SPLG-base-de-datos-propuesta.sql`) y se dibujan con el estereotipo «propuesto». Tres tablas son libros de solo agregar —`cash_movement`, `customer_account_entry` y `commission_entry`— y rechazan todo `UPDATE` y todo `DELETE` por un disparador, como `audit_log`; el saldo de `cash_box` y de `customer_account` es una copia del libro que solo cambia por el punto único de escritura. Dos índices únicos parciales no se dibujan: una sesión abierta por caja y una cuenta vigente por cliente y distribuidora. Las comisiones se anclan en `employee` (el legajo del módulo de personal) y se asientan con `employee_id`. La rendición no tiene columnas hacia la hoja de carga del camión ni hacia la carga de combustible, que son de los módulos de stock y de flota: queda como relación pendiente entre módulos.
 
 | Contexto | Tabla | Concepto | Qué guarda (planificada) |
 |---|---|---|---|
@@ -22212,30 +23275,30 @@ El módulo de caja y rendición agrega **trece tablas** y catorce tipos enumerad
 
 ![Modelo físico: caja y finanzas](diagramas/base-de-datos/fisico/SPLG-fisico-14-caja-y-finanzas.png)
 
-**Figura 423 — Modelo físico: caja y finanzas (planificado)**
+**Figura 490 — Modelo físico: caja y finanzas (planificado)**
 
 ![DER conceptual: caja y movimientos](diagramas/base-de-datos/conceptual/SPLG-der-12-caja-y-movimientos.png)
 
-**Figura 424 — Modelo entidad-relación conceptual: caja y movimientos**
+**Figura 491 — Modelo entidad-relación conceptual: caja y movimientos**
 
 ![DER conceptual: rendiciones de choferes](diagramas/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png)
 
-**Figura 425 — Modelo entidad-relación conceptual: rendiciones de choferes**
+**Figura 492 — Modelo entidad-relación conceptual: rendiciones de choferes**
 
 ![DER conceptual: cuentas corrientes](diagramas/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png)
 
-**Figura 426 — Modelo entidad-relación conceptual: cuentas corrientes**
+**Figura 493 — Modelo entidad-relación conceptual: cuentas corrientes**
 
 ![DER conceptual: comisiones y liquidaciones](diagramas/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png)
 
-**Figura 427 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
+**Figura 494 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
 
 ## 8. Decisiones de Diseño Relevantes
 
 | Decisión | Alternativa Descartada | Razón |
 |----------|----------------------|-------|
 | Redis GEORADIUS para radar de choferes | Query PostGIS en PostgreSQL | Redis es in-memory → latencia <1ms; despacho debe ser instantáneo |
-| WebSocket (Socket.IO) para tracking | Polling HTTP cada 5s | Polling genera 12× más tráfico; WS push es en tiempo real |
+| WebSocket (Socket.IO) para seguimiento | Polling HTTP cada 5s | Polling genera 12× más tráfico; WS push es en tiempo real |
 | QueryRunner con lock pesimista para stock | Optimistic locking (version) | Con 100+ pedidos simultáneos, optimistic genera demasiados reintentos |
 | decimal.js para precios | number nativo JS | `0.1 + 0.2 = 0.30000000000000004` — inaceptable en montos monetarios |
 | FCM para notificaciones push | WebSocket directo | FCM funciona con app cerrada; WS requiere conexión activa |
@@ -22257,7 +23320,8 @@ El módulo de caja y rendición agrega **trece tablas** y catorce tipos enumerad
 | `PaymentsService.createCheckout()` y `ConfirmPaymentUseCase.execute()` | `crearCheckoutDePago` y `notificarResultadoDePago` | CU-048 | IRQ-02, IRQ-08 |
 | `ConfirmDeliveryUseCase.execute()` | `confirmarEntregaConCodigo` | CU-079 | IRQ-02, IRQ-08 |
 | `CancelOrderUseCase.execute()` | `cancelarPedido` | CU-008 | IRQ-02, IRQ-04 |
-| `CashLedgerService` → `Caja.registrarMovimiento()` | `registrarMovimientoDeCaja` | CU-228 | IRQ-19, IRQ-08 |
+| `CashLedgerService` → `Caja.registrarMovimiento()` | `registrarEntradaDeDinero` | CU-228 | IRQ-19, IRQ-08 |
+| `CashLedgerService` → `Caja.registrarMovimiento()` | `registrarSalidaDeDinero` | CU-309 | IRQ-19, IRQ-08 |
 | `DriverSettlementService.aprobarRendicion()` | `aprobarRendicion` | CU-233 | IRQ-19, IRQ-03 |
 | `CustomerAccountService` y `CreateOrderUseCase` | `venderACuentaCorriente` | CU-236 | IRQ-19, IRQ-02 |
 | `CommissionService.liquidarComisionesDelChofer()` | `liquidarComisionesDelChofer` | CU-242 | IRQ-19, IRQ-03 |
@@ -22277,10 +23341,7 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 
 | Pendiente | Descripción | CU | Iteración | Prioridad |
 |-----|-------------|----|:---------:|-----------|
-| Modificación de franja horaria | No existe operación de actualización: la franja se puede crear, consultar y eliminar, pero no modificar. La capacidad queda fija desde el alta. Si la capacidad nueva es menor que lo comprometido, el sistema advierte la sobrecarga y no bloquea. | CU-043 | I-1 | Crítico |
-| Reactivación de producto | Sólo existe la desactivación. El atributo que marca al producto como activo no es modificable y la validación de entrada rechaza todo campo no declarado, de modo que un producto dado de baja no puede volver al catálogo ni siquiera listarse. | CU-268, CU-269 | I-1 | Crítico |
-| Cancelación del pedido desde la App Cliente | La app cancela por una ruta reservada al chofer y al administrador, que responde 403 a un cliente; la ruta que admite al cliente existe. | CU-008 | I-1 | Importante |
-| Historial de estados del pedido | La tabla del historial existe y ningún servicio la escribe ni la consulta: el pedido conserva sólo las marcas de tiempo de tres estados. | CU-169, CU-170 | I-4 | Importante |
+| Reactivación de producto | Solo existe la desactivación. El atributo que marca al producto como activo no es modificable y la validación de entrada rechaza todo campo no declarado, de modo que un producto dado de baja no puede volver al catálogo ni siquiera listarse. | CU-268, CU-269 | I-1 | Crítico |
 | Aviso de pago rechazado o cancelado | Cuando la pasarela informa un pago rechazado o cancelado, el sistema lo registra y deja el pedido a la espera, pero no le avisa al Cliente ni libera el stock hasta que vence el plazo de pago. El aviso de pago aprobado sí está construido. | CU-048 | — | Importante |
 | Reintegro del pago de un pedido | Cancelar un pedido pagado por una pasarela restituye el stock, pero no devuelve el dinero. Tampoco se devuelve el recargo de un pedido express que pasa a reparto común. | CU-168 | I-7 | Importante |
 | Personal y legajos | Documentación del personal con vencimiento, asistencia, licencias, saldo de vacaciones, tablero y habilitación laboral del chofer. Los puestos, los legajos, el egreso, la cuenta de acceso y los adjuntos del legajo ya están construidos (CU-176 a CU-182, CU-186 y CU-255 a CU-257); falta lo que cuelga del legajo. | CU-183 a CU-185, CU-187 a CU-194 y CU-246 | I-11 | Importante |
@@ -22290,14 +23351,14 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 | Pendiente | Descripción | CU | Iteración | Prioridad |
 |-----|-------------|----|:---------:|-----------|
 | Parámetros del despacho | Los pasos de radio de búsqueda y la ventana de aceptación de la oferta son constantes del programa. El módulo inteligente M1 exige que sean configurables por distribuidora. | CU-171 | I-1 | Crítico |
-| Parámetros de los procesos automáticos | La tabla de configuración por distribuidora existe, sin servicio ni endpoint: ningún parámetro de los módulos inteligentes ni de la compra express puede editarse. | CU-172 | I-1 | Importante |
+| Parámetros de los procesos automáticos | La tabla de configuración por distribuidora existe, sin servicio ni ruta: ningún parámetro de los módulos inteligentes ni de la compra express puede editarse. | CU-172 | I-1 | Importante |
 | Frecuencia de las tareas programadas | Las cinco frecuencias —incluida la del aviso de vencimientos de flota (CU-142)— están fijas en el código. Son tareas de mantenimiento del sistema, no procesos automatizados. | CU-173 | I-1 | Importante |
 
 ### 10.3 Integridad y consistencia del modelo
 
 | Pendiente | Descripción | Prioridad |
 |-----|-------------|-----------|
-| Columna `isActive` deprecada en `delivery` | La habilitación administrativa (`isEnabled`) y la presencia en línea (`isAvailable`) ya son columnas separadas; ningún camino del código lee ni escribe `isActive`, que queda en su valor por omisión (`true`) desde el alta. La columna vieja sigue declarada en la entidad y en la base porque no se migró su baja. Es una deuda de limpieza de esquema, no una colisión funcional, y no corresponde a ningún caso de uso. | Menor |
+| Columna `isActive` en desuso en `delivery` | La habilitación administrativa (`isEnabled`) y la presencia en línea (`isAvailable`) ya son columnas separadas; ningún camino del código lee ni escribe `isActive`, que queda en su valor por omisión (`true`) desde el alta. La columna vieja sigue declarada en la entidad y en la base porque no se migró su baja. Es una deuda de limpieza de esquema, no una colisión funcional, y no corresponde a ningún caso de uso. | Menor |
 
 ### 10.4 Observaciones de seguridad
 
@@ -22366,21 +23427,21 @@ chofer o el administrador lo liberan, y entonces se despacha de nuevo.
 
 ![Diagrama de estados del pedido](diagramas/uml/UML_Estados_Pedido.png)
 
-**Figura 428 — Diagrama de estados del pedido**
+**Figura 495 — Diagrama de estados del pedido**
 
 
 #### Reclamo
 
 ![Diagrama de estados del reclamo](diagramas/uml/UML_Estados_Reclamo.png)
 
-**Figura 429 — Diagrama de estados del reclamo**
+**Figura 496 — Diagrama de estados del reclamo**
 
 
 #### Envase
 
 ![Diagrama de estados del envase](diagramas/uml/UML_Estados_Envase.png)
 
-**Figura 430 — Diagrama de estados del envase**
+**Figura 497 — Diagrama de estados del envase**
 
 
 #### Reserva programada
@@ -22390,46 +23451,46 @@ la seña, y el diagrama muestra cómo llega a `PENDING` o a `CANCELLED`.
 
 ![Diagrama de estados de la reserva programada](diagramas/uml/UML_Estados_Reserva.png)
 
-**Figura 431 — Diagrama de estados de la reserva programada**
+**Figura 498 — Diagrama de estados de la reserva programada**
 
 
 #### Tarea de flota
 
 ![Diagrama de estados de la tarea de flota](diagramas/uml/UML_Estados_TareaFlota.png)
 
-**Figura 432 — Diagrama de estados de la tarea de flota**
+**Figura 499 — Diagrama de estados de la tarea de flota**
 
 
 #### Oferta de despacho
 
 ![Diagrama de estados de la oferta de despacho](diagramas/uml/UML_Estados_OfertaDespacho.png)
 
-**Figura 433 — Diagrama de estados de la oferta de despacho**
+**Figura 500 — Diagrama de estados de la oferta de despacho**
 
 
 #### Orden de compra
 
-La orden nace en borrador, se envía, se recibe de a partes y termina recibida, cancelada o cerrada con faltante. Sólo se edita en borrador. (Construido.)
+La orden nace en borrador, se envía, se recibe de a partes y termina recibida, cancelada o cerrada con faltante. Solo se edita en borrador. (Construido.)
 
 ![Diagrama de estados de la orden de compra](diagramas/uml/UML_Estados_OrdenDeCompra.png)
 
-**Figura 434 — Diagrama de estados de la orden de compra**
+**Figura 501 — Diagrama de estados de la orden de compra**
 
 
 #### Recepción de compra
 
-La recepción nace confirmada y sólo sale por la anulación; el pago al proveedor es otro atributo. (Construido.)
+La recepción nace confirmada y solo sale por la anulación; el pago al proveedor es otro atributo. (Construido.)
 
 ![Diagrama de estados de la recepción de compra](diagramas/uml/UML_Estados_RecepcionDeCompra.png)
 
-**Figura 435 — Diagrama de estados de la recepción de compra**
+**Figura 502 — Diagrama de estados de la recepción de compra**
 
 
 #### Carga de camión (planificado, I-13)
 
 ![Diagrama de estados de la carga de camión](diagramas/uml/UML_Estados_CargaDeCamion.png)
 
-**Figura 436 — Diagrama de estados de la carga de camión**
+**Figura 503 — Diagrama de estados de la carga de camión**
 
 
 #### Empleado
@@ -22438,7 +23499,7 @@ El legajo nace activo y sale por el egreso; el reingreso lo reactiva (construido
 
 ![Diagrama de estados del empleado](diagramas/uml/UML_Estados_Empleado.png)
 
-**Figura 437 — Diagrama de estados del empleado**
+**Figura 504 — Diagrama de estados del empleado**
 
 
 #### Licencia laboral
@@ -22447,7 +23508,7 @@ La licencia nace solicitada y un administrador la aprueba o la rechaza; se cance
 
 ![Diagrama de estados de la licencia laboral](diagramas/uml/UML_Estados_Licencia.png)
 
-**Figura 438 — Diagrama de estados de la licencia laboral**
+**Figura 505 — Diagrama de estados de la licencia laboral**
 
 
 #### Jornada de trabajo
@@ -22456,7 +23517,7 @@ Una sola jornada abierta por empleado a la vez; se cierra con la marca del chofe
 
 ![Diagrama de estados de la jornada de trabajo](diagramas/uml/UML_Estados_Jornada.png)
 
-**Figura 439 — Diagrama de estados de la jornada de trabajo**
+**Figura 506 — Diagrama de estados de la jornada de trabajo**
 #### Carga de combustible
 
 La carga nace normal o anómala, según el desvío de su consumo respecto del promedio de las últimas cinco
@@ -22465,7 +23526,7 @@ no cuenta en los cálculos. El estado se deriva de la marca de anomalía y de la
 
 ![Diagrama de estados de la carga de combustible](diagramas/uml/UML_Estados_CargaCombustible.png)
 
-**Figura 440 — Diagrama de estados de la carga de combustible (planificado, I-12)**
+**Figura 507 — Diagrama de estados de la carga de combustible (planificado, I-12)**
 
 
 #### Multa de tránsito
@@ -22475,7 +23536,7 @@ está pendiente y vence en siete días o menos sin aviso, el aviso diario la mar
 
 ![Diagrama de estados de la multa de tránsito](diagramas/uml/UML_Estados_MultaTransito.png)
 
-**Figura 441 — Diagrama de estados de la multa de tránsito (planificado, I-12)**
+**Figura 508 — Diagrama de estados de la multa de tránsito (planificado, I-12)**
 
 
 #### Siniestro
@@ -22485,7 +23546,7 @@ Un siniestro cerrado no admite cambios y no devuelve el vehículo a la flota act
 
 ![Diagrama de estados del siniestro](diagramas/uml/UML_Estados_Siniestro.png)
 
-**Figura 442 — Diagrama de estados del siniestro (planificado, I-12)**
+**Figura 509 — Diagrama de estados del siniestro (planificado, I-12)**
 
 
 #### Neumático
@@ -22494,7 +23555,7 @@ El neumático nace en depósito; se monta, se rota, se desmonta y se recapa, y l
 
 ![Diagrama de estados del neumático](diagramas/uml/UML_Estados_Neumatico.png)
 
-**Figura 443 — Diagrama de estados del neumático (planificado, I-12, opcional)**
+**Figura 510 — Diagrama de estados del neumático (planificado, I-12, opcional)**
 
 
 #### Vigencia de la póliza y de la habilitación
@@ -22505,8 +23566,8 @@ habilitación para transportar mercancías peligrosas.
 
 ![Diagrama de estados de la vigencia de la póliza](diagramas/uml/UML_Estados_PolizaDelVehiculo.png)
 
-**Figura 444 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)**
-**Figura 445 — Diagrama de estados de la oferta de despacho**
+**Figura 511 — Diagrama de estados de la vigencia de la póliza y de la habilitación (planificado, I-12)**
+**Figura 512 — Diagrama de estados de la oferta de despacho**
 
 
 #### Sesión de caja
@@ -22515,7 +23576,7 @@ La sesión se abre con un monto inicial y se cierra con un arqueo. Una caja tien
 
 ![Diagrama de estados: sesión de caja](diagramas/uml/UML_Estados_SesionDeCaja.png)
 
-**Figura 446 — Diagrama de estados: sesión de caja**
+**Figura 513 — Diagrama de estados: sesión de caja**
 
 
 #### Rendición del chofer
@@ -22524,7 +23585,7 @@ La rendición nace abierta por el proceso de las 23:30, el chofer la presenta y 
 
 ![Diagrama de estados: rendición del chofer](diagramas/uml/UML_Estados_RendicionChofer.png)
 
-**Figura 447 — Diagrama de estados: rendición del chofer**
+**Figura 514 — Diagrama de estados: rendición del chofer**
 
 
 #### Liquidación de comisiones
@@ -22533,16 +23594,16 @@ La liquidación nace como borrador. Al aprobarla, un neto positivo la deja aprob
 
 ![Diagrama de estados: liquidación de comisiones](diagramas/uml/UML_Estados_LiquidacionComisiones.png)
 
-**Figura 448 — Diagrama de estados: liquidación de comisiones**
+**Figura 515 — Diagrama de estados: liquidación de comisiones**
 
 
 #### Cuenta corriente
 
-La cuenta se habilita activa. El administrador la bloquea y la reactiva, y sólo la cierra con saldo cero.
+La cuenta se habilita activa. El administrador la bloquea y la reactiva, y solo la cierra con saldo cero.
 
 ![Diagrama de estados: cuenta corriente](diagramas/uml/UML_Estados_CuentaCorriente.png)
 
-**Figura 449 — Diagrama de estados: cuenta corriente**
+**Figura 516 — Diagrama de estados: cuenta corriente**
 
 
 ### 11.2 Diagramas de Actividad
@@ -22555,7 +23616,7 @@ responde, el pedido pasa al siguiente candidato que no haya sido contactado ante
 
 ![Diagrama de actividad del despacho por proximidad](diagramas/uml/UML_Actividad_Despacho.png)
 
-**Figura 450 — Diagrama de actividad del despacho por proximidad**
+**Figura 517 — Diagrama de actividad del despacho por proximidad**
 
 
 #### Ciclo de vida del pedido
@@ -22565,7 +23626,7 @@ pago. Las dos ramas paralelas del tramo en camino terminan cuando el pedido qued
 
 ![Diagrama de actividad del ciclo de vida del pedido](diagramas/uml/UML_Actividad_CicloPedido.png)
 
-**Figura 451 — Diagrama de actividad del ciclo de vida del pedido**
+**Figura 518 — Diagrama de actividad del ciclo de vida del pedido**
 
 
 ---

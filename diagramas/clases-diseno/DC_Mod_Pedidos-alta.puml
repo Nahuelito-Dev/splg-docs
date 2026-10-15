@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -69,19 +39,20 @@ class CreateOrderUseCase <<controlador>> {
   + venderACuentaCorriente(cliente: Cliente,\n      direccionId: Identificador, items: Lista): Pedido
 }
 class CancelOrderUseCase <<controlador>> {
+  + cancelarMiPedido(pedidoId: Identificador,\n      motivo: Cadena): Pedido
   + cancelarPedido(pedidoId: Identificador,\n      motivo: Cadena): Pedido
-  + cancelarPedidoForzado(pedidoId: Identificador): Pedido
 }
 class ReleaseOrderUseCase <<controlador>> {
   + liberarPedido(pedidoId: Identificador,\n      motivo: Cadena): Pedido
+}
+class UpdateOrderUseCase <<controlador>> {
+  + modificarMiPedido(pedidoId: Identificador,\n      datos: Registro): Pedido
+  + modificarPedido(pedidoId: Identificador,\n      datos: Registro): Pedido
 }
 interface NotificationPort <<puerto>> {
   + sendArrivalPushToCustomer(cliente: Cliente,\n      pedido: Pedido, nombreDelChofer: Cadena)
   + sendOrderConfirmation(cliente: Cliente, pedido: Pedido)
   + sendPaymentApprovedPush(cliente: Cliente, pedido: Pedido,\n      esSena: Booleano)
-}
-class OrderStatusHistoryService <<fachada>> {
-  + consultarHistorialDeEstados(pedidoId: Identificador): CambioEstadoPedido[*]
 }
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class RealtimeDispatchPort <<referencia>>
@@ -98,9 +69,9 @@ CancelOrderUseCase --> "1" Map_String_Pedido
 CancelOrderUseCase --> "1" RealtimeDispatchPort
 CreateOrderUseCase --> "1" NotificationPort
 CreateOrderUseCase --> "1" PaymentsService
-OrderStatusHistoryService --> "1" Map_String_Pedido
 ReleaseOrderUseCase --> "1" Map_String_Pedido
 ReleaseOrderUseCase --> "1" RealtimeDispatchPort
+UpdateOrderUseCase --> "1" Map_String_Pedido
 CancelOrderUseCase ..> Pedido
 CreateOrderUseCase ..> Cliente
 CreateOrderUseCase ..> CuentaCorriente
@@ -108,11 +79,11 @@ CreateOrderUseCase ..> FranjaHoraria
 CreateOrderUseCase ..> "<<create>>" Pedido
 CreateOrderUseCase ..> Producto
 CreateOrderUseCase ..> ZonaCobertura
-OrderStatusHistoryService ..> Pedido
 ReleaseOrderUseCase ..> OfertaDespacho
 ReleaseOrderUseCase ..> Pedido
+UpdateOrderUseCase ..> Pedido
 
 legend bottom right
-  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
 endlegend
 @enduml

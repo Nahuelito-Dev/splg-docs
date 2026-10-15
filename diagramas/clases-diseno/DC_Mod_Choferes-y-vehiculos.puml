@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -61,13 +31,15 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class DeliveryService <<fachada>> {
+  + activarChofer(choferId: Identificador): Chofer
+  + activarDisponibilidad(usuario: Usuario): Registro
   + actualizarPerfilDelChofer(choferId: Identificador,\n      datos: Registro): Chofer
   + ajustarSaldoDelChofer(choferId: Identificador,\n      monto: Moneda): Chofer
   + buscarChoferPorUsuario(usuario: Usuario): Chofer
-  + cambiarDisponibilidad(usuario: Usuario,\n      disponible: Booleano): Registro
-  + cambiarEstadoDelChofer(choferId: Identificador,\n      activo: Booleano): Chofer
   + consultarDetalleDelChofer(choferId: Identificador,\n      out usuario: Usuario, out rol: Rol): Chofer
   + consultarPerfilDelChofer(usuario: Usuario,\n      out saldo: Moneda): Chofer
+  + desactivarChofer(choferId: Identificador): Chofer
+  + desactivarDisponibilidad(usuario: Usuario): Registro
   + eliminarChofer(choferId: Identificador)
   + findById(choferId: Identificador): Chofer
   + invalidarChofer(choferId: Identificador): Chofer
@@ -94,12 +66,12 @@ class CarService <<fachada>> {
   + reactivarVehiculo(vehiculoId: Identificador): Vehiculo
   + registrarVehiculo(usuario: Usuario, tipo: Cadena,\n      capacidad: Decimal, patente: Cadena, marca: Cadena,\n      modelo: Cadena, anio: Entero,\n      color: Cadena): Vehiculo
 }
-class "Map<String, Vehiculo>" as Map_String_Vehiculo <<colección>> {
-  + get(clave: Cadena): Vehiculo
-}
 class "List<Vehiculo>" as List_Vehiculo <<colección>> {
   + getActivos(): Vehiculo[*]
   + getVehiculosDe(distribuidora: Distribuidora): Vehiculo[*]
+}
+class "Map<String, Vehiculo>" as Map_String_Vehiculo <<colección>> {
+  + get(clave: Cadena): Vehiculo
 }
 class VehicleAssignmentService <<fachada>> {
   + consultarHistorialDeChoferesDelVehiculo(vehiculoId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
@@ -125,8 +97,8 @@ class Usuario <<referencia>>
 
 Map_String_Chofer "1" o--> "0..*" Chofer
 List_Chofer "1" o--> "0..*" Chofer
-Map_String_Vehiculo "1" o--> "0..*" Vehiculo
 List_Vehiculo "1" o--> "0..*" Vehiculo
+Map_String_Vehiculo "1" o--> "0..*" Vehiculo
 List_AsignacionVehiculo "1" o--> "0..*" AsignacionVehiculo
 CarService --> "1" List_Vehiculo
 CarService --> "1" Map_String_Chofer
@@ -148,6 +120,6 @@ VehicleAssignmentService ..> FleetTaskService
 VehicleAssignmentService ..> Vehiculo
 
 legend bottom right
-  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
 endlegend
 @enduml

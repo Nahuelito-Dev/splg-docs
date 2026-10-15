@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-334 Aprobar una Liquidación de Comisiones
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: aprobarLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación aprobada, o cerrada sin pago si el neto no es positivo
+    else la liquidación no está en borrador
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

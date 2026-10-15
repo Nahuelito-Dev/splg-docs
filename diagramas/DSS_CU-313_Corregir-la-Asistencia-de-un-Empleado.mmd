@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-313 Corregir la Asistencia de un Empleado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: corregirAsistencia(asistenciaId, datos, nota)
+    activate SIS
+    alt la jornada existe y la corrección tiene nota
+        SIS-->>ADM: jornada corregida
+    else la jornada no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else falta la nota
+        SIS-->>ADM: datos inválidos
+    end
+    deactivate SIS

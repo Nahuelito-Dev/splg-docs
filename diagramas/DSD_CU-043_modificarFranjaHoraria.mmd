@@ -1,5 +1,5 @@
 sequenceDiagram
-    title DSD — CU-043 Modificar Capacidad de Franja Horaria · modificarFranjaHoraria
+    title DSD — CU-043 Modificar una Franja Horaria · modificarFranjaHoraria
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SRV as :TimeSlotService
@@ -10,6 +10,7 @@ sequenceDiagram
     SRV->>+COL: get(franjaId)
     COL-->>-SRV: franja
     SRV->>+FRA: modificar(nombre, horaInicio, horaFin, capacidad)
+    FRA->>FRA: validarRango()
     FRA->>FRA: validarCapacidad(capacidad)
     deactivate FRA
     SRV-->>-ADM: franja

@@ -11,7 +11,7 @@ sequenceDiagram
     else algún filtro no tiene el formato esperado
         SIS-->>ADM: error de validación
     else filtros válidos
-        Note over ADM,SIS: con una distribuidora en contexto, sólo los<br/>asientos de ella
+        Note over ADM,SIS: con una distribuidora en contexto, solo los<br/>asientos de ella
         SIS-->>ADM: asientos del más reciente al más antiguo (autor, rol, operación, recurso, fecha, origen, resultado, cuerpo depurado) y total, o lista vacía si ninguno coincide
     end
     deactivate SIS
@@ -23,7 +23,7 @@ sequenceDiagram
     else algún filtro no tiene el formato esperado
         SIS-->>ADM: error de validación
     else filtros válidos
-        Note over ADM,SIS: con una distribuidora en contexto, sólo las<br/>auditorías de ella
+        Note over ADM,SIS: con una distribuidora en contexto, solo las<br/>auditorías de ella
         SIS-->>ADM: auditorías de la más reciente a la más antigua (acción, usuario, entidad, registro, fecha y hora, dirección IP, detalle de cada campo con su valor anterior y nuevo) y total, o lista vacía si ninguna coincide
     end
     deactivate SIS

@@ -71,7 +71,7 @@ def manifiesto():
 # Un DSD de un caso planificado puede nombrarlas; en uno implementado, no.
 PROPUESTAS_CLASE = {
   # Carrito persistente (I-3)
-  "CartController": "CU-122 a CU-126: endpoints del carrito; el módulo cart sólo registra las entidades",
+  "CartController": "CU-122 a CU-126: endpoints del carrito; el módulo cart solo registra las entidades",
   "CartService": "CU-122 a CU-126: agregar, modificar, quitar, consultar y vaciar el carrito",
   # Consumo declarado y recompra (I-5, I-6): módulo repurchase (D8)
   "ConsumptionService": "CU-143, CU-144: orquesta el consumo declarado fuera de customer, para no crear un ciclo con order",
@@ -98,14 +98,11 @@ PROPUESTAS_CLASE = {
   "RouteSequencerService": "CU-107: orden de las paradas de un lote",
   # Pequeños huecos (I-1)
   "CoverageZoneCronService": "CU-151: barrido que desactiva las zonas vencidas",
-  "UpdateTimeSlotDto": "CU-043: validación de la modificación de una franja",
   # Configuración de procesos y tareas (I-1)
   "ModuleConfigController": "CU-171, CU-172, CU-173: endpoints de la configuración de procesos por distribuidora",
   "ModuleConfigService": "CU-171, CU-172, CU-173: lee y valida los parámetros de module_config, con los valores por omisión",
   "DispatchConfigService": "CU-171: entrega al despacho los parámetros de su distribuidora, con una copia en memoria de un minuto",
   "ScheduledTaskGate": "CU-173: decide en cada ciclo qué distribuidoras atiende cada tarea programada, según su intervalo",
-  # Historial de estados del pedido (I-4)
-  "OrderStatusHistoryService": "CU-169, CU-170: escribe y lee order_status_history, que existe sin servicio",
   # Caja, rendición, cuentas corrientes y comisiones (I-14)
   "CashBoxService": "CU-225 a CU-227, CU-264: cajas y sesiones de caja con arqueo, módulo cash",
   "CashLedgerService": "CU-228, CU-229: punto único de escritura del libro de caja y de los saldos",
@@ -147,10 +144,25 @@ EXTERNAS = {"QueryRunner", "EntityManager", "Repository", "DataSource", "Decimal
             # @nestjs/terminus: es la única clase de aplicación de CU-104 (salud del sistema).
             "HealthCheckService"}
 
-# Casos que sólo se incluyen: ningún actor los inicia ni tienen operación del sistema en el
+# Casos que solo se incluyen: ningún actor los inicia ni tienen operación del sistema en el
 # catálogo. Su DSD es el fragmento que realiza el caso incluido: el primer mensaje sale del
 # controlador del caso base (`controladores`) y lleva la `firma` de acá; una nota «Caso incluido
 # desde CU-…» nombra a los casos base. Nombre de archivo: DSD_CU-xxx_<operacion>.mmd.
+# Diagrama de secuencia del sistema de cada caso incluido: lo inicia el actor del caso base principal (el DSS
+# es la vista de caja negra del fragmento que el caso base ejecuta); la operación no es del catálogo.
+DSS_INCLUIDOS = {
+    "crearUsuarioBase": {"cu": "CU-082", "actores": ["ACT-01"],
+                         "firma": "crearUsuarioBase(rol, datosPersonales, distribuidoraId)"},
+    "almacenarArchivo": {"cu": "CU-159", "actores": ["ACT-03"], "firma": "almacenarArchivo(clave, contenido, tipo)"},
+    "recuperarArchivo": {"cu": "CU-160", "actores": ["ACT-03"], "firma": "recuperarArchivo(clave, nombreDeDescarga)"},
+    "registrarCambioDeEstado": {"cu": "CU-169", "actores": ["ACT-01"],
+                                "firma": "registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)"},
+    "descontarStockDeLaEntrega": {"cu": "CU-220", "actores": ["ACT-03"], "firma": "descontarStockDeLaEntrega(pedidoId)"},
+    "verificarHabilitacionLaboral": {"cu": "CU-246", "actores": ["ACT-03"], "firma": "verificarHabilitacionLaboral(choferId)"},
+    "verificarCargaDeCamionAbierta": {"cu": "CU-248", "actores": ["ACT-03"], "firma": "verificarCargaDeCamionAbierta(choferId)"},
+    "aplicarMovimientoDeStock": {"cu": "CU-250", "actores": ["ACT-03"], "firma": "aplicarMovimientoDeStock(operacion)"},
+}
+
 INCLUIDOS = {
     "crearUsuarioBase": {"casos": ["CU-082"], "bases": ["CU-002", "CU-003", "CU-031", "CU-086", "CU-087"],
                          "controladores": {"RegistroService"},
@@ -184,6 +196,10 @@ INCLUIDOS = {
     "descontarStockDeLaEntrega": {"casos": ["CU-220"], "bases": ["CU-020", "CU-079", "CU-278"],
                                   "controladores": {"UpdateOrderStatusUseCase", "ReapplyDeliveriesUseCase"},
                                   "firma": "registrarEntrega(entrega)"},
+    "registrarCambioDeEstado": {"casos": ["CU-169"], "bases": ["CU-005", "CU-008", "CU-009", "CU-010", "CU-012", "CU-015", "CU-018", "CU-020", "CU-072", "CU-075", "CU-077", "CU-079", "CU-147"],
+                                "controladores": {"UpdateOrderStatusUseCase", "CreateOrderUseCase", "CancelOrderUseCase",
+                                                  "ReleaseOrderUseCase", "ReservationService", "OrderService"},
+                                "firma": "registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)"},
     "crearCheckoutDePago": {"casos": ["CU-048"], "bases": ["CU-005", "CU-072", "CU-147"],
                             "controladores": {"CreateOrderUseCase"},
                             "firma": "crearCheckoutDePago(pedidoId, medioDePago)",
@@ -376,7 +392,7 @@ def verificar(estricto=False, solo=None):
         elif et is None:
             e("el primer mensaje no sale de un actor")
         else:
-            a = re.fullmatch(r'(.+) \((ACT-0[1-9])\)', et)
+            a = re.fullmatch(r'(.+) \((ACT-(?:0[1-9]|10))\)', et)
             if not a or a.group(2) not in actores or actores[a.group(2)] != a.group(1):
                 e(f"el actor {et!r} no es del catálogo (nombre y código)")
             elif a.group(2) not in o["actores"]:

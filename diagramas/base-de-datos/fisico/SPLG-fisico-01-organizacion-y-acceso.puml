@@ -1,16 +1,6 @@
 @startuml
 title Modelo físico — Organización y acceso
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 12
-skinparam dpi 150
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 12
-}
+!include ../../estilo-vp.iuml
 skinparam entity<<ajena>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
@@ -18,14 +8,12 @@ skinparam entity<<ajena>> {
 }
 skinparam class<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
 skinparam entity<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
-skinparam legendBackgroundColor #FFFFFF
-skinparam legendBorderColor #2C4257
 
 hide circle
 skinparam linetype polyline
@@ -134,7 +122,7 @@ e_user |o--o{ e_module_config : updated_by_user_id
 e_audit ||--o{ e_audit_detail : audit_id
 
 legend bottom
-|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |
 endlegend
 note as N
   Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case

@@ -1,0 +1,26 @@
+sequenceDiagram
+    title DSD — CU-138 Registrar la Licencia de Conducir del Chofer · registrarLicenciaDeConducir
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FleetTaskService
+    participant COP as :Map#lt;String, PlanMantenimiento#gt;
+    participant COV as :Map#lt;String, Vehiculo#gt;
+    participant COC as :Map#lt;String, Chofer#gt;
+    participant PLN as plan:PlanMantenimiento
+
+    ADM->>+SRV: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)
+    SRV->>+COP: get(planId)
+    COP-->>-SRV: plan
+    alt El plan es de un vehículo
+        SRV->>+COV: get(recursoId)
+        COV-->>-SRV: vehiculo
+    else El plan es de un chofer
+        SRV->>+COC: get(recursoId)
+        COC-->>-SRV: chofer
+    end
+    SRV->>+PLN: crearTarea(recurso, vencimiento, detalle)
+    PLN->>PLN: assertSujetoCoherente(recurso)
+    create participant TAR as :TareaMantenimiento
+    PLN->>TAR: «create»(recurso, vencimiento, detalle)
+    PLN-->>-SRV: tarea
+    SRV-->>-ADM: tarea

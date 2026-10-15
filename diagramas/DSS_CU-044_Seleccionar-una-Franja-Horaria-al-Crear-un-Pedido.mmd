@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-044 Seleccionar una Franja Horaria al Crear un Pedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: validarFranjaDelPedido(franjaId, fecha)
+    activate SIS
+    alt la franja está activa y tiene cupo para esa fecha
+        SIS-->>CLI: franja disponible
+    else la franja ya está completa
+        SIS-->>CLI: error de solicitud (la franja del día está completa)
+    else la fecha agendada es anterior a hoy
+        SIS-->>CLI: error de solicitud (no se puede agendar en una fecha pasada)
+    else la franja no existe o está inactiva
+        SIS-->>CLI: error de solicitud (franja inválida o inactiva)
+    end
+    deactivate SIS

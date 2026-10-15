@@ -11,6 +11,7 @@ contenido, una fila por tema. El recorrido del codigo se anima, que es lo que ha
 entender de una que el flujo tiene un sentido.
 """
 import os
+from estilo_vp import FUENTE, RELLENO, RELLENO_CLARO, BORDE, TINTA as TINTA_VP, SUAVE as SUAVE_VP
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/"
 
@@ -19,13 +20,14 @@ MARGEN   = 30
 W        = 1180
 CAB      = 96
 
-TINTA  = "#1C1A17"
-SUAVE  = "#6B7683"
-OSCURO = "#2F3640"
+# Estilo Visual Paradigm (estilo_vp.py): fondo blanco, relleno celeste, borde azul oscuro de línea fina
+TINTA  = "#000000"
+SUAVE  = SUAVE_VP
+OSCURO = RELLENO_CLARO          # columna de rótulos de cada fila
 PAPEL  = "#FFFFFF"
-LINEA  = "#D8D3C7"
+LINEA  = BORDE
 
-AZUL, VERDE, VIOLETA, OCRE, ROJO, TEAL = "#3C6E8F", "#3F7A50", "#7B4B8A", "#A26A45", "#9C5A46", "#3E7C79"
+AZUL = VERDE = VIOLETA = OCRE = ROJO = TEAL = BORDE
 
 ICONOS = {
  "laptop": "M3 5h18v11H3z M1 18h22l-2 2H3z",
@@ -51,8 +53,8 @@ def ico(n, x, y, c, e=1.0, ancho=1.6):
             f'stroke-linecap="round" stroke-linejoin="round"><path d="{ICONOS[n]}"/></g>')
 
 def caja(x, y, w, h, t, s, color, i=None, relleno=None):
-    o = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{relleno or "#FFFFFF"}" '
-         f'stroke="{color}" stroke-width="1.3"/>']
+    o = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="3" fill="{relleno or RELLENO}" '
+         f'stroke="{color}" stroke-width="1"/>']
     tx = x + (40 if i else 14)
     if i: o.append(ico(i, x + 11, y + (h - 24) / 2, color))
     if s:
@@ -63,12 +65,12 @@ def caja(x, y, w, h, t, s, color, i=None, relleno=None):
     return "".join(o)
 
 def chip(x, y, w, t, color, tinte):
-    return (f'<rect x="{x}" y="{y}" width="{w}" height="26" rx="13" fill="{tinte}" stroke="{color}" stroke-width="1.2"/>'
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="26" rx="13" fill="{RELLENO_CLARO}" stroke="{color}" stroke-width="1"/>'
             f'<text x="{x+w/2}" y="{y+17.5}" class="t-chip" fill="{color}" text-anchor="middle">{t}</text>')
 
 def fle(x1, y1, x2, y2, c, t="", anim=True):
-    o = [f'<path d="M {x1} {y1} L {x2} {y2}" fill="none" stroke="{c}" stroke-width="1.9" '
-         f'stroke-dasharray="7 6" class="{"flujo" if anim else ""}" marker-end="url(#p{c[1:]})"/>']
+    o = [f'<path d="M {x1} {y1} L {x2} {y2}" fill="none" stroke="{c}" stroke-width="1.1" '
+         f'stroke-dasharray="6 3" class="{"flujo" if anim else ""}" marker-end="url(#p{c[1:]})"/>']
     if t:
         o.append(f'<text x="{(x1+x2)/2}" y="{(y1+y2)/2 - 9}" class="t-eti" fill="{SUAVE}" text-anchor="middle">{t}</text>')
     return "".join(o)
@@ -90,12 +92,12 @@ svg.append(f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" wid
   aria-label="Entornos y recorrido del código de SPLG">
 <defs>{defs}</defs>
 <style>
-  text{{font-family:Helvetica,Arial,sans-serif}}
-  .t-tit{{font-size:26px;font-weight:700}}
-  .t-baj{{font-size:12.5px}}
-  .t-rot{{font-size:15px;font-weight:700;fill:#FFFFFF}}
-  .t-cja{{font-size:13px;font-weight:600}}
-  .t-sub{{font-size:11px}}
+  text{{font-family:Arial,Helvetica,sans-serif}}
+  .t-tit{{font-size:18px;font-weight:700}}
+  .t-baj{{font-size:11px}}
+  .t-rot{{font-size:13px;font-weight:700;fill:#000000}}
+  .t-cja{{font-size:12px;font-weight:700}}
+  .t-sub{{font-size:10.5px}}
   .t-chip{{font-size:11px;font-weight:600}}
   .t-eti{{font-size:11px;font-weight:600}}
   /* El recorrido del codigo se anima. Sin el movimiento hay que leer las
@@ -105,9 +107,8 @@ svg.append(f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" wid
   @media (prefers-reduced-motion:reduce){{.flujo{{animation:none}}}}
 </style>
 <rect width="{W}" height="{H}" fill="{PAPEL}"/>
-<rect x="{MARGEN}" y="{MARGEN}" width="6" height="34" rx="3" fill="{TEAL}"/>
-<text x="{MARGEN+20}" y="{MARGEN+26}" class="t-tit" fill="{TINTA}">Entornos y recorrido del código — SPLG</text>
-<text x="{MARGEN+20}" y="{MARGEN+48}" class="t-baj" fill="{SUAVE}">Dónde corre cada pieza y cómo llega el código de una máquina a la otra</text>''')
+<text x="{MARGEN}" y="{MARGEN+22}" class="t-tit" fill="{TINTA}">Entornos y recorrido del código — SPLG</text>
+<text x="{MARGEN}" y="{MARGEN+42}" class="t-baj" fill="{SUAVE}">Dónde corre cada pieza y cómo llega el código de una máquina a la otra</text>''')
 
 y = CAB
 X = MARGEN
@@ -115,7 +116,7 @@ PANEL_X = X + ROTULO_W
 PANEL_W = W - PANEL_X - MARGEN
 
 for nombre, alto in FILAS:
-    svg.append(f'<rect x="{X}" y="{y}" width="{ROTULO_W}" height="{alto}" fill="{OSCURO}"/>')
+    svg.append(f'<rect x="{X}" y="{y}" width="{ROTULO_W}" height="{alto}" fill="{OSCURO}" stroke="{LINEA}" stroke-width="1"/>')
     lineas = nombre.split("\n")
     y0 = y + alto/2 - (len(lineas)-1)*10 + 5
     for i, l in enumerate(lineas):
@@ -141,9 +142,9 @@ svg.append(f'<text x="{px+588}" y="{y+134}" class="t-sub" fill="{SUAVE}">Los dos
 y += FILAS[0][1]
 svg.append(ico("github", px, y + 55, OCRE, 1.6, 1.3))
 svg.append(caja(px + 78, y + 22, 250, 46, "6 repositorios splg-*", "GitFlow: develop → release → main", OCRE, "github"))
-svg.append(chip(px + 78,  y + 84, 118, "develop", OCRE, "#FDEFE6"))
-svg.append(chip(px + 210, y + 84, 118, "release", OCRE, "#FDEFE6"))
-svg.append(chip(px + 342, y + 84, 118, "main", OCRE, "#FDEFE6"))
+svg.append(chip(px + 78,  y + 84, 118, "develop", OCRE, RELLENO_CLARO))
+svg.append(chip(px + 210, y + 84, 118, "release", OCRE, RELLENO_CLARO))
+svg.append(chip(px + 342, y + 84, 118, "main", OCRE, RELLENO_CLARO))
 svg.append(caja(px + 500, y + 18, 278, 34, "checks.yml", None, VERDE, "check"))
 svg.append(caja(px + 500, y + 58, 278, 34, "release.yml", None, VIOLETA, "reloj"))
 svg.append(caja(px + 500, y + 98, 278, 34, "deploy.yml", None, ROJO, "cohete"))

@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-220 Descontar del Stock Físico lo Entregado
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: descontarStockDeLaEntrega(pedidoId)
+    activate SIS
+    alt alcanzan las llenas del camión o del depósito
+        SIS-->>ADM: stock físico descontado y vacías acreditadas
+    else no alcanzan las llenas de una garrafa
+        SIS-->>ADM: entrega confirmada igual, con la garrafa pendiente de conciliar
+    end
+    deactivate SIS
+    Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-020 y también lo incluyen CU-079 y CU-278

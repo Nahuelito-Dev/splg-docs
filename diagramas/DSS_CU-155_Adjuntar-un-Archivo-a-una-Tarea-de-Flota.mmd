@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-155 Adjuntar un Archivo a una Tarea de Flota
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: adjuntarArchivoALaTarea(tareaId, archivo)
+    activate SIS
+    alt el archivo es de un tipo y un tamaño permitidos
+        SIS-->>ADM: adjunto creado
+    else el tipo no está permitido
+        SIS-->>ADM: tipo de archivo no soportado
+    else el archivo supera el tamaño máximo
+        SIS-->>ADM: archivo demasiado grande
+    else la tarea no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

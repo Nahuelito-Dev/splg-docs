@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-124 Quitar un Ítem del Carrito
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: quitarItemDelCarrito(itemId)
+    activate SIS
+    alt el ítem es del carrito del cliente
+        SIS-->>CLI: carrito sin el ítem
+    else el ítem no es del carrito del cliente
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

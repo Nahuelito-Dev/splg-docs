@@ -1,16 +1,6 @@
 @startuml
 title Modelo físico de la base de datos — vista general (tablas implementadas)
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 12
-skinparam dpi 150
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 12
-}
+!include ../../estilo-vp.iuml
 skinparam entity<<ajena>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
@@ -18,14 +8,12 @@ skinparam entity<<ajena>> {
 }
 skinparam class<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
 skinparam entity<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
-skinparam legendBackgroundColor #FFFFFF
-skinparam legendBorderColor #2C4257
 
 hide circle
 left to right direction
@@ -469,7 +457,7 @@ e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice
 legend bottom right
   63 tablas implementadas y 108 relaciones dibujadas.
   Además, 42 tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.
-  Cada tabla muestra sólo su PK y sus FK; las columnas completas están en la lámina de su contexto
+  Cada tabla muestra solo su PK y sus FK; las columnas completas están en la lámina de su contexto
   y en el diccionario de datos. * = obligatoria.
 endlegend
 @enduml

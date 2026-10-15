@@ -1,16 +1,6 @@
 @startuml
 title Modelo entidad-relación conceptual — Caja y movimientos
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 12
-skinparam dpi 150
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 12
-}
+!include ../../estilo-vp.iuml
 skinparam entity<<ajena>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
@@ -18,21 +8,19 @@ skinparam entity<<ajena>> {
 }
 skinparam class<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
 skinparam entity<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
-skinparam legendBackgroundColor #FFFFFF
-skinparam legendBorderColor #2C4257
 
 hide circle
 
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity Caja <<propuesto>> #E4EDF4;line:1F5E8C {
+entity Caja <<propuesto>> #FFF6D9;line:1F5E8C {
   * identificador
   --
   {field} nombre
@@ -41,7 +29,7 @@ entity Caja <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} requiere sesión
   {field} activa
 }
-entity SesionDeCaja <<propuesto>> #E4EDF4;line:1F5E8C {
+entity SesionDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
   * identificador
   --
   {field} estado
@@ -53,7 +41,7 @@ entity SesionDeCaja <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} diferencia
   {field} observaciones
 }
-entity CategoriaDeCaja <<propuesto>> #E4EDF4;line:1F5E8C {
+entity CategoriaDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
   * identificador
   --
   {field} nombre
@@ -61,7 +49,7 @@ entity CategoriaDeCaja <<propuesto>> #E4EDF4;line:1F5E8C {
   {field} código de sistema
   {field} activa
 }
-entity MovimientoDeCaja <<propuesto>> #E4EDF4;line:1F5E8C {
+entity MovimientoDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
   * identificador
   --
   {field} sentido
@@ -97,6 +85,6 @@ GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
-  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
+  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.
 endlegend
 @enduml

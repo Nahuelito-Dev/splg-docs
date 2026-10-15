@@ -6,7 +6,7 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
 
     Note over SAU: Se ejecuta una vez por<br/>día
-    SAU->>SIS: avisarVencimientosPendientes()
+    SAU->>SIS: avisarVencimientosDelPersonal()
     activate SIS
     alt Hay documentación del personal por vencer, vencida o faltante
         SIS-)ADM: notificarVencimientosDelPersonal(tareas)

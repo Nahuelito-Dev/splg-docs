@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-310 Transferir Fondos entre Cajas
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: los dos movimientos asentados
+    else alguna caja no admite el movimiento
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

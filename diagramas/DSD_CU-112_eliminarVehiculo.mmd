@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-112 Eliminar un Vehículo · eliminarVehiculo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COL as :Map#lt;String, Vehiculo#gt;
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: eliminarVehiculo(vehiculoId)
+    SRV->>+COL: get(vehiculoId)
+    COL-->>-SRV: vehiculo
+    SRV->>+VEH: darDeBaja()
+    VEH->>VEH: assertLibre()
+    deactivate VEH
+    SRV-->>-ADM: confirmacion

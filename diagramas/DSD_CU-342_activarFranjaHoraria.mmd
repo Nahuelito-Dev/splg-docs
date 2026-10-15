@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-342 Activar una Franja Horaria · activarFranjaHoraria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TimeSlotService
+    participant COL as :Map#lt;String, FranjaHoraria#gt;
+    participant FRA as franja:FranjaHoraria
+
+    ADM->>+SRV: activarFranjaHoraria(franjaId)
+    SRV->>+COL: get(franjaId)
+    COL-->>-SRV: franja
+    SRV->>FRA: activar()
+    SRV-->>-ADM: franja

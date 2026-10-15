@@ -10,7 +10,7 @@ Escribe `material-de-trabajo/clases-codigo.json`. Es la fuente única que usan
 `cruzar-dsd-clases.py`: todos leen el código una sola vez y comparten el resultado,
 así que no hay manera de que el diagrama de clases diga algo que el código no dice.
 
-No se editan `.ts` ni se ejecuta nada del backend: sólo se lee texto con expresiones
+No se editan `.ts` ni se ejecuta nada del backend: solo se lee texto con expresiones
 regulares. Es aproximado (no es un parser de TypeScript), pero suficiente para lo
 que hace falta: nombre de la clase, sus atributos/relaciones y la firma de cada
 método.

@@ -1,16 +1,6 @@
 @startuml
 title Modelo físico — Venta y pedidos
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 12
-skinparam dpi 150
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 12
-}
+!include ../../estilo-vp.iuml
 skinparam entity<<ajena>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
@@ -18,14 +8,12 @@ skinparam entity<<ajena>> {
 }
 skinparam class<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
 skinparam entity<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
-skinparam legendBackgroundColor #FFFFFF
-skinparam legendBorderColor #2C4257
 
 hide circle
 skinparam linetype polyline
@@ -171,9 +159,9 @@ e_user |o--o{ e_order_status_history : changed_by_user_id
 e_order ||--o{ e_order_status_history : order_id
 
 legend bottom
-|<#F1F1F1> **tabla de otro contexto** | sólo se muestra su nombre; sus columnas están en su propio contexto |
+|<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |
 |<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
-|<#E4EDF4> **propuesto** | columna planificada, todavía sin aplicar a la base |
+|<#FFF6D9> **propuesto** | columna planificada, todavía sin aplicar a la base |
 endlegend
 note as N
   Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case

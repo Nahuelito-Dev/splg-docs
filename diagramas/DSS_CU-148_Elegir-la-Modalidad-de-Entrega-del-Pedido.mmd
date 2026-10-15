@@ -8,7 +8,7 @@ sequenceDiagram
     activate SIS
     alt las dos modalidades están disponibles
         SIS-->>CLI: opciones con precio y tiempo estimado
-    else sólo la programada está disponible
+    else solo la programada está disponible
         SIS-->>CLI: opción programada con el motivo
     end
     deactivate SIS

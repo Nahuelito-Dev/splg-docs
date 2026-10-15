@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-341 Modificar un Pedido Pendiente (Cliente)
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: modificarMiPedido(pedidoId, datos)
+    activate SIS
+    alt el pedido es del cliente, está pendiente sin chofer y los datos son válidos
+        SIS-->>CLI: pedido modificado
+    else el pedido no existe o es de otro cliente
+        SIS-->>CLI: recurso no encontrado
+    else lo tomó un repartidor, tiene pago en línea o la seña supera el total
+        SIS-->>CLI: conflicto
+    else falta stock, cupo o la dirección está fuera de cobertura
+        SIS-->>CLI: solicitud inválida
+    end
+    deactivate SIS

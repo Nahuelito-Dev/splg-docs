@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-314 Consultar la Asistencia de los Empleados
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarAsistencias(desde, hasta)
+    activate SIS
+    alt hay jornadas en el período
+        SIS-->>ADM: jornadas con su duración, incluidas las abiertas
+    else no hay ninguna
+        SIS-->>ADM: listado vacío
+    end
+    deactivate SIS

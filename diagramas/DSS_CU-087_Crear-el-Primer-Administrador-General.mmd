@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-087 Crear el Primer Administrador General
+    autonumber
+    actor OPE as Operador Técnico (ACT-10)
+    participant SIS as :Sistema
+
+    OPE->>SIS: crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)
+    activate SIS
+    alt no existe ningún super administrador
+        SIS-->>OPE: super administrador creado (queda habilitado el acceso al panel)
+    else ya existe un super administrador
+        SIS-->>OPE: rechazo (la operación de arranque ya fue usada)
+    end
+    deactivate SIS
+    Note over OPE,SIS: Se ejecuta desde el servidor, no desde el<br/>panel ni las apps

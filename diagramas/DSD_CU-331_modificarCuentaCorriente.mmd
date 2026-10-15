@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-331 Modificar la Cuenta Corriente de un Cliente · modificarCuentaCorriente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CustomerAccountService
+    participant CUES as :Map#lt;String, CuentaCorriente#gt;
+    participant CUE as cuentaCorriente:CuentaCorriente
+
+    ADM->>+SRV: modificarCuentaCorriente(cuentaId, datos)
+    SRV->>+CUES: get(cuentaId)
+    CUES-->>-SRV: cuentaCorriente
+    SRV->>+CUE: modificar(datos)
+    CUE->>CUE: validarCambio(datos)
+    deactivate CUE
+    SRV-->>-ADM: cuentaCorriente

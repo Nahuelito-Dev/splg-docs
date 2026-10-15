@@ -3,7 +3,6 @@ sequenceDiagram
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant SIS as :Sistema
-    actor ADM as Administrador (ACT-03)
 
     Note over SAU: Se dispara al cancelarse<br/>el pedido (CU-008,<br/>CU-010) o al degradarse<br/>un pedido express<br/>(CU-149)
     SAU->>SIS: reintegrarPagoDelPedido(pedidoId, importe)
@@ -18,10 +17,4 @@ sequenceDiagram
         SIS-->>SAU: sin devolución
     end
     deactivate SIS
-
-    opt El administrador reintenta una devolución fallida desde el detalle del pedido
-        ADM->>SIS: reintegrarPagoDelPedido(pedidoId, importe)
-        activate SIS
-        SIS-->>ADM: pago reintegrado o devolución fallida, según responda la pasarela
-        deactivate SIS
-    end
+    Note over SAU,SIS: También lo inicia el Administrador (ACT-03) cuando reintenta una devolución fallida desde el detalle del pedido

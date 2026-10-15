@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-118 Editar una Dirección de Entrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: editarDireccionDeEntrega(direccionId, cambios)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: dirección actualizada
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

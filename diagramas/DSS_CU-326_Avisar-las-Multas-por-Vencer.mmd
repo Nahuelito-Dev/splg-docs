@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSS — CU-326 Avisar las Multas por Vencer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    actor SAU as Sistema Automático (ACT-04)
+    participant SIS as :Sistema
+
+    Note over SAU,SIS: Se ejecuta una vez por día,<br/>a las 08:00 hora argentina
+    SAU->>SIS: avisarMultasPorVencer()
+    activate SIS
+    alt hay multas pendientes que vencen en siete días o menos, o ya vencidas, sin aviso
+        SIS-)ADM: notificarMultasPorVencer(multas)
+        SIS-->>SAU: avisos enviados
+    else no hay ninguna
+        SIS-->>SAU: el ciclo termina sin avisos
+    end
+    deactivate SIS

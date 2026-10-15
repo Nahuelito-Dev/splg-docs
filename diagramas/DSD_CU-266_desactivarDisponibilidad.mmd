@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSD — CU-266 Desactivar la Disponibilidad · desactivarDisponibilidad
+    autonumber
+    actor CHF as Chofer (ACT-02)
+    participant SRV as :DeliveryService
+    participant CHOS as :Map#lt;String, Chofer#gt;
+    participant CHO as chofer:Chofer
+    participant UBI as ubicacion:UbicacionGPS
+
+    CHF->>+SRV: desactivarDisponibilidad(usuarioId)
+    SRV->>+CHOS: get(usuarioId)
+    CHOS-->>-SRV: chofer
+    SRV->>+CHO: desactivarDisponibilidad(falso)
+    CHO->>CHO: validarHabilitacion()
+    deactivate CHO
+    opt El chofer quedó no disponible
+        SRV->>+CHO: getUbicacion()
+        CHO-->>-SRV: ubicacion
+        SRV->>UBI: eliminar()
+    end
+    SRV-->>-CHF: disponibilidad

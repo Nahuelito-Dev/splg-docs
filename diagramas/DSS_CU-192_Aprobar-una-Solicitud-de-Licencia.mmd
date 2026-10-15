@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-192 Aprobar una Solicitud de Licencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: aprobarLicencia(licenciaId)
+    activate SIS
+    alt la licencia está solicitada
+        SIS-->>ADM: licencia aprobada, con su autor y su fecha
+    else la licencia no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la licencia no está solicitada
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

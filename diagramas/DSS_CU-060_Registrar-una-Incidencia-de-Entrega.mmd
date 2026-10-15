@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-060 Registrar una Incidencia de Entrega
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: registrarIncidencia(pedidoId, tipo, descripcion, foto)
+    activate SIS
+    alt el pedido existe
+        SIS-->>CHO: incidencia registrada (incidenciaId, estado ABIERTA)
+    else el pedido no existe, es de otra distribuidora o no es del chofer
+        SIS-->>CHO: recurso no encontrado
+    else el chofer tuvo el pedido y ya no lo tiene a cargo
+        SIS-->>CHO: recurso ya no disponible
+    end
+    deactivate SIS

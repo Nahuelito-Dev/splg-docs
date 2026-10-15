@@ -148,6 +148,7 @@
 | Agrupa | SesionDeCaja | MovimientoDeCaja | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Clasifica | CategoriaDeCaja | MovimientoDeCaja | Asociación | 1 a 0..* | Descripción para |
 | Anula a | MovimientoDeCaja | MovimientoDeCaja | Asociación | 0..1 a 0..1 | Está relacionado con una transacción |
+| Registró | Usuario | MovimientoDeCaja | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Presenta | Chofer | RendicionChofer | Composición | 1 a 0..* | Está relacionado con una transacción |
 | Ingresa en | RendicionChofer | Caja | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
 | Genera | RendicionChofer | MovimientoDeCaja | Asociación | 0..1 a 0..1 | Está relacionado con una transacción |

@@ -1,0 +1,27 @@
+sequenceDiagram
+    title DSD — CU-339 Modificar un Pedido Pendiente (Administrador) · modificarPedido
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant UOU as :UpdateOrderUseCase
+    participant COL as :Map#lt;String, Pedido#gt;
+    participant PED as pedido:Pedido
+    participant PRO as producto:Producto
+
+    ADM->>+UOU: modificarPedido(pedidoId, datos)
+    UOU->>+COL: get(pedidoId)
+    COL-->>-UOU: pedido
+    UOU->>+PED: modificar(datos)
+    PED->>PED: validarEditable()
+    opt Cambian los renglones
+        PED->>PRO: reservar(cantidad)
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+    end
+    opt Cambia la dirección
+        create participant CAM as :CambioDireccion
+        PED->>CAM: «create»(direccionOrigen, direccionNueva, autor, motivo)
+    end
+    PED->>PED: calcularTotal()
+    deactivate PED
+    UOU-->>-ADM: pedido
+    Note over ADM,UOU: También lo inicia el Administrador General (ACT-05)

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-119 Eliminar una Dirección de Entrega
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: eliminarDireccionDeEntrega(direccionId)
+    activate SIS
+    alt la dirección existe y es del cliente
+        SIS-->>CLI: baja confirmada (baja lógica, los pedidos que la usaron la siguen mostrando)
+    else la dirección no existe o es de otro
+        SIS-->>CLI: operación rechazada
+    end
+    deactivate SIS

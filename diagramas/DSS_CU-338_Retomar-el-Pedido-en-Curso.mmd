@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-338 Retomar el Pedido en Curso
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: consultarPedidoEnCurso()
+    activate SIS
+    alt el chofer tiene un pedido en curso o un cobro pendiente de hoy
+        SIS-->>CHO: pedido en curso
+    else el chofer no tiene ninguno
+        SIS-->>CHO: sin contenido
+    end
+    deactivate SIS

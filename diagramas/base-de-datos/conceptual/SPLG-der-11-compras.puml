@@ -1,16 +1,6 @@
 @startuml
 title Modelo entidad-relación conceptual — Compras
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 12
-skinparam dpi 150
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 12
-}
+!include ../../estilo-vp.iuml
 skinparam entity<<ajena>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
@@ -18,14 +8,12 @@ skinparam entity<<ajena>> {
 }
 skinparam class<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
 skinparam entity<<propuesto>> {
   BorderColor #1F5E8C
-  BackgroundColor #E4EDF4
+  BackgroundColor #FFF6D9
 }
-skinparam legendBackgroundColor #FFFFFF
-skinparam legendBorderColor #2C4257
 
 hide circle
 
@@ -113,6 +101,6 @@ RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
-  Las entidades en gris pertenecen a otra vista; se muestran sólo como referencia.
+  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.
 endlegend
 @enduml

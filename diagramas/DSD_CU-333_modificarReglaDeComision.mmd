@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-333 Modificar una Regla de Comisión por Entrega · modificarReglaDeComision
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CommissionService
+    participant REGS as :Map#lt;String, ReglaComision#gt;
+    participant REG as regla:ReglaComision
+
+    ADM->>+SRV: modificarReglaDeComision(reglaId, datos)
+    SRV->>+REGS: get(reglaId)
+    REGS-->>-SRV: regla
+    SRV->>+REG: modificar(datos)
+    REG->>REG: validarSinSolapamiento(datos)
+    deactivate REG
+    SRV-->>-ADM: regla

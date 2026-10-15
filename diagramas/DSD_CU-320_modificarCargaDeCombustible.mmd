@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSD — CU-320 Modificar una Carga de Combustible · modificarCargaDeCombustible
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :FuelLoadService
+    participant COC as :Map#lt;String, CargaCombustible#gt;
+    participant CAR as cargaCombustible:CargaCombustible
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: modificarCargaDeCombustible(cargaId, datos)
+    SRV->>+COC: get(cargaId)
+    COC-->>-SRV: cargaCombustible
+    SRV->>+CAR: modificar(datos)
+    CAR->>CAR: assertNoAnulada()
+    CAR->>CAR: assertImporteCoherente()
+    CAR->>VEH: actualizarKilometraje(kilometraje)
+    deactivate CAR
+    SRV-->>-ADM: cargaCombustible

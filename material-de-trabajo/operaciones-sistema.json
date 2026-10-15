@@ -8,7 +8,8 @@
     "ACT-06": "MercadoPago",
     "ACT-07": "Firebase",
     "ACT-08": "Servicio de correo",
-    "ACT-09": "Plataforma de despliegue"
+    "ACT-09": "Plataforma de despliegue",
+    "ACT-10": "Operador Técnico"
   },
   "operaciones": [
     {
@@ -49,7 +50,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-195"
+        "CU-320"
       ],
       "actores": [
         "ACT-03"
@@ -67,7 +68,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-195"
+        "CU-321"
       ],
       "actores": [
         "ACT-03"
@@ -85,7 +86,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-195"
+        "CU-322"
       ],
       "actores": [
         "ACT-03"
@@ -155,7 +156,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-198"
+        "CU-323"
       ],
       "actores": [
         "ACT-03"
@@ -177,7 +178,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-198"
+        "CU-324"
       ],
       "actores": [
         "ACT-03"
@@ -195,7 +196,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-198"
+        "CU-325"
       ],
       "actores": [
         "ACT-03"
@@ -208,7 +209,7 @@
       "firmaConTipos": "avisarMultasPorVencer()",
       "parametros": [],
       "casosDeUso": [
-        "CU-198"
+        "CU-326"
       ],
       "actores": [
         "ACT-04"
@@ -301,7 +302,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-201"
+        "CU-327"
       ],
       "actores": [
         "ACT-03"
@@ -319,7 +320,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-201"
+        "CU-328"
       ],
       "actores": [
         "ACT-03"
@@ -498,7 +499,8 @@
         "CU-106"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-04"
       ],
       "cambiaEstado": true
     },
@@ -534,7 +536,8 @@
         "CU-107"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-04"
       ],
       "cambiaEstado": true
     },
@@ -552,7 +555,9 @@
         "CU-108"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-03",
+        "ACT-04"
       ],
       "cambiaEstado": true
     },
@@ -570,7 +575,9 @@
         "CU-105"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03",
+        "ACT-04"
       ],
       "cambiaEstado": true
     },
@@ -644,29 +651,6 @@
       ],
       "casosDeUso": [
         "CU-096"
-      ],
-      "actores": [
-        "ACT-03"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "actualizarProducto",
-      "firma": "actualizarProducto(productoId, datos)",
-      "firmaConTipos": "actualizarProducto(productoId identificador, datos registro)",
-      "parametros": [
-        {
-          "nombre": "productoId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "datos",
-          "tipo": "registro"
-        }
-      ],
-      "casosDeUso": [
-        "CU-037",
-        "CU-039"
       ],
       "actores": [
         "ACT-03"
@@ -761,7 +745,8 @@
         "CU-094"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -805,7 +790,8 @@
         "CU-174"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -840,6 +826,7 @@
         "CU-107"
       ],
       "actores": [
+        "ACT-02",
         "ACT-04"
       ],
       "cambiaEstado": true
@@ -859,7 +846,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-049"
+        "CU-337"
       ],
       "actores": [
         "ACT-03"
@@ -875,6 +862,7 @@
         "CU-106"
       ],
       "actores": [
+        "ACT-01",
         "ACT-04"
       ],
       "cambiaEstado": true
@@ -890,7 +878,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-242"
+        "CU-335"
       ],
       "actores": [
         "ACT-03"
@@ -930,7 +918,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-242"
+        "CU-334"
       ],
       "actores": [
         "ACT-03"
@@ -1003,7 +991,8 @@
         "CU-068"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -1035,43 +1024,6 @@
       ],
       "actores": [
         "ACT-04"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "avisarVencimientosPendientes",
-      "firma": "avisarVencimientosPendientes()",
-      "firmaConTipos": "avisarVencimientosPendientes()",
-      "parametros": [],
-      "casosDeUso": [
-        "CU-142",
-        "CU-188"
-      ],
-      "actores": [
-        "ACT-04"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "bloquearUsuario",
-      "firma": "bloquearUsuario(usuarioId, bloquear)",
-      "firmaConTipos": "bloquearUsuario(usuarioId identificador, bloquear booleano)",
-      "parametros": [
-        {
-          "nombre": "usuarioId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "bloquear",
-          "tipo": "booleano"
-        }
-      ],
-      "casosDeUso": [
-        "CU-050",
-        "CU-270"
-      ],
-      "actores": [
-        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -1176,7 +1128,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-051",
         "CU-114"
       ],
       "actores": [
@@ -1206,7 +1157,8 @@
         "CU-064"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02"
       ],
       "cambiaEstado": true
     },
@@ -1225,7 +1177,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-047"
+        "CU-336"
       ],
       "actores": [
         "ACT-01",
@@ -1257,94 +1209,6 @@
       ],
       "actores": [
         "ACT-01"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "cambiarDisponibilidad",
-      "firma": "cambiarDisponibilidad(usuarioId, disponible)",
-      "firmaConTipos": "cambiarDisponibilidad(usuarioId identificador, disponible booleano)",
-      "parametros": [
-        {
-          "nombre": "usuarioId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "disponible",
-          "tipo": "booleano"
-        }
-      ],
-      "casosDeUso": [
-        "CU-022",
-        "CU-266"
-      ],
-      "actores": [
-        "ACT-02"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "cambiarEstadoDelChofer",
-      "firma": "cambiarEstadoDelChofer(choferId, activo)",
-      "firmaConTipos": "cambiarEstadoDelChofer(choferId identificador, activo booleano)",
-      "parametros": [
-        {
-          "nombre": "choferId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "activo",
-          "tipo": "booleano"
-        }
-      ],
-      "casosDeUso": [
-        "CU-033",
-        "CU-267"
-      ],
-      "actores": [
-        "ACT-03"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "cancelarPedido",
-      "firma": "cancelarPedido(pedidoId, motivo)",
-      "firmaConTipos": "cancelarPedido(pedidoId identificador, motivo cadena)",
-      "parametros": [
-        {
-          "nombre": "pedidoId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "motivo",
-          "tipo": "cadena"
-        }
-      ],
-      "casosDeUso": [
-        "CU-008",
-        "CU-010"
-      ],
-      "actores": [
-        "ACT-01",
-        "ACT-03"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "cancelarPedidoForzado",
-      "firma": "cancelarPedidoForzado(pedidoId)",
-      "firmaConTipos": "cancelarPedidoForzado(pedidoId identificador)",
-      "parametros": [
-        {
-          "nombre": "pedidoId",
-          "tipo": "identificador"
-        }
-      ],
-      "casosDeUso": [
-        "CU-010"
-      ],
-      "actores": [
-        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -1502,8 +1366,7 @@
         "CU-020"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -1530,8 +1393,7 @@
       ],
       "actores": [
         "ACT-01",
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -1575,7 +1437,9 @@
         "CU-105"
       ],
       "actores": [
-        "ACT-03"
+        "ACT-02",
+        "ACT-03",
+        "ACT-04"
       ],
       "cambiaEstado": true
     },
@@ -1698,8 +1562,7 @@
         "CU-152"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -1738,7 +1601,8 @@
         "CU-041"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -1753,7 +1617,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-035",
         "CU-109"
       ],
       "actores": [
@@ -1866,7 +1729,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-044",
         "CU-045"
       ],
       "actores": [
@@ -1995,8 +1857,7 @@
       ],
       "actores": [
         "ACT-01",
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2081,8 +1942,8 @@
       ],
       "actores": [
         "ACT-01",
-        "ACT-03",
-        "ACT-05"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2166,7 +2027,8 @@
         "CU-062"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2201,7 +2063,8 @@
         "CU-163"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2237,7 +2100,9 @@
         "CU-006"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2263,7 +2128,8 @@
         "CU-081"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2285,7 +2151,8 @@
         "CU-080"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2303,7 +2170,8 @@
         "CU-004"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02"
       ],
       "cambiaEstado": false
     },
@@ -2321,7 +2189,8 @@
         "CU-004"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02"
       ],
       "cambiaEstado": false
     },
@@ -2339,7 +2208,8 @@
         "CU-049"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2357,7 +2227,8 @@
         "CU-041"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2375,7 +2246,8 @@
         "CU-041"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2424,7 +2296,9 @@
         "CU-065"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2475,8 +2349,7 @@
       "actores": [
         "ACT-01",
         "ACT-02",
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -2494,6 +2367,7 @@
         "CU-163"
       ],
       "actores": [
+        "ACT-02",
         "ACT-03"
       ],
       "cambiaEstado": false
@@ -2512,6 +2386,7 @@
         "CU-115"
       ],
       "actores": [
+        "ACT-02",
         "ACT-03"
       ],
       "cambiaEstado": false
@@ -2723,8 +2598,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-005",
-        "CU-044"
+        "CU-005"
       ],
       "actores": [
         "ACT-01"
@@ -2757,7 +2631,7 @@
         "CU-087"
       ],
       "actores": [
-        "ACT-05"
+        "ACT-10"
       ],
       "cambiaEstado": true
     },
@@ -2867,7 +2741,9 @@
         "CU-072"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -2886,40 +2762,6 @@
       ],
       "actores": [
         "ACT-05"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "crearTareaDeFlota",
-      "firma": "crearTareaDeFlota(planId, recursoId, vencimiento, detalle)",
-      "firmaConTipos": "crearTareaDeFlota(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)",
-      "parametros": [
-        {
-          "nombre": "planId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "recursoId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "vencimiento",
-          "tipo": "fecha"
-        },
-        {
-          "nombre": "detalle",
-          "tipo": "registro"
-        }
-      ],
-      "casosDeUso": [
-        "CU-136",
-        "CU-137",
-        "CU-138",
-        "CU-140",
-        "CU-197"
-      ],
-      "actores": [
-        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -3154,7 +2996,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-046",
         "CU-118"
       ],
       "actores": [
@@ -3177,7 +3018,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-051",
         "CU-111"
       ],
       "actores": [
@@ -3254,7 +3094,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-046",
         "CU-119"
       ],
       "actores": [
@@ -3327,7 +3166,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-051",
         "CU-112"
       ],
       "actores": [
@@ -3427,6 +3265,8 @@
         "CU-108"
       ],
       "actores": [
+        "ACT-01",
+        "ACT-03",
         "ACT-04"
       ],
       "cambiaEstado": true
@@ -3872,7 +3712,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-046",
         "CU-120"
       ],
       "actores": [
@@ -3979,7 +3818,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-235"
+        "CU-331"
       ],
       "actores": [
         "ACT-03"
@@ -4057,7 +3896,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-240"
+        "CU-333"
       ],
       "actores": [
         "ACT-03"
@@ -4104,7 +3943,8 @@
         "CU-078"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -4157,6 +3997,8 @@
         "CU-105"
       ],
       "actores": [
+        "ACT-02",
+        "ACT-03",
         "ACT-04"
       ],
       "cambiaEstado": true
@@ -4278,7 +4120,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-233"
+        "CU-330"
       ],
       "actores": [
         "ACT-03"
@@ -4426,44 +4268,10 @@
         }
       ],
       "casosDeUso": [
-        "CU-237"
+        "CU-329"
       ],
       "actores": [
         "ACT-03"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "registrarCambioDeEstado",
-      "firma": "registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)",
-      "firmaConTipos": "registrarCambioDeEstado(pedidoId identificador, estadoAnterior cadena, estadoNuevo cadena, autor identificador, motivo cadena)",
-      "parametros": [
-        {
-          "nombre": "pedidoId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "estadoAnterior",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "estadoNuevo",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "autor",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "motivo",
-          "tipo": "cadena"
-        }
-      ],
-      "casosDeUso": [
-        "CU-169"
-      ],
-      "actores": [
-        "ACT-04"
       ],
       "cambiaEstado": true
     },
@@ -4478,37 +4286,10 @@
         }
       ],
       "casosDeUso": [
-        "CU-236"
+        "CU-332"
       ],
       "actores": [
         "ACT-04"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "registrarChofer",
-      "firma": "registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)",
-      "firmaConTipos": "registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)",
-      "parametros": [
-        {
-          "nombre": "datosPersonales",
-          "tipo": "registro"
-        },
-        {
-          "nombre": "datosDelChofer",
-          "tipo": "registro"
-        },
-        {
-          "nombre": "distribuidoraId",
-          "tipo": "identificador"
-        }
-      ],
-      "casosDeUso": [
-        "CU-003",
-        "CU-031"
-      ],
-      "actores": [
-        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -4541,7 +4322,6 @@
         }
       ],
       "casosDeUso": [
-        "CU-046",
         "CU-116"
       ],
       "actores": [
@@ -4621,44 +4401,7 @@
         "CU-060"
       ],
       "actores": [
-        "ACT-02"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "registrarMovimientoDeCaja",
-      "firma": "registrarMovimientoDeCaja(cajaId, sentido, importe, categoriaId, medio, descripcion)",
-      "firmaConTipos": "registrarMovimientoDeCaja(cajaId identificador, sentido cadena, importe moneda, categoriaId identificador, medio cadena, descripcion cadena)",
-      "parametros": [
-        {
-          "nombre": "cajaId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "sentido",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "importe",
-          "tipo": "moneda"
-        },
-        {
-          "nombre": "categoriaId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "medio",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "descripcion",
-          "tipo": "cadena"
-        }
-      ],
-      "casosDeUso": [
-        "CU-228"
-      ],
-      "actores": [
+        "ACT-02",
         "ACT-03"
       ],
       "cambiaEstado": true
@@ -4689,7 +4432,8 @@
         "CU-070"
       ],
       "actores": [
-        "ACT-02"
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -4928,7 +4672,9 @@
         "CU-098"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -5019,7 +4765,9 @@
         "CU-108"
       ],
       "actores": [
-        "ACT-03"
+        "ACT-01",
+        "ACT-03",
+        "ACT-04"
       ],
       "cambiaEstado": true
     },
@@ -5105,24 +4853,6 @@
       "cambiaEstado": false
     },
     {
-      "nombre": "suscribirseAlSeguimiento",
-      "firma": "suscribirseAlSeguimiento(clienteId)",
-      "firmaConTipos": "suscribirseAlSeguimiento(clienteId identificador)",
-      "parametros": [
-        {
-          "nombre": "clienteId",
-          "tipo": "identificador"
-        }
-      ],
-      "casosDeUso": [
-        "CU-021"
-      ],
-      "actores": [
-        "ACT-01"
-      ],
-      "cambiaEstado": false
-    },
-    {
       "nombre": "tomarReclamo",
       "firma": "tomarReclamo(reclamoId)",
       "firmaConTipos": "tomarReclamo(reclamoId identificador)",
@@ -5159,7 +4889,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-228"
+        "CU-310"
       ],
       "actores": [
         "ACT-03"
@@ -5215,23 +4945,8 @@
         "CU-058"
       ],
       "actores": [
-        "ACT-01"
-      ],
-      "cambiaEstado": false
-    },
-    {
-      "nombre": "validarSesion",
-      "firma": "validarSesion()",
-      "firmaConTipos": "validarSesion()",
-      "parametros": [],
-      "casosDeUso": [
-        "CU-091"
-      ],
-      "actores": [
         "ACT-01",
-        "ACT-02",
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -5305,7 +5020,9 @@
         "CU-084"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-02",
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -5483,7 +5200,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-178"
+        "CU-311"
       ],
       "actores": [
         "ACT-03"
@@ -5504,8 +5221,7 @@
         "CU-179"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -5523,8 +5239,7 @@
         "CU-180"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -5569,7 +5284,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-181"
+        "CU-312"
       ],
       "actores": [
         "ACT-03"
@@ -5592,38 +5307,6 @@
       ],
       "casosDeUso": [
         "CU-182"
-      ],
-      "actores": [
-        "ACT-03"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "crearTareaDelEmpleado",
-      "firma": "crearTareaDelEmpleado(empleadoId, planId, vencimiento, detalle)",
-      "firmaConTipos": "crearTareaDelEmpleado(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)",
-      "parametros": [
-        {
-          "nombre": "empleadoId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "planId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "vencimiento",
-          "tipo": "fecha"
-        },
-        {
-          "nombre": "detalle",
-          "tipo": "registro"
-        }
-      ],
-      "casosDeUso": [
-        "CU-183",
-        "CU-184",
-        "CU-185"
       ],
       "actores": [
         "ACT-03"
@@ -5741,7 +5424,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-189"
+        "CU-313"
       ],
       "actores": [
         "ACT-03"
@@ -5763,7 +5446,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-189"
+        "CU-314"
       ],
       "actores": [
         "ACT-03"
@@ -5789,7 +5472,7 @@
       "firmaConTipos": "registrarFinDeJornada()",
       "parametros": [],
       "casosDeUso": [
-        "CU-190"
+        "CU-315"
       ],
       "actores": [
         "ACT-02"
@@ -5845,7 +5528,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-191"
+        "CU-316"
       ],
       "actores": [
         "ACT-03"
@@ -5863,7 +5546,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-191"
+        "CU-317"
       ],
       "actores": [
         "ACT-03"
@@ -5889,7 +5572,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-192"
+        "CU-319"
       ],
       "actores": [
         "ACT-03"
@@ -5929,7 +5612,7 @@
         }
       ],
       "casosDeUso": [
-        "CU-192"
+        "CU-318"
       ],
       "actores": [
         "ACT-03"
@@ -6386,6 +6069,7 @@
         "CU-224"
       ],
       "actores": [
+        "ACT-03",
         "ACT-04"
       ],
       "cambiaEstado": false
@@ -6399,7 +6083,8 @@
         "CU-224"
       ],
       "actores": [
-        "ACT-03"
+        "ACT-03",
+        "ACT-04"
       ],
       "cambiaEstado": false
     },
@@ -7240,8 +6925,7 @@
         "CU-294"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -7263,8 +6947,7 @@
         "CU-299"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -7286,8 +6969,7 @@
         "CU-300"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -7313,8 +6995,7 @@
         "CU-301"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -7343,8 +7024,8 @@
     },
     {
       "nombre": "cotizarPedido",
-      "firma": "cotizarPedido(items, medioDePago, direccionId, clienteId)",
-      "firmaConTipos": "cotizarPedido(items lista, medioDePago cadena, direccionId identificador, clienteId identificador)",
+      "firma": "cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)",
+      "firmaConTipos": "cotizarPedido(items lista, medioDePago cadena, direccionId identificador, clienteId identificador, pedidoId identificador)",
       "parametros": [
         {
           "nombre": "items",
@@ -7361,6 +7042,10 @@
         {
           "nombre": "clienteId",
           "tipo": "identificador"
+        },
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
         }
       ],
       "casosDeUso": [
@@ -7368,8 +7053,7 @@
       ],
       "actores": [
         "ACT-01",
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -7391,10 +7075,816 @@
         "CU-304"
       ],
       "actores": [
-        "ACT-03",
-        "ACT-05"
+        "ACT-03"
       ],
       "cambiaEstado": false
+    },
+    {
+      "nombre": "modificarZonaDeCobertura",
+      "firma": "modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)",
+      "firmaConTipos": "modificarZonaDeCobertura(zonaId identificador, nombre cadena, poligono poligono, recargo moneda)",
+      "parametros": [
+        {
+          "nombre": "zonaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "nombre",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "poligono",
+          "tipo": "poligono"
+        },
+        {
+          "nombre": "recargo",
+          "tipo": "moneda"
+        }
+      ],
+      "casosDeUso": [
+        "CU-305"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "consultarZonaDeCobertura",
+      "firma": "consultarZonaDeCobertura(zonaId)",
+      "firmaConTipos": "consultarZonaDeCobertura(zonaId identificador)",
+      "parametros": [
+        {
+          "nombre": "zonaId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-306"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "activarZonaDeCobertura",
+      "firma": "activarZonaDeCobertura(zonaId)",
+      "firmaConTipos": "activarZonaDeCobertura(zonaId identificador)",
+      "parametros": [
+        {
+          "nombre": "zonaId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-307"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "desactivarZonaDeCobertura",
+      "firma": "desactivarZonaDeCobertura(zonaId)",
+      "firmaConTipos": "desactivarZonaDeCobertura(zonaId identificador)",
+      "parametros": [
+        {
+          "nombre": "zonaId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-308"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarEntradaDeDinero",
+      "firma": "registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)",
+      "firmaConTipos": "registrarEntradaDeDinero(cajaId identificador, importe moneda, categoriaId identificador, medio cadena, motivo cadena)",
+      "parametros": [
+        {
+          "nombre": "cajaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "importe",
+          "tipo": "moneda"
+        },
+        {
+          "nombre": "categoriaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "medio",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "motivo",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-228"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarSalidaDeDinero",
+      "firma": "registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)",
+      "firmaConTipos": "registrarSalidaDeDinero(cajaId identificador, importe moneda, categoriaId identificador, medio cadena, motivo cadena)",
+      "parametros": [
+        {
+          "nombre": "cajaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "importe",
+          "tipo": "moneda"
+        },
+        {
+          "nombre": "categoriaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "medio",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "motivo",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-309"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "consultarPedidoEnCurso",
+      "firma": "consultarPedidoEnCurso()",
+      "firmaConTipos": "consultarPedidoEnCurso()",
+      "parametros": [],
+      "casosDeUso": [
+        "CU-338"
+      ],
+      "actores": [
+        "ACT-02"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "modificarPedido",
+      "firma": "modificarPedido(pedidoId, datos)",
+      "firmaConTipos": "modificarPedido(pedidoId identificador, datos registro)",
+      "parametros": [
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "datos",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-339"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "consultarMovimientosDeCaja",
+      "firma": "consultarMovimientosDeCaja(cajaId, desde, hasta)",
+      "firmaConTipos": "consultarMovimientosDeCaja(cajaId identificador, desde fecha, hasta fecha)",
+      "parametros": [
+        {
+          "nombre": "cajaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "desde",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "hasta",
+          "tipo": "fecha"
+        }
+      ],
+      "casosDeUso": [
+        "CU-340"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "modificarMiPedido",
+      "firma": "modificarMiPedido(pedidoId, datos)",
+      "firmaConTipos": "modificarMiPedido(pedidoId identificador, datos registro)",
+      "parametros": [
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "datos",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-341"
+      ],
+      "actores": [
+        "ACT-01"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "bloquearUsuario",
+      "firma": "bloquearUsuario(usuarioId)",
+      "firmaConTipos": "bloquearUsuario(usuarioId identificador)",
+      "parametros": [
+        {
+          "nombre": "usuarioId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-050"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "desbloquearUsuario",
+      "firma": "desbloquearUsuario(usuarioId)",
+      "firmaConTipos": "desbloquearUsuario(usuarioId identificador)",
+      "parametros": [
+        {
+          "nombre": "usuarioId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-270"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "activarDisponibilidad",
+      "firma": "activarDisponibilidad(usuarioId)",
+      "firmaConTipos": "activarDisponibilidad(usuarioId identificador)",
+      "parametros": [
+        {
+          "nombre": "usuarioId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-022"
+      ],
+      "actores": [
+        "ACT-02"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "desactivarDisponibilidad",
+      "firma": "desactivarDisponibilidad(usuarioId)",
+      "firmaConTipos": "desactivarDisponibilidad(usuarioId identificador)",
+      "parametros": [
+        {
+          "nombre": "usuarioId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-266"
+      ],
+      "actores": [
+        "ACT-02"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "activarChofer",
+      "firma": "activarChofer(choferId)",
+      "firmaConTipos": "activarChofer(choferId identificador)",
+      "parametros": [
+        {
+          "nombre": "choferId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-033"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "desactivarChofer",
+      "firma": "desactivarChofer(choferId)",
+      "firmaConTipos": "desactivarChofer(choferId identificador)",
+      "parametros": [
+        {
+          "nombre": "choferId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-267"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "actualizarPrecioDelProducto",
+      "firma": "actualizarPrecioDelProducto(productoId, precio)",
+      "firmaConTipos": "actualizarPrecioDelProducto(productoId identificador, precio moneda)",
+      "parametros": [
+        {
+          "nombre": "productoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "precio",
+          "tipo": "moneda"
+        }
+      ],
+      "casosDeUso": [
+        "CU-037"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "configurarPromocionesDelProducto",
+      "firma": "configurarPromocionesDelProducto(productoId, promociones)",
+      "firmaConTipos": "configurarPromocionesDelProducto(productoId identificador, promociones lista)",
+      "parametros": [
+        {
+          "nombre": "productoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "promociones",
+          "tipo": "lista"
+        }
+      ],
+      "casosDeUso": [
+        "CU-039"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "avisarVencimientosDeLaFlota",
+      "firma": "avisarVencimientosDeLaFlota()",
+      "firmaConTipos": "avisarVencimientosDeLaFlota()",
+      "parametros": [],
+      "casosDeUso": [
+        "CU-142"
+      ],
+      "actores": [
+        "ACT-04"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "avisarVencimientosDelPersonal",
+      "firma": "avisarVencimientosDelPersonal()",
+      "firmaConTipos": "avisarVencimientosDelPersonal()",
+      "parametros": [],
+      "casosDeUso": [
+        "CU-188"
+      ],
+      "actores": [
+        "ACT-04"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarSeguroDelVehiculo",
+      "firma": "registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)",
+      "firmaConTipos": "registrarSeguroDelVehiculo(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "recursoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-136"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarVerificacionTecnica",
+      "firma": "registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)",
+      "firmaConTipos": "registrarVerificacionTecnica(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "recursoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-137"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarLicenciaDeConducir",
+      "firma": "registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)",
+      "firmaConTipos": "registrarLicenciaDeConducir(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "recursoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-138"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "programarMantenimientoDeVehiculo",
+      "firma": "programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)",
+      "firmaConTipos": "programarMantenimientoDeVehiculo(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "recursoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-140"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarHabilitacionDeMercanciasPeligrosas",
+      "firma": "registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)",
+      "firmaConTipos": "registrarHabilitacionDeMercanciasPeligrosas(planId identificador, recursoId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "recursoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-197"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarCursoDeMercanciasPeligrosas",
+      "firma": "registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)",
+      "firmaConTipos": "registrarCursoDeMercanciasPeligrosas(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "empleadoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-183"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarExamenPsicofisico",
+      "firma": "registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)",
+      "firmaConTipos": "registrarExamenPsicofisico(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "empleadoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-184"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarAltaEnLaART",
+      "firma": "registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)",
+      "firmaConTipos": "registrarAltaEnLaART(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)",
+      "parametros": [
+        {
+          "nombre": "empleadoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "planId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "vencimiento",
+          "tipo": "fecha"
+        },
+        {
+          "nombre": "detalle",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-185"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarChofer",
+      "firma": "registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)",
+      "firmaConTipos": "registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)",
+      "parametros": [
+        {
+          "nombre": "datosPersonales",
+          "tipo": "registro"
+        },
+        {
+          "nombre": "datosDelChofer",
+          "tipo": "registro"
+        },
+        {
+          "nombre": "distribuidoraId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-003"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "registrarChoferEnLaFlota",
+      "firma": "registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)",
+      "firmaConTipos": "registrarChoferEnLaFlota(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)",
+      "parametros": [
+        {
+          "nombre": "datosPersonales",
+          "tipo": "registro"
+        },
+        {
+          "nombre": "datosDelChofer",
+          "tipo": "registro"
+        },
+        {
+          "nombre": "distribuidoraId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-031"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "cancelarMiPedido",
+      "firma": "cancelarMiPedido(pedidoId, motivo)",
+      "firmaConTipos": "cancelarMiPedido(pedidoId identificador, motivo cadena)",
+      "parametros": [
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "motivo",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-008"
+      ],
+      "actores": [
+        "ACT-01"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "cancelarPedido",
+      "firma": "cancelarPedido(pedidoId, motivo)",
+      "firmaConTipos": "cancelarPedido(pedidoId identificador, motivo cadena)",
+      "parametros": [
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "motivo",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-010"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "validarFranjaDelPedido",
+      "firma": "validarFranjaDelPedido(franjaId, fecha)",
+      "firmaConTipos": "validarFranjaDelPedido(franjaId identificador, fecha fecha)",
+      "parametros": [
+        {
+          "nombre": "franjaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "fecha",
+          "tipo": "fecha"
+        }
+      ],
+      "casosDeUso": [
+        "CU-044"
+      ],
+      "actores": [
+        "ACT-01"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "activarFranjaHoraria",
+      "firma": "activarFranjaHoraria(franjaId)",
+      "firmaConTipos": "activarFranjaHoraria(franjaId identificador)",
+      "parametros": [
+        {
+          "nombre": "franjaId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-342"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "desactivarFranjaHoraria",
+      "firma": "desactivarFranjaHoraria(franjaId)",
+      "firmaConTipos": "desactivarFranjaHoraria(franjaId identificador)",
+      "parametros": [
+        {
+          "nombre": "franjaId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-343"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
     }
   ]
 }

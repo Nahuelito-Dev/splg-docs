@@ -13,8 +13,8 @@ python3 generar-modelo-datos.py
 | Archivo | Qué es | Para qué sirve |
 |---|---|---|
 | `SPLG-base-de-datos.sql` | Volcado de `pg_dump`, esquema completo | Recrear la base tal cual está |
-| `SPLG-base-de-datos-portable.sql` | Sólo lo implementado, en SQL portable | Diagramar el estado actual |
-| `SPLG-base-de-datos-propuesta.sql` | Sólo lo planificado (los módulos de gestión) | Boceto de las migraciones que faltan |
+| `SPLG-base-de-datos-portable.sql` | Solo lo implementado, en SQL portable | Diagramar el estado actual |
+| `SPLG-base-de-datos-propuesta.sql` | Solo lo planificado (los módulos de gestión) | Boceto de las migraciones que faltan |
 | `SPLG-base-de-datos-completa-portable.sql` | Actual + planificado, en SQL portable | Ver todo el modelo en un solo SQL |
 | `fisico/SPLG-fisico-NN-<contexto>.png` / `.svg` | Entidad-relación con tablas y columnas, una lámina por contexto de negocio | Las láminas técnicas |
 | `conceptual/SPLG-der-NN-<área>.png` / `.svg` | Entidad-relación conceptual: una entidad por concepto del modelo conceptual, con sus atributos y las relaciones con su nombre | Las láminas para la defensa |
@@ -23,7 +23,7 @@ python3 generar-modelo-datos.py
 
 En las láminas físicas, lo que ya está implementado va en blanco con borde oscuro y lo
 propuesto —columnas planificadas que todavía no están en la base— en celeste, con el
-marcador `<<propuesto>>`. Una tabla en gris es de otro contexto y sólo se muestra su nombre.
+marcador `<<propuesto>>`. Una tabla en gris es de otro contexto y solo se muestra su nombre.
 Los nombres reflejan la base real: conviven camelCase (`paymentMethod`) y snake_case
 (`scheduled_date`), y la tabla `claims` está en plural; unificarlos exigiría renombrar
 columnas en una base en uso.

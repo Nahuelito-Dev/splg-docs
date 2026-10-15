@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-044 Seleccionar una Franja Horaria al Crear un Pedido · validarFranjaDelPedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SRV as :TimeSlotService
+    participant FRA as franja:FranjaHoraria
+
+    CLI->>+SRV: validarFranjaDelPedido(franjaId, fecha)
+    SRV->>+FRA: tieneCupo(fecha)
+    FRA-->>-SRV: hayCupo
+    SRV-->>-CLI: franja

@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSD — CU-324 Anular una Multa de Tránsito · anularMultaDeTransito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :TrafficFineService
+    participant COM as :Map#lt;String, MultaTransito#gt;
+    participant MUL as multaTransito:MultaTransito
+
+    ADM->>+SRV: anularMultaDeTransito(multaId, motivo)
+    SRV->>+COM: get(multaId)
+    COM-->>-SRV: multaTransito
+    SRV->>+MUL: anular(motivo)
+    MUL->>MUL: validarTransicion(estadoDestino)
+    deactivate MUL
+    SRV-->>-ADM: multaTransito

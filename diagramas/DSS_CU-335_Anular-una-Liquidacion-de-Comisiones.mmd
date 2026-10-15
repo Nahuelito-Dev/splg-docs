@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-335 Anular una Liquidación de Comisiones
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularLiquidacion(liquidacionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: liquidación anulada y asientos liberados
+    else la liquidación ya está pagada
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

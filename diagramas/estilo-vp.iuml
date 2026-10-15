@@ -1,0 +1,122 @@
+' Estilo Visual Paradigm de todos los diagramas PlantUML del repositorio.
+' Los generadores y los .puml hechos a mano lo incluyen con !include; los colores
+' son los mismos que estilo_vp.py (SVG propios) y que el tema de Mermaid.
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam dpi 150
+skinparam roundCorner 0
+skinparam classAttributeIconSize 0
+skinparam ArrowColor #1F3A5F
+skinparam ArrowThickness 0.8
+skinparam ArrowFontSize 10
+skinparam ArrowFontColor #1F3A5F
+skinparam stereotypeFontSize 10
+skinparam actor {
+  BackgroundColor #DCE6F2/#FFFFFF
+  BorderColor #3C5F8F
+  FontSize 11
+}
+skinparam usecase {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  FontSize 11
+  BorderThickness 0.8
+}
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #3C5F8F
+  FontSize 12
+  FontStyle bold
+  BorderThickness 0.8
+}
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #3C5F8F
+  FontSize 12
+  FontStyle bold
+  BorderThickness 0.8
+}
+skinparam class {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  HeaderBackgroundColor #C6DAF0
+  ArrowColor #1F3A5F
+  FontSize 11
+  AttributeFontSize 11
+  FontStyle bold
+  BorderThickness 0.8
+}
+skinparam interface {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  HeaderBackgroundColor #C6DAF0
+  FontSize 11
+  AttributeFontSize 11
+}
+skinparam entity {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  FontSize 11
+  AttributeFontSize 11
+}
+skinparam state {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  StartColor #1F3A5F
+  EndColor #1F3A5F
+  FontSize 11
+  AttributeFontSize 11
+}
+skinparam activity {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  StartColor #1F3A5F
+  EndColor #1F3A5F
+  BarColor #1F3A5F
+  DiamondBackgroundColor #FFFFFF
+  DiamondBorderColor #3C5F8F
+  FontSize 11
+}
+skinparam component {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  FontSize 11
+}
+skinparam node {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  FontSize 11
+}
+skinparam database {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+  FontSize 11
+}
+skinparam cloud {
+  BackgroundColor #FFFFFF
+  BorderColor #3C5F8F
+}
+skinparam note {
+  BackgroundColor #FFFFFF
+  BorderColor #3C5F8F
+  FontSize 10
+}
+skinparam legend {
+  BackgroundColor #FFFFFF
+  BorderColor #3C5F8F
+}
+skinparam title {
+  FontSize 13
+  FontStyle bold
+}
+hide empty description
+skinparam artifact {
+  BackgroundColor #DCE6F2/#C6DAF0
+  BorderColor #3C5F8F
+}
+skinparam swimlane {
+  BorderColor #3C5F8F
+  TitleFontSize 11
+}

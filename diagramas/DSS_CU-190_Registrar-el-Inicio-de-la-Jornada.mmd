@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-190 Registrar el Inicio de la Jornada
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+
+    CHO->>SIS: registrarInicioDeJornada()
+    activate SIS
+    alt el chofer tiene un legajo activo y ninguna jornada abierta
+        SIS-->>CHO: jornada abierta
+    else la cuenta no tiene legajo activo o ya hay una jornada abierta
+        SIS-->>CHO: conflicto
+    end
+    deactivate SIS

@@ -16,16 +16,3 @@ sequenceDiagram
         SIS-->>ADM: datos inválidos
     end
     deactivate SIS
-
-    ADM->>SIS: reingresarEmpleado(empleadoId, fechaDeIngreso)
-    activate SIS
-    alt el empleado está egresado
-        SIS-->>ADM: legajo activo con la fecha de ingreso nueva
-    else el empleado no existe en la distribuidora
-        SIS-->>ADM: recurso no encontrado
-    else el empleado no está egresado
-        SIS-->>ADM: conflicto
-    else la fecha de ingreso es anterior a la de egreso
-        SIS-->>ADM: datos inválidos
-    end
-    deactivate SIS

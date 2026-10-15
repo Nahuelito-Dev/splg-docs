@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-248 Verificar la Carga de Camión Abierta del Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: verificarCargaDeCamionAbierta(choferId)
+    activate SIS
+    alt el control está apagado, o la carga abierta está en ruta
+        SIS-->>ADM: el chofer puede recibir pedidos
+    else el control exige carga abierta y no la tiene, o la carga todavía no salió
+        SIS-->>ADM: el chofer no puede recibir pedidos, con el motivo
+    end
+    deactivate SIS
+    Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-012 y también lo incluyen CU-013, CU-015 y<br/>CU-080

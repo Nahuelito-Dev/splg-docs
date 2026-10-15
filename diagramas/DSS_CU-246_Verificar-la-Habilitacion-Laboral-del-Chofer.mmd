@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-246 Verificar la Habilitación Laboral del Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: verificarHabilitacionLaboral(choferId)
+    activate SIS
+    alt el legajo está activo, sin licencia que cubra hoy ni tarea bloqueante vencida
+        SIS-->>ADM: chofer habilitado
+    else el legajo está egresado, hay una licencia aprobada que cubre hoy o una tarea bloqueante vencida
+        SIS-->>ADM: chofer inhabilitado, con el motivo
+    end
+    deactivate SIS
+    Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-012 y también lo incluyen CU-013 y CU-015

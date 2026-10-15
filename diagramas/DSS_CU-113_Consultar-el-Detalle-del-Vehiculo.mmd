@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-113 Consultar el Detalle del Vehículo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarDetalleDelVehiculo(vehiculoId)
+    activate SIS
+    alt el vehículo existe
+        SIS-->>ADM: ficha del vehículo con su chofer
+    else el vehículo no existe
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

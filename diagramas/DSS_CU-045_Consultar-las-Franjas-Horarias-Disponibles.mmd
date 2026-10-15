@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-045 Consultar las Franjas Horarias Disponibles
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: consultarDisponibilidadDeFranjas(fecha, distribuidora)
+    activate SIS
+    alt la fecha es válida
+        SIS-->>CLI: por cada franja activa (nombre, horario, capacidad, reservados, cupos libres)
+    else la fecha es inválida
+        SIS-->>CLI: error de validación
+    end
+    deactivate SIS
+
+    opt vista administrativa
+        CLI->>SIS: listarFranjas(distribuidora)
+        activate SIS
+        SIS-->>CLI: franjas activas de la distribuidora
+        deactivate SIS
+    end

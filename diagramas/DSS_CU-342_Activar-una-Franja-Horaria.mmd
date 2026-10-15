@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-342 Activar una Franja Horaria
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: activarFranjaHoraria(franjaId)
+    activate SIS
+    alt la franja pertenece a la distribuidora
+        SIS-->>ADM: franja activada
+    else la franja no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

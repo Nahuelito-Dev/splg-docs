@@ -1,0 +1,12 @@
+sequenceDiagram
+    title DSD — CU-306 Consultar un Polígono de Cobertura · consultarZonaDeCobertura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CoverageZoneService
+    participant COL as :Map#lt;String, ZonaCobertura#gt;
+
+    ADM->>+SRV: consultarZonaDeCobertura(zonaId)
+    SRV->>+COL: get(zonaId)
+    COL-->>-SRV: zona
+    SRV-->>-ADM: zona
+    Note over ADM,SRV: También lo inicia el Administrador General (ACT-05)

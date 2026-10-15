@@ -1,0 +1,24 @@
+sequenceDiagram
+    title DSD — CU-039 Configurar las Promociones por Cantidad · configurarPromocionesDelProducto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :GasCylinderService
+    participant COL as :Map#lt;String, Producto#gt;
+    participant PRO as producto:Producto
+
+    ADM->>+SRV: configurarPromocionesDelProducto(productoId, promociones)
+    SRV->>+COL: get(productoId)
+    COL-->>-SRV: producto
+    opt Cambia el precio
+        SRV->>PRO: actualizarPrecio(precio)
+    end
+    opt Cambian las promociones
+        SRV->>+PRO: reemplazarPromociones(promociones)
+        PRO->>PRO: validarSinRepetir(promociones)
+        loop Por cada promocion de promociones
+            create participant PRM as :Promocion
+            PRO->>PRM: «create»(cantidad, descuento)
+        end
+        deactivate PRO
+    end
+    SRV-->>-ADM: producto

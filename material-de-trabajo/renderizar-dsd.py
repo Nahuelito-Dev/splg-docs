@@ -14,13 +14,17 @@ Con `--sitio` además dibuja el diagrama con la versión de Mermaid que carga el
 Eso necesita `MERMAID_SITIO` apuntando al `mermaid.min.js` 10.9.1 (por ejemplo, el de
 `npm i mermaid@10.9.1` en una carpeta fuera del repositorio).
 
-Variables de entorno, sólo si el entorno no es el de siempre:
+Variables de entorno, solo si el entorno no es el de siempre:
     MMDC        ruta de `mmdc` (por omisión, el de la caché de npx o el del PATH)
     CHROMIUM    ruta del ejecutable de Chromium (por omisión, el de Playwright)
 """
 import glob, json, os, re, shutil, subprocess, sys, tempfile
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/../"
+sys.path.insert(0, D)
+from estilo_vp import MERMAID   # estilo Visual Paradigm, el mismo que el del sitio
+TEMA_MERMAID = os.path.join(tempfile.gettempdir(), "splg-mermaid-vp.json")
+json.dump(MERMAID, open(TEMA_MERMAID, "w"))
 
 
 def buscar_mmdc():
@@ -51,7 +55,7 @@ def renderizar(mmd, mmdc, cfg):
     png = D + f"diagramas/png/{base}.png"
     os.makedirs(os.path.dirname(svg), exist_ok=True)
     os.makedirs(os.path.dirname(png), exist_ok=True)
-    base_cmd = [mmdc, "-p", cfg, "-i", mmd, "-t", "neutral", "-b", "white", "-q"]
+    base_cmd = [mmdc, "-p", cfg, "-c", TEMA_MERMAID, "-i", mmd, "-b", "white", "-q"]
     subprocess.run(base_cmd + ["-o", svg], check=True)
     vb = re.search(r'viewBox="[-\d.]+ [-\d.]+ ([\d.]+) ([\d.]+)"', open(svg, encoding="utf-8").read())
     lado = int(max(float(vb.group(1)), float(vb.group(2)))) + 1

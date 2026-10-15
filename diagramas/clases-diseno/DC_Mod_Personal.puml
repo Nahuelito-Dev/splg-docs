@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -99,13 +69,6 @@ class AttendanceService <<fachada>> {
   + registrarFinDeJornada()
   + registrarInicioDeJornada()
 }
-class "List<JornadaDeTrabajo>" as List_JornadaDeTrabajo <<colección>> {
-  + getAbiertasDeHoy(): JornadaDeTrabajo[*]
-  + getEntre(desde: FechaHora,\n      hasta: FechaHora): JornadaDeTrabajo[*]
-}
-class "Map<String, JornadaDeTrabajo>" as Map_String_JornadaDeTrabajo <<colección>> {
-  + get(clave: Cadena): JornadaDeTrabajo
-}
 class LeaveService <<fachada>> {
   + aprobarLicencia(licenciaId: Identificador): LicenciaLaboral
   + cancelarLicencia(licenciaId: Identificador): LicenciaLaboral
@@ -117,20 +80,27 @@ class LeaveService <<fachada>> {
 class "Map<String, LicenciaLaboral>" as Map_String_LicenciaLaboral <<colección>> {
   + get(clave: Cadena): LicenciaLaboral
 }
-class "List<LicenciaLaboral>" as List_LicenciaLaboral <<colección>> {
-  + filtrar(estado: Cadena, desde: FechaHora,\n      hasta: FechaHora): LicenciaLaboral[*]
-  + getAprobadasQueCubren(hoy: Fecha): LicenciaLaboral[*]
-}
 class VacationPolicy <<fabricación pura>> {
   + diasCorrespondientes(fechaDeIngreso: Fecha,\n      anio: Entero): Entero
 }
 class PersonnelDashboardService <<fachada>> {
   + consultarTableroDePersonal(): Registro
 }
+class "List<JornadaDeTrabajo>" as List_JornadaDeTrabajo <<colección>> {
+  + getAbiertasDeHoy(): JornadaDeTrabajo[*]
+  + getEntre(desde: FechaHora,\n      hasta: FechaHora): JornadaDeTrabajo[*]
+}
+class "List<LicenciaLaboral>" as List_LicenciaLaboral <<colección>> {
+  + filtrar(estado: Cadena, desde: FechaHora,\n      hasta: FechaHora): LicenciaLaboral[*]
+  + getAprobadasQueCubren(hoy: Fecha): LicenciaLaboral[*]
+}
+class "Map<String, JornadaDeTrabajo>" as Map_String_JornadaDeTrabajo <<colección>> {
+  + get(clave: Cadena): JornadaDeTrabajo
+}
 class PuestoDeTrabajo <<referencia>>
 class Empleado <<referencia>>
-class JornadaDeTrabajo <<referencia>>
 class LicenciaLaboral <<referencia>>
+class JornadaDeTrabajo <<referencia>>
 class RegistroService <<referencia>>
 class "List<TareaMantenimiento>" as List_TareaMantenimiento <<referencia>>
 class Usuario <<referencia>>
@@ -141,10 +111,10 @@ class Chofer <<referencia>>
 Map_String_PuestoDeTrabajo "1" o--> "0..*" PuestoDeTrabajo
 Map_String_Empleado "1" o--> "0..*" Empleado
 List_Empleado "1" o--> "0..*" Empleado
-List_JornadaDeTrabajo "1" o--> "0..*" JornadaDeTrabajo
-Map_String_JornadaDeTrabajo "1" o--> "0..*" JornadaDeTrabajo
 Map_String_LicenciaLaboral "1" o--> "0..*" LicenciaLaboral
+List_JornadaDeTrabajo "1" o--> "0..*" JornadaDeTrabajo
 List_LicenciaLaboral "1" o--> "0..*" LicenciaLaboral
+Map_String_JornadaDeTrabajo "1" o--> "0..*" JornadaDeTrabajo
 AttendanceService --> "1" List_JornadaDeTrabajo
 AttendanceService --> "1" Map_String_Empleado
 AttendanceService --> "1" Map_String_JornadaDeTrabajo
@@ -180,6 +150,6 @@ TerminateEmployeeUseCase ..> Empleado
 TerminateEmployeeUseCase ..> Usuario
 
 legend bottom right
-  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
 endlegend
 @enduml

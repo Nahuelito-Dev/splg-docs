@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-019 Avisar la Llegada al Cliente
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
+
+    CHO->>SIS: avisarLlegada(pedidoId)
+    activate SIS
+    alt El pedido está en camino
+        SIS-)CLI: notificarLlegadaDelChofer(pedido)
+        Note over SIS: El aviso llega en tiempo<br/>real y como notificación<br/>al dispositivo
+        SIS-->>CHO: cliente notificado
+    else El pedido es de otra distribuidora
+        SIS-->>CHO: recurso no encontrado
+    else El pedido está asignado a otro chofer
+        SIS-->>CHO: acceso denegado
+    else El pedido no está en camino
+        SIS-->>CHO: error de solicitud (el pedido no está en camino)
+    end
+    deactivate SIS

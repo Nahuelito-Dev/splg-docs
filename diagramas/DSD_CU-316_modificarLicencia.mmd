@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-316 Modificar una Licencia o Ausencia · modificarLicencia
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :LeaveService
+    participant COL as :Map#lt;String, LicenciaLaboral#gt;
+    participant LIC as licencia:LicenciaLaboral
+    participant EMP as empleado:Empleado
+
+    ADM->>+SRV: modificarLicencia(licenciaId, datos)
+    SRV->>+COL: get(licenciaId)
+    COL-->>-SRV: licencia
+    SRV->>+LIC: getEmpleado()
+    LIC-->>-SRV: empleado
+    SRV->>EMP: assertSinSuperposicionExcepto(fechaDesde, fechaHasta, licencia)
+    SRV->>+LIC: modificar(datos)
+    LIC->>LIC: assertSolicitada()
+    deactivate LIC
+    SRV-->>-ADM: licencia

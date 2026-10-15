@@ -1,59 +1,29 @@
 @startuml
-skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  ArrowColor #2C4257
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}
 skinparam class<<referencia>> {
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }
 skinparam class<<fachada>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<controlador>> {
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }
 skinparam class<<fabricación pura>> {
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }
 skinparam class<<colección>> {
   HeaderBackgroundColor #E6E6E6
 }
 skinparam class<<adaptador>> {
-  HeaderBackgroundColor #DCEBDD
-}
-skinparam interface {
-  BorderColor #2C4257
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}
-skinparam note {
-  BackgroundColor #FFFFFF
-  BorderColor #2C4257
+  HeaderBackgroundColor #D5E3F3
 }
 skinparam packageStyle rectangle
-skinparam package {
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}
 hide circle
 hide empty members
 
@@ -62,7 +32,6 @@ skinparam nodesep 25
 skinparam ranksep 90
 class AuthService <<fachada>> {
   + iniciarSesion(correo: Cadena,\n      contrasena: Cadena): Registro
-  + validarSesion(): Booleano
 }
 class RegistroService <<fachada>> {
   + autorizarAlta(solicitante: Usuario, rolChofer: TipoDeRol,\n      distribuidoraId: Identificador)
@@ -71,15 +40,16 @@ class RegistroService <<fachada>> {
   + registrar(datosPersonales: Registro, rol: Rol,\n      distribuidoraId: Identificador): Usuario
   + registrarAdministrador(nombreCompleto: Cadena,\n      correo: Cadena, telefono: Cadena,\n      contrasena: Cadena, rol: Cadena,\n      distribuidoraId: Identificador): Usuario
   + registrarChofer(datosPersonales: Registro,\n      datosDelChofer: Registro,\n      distribuidoraId: Identificador): Usuario
+  + registrarChoferEnLaFlota(datosPersonales: Registro,\n      datosDelChofer: Registro,\n      distribuidoraId: Identificador): Usuario
   + registrarse(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, contrasena: Cadena,\n      datosDelCliente: Registro): Usuario
 }
 interface FirebaseAuthPort <<puerto>> {
   + createUserSafe(correo: Cadena, contrasena: Cadena,\n      nombreCompleto: Cadena, telefono: Cadena): Registro
   + deleteUserSafe(cuenta: Registro)
   + generatePasswordResetLink(correo: Cadena,\n      ajustes: Registro): Cadena
-  + updateUser(cuenta: Registro, correoNuevo: Cadena)
   + updateUser(cuenta: Registro, deshabilitada: Booleano)
-  + verifyIdToken(token: Cadena): Registro
+  + updateUser(cuenta: Registro, correoNuevo: Cadena)
+  + verifyIdToken(token: Cadena)
 }
 interface FcmPort <<puerto>> {
   + sendToToken(token: Cadena, notificacion: Registro)
@@ -94,7 +64,6 @@ class Cliente <<referencia>>
 class Empleado <<referencia>>
 class NotificationsService <<referencia>>
 
-AuthService --> "1" FirebaseAuthPort
 AuthService --> "1" Map_String_Usuario
 RegistroService --> "1" FirebaseAuthPort
 RegistroService --> "1" List_Administrador
@@ -108,6 +77,6 @@ RegistroService ..> "<<create>>" Usuario
 NotificationsService --> "1" FcmPort
 
 legend bottom right
-  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
 endlegend
 @enduml

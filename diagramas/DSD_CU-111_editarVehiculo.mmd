@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSD — CU-111 Editar un Vehículo · editarVehiculo
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :CarService
+    participant COL as :Map#lt;String, Vehiculo#gt;
+    participant VEH as vehiculo:Vehiculo
+
+    ADM->>+SRV: editarVehiculo(vehiculoId, datos)
+    SRV->>+COL: get(vehiculoId)
+    COL-->>-SRV: vehiculo
+    SRV->>+VEH: editar(datos)
+    opt Cambia la patente
+        VEH->>VEH: assertPatenteUnica(patente)
+    end
+    opt Cambia la patente o el tipo
+        VEH->>VEH: assertLibre()
+    end
+    deactivate VEH
+    SRV-->>-ADM: vehiculo

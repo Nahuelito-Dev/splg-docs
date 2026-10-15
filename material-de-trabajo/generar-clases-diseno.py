@@ -50,8 +50,7 @@ VISTAS_MODULOS = [
     ("Productos y franjas horarias", "Productos-y-franjas", ["gascylinder", "time-slot"]),
     ("Cobertura y distribuidoras", "Cobertura-y-distribuidoras", ["coverage-zone", "distributor"]),
     ("Pedidos: alta y cancelación", "Pedidos-alta",
-     ["=CreateOrderUseCase", "=CancelOrderUseCase", "=ReleaseOrderUseCase", "=NotificationPort",
-      "=OrderStatusHistoryService"]),
+     ["=CreateOrderUseCase", "=CancelOrderUseCase", "=ReleaseOrderUseCase", "=UpdateOrderUseCase", "=NotificationPort"]),
     ("Pedidos: consulta y estado", "Pedidos-estado",
      ["=OrderService", "=UpdateOrderStatusUseCase", "=ConfirmDeliveryUseCase", "=CashCollectionUseCase", "=QuoteOrderUseCase", "=OrderStatusHistorySubscriber", "=Map<String, Pedido>",
       "=List<Pedido>"]),
@@ -101,7 +100,7 @@ VISTAS_MODULOS = [
       "=List<ReglaComision>", "=List<AsientoComision>"]),
 ]
 
-# Vistas de dominio: el foco lleva atributos y operaciones; la referencia, sólo el nombre.
+# Vistas de dominio: el foco lleva atributos y operaciones; la referencia, solo el nombre.
 VISTAS_DOMINIO = [
     ("Organización y acceso", "Organizacion-y-acceso",
      ["Distribuidora", "ConfiguracionModulo", "Usuario", "Rol", "Administrador", "AsientoAuditoria",
@@ -150,7 +149,7 @@ VISTAS_DOMINIO = [
      ["Deposito", "Producto", "Usuario", "Distribuidora"]),
     ("Caja y movimientos", "Caja",
      ["Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja"],
-     ["Distribuidora", "RendicionChofer", "AsientoCuentaCorriente", "LiquidacionComisiones"]),
+     ["Distribuidora", "Usuario", "RendicionChofer", "AsientoCuentaCorriente", "LiquidacionComisiones"]),
     ("Rendición del chofer", "Rendicion",
      ["RendicionChofer", "PedidoRendido", "GastoDeRendicion"],
      ["Chofer", "Empleado", "Pedido", "Caja", "MovimientoDeCaja", "CategoriaDeCaja", "AsientoComision"]),
@@ -176,61 +175,31 @@ AREAS_PAQUETES = [
     ("Stock y compras", ["stock", "purchase", "truck-load"]),
 ]
 
-CAB = f"""skinparam backgroundColor #FFFFFF
-skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 13
-skinparam dpi 150
+CAB = f"""!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam classAttributeIconSize 0
-skinparam roundCorner 0
 skinparam genericDisplay old
-skinparam class {{
-  BorderColor {TINTA}
-  BackgroundColor #FFFFFF
-  ArrowColor {TINTA}
-  FontSize 14
-  AttributeFontSize 12
-  HeaderBackgroundColor #E8EEF3
-}}
 skinparam class<<referencia>> {{
   BackgroundColor #F1F1F1
   BorderColor #8A97A3
   FontColor #55616C
 }}
 skinparam class<<fachada>> {{
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }}
 skinparam class<<controlador>> {{
-  HeaderBackgroundColor #D6E4F0
+  HeaderBackgroundColor #B7CDE8
 }}
 skinparam class<<fabricación pura>> {{
-  HeaderBackgroundColor #F3E9CF
+  HeaderBackgroundColor #E4ECF6
 }}
 skinparam class<<colección>> {{
   HeaderBackgroundColor #E6E6E6
 }}
 skinparam class<<adaptador>> {{
-  HeaderBackgroundColor #DCEBDD
-}}
-skinparam interface {{
-  BorderColor {TINTA}
-  BackgroundColor #FFFFFF
-  HeaderBackgroundColor #DCEBDD
-  FontSize 14
-  AttributeFontSize 12
-}}
-skinparam note {{
-  BackgroundColor #FFFFFF
-  BorderColor {TINTA}
+  HeaderBackgroundColor #D5E3F3
 }}
 skinparam packageStyle rectangle
-skinparam package {{
-  BorderColor #8A97A3
-  FontSize 13
-  FontColor #55616C
-}}
 hide circle
 hide empty members
 """
@@ -319,7 +288,7 @@ def flecha_dep(o, d):
 
 
 def lineas_relaciones(en_vista, con_nombre=True, ambos_extremos=True, incluir_dep=True):
-    """Relaciones entre las clases `en_vista`. `ambos_extremos`: sólo las que tienen ambos
+    """Relaciones entre las clases `en_vista`. `ambos_extremos`: solo las que tienen ambos
     extremos dentro de la vista; si no, alcanza con uno (las de referencia se dibujan igual)."""
     r = []
     for a in dc.asociaciones:
@@ -385,7 +354,7 @@ def vista_dominio(titulo, foco, ref):
         lin.append(f"({a_}, {b_}) .. {c}")
     if len(en_vista) > len(foco_s):
         lin += ["", "legend bottom right",
-                "  Las clases en gris pertenecen a otra vista; se muestran sólo como referencia.",
+                "  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.",
                 "endlegend"]
     lin.append("@enduml")
     return "\n".join(lin)
@@ -406,7 +375,7 @@ def vista_general():
     lin += generalizaciones(todas)
     vistas = [a for a in dc.asociaciones if a["a"] in M.CLASES and a["b"] in M.CLASES
               and not (a["a"] == "Usuario" and a["nombre"] in AUTORIA and a["b"] != "AsientoAuditoria")]
-    # entre un mismo par de clases hay a veces dos asociaciones: sólo ésas llevan el nombre, para distinguirlas
+    # entre un mismo par de clases hay a veces dos asociaciones: solo ésas llevan el nombre, para distinguirlas
     por_par = collections.Counter(frozenset((a["a"], a["b"])) for a in vistas)
     for a in vistas:
         repetida = por_par[frozenset((a["a"], a["b"]))] > 1
@@ -414,9 +383,9 @@ def vista_general():
     c, a_, b_ = M.CLASE_ASOCIACION
     lin.append(f"({a_}, {b_}) .. {c}")
     lin += ["", "legend bottom right",
-            "  Vista de conjunto: sin miembros; sólo llevan nombre las asociaciones que comparten par. La flecha abierta marca",
+            "  Vista de conjunto: sin miembros; solo llevan nombre las asociaciones que comparten par. La flecha abierta marca",
             "  la navegabilidad que piden los diagramas de interacción; se omiten las asociaciones",
-            "  de Usuario que sólo registran la autoría de un hecho, que figuran en su área.",
+            "  de Usuario que solo registran la autoría de un hecho, que figuran en su área.",
             "endlegend", "@enduml"]
     return "\n".join(lin)
 
@@ -448,7 +417,7 @@ def vista_modulo(titulo, propias):
         if pu in propias_s and ad not in propias_s:
             refs.append(ad)
 
-    # una clase propia que sólo recibe mensajes de clases de otra vista (un puerto, un validador)
+    # una clase propia que solo recibe mensajes de clases de otra vista (un puerto, un validador)
     # quedaría suelta: se dibuja con quien la usa, en gris
     def tocadas(extra):
         t = set()
@@ -493,7 +462,7 @@ def vista_modulo(titulo, propias):
         if ad in en_vista and pu in en_vista:
             lin.append(f"{ident(ad)} ..|> {ident(pu)}")
     lin += ["", "legend bottom right",
-            "  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran sólo como referencia.",
+            "  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.",
             "endlegend", "@enduml"]
     return "\n".join(lin), refs
 
@@ -584,7 +553,7 @@ def main(render=True):
     escribir(SAL + "DC_Paquetes.puml", texto)
     nombres.append("DC_Paquetes")
 
-    # se borra sólo lo que ya no tiene fuente: nunca una imagen que se vaya a quedar sin regenerar
+    # se borra solo lo que ya no tiene fuente: nunca una imagen que se vaya a quedar sin regenerar
     vigentes = set(nombres)
     for viejo in os.listdir(SAL):
         if os.path.splitext(viejo)[0] not in vigentes:
@@ -629,8 +598,8 @@ def documento(indice, vistas_mod, deps):
           "| Un objeto de dominio que llega por parámetro o variable local (controlador a objeto, objeto a objeto sin asociación) | **Dependencia** (línea punteada) |",
           "| Servicio, puerto o colección que colabora con otro | Asociación navegable de multiplicidad 1: el colaborador se inyecta como atributo. Si el código real no lo inyecta, dependencia |",
           "| Primer receptor del mensaje del actor | `«controlador»` (clase `…UseCase` del módulo) o `«fachada»` (servicio fachada del módulo): el controlador de aplicación |",
-          "| Objeto de infraestructura que sólo recibe mensajes de otros | `«fabricación pura»` |",
-          "| Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con `..|>` sólo si aparece en un DSD |",
+          "| Objeto de infraestructura que solo recibe mensajes de otros | `«fabricación pura»` |",
+          "| Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con `..|>` solo si aparece en un DSD |",
           "| `:Map<String, X>` y `:List<X>` | `«colección»` agregada a su clase `X` (el DSD las usa para buscar por identificador) |", "",
           "**Notación.** Atributos `- nombre: Tipo` (privados; `/` marca un atributo derivado); operaciones "
           "`+ nombre(parametro: Tipo): Retorno`; `X[*]` es una colección de `X`; una línea sin punta no "
@@ -660,7 +629,7 @@ def documento(indice, vistas_mod, deps):
           "### 5.1 Clases del Dominio", "",
           "Las clases del modelo conceptual, con sus atributos tipados y las operaciones que reciben en "
           "los DSD. La vista general no lleva miembros; las vistas por área llevan todos y dibujan en "
-          "gris, sólo como referencia, las clases de otra área. Cada asociación del modelo conceptual "
+          "gris, solo como referencia, las clases de otra área. Cada asociación del modelo conceptual "
           "está en alguna vista, con su multiplicidad.", "",
           "![Clases de dominio: vista general](diagramas/clases-diseno/DC_General.png)", "",
           "**Figura 0 — Diagrama de Clases de Dominio**", ""]

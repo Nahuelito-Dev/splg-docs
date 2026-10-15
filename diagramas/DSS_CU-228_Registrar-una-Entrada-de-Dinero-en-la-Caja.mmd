@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-228 Registrar una Entrada de Dinero en la Caja
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: movimiento de entrada registrado con el saldo actualizado
+    else la caja exige sesión y no está abierta
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS

@@ -1,0 +1,18 @@
+sequenceDiagram
+    title DSS — CU-324 Anular una Multa de Tránsito
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularMultaDeTransito(multaId, motivo)
+    activate SIS
+    alt la multa existe y no está pagada ni anulada
+        SIS-->>ADM: multa anulada
+    else la multa no existe en la distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la multa está pagada o anulada
+        SIS-->>ADM: solicitud inválida: la multa no se puede anular
+    else falta el motivo
+        SIS-->>ADM: solicitud inválida, con el detalle del campo
+    end
+    deactivate SIS

@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-330 Reabrir la Rendición del Chofer
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: reabrirRendicion(rendicionId)
+    activate SIS
+    alt la operación es válida
+        SIS-->>ADM: rendición abierta otra vez
+    else la rendición no está presentada
+        SIS-->>ADM: operación rechazada
+    end
+    deactivate SIS
