@@ -2,22 +2,20 @@ sequenceDiagram
     title DSD — CU-171 Configurar los Parámetros de Despacho de la Distribuidora · configurarParametrosDeDespacho
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :ModuleConfigService
+    participant SRV as :DispatchSettingsService
     participant DIS as distribuidora:Distribuidora
     participant CFG as configuracion:ConfiguracionModulo
-    participant DCS as :DispatchConfigService
 
     ADM->>+SRV: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
-    SRV->>SRV: validarParametros(radiosKm, ventanaDeAceptacion)
     SRV->>+DIS: getConfiguracion(despacho)
     DIS-->>-SRV: configuracion
     alt La distribuidora no tiene configuración de despacho
-        SRV->>+DIS: crearConfiguracion(despacho, radiosKm, ventanaDeAceptacion)
+        SRV->>+DIS: crearConfiguracion(despacho, radiosKm, ventanaDeAceptacion, administrador)
         create participant NCF as nueva:ConfiguracionModulo
-        DIS->>NCF: «create»(despacho, radiosKm, ventanaDeAceptacion)
+        DIS->>NCF: «create»(despacho, radiosKm, ventanaDeAceptacion, administrador)
         DIS-->>-SRV: configuracion
     else La distribuidora ya tiene configuración de despacho
         SRV->>CFG: actualizar(radiosKm, ventanaDeAceptacion, administrador)
     end
-    SRV->>DCS: invalidar(distribuidora)
+    SRV->>SRV: descartarCopia(distribuidora)
     SRV-->>-ADM: configuracion

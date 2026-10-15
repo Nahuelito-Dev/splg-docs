@@ -4,13 +4,20 @@ sequenceDiagram
     actor SIS as Sistema Automático (ACT-04)
     participant TIK as :DispatchService
     participant ORQ as :DispatchOrchestratorService
+    participant FRC as :ScheduledTasksSettingsService
     participant OFR as :DispatchOfferRepositoryPort
     participant OFE as oferta:OfertaDespacho
     participant PED as pedido:Pedido
     participant ORS as :OrderService
 
     SIS->>+TIK: vencerOfertasExpiradas()
-    TIK->>+ORQ: handleExpiredOffers()
+    TIK->>+ORQ: distribuidorasConOfertasVencidas()
+    ORQ-->>-TIK: conOfertas
+    TIK->>+ORS: distribuidorasConPedidosDisponibles()
+    ORS-->>-TIK: conPendientes
+    TIK->>+FRC: distribuidorasQueCorren(tareaProgramada, distribuidoras)
+    FRC-->>-TIK: corren
+    TIK->>+ORQ: handleExpiredOffers(corren)
     ORQ->>+OFR: findExpired(ahora)
     OFR-->>-ORQ: ofertas
     loop Por cada oferta vencida
@@ -25,16 +32,18 @@ sequenceDiagram
         end
     end
     deactivate ORQ
-    TIK->>+ORS: findAvailableOrders()
-    ORS-->>-TIK: pendientes
-    loop Por cada pedido pendiente de más de 60 segundos
-        TIK->>+ORQ: ensureOffered(pedido)
-        ORQ->>+PED: tieneOfertaVigente()
-        PED-->>-ORQ: vigente
-        opt El pedido no tiene oferta vigente
-            ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
-            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
+    loop Por cada distribuidora que corre
+        TIK->>+ORS: findAvailableOrders(distribuidora)
+        ORS-->>-TIK: pendientes
+        loop Por cada pedido pendiente de más de 60 segundos
+            TIK->>+ORQ: ensureOffered(pedido)
+            ORQ->>+PED: tieneOfertaVigente()
+            PED-->>-ORQ: vigente
+            opt El pedido no tiene oferta vigente
+                ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
+                Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
+            end
+            deactivate ORQ
         end
-        deactivate ORQ
     end
     deactivate TIK

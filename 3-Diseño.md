@@ -557,6 +557,7 @@
 | 17 | 2026-10-14 | Diagramas de interacción del blindaje (297 → 303 casos de uso): CU-299 a CU-304, el suscriptor del historial de estados (CU-169), tablas de implementación al día y modelo de datos con `reservation_deficit` y `previous_on_hand_at` (63 tablas); diagrama de clases de diseño con 301 clases. | Nahuel Wagner |
 | 18 | 2026-10-14 | Revisión integral: casos de uso reales de inicio de sesión, creación y cancelación de pedido al día con el código; diagramas de interacción de los 339 casos; criterios de la API REST (idempotencia y filtros) coherentes con el código; diagramas en estilo Visual Paradigm. | Nahuel Wagner |
 | 19 | 2026-10-14 | Revisión independiente: 340 casos de uso, 372 diagramas de interacción de diseño con los pies de figura según el catálogo y diagrama de clases de diseño regenerado. | Nahuel Wagner |
+| 20 | 2026-10-15 | Módulo inteligente M1 construido: diagramas de interacción de CU-171, CU-173, CU-012, CU-013 y CU-014 con las clases del código (`DispatchSettingsService`, `ScheduledTasksSettingsService`, `ModuleConfigService`), parámetros del despacho como configuración por distribuidora, aviso `order:no-drivers` y pendientes de §10 al día. | Nahuel Wagner |
 
 ---
 
@@ -1109,7 +1110,7 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 | **Actor Principal** | ACT-04 (Sistema) |
 | **Objetivos asociados** | OBJ-02 |
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
-| **Descripción** | Al confirmarse un pedido en efectivo (o al confirmarse el pago de un pedido con MercadoPago, CU-048), el sistema busca al chofer habilitado, validado y disponible más cercano usando el radar geoespacial de Redis, probando radios crecientes de 5, 10, 15 y 20 km hasta encontrar uno sin contactar. Sin intervención humana, emite una oferta con una ventana de aceptación de 30 segundos y notifica por WebSocket al chofer elegido. |
+| **Descripción** | Al confirmarse un pedido en efectivo (o al confirmarse el pago de un pedido con MercadoPago, CU-048), el sistema busca al chofer habilitado, validado y disponible más cercano usando el radar geoespacial de Redis, probando los pasos de radio crecientes de la distribuidora (por omisión 5, 10, 15 y 20 km) hasta encontrar uno sin contactar. Sin intervención humana, emite una oferta con la ventana de aceptación de la distribuidora (por omisión 30 segundos) y notifica por WebSocket al chofer elegido. |
 | **Precondición** | Existe una orden con estado PENDING sin chofer asignado. El radar `drivers:locations` de Redis puede contener cero o más choferes conectados. |
 
 **Secuencia normal**
@@ -1117,10 +1118,10 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 | Paso | Acción |
 |------|--------|
 | 1 | `CreateOrderUseCase.execute()` invoca `DispatchOrchestratorService.offerToNextDriver(savedOrder)` post-commit, en modo de mejor esfuerzo (solo para pedidos CASH; los pagados con MercadoPago se despachan recién cuando el webhook confirma el pago, CU-048). |
-| 2 | `offerToNextDriver()` toma un bloqueo distribuido por pedido (Redlock), vuelve a leer el pedido y no ofrece si ya tiene una oferta vigente (`DispatchOfferRepositoryPort.hasActiveOffer`); toma el punto de entrega (`deliveryPoint`) y clasifica a los choferes ya contactados con `DispatchOfferRepositoryPort.findDriverOfferState`: los bloqueados y los re-ofertables, vacíos en la primera oferta. |
-| 3 | `findNearestAvailable()` recorre los radios `[5, 10, 15, 20]` km en orden creciente; para cada uno llama `RealtimeDispatchPort.findNearbyDrivers(lat, lng, radiusKm)` (`RedisService.getNearbyDrivers` → `GEORADIUS drivers:locations`, que devuelve `driverIds` ordenados ASC por distancia) y se queda con el primer radio que produzca un candidato. |
+| 2 | `offerToNextDriver()` toma un bloqueo distribuido por pedido (Redlock), vuelve a leer el pedido y no ofrece si ya tiene una oferta vigente (`DispatchOfferRepositoryPort.hasActiveOffer`); toma el punto de entrega (`deliveryPoint`) y clasifica a los choferes ya contactados con `DispatchOfferRepositoryPort.findDriverOfferState`: los bloqueados y los re-ofertables, vacíos en la primera oferta. Lee los parámetros del despacho de la distribuidora con `DispatchSettingsService.obtener` (CU-171): los pasos de radio y la ventana de aceptación, con una copia en memoria de un minuto. |
+| 3 | `findNearestAvailable()` recorre los pasos de radio de la distribuidora (`radiusStepsKm`; por omisión `[5, 10, 15, 20]` km) en orden creciente; para cada uno llama `RealtimeDispatchPort.findNearbyDrivers(lat, lng, radiusKm)` (`RedisService.getNearbyDrivers` → `GEORADIUS drivers:locations`, que devuelve `driverIds` ordenados ASC por distancia) y se queda con el primer radio que produzca un candidato. |
 | 4 | Dentro de cada radio, `DeliveryService.choferesElegibles()` filtra la lista contra la base, conservando solo los choferes con `isEnabled = true` y `validated = true` (preservando el orden de cercanía). Después `FleetDispatchLockService.choferesInhabilitados` descarta a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-136 a CU-138, CU-161), y se toma el primero que todavía no fue contactado para este pedido. |
-| 5 | Crea la oferta (`DispatchOfferRepositoryPort.create`) con vencimiento a los 30 segundos y llama `RealtimeDispatchPort.notifyDriverNewOrder(driverId, payload)` → `DriversGateway.notifyNewOrder()` → `socket.to('driver_' + driverId).emit('server:new-order-request', { event: 'NEW_ORDER', orderId, totalAmount, paymentMethod, expiresAt, items })`. En paralelo envía un push FCM complementario (`NotificationsService.sendOfferPushToDriver`, de mejor esfuerzo). |
+| 5 | Crea la oferta (`DispatchOfferRepositoryPort.create`) con vencimiento a `offerTtlSeconds` segundos (30 por omisión) y llama `RealtimeDispatchPort.notifyDriverNewOrder(driverId, payload)` → `DriversGateway.notifyNewOrder()` → `socket.to('driver_' + driverId).emit('server:new-order-request', { event: 'NEW_ORDER', orderId, totalAmount, paymentMethod, expiresAt, items })`. En paralelo envía un push FCM complementario (`NotificationsService.sendOfferPushToDriver`, de mejor esfuerzo). |
 | 6 | Se detiene en el primer chofer elegible encontrado: no se contacta a ningún otro mientras esa oferta esté vigente. |
 | 7 | Si ningún radio produce un candidato nunca contactado, se repite la búsqueda con los choferes que dejaron vencer su oferta hace más que el enfriamiento (3 minutos): la re-oferta es el último recurso, y quien rechazó o ya tuvo el pedido no vuelve a recibirlo. Un chofer con tres ofertas vencidas para el mismo pedido (la original y dos re-ofertas) queda agotado para ese pedido. |
 | 8 | Si tampoco hay un chofer que se pueda re-ofertar: no se crea oferta, se avisa a los administradores del panel (`order:no-drivers`, una sola vez por agotamiento) y el pedido queda en PENDING para que el ciclo de la tarea programada (CU-014) lo reintente. |
@@ -1131,17 +1132,17 @@ Este caso de uso no tiene pantalla propia: lo ejecuta el Sistema. Su salida visi
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el pedido no tiene `deliveryPoint` resuelto → no hay contra qué medir cercanía, no se ofrece a nadie. |
+| 2 | Si el pedido no tiene `deliveryPoint` resuelto → no hay contra qué medir cercanía, no se ofrece a nadie y se avisa a los administradores con `order:no-drivers` (`no_delivery_point`). |
 | 3 | Si Redis no está disponible → la oferta falla silenciosamente (captura `.catch()`) y la tarea programada de CU-014 la reintentará en su próximo ciclo. |
-| 4 | Si todos los `driverId` de los cuatro radios están deshabilitados, no validados, sin vehículo en uso, con documentación vencida o bloqueados para ese pedido → cae al paso 7 y, de no haber re-ofertables, al paso 8. |
-| 5 | Si la conexión WebSocket del chofer está caída → Socket.IO reintentará al reconectar; si no llega a tiempo, la oferta igual vence a los 30 segundos y el ciclo de CU-014 la re-ofrece. |
+| 4 | Si todos los `driverId` de todos los radios están deshabilitados, no validados, sin vehículo en uso, con documentación vencida o bloqueados para ese pedido → cae al paso 7 y, de no haber re-ofertables, al paso 8. |
+| 5 | Si la conexión WebSocket del chofer está caída → Socket.IO reintentará al reconectar; si no llega a tiempo, la oferta igual vence al cumplirse la ventana de aceptación y el ciclo de CU-014 la re-ofrece. |
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Cada `GEORADIUS` se resuelve en memoria (< 500ms incluso probando los cuatro radios). Notificación WebSocket < 100ms desde el commit. |
+| **Rendimiento** | Cada `GEORADIUS` se resuelve en memoria (< 500ms incluso probando todos los radios). Notificación WebSocket < 100ms desde el commit. |
 | **Frecuencia** | Una vez por cada pedido pagado en efectivo o confirmado por MercadoPago (50–200 veces/día). |
 | **Estabilidad** | Alta. |
-| **Comentarios** | El radar de Redis (`drivers:locations`) solo sabe de posición: no filtra por habilitación ni validación, así que ese filtro lo aplica `choferesElegibles()` contra la base en cada radio. Los cuatro radios (5/10/15/20 km) y la ventana de aceptación de 30 segundos son constantes del código (`DispatchOrchestratorService`); su configuración por distribuidora está planificada (CU-171, I-1) y es un requisito explícito de la cátedra para los módulos inteligentes (ver §10.2). |
+| **Comentarios** | El radar de Redis (`drivers:locations`) solo sabe de posición: no filtra por habilitación ni validación, así que ese filtro lo aplica `choferesElegibles()` contra la base en cada radio. Los pasos de radio (`radiusStepsKm`, por omisión 5/10/15/20 km) y la ventana de aceptación (`offerTtlSeconds`, por omisión 30 segundos) se configuran por distribuidora (CU-171), como exige la cátedra para los módulos inteligentes; el orquestador los lee en cada oferta. |
 
 #### Flujo del Algoritmo
 
@@ -1151,21 +1152,22 @@ CreateOrderUseCase.execute() [pago CASH]  ó  ConfirmPaymentUseCase [pago MP apr
   ▼
 DispatchOrchestratorService.offerToNextDriver(order)
   │  [1] destino = coordenadasDePunto(order.deliveryPoint)
+  │      { radiusStepsKm, offerTtlSeconds } = settings.obtener(order.distributorId)   // CU-171
   │  [2] { blocked, reofferable } = offers.findDriverOfferState(order.orderId, now, REOFFER_COOLDOWN_MS)
-  │  [3] Por cada radio en [5, 10, 15, 20] km:
+  │  [3] Por cada paso de radio de la distribuidora (por omisión 5, 10, 15 y 20 km):
   │      ├─▶ realtimeDispatchPort.findNearbyDrivers(lat, lng, radioKm)
   │      │       └─▶ redisService.getNearbyDrivers() → GEORADIUS drivers:locations ASC
   │      ├─▶ deliveries.choferesElegibles(driverIds) → solo isEnabled && validated
   │      └─▶ primer id no incluido en alreadyOffered → candidato
   │  [4] Si hay candidato:
-  │      ├─▶ offers.create(orderId, candidato, expiresAt = +30s)
+  │      ├─▶ offers.create(orderId, candidato, expiresAt = +offerTtlSeconds)
   │      ├─▶ driversGateway.notifyNewOrder(candidato, payload)
   │      │       └─▶ socket.to('driver_' + candidato).emit('server:new-order-request', payload)
   │      └─▶ notifications.sendOfferPushToDriver(candidato, orderId)
   │  [5] Si no hay candidato nuevo, se repite con los de `reofferable` (oferta vencida hace más que el enfriamiento)
   │  [6] Si ningún radio tiene candidato:
   │      ├─▶ dispatch.notifyAdmins('order:no-drivers', motivo) — una sola vez por agotamiento
-  │      └─▶ El pedido queda en PENDING → el cron de CU-014 reintenta cada 15s
+  │      └─▶ El pedido queda en PENDING → el cron de CU-014 reintenta en el ciclo de la distribuidora (15 s por omisión)
   │
   └─▶ Flujo continúa en CU-015 (Aceptar Pedido) o CU-016 (Rechazar Pedido)
 ```
@@ -1179,7 +1181,7 @@ Value: { member: "driverId" (= user_id del chofer), score: geohash }
 
 Operaciones:
   GEOADD    drivers:locations  <lng> <lat> <driverId>        // En cada driver:update-location (CU-017)
-  GEORADIUS drivers:locations  <lng> <lat> <radioKm> km ASC  // Al buscar candidatos (5/10/15/20 km)
+  GEORADIUS drivers:locations  <lng> <lat> <radioKm> km ASC  // Al buscar candidatos (pasos de radio de la distribuidora)
   ZREM      drivers:locations  <driverId>                    // Al desconectarse o ponerse offline
 ```
 
@@ -1191,7 +1193,7 @@ Operaciones:
   ▼
 [OrderInfoBottomSheet]
   ├─ Ítems y total
-  ├─ Ventana de aceptación (30 s, `expiresAt`)
+  ├─ Ventana de aceptación (`expiresAt`; 30 s por omisión)
   ├─ [Botón "Aceptar"] → CU-015
   └─ [Botón "Rechazar"] → CU-016
 ```
@@ -1204,6 +1206,7 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :DispatchOrchestratorService
+    participant CFG as :DispatchSettingsService
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
@@ -1216,9 +1219,11 @@ sequenceDiagram
     PEDS-->>-SRV: pedido
     SRV->>+PED: getPuntoDeEntrega()
     PED-->>-SRV: destino
+    SRV->>+CFG: obtener(distribuidora)
+    CFG-->>-SRV: parametros
     SRV->>+PED: getEstadoDeLasOfertas(ahora, enfriamiento)
     PED-->>-SRV: estado
-    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nunca contactado
+    loop Por cada radioKm de los pasos de la distribuidora hasta hallar un chofer nunca contactado
         SRV->>+RT: findNearbyDrivers(destino, radioKm)
         RT-->>-SRV: cercanos
         loop Por cada chofer de cercanos
@@ -1227,7 +1232,7 @@ sequenceDiagram
         end
     end
     opt No hay un chofer nuevo y alguno dejó vencer su oferta hace más que el enfriamiento
-        loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer con la oferta vencida
+        loop Por cada radioKm de los pasos de la distribuidora hasta hallar un chofer con la oferta vencida
             SRV->>+RT: findNearbyDrivers(destino, radioKm)
             RT-->>-SRV: cercanos
             loop Por cada chofer de cercanos
@@ -1259,7 +1264,7 @@ La operación del sistema es `ofrecerAlSiguienteChofer` (CU-013); su contrato y 
 ### 3.4 CU-014 Crítico · automático — Vencer la Oferta y Ofrecer al Siguiente Chofer
 
 **Actor:** Sistema (ACT-04)
-**Disparador:** tarea programada que se ejecuta cada 15 segundos
+**Disparador:** tarea programada con un ciclo fijo de 15 segundos; cada distribuidora la recibe con su propio intervalo (CU-173)
 
 #### Interfaz Gráfica
 
@@ -1281,12 +1286,12 @@ Este caso de uso no tiene pantalla: lo ejecuta el Sistema. Su salida visible es 
 
 | Paso | Acción |
 |------|--------|
-| 1 | La tarea programada se activa. Toma un bloqueo distribuido con vencimiento de 12 segundos, de modo que una sola instancia del backend procese el ciclo aunque haya varias corriendo. |
-| 2 | Busca las ofertas emitidas cuya ventana de aceptación, de 30 segundos, ya venció. |
+| 1 | La tarea programada se activa. Toma un bloqueo distribuido con vencimiento de 12 segundos, de modo que una sola instancia del backend procese el ciclo aunque haya varias corriendo. Decide, de una sola pasada, a qué distribuidoras con ofertas vencidas o pedidos pendientes les toca el ciclo, según su `dispatchRetrySeconds` (`ScheduledTasksSettingsService.distribuidorasQueCorren`; 15 segundos por omisión). |
+| 2 | Busca las ofertas emitidas cuya ventana de aceptación ya venció, de las distribuidoras que corren. |
 | 3 | Marca cada oferta vencida como expirada y registra al chofer como ya contactado para ese pedido. |
-| 4 | Recorre los radios de búsqueda en orden creciente —5, 10, 15 y 20 kilómetros— y toma el primer chofer disponible que todavía no haya sido contactado para ese pedido. |
-| 5 | Emite una nueva oferta a ese chofer, con una ventana de aceptación de 30 segundos, y le envía la notificación. |
-| 6 | Si ningún radio arroja un candidato sin contactar, el pedido permanece pendiente y se reintenta en el ciclo siguiente. |
+| 4 | Recorre los pasos de radio de la distribuidora en orden creciente —por omisión 5, 10, 15 y 20 kilómetros— y toma el primer chofer disponible que todavía no haya sido contactado para ese pedido. |
+| 5 | Emite una nueva oferta a ese chofer, con la ventana de aceptación de la distribuidora (30 segundos por omisión), y le envía la notificación. |
+| 6 | Si ningún radio arroja un candidato sin contactar, el pedido permanece pendiente, se avisa a los administradores con `order:no-drivers` (una sola vez por agotamiento) y se reintenta en el ciclo siguiente de la distribuidora. |
 
 **Postcondición:** Las ofertas vencidas quedaron cerradas y, si había un chofer disponible sin contactar, existe una nueva oferta vigente para el pedido. El pedido no cambia de estado por efecto de este caso de uso.
 
@@ -1299,10 +1304,10 @@ Este caso de uso no tiene pantalla: lo ejecuta el Sistema. Su salida visible es 
 
 | Campo | Detalle |
 |-------|---------|
-| **Rendimiento** | Cada ciclo se completa en menos de 3 segundos, holgadamente por debajo del intervalo de 15 segundos entre ejecuciones. |
-| **Frecuencia** | Cada 15 segundos, de forma permanente mientras el sistema está en funcionamiento. |
+| **Rendimiento** | Cada ciclo se completa en menos de 3 segundos, holgadamente por debajo del ciclo de base de 15 segundos. |
+| **Frecuencia** | Ciclo fijo de 15 segundos, de forma permanente mientras el sistema está en funcionamiento; cada distribuidora lo recibe con su intervalo (15 segundos por omisión, hasta 300). |
 | **Estabilidad** | Alta |
-| **Comentarios** | La ventana de aceptación y los radios de búsqueda son constantes del código; su configuración desde el sistema está planificada (CU-171, I-1). La cátedra exige que un módulo inteligente sea parametrizable como mínimo en el momento de su ejecución, de modo que llevar estos dos valores a configuración es un pendiente declarado. El sistema no avisa al administrador cuando un pedido agota los radios sin encontrar chofer: simplemente se reintenta en el ciclo siguiente. |
+| **Comentarios** | La ventana de aceptación y los pasos de radio se leen de la configuración de la distribuidora (CU-171) y el intervalo del ciclo, de la de las tareas programadas (CU-173): la cátedra exige que un módulo inteligente sea parametrizable como mínimo en el momento de su ejecución. Cuando un pedido agota los radios sin encontrar chofer, el sistema avisa a los administradores con `order:no-drivers` (una sola vez por agotamiento) y se reintenta en el ciclo siguiente. |
 
 #### Diagrama de Interacción
 
@@ -1313,13 +1318,20 @@ sequenceDiagram
     actor SIS as Sistema Automático (ACT-04)
     participant TIK as :DispatchService
     participant ORQ as :DispatchOrchestratorService
+    participant FRC as :ScheduledTasksSettingsService
     participant OFR as :DispatchOfferRepositoryPort
     participant OFE as oferta:OfertaDespacho
     participant PED as pedido:Pedido
     participant ORS as :OrderService
 
     SIS->>+TIK: vencerOfertasExpiradas()
-    TIK->>+ORQ: handleExpiredOffers()
+    TIK->>+ORQ: distribuidorasConOfertasVencidas()
+    ORQ-->>-TIK: conOfertas
+    TIK->>+ORS: distribuidorasConPedidosDisponibles()
+    ORS-->>-TIK: conPendientes
+    TIK->>+FRC: distribuidorasQueCorren(tareaProgramada, distribuidoras)
+    FRC-->>-TIK: corren
+    TIK->>+ORQ: handleExpiredOffers(corren)
     ORQ->>+OFR: findExpired(ahora)
     OFR-->>-ORQ: ofertas
     loop Por cada oferta vencida
@@ -1334,17 +1346,19 @@ sequenceDiagram
         end
     end
     deactivate ORQ
-    TIK->>+ORS: findAvailableOrders()
-    ORS-->>-TIK: pendientes
-    loop Por cada pedido pendiente de más de 60 segundos
-        TIK->>+ORQ: ensureOffered(pedido)
-        ORQ->>+PED: tieneOfertaVigente()
-        PED-->>-ORQ: vigente
-        opt El pedido no tiene oferta vigente
-            ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
-            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
+    loop Por cada distribuidora que corre
+        TIK->>+ORS: findAvailableOrders(distribuidora)
+        ORS-->>-TIK: pendientes
+        loop Por cada pedido pendiente de más de 60 segundos
+            TIK->>+ORQ: ensureOffered(pedido)
+            ORQ->>+PED: tieneOfertaVigente()
+            PED-->>-ORQ: vigente
+            opt El pedido no tiene oferta vigente
+                ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
+                Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
+            end
+            deactivate ORQ
         end
-        deactivate ORQ
     end
     deactivate TIK
 ```
@@ -1366,7 +1380,7 @@ La operación del sistema es `vencerOfertasExpiradas` (CU-014); su contrato y su
 
 **Figura 11 — CU-015 Aceptar un Pedido — Interfaz Gráfica**
 
-La hoja inferior muestra los ítems, el total y la ventana de aceptación de 30 segundos, con los botones «Aceptar» y «Rechazar».
+La hoja inferior muestra los ítems, el total y la ventana de aceptación (`expiresAt`; 30 segundos por omisión), con los botones «Aceptar» y «Rechazar».
 
 #### Especificación del CU Real
 
@@ -4843,7 +4857,7 @@ sequenceDiagram
 #### DSD — CU-013: Asignar un Pedido Automáticamente por Proximidad
 
 
-Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asignación**. El pedido no se difunde a todos los choferes: se ofrece a **uno solo** por vez, el más cercano que todavía no fue contactado, con una ventana de aceptación de 30 segundos.
+Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asignación**. El pedido no se difunde a todos los choferes: se ofrece a **uno solo** por vez, el más cercano que todavía no fue contactado, con la ventana de aceptación de la distribuidora (30 segundos por omisión).
 
 ##### Operación: ofrecerAlSiguienteChofer(pedidoId)
 
@@ -4853,6 +4867,7 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :DispatchOrchestratorService
+    participant CFG as :DispatchSettingsService
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
@@ -4865,9 +4880,11 @@ sequenceDiagram
     PEDS-->>-SRV: pedido
     SRV->>+PED: getPuntoDeEntrega()
     PED-->>-SRV: destino
+    SRV->>+CFG: obtener(distribuidora)
+    CFG-->>-SRV: parametros
     SRV->>+PED: getEstadoDeLasOfertas(ahora, enfriamiento)
     PED-->>-SRV: estado
-    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nunca contactado
+    loop Por cada radioKm de los pasos de la distribuidora hasta hallar un chofer nunca contactado
         SRV->>+RT: findNearbyDrivers(destino, radioKm)
         RT-->>-SRV: cercanos
         loop Por cada chofer de cercanos
@@ -4876,7 +4893,7 @@ sequenceDiagram
         end
     end
     opt No hay un chofer nuevo y alguno dejó vencer su oferta hace más que el enfriamiento
-        loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer con la oferta vencida
+        loop Por cada radioKm de los pasos de la distribuidora hasta hallar un chofer con la oferta vencida
             SRV->>+RT: findNearbyDrivers(destino, radioKm)
             RT-->>-SRV: cercanos
             loop Por cada chofer de cercanos
@@ -4901,11 +4918,11 @@ sequenceDiagram
 
 **Figura 81 — DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)**
 
-**Clases participantes:** `DispatchOrchestratorService` (controlador del despacho secuencial), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `RealtimeDispatchPort` (fabricación pura: el radar de choferes por cercanía y el aviso en vivo) y `NotificationsService` (fabricación pura: el aviso al dispositivo).
+**Clases participantes:** `DispatchOrchestratorService` (controlador del despacho secuencial), `DispatchSettingsService` (fabricación pura: los pasos de radio y la ventana de la distribuidora), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `RealtimeDispatchPort` (fabricación pura: el radar de choferes por cercanía y el aviso en vivo) y `NotificationsService` (fabricación pura: el aviso al dispositivo).
 
 **GRASP.** *Controlador*: `DispatchOrchestratorService` recibe la operación y coordina la búsqueda. *Experto*: `Pedido` conoce su punto de entrega, el estado de las ofertas que hizo a cada chofer (bloqueados y re-ofertables) y sus ofertas; `Chofer` sabe si puede recibir la oferta (habilitado, validado, de la distribuidora, con vehículo en uso y documentación vigente). *Creador*: el `Pedido` crea sus `OfertaDespacho`, porque las contiene (composición); el controlador no las crea. *Fabricación pura*: el radar y los avisos quedan fuera de los objetos de dominio (Bajo Acoplamiento): el orquestador no conoce Redis ni Socket.IO.
 
-**No se dibuja:** el bloqueo distribuido que serializa la oferta de cada pedido, la persistencia de la oferta, la vigencia de 30 segundos que se calcula a partir del reloj, la lectura de la configuración de radios (CU-171) y el caché de elegibilidad dentro de un mismo intento.
+**No se dibuja:** el bloqueo distribuido que serializa la oferta de cada pedido, la persistencia de la oferta, el cálculo de la vigencia a partir del reloj y de la ventana de la distribuidora, y el caché de elegibilidad dentro de un mismo intento.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -4914,9 +4931,10 @@ sequenceDiagram
 | `Pedido.getEstadoDeLasOfertas(...)` | `DispatchOfferRepositoryPort.findDriverOfferState`: clasifica a los choferes que ya tuvieron una `DispatchOffer` de ese pedido en bloqueados (rechazaron, ya lo tuvieron, tienen una oferta vigente, la dejaron vencer hace menos que el enfriamiento de 3 minutos o acumulan tres ofertas vencidas para ese pedido) y re-ofertables (menos de tres ofertas, todas vencidas hace más que el enfriamiento) |
 | `Pedido.getPuntoDeEntrega()` | `Order.deliveryPoint`, convertido con `coordenadasDePunto()` |
 | `Chofer.puedeRecibirOferta(...)` | `DeliveryService.choferesElegibles` (habilitado, validado y de la distribuidora del pedido) y `FleetDispatchLockService.choferesInhabilitados` (licencia y vehículo con documentación vigente) |
-| `Pedido.ofrecerA(...)` | `DispatchOrchestratorService.offerToNextDriver`: calcula `DispatchOffer.expiresAt` y llama a `DispatchOfferRepositoryPort.create` |
+| `DispatchSettingsService.obtener(...)` | `DispatchSettingsService.obtener`: devuelve `radiusStepsKm` y `offerTtlSeconds` de la distribuidora, o los de omisión, con una copia en memoria de un minuto; el orquestador la lee en cada oferta |
+| `Pedido.ofrecerA(...)` | `DispatchOrchestratorService.offerToNextDriver`: calcula `DispatchOffer.expiresAt` con `offerTtlSeconds` y llama a `DispatchOfferRepositoryPort.create` |
 | `OfertaDespacho.«create»` | `DispatchOfferRepositoryPort.create`: inserta la `DispatchOffer` en estado `OFFERED` |
-| `RealtimeDispatchPort.notifyAdmins(...)` | `RealtimeDispatchPort.notifyAdmins`: el aviso `order:no-drivers` al panel, con el motivo (sin choferes en el radio, todos agotados o pedido sin punto de entrega); una sola vez por agotamiento, con una marca en Redis que se borra al conseguir una oferta |
+| `RealtimeDispatchPort.notifyAdmins(...)` | `RealtimeDispatchPort.notifyAdmins`: el aviso `order:no-drivers` al panel (`orderId`, `distributorId`, `reason` y `at`), con el motivo (`no_drivers_in_range`, `all_drivers_exhausted` o `no_delivery_point`); una sola vez por agotamiento, con una marca en Redis que se borra al conseguir una oferta |
 
 **Observaciones de diseño**
 
@@ -4938,13 +4956,20 @@ sequenceDiagram
     actor SIS as Sistema Automático (ACT-04)
     participant TIK as :DispatchService
     participant ORQ as :DispatchOrchestratorService
+    participant FRC as :ScheduledTasksSettingsService
     participant OFR as :DispatchOfferRepositoryPort
     participant OFE as oferta:OfertaDespacho
     participant PED as pedido:Pedido
     participant ORS as :OrderService
 
     SIS->>+TIK: vencerOfertasExpiradas()
-    TIK->>+ORQ: handleExpiredOffers()
+    TIK->>+ORQ: distribuidorasConOfertasVencidas()
+    ORQ-->>-TIK: conOfertas
+    TIK->>+ORS: distribuidorasConPedidosDisponibles()
+    ORS-->>-TIK: conPendientes
+    TIK->>+FRC: distribuidorasQueCorren(tareaProgramada, distribuidoras)
+    FRC-->>-TIK: corren
+    TIK->>+ORQ: handleExpiredOffers(corren)
     ORQ->>+OFR: findExpired(ahora)
     OFR-->>-ORQ: ofertas
     loop Por cada oferta vencida
@@ -4959,34 +4984,36 @@ sequenceDiagram
         end
     end
     deactivate ORQ
-    TIK->>+ORS: findAvailableOrders()
-    ORS-->>-TIK: pendientes
-    loop Por cada pedido pendiente de más de 60 segundos
-        TIK->>+ORQ: ensureOffered(pedido)
-        ORQ->>+PED: tieneOfertaVigente()
-        PED-->>-ORQ: vigente
-        opt El pedido no tiene oferta vigente
-            ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
-            Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
+    loop Por cada distribuidora que corre
+        TIK->>+ORS: findAvailableOrders(distribuidora)
+        ORS-->>-TIK: pendientes
+        loop Por cada pedido pendiente de más de 60 segundos
+            TIK->>+ORQ: ensureOffered(pedido)
+            ORQ->>+PED: tieneOfertaVigente()
+            PED-->>-ORQ: vigente
+            opt El pedido no tiene oferta vigente
+                ORQ->>ORQ: ofrecerAlSiguienteChofer(pedido)
+                Note over ORQ,PED: Oferta: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
+            end
+            deactivate ORQ
         end
-        deactivate ORQ
     end
     deactivate TIK
 ```
 
 **Figura 82 — DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()**
 
-**Clases participantes:** `DispatchService` (controlador: el reloj del proceso), `DispatchOrchestratorService`, `DispatchOfferRepositoryPort` (fabricación pura: la búsqueda de ofertas vencidas atraviesa todos los pedidos), `OrderService` (consulta de los pedidos pendientes) y los objetos de dominio `OfertaDespacho` y `Pedido`.
+**Clases participantes:** `DispatchService` (controlador: el reloj del proceso), `DispatchOrchestratorService`, `ScheduledTasksSettingsService` (fabricación pura: a qué distribuidoras les toca el ciclo), `DispatchOfferRepositoryPort` (fabricación pura: la búsqueda de ofertas vencidas atraviesa todos los pedidos), `OrderService` (consulta de los pedidos pendientes) y los objetos de dominio `OfertaDespacho` y `Pedido`.
 
 **GRASP.** *Controlador*: `DispatchService` recibe la operación del proceso temporal y la reparte; no decide a quién ofrecer. *Experto*: `OfertaDespacho` sabe vencer; `Pedido` sabe si todavía es re-ofertable (pendiente y sin chofer) y si tiene una oferta vigente. *Alta Cohesión*: la decisión de a quién ofrecer vive en `DispatchOrchestratorService` y el reloj en `DispatchService`.
 
 **Referencias.** La nueva `OfertaDespacho`, que crea el `Pedido` y se avisa al chofer elegido, es la operación `ofrecerAlSiguienteChofer` (CU-013), con su propio diagrama.
 
-**No se dibuja:** el bloqueo distribuido de cada ciclo (`RedisService.acquireLock`, una sola instancia procesa cada ciclo de 15 segundos), la lectura del pedido de cada oferta y la persistencia.
+**No se dibuja:** el bloqueo distribuido de cada ciclo (`RedisService.acquireLock`, una sola instancia procesa cada ciclo de 15 segundos), la marca de última ejecución de cada distribuidora, la lectura del pedido de cada oferta y la persistencia.
 
 | Operación de diseño | Implementación |
 |---|---|
-| `DispatchService.vencerOfertasExpiradas(...)` | `DispatchService.tick`: corre cada 15 segundos con el bloqueo distribuido y llama a `DispatchOrchestratorService.handleExpiredOffers` y a `DispatchService.bootstrapPendingWithoutOffer` |
+| `DispatchService.vencerOfertasExpiradas(...)` | `DispatchService.tick`: corre en un ciclo fijo de 15 segundos con el bloqueo distribuido, decide con `ScheduledTasksSettingsService.distribuidorasQueCorren` a qué distribuidoras les toca (CU-173) y llama a `DispatchOrchestratorService.handleExpiredOffers` y a `DispatchService.bootstrapPendingWithoutOffer` con ese conjunto |
 | `OfertaDespacho.vencer(...)` | `DispatchOrchestratorService.handleExpiredOffers`: llama a `DispatchOfferRepositoryPort.updateStatus` con el estado `EXPIRED` |
 | `OfertaDespacho.getPedido()` | `DispatchOffer.order`, que `DispatchOrchestratorService.handleExpiredOffers` lee con `OrderRepositoryPort.findByIdFull` |
 | `Pedido.esReofertable()` | `DispatchOrchestratorService.isReofferable`: `Order.status` pendiente y sin `Order.deliveryId` |
@@ -5136,6 +5163,7 @@ sequenceDiagram
     participant TLG as :TruckLoadGateService
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
+    participant CFG as :DispatchSettingsService
 
     ADM->>+SRV: asignarChoferAPedido(pedidoId, choferId)
     SRV->>+PEDS: get(pedidoId)
@@ -5162,6 +5190,8 @@ sequenceDiagram
         SRV-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)
     end
     SRV-)RT: notifyAdmins(pedido)
+    SRV->>+CFG: obtener(distribuidora)
+    CFG-->>-SRV: parametros
     SRV-)RT: notifyDriverNewOrder(chofer, pedido)
     SRV-->>-ADM: pedido
 ```
@@ -5201,40 +5231,46 @@ sequenceDiagram
     title DSD — CU-171 Configurar los Parámetros de Despacho de la Distribuidora · configurarParametrosDeDespacho
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :ModuleConfigService
+    participant SRV as :DispatchSettingsService
     participant DIS as distribuidora:Distribuidora
     participant CFG as configuracion:ConfiguracionModulo
-    participant DCS as :DispatchConfigService
 
     ADM->>+SRV: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
-    SRV->>SRV: validarParametros(radiosKm, ventanaDeAceptacion)
     SRV->>+DIS: getConfiguracion(despacho)
     DIS-->>-SRV: configuracion
     alt La distribuidora no tiene configuración de despacho
-        SRV->>+DIS: crearConfiguracion(despacho, radiosKm, ventanaDeAceptacion)
+        SRV->>+DIS: crearConfiguracion(despacho, radiosKm, ventanaDeAceptacion, administrador)
         create participant NCF as nueva:ConfiguracionModulo
-        DIS->>NCF: «create»(despacho, radiosKm, ventanaDeAceptacion)
+        DIS->>NCF: «create»(despacho, radiosKm, ventanaDeAceptacion, administrador)
         DIS-->>-SRV: configuracion
     else La distribuidora ya tiene configuración de despacho
         SRV->>CFG: actualizar(radiosKm, ventanaDeAceptacion, administrador)
     end
-    SRV->>DCS: invalidar(distribuidora)
+    SRV->>SRV: descartarCopia(distribuidora)
     SRV-->>-ADM: configuracion
 ```
 
 **Figura 86 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)**
 
-**Clases participantes:** `ModuleConfigService` (controlador de fachada; colaboración propuesta), `DispatchConfigService` (fabricación pura propuesta: entrega los parámetros al despacho con una copia en memoria) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. **Colaboración propuesta:** `ModuleConfigService` y `DispatchConfigService` no existen en el código; la entidad `ModuleConfig` y su tabla sí, sin servicio ni ruta.
+**Clases participantes:** `DispatchSettingsService` (controlador de la configuración del despacho: guarda, lee y entrega los parámetros al orquestador con una copia en memoria de un minuto por distribuidora) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
 
-**GRASP.** *Controlador*: `ModuleConfigService` recibe la operación. *Creador*: la `Distribuidora` crea su `ConfiguracionModulo`, porque la agrega (composición). *Experto*: `ConfiguracionModulo` es quien toma los valores nuevos, con el administrador y la fecha de la modificación; `ModuleConfigService.validarParametros` aplica las reglas que cruzan valores (pasos de radio estrictamente crecientes). *Alta Cohesión*: `DispatchConfigService` es el único lugar que lee los parámetros y devuelve los valores por omisión.
+**GRASP.** *Controlador*: `DispatchSettingsService` recibe la operación, guarda los parámetros y descarta su copia en memoria. *Creador*: `Distribuidora` crea su `ConfiguracionModulo`, porque la contiene (composición del modelo conceptual). *Experto*: `ConfiguracionModulo` toma los parámetros nuevos y registra qué administrador los modificó y cuándo.
 
-**No se dibuja:** la persistencia, el contexto de la distribuidora que sale de la sesión del administrador y la renovación de la copia en memoria en las demás instancias, que se produce al vencer el minuto de la copia.
+**No se dibuja:** la validación del cuerpo (`DispatchConfigDto` con el `ValidationPipe`: 1 a 8 pasos de 1 a 100 km estrictamente crecientes y una ventana de 10 a 300 segundos), la resolución de la distribuidora (`@CurrentDistributor({ required: true })`), la lectura de lo guardado con que se arma la respuesta (`isDefault`, `updatedAt` y `updatedByUserId`) y el `GET`.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `DispatchSettingsService.configurarParametrosDeDespacho(...)` | `DispatchSettingsService.guardar`: la invoca `ModuleConfigController.putDispatch` con el cuerpo ya validado; guarda solo los campos enviados |
+| `Distribuidora.getConfiguracion(...)` | `ModuleConfigService.fila`: la fila de `ModuleConfig` de la distribuidora para el proceso `dispatch` |
+| `Distribuidora.crearConfiguracion(...)` | `ModuleConfigService.guardar`: un solo `INSERT ... ON CONFLICT` sobre la distribuidora y el proceso, con el usuario que modifica |
+| `ConfiguracionModulo.«create»` | `ModuleConfigService.guardar`: inserta la fila de `ModuleConfig` con los parámetros en `ModuleConfig.params` |
+| `ConfiguracionModulo.actualizar(...)` | `ModuleConfigService.guardar`: el mismo `INSERT ... ON CONFLICT` actualiza `ModuleConfig.params`, `ModuleConfig.updatedAt` y `ModuleConfig.updatedByUserId` |
+| `DispatchSettingsService.descartarCopia(...)` | `DispatchSettingsService.guardar`: descarta la copia en memoria de la distribuidora, así que la próxima oferta de esa instancia lee lo nuevo; las demás instancias lo ven, como máximo, un minuto después |
 
 **Observaciones de diseño**
 
-- El `ValidationPipe` global valida la forma del cuerpo contra `DispatchConfigDto` (`whitelist` y `forbidNonWhitelisted`); `validarParametros` aplica las reglas que dependen de los valores entre sí, como el orden creciente de los pasos.
-- `DispatchOrchestratorService.offerToNextDriver` y `OrderService.assignDelivery` leen `DispatchConfigService.forDistributor(distributorId)` en lugar de las constantes; si la distribuidora no tiene fila, devuelve los valores por omisión.
-- `@Auth(ADMIN, SUPER_ADMIN)` y `@CurrentDistributor({ required: true })`: el Administrador General debe indicar la distribuidora con `X-Distributor`.
+- `@Auth(ADMIN, SUPER_ADMIN)`: el Administrador opera siempre sobre su distribuidora; el Administrador General la indica con `X-Distributor` y, sin ella, recibe 400.
+- Lo no enviado no se guarda: se lee con su valor por omisión (`[5, 10, 15, 20]` km y 30 segundos).
 
 ---
 
@@ -13096,7 +13132,7 @@ sequenceDiagram
     title DSD — CU-172 Configurar los Parámetros de un Proceso Automático · configurarParametrosDeProceso
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :ModuleConfigService
+    participant SRV as :ProcessConfigService
     participant DIS as distribuidora:Distribuidora
     participant CFG as configuracion:ConfiguracionModulo
 
@@ -13117,16 +13153,16 @@ sequenceDiagram
 
 **Figura 258 — DSD CU-172: Configurar los Parámetros de un Proceso Automático**
 
-**Clases participantes (colaboración propuesta):** `ModuleConfigService` (controlador del módulo de configuración de procesos, que no existe en el código y se construye en la iteración I-1) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. La tabla de configuración ya existe, sin servicio ni punto de entrada.
+**Clases participantes (colaboración propuesta):** `ProcessConfigService` (controlador de la configuración de los procesos automáticos, que no existe en el código y se construye en la iteración I-1; guarda con `ModuleConfigService`, que ya existe) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`. El servicio y las rutas de la configuración ya existen para el despacho (CU-171) y las tareas programadas (CU-173).
 
-**GRASP.** *Controlador*: `ModuleConfigService`. *Creador*: `Distribuidora` crea su `ConfiguracionModulo`, porque la contiene (composición del modelo conceptual). *Experto*: `ConfiguracionModulo` es quien toma los parámetros nuevos y registra qué administrador los modificó y cuándo. Una sola operación atiende a los cinco procesos configurables: cambia el esquema de validación, no el flujo.
+**GRASP.** *Controlador*: `ProcessConfigService`. *Creador*: `Distribuidora` crea su `ConfiguracionModulo`, porque la contiene (composición del modelo conceptual). *Experto*: `ConfiguracionModulo` es quien toma los parámetros nuevos y registra qué administrador los modificó y cuándo. Una sola operación atiende a los cinco procesos configurables: cambia el esquema de validación, no el flujo.
 
 **No se dibuja:** el esquema de cada proceso con sus valores por omisión y el guardado.
 
 **Observaciones de diseño**
 
 - Una sola operación atiende a los cinco procesos: lo que cambia entre ellos es el esquema de validación que `esquemaDelProceso` devuelve, no el flujo.
-- `ModuleConfigService.obtener(distributorId, proceso)` mezcla lo guardado con los valores por omisión del proceso; es la operación que leen los procesos y la pantalla.
+- `ProcessConfigService.obtener(distributorId, proceso)` mezcla lo guardado con los valores por omisión del proceso; es la operación que leen los procesos y la pantalla.
 - `@Auth(ADMIN, SUPER_ADMIN)` y `@CurrentDistributor({ required: true })`: el Administrador General debe indicar la distribuidora con `X-Distributor`.
 
 ---
@@ -13140,14 +13176,12 @@ sequenceDiagram
     title DSD — CU-173 Configurar la Frecuencia de las Tareas Programadas · configurarFrecuenciaDeTareas
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :ModuleConfigService
+    participant SRV as :ScheduledTasksSettingsService
     participant DIS as distribuidora:Distribuidora
     participant CFG as configuracion:ConfiguracionModulo
-    participant GAT as :ScheduledTaskGate
     participant RDS as :RedisService
 
     ADM->>+SRV: configurarFrecuenciaDeTareas(intervalos)
-    SRV->>SRV: validarIntervalos(intervalos)
     SRV->>+DIS: getConfiguracion(tareasProgramadas)
     DIS-->>-SRV: configuracion
     alt La distribuidora no tiene configuración de las tareas programadas
@@ -13158,25 +13192,33 @@ sequenceDiagram
     else La distribuidora ya la tiene
         SRV->>CFG: actualizar(intervalos, administrador)
     end
-    SRV->>+GAT: reprogramar(distribuidora)
-    GAT->>RDS: del(marcas de ultima ejecucion)
-    deactivate GAT
+    SRV->>RDS: incr(generacion)
+    loop Por cada tarea con intervalo
+        SRV->>RDS: del(marca de la generacion anterior)
+    end
     SRV-->>-ADM: configuracion
 ```
 
 **Figura 259 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas**
 
-**Clases participantes (colaboración propuesta):** `ModuleConfigService` y `ScheduledTaskGate` (controlador y fabricación pura del módulo de configuración, que no existen en el código y se construyen en la iteración I-1), `RedisService` (existente) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
+**Clases participantes:** `ScheduledTasksSettingsService` (controlador de la configuración de las tareas programadas: guarda, lee y decide a qué distribuidoras les toca cada ciclo), `RedisService` (fabricación pura: la generación y las marcas de última ejecución) y los objetos de dominio `Distribuidora` y `ConfiguracionModulo`.
 
-**GRASP.** *Controlador*: `ModuleConfigService`. *Creador*: `Distribuidora` crea su `ConfiguracionModulo`, porque la contiene. *Experto*: `ConfiguracionModulo` toma los intervalos nuevos. *Fabricación pura*: `ScheduledTaskGate` decide en cada ciclo qué distribuidoras atiende cada tarea según su intervalo; al reprogramar borra las marcas de última ejecución en `RedisService`, de modo que el intervalo nuevo rige desde el ciclo siguiente.
+**GRASP.** *Controlador*: `ScheduledTasksSettingsService` recibe la operación y reprograma las tareas. *Creador*: `Distribuidora` crea su `ConfiguracionModulo`, porque la contiene. *Experto*: `ConfiguracionModulo` toma los intervalos nuevos y registra quién los modificó y cuándo. *Fabricación pura*: las marcas viven en Redis, no en la base relacional.
 
-**No se dibuja:** las reglas de validación de los intervalos y el guardado.
+**No se dibuja:** la validación del cuerpo (`ScheduledTasksConfigDto`: múltiplos del ciclo de base de cada tarea, `dispatchRetrySeconds` hasta 300 segundos, el resto hasta 24 horas y `fleetAlertHour` de 0 a 23), la resolución de la distribuidora y el `GET`.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `ScheduledTasksSettingsService.configurarFrecuenciaDeTareas(...)` | `ScheduledTasksSettingsService.guardar`: la invoca `ModuleConfigController.putScheduledTasks` con el cuerpo ya validado; guarda solo los campos enviados |
+| `Distribuidora.getConfiguracion(...)` | `ModuleConfigService.fila`: la fila de `ModuleConfig` de la distribuidora para el proceso `scheduled_tasks` |
+| `Distribuidora.crearConfiguracion(...)` | `ModuleConfigService.guardar`: un solo `INSERT ... ON CONFLICT` sobre la distribuidora y el proceso, con el usuario que modifica |
+| `ConfiguracionModulo.«create»` | `ModuleConfigService.guardar`: inserta la fila de `ModuleConfig` con los intervalos en `ModuleConfig.params` |
+| `ConfiguracionModulo.actualizar(...)` | `ModuleConfigService.guardar`: el mismo `INSERT ... ON CONFLICT` actualiza `ModuleConfig.params`, `ModuleConfig.updatedAt` y `ModuleConfig.updatedByUserId` |
 
 **Observaciones de diseño**
 
-- `ScheduledTaskGate.debeCorrer(tarea, distributorId)` es la operación que consultan las tareas en cada ciclo: lee el intervalo de la distribuidora y toma la marca con `SET` condicional y expiración igual al intervalo; si la marca ya existe, la tarea saltea a esa distribuidora en ese ciclo.
-- Borrar las marcas al guardar hace que el intervalo nuevo rija desde el ciclo siguiente, sin esperar a que venza el anterior.
-- El resto del flujo es el de CU-172: la misma ruta, el mismo servicio y la misma tabla; cambia el esquema de validación del proceso `scheduled_tasks`.
+- Cada `PUT` incrementa la generación de la distribuidora (`scheduled-task:gen:<distributorId>`) y la clave de la marca la incluye: una marca de la configuración vieja nunca queda viva, ni la que otra instancia o un tic en curso creen después del `PUT`.
+- En cada tic, `ScheduledTasksSettingsService.distribuidorasQueCorren` decide a qué distribuidoras les toca; con el intervalo igual al tic corre siempre y no hay marca.
 
 ---
 
@@ -20483,8 +20525,8 @@ No toda clase del diagrama es una clase del código con ese nombre. Son de tres 
     `GrantEmployeeAccountUseCase`, `AttendanceService`, `LeaveService`, `PersonnelDashboardService` y
     `AttachmentsService`, y las fabricaciones puras `CuilValidator` y `VacationPolicy`; reutiliza `FleetTaskService`,
     `FleetExpirationsService`, `FleetAlertsCron`, `RegistroService` y `S3Service`, que existen;
-  - la configuración de procesos y de tareas (CU-171 a CU-173): `ModuleConfigController`,
-    `ModuleConfigService`, `DispatchConfigService` y `ScheduledTaskGate`;
+  - la configuración de los procesos automáticos (CU-172): `ProcessConfigService`, que valida
+    los parámetros de cada proceso contra su esquema y guarda con `ModuleConfigService`, que existe;
   - el reintegro de pagos (CU-168): `ReintegroListener` y `RefundPaymentUseCase`, más las
     operaciones nuevas de `PaymentsService` y `PaymentGatewayPort`;
   - las operaciones nuevas sobre clases que existen: cambio de dirección, quién recibe y
@@ -20539,7 +20581,7 @@ compromete dinero.**
 | Desemboca en | CU-081 Consultar los Pedidos Asignados al Chofer, CU-017 Actualizar la Ubicación GPS del Chofer, CU-018 Marcar un Pedido "En Camino" |
 | Comparte mecánica con | CU-149 Despachar un Pedido Express a un Chofer en Moto |
 
-**Componentes:** `DispatchOrchestratorService` (orquestador), `DispatchService` (proceso temporal) y la entidad `DispatchOffer`.
+**Componentes:** `DispatchOrchestratorService` (orquestador), `DispatchService` (proceso temporal), `DispatchSettingsService` y `ScheduledTasksSettingsService` (configuración de la distribuidora) y la entidad `DispatchOffer`.
 
 #### Descripción
 
@@ -20561,7 +20603,7 @@ en paralelo y queda auditable.
 - Choferes ya contactados para el pedido — tabla `dispatch_offer`
 - Choferes activos y su posición — índice geoespacial (GEORADIUS)
 - Distribuidora dueña del pedido — filtro de aislamiento multidistribuidora
-- Pasos de radio de búsqueda y vigencia de la oferta — parámetros configurados (`RADIUS_STEPS_KM`, `OFFER_TTL_SECONDS`)
+- Pasos de radio de búsqueda y vigencia de la oferta — configuración de la distribuidora (`radiusStepsKm`, `offerTtlSeconds`; CU-171), o sus valores por omisión
 
 #### Algoritmo — `offerToNextDriver(order)`
 
@@ -20570,21 +20612,22 @@ en paralelo y queda auditable.
    (dispatch_offer WHERE order_id = ?)
 
 2. Buscar el siguiente candidato:
-     Para cada radio en [5, 10, 15, 20] km:
+     Para cada paso de radio de la distribuidora (por omisión 5, 10, 15 y 20 km):
          a. GEORADIUS sobre el índice de choferes activos  → ordenados por cercanía ASC
          b. Filtrar por distribuidora del pedido            → aislamiento multidistribuidora
          c. Descartar los ya contactados
          d. Si queda alguno → es el candidato; cortar la búsqueda
-     Si ningún radio arroja candidato → no hacer nada (el proceso temporal reintentará)
+     Si ningún radio arroja candidato → avisar a los administradores (order:no-drivers, una vez)
+     y no crear oferta (el proceso temporal reintentará)
 
-3. Crear la oferta con vigencia = ahora + 30 s  (estado OFFERED)
+3. Crear la oferta con vigencia = ahora + offerTtlSeconds (30 s por omisión)  (estado OFFERED)
 
 4. Notificar al chofer:
      · WebSocket  'NEW_ORDER'  con el detalle del pedido y la hora de vencimiento
      · Push FCM complementario (de mejor esfuerzo, por si la app está cerrada)
 ```
 
-#### Algoritmo — `handleExpiredOffers()` — proceso temporal cada 15 s
+#### Algoritmo — `handleExpiredOffers()` — proceso temporal (ciclo de 15 s, por distribuidora)
 
 ```
 Para cada oferta OFFERED cuya vigencia ya pasó:
@@ -20613,10 +20656,10 @@ agotados los candidatos, se avisa una vez a los administradores con `order:no-dr
 
 #### Salidas
 
-- Oferta `OFFERED` persistida en `dispatch_offer` para un único chofer, con vigencia de 30 segundos
+- Oferta `OFFERED` persistida en `dispatch_offer` para un único chofer, con la vigencia de la distribuidora (30 segundos por omisión)
 - Notificación WebSocket `NEW_ORDER` y push FCM complementario al chofer ofertado
 - Pedido asignado (`delivery_id` cargado) cuando el chofer acepta
-- Pedido `PENDING` a la espera de asignación manual del administrador si se agotan los radios sin candidatos
+- Pedido `PENDING` a la espera de asignación manual del administrador si se agotan los radios sin candidatos, con el aviso `order:no-drivers` al panel
 
 #### Aislamiento multidistribuidora
 
@@ -20626,14 +20669,17 @@ de otra distribuidora.
 
 #### Parámetros
 
-| Parámetro | Valor vigente | Constante |
-|-----------|---------------|-----------|
-| Pasos de radio de búsqueda | `[5, 10, 15, 20]` km | `RADIUS_STEPS_KM` |
-| Ventana de aceptación | 30 segundos | `OFFER_TTL_SECONDS` |
-| Frecuencia de revisión de vencimientos | cada 15 segundos | `@Cron('*/15 * * * * *')` |
+Son configuración de cada distribuidora (CU-171 y CU-173); los valores por omisión son los que regían cuando eran constantes del programa.
 
-> Los dos primeros son constantes de clase. Llevarlos a configuración por
-> distribuidora es el caso de uso CU-171 (planificado, I-1).
+| Parámetro | Campo de la configuración | Valor por omisión | Rango admitido |
+|-----------|---------------------------|-------------------|----------------|
+| Pasos de radio de búsqueda | `radiusStepsKm` | `[5, 10, 15, 20]` km | de 1 a 8 pasos, cada uno de 1 a 100 km y estrictamente creciente |
+| Ventana de aceptación | `offerTtlSeconds` | 30 segundos | de 10 a 300 segundos |
+| Frecuencia de revisión de vencimientos | `dispatchRetrySeconds` | cada 15 segundos (`@Cron('*/15 * * * * *')` es el ciclo de base) | múltiplo de 15, hasta 300 segundos |
+
+> Se leen en cada oferta a través de `DispatchSettingsService`, con una copia en memoria de
+> un minuto por distribuidora; guardar la descarta en la instancia que atiende el `PUT`.
+> Las ofertas ya enviadas conservan su vencimiento.
 
 #### Por qué no es una consulta
 
@@ -20662,18 +20708,18 @@ sequenceDiagram
     participant OFERTAS as dispatch_offer
     participant GEO as Índice geoespacial
     participant CHO as Chofer
-    participant CRON as Proceso temporal (15 s)
+    participant CRON as Proceso temporal (ciclo de 15 s)
 
     CLI->>API: crear pedido
     API->>ORQ: offerToNextDriver(pedido)
     ORQ->>OFERTAS: choferes ya contactados
     OFERTAS-->>ORQ: conjunto (vacío)
-    loop radio en 5, 10, 15, 20 km
+    loop paso de radio de la distribuidora
         ORQ->>GEO: choferes cercanos dentro del radio
         GEO-->>ORQ: lista ordenada por cercanía
         ORQ->>ORQ: filtrar por distribuidora y descartar contactados
     end
-    ORQ->>OFERTAS: crear oferta (vence en 30 s)
+    ORQ->>OFERTAS: crear oferta (vence en offerTtlSeconds)
     ORQ-->>CHO: NEW_ORDER + push FCM
 
     alt El chofer acepta dentro de la ventana
@@ -23350,9 +23396,7 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 
 | Pendiente | Descripción | CU | Iteración | Prioridad |
 |-----|-------------|----|:---------:|-----------|
-| Parámetros del despacho | Los pasos de radio de búsqueda y la ventana de aceptación de la oferta son constantes del programa. El módulo inteligente M1 exige que sean configurables por distribuidora. | CU-171 | I-1 | Crítico |
-| Parámetros de los procesos automáticos | La tabla de configuración por distribuidora existe, sin servicio ni ruta: ningún parámetro de los módulos inteligentes ni de la compra express puede editarse. | CU-172 | I-1 | Importante |
-| Frecuencia de las tareas programadas | Las cinco frecuencias —incluida la del aviso de vencimientos de flota (CU-142)— están fijas en el código. Son tareas de mantenimiento del sistema, no procesos automatizados. | CU-173 | I-1 | Importante |
+| Parámetros de los procesos automáticos | El servicio y las rutas de la configuración por distribuidora existen solo para el despacho (CU-171) y las tareas programadas (CU-173): ningún parámetro de los otros módulos inteligentes ni de la compra express puede editarse. | CU-172 | I-1 | Importante |
 
 ### 10.3 Integridad y consistencia del modelo
 
@@ -23610,8 +23654,9 @@ La cuenta se habilita activa. El administrador la bloquea y la reactiva, y solo 
 
 #### Despacho por proximidad (M1)
 
-El despacho ofrece el pedido de a un chofer por vez. La búsqueda empieza en un radio de 5 km y lo
-amplía de a 5 km hasta 20 km; la oferta vence a los 30 segundos y, si el chofer la rechaza o no
+El despacho ofrece el pedido de a un chofer por vez. La búsqueda empieza en el primer paso de radio
+de la distribuidora y lo amplía paso a paso (por omisión 5, 10, 15 y 20 km); la oferta vence al
+cumplirse la ventana de la distribuidora (30 segundos por omisión) y, si el chofer la rechaza o no
 responde, el pedido pasa al siguiente candidato que no haya sido contactado antes.
 
 ![Diagrama de actividad del despacho por proximidad](diagramas/uml/UML_Actividad_Despacho.png)

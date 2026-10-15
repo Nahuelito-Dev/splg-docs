@@ -102,6 +102,7 @@
 | 19 | 2026-10-14 | Blindaje de pedidos, cobros y stock: CU-299 a CU-304 (cobros manuales del administrador, cotización, ruta de un pedido y cobros pendientes), CU-169 implementado, datos del chofer y quién canceló en el detalle del pedido, 410 al chofer que tuvo el pedido, X-Distributor obligatorio para el administrador general en las escrituras, mensajes 401 propios del inicio de sesión y del token, y las reglas de stock del 14/10 (déficit de reservas, costo promedio exacto, transiciones de la carga en 409, clave de idempotencia obligatoria); 297 → 303 casos de uso (CU-299 a CU-304). | Nahuel Wagner |
 | 20 | 2026-10-14 | Revisión integral: 303 → 340 casos de uso. Un caso de uso por operación (CU-305 a CU-341: polígonos de cobertura, caja, personal, flota, compras, cuentas corrientes y pedidos, con la modificación del pedido por el cliente y la cotización de edición), cobros en SS-14, CU-169 como caso incluido, plan e iteraciones con su estado real, y «Aprobar», «Crear» y «Tablero» en los nombres. | Nahuel Wagner |
 | 21 | 2026-10-14 | Revisión independiente: 340 casos de uso (CU-001 a CU-343, sin CU-021 y CU-091, retirados por no ser casos de uso, ni CU-093), actor ACT-10 Operador Técnico, activar y desactivar franja (CU-342 y CU-343), transición desplazada a después de la construcción (T-01 del 21/12/2026 al 19/02/2027) y formato único de actores. | Nahuel Wagner |
+| 22 | 2026-10-15 | Módulo inteligente M1 construido: CU-171 y CU-173 pasan a «Implementado» (parámetros del despacho y frecuencia de las tareas programadas por distribuidora), con sus endpoints, campos, validaciones y mensajes verificados contra el código y la API; CU-014 refleja el aviso `order:no-drivers` y el ciclo por distribuidora. | Nahuel Wagner |
 
 ---
 
@@ -175,12 +176,12 @@ Las barras de color pleno son las fases e iteraciones del plan. Los rombos son l
 
 ### Plan de construcción de los casos de uso planificados
 
-El sistema construido no realiza ciento tres casos de uso (los veintinueve del alcance original y los setenta y cuatro de los módulos de gestión: diecinueve de personal, I-11; veintidós de flota ampliada, I-12; y treinta y tres de caja y rendición, I-14), que están especificados con sus
+El sistema construido no realiza ciento un casos de uso (los veintisiete del alcance original y los setenta y cuatro de los módulos de gestión: diecinueve de personal, I-11; veintidós de flota ampliada, I-12; y treinta y tres de caja y rendición, I-14), que están especificados con sus
 artefactos completos y figuran como «Planificado» en el catálogo de la sección 8: los veintitrés que la
 documentación venía señalando como no construidos (CU-043, CU-105 a CU-108, CU-122 a CU-128, CU-132 a
 CU-135, CU-143 a CU-148 y CU-151), el despacho de un pedido express a un chofer en moto (CU-149), que es
-condición de la compra express, y seis casos nuevos que formalizan funcionalidad que faltaba (CU-168 a
-CU-173), y los dos casos que parten de CU-040 la reactivación de un producto dado de baja (CU-268 y CU-269). Otros once casos construidos tienen un tramo planificado asociado a una iteración: el reintegro del pago (CU-008
+condición de la compra express, y cuatro casos nuevos que formalizan funcionalidad que faltaba (CU-168 a
+CU-170 y CU-172; CU-171 y CU-173 se construyeron el 15/10/2026), y los dos casos que parten de CU-040 la reactivación de un producto dado de baja (CU-268 y CU-269). Otros once casos construidos tienen un tramo planificado asociado a una iteración: el reintegro del pago (CU-008
 y CU-010, I-7), la verificación laboral del chofer en el despacho (CU-012, CU-013 y CU-015, I-11), el listado y la baja del legajo (CU-180 y CU-311, I-11), el egreso del chofer con una rendición pendiente (CU-181, I-14), el tiempo estimado de llegada (CU-017, I-4) y la resolución de la dirección contra el servicio de mapas (CU-116 y CU-118, I-4). La fotografía del reclamo (CU-174 y CU-175, y el tramo de CU-023) ya está construida. Cada caso muestra su iteración como «Planificado (I-n)» en el catálogo y en su
 caso de uso expandido.
 
@@ -189,7 +190,7 @@ sistema que tocan y con sus dependencias.
 
 | Iteración | Casos de uso | Tamaño | Qué se puede mostrar al cerrarla |
 |---|---|:---:|---|
-| **I-1** Cimientos y huecos cortos | CU-043, CU-151, CU-171, CU-172, CU-173; CU-268 y CU-269 (reactivación de un producto dado de baja y listado de los dados de baja) | M | La franja se edita sin darla de baja; una zona vencida se desactiva sola; los parámetros del despacho, de los procesos automáticos y de las tareas programadas se editan desde el panel; un producto dado de baja vuelve al catálogo. |
+| **I-1** Cimientos y huecos cortos | CU-043, CU-151, CU-171, CU-172, CU-173; CU-268 y CU-269 (reactivación de un producto dado de baja y listado de los dados de baja) | M | La franja se edita sin darla de baja; una zona vencida se desactiva sola; los parámetros del despacho, de los procesos automáticos y de las tareas programadas se editan desde el panel; un producto dado de baja vuelve al catálogo. Construidos el 15/10/2026: los parámetros del despacho (CU-171) y la frecuencia de las tareas programadas (CU-173). |
 | **I-2** Vigencia de envases | CU-132, CU-133, CU-134, CU-135 | M | Un envase con la revisión vencida no puede asignarse a ningún pedido. |
 | **I-3** Carrito persistente | CU-122, CU-123, CU-124, CU-125, CU-126 | L | El cliente arma el carrito, cierra la app, la vuelve a abrir y el carrito sigue ahí. |
 | **I-4** Pedido en curso | CU-127, CU-128, CU-169, CU-170, CU-302, CU-303, CU-338, CU-339 y CU-341 | M | El cliente cambia la dirección de un pedido en curso y el chofer lo ve, con quién recibe; el cliente y el administrador ven el historial de estados del pedido; la cotización y la ruta de un pedido las calcula el sistema, el chofer retoma su pedido en curso al abrir la aplicación y el administrador y el cliente editan un pedido pendiente. Construido: el historial de estados (CU-169 y CU-170), la cotización, la ruta, el pedido en curso del chofer y la edición del pedido pendiente (del administrador y del cliente); pendiente: el cambio de dirección y quién recibe. |
@@ -789,7 +790,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Sistema (ACT-04)  
 **Subsistema:** SS-03 Despacho y Asignación  
 **Calificación:** Crítico  
-**Descripción:** Un proceso automático que corre cada quince segundos revisa las ofertas de pedido cuya ventana de aceptación venció: las cierra y, si el pedido sigue sin chofer, abre la oferta para el siguiente candidato disponible. El mismo proceso vuelve a poner en circulación los pedidos que quedaron sin ninguna oferta activa, por ejemplo porque al crearse no había ningún chofer cerca o porque el chofer que lo tenía lo liberó. Si se agotan los candidatos, el pedido no pasa a ningún estado especial ni genera una alerta automática: permanece pendiente hasta que el administrador lo asigne a mano (CU-012) o aparezca un chofer disponible.
+**Descripción:** Un proceso automático que corre cada quince segundos revisa las ofertas de pedido cuya ventana de aceptación venció: las cierra y, si el pedido sigue sin chofer, abre la oferta para el siguiente candidato disponible. El mismo proceso vuelve a poner en circulación los pedidos que quedaron sin ninguna oferta activa, por ejemplo porque al crearse no había ningún chofer cerca o porque el chofer que lo tenía lo liberó. Cada distribuidora recibe el ciclo con su propio intervalo (CU-173). Si se agotan los candidatos, el pedido no pasa a ningún estado especial: permanece pendiente, y el sistema avisa a los administradores de la distribuidora con el evento en vivo `order:no-drivers` (una sola vez por agotamiento) para que lo asignen a mano (CU-012) o aparezca un chofer disponible.
 
 ---
 
@@ -797,7 +798,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-03 Despacho y Asignación  
 **Calificación:** Crítico  
-**Descripción:** El administrador define para su distribuidora los pasos de radio con que el despacho busca choferes y la ventana de tiempo que cada chofer tiene para aceptar una oferta. Los valores vigentes del sistema (cuatro pasos de 5, 10, 15 y 20 km, y 30 segundos) quedan como valores por omisión. Ruta de la API: `PUT /module-config/dispatch`.
+**Descripción:** El administrador define para su distribuidora los pasos de radio con que el despacho busca choferes y la ventana de tiempo que cada chofer tiene para aceptar una oferta. Los valores que regían cuando eran constantes del programa (cuatro pasos de 5, 10, 15 y 20 km, y 30 segundos) quedan como valores por omisión. Rutas de la API: `GET /module-config/dispatch` y `PUT /module-config/dispatch`.
 
 ---
 
@@ -2395,7 +2396,7 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 **Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-18 Observabilidad y Operación  
 **Calificación:** Importante  
-**Descripción:** El administrador define cada cuánto corre, para su distribuidora, cada tarea programada del sistema: el ciclo de reintentos del despacho, la activación y el vencimiento de reservas, el vencimiento de pedidos de MercadoPago sin pagar y el aviso diario de vencimientos de flota. Las frecuencias vigentes son constantes del programa. Ruta de la API: `PUT /module-config/scheduled_tasks`.
+**Descripción:** El administrador define cada cuánto corre, para su distribuidora, cada tarea programada del sistema: el ciclo de reintentos del despacho, la activación y el vencimiento de reservas, el vencimiento de pedidos de MercadoPago sin pagar y el aviso diario de vencimientos de flota. Sin configuración rigen las frecuencias de siempre (15 segundos, 5 minutos, 1 hora, 30 minutos y las 8 de la mañana). Rutas de la API: `GET /module-config/scheduled_tasks` y `PUT /module-config/scheduled_tasks`.
 
 ---
 
@@ -3537,9 +3538,9 @@ Responsable de la plataforma, distinto del administrador de cada empresa. Da de 
 | CU-168 Reintegrar el Pago de un Pedido | SS-14 | ACT-04, ACT-03 | Importante | Planificado (I-7) |
 | CU-169 Registrar el Cambio de Estado de un Pedido | SS-02 | — | Importante | Implementado |
 | CU-170 Consultar el Historial de Estados de un Pedido | SS-02 | ACT-01, ACT-02, ACT-03, ACT-05 | Secundario | Implementado (back y panel) |
-| CU-171 Configurar los Parámetros de Despacho de la Distribuidora | SS-03 | ACT-03, ACT-05 | Crítico | Planificado (I-1) |
+| CU-171 Configurar los Parámetros de Despacho de la Distribuidora | SS-03 | ACT-03, ACT-05 | Crítico | Implementado |
 | CU-172 Configurar los Parámetros de un Proceso Automático | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
-| CU-173 Configurar la Frecuencia de las Tareas Programadas | SS-18 | ACT-03, ACT-05 | Importante | Planificado (I-1) |
+| CU-173 Configurar la Frecuencia de las Tareas Programadas | SS-18 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-174 Adjuntar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Importante | Implementado |
 | CU-175 Consultar la Fotografía de un Reclamo | SS-05 | ACT-01, ACT-03, ACT-05 | Secundario | Implementado |
 | CU-176 Consultar los Puestos de Trabajo | SS-19 | ACT-03 | Importante | Implementado |

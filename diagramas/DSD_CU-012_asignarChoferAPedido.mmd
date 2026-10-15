@@ -10,6 +10,7 @@ sequenceDiagram
     participant TLG as :TruckLoadGateService
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
+    participant CFG as :DispatchSettingsService
 
     ADM->>+SRV: asignarChoferAPedido(pedidoId, choferId)
     SRV->>+PEDS: get(pedidoId)
@@ -36,5 +37,7 @@ sequenceDiagram
         SRV-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)
     end
     SRV-)RT: notifyAdmins(pedido)
+    SRV->>+CFG: obtener(distribuidora)
+    CFG-->>-SRV: parametros
     SRV-)RT: notifyDriverNewOrder(chofer, pedido)
     SRV-->>-ADM: pedido

@@ -2,10 +2,10 @@
 
 Las genera `generar-clases-diseno.py`; no se editan a mano.
 
-- Clases de diseño: **300**; operaciones: **1328**.
-- Por papel: coleccion: 79, controlador: 28, dominio: 83, fabricación pura: 15, fachada: 85, puerto: 10.
-- Asociaciones: 502 (167 del modelo conceptual, 335 de colaboración); dependencias: 277; realizaciones: 0.
-- Dependencias entre módulos: 131.
+- Clases de diseño: **300**; operaciones: **1330**.
+- Por papel: coleccion: 79, controlador: 28, dominio: 83, fabricación pura: 13, fachada: 87, puerto: 10.
+- Asociaciones: 503 (167 del modelo conceptual, 336 de colaboración); dependencias: 281; realizaciones: 0.
+- Dependencias entre módulos: 132.
 
 | Vista | Archivo | Clases | Operaciones |
 |---|---|---:|---:|
@@ -33,11 +33,11 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Clientes y direcciones de entrega (módulo) | `diagramas/clases-diseno/DC_Mod_Clientes.png` | 7 | 22 |
 | Carrito y recompra (módulo) | `diagramas/clases-diseno/DC_Mod_Carrito-y-recompra.png` | 5 | 12 |
 | Productos y franjas horarias (módulo) | `diagramas/clases-diseno/DC_Mod_Productos-y-franjas.png` | 5 | 22 |
-| Cobertura y distribuidoras (módulo) | `diagramas/clases-diseno/DC_Mod_Cobertura-y-distribuidoras.png` | 10 | 28 |
+| Cobertura y distribuidoras (módulo) | `diagramas/clases-diseno/DC_Mod_Cobertura-y-distribuidoras.png` | 10 | 27 |
 | Pedidos: alta y cancelación (módulo) | `diagramas/clases-diseno/DC_Mod_Pedidos-alta.png` | 5 | 14 |
-| Pedidos: consulta y estado (módulo) | `diagramas/clases-diseno/DC_Mod_Pedidos-estado.png` | 8 | 54 |
+| Pedidos: consulta y estado (módulo) | `diagramas/clases-diseno/DC_Mod_Pedidos-estado.png` | 8 | 55 |
 | Pagos y reservas (módulo) | `diagramas/clases-diseno/DC_Mod_Pagos.png` | 5 | 13 |
-| Despacho de pedidos (módulo) | `diagramas/clases-diseno/DC_Mod_Despacho.png` | 8 | 22 |
+| Despacho de pedidos (módulo) | `diagramas/clases-diseno/DC_Mod_Despacho.png` | 8 | 23 |
 | Seguimiento en tiempo real (módulo) | `diagramas/clases-diseno/DC_Mod_Tiempo-real.png` | 4 | 5 |
 | Choferes y vehículos (módulo) | `diagramas/clases-diseno/DC_Mod_Choferes-y-vehiculos.png` | 8 | 40 |
 | Flota: tareas, adjuntos y vencimientos (módulo) | `diagramas/clases-diseno/DC_Mod_Flota-tareas.png` | 8 | 29 |
@@ -49,7 +49,7 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Flota: gastos, multas y siniestros (módulo) | `diagramas/clases-diseno/DC_Mod_Flota-gastos.png` | 16 | 36 |
 | Reclamos, incidencias y calificaciones (módulo) | `diagramas/clases-diseno/DC_Mod_Posventa.png` | 6 | 20 |
 | Notificaciones y correo (módulo) | `diagramas/clases-diseno/DC_Mod_Notificaciones.png` | 3 | 19 |
-| Reportes, salud y almacenamiento (módulo) | `diagramas/clases-diseno/DC_Mod_Soporte.png` | 7 | 22 |
+| Reportes, salud y almacenamiento (módulo) | `diagramas/clases-diseno/DC_Mod_Soporte.png` | 7 | 23 |
 | Stock (módulo) | `diagramas/clases-diseno/DC_Mod_Stock.png` | 24 | 57 |
 | Compras (módulo) | `diagramas/clases-diseno/DC_Mod_Compras.png` | 11 | 25 |
 | Carga del camión (módulo) | `diagramas/clases-diseno/DC_Mod_Carga-del-camion.png` | 12 | 19 |

@@ -143,6 +143,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 20 | 2026-10-14 | Casos de uso expandidos del blindaje (297 → 303 casos, CU-299 a CU-304): CU-299 a CU-304 nuevos, CU-169 implementado, CU-001, CU-006, CU-007, CU-008, CU-010, CU-063, CU-012, CU-015 y CU-020 con las reglas nuevas, y las reglas de stock del 14/10 en CU-213, CU-217, CU-218, CU-219 a CU-224, CU-259, CU-260, CU-274, CU-276 a CU-278, CU-280 y CU-289 a CU-296. | Nahuel Wagner |
 | 21 | 2026-10-14 | Revisión integral: 339 casos de uso expandidos (un caso por operación), historial de estados implementado (CU-169 incluido y CU-170 con el chofer), franja horaria (CU-043) y cancelación desde la App Cliente al día, relaciones «include» y «extend» sin casos inexistentes, trazabilidad CU–IRQ y matriz recalculadas, y nombres iguales a los del catálogo. | Nahuel Wagner |
 | 22 | 2026-10-14 | Revisión independiente: 340 casos de uso expandidos (CU-001 a CU-343, sin CU-021, CU-091 y CU-093), CU-342 y CU-343, actor ACT-10, includes de navegación retirados, extends con punto de extensión y registro formal del texto. | Nahuel Wagner |
+| 23 | 2026-10-15 | Casos de uso expandidos de CU-171 y CU-173 con el estado «Implementado» (rutas `GET` y `PUT`, campos, validaciones y mensajes del código); CU-012, CU-013, CU-014 y CU-016 leen la configuración de la distribuidora, y CU-013 y CU-014 reflejan el aviso `order:no-drivers`. | Nahuel Wagner |
 
 ---
 
@@ -1180,9 +1181,9 @@ interacción de diseño, en el Documento 3.
 |------|--------|
 | 1 | El sistema recibe el aviso de que se creó un pedido, una vez confirmada la transacción del alta. |
 | 2 | Recupera el conjunto de choferes a los que ya se le ofreció este pedido, para no volver a contactarlos. |
-| 3 | Busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —5, 10, 15 y 20 km—: en cada paso obtiene los choferes presentes en el radar ordenados por cercanía, los restringe a los de la distribuidora dueña del pedido y descarta los ya contactados y a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-161, CU-136 a CU-138), y —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— a los que no pueden recibir pedidos según su carga de camión. Se queda con el primero que aparece y corta la búsqueda. |
+| 3 | Lee los parámetros del despacho de la distribuidora (CU-171) y busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —por omisión 5, 10, 15 y 20 km—: en cada paso obtiene los choferes presentes en el radar ordenados por cercanía, los restringe a los de la distribuidora dueña del pedido y descarta los ya contactados y a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-161, CU-136 a CU-138), y —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— a los que no pueden recibir pedidos según su carga de camión. Se queda con el primero que aparece y corta la búsqueda. |
 | 3.a | *(Planificado, todavía sin iteración asignada en el plan de construcción.)* Entre los candidatos admite tanto a los choferes libres como a los que están por terminar su entrega en curso, pero descarta a los que tienen una entrega en pleno recorrido. Así un chofer que está entregando la última garrafa puede recibir el pedido siguiente sin que quede un hueco muerto entre uno y otro. |
-| 4 | Registra la oferta a nombre de ese chofer, con su momento de vencimiento fijado en la ventana de aceptación, que es de 30 segundos. |
+| 4 | Registra la oferta a nombre de ese chofer, con su momento de vencimiento fijado en la ventana de aceptación de la distribuidora (`offerTtlSeconds`, 30 segundos por omisión). |
 | 5 | Le avisa al chofer por la conexión en tiempo real, con el detalle del pedido y la hora en que la oferta pierde vigencia. |
 | 6 | Le envía además una notificación al dispositivo, para el caso de que tenga la aplicación cerrada. El envío no bloquea el proceso. |
 
@@ -1192,7 +1193,8 @@ interacción de diseño, en el Documento 3.
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si ningún paso de radio arroja un candidato nuevo, el sistema no emite oferta alguna y el pedido queda a la espera. El proceso temporal de CU-014 lo reintentará cuando aparezcan choferes disponibles. |
+| 3 | Si ningún paso de radio arroja un candidato nuevo, el sistema no emite oferta alguna y el pedido queda a la espera. Avisa a los administradores de la distribuidora con el evento en vivo `order:no-drivers` (`orderId`, `distributorId`, `reason` y `at`), una sola vez por agotamiento: `reason` es `no_drivers_in_range` si no hay choferes elegibles en el radio o `all_drivers_exhausted` si los que había rechazaron o esperan una re-oferta. El proceso temporal de CU-014 lo reintentará cuando aparezcan choferes disponibles. |
+| 3 | Si el pedido no tiene punto de entrega, no hay contra qué medir la cercanía: no se emite oferta y se avisa con `order:no-drivers` y `reason` `no_delivery_point`. |
 | 3 | Si los únicos choferes cercanos pertenecen a otra distribuidora, quedan descartados: un chofer nunca recibe ofertas de una empresa que no es la suya. |
 | 3 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, queda descartado como candidato y la oferta pasa al siguiente. |
 | 3 | Si el chofer tiene una carga de camión que no está en ruta, o su vehículo en uso no es el de la carga, o no tiene carga y la distribuidora exige tenerla (CU-249), queda descartado como candidato y la oferta pasa al siguiente. |
@@ -1222,12 +1224,12 @@ interacción de diseño, en el Documento 3.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El proceso temporal se ejecuta automáticamente cada 15 segundos. |
-| 2 | Toma un cerrojo distribuido antes de empezar; si otra instancia ya lo tiene, esta ejecución se saltea sin hacer nada. |
+| 1 | El proceso temporal se ejecuta automáticamente en un ciclo fijo de 15 segundos. |
+| 2 | Toma un cerrojo distribuido antes de empezar; si otra instancia ya lo tiene, esta ejecución se saltea sin hacer nada. A continuación decide, de una sola pasada, a qué distribuidoras con ofertas vencidas o pedidos pendientes les toca el ciclo según su intervalo `dispatchRetrySeconds` (CU-173; 15 segundos por omisión); las demás esperan a su propio ciclo. |
 | 3 | Obtiene las ofertas cuya vigencia ya expiró y todavía figuran como ofrecidas, y marca cada una como vencida. |
 | 4 | Vuelve a leer el pedido desde la base, porque pudo haber sido aceptado o cancelado por otra vía mientras la oferta corría. |
 | 5 | Si el pedido sigue en estado PENDING y sin chofer asignado, ejecuta CU-013 para ofrecerlo al siguiente candidato. |
-| 6 | Recorre además hasta **50** pedidos pendientes sin oferta vigente **y con más de 60 segundos de antigüedad** —los recién creados ya fueron ofrecidos al crearse— y les abre una oferta sin pisar las que estén en curso. |
+| 6 | Recorre además, por cada una de esas distribuidoras, hasta **50** pedidos pendientes sin oferta vigente **y con más de 60 segundos de antigüedad** —los recién creados ya fueron ofrecidos al crearse— y les abre una oferta sin pisar las que estén en curso. |
 
 **Postcondición:** Ninguna oferta vencida permanece abierta. Cada pedido pendiente tiene a lo sumo una oferta vigente.
 
@@ -1242,9 +1244,9 @@ interacción de diseño, en el Documento 3.
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Cada ejecución del barrido, acotada a 50 pedidos, se completa en menos de 3 segundos. |
-| **Frecuencia** | Automático, cada 15 segundos. |
+| **Frecuencia** | Automático: ciclo fijo de 15 segundos; cada distribuidora lo recibe con su propio intervalo (15 segundos por omisión, hasta 300). |
 | **Estabilidad** | Alta |
-| **Comentarios** | El cerrojo distribuido vence a los 12 segundos, es decir antes del siguiente ciclo, para que una instancia que caiga sin liberarlo no bloquee el proceso. Con varias instancias del backend corriendo, solo una procesa cada ciclo. El barrido de pendientes está acotado a 50 pedidos por ciclo: con una cola mayor, la cola se drena de a 50 cada 15 segundos. El rechazo explícito del chofer no espera a este proceso: cierra la oferta y dispara la siguiente de inmediato. El sistema **no** escala al administrador cuando se agotan los candidatos; el pedido simplemente permanece pendiente. Los pasos de radio y la ventana de aceptación son constantes del programa (`RADIUS_STEPS_KM` y `OFFER_TTL_SECONDS`): llevarlos a configuración por distribuidora es un pendiente registrado en el Documento 3. |
+| **Comentarios** | El cerrojo distribuido vence a los 12 segundos, es decir antes del siguiente ciclo, para que una instancia que caiga sin liberarlo no bloquee el proceso. Con varias instancias del backend corriendo, solo una procesa cada ciclo. El barrido de pendientes está acotado a 50 pedidos por ciclo y por distribuidora: con una cola mayor, la cola se drena de a 50 en cada ciclo de la distribuidora, y ninguna distribuidora tapa a otra. El rechazo explícito del chofer no espera a este proceso: cierra la oferta y dispara la siguiente de inmediato. Cuando se agotan los candidatos, el sistema avisa a los administradores de la distribuidora con el evento en vivo `order:no-drivers` (una sola vez por agotamiento, CU-013) y el pedido permanece pendiente. Los pasos de radio y la ventana de aceptación se leen de la configuración de la distribuidora (CU-171); el intervalo del ciclo, de CU-173. Las ofertas vencidas de una distribuidora a la que todavía no le toca el ciclo quedan ofrecidas, con el vencimiento pasado, hasta su próximo ciclo: el chofer todavía podría aceptarlas. |
 
 ---
 #### Crítico CU-171 — Configurar los Parámetros de Despacho de la Distribuidora
@@ -1253,37 +1255,40 @@ interacción de diseño, en el Documento 3.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-05 |
 | **Requisitos asociados** | IRQ-09 |
-| **Descripción** | El administrador consulta y modifica los parámetros del módulo inteligente M1 de su distribuidora: la lista de pasos de radio, en kilómetros, con que se amplía la búsqueda de choferes (CU-013, CU-014), y la ventana de aceptación de cada oferta, en segundos. Los valores se guardan por distribuidora. Rutas de la API: `GET /module-config/dispatch` y `PUT /module-config/dispatch`. |
-| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor` y, sin ella, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
-| **Estado** | Planificado (I-1). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | El administrador consulta y modifica los parámetros del módulo inteligente M1 de su distribuidora: los pasos de radio (`radiusStepsKm`), en kilómetros, con que se amplía la búsqueda de choferes (CU-013, CU-014), y la ventana de aceptación de cada oferta (`offerTtlSeconds`), en segundos. Los valores se guardan por distribuidora. Rutas de la API: `GET /module-config/dispatch` y `PUT /module-config/dispatch`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05). El administrador opera siempre sobre su distribuidora, sin importar el encabezado `X-Distributor`; el Administrador General indica la distribuidora con el encabezado `X-Distributor` (slug o id). |
+| **Estado** | Implementado (back y panel, desde el 15/10/2026). |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la sección de parámetros del despacho; el panel consulta los valores vigentes con `GET /module-config/dispatch`, que devuelve los de la distribuidora o, si no configuró ninguno, los valores por omisión. |
-| 2 | El administrador modifica la lista de pasos de radio y la ventana de aceptación y confirma. |
-| 3 | El panel envía `PUT /module-config/dispatch` con `radiusStepsKm` y `offerTtlSeconds`. |
-| 4 | El sistema valida los valores: de uno a ocho pasos, cada uno entre 1 y 100 km y estrictamente mayor que el anterior; una ventana entre 10 y 300 segundos. |
-| 5 | El sistema guarda los parámetros de la distribuidora con el usuario que los modificó y descarta la copia en memoria de esa distribuidora. |
-| 6 | El sistema devuelve la configuración guardada. |
+| 1 | El administrador abre «Parámetros del despacho» en Configuración; el panel consulta los valores vigentes con `GET /module-config/dispatch`, que devuelve `radiusStepsKm`, `offerTtlSeconds`, `isDefault` (`true` si rigen los valores por omisión), `updatedAt` y `updatedByUserId` (quién modificó por última vez; `null` si nunca). Si la distribuidora no configuró nada, devuelve los valores por omisión: `[5, 10, 15, 20]` km y 30 segundos. |
+| 2 | El administrador modifica la lista de pasos de radio, la ventana de aceptación o ambas, y confirma. |
+| 3 | El panel envía `PUT /module-config/dispatch` con `radiusStepsKm` y `offerTtlSeconds`; los dos campos son opcionales. |
+| 4 | El sistema valida lo que viene: de 1 a 8 pasos, cada uno de 1 a 100 km y estrictamente mayor que el anterior; una ventana entera de 10 a 300 segundos. |
+| 5 | El sistema guarda en `module_config` (proceso `dispatch`) solo los campos que vinieron, con el usuario que los modificó y la fecha, y descarta la copia en memoria de esa distribuidora. |
+| 6 | El sistema devuelve la configuración con el mismo formato que el `GET`: lo que no se envió toma su valor por omisión. |
 
-**Postcondición:** La distribuidora tiene configurados sus pasos de radio y su ventana de aceptación. Las ofertas que se creen a partir de ese momento los usan; las ofertas ya enviadas conservan su vencimiento original.
+**Postcondición:** La distribuidora tiene configurados sus pasos de radio y su ventana de aceptación. Las ofertas que se creen a partir de ese momento los usan; las ofertas ya enviadas conservan su `expiresAt` original. Un `PUT` sin campos restablece los valores por omisión.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
-| 4 | Si la lista está vacía, tiene más de ocho pasos, repite o desordena valores, o algún valor está fuera de rango, el sistema responde 400 con el detalle del campo. |
-| 4 | Si la ventana de aceptación está fuera del rango permitido, el sistema responde 400 con el detalle del campo. |
+| 1 | Si no hay sesión, el sistema responde 401. Si el solicitante es un chofer o un cliente, responde 403 "Acceso denegado. Requiere rol: admin, super_admin". |
+| 1, 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)", tanto en el `GET` como en el `PUT`. |
+| 3 | Si el cuerpo trae un campo desconocido, el sistema responde 400 "property <campo> should not exist". |
+| 4 | Si `radiusStepsKm` no es una lista de 1 a 8 pasos o algún paso sale de 1 a 100 km, el sistema responde 400 con el detalle del campo: "radiusStepsKm must contain at least 1 elements", "radiusStepsKm must contain no more than 8 elements", "each value in radiusStepsKm must not be less than 1" o "each value in radiusStepsKm must not be greater than 100". |
+| 4 | Si los pasos repiten o desordenan valores, el sistema responde 400 "radiusStepsKm tiene que ser una lista estrictamente creciente: cada valor mayor que el anterior, sin repetidos". |
+| 4 | Si `offerTtlSeconds` no es un entero de 10 a 300, el sistema responde 400 "offerTtlSeconds must be an integer number", "offerTtlSeconds must not be less than 10" u "offerTtlSeconds must not be greater than 300". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura y una escritura. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al incorporar la distribuidora y cuando ajusta su cobertura. |
 | **Estabilidad** | Media |
-| **Comentarios** | Cumple el criterio de parametrización del proyecto para el módulo M1 (Documento 3, §6.1): los pasos de radio y la ventana de aceptación, que hasta ahora son constantes del programa (`RADIUS_STEPS_KM` y `OFFER_TTL_SECONDS` de `DispatchOrchestratorService`), pasan a ser configurables por distribuidora. Se guardan en `module_config`, en la fila de la distribuidora para el proceso `dispatch`, un valor que se agrega a `configurable_process_enum` (los cinco actuales corresponden a CU-105 a CU-108 y CU-149). Los valores por omisión son los de las constantes actuales, de modo que una distribuidora que no configura nada se comporta igual. El orquestador lee la configuración en cada oferta, con una copia en memoria de un minuto por distribuidora para no consultar la base en cada ciclo de 15 segundos: un cambio rige, como máximo, un minuto después de guardado en las demás instancias. La asignación manual (CU-012) usa la misma ventana. Los límites de validación son una propuesta de diseño. La frecuencia con que corre el ciclo de reintentos es otro parámetro, que se configura en CU-173. |
+| **Comentarios** | Cumple el criterio de parametrización del proyecto para el módulo M1 (Documento 3, §6.1): los pasos de radio y la ventana de aceptación, que eran constantes del programa (`RADIUS_STEPS_KM` y `OFFER_TTL_SECONDS`), son ahora configurables por distribuidora. Se guardan en `module_config`, en la fila de la distribuidora para el proceso `dispatch`, un valor que la migración `ParametrosDespachoYTareas` agrega a `configurable_process_enum`. Los valores por omisión son los de las constantes anteriores, de modo que una distribuidora que no configura nada se comporta igual; el `PUT` es parcial y lo que no se envía se lee con su valor por omisión. El `GET` lee de la base lo guardado y calcula `isDefault`; si el JSON guardado trae un valor fuera de rango, se lee con el valor por omisión en vez de romper el despacho. El orquestador (`DispatchOrchestratorService`) lee la configuración en cada oferta a través de `DispatchSettingsService`, con una copia en memoria de 1 minuto por distribuidora para no consultar la base en cada ciclo: guardar descarta la copia de la instancia que atiende el `PUT`, y en las demás el cambio rige, como máximo, un minuto después. La asignación manual (CU-012) usa la misma ventana para el `expiresAt` del aviso al chofer. La frecuencia con que corre el ciclo de reintentos es otro parámetro, que se configura en CU-173. |
 
 ---
 
@@ -2595,7 +2600,7 @@ interacción de diseño, en el Documento 3.
 | **Rendimiento** | La asignación manual se completa en menos de 1 segundo. |
 | **Frecuencia** | Baja: es la vía de excepción cuando el despacho automático no encontró candidatos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas de despacho abiertas a los demás choferes, guarda la copia del vehículo y avisa. Un pedido aceptado se puede reasignar a otro chofer: el código nuevo deja sin efecto el del anterior y el anterior se entera por la conexión en tiempo real. El chofer nuevo recibe el pedido con el mismo evento de una oferta y puede "aceptarla", sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Al asignar, el sistema aplica la misma regla de flota que al aceptar (CU-015): un chofer sin vehículo en uso no recibe pedidos, ni siquiera por asignación manual. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer. **Carga del camión (I-13, implementado):** antes de asignarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta solo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). La asignación manual toma la carga abierta del chofer igual que la aceptación (CU-015), de modo que no puede quedar un pedido asignado sobre una carga devuelta. Es idempotente por `Idempotency-Key`. |
+| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas de despacho abiertas a los demás choferes, guarda la copia del vehículo y avisa. Un pedido aceptado se puede reasignar a otro chofer: el código nuevo deja sin efecto el del anterior y el anterior se entera por la conexión en tiempo real. El chofer nuevo recibe el pedido con el mismo evento de una oferta y puede "aceptarla", sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Al asignar, el sistema aplica la misma regla de flota que al aceptar (CU-015): un chofer sin vehículo en uso no recibe pedidos, ni siquiera por asignación manual. El aviso que recibe el chofer vence según la ventana de aceptación de la distribuidora (CU-171), la misma del despacho automático. **Planificado (I-11):** incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer. **Carga del camión (I-13, implementado):** antes de asignarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta solo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). La asignación manual toma la carga abierta del chofer igual que la aceptación (CU-015), de modo que no puede quedar un pedido asignado sobre una carga devuelta. Es idempotente por `Idempotency-Key`. |
 
 ---
 
@@ -2655,7 +2660,7 @@ interacción de diseño, en el Documento 3.
 | Paso | Acción |
 |------|--------|
 | 1 | El chofer recibe la oferta con los datos del pedido y el momento en que pierde vigencia. |
-| 2 | Presiona "Rechazar", o deja vencer la ventana de 30 segundos. |
+| 2 | Presiona "Rechazar", o deja vencer la ventana de aceptación (30 segundos por omisión, configurable en CU-171). |
 | 3 | Ante el rechazo explícito, la app avisa al sistema. La solicitud **no lleva contenido**: el chofer se identifica por su token y el pedido, por el identificador de la solicitud. |
 | 4 | El sistema cierra como rechazada la oferta que ese chofer tenía abierta sobre el pedido. El registro de ofertas es lo que impide volver a ofrecerle el mismo pedido: no existe una lista de rechazos guardada en el pedido. |
 | 5 | El pedido continúa en estado PENDING. |
@@ -9932,37 +9937,41 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-15 |
 | **Requisitos asociados** | IRQ-15 |
-| **Descripción** | El administrador consulta y modifica la frecuencia de las tareas programadas de su distribuidora: los intervalos de las que corren cada pocos segundos o minutos y la hora de la que corre una vez por día. Los valores se guardan por distribuidora; cada tarea corre con un ciclo de base fijo y, en cada ciclo, atiende solo a las distribuidoras cuyo intervalo se cumplió. |
-| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05); el Administrador General indica la distribuidora con el encabezado `X-Distributor` y, sin ella, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
-| **Estado** | Planificado (I-1). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Descripción** | El administrador consulta y modifica la frecuencia de las tareas programadas de su distribuidora: los intervalos, en segundos, de las que corren cada pocos segundos o minutos (`dispatchRetrySeconds`, `reservationActivationSeconds`, `unpaidReservationExpirySeconds` y `unpaidMercadoPagoExpirySeconds`) y la hora del día (`fleetAlertHour`) de la que corre una vez por día. Los valores se guardan por distribuidora; cada tarea corre con un ciclo de base fijo y, en cada ciclo, atiende solo a las distribuidoras cuyo intervalo se cumplió. Rutas de la API: `GET /module-config/scheduled_tasks` y `PUT /module-config/scheduled_tasks`. |
+| **Precondición** | El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05). El administrador opera siempre sobre su distribuidora, sin importar el encabezado `X-Distributor`; el Administrador General indica la distribuidora con el encabezado `X-Distributor` (slug o id). |
+| **Estado** | Implementado (back y panel, desde el 15/10/2026). |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la sección de tareas programadas; el panel consulta los valores vigentes con `GET /module-config/scheduled_tasks`, que devuelve los de la distribuidora o los valores por omisión. |
+| 1 | El administrador abre «Tareas programadas» en Configuración; el panel consulta los valores vigentes con `GET /module-config/scheduled_tasks`, que devuelve los cinco campos más `isDefault`, `updatedAt` y `updatedByUserId`. Si la distribuidora no configuró nada, devuelve los valores por omisión: 15 segundos, 300 segundos, 3600 segundos, 1800 segundos y las 8 horas. |
 | 2 | El administrador modifica uno o más intervalos, o la hora del aviso de flota, y confirma. |
-| 3 | El panel envía `PUT /module-config/scheduled_tasks` con el intervalo de cada tarea. |
-| 4 | El sistema valida cada valor: un múltiplo entero del ciclo de base de su tarea, de hasta 24 horas, y una hora entre 0 y 23 para el aviso de flota. |
-| 5 | El sistema guarda los parámetros de la distribuidora, con el usuario que los modificó. |
-| 6 | El sistema borra las marcas de última ejecución de esa distribuidora, para que los intervalos nuevos rijan desde el ciclo siguiente. |
-| 7 | El sistema devuelve la configuración guardada. |
+| 3 | El panel envía `PUT /module-config/scheduled_tasks` con los campos que cambian; todos son opcionales. |
+| 4 | El sistema valida lo que viene: `dispatchRetrySeconds`, múltiplo entero de 15 y hasta 300 segundos; `reservationActivationSeconds`, múltiplo entero de 300 y hasta 86400; `unpaidReservationExpirySeconds`, múltiplo entero de 3600 y hasta 86400; `unpaidMercadoPagoExpirySeconds`, múltiplo entero de 1800 y hasta 86400; `fleetAlertHour`, entero de 0 a 23, en hora de Argentina. |
+| 5 | El sistema guarda en `module_config` (proceso `scheduled_tasks`) solo los campos que vinieron, con el usuario que los modificó y la fecha. |
+| 6 | El sistema incrementa la generación de esa distribuidora en Redis (`scheduled-task:gen:<distributorId>`), descarta la copia en memoria y borra las marcas de última ejecución de la generación anterior, para que los intervalos nuevos rijan desde el ciclo siguiente. |
+| 7 | El sistema devuelve la configuración con el mismo formato que el `GET`: lo que no se envió toma su valor por omisión. |
 
-**Postcondición:** La distribuidora tiene configurada la frecuencia de cada tarea. Desde el ciclo siguiente, cada tarea corre para esa distribuidora con el intervalo nuevo.
+**Postcondición:** La distribuidora tiene configurada la frecuencia de cada tarea. Desde el ciclo siguiente, cada tarea corre para esa distribuidora con el intervalo nuevo. Un `PUT` sin campos restablece los valores por omisión.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". |
-| 4 | Si un intervalo no es múltiplo del ciclo de base de su tarea, supera las 24 horas o la hora está fuera de 0 a 23, el sistema responde 400 con el detalle del campo. |
+| 1 | Si no hay sesión, el sistema responde 401. Si el solicitante es un chofer o un cliente, responde 403 "Acceso denegado. Requiere rol: admin, super_admin". |
+| 1, 3 | Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)", tanto en el `GET` como en el `PUT`. |
+| 3 | Si el cuerpo trae un campo desconocido, el sistema responde 400 "property <campo> should not exist". |
+| 4 | Si un intervalo no es múltiplo del ciclo de base de su tarea, el sistema responde 400 con el detalle del campo, por ejemplo "dispatchRetrySeconds tiene que ser un múltiplo entero de 15 segundos (el ciclo de base de la tarea)"; si no es un entero, además "<campo> must be an integer number". |
+| 4 | Si `dispatchRetrySeconds` supera los 300 segundos, el sistema responde 400 "dispatchRetrySeconds must not be greater than 300"; si otro intervalo supera las 24 horas, por ejemplo 400 "reservationActivationSeconds must not be greater than 86400". |
+| 4 | Si `fleetAlertHour` está fuera de 0 a 23, el sistema responde 400 "fleetAlertHour must not be less than 0" o "fleetAlertHour must not be greater than 23". |
 
 | Campo | Detalle |
 |-------|---------|
 | **Rendimiento** | Una lectura, una escritura y el borrado de unas pocas claves. Responde en menos de 1 segundo. |
 | **Frecuencia** | Muy baja: al poner en marcha la distribuidora. |
 | **Estabilidad** | Media |
-| **Comentarios** | Las frecuencias de las tareas están escritas en el código con el decorador `@Cron`, que no admite una expresión distinta por distribuidora: el ciclo de reintentos del despacho (15 segundos), la activación de reservas (5 minutos), el vencimiento de reservas sin seña (cada hora), el vencimiento de pedidos de MercadoPago sin pagar (30 minutos) y el aviso de vencimientos de flota (diario, a las 8). Para hacerlas configurables, cada tarea conserva su ciclo de base como tic fijo y, dentro de cada ciclo, consulta la configuración de cada distribuidora y la marca de su última ejecución, que se guarda en Redis con una expiración igual al intervalo; los intervalos son múltiplos del ciclo de base. Son tareas de mantenimiento del sistema y no procesos automatizados: avisan o aplican reglas, no deciden. Los parámetros de los procesos automatizados, incluida su hora de ejecución, se configuran con CU-172. El valor se agrega a `configurable_process_enum` como `scheduled_tasks`. Los valores por omisión son los vigentes. |
+| **Comentarios** | El decorador `@Cron` no admite una expresión distinta por distribuidora, así que cada tarea conserva su ciclo de base como tic fijo: el reintento del despacho (15 segundos), la activación de reservas (5 minutos), el vencimiento de reservas sin seña (1 hora), el vencimiento de pedidos de MercadoPago sin pagar (30 minutos) y el aviso de vencimientos de flota (cada hora en punto, zona `America/Argentina/Buenos_Aires`). Al empezar cada tic, y de una sola pasada, el sistema decide a qué distribuidoras con trabajo pendiente les toca (`ScheduledTasksSettingsService.distribuidorasQueCorren`) y deja sus marcas en ese momento; si el tic falla antes de procesar una distribuidora, le devuelve la marca para que no pierda un intervalo entero. Cuando el intervalo es igual al tic, la tarea corre para la distribuidora en cada tic y no hay marca. Cuando es mayor, la marca de última ejecución vive en Redis (`scheduled-task:<campo>:<distributorId>:<generación>`), se crea con `SET NX` —con varias instancias, una sola gana el ciclo— y vence medio tic antes del intervalo, para absorber el jitter del reloj del cron. Cada distribuidora se consulta con su propio cupo de 50 pedidos y orden por antigüedad: ninguna tapa a otra. El tope de `dispatchRetrySeconds` es 300 segundos porque una oferta vencida queda `offered` hasta que corre el ciclo de su distribuidora; con más, el pedido pasaría demasiado sin re-ofrecerse. Las ofertas vencidas de una distribuidora a la que todavía no le toca quedan `offered` con `expiresAt` pasado hasta su próximo ciclo. El aviso de flota corre cada hora y avisa a la distribuidora cuya hora configurada es la actual; cada tarea de mantenimiento se avisa una sola vez (`alertedAt`). Los barridos de mantenimiento globales (limpieza de archivos, conciliación y stock bajo, desactivación de recargos) no son parte de esta configuración. La copia en memoria es de 1 minuto y se compara con la generación de Redis en cada lectura: si difiere, se descarta y se relee. Son tareas de mantenimiento del sistema y no procesos automatizados: avisan o aplican reglas, no deciden. Los parámetros de los procesos automatizados, incluida su hora de ejecución, se configuran con CU-172. El valor se agrega a `configurable_process_enum` como `scheduled_tasks`. Los valores por omisión son los que regían antes. |
 
 ---
 

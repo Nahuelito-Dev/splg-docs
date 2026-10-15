@@ -3,6 +3,7 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant SRV as :DispatchOrchestratorService
+    participant CFG as :DispatchSettingsService
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
@@ -15,9 +16,11 @@ sequenceDiagram
     PEDS-->>-SRV: pedido
     SRV->>+PED: getPuntoDeEntrega()
     PED-->>-SRV: destino
+    SRV->>+CFG: obtener(distribuidora)
+    CFG-->>-SRV: parametros
     SRV->>+PED: getEstadoDeLasOfertas(ahora, enfriamiento)
     PED-->>-SRV: estado
-    loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer nunca contactado
+    loop Por cada radioKm de los pasos de la distribuidora hasta hallar un chofer nunca contactado
         SRV->>+RT: findNearbyDrivers(destino, radioKm)
         RT-->>-SRV: cercanos
         loop Por cada chofer de cercanos
@@ -26,7 +29,7 @@ sequenceDiagram
         end
     end
     opt No hay un chofer nuevo y alguno dejó vencer su oferta hace más que el enfriamiento
-        loop Por cada radioKm de 5, 10, 15 y 20 hasta hallar un chofer con la oferta vencida
+        loop Por cada radioKm de los pasos de la distribuidora hasta hallar un chofer con la oferta vencida
             SRV->>+RT: findNearbyDrivers(destino, radioKm)
             RT-->>-SRV: cercanos
             loop Por cada chofer de cercanos

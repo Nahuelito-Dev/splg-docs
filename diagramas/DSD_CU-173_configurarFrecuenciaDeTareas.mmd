@@ -2,14 +2,12 @@ sequenceDiagram
     title DSD — CU-173 Configurar la Frecuencia de las Tareas Programadas · configurarFrecuenciaDeTareas
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :ModuleConfigService
+    participant SRV as :ScheduledTasksSettingsService
     participant DIS as distribuidora:Distribuidora
     participant CFG as configuracion:ConfiguracionModulo
-    participant GAT as :ScheduledTaskGate
     participant RDS as :RedisService
 
     ADM->>+SRV: configurarFrecuenciaDeTareas(intervalos)
-    SRV->>SRV: validarIntervalos(intervalos)
     SRV->>+DIS: getConfiguracion(tareasProgramadas)
     DIS-->>-SRV: configuracion
     alt La distribuidora no tiene configuración de las tareas programadas
@@ -20,7 +18,8 @@ sequenceDiagram
     else La distribuidora ya la tiene
         SRV->>CFG: actualizar(intervalos, administrador)
     end
-    SRV->>+GAT: reprogramar(distribuidora)
-    GAT->>RDS: del(marcas de ultima ejecucion)
-    deactivate GAT
+    SRV->>RDS: incr(generacion)
+    loop Por cada tarea con intervalo
+        SRV->>RDS: del(marca de la generacion anterior)
+    end
     SRV-->>-ADM: configuracion

@@ -7604,6 +7604,48 @@
   ],
   "estereotipo": null
  },
+ "DispatchSettingsService": {
+  "kind": "service",
+  "file": "distributor/dispatch-settings.service.ts",
+  "metodos": [
+   {
+    "nombre": "obtener",
+    "parametros": "distributorId: string | null | undefined",
+    "retorno": "Promise<DispatchSettings>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vigentes",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<DispatchSettingsVigentes>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "distributorId: string, settings: Partial<DispatchSettings>, actorUserId: string",
+    "retorno": "Promise<DispatchSettingsVigentes>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "copia",
+    "parametros": "settings: DispatchSettings",
+    "retorno": "DispatchSettings",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ModuleConfigService"
+  ],
+  "estereotipo": null
+ },
  "DistributorLogoService": {
   "kind": "service",
   "file": "distributor/distributor-logo.service.ts",
@@ -7854,6 +7896,49 @@
   ],
   "estereotipo": null
  },
+ "ModuleConfigController": {
+  "kind": "controller",
+  "file": "distributor/module-config.controller.ts",
+  "metodos": [
+   {
+    "nombre": "getDispatch",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DispatchConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "putDispatch",
+    "parametros": "@Body() dto: DispatchConfigDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<DispatchConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getScheduledTasks",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<ScheduledTasksConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "putScheduledTasks",
+    "parametros": "@Body() dto: ScheduledTasksConfigDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<ScheduledTasksConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DispatchSettingsService",
+   "ScheduledTasksSettingsService"
+  ],
+  "estereotipo": "controller"
+ },
  "ModuleConfigService": {
   "kind": "service",
   "file": "distributor/module-config.service.ts",
@@ -7862,6 +7947,14 @@
     "nombre": "parametros",
     "parametros": "distributorId: string, module: ConfigurableProcess",
     "retorno": "Promise<ModuleConfigParams | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "fila",
+    "parametros": "distributorId: string, module: ConfigurableProcess",
+    "retorno": "Promise<ModuleConfig | null>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -7877,6 +7970,105 @@
   ],
   "dependencias": [
    "Repository"
+  ],
+  "estereotipo": null
+ },
+ "ScheduledTasksSettingsService": {
+  "kind": "service",
+  "file": "distributor/scheduled-tasks-settings.service.ts",
+  "metodos": [
+   {
+    "nombre": "obtener",
+    "parametros": "distributorId: string | null | undefined",
+    "retorno": "Promise<ScheduledTasksSettings>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vigentes",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<ScheduledTasksVigentes>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "distributorId: string, settings: Partial<ScheduledTasksSettings>, actorUserId: string",
+    "retorno": "Promise<ScheduledTasksVigentes>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "distribuidorasQueCorren",
+    "parametros": "tarea: TareaConIntervalo, ids: readonly string[]",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "liberarMarca",
+    "parametros": "tarea: TareaConIntervalo, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "esLaHoraDelAvisoDeFlota",
+    "parametros": "distributorId: string, horaActual: number",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "leTocaCorrer",
+    "parametros": "tarea: TareaConIntervalo, distributorId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargar",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "generacionVigente",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "claveDeGeneracion",
+    "parametros": "distributorId: string",
+    "retorno": null,
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "claveDeMarca",
+    "parametros": "tarea: TareaConIntervalo, distributorId: string, generacion: string",
+    "retorno": null,
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ModuleConfigService",
+   "RedisService"
   ],
   "estereotipo": null
  },
@@ -10700,7 +10892,7 @@
    },
    {
     "nombre": "pasarAImpago",
-    "parametros": "manager: EntityManager, order: Order",
+    "parametros": "manager: EntityManager, order: Order, anotacion?: { adminUserId: string; reason: string }",
     "retorno": "Promise<boolean>",
     "visibilidad": "-",
     "estatico": false,
@@ -10960,8 +11152,16 @@
     "abstracto": false
    },
    {
-    "nombre": "handleExpiredOffers",
+    "nombre": "distribuidorasConOfertasVencidas",
     "parametros": "",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "handleExpiredOffers",
+    "parametros": "distribuidoras?: ReadonlySet<string>",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -11025,7 +11225,7 @@
    },
    {
     "nombre": "findNearestAvailable",
-    "parametros": "lat: number, lng: number, exclude: Set<string>, distributorId?: string | null",
+    "parametros": "lat: number, lng: number, exclude: Set<string>, distributorId: string | null | undefined, radiusStepsKm: readonly number[]",
     "retorno": "Promise<",
     "visibilidad": "-",
     "estatico": false,
@@ -11056,7 +11256,8 @@
    "NotificationsService",
    "FleetDispatchLockService",
    "RedisService",
-   "TruckLoadGatePort"
+   "TruckLoadGatePort",
+   "DispatchSettingsService"
   ],
   "estereotipo": null
  },
@@ -11107,6 +11308,30 @@
     "parametros": "dto: QuoteOrderDto, distributorId: string | null, actor: { userId: string; role: RoleType }",
     "retorno": "Promise<QuoteResponseDto>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargarParaEditar",
+    "parametros": "orderId: string, distributorId: string | null, actor: { userId: string; role: RoleType }, dto: QuoteOrderDto",
+    "retorno": "Promise<",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "validarAgendaDeEdicion",
+    "parametros": "order: Order, dto: QuoteOrderDto, distributorId: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "zonaDelPedido",
+    "parametros": "order: Order",
+    "retorno": "ZonaCotizada | null",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    }
@@ -11162,6 +11387,14 @@
   "file": "order/application/reservation.service.ts",
   "metodos": [
    {
+    "nombre": "porDistribuidora",
+    "parametros": "tarea: TareaConIntervalo, where: FindOptionsWhere<Order>, opciones: { order: FindOptionsOrder<Order>; relations?: string[]; }, procesar: (pedidos: Order[]) => Promise<void>",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findReservations",
     "parametros": "distributorId?: string | null",
     "retorno": null,
@@ -11186,10 +11419,26 @@
     "abstracto": false
    },
    {
+    "nombre": "activarReservas",
+    "parametros": "due: Order[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "expireUnpaidReservations",
     "parametros": "",
     "retorno": "Promise<void>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "expirarReservasSinSena",
+    "parametros": "stale: Order[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -11200,6 +11449,14 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "expirarPedidosMercadoPago",
+    "parametros": "stale: Order[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -11208,6 +11465,7 @@
    "OrderRepositoryPort",
    "GasCylinderService",
    "DispatchOrchestratorService",
+   "ScheduledTasksSettingsService",
    "ConfigService"
   ],
   "estereotipo": null
@@ -11329,24 +11587,56 @@
   "metodos": [
    {
     "nombre": "execute",
-    "parametros": "orderId: string, dto: UpdateOrderDto, actorUserId: string, distributorId: string | null",
+    "parametros": "orderId: string, dto: UpdateOrderDto, actorUserId: string, distributorId: string | null, actorRole: RoleType = RoleType.ADMIN",
     "retorno": "Promise<Order>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
    },
    {
+    "nombre": "enTransaccion",
+    "parametros": "orderId: string, dto: UpdateOrderDto, actorUserId: string, distributorId: string | null, actorRole: RoleType",
+    "retorno": "Promise<ResultadoEdicion>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "releerOrFail",
+    "parametros": "orderId: string",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "efectosPosteriores",
+    "parametros": "tx: EdicionAplicada",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cambiaronLosRenglones",
+    "parametros": "actuales: ReadonlyArray<{ gasCylinderId: string; quantity: number }>, nuevos: | ReadonlyArray<{ gasCylinderId: string; quantity: number }> | undefined",
+    "retorno": "boolean",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "assertEditable",
-    "parametros": "order: Order, dto: UpdateOrderDto",
+    "parametros": "order: Order, dto: UpdateOrderDto, esCliente: boolean",
     "retorno": "void",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
    {
-    "nombre": "zonaGuardada",
-    "parametros": "order: Order",
-    "retorno": "ZonaParaRecargo | null",
+    "nombre": "detalleDeLaEdicion",
+    "parametros": "dto: UpdateOrderDto, c: { cambiaItems: boolean; cambiaDireccion: boolean; cambiaPago: boolean; cambiaAgenda: boolean; cambiaNotas: boolean; totalAnterior: number; totalNuevo: number; }",
+    "retorno": "string",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
@@ -11360,7 +11650,8 @@
    "GasCylinderService",
    "OrderRepositoryPort",
    "RealtimeDispatchPort",
-   "DispatchOrchestratorService"
+   "DispatchOrchestratorService",
+   "RedisService"
   ],
   "estereotipo": "usecase"
  },
@@ -11378,7 +11669,7 @@
    },
    {
     "nombre": "bootstrapPendingWithoutOffer",
-    "parametros": "",
+    "parametros": "distribuidoras: ReadonlySet<string>",
     "retorno": "Promise<void>",
     "visibilidad": "-",
     "estatico": false,
@@ -11388,7 +11679,8 @@
   "dependencias": [
    "OrderService",
    "RedisService",
-   "DispatchOrchestratorService"
+   "DispatchOrchestratorService",
+   "ScheduledTasksSettingsService"
   ],
   "estereotipo": null
  },
@@ -11597,6 +11889,14 @@
     "abstracto": true
    },
    {
+    "nombre": "findDistributorsWithAvailable",
+    "parametros": "",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
     "nombre": "findAvailable",
     "parametros": "limit: number, offset: number, distributorId?: string | null",
     "retorno": "Promise<PaginatedOrders>",
@@ -11616,6 +11916,14 @@
     "nombre": "findByDelivery",
     "parametros": "deliveryId: string, limit: number, offset: number, distributorId?: string | null",
     "retorno": "Promise<PaginatedOrders>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
+    "nombre": "findCurrentOfDelivery",
+    "parametros": "deliveryId: string, distributorId: string, desde: Date",
+    "retorno": "Promise<Order | null>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": true
@@ -11991,6 +12299,14 @@
     "abstracto": false
    },
    {
+    "nombre": "findDistributorsWithAvailable",
+    "parametros": "",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findAvailable",
     "parametros": "limit: number, offset: number, distributorId?: string | null",
     "retorno": "Promise<PaginatedOrders>",
@@ -12010,6 +12326,14 @@
     "nombre": "findByDelivery",
     "parametros": "deliveryId: string, limit: number, offset: number, distributorId?: string | null",
     "retorno": "Promise<PaginatedOrders>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findCurrentOfDelivery",
+    "parametros": "deliveryId: string, distributorId: string, desde: Date",
+    "retorno": "Promise<Order | null>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -12256,6 +12580,14 @@
     "abstracto": false
    },
    {
+    "nombre": "findMyActive",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: true }) distributorId: string, @Res({ passthrough: true }) res: Response",
+    "retorno": "Promise<OrderResponseDto | undefined>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findByDelivery",
     "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('deliveryId', ParseUUIDPipe) deliveryId: string, @Query() paginationDto: PaginationDto, @CurrentDistributor() distributorId: string | null",
     "retorno": null,
@@ -12283,6 +12615,14 @@
     "nombre": "getDriverPhoto",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: DownloadQueryDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null, @Res() res: Response",
     "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "statusHistory",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
+    "retorno": null,
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -12385,7 +12725,7 @@
    },
    {
     "nombre": "update",
-    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateOrderDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateOrderDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -12432,6 +12772,14 @@
     "abstracto": false
    },
    {
+    "nombre": "pedidoCancelado",
+    "parametros": "order: Order, actor: CancelActor",
+    "retorno": "OrderResponseDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "pedidoTrasElCobro",
     "parametros": "id: string, distributorId: string | null, guardado: Order",
     "retorno": "Promise<OrderResponseDto>",
@@ -12467,7 +12815,7 @@
     "nombre": "mapStatus",
     "parametros": "status: OrderStatus",
     "retorno": "string",
-    "visibilidad": "-",
+    "visibilidad": "+",
     "estatico": true,
     "abstracto": false
    },
@@ -12544,8 +12892,8 @@
     "abstracto": false
    },
    {
-    "nombre": "assertAsignadoAlChofer",
-    "parametros": "deliveryIdDelPedido: string | null, userId: string",
+    "nombre": "assertPedidoPropioDelChofer",
+    "parametros": "order: Order, userId: string",
     "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
@@ -12576,6 +12924,22 @@
     "abstracto": false
    },
    {
+    "nombre": "pedidoLegible",
+    "parametros": "id: string, distributorId?: string | null, customerUserId?: string | null, choferUserId?: string | null",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getStatusHistory",
+    "parametros": "id: string, distributorId?: string | null, customerUserId?: string | null, choferUserId?: string | null, verNombres = false",
+    "retorno": "Promise<OrderStatusHistoryEntryDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "quienCancelo",
     "parametros": "orderId: string",
     "retorno": "Promise<CancelledBy | null>",
@@ -12600,6 +12964,14 @@
     "abstracto": false
    },
    {
+    "nombre": "distribuidorasConPedidosDisponibles",
+    "parametros": "",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findAvailableOrders",
     "parametros": "paginationDto: PaginationDto, distributorId?: string | null",
     "retorno": null,
@@ -12619,6 +12991,14 @@
     "nombre": "findByDelivery",
     "parametros": "deliveryId: string, paginationDto: PaginationDto, distributorId?: string | null",
     "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findCurrentOfDriver",
+    "parametros": "driverUserId: string, distributorId: string",
+    "retorno": "Promise<OrderResponseDto | null>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -12719,7 +13099,8 @@
    "DataSource",
    "FleetDispatchLockService",
    "TruckLoadGatePort",
-   "DriverRatingPort"
+   "DriverRatingPort",
+   "DispatchSettingsService"
   ],
   "estereotipo": null
  },
@@ -13776,7 +14157,7 @@
    },
    {
     "nombre": "withLock",
-    "parametros": "key: string, ttlMs: number, fn: () => Promise<T>",
+    "parametros": "key: string, ttlMs: number, fn: () => Promise<T>, esperaMaxMs = 0",
     "retorno": "Promise<",
     "visibilidad": "+",
     "estatico": false,
@@ -13785,6 +14166,22 @@
    {
     "nombre": "setIfAbsent",
     "parametros": "key: string, ttlSec: number",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "incr",
+    "parametros": "key: string",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "setIfAbsentMs",
+    "parametros": "key: string, ttlMs: number",
     "retorno": "Promise<boolean>",
     "visibilidad": "+",
     "estatico": false,

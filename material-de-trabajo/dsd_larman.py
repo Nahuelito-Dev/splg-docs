@@ -98,11 +98,8 @@ PROPUESTAS_CLASE = {
   "RouteSequencerService": "CU-107: orden de las paradas de un lote",
   # Pequeños huecos (I-1)
   "CoverageZoneCronService": "CU-151: barrido que desactiva las zonas vencidas",
-  # Configuración de procesos y tareas (I-1)
-  "ModuleConfigController": "CU-171, CU-172, CU-173: endpoints de la configuración de procesos por distribuidora",
-  "ModuleConfigService": "CU-171, CU-172, CU-173: lee y valida los parámetros de module_config, con los valores por omisión",
-  "DispatchConfigService": "CU-171: entrega al despacho los parámetros de su distribuidora, con una copia en memoria de un minuto",
-  "ScheduledTaskGate": "CU-173: decide en cada ciclo qué distribuidoras atiende cada tarea programada, según su intervalo",
+  # Configuración de los procesos automáticos (I-1); el despacho y las tareas (CU-171, CU-173) ya están construidos
+  "ProcessConfigService": "CU-172: valida los parámetros de un proceso automático contra el esquema de ese proceso y los guarda con ModuleConfigService",
   # Caja, rendición, cuentas corrientes y comisiones (I-14)
   "CashBoxService": "CU-225 a CU-227, CU-264: cajas y sesiones de caja con arqueo, módulo cash",
   "CashLedgerService": "CU-228, CU-229: punto único de escritura del libro de caja y de los saldos",

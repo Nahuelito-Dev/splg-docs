@@ -396,6 +396,7 @@
 | 21 | 2026-10-14 | Diagramas de secuencia del sistema y contratos del blindaje (297 → 303 casos de uso): tres operaciones de cobro del administrador, cotizarPedido, consultarRutaDelPedido y consultarCobrosPendientes (341 operaciones y 210 contratos); modelo conceptual con el déficit de reservas del producto y el instante de la existencia previa de la recepción. | Nahuel Wagner |
 | 22 | 2026-10-14 | Revisión integral: 339 diagramas de secuencia y operaciones separados por caso de uso, contratos de las operaciones nuevas (polígonos, caja, edición del pedido), contrato de cobro impago con el motivo en el pedido, y el modelo conceptual con las asociaciones «registró» y los atributos de la zona de cobertura. | Nahuel Wagner |
 | 23 | 2026-10-14 | Revisión independiente: 340 diagramas de secuencia del sistema (también los de los ocho casos incluidos), una operación por caso de uso, 362 operaciones y 229 contratos. | Nahuel Wagner |
+| 24 | 2026-10-15 | Contratos de CU-171 y CU-173 al día con el código, valores por omisión del módulo M1 (§3.6) como configuración por distribuidora y contratos de CU-013 y CU-014 con la configuración y el aviso al panel. | Nahuel Wagner |
 
 ---
 
@@ -2970,7 +2971,7 @@ sequenceDiagram
 
 **Figura 74 — DSS CU-016: Rechazar un Pedido Ofrecido**
 
-> El rechazo **no** espera el vencimiento de la ventana de 30 segundos: re-ofrece de inmediato al siguiente chofer más cercano.
+> El rechazo **no** espera el vencimiento de la ventana de aceptación (30 segundos por omisión): re-ofrece de inmediato al siguiente chofer más cercano.
 
 ---
 
@@ -11693,11 +11694,11 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Ofrecer el pedido al chofer más cercano de la misma distribuidora que todavía no fue contactado, con una vigencia limitada para aceptarlo. |
 | **Tipo** | Sistema (proceso automático) |
 | **Referencias cruzadas** | Casos de uso: CU-013. Funciones: IRQ-02, IRQ-03, OBJ-02. |
-| **Notas** | Busca por radios crecientes (5, 10, 15 y 20 km: `RADIUS_STEPS_KM`) y ofrece a un solo chofer por vez, con una vigencia de 30 segundos (`OFFER_TTL_SECONDS`). Los radios y la vigencia son constantes del programa; serán configurables por distribuidora con CU-171 (I-1). Solo considera choferes habilitados y validados, con vehículo en uso y documentación vigente. Se notifica al Chofer elegido. |
-| **Excepciones** | Si ningún radio produce un chofer nuevo → no se crea la oferta y el pedido queda pendiente; el proceso temporal lo reintenta (CU-014). Si falla el aviso push → se ignora y la oferta igual queda creada. |
+| **Notas** | Busca por radios crecientes y ofrece a un solo chofer por vez, con una vigencia limitada. Los radios (`radiusStepsKm`; por omisión 5, 10, 15 y 20 km) y la vigencia (`offerTtlSeconds`; por omisión 30 segundos) son los de la configuración de la distribuidora (CU-171), que se lee en cada oferta. Solo considera choferes habilitados y validados, con vehículo en uso y documentación vigente. Se notifica al Chofer elegido. |
+| **Excepciones** | Si ningún radio produce un chofer nuevo → no se crea la oferta, se avisa a los administradores de la distribuidora con el evento en vivo `order:no-drivers` (una sola vez por agotamiento) y el pedido queda pendiente; el proceso temporal lo reintenta (CU-014). Si falla el aviso push → se ignora y la oferta igual queda creada. |
 | **Salida** | El chofer al que se ofreció el pedido, o ninguno si no hubo candidato. |
 | **Precondiciones** | El Pedido tiene estado «pendiente», no tiene Chofer asociado y tiene punto de entrega. Existe al menos un Chofer disponible con UbicacionGPS registrada. |
-| **Postcondiciones** | Se creó una instancia de OfertaDespacho, en estado «ofrecida», dirigida al Chofer elegido y asociada al Pedido y a la Distribuidora, con una vigencia de 30 segundos desde su creación. El Pedido no cambió de estado: sigue «pendiente». |
+| **Postcondiciones** | Se creó una instancia de OfertaDespacho, en estado «ofrecida», dirigida al Chofer elegido y asociada al Pedido y a la Distribuidora, con la vigencia de la configuración de la distribuidora (30 segundos por omisión) desde su creación. El Pedido no cambió de estado: sigue «pendiente». |
 
 ---
 
@@ -11709,7 +11710,7 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Cerrar las ofertas cuya vigencia venció y volver a ofrecer cada pedido todavía pendiente al siguiente chofer más cercano, sin intervención humana. |
 | **Tipo** | Sistema (proceso automático) |
 | **Referencias cruzadas** | Casos de uso: CU-014. Funciones: IRQ-02, IRQ-03, OBJ-02. |
-| **Notas** | Se ejecuta cada 15 segundos. Con más de una instancia del sistema en ejecución, solo una procesa cada ciclo, para que no se dupliquen las ofertas. También ofrece los pedidos pendientes sin oferta activa y con más de 60 segundos de antigüedad. Se notifica a cada Chofer al que se le ofrece un Pedido. |
+| **Notas** | Tiene un ciclo fijo de 15 segundos y atiende a cada distribuidora con su propio intervalo (CU-173; 15 segundos por omisión). Con más de una instancia del sistema en ejecución, solo una procesa cada ciclo, para que no se dupliquen las ofertas. También ofrece los pedidos pendientes sin oferta activa y con más de 60 segundos de antigüedad. Se notifica a cada Chofer al que se le ofrece un Pedido. |
 | **Excepciones** | Si otra instancia ya está procesando el ciclo → el ciclo se saltea. Si el pedido de una oferta vencida ya fue aceptado, cancelado o no existe → la oferta se cierra igual y no se vuelve a ofrecer. |
 | **Salida** | Ninguna: es un proceso interno sin actor receptor. |
 | **Precondiciones** | Existe al menos una OfertaDespacho en estado «ofrecida» cuya vigencia ya terminó. |
@@ -13855,13 +13856,13 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 |-------|---------|
 | **Nombre** | `configurarParametrosDeDespacho(radiosKm lista, ventanaDeAceptacion entero)` |
 | **Responsabilidades** | Guardar los pasos de radio y la ventana de aceptación del despacho de una distribuidora, reemplazando la configuración anterior. |
-| **Tipo** | Sistema (planificado, I-1) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-171. Funciones: IRQ-09, OBJ-02, OBJ-05. |
-| **Notas** | Hay una sola configuración por distribuidora y proceso. Los parámetros no enviados toman su valor por omisión al leerse. Las demás instancias del sistema renuevan su copia al vencer. |
-| **Excepciones** | Si falta la distribuidora → error de solicitud. Si algún valor está fuera de rango, o los pasos no son estrictamente crecientes → error de solicitud con el detalle del campo. |
-| **Salida** | La configuración guardada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. Los valores cumplen los rangos. |
-| **Postcondiciones** | La instancia de ConfiguracionModulo de la Distribuidora para el despacho tiene los pasos de radio y la ventana indicados, con el Administrador que los modificó y la fecha. Las ofertas que se creen después usan esos valores. |
+| **Notas** | Los parámetros son `radiusStepsKm` (los pasos de radio, de 1 a 8, cada uno de 1 a 100 km y estrictamente crecientes) y `offerTtlSeconds` (la ventana, un entero de 10 a 300 segundos) de `PUT /module-config/dispatch`. Hay una sola configuración por distribuidora y proceso. Solo se guardan los parámetros enviados: los demás toman su valor por omisión al leerse (5, 10, 15 y 20 km; 30 segundos) y una solicitud sin parámetros los restablece todos. La respuesta, igual que la de `GET /module-config/dispatch`, trae además si rigen los valores por omisión (`isDefault`), la fecha de la última modificación y quién la hizo. El despacho lee la configuración en cada oferta, con una copia en memoria de un minuto por distribuidora: guardar descarta la copia de la instancia que atiende la solicitud y las demás renuevan la suya al vencer. |
+| **Excepciones** | Si no hay sesión → no autenticado. Si quien solicita no es Administrador ni Administrador General → acceso denegado. Si falta la distribuidora (Administrador General sin `X-Distributor`) → error de solicitud «Falta la distribuidora: enviá el header X-Distributor (slug o id)». Si el cuerpo trae un campo desconocido, algún valor está fuera de rango o los pasos no son estrictamente crecientes → error de solicitud con el detalle del campo. |
+| **Salida** | La configuración vigente: los pasos de radio, la ventana de aceptación, si rigen los valores por omisión, y la fecha y el usuario de la última modificación. |
+| **Precondiciones** | El Administrador (o el Administrador General con la distribuidora indicada) está autenticado. Los valores enviados cumplen los rangos. |
+| **Postcondiciones** | La instancia de ConfiguracionModulo de la Distribuidora para el despacho tiene los pasos de radio y la ventana enviados, con el usuario que los modificó y la fecha; lo que no se envió quedó sin valor propio y rige el de omisión. Las ofertas que se creen después usan esos valores; las ya enviadas conservan su vencimiento. |
 
 ---
 
@@ -13887,13 +13888,13 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 |-------|---------|
 | **Nombre** | `configurarFrecuenciaDeTareas(intervalos registro)` |
 | **Responsabilidades** | Guardar el intervalo de cada tarea programada de una distribuidora y reprogramarlas, de modo que el valor nuevo rija desde el ciclo siguiente. |
-| **Tipo** | Sistema (planificado, I-1) |
+| **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-173. Funciones: IRQ-15, OBJ-05, OBJ-15. |
-| **Notas** | Cada intervalo es múltiplo del ciclo de base de su tarea. La marca de última ejecución no se guarda en la base relacional. |
-| **Excepciones** | Si falta la distribuidora → error de solicitud. Si un intervalo no es múltiplo del ciclo de base, supera las 24 horas o la hora está fuera de 0 a 23 → error de solicitud con el detalle del campo. |
-| **Salida** | La configuración guardada. |
-| **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. Los intervalos cumplen las reglas. |
-| **Postcondiciones** | La instancia de ConfiguracionModulo de la Distribuidora para las tareas programadas tiene los intervalos indicados, con el Administrador que los modificó y la fecha. Las marcas de última ejecución de esa Distribuidora se borraron. |
+| **Notas** | El registro lleva `dispatchRetrySeconds` (múltiplo entero de 15, hasta 300), `reservationActivationSeconds` (múltiplo de 300), `unpaidReservationExpirySeconds` (múltiplo de 3600) y `unpaidMercadoPagoExpirySeconds` (múltiplo de 1800), los tres últimos hasta 86400, y `fleetAlertHour` (hora de Argentina, de 0 a 23). Cada intervalo es múltiplo del ciclo de base de su tarea. Solo se guardan los campos enviados: los demás toman su valor por omisión al leerse (15, 300, 3600 y 1800 segundos; las 8 horas) y una solicitud sin campos los restablece todos. La respuesta trae además si rigen los valores por omisión (`isDefault`), la fecha de la última modificación y quién la hizo. La marca de última ejecución de cada tarea no se guarda en la base relacional: vive en Redis, por distribuidora y por generación de la configuración; guardar incrementa la generación y borra las marcas de la anterior, y la copia en memoria de un minuto se descarta. |
+| **Excepciones** | Si no hay sesión → no autenticado. Si quien solicita no es Administrador ni Administrador General → acceso denegado. Si falta la distribuidora → error de solicitud «Falta la distribuidora: enviá el header X-Distributor (slug o id)». Si el cuerpo trae un campo desconocido, un intervalo no es múltiplo del ciclo de base, `dispatchRetrySeconds` supera los 300 segundos, otro intervalo supera las 24 horas o la hora está fuera de 0 a 23 → error de solicitud con el detalle del campo. |
+| **Salida** | La configuración vigente: los cinco valores, si rigen los de omisión, y la fecha y el usuario de la última modificación. |
+| **Precondiciones** | El Administrador (o el Administrador General con la distribuidora indicada) está autenticado. Los intervalos cumplen las reglas. |
+| **Postcondiciones** | La instancia de ConfiguracionModulo de la Distribuidora para las tareas programadas tiene los intervalos enviados, con el usuario que los modificó y la fecha. Las marcas de última ejecución de esa Distribuidora de la generación anterior se borraron: los intervalos nuevos rigen desde el ciclo siguiente. |
 
 ---
 
@@ -15282,19 +15283,27 @@ frecuencia de ejecución del proceso y la vigencia de las ofertas que emite.
 
 ### 3.6 Valores vigentes del módulo M1
 
-Los siguientes valores son los que el sistema aplica. Se registran aquí porque
-los diagramas de secuencia de la sección 2 y los contratos de operación los
-referencian.
+Los parámetros del módulo M1 son configuración de cada distribuidora (CU-171 y CU-173,
+`GET` y `PUT /module-config/dispatch` y `/module-config/scheduled_tasks`). Los valores
+por omisión, que rigen mientras la distribuidora no configure nada, son los que tenía el
+sistema cuando eran constantes del programa; los diagramas de secuencia de la sección 2 y
+los contratos de operación los referencian.
 
-| Parámetro | Valor vigente | Constante en el código |
-|-----------|---------------|------------------------|
-| Pasos de radio de búsqueda | 5, 10, 15 y 20 km | `DispatchOrchestratorService.RADIUS_STEPS_KM` |
-| Vigencia de la oferta al chofer | 30 segundos | `DispatchOrchestratorService.OFFER_TTL_SECONDS` |
-| Frecuencia de revisión de ofertas vencidas | cada 15 segundos | `@Cron('*/15 * * * * *')` en `dispatch.service.ts` |
-| Revisión de reservas de stock | cada 5 minutos, cada 30 minutos y cada hora | `@Cron` en `reservation.service.ts` |
+| Parámetro | Campo de la configuración | Valor por omisión | Rango admitido |
+|-----------|---------------------------|-------------------|----------------|
+| Pasos de radio de búsqueda | `radiusStepsKm` | 5, 10, 15 y 20 km | de 1 a 8 pasos, cada uno de 1 a 100 km y estrictamente creciente |
+| Vigencia de la oferta al chofer | `offerTtlSeconds` | 30 segundos | de 10 a 300 segundos |
+| Frecuencia de revisión de ofertas vencidas | `dispatchRetrySeconds` | cada 15 segundos | múltiplo de 15, hasta 300 segundos |
+| Activación de reservas con la seña paga | `reservationActivationSeconds` | cada 5 minutos | múltiplo de 300, hasta 86400 segundos |
+| Vencimiento de reservas sin seña | `unpaidReservationExpirySeconds` | cada hora | múltiplo de 3600, hasta 86400 segundos |
+| Vencimiento de pedidos de MercadoPago sin pagar | `unpaidMercadoPagoExpirySeconds` | cada 30 minutos | múltiplo de 1800, hasta 86400 segundos |
+| Hora del aviso de vencimientos de flota | `fleetAlertHour` | 8 horas (Argentina) | de 0 a 23 |
 
-> Los dos primeros parámetros son constantes de clase. Llevarlos a
-> configuración por distribuidora es el caso de uso CU-171 (planificado, I-1).
+> `GET` informa además `isDefault`, la fecha y el usuario de la última modificación. La
+> configuración la lee el despacho en cada oferta, con una copia en memoria de un minuto
+> por distribuidora; la de las tareas rige desde el ciclo siguiente a guardarla. Cada
+> tarea conserva su ciclo de base como tic fijo (`@Cron`) y, en cada tic, atiende solo a
+> las distribuidoras a las que les toca.
 
 > Esta sección se desarrolla con mayor detalle en el **Doc 3 — Diseño**, donde cada
 > módulo inteligente tiene su especificación, su diagrama de interacción y su
@@ -15324,7 +15333,7 @@ referencian.
 | **QueryRunner** | Tecnología | API de TypeORM para ejecutar transacciones manuales sobre PostgreSQL. |
 | **SELECT FOR UPDATE** | Tecnología | Sentencia SQL que adquiere un lock pesimista sobre las filas seleccionadas hasta que termina la transacción. |
 | **Stock fantasma** | Concepto | Stock comprometido en una transacción no finalizada que bloquea la disponibilidad real para otros pedidos. Se previene con reversión automática. |
-| **Cron** | Concepto | Tarea programada que se ejecuta a intervalos regulares. En el sistema se usan cuatro: revisión de ofertas vencidas cada 15 segundos (`@Cron('*/15 * * * * *')`) y revisión de reservas de stock cada 5 minutos, cada 30 minutos y cada hora. |
+| **Cron** | Concepto | Tarea programada que se ejecuta a intervalos regulares. En el sistema se usan cuatro con ciclo configurable por distribuidora (CU-173): revisión de ofertas vencidas (ciclo de base de 15 segundos, `@Cron('*/15 * * * * *')`) y revisión de reservas de stock (ciclos de base de 5 minutos, 30 minutos y una hora), más el aviso de vencimientos de flota, que corre cada hora en punto y avisa a la hora que fija cada distribuidora. |
 | **JSONB** | Tecnología | Tipo de columna PostgreSQL para almacenar JSON binario indexable. Usado para `GasCylinder.promotions`. |
 | **Soft-delete** | Concepto | Eliminación lógica que marca un registro como inactivo (`deletedAt`) sin borrarlo físicamente. |
 | **Geohash** | Concepto | Codificación geográfica de coordenadas en cadenas cortas. Redis lo usa internamente para indexar posiciones. |

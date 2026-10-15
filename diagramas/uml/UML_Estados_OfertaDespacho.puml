@@ -17,7 +17,8 @@ REJECTED --> [*]
 EXPIRED --> [*]
 
 note right of OFFERED
-  Vigencia: 30 segundos desde la creación.
+  Vigencia: la ventana de la distribuidora
+  (30 segundos por omisión) desde la creación.
   El pedido se ofrece de a un chofer por vez.
 end note
 @enduml

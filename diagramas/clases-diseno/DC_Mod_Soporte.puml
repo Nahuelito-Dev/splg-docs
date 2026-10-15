@@ -55,7 +55,8 @@ class RedisHealthIndicator <<fabricación pura>> {
   + isHealthy(redis: Registro): Booleano
 }
 class RedisService <<fabricación pura>> {
-  + del(marcasDeUltimaEjecucion: Registro)
+  + del(marcaDeLaGeneracionAnterior: Cadena)
+  + incr(generacion: Entero)
   + ping(): Booleano
 }
 class S3Service <<fabricación pura>> {

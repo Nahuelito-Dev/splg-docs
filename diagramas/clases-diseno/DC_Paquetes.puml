@@ -208,6 +208,7 @@ order ..> customer
 order ..> customer_account
 order ..> cylinder
 order ..> delivery
+order ..> distributor
 order ..> fleet
 order ..> gascylinder
 order ..> incident
