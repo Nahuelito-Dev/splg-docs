@@ -10,7 +10,6 @@ sequenceDiagram
     activate SIS
     alt Hay habilitaciones por vencer sin avisar
         SIS-)ADM: notificarVencimientosDeLaFlota(tareas)
-        Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
         SIS-->>SAU: avisos enviados
     else No hay ninguna
         SIS-->>SAU: el ciclo termina sin avisos

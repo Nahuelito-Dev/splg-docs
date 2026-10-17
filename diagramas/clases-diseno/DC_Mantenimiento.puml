@@ -38,8 +38,7 @@ class PlanMantenimiento {
   + assertAplicaA(empleado: Empleado)
   + assertSujetoCoherente(recurso: Cadena)
   + assertSujetoEmpleado()
-  + crearTarea(recurso: Cadena, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
-  + crearTarea(empleado: Empleado, vencimiento: Fecha,\n      detalle: Registro): TareaMantenimiento
+  + crearTarea(vencimiento: Fecha, detalle: Registro,\n      recurso: Cadena = ninguno,\n      empleado: Empleado = ninguno): TareaMantenimiento
 }
 class TareaMantenimiento {
   - estado: EstadoDeLaTarea
@@ -50,8 +49,7 @@ class TareaMantenimiento {
   - costo: Moneda
   - vigenteDesde: Fecha
   - detalle: Registro
-  + «create» TareaMantenimiento(recurso: Cadena,\n      vencimiento: Fecha, detalle: Registro)
-  + «create» TareaMantenimiento(empleado: Empleado,\n      vencimiento: Fecha, detalle: Registro)
+  + «create» TareaMantenimiento(vencimiento: Fecha,\n      detalle: Registro, recurso: Cadena = ninguno,\n      empleado: Empleado = ninguno)
   + adjuntar(clave: Cadena, archivo: Archivo,\n      usuario: Usuario): AdjuntoTarea
   + assertAbierta()
   + cerrar(fecha: Fecha, kilometraje: Entero, costo: Moneda,\n      observacion: Cadena)

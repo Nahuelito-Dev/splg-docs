@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de estados — Siniestro (planificado, I-12)
+title Diagrama de estados — Siniestro (planificado, C-18)
 !include ../estilo-vp.iuml
 hide empty description
 state "Denunciado\n(reported)" as REPORTED

@@ -40,9 +40,7 @@ class Incidencia {
   - estado: EstadoDeIncidencia
   - resolucion: Cadena
   - fotografia: Cadena
-  + «create» Incidencia(chofer: Chofer, nota: Cadena)
-  + «create» Incidencia(administrador: Usuario,\n      motivo: Cadena)
-  + «create» Incidencia(usuario: Usuario, tipo: Cadena,\n      descripcion: Cadena, foto: Archivo)
+  + «create» Incidencia(usuario: Usuario = ninguno,\n      tipo: Cadena = ninguno,\n      descripcion: Cadena = ninguno,\n      foto: Archivo = ninguno, chofer: Chofer = ninguno,\n      nota: Cadena = ninguno,\n      administrador: Usuario = ninguno,\n      motivo: Cadena = ninguno)
   + getResumen(): Registro
   + resolver(nota: Cadena)
 }

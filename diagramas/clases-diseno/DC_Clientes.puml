@@ -30,8 +30,7 @@ hide empty members
 class Cliente {
   - consumoMensualDeclarado: Decimal
   - diasDeAviso: Entero
-  + «create» Cliente(usuario: Usuario,\n      datosDelCliente: Registro)
-  + «create» Cliente(usuario: Usuario,\n      ubicacion: UbicacionGPS)
+  + «create» Cliente(usuario: Usuario,\n      datosDelCliente: Registro = ninguno,\n      ubicacion: UbicacionGPS = ninguno)
   + actualizarConsumo(cantidadPorMes: Decimal)
   + actualizarUbicacion(coordenadas: Coordenada)
   + configurarAviso(dias: Entero)
@@ -52,9 +51,7 @@ class Cliente {
   + promoverOtraPredeterminada()
   + registrarDireccion(datos: Registro): DireccionEntrega
   + registrarEstimacion(fechaEstimada: Fecha)
-  + registrarToken(token: Cadena)
-  + validarRango(cantidadPorMes: Decimal)
-  + validarRango(dias: Entero)
+  + validarRango(cantidadPorMes: Decimal = ninguno,\n      dias: Entero = ninguno)
   + validarSinCuentaCorriente(distribuidoraId: Identificador)
 }
 class DireccionEntrega {

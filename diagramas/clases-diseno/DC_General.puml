@@ -134,7 +134,7 @@ Distribuidora "1" *--> "0..*" FranjaHoraria
 Distribuidora "1" *--> "0..*" ConfiguracionModulo
 Usuario "0..1" -- "0..*" AsientoAuditoria
 Distribuidora "0..1" -- "0..*" Auditoria
-Auditoria "1" *--> "0..*" DetalleAuditoria
+Auditoria "1" *-- "0..*" DetalleAuditoria
 TipoAccionAuditoria "1" -- "0..*" Auditoria
 Cliente "1" *-- "0..*" DireccionEntrega
 Cliente "1" -- "0..*" Pedido
@@ -245,7 +245,7 @@ Distribuidora "1" *--> "0..*" Caja
 Distribuidora "1" *--> "0..*" CategoriaDeCaja
 Distribuidora "1" *--> "0..*" CuentaCorriente
 Distribuidora "1" *--> "0..*" ReglaComision
-Caja "1" *--> "0..*" SesionDeCaja
+Caja "1" *-- "0..*" SesionDeCaja
 Caja "1" *--> "0..*" MovimientoDeCaja
 SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja
 CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja

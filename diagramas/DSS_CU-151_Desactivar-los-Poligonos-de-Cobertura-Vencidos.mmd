@@ -10,7 +10,6 @@ sequenceDiagram
     alt Otra instancia ya está ejecutando el barrido
         SIS-->>SAU: ejecución salteada
     else Hay zonas activas con vigencia vencida
-        Note over SAU,SIS: Marca cada zona como inactiva
         SIS-->>SAU: zonas desactivadas (cantidad, identificadores)
     else No hay zonas vencidas
         SIS-->>SAU: sin cambios

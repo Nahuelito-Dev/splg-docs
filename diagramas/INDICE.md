@@ -68,7 +68,7 @@ especificados representan el comportamiento previsto, no el actual.
 | CU-008 | Cancelar Pedido (Cliente) | SS-02 | Implementado | `DSS_CU-008_cu-008-cancelar-pedido-cliente` | `DSD_CU-008_cu-008-cancelar-pedido-cliente` |
 | CU-009 | Cancelar Pedido (Chofer) | SS-02 | Implementado | `DSS_CU-009_cu-009-cancelar-pedido-chofer` | `DSD_CU-009_cu-009-cancelar-pedido-chofer` |
 | CU-010 | Cancelar Pedido (Administrador) | SS-02 | Implementado | `DSS_CU-010_cu-010-cancelar-pedido-administrador` | `DSD_CU-010_cu-010-cancelar-pedido-administrador` |
-| CU-011 | Listar Todos los Pedidos | SS-02 | Implementado | `DSS_CU-011_cu-011-listar-todos-los-pedidos` | `DSD_CU-011_cu-011-listar-todos-los-pedidos` |
+| CU-011 | Consultar Todos los Pedidos | SS-02 | Implementado | `DSS_CU-011_cu-011-listar-todos-los-pedidos` | `DSD_CU-011_cu-011-listar-todos-los-pedidos` |
 | CU-012 | Asignar Chofer Manualmente | SS-03 | Implementado | `DSS_CU-012_cu-012-asignar-chofer-manualmente` | `DSD_CU-012_cu-012-asignar-chofer-manualmente` |
 | CU-013 | Asignar Pedido Automáticamente por Proximidad | SS-03 | Implementado | `DSS_CU-013_cu-013-ofrecer-el-pedido-al-chofer-más-cercano` | `DSD_CU-013_cu-013-ofrecer-el-pedido-al-chofer-más-cercano-m1` |
 | CU-014 | Reintentar Asignación con Radio Expandido (Cron) | SS-03 | Implementado | `DSS_CU-014_cu-014-vencer-la-oferta-y-ofrecer-al-siguiente-chofer` | `DSD_CU-014_cu-014-vencimiento-de-la-oferta-y-re-oferta-al-siguiente-m1-` |
@@ -135,7 +135,7 @@ especificados representan el comportamiento previsto, no el actual.
 | CU-075 | Activar Reservas Vencidas Automaticamente (Cron) | SS-15 | Implementado | `DSS_CU-075_cu-075-activar-reservas-vencidas-automáticamente` | `DSD_CU-075_076_077_cu-075-cu-076-cu-077-los-tres-crons-de-reservas-y-pagos-pend` |
 | CU-076 | Expirar Reservas sin Seña Pagada (Cron) | SS-15 | Implementado | `DSS_CU-076_cu-076-expirar-reservas-sin-seña-pagada` | `DSD_CU-075_076_077_cu-075-cu-076-cu-077-los-tres-crons-de-reservas-y-pagos-pend` |
 | CU-077 | Expirar Pedidos de MercadoPago sin Pagar (Cron) | SS-15 | Implementado | `DSS_CU-077_cu-077-expirar-pedidos-de-mercadopago-sin-pagar` | `DSD_CU-075_076_077_cu-075-cu-076-cu-077-los-tres-crons-de-reservas-y-pagos-pend` |
-| CU-078 | Obtener el Código de Entrega (QR del chofer) | SS-04 | Implementado | `DSS_CU-078_cu-078-obtener-el-código-de-entrega-qr-del-chofer` | `DSD_CU-078_079_cu-078-cu-079-entrega-verificada-por-qr-prueba-anti-fraude` |
+| CU-078 | Consultar el Código de Entrega (QR del chofer) | SS-04 | Implementado | `DSS_CU-078_cu-078-obtener-el-código-de-entrega-qr-del-chofer` | `DSD_CU-078_079_cu-078-cu-079-entrega-verificada-por-qr-prueba-anti-fraude` |
 | CU-079 | Confirmar Entrega Escaneando el QR (cliente) | SS-04 | Implementado | `DSS_CU-079_cu-079-confirmar-entrega-escaneando-el-qr-cliente` | `DSD_CU-078_079_cu-078-cu-079-entrega-verificada-por-qr-prueba-anti-fraude` |
 | CU-080 | Consultar el Pool de Pedidos Disponibles | SS-02 | Implementado | `DSS_CU-080_cu-080-consultar-el-pool-de-pedidos-disponibles` | `DSD_CU-080_cu-080-consultar-el-pool-de-pedidos-disponibles` |
 | CU-081 | Consultar los Pedidos Asignados al Chofer | SS-02 | Implementado | `DSS_CU-081_cu-081-consultar-los-pedidos-asignados-al-chofer` | `DSD_CU-081_cu-081-consultar-los-pedidos-asignados-al-chofer` |

@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-029 Consultar el Reporte por Método de Pago
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)
+    activate SIS
+    SIS-->>ADM: distribución entre efectivo y pasarela (cantidad, monto)
+    deactivate SIS

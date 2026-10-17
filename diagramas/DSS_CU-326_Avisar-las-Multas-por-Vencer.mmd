@@ -5,7 +5,6 @@ sequenceDiagram
     actor SAU as Sistema Automático (ACT-04)
     participant SIS as :Sistema
 
-    Note over SAU,SIS: Se ejecuta una vez por día,<br/>a las 08:00 hora argentina
     SAU->>SIS: avisarMultasPorVencer()
     activate SIS
     alt hay multas pendientes que vencen en siete días o menos, o ya vencidas, sin aviso

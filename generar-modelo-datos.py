@@ -875,7 +875,7 @@ def _gas(desc="Tipo de garrafa."):
 PROPUESTO = [
   {
     "clave": "express-recargo-y-tipo-de-vehiculo",
-    "casos": "CU-147 a CU-149 (I-7)",
+    "casos": "CU-147 a CU-149 (C-17)",
     "nota": "La compra express guarda el recargo para poder explicar el total después, igual que el pedido guarda la zona que lo originó. El tipo de vehículo es hoy texto libre (`type_car`: «Moto», «Auto»…) y la express depende de reconocer una moto: se agrega una columna enumerada y se rellena desde `type_car`.",
     "titulo": "Recargo express y tipo de vehículo",
     "pedido": "Explicar el total de un pedido express y reconocer la moto sin depender de un texto libre.",
@@ -894,7 +894,7 @@ PROPUESTO = [
   },
   {
     "clave": "recupero-baja-y-oferta-de-retiro",
-    "casos": "CU-108 (I-8)",
+    "casos": "CU-108 (C-15)",
     "nota": "El ciclo del envase no tiene un estado de baja: se agrega una baja lógica en vez de un valor de estado, para no tocar la máquina de estados que ya usan el despacho y la devolución. El aviso de recupero necesita saber a qué entrega se ató la oferta de retiro.",
     "titulo": "Baja del envase y oferta de retiro",
     "pedido": "Poder dar un envase de baja y atar la oferta de retiro a la entrega programada.",
@@ -913,7 +913,7 @@ PROPUESTO = [
   },
   {
     "clave": "configuracion-despacho-y-tareas",
-    "casos": "CU-171 y CU-173 (I-1)",
+    "casos": "CU-171 y CU-173 (C-07)",
     "nota": "Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: solo hace falta ampliar el tipo enumerado de procesos configurables.",
     "titulo": "Configuración del despacho y de las tareas programadas",
     "pedido": "Que el administrador configure el despacho y la frecuencia de las tareas de su distribuidora.",
@@ -924,7 +924,7 @@ PROPUESTO = [
   },
   {
     "clave": "caja-rendicion-cuentas-corrientes",
-    "casos": "CU-225 a CU-245 (I-14)",
+    "casos": "CU-225 a CU-245 (C-20)",
     "nota": "Cinco libros de solo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que solo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE \"deletedAt\" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.",
     "titulo": "Caja, rendición del chofer, cuentas corrientes y comisiones",
     "pedido": "Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.",
@@ -1179,7 +1179,7 @@ PROPUESTO = [
 # Los módulos de gestión de la distribuidora traen su modelo planificado en un archivo propio.
 import propuesto_personal
 PROPUESTO += propuesto_personal.AGREGADOS
-# Flota ampliada (iteración I-12): combustible, multas, siniestros y neumáticos, en su propio archivo.
+# Flota ampliada (iteración C-18): combustible, multas, siniestros y neumáticos, en su propio archivo.
 import propuesto_flota
 PROPUESTO += propuesto_flota.AGREGADOS
 

@@ -10,7 +10,6 @@ sequenceDiagram
     activate SIS
     alt Hay documentación del personal por vencer, vencida o faltante
         SIS-)ADM: notificarVencimientosDelPersonal(tareas)
-        Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
         SIS-->>SAU: avisos enviados
     else No hay ninguna
         SIS-->>SAU: el ciclo termina sin avisos

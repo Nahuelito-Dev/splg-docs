@@ -33,7 +33,7 @@ skinparam ranksep 90
 class CommissionService <<fachada>> {
   + anularLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
   + aprobarLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
-  + consultarMisComisiones(fechaDesde: Fecha,\n      fechaHasta: Fecha,\n      out saldo: Moneda): AsientoComision[*]
+  + consultarMisComisiones(fechaDesde: Fecha,\n      fechaHasta: Fecha): AsientoComision[*]
   + crearReglaDeComision(empleadoId: Identificador,\n      productoId: Identificador, base: BaseDeComision,\n      valor: Decimal, vigenteDesde: Fecha): ReglaComision
   + liquidarComisionesDelChofer(empleadoId: Identificador,\n      fechaDesde: Fecha,\n      fechaHasta: Fecha): LiquidacionComisiones
   + modificarReglaDeComision(reglaId: Identificador,\n      datos: Registro): ReglaComision

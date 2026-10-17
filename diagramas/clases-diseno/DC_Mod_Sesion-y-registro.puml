@@ -34,12 +34,10 @@ class AuthService <<fachada>> {
   + iniciarSesion(correo: Cadena,\n      contrasena: Cadena): Registro
 }
 class RegistroService <<fachada>> {
-  + autorizarAlta(solicitante: Usuario, rolChofer: TipoDeRol,\n      distribuidoraId: Identificador)
-  + autorizarAlta(solicitante: Usuario, rol: Rol,\n      distribuidoraId: Identificador): Usuario
+  + autorizarAlta(solicitante: Usuario,\n      distribuidoraId: Identificador,\n      rolChofer: TipoDeRol = ninguno,\n      rol: Rol = ninguno): Usuario
   + crearPrimerSuperAdministrador(nombreCompleto: Cadena,\n      correo: Cadena, telefono: Cadena,\n      contrasena: Cadena): Usuario
   + registrar(datosPersonales: Registro, rol: Rol,\n      distribuidoraId: Identificador): Usuario
   + registrarAdministrador(nombreCompleto: Cadena,\n      correo: Cadena, telefono: Cadena,\n      contrasena: Cadena, rol: Cadena,\n      distribuidoraId: Identificador): Usuario
-  + registrarChofer(datosPersonales: Registro,\n      datosDelChofer: Registro,\n      distribuidoraId: Identificador): Usuario
   + registrarChoferEnLaFlota(datosPersonales: Registro,\n      datosDelChofer: Registro,\n      distribuidoraId: Identificador): Usuario
   + registrarse(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, contrasena: Cadena,\n      datosDelCliente: Registro): Usuario
 }
@@ -47,13 +45,12 @@ interface FirebaseAuthPort <<puerto>> {
   + createUserSafe(correo: Cadena, contrasena: Cadena,\n      nombreCompleto: Cadena, telefono: Cadena): Registro
   + deleteUserSafe(cuenta: Registro)
   + generatePasswordResetLink(correo: Cadena,\n      ajustes: Registro): Cadena
-  + updateUser(cuenta: Registro, deshabilitada: Booleano)
-  + updateUser(cuenta: Registro, correoNuevo: Cadena)
+  + signInWithEmailAndPassword(correo: Cadena,\n      contrasena: Cadena): Registro
+  + updateUser(cuenta: Registro,\n      deshabilitada: Booleano = ninguno,\n      correoNuevo: Cadena = ninguno)
   + verifyIdToken(token: Cadena)
 }
 interface FcmPort <<puerto>> {
-  + sendToToken(token: Cadena, notificacion: Registro)
-  + sendToToken(token: Cadena, confirmacion: Cadena)
+  + sendToToken(token: Cadena,\n      notificacion: Registro = ninguno,\n      confirmacion: Cadena = ninguno)
 }
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class "List<Administrador>" as List_Administrador <<referencia>>
@@ -64,6 +61,7 @@ class Cliente <<referencia>>
 class Empleado <<referencia>>
 class NotificationsService <<referencia>>
 
+AuthService --> "1" FirebaseAuthPort
 AuthService --> "1" Map_String_Usuario
 RegistroService --> "1" FirebaseAuthPort
 RegistroService --> "1" List_Administrador

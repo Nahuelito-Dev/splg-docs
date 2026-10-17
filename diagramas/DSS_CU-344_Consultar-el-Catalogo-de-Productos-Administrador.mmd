@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-344 Consultar el Catálogo de Productos (Administrador)
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCatalogo(pagina, limite, distribuidora)
+    activate SIS
+    SIS-->>ADM: productos activos de la distribuidora (tipo, peso, precio, stock, promociones)
+    deactivate SIS
+
+    opt detalle de un producto
+        ADM->>SIS: consultarDetalleDelProducto(productoId)
+        activate SIS
+        alt el producto existe
+            SIS-->>ADM: detalle del producto
+        else el producto no existe
+            SIS-->>ADM: recurso no encontrado
+        end
+        deactivate SIS
+    end

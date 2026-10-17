@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de estados — Neumático (planificado, I-12, opcional)
+title Diagrama de estados — Neumático (planificado, C-18, opcional)
 !include ../estilo-vp.iuml
 hide empty description
 state "En depósito\n(in_stock)" as STOCK

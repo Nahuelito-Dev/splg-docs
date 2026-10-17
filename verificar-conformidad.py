@@ -40,7 +40,7 @@ CUE = ["Objetivos asociados","Requisitos asociados","Descripción","Precondició
 for f, ini, fin in [("Casos-de-Uso.md", r'^## 5\. ', r'^## 6\. '),
                     ("1-Requisitos.md",  r'^## 7\. ', r'^## 8\. ')]:
     revisar(f"CU expandidos — {f}",
-            bloques(leer(f), ini, fin, r'^#{4}\s+.*?(CU-\d+)\s*[—-]'), CUE, excepciones=("CU-003",))
+            bloques(leer(f), ini, fin, r'^#{4}\s+.*?(CU-\d+)\s*[—-]'), CUE)
 
 # --- CU de alto nivel (plantilla 0-Plan_Del_Proyecto.txt) ---
 for f, ini, fin in [("Casos-de-Uso.md", r'^## 4\. ', r'^## 5\. '),
@@ -199,6 +199,41 @@ def _attrs(tag):
 def _elementos(svg, clase):
     return [_attrs(m) for m in re.findall(r'<(?:g|path|line|rect)\s[^>]*class="%s"[^>]*>' % clase, svg)]
 
+def geometria(nombre, doc):
+    """Ninguna asociación ni relación atraviesa un óvalo que no sea su extremo (0 líneas sobre óvalos ajenos)."""
+    errores = []
+    ovalos = {}
+    for m_ in re.finditer(r'<g class="cu" data-cu="(CU-\d+)"[^>]*><ellipse cx="([\d.]+)" cy="([\d.]+)" rx="([\d.]+)" ry="([\d.]+)"', doc):
+        ovalos[m_.group(1)] = tuple(float(x_) for x_ in m_.groups()[1:])
+    cubos = collections.defaultdict(list)
+    for c_, (cx_, cy_, rx_, ry_) in ovalos.items():
+        for b_ in range(int((cy_ - ry_) // 40), int((cy_ + ry_) // 40) + 1): cubos[b_].append(c_)
+    def cruza(segs, permitidos):
+        malos = set()
+        for (x0_, y0_, x1_, y1_) in segs:
+            largo = max(abs(x1_ - x0_), abs(y1_ - y0_))
+            n_ = int(largo // 3) + 1
+            for i_ in range(1, n_):
+                x_ = x0_ + (x1_ - x0_) * i_ / n_; y_ = y0_ + (y1_ - y0_) * i_ / n_
+                for c_ in cubos.get(int(y_ // 40), ()):
+                    if c_ in permitidos: continue
+                    cx_, cy_, rx_, ry_ = ovalos[c_]
+                    if ((x_ - cx_) / rx_) ** 2 + ((y_ - cy_) / ry_) ** 2 < 0.98: malos.add(c_)
+        return malos
+    for a_ in _elementos(doc, "asoc"):
+        d_ = re.match(r'M([\d.]+) ([\d.]+) L([\d.]+) ([\d.]+)', a_["d"])
+        if cruza([tuple(float(x_) for x_ in d_.groups())], {a_.get("data-cu", "")}):
+            errores.append(f"{nombre}: la asociación {a_['data-act']}–{a_['data-cu']} atraviesa un óvalo")
+    for r_ in _elementos(doc, "rel"):
+        toks = re.findall(r'([MHV])([\d.]+)(?: ([\d.]+))?', r_["d"])
+        x_, y_ = float(toks[0][1]), float(toks[0][2]); segs = []
+        for t_, a1, a2 in toks[1:]:
+            nx_, ny_ = (float(a1), y_) if t_ == "H" else (x_, float(a1))
+            segs.append((x_, y_, nx_, ny_)); x_, y_ = nx_, ny_
+        if cruza(segs, {r_["data-desde"], r_["data-hasta"]}):
+            errores.append(f"{nombre}: la relación {r_['data-desde']}→{r_['data-hasta']} atraviesa un óvalo")
+    return errores
+
 def verificar_diagrama_cu():
     errores = []
     laminas = sorted(glob.glob(D + "diagramas/uml/CU_Sistema_Completo-Lamina-*.svg"))
@@ -287,37 +322,7 @@ def verificar_diagrama_cu():
         if aisl: errores.append(f"único: casos aislados {aisl[:8]}")
         dif = sorted(f"{c}: dibuja {sorted(con.get(c, set()))} y el catálogo dice {sorted(esperado[c])}" for c in TODOS if con.get(c, set()) != esperado.get(c, set()))
         if dif: errores.append(f"único: {len(dif)} casos con actores distintos del catálogo, p. ej. {dif[:3]}")
-        # --- geometría: ninguna asociación ni relación atraviesa un óvalo que no sea su extremo ---
-        ovalos = {}
-        for m_ in re.finditer(r'<g class="cu" data-cu="(CU-\d+)"[^>]*><ellipse cx="([\d.]+)" cy="([\d.]+)" rx="([\d.]+)" ry="([\d.]+)"', du):
-            ovalos[m_.group(1)] = tuple(float(x_) for x_ in m_.groups()[1:])
-        cubos = collections.defaultdict(list)
-        for c_, (cx_, cy_, rx_, ry_) in ovalos.items():
-            for b_ in range(int((cy_ - ry_) // 40), int((cy_ + ry_) // 40) + 1): cubos[b_].append(c_)
-        def cruza(segs, permitidos):
-            malos = set()
-            for (x0_, y0_, x1_, y1_) in segs:
-                largo = max(abs(x1_ - x0_), abs(y1_ - y0_))
-                n_ = int(largo // 3) + 1
-                for i_ in range(1, n_):
-                    x_ = x0_ + (x1_ - x0_) * i_ / n_; y_ = y0_ + (y1_ - y0_) * i_ / n_
-                    for c_ in cubos.get(int(y_ // 40), ()):
-                        if c_ in permitidos: continue
-                        cx_, cy_, rx_, ry_ = ovalos[c_]
-                        if ((x_ - cx_) / rx_) ** 2 + ((y_ - cy_) / ry_) ** 2 < 0.98: malos.add(c_)
-            return malos
-        cruces = 0
-        for a_ in _elementos(du, "asoc"):
-            d_ = re.match(r'M([\d.]+) ([\d.]+) L([\d.]+) ([\d.]+)', a_["d"])
-            segs = [tuple(float(x_) for x_ in d_.groups())]
-            if cruza(segs, {a_["data-cu"]}): cruces += 1; errores.append(f"único: la asociación {a_['data-act']}–{a_['data-cu']} atraviesa un óvalo")
-        for r_ in _elementos(du, "rel"):
-            toks = re.findall(r'([MHV])([\d.]+)(?: ([\d.]+))?', r_["d"])
-            x_, y_ = float(toks[0][1]), float(toks[0][2]); segs = []
-            for t_, a1, a2 in toks[1:]:
-                nx_, ny_ = (float(a1), y_) if t_ == "H" else (x_, float(a1))
-                segs.append((x_, y_, nx_, ny_)); x_, y_ = nx_, ny_
-            if cruza(segs, {r_["data-desde"], r_["data-hasta"]}): cruces += 1; errores.append(f"único: la relación {r_['data-desde']}→{r_['data-hasta']} atraviesa un óvalo")
+        for _c_ in geometria("único", du): errores.append(_c_)
         d1 = leer(D + "1-Requisitos.md")
         i77 = d1.index("### 7.7 Relaciones entre Casos de Uso")
         j77 = d1.find("\n### 7.8", i77)
@@ -328,7 +333,7 @@ def verificar_diagrama_cu():
         for l_ in s77.split("\n"):
             if "Relaciones `«include»`" in l_: modo = "include"
             elif "Relaciones `«extend»`" in l_: modo = "extend"
-            m_ = re.match(r'^\| (CU-\d{3}) [^|]+ \| → \| (CU-\d{3}) ', l_)
+            m_ = re.match(r'^\|(?: PE-\d+ \|)? (CU-\d{3}) [^|]+ \| → \| (CU-\d{3}) ', l_)
             if m_ and modo: tabla.add((modo, m_.group(1), m_.group(2)))
         dib_u = {(r["data-tipo"], r["data-desde"], r["data-hasta"]) for r in _elementos(du, "rel")}
         falt = sorted(tabla - dib_u); sob = sorted(dib_u - tabla)
@@ -338,7 +343,8 @@ def verificar_diagrama_cu():
     for f_ in por_ss:
         d_ = leer(f_); ss_ = re.search(r'CU_(SS-\d\d)_', f_).group(1)
         con = conectados(d_); ent = con_entrada(d_)
-        propios = {c["data-cu"] for c in _elementos(d_, "cu") if cat_ss.get(c["data-cu"]) == ss_}
+        errores += geometria(os.path.basename(f_), d_)
+        propios = {c for c in re.findall(r'<g class="cu" data-cu="(CU-\d+)"[^>]*><ellipse(?![^>]*stroke-dasharray)', d_) if cat_ss.get(c) == ss_}
         for c in sorted(propios):
             if con.get(c, set()) != esperado.get(c, set()) and not (not esperado.get(c) and c in ent):
                 errores.append(f"{os.path.basename(f_)}: {c} dibuja {sorted(con.get(c, set()))} y el catálogo dice {sorted(esperado.get(c, set()))}")
@@ -346,6 +352,7 @@ def verificar_diagrama_cu():
                 errores.append(f"{os.path.basename(f_)}: {c} está aislado")
     # láminas por actor: cada caso propio unido a su actor y ninguno aislado
     for n_, doc_ in docs_lam.items():
+        errores += geometria(n_, doc_)
         acs = [a_["data-act"] for a_ in _elementos(doc_, "actor")]
         con = conectados(doc_)
         for c in {c_["data-cu"] for c_ in _elementos(doc_, "cu")}:
@@ -357,6 +364,24 @@ def verificar_diagrama_cu():
         enlam = set(re.findall(r'<g class="cu" data-cu="(CU-\d+)"[^>]*><ellipse(?![^>]*stroke-dasharray)', doc_))
         for c in sorted(enlam & propios):
             if acs[0] not in con.get(c, set()): errores.append(f"{n_}: {c} no está unido a ACT-{acs[0]}")
+    # diagrama de casos de uso por subsistemas: un paquete por subsistema con su cantidad de casos y cada actor unido
+    # a los subsistemas en los que participa (los de sus casos, principales y secundarios)
+    ruta_p = D + "diagramas/uml/CU_Sistema_Diagrama-De-Subsistemas.svg"
+    if not os.path.exists(ruta_p):
+        errores.append("falta el diagrama de subsistemas (CU_Sistema_Diagrama-De-Subsistemas.svg)")
+    else:
+        dp = leer(ruta_p)
+        revisar("subsistemas (paquetes)", dp)
+        cuenta_p = collections.Counter(cat_ss[c] for c in cat_ss)
+        paq_p = {p_["data-pq"]: int(p_["data-n"]) for p_ in _elementos(dp, "paquete")}
+        if paq_p != dict(cuenta_p): errores.append(f"subsistemas (paquetes): {paq_p} distintos del catálogo {dict(cuenta_p)}")
+        esp_p = collections.defaultdict(set)
+        for c, s_ in esperado.items(): esp_p[cat_ss[c]] |= s_
+        dib_p = collections.defaultdict(set)
+        for a_ in _elementos(dp, "asoc"): dib_p[a_["data-pq"]].add(a_["data-act"])
+        for ss_p in sorted(esp_p):
+            if dib_p.get(ss_p, set()) != esp_p[ss_p]:
+                errores.append(f"subsistemas (paquetes): {ss_p} dibuja {sorted(dib_p.get(ss_p, set()))} y sus casos tienen {sorted(esp_p[ss_p])}")
     # los diagramas por subsistema dibujan los mismos casos
     cus_ss = set()
     for f in por_ss:
@@ -417,13 +442,13 @@ def verificar_plantillas():
     if not tabla_con(hitos, ["Descripción", "Hito"]):
         errores.append("Doc 0 §3: falta la tabla Descripción · Hito")
     fila_c = next((l for l in hitos.split("\n") if l.startswith("| Fase de Construcción")), "")
-    falt = [f"I-{n}" for n in range(1, 12) if f"(I-{n})" not in fila_c]
+    falt = [f"C-{n:02d}" for n in range(1, 21) if f"C-{n:02d}" not in fila_c]
     if falt: errores.append(f"Doc 0 §3: el hito de Construcción no refleja las iteraciones {falt}")
     cal = seccion(d0, orden[2], orden[3])
     if "### Cronograma (Diagrama de Gantt)" not in cal or "UML_Gantt." not in cal:
         errores.append("Doc 0 §4: falta el Cronograma (Diagrama de Gantt) como figura")
     gantt = open(D + "diagramas/uml/UML_Gantt.puml", encoding="utf-8").read()
-    for cod in ["INI", "E01", "C01", "C02", "C03", "C04", "C05", "C06", "T01"] + [f"I{n}" for n in range(1, 12)]:
+    for cod in ["INI", "E01", "C01", "C02", "C03", "C04", "C05", "C06", "T01"] + [f"C{n:02d}" for n in range(7, 21)]:
         if f"[{cod}]" not in gantt: errores.append(f"Gantt: falta la barra {cod}")
     if gantt.count("happens") < 5: errores.append("Gantt: faltan los hitos de cierre")
     if not tabla_con(seccion(d0, orden[3], orden[4]), ["Actor", "Descripción"]):
@@ -438,7 +463,7 @@ def verificar_plantillas():
         if f"**{campo}:**" not in cab: errores.append(f"0.1: falta «{campo}» en la cabecera")
     for t in ("## Lista de Cambios", "## Sobre este Documento", "### Configuración de la Iteración"):
         if t not in d01: errores.append(f"0.1: falta «{t.lstrip('# ')}»")
-    for cod, titulo in (("C-06", "## Iteración C-06"), ("I-1", "## Iteración I-1"), ("T-01", "## Iteración T-01")):
+    for cod, titulo in (("C-06", "## Iteración C-06"), ("C-07", "## Iteración C-07"), ("C-20", "## Iteración C-20"), ("T-01", "## Iteración T-01")):
         try:
             a = d01.index(titulo); b = d01.find("\n## ", a + 5)
             blq = d01[a:b if b != -1 else len(d01)]
@@ -509,6 +534,9 @@ import json
 CAMPOS_CONTRATO = ["Nombre","Responsabilidades","Tipo","Referencias cruzadas","Notas",
                    "Excepciones","Salida","Precondiciones","Postcondiciones"]
 
+PRE_MAL = re.compile(r'\b(ya valid[oó]|su firma es válida|son válid[oa]s|cumplen|suficiente|alcanzan|coincide|permitid[oa]|no supera|formato)\b', re.I)
+POST_MAL = re.compile(r'\b(si falla|si la persistencia|se valida|el sistema (?:verifica|valida|comprueba)|no (?:cambió|cambia|varió|se modificó|se eliminó|se borró)|ningún [^.]*(?:cambió|se modificó|quedó negativo)|dejó de (?:aparecer|listarse|ser visible)|recibieron|S3|Firebase|Redis|HTTP)\b', re.I)
+
 def verificar_operaciones():
     errores = []
     ruta = D + "material-de-trabajo/operaciones-sistema.json"
@@ -524,9 +552,6 @@ def verificar_operaciones():
         r'\*\*Código:\*\*\s*(CU-\d+)\s*\|[^\n]*\n\*\*Actor/es:\*\*\s*([^\n]*)', _cat[_a:_b])
         if "caso incluido" in m.group(2).lower() or "ninguno directo" in m.group(2).lower()}
     vistas = {}
-    sys.path.insert(0, D + "material-de-trabajo")
-    import dsd_larman as _dl
-    _dss_inc = _dl.DSS_INCLUIDOS
     for f in sorted(glob.glob(D + "diagramas/DSS_*.mmd")):
         base = os.path.basename(f)
         cu = re.search(r'CU-\d+', base).group(0)
@@ -555,10 +580,6 @@ def verificar_operaciones():
                     errores.append(f"{base}: el iniciador «{parts[org][0]}» no se llama como en el catálogo ({actores[parts[org][1]]})")
                 nom = txt.split("(")[0]
                 o = ops.get(nom)
-                if not o and nom in _dss_inc:
-                    o = {"firma": _dss_inc[nom]["firma"], "actores": _dss_inc[nom]["actores"]}
-                    if _dss_inc[nom]["cu"] != cu:
-                        errores.append(f"{base}: {nom} es del caso incluido {_dss_inc[nom]['cu']}")
                 if not o:
                     errores.append(f"{base}: la operación {txt!r} no está en el catálogo")
                     continue
@@ -575,9 +596,6 @@ def verificar_operaciones():
                 errores.append(f"{base}: lo que el sistema le manda a un actor que no lo pidió debe ser un mensaje asíncrono notificar...(): {txt!r}")
             if flecha == "-)" and not noti:
                 errores.append(f"{base}: el mensaje asíncrono {txt!r} no es una notificación con nombre")
-    for nom, o in _dss_inc.items():
-        if nom not in vistas:
-            errores.append(f"caso incluido: {nom} ({o['cu']}) no tiene diagrama de secuencia del sistema")
     for nom, o in ops.items():
         if nom not in vistas:
             errores.append(f"catálogo: {nom} no aparece en ningún diagrama de secuencia")
@@ -600,6 +618,15 @@ def verificar_operaciones():
         campos = re.findall(r'^\|\s*\*\*(.+?)\*\*\s*\|', cuerpo, re.M)
         if campos != CAMPOS_CONTRATO:
             errores.append(f"contratos: {nom} tiene los campos {campos}, la plantilla pide {CAMPOS_CONTRATO}")
+        # Larman: la precondición es lo que se asume (lo que el sistema valida va como excepción)
+        # y la postcondición describe sólo los cambios en el modelo conceptual, en pasado y sin
+        # ramas de falla, ni efectos que no son del modelo (avisos, almacenamiento, visibilidad).
+        pre = re.search(r'^\|\s*\*\*Precondiciones\*\*\s*\|\s*(.*?)\s*\|$', cuerpo, re.M)
+        post = re.search(r'^\|\s*\*\*Postcondiciones\*\*\s*\|\s*(.*?)\s*\|$', cuerpo, re.M)
+        for hallado in (PRE_MAL.findall(pre.group(1)) if pre else []):
+            errores.append(f"contratos: {nom}: la precondición valida en vez de asumir ({hallado!r}); va como excepción")
+        for hallado in (POST_MAL.findall(post.group(1)) if post else []):
+            errores.append(f"contratos: {nom}: la postcondición no describe un cambio del modelo conceptual ({hallado!r})")
         m = re.search(r'^\|\s*\*\*Nombre\*\*\s*\|\s*`(.+?)`\s*\|', cuerpo, re.M)
         if m and m.group(1) != ops[nom]["firmaConTipos"]:
             errores.append(f"contratos: el nombre de {nom} no es la firma del catálogo ({ops[nom]['firmaConTipos']})")
@@ -828,14 +855,189 @@ for _f in ("2-Analisis.md", "3-Diseño.md"):
             _err_s.append(f"{_f}: un pie de figura nombra varios casos: {_m.group(1)}")
         elif _cat_n.get(_cus_[0]) != _nom_:
             _err_s.append(f"{_f}: el pie «{_cus_[0]}: {_nom_}» no usa el nombre del catálogo «{_cat_n.get(_cus_[0])}»")
-_RET = ("CU-021", "CU-091")
+from retirados import CODIGOS as _RET
 for _f in ("0-Plan_Del_Proyecto.md", "0.1-Planificacion_Iteraciones.md", "1-Requisitos.md", "2-Analisis.md", "3-Diseño.md", "Casos-de-Uso.md", "README.md", "GUIA-DEL-REPOSITORIO.md"):
-    for _l_ in open(D + _f, encoding="utf-8").read().split("\n"):
-        if any(r_ in _l_ for r_ in _RET) and not re.search(r'retir|sin CU-021|Lista de Cambios|^\| \d+ \| 2026-', _l_):
+    _tf = open(D + _f, encoding="utf-8").read()
+    _en_retirados = False
+    for _l_ in _tf.split("\n"):
+        if _l_.startswith("#"): _en_retirados = _l_.strip().endswith("Casos de uso retirados") or "Resumen de Calificación" in _l_
+        if _en_retirados or _l_.startswith("| **Total**"): continue
+        if any(re.search(rf'{r_}\b', _l_) for r_ in _RET) and not re.search(r'retir|sin CU-021|^- Figura|^\| CU-\d+ \(retirado\)|^\| \d+ \| 2026-', _l_):
             _err_s.append(f"{_f}: menciona un caso retirado fuera de la tabla de retirados: {_l_[:70]}")
+# una sola numeración de iteraciones: ningún I-1..I-14 como identificador (solo la columna «Paquete» de la tabla de correspondencia del Documento 0 §4 y las filas de las Listas de Cambios, que son historia)
+_rx_i = re.compile(r'(?<![A-Za-z0-9-])I-(?:[1-9]|1[0-4])(?!\d)')
+for _f in ("0-Plan_Del_Proyecto.md", "0.1-Planificacion_Iteraciones.md", "1-Requisitos.md", "2-Analisis.md", "3-Diseño.md", "Casos-de-Uso.md", "README.md", "GUIA-DEL-REPOSITORIO.md", "AGENTS.md", "INDICE-IMAGENES.md"):
+    for _l_ in open(D + _f, encoding="utf-8").read().split("\n"):
+        if _rx_i.search(_l_) and not re.match(r'\| \d+ \| 2026-', _l_) and not (_f == "0-Plan_Del_Proyecto.md" and re.match(r'\| \*\*C-\d\d\*\* |El plan agrupa los casos en catorce paquetes', _l_)):
+            _err_s.append(f"{_f}: usa la numeración I-n de iteraciones: {_l_[:70]}")
 if _err_s: FALLAS.append("Secciones, pies de figura y retirados")
-print(f"[{'OK' if not _err_s else 'FALLA':5}] Un solo DSS por CU, pies de figura con el nombre del catálogo y sin menciones de casos retirados"
+print(f"[{'OK' if not _err_s else 'FALLA':5}] Un solo DSS por CU, pies de figura con el nombre del catálogo y sin menciones de casos retirados ni numeración I-n"
       + (f" | {len(_err_s)} errores: {_err_s[:6]}" if _err_s else ""))
+
+# ---------- actores: la misma tabla en el Documento 0, el Documento 1 y Casos-de-Uso.md; ACT-10 presente ----------
+_err_act = []
+def _tabla_actores(f, ini):
+    _t = open(D + f, encoding="utf-8").read()
+    _a = _t.index(ini)
+    _m = re.search(r'\| Código \| Actor \| Tipo \| Descripción \|\n\|[-| :]+\|\n((?:\| ACT-\d+ \|.*\n)+)', _t[_a:])
+    return _m.group(1).strip() if _m else ""
+_ta = {"Documento 0 §5": _tabla_actores("0-Plan_Del_Proyecto.md", "## 5. Actores del Sistema"),
+       "Documento 1 §7.1": _tabla_actores("1-Requisitos.md", "### 7.1 Definición de Actores"),
+       "Casos-de-Uso.md §1": _tabla_actores("Casos-de-Uso.md", "## 1. Actores del Sistema")}
+for _k, _v in _ta.items():
+    if not _v: _err_act.append(f"{_k}: no encuentro la tabla de actores")
+if len(set(_ta.values())) != 1: _err_act.append("las tablas de actores del Documento 0, el Documento 1 y Casos-de-Uso.md no son idénticas")
+for _k, _v in _ta.items():
+    if _v and (len(re.findall(r'^\| ACT-\d+ ', _v, re.M)) != 10 or "ACT-10" not in _v):
+        _err_act.append(f"{_k}: la tabla no tiene los diez actores (con ACT-10 Operador Técnico)")
+for _f, _ini in (("0-Plan_Del_Proyecto.md", "## 6. Diagrama de Casos de Uso del Sistema"), ("1-Requisitos.md", "## 3. Diagrama de Casos de Uso del Sistema"),
+                 ("Casos-de-Uso.md", "## 2. Diagrama de Casos de Uso del Sistema")):
+    _t = open(D + _f, encoding="utf-8").read()
+    _a = _t.index(_ini)
+    _i_sub = _t.find("CU_Sistema_Diagrama-De-Subsistemas.png", _a)
+    _i_comp = _t.find("CU_Sistema_Diagrama-Completo.png", _a)
+    _i_mapa = _t.find("CU_Sistema_Mapa.png", _a)
+    if not (0 < _i_sub < _i_comp < _i_mapa):
+        _err_act.append(f"{_f}: el diagrama por subsistemas tiene que ir primero, después el completo con sus láminas y al final el mapa de navegación")
+if _err_act: FALLAS.append("Actores y figura principal del diagrama de casos de uso")
+print(f"[{'OK' if not _err_act else 'FALLA':5}] Tablas de actores idénticas (10 actores) y diagrama por subsistemas como figura principal" + (f" | {_err_act}" if _err_act else ""))
+
+# ---------- tabla de implementación, catálogo vs CUA, cifras derivadas, pasos del CUE y CU reales ----------
+# La «Tabla de implementación por caso de uso» (Casos-de-Uso.md §8) es la fuente de lo técnico de cada caso; el
+# Documento 3 §4.25 es su copia. Sus pasos existen en el CUE; el catálogo (§3) y el CUA dicen los mismos actores; las cifras
+# de los textos (retirados, casos por actor) salen del catálogo y de retirados.py; los CU reales llevan el nombre del
+# catálogo; ningún DSD queda suelto después de la Trazabilidad de Casos-de-Uso.md.
+def verificar_tabla_implementacion():
+    errores = []
+    cas = open(D + "Casos-de-Uso.md", encoding="utf-8").read()
+    dis = open(D + "3-Diseño.md", encoding="utf-8").read()
+    plan = open(D + "0-Plan_Del_Proyecto.md", encoding="utf-8").read()
+    req = open(D + "1-Requisitos.md", encoding="utf-8").read()
+    i8 = cas.find("## 8. Tabla de implementación por caso de uso")
+    if i8 < 0:
+        return ["Casos-de-Uso.md: falta la «Tabla de implementación por caso de uso» (§8)"]
+    t8 = cas[i8:]
+    filas8 = {m.group(1): m.group(0) for m in re.finditer(r'^\| (CU-\d{3})(?: \(retirado\))? [^\n]*$', t8, re.M)}
+    # --- B1: existe en el Documento 3 (§4.25), con los mismos renglones que Casos-de-Uso.md §8
+    j = dis.find("### 4.25 Tabla de implementación por caso de uso")
+    if j < 0:
+        errores.append("3-Diseño.md: falta la «Tabla de implementación por caso de uso» (§4.25)")
+    else:
+        k = min(x for x in (dis.find("\n### ", j + 5), dis.find("\n## ", j + 5), dis.find("\n<!-- ", j + 5)) if x != -1)
+        filas3 = {m.group(1): m.group(0) for m in re.finditer(r'^\| (CU-\d{3})(?: \(retirado\))? [^\n]*$', dis[j:k], re.M)}
+        if filas3 != filas8:
+            errores.append(f"3-Diseño.md §4.25 no es copia de Casos-de-Uso.md §8 ({len(filas3)} y {len(filas8)} renglones): correr generar-tabla-implementacion.py")
+    catalogo = {m.group(1): set(re.findall(r'ACT-\d\d', m.group(2)))
+                for m in re.finditer(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \| ([^|]*)\|', cas[cas.index("## 3. Cat"):cas.index("## 4. Casos")], re.M)}
+    faltan = sorted(set(catalogo) - set(filas8))
+    if faltan:
+        errores.append(f"tabla de implementación: sin renglón {faltan[:6]}")
+    # --- I5: los pasos que cita la tabla y los de Rendimiento existen en el CUE
+    s5 = cas[cas.index("## 5. Casos de Uso Expandidos"):cas.index("## 6. Diagramas")]
+    cue = {m.group(1): m.group(2) for m in re.finditer(r'^#### [^\n]*?(CU-\d+) — [^\n]*\n(.*?)(?=^#{1,4} |\Z)', s5, re.M | re.S)}
+    for cu, cuerpo in cue.items():
+        sec = re.search(r'\*\*Secuencia Normal\*\*(.*?)\*\*Postcondici', cuerpo, re.S)
+        pasos = {int(x) for x in re.findall(r'^\| (\d+) \|', sec.group(1), re.M)} if sec else set()
+        alt = re.search(r'\*\*Secuencia Alternativa[^\n]*\*\*(.*?)(?=\n\*\*Rendimiento|\Z)', cuerpo, re.S)
+        if alt: pasos |= {int(x) for x in re.findall(r'^\| (\d+) \|', alt.group(1), re.M)}
+        rend = re.search(r'\*\*Rendimiento\*\*\s*\n(.*?)(?=\n\| Campo|\Z)', cuerpo, re.S)
+        for n in {int(x) for x in re.findall(r'^\| (\d+) \|', rend.group(1), re.M)} if rend else set():
+            if n not in pasos: errores.append(f"{cu}: el Rendimiento cita el paso {n}, que el CUE no tiene")
+        exc = re.search(r'\*\*Excepciones\*\*\s*\n(.*?)(?=\n\*\*|\n\| Campo|\Z)', cuerpo, re.S)
+        if exc and re.search(r'^\| — \|', exc.group(1), re.M):
+            errores.append(f"{cu}: tiene una excepción sin paso («—»)")
+        fila = filas8.get(cu)
+        if fila:
+            celdas = fila.split(" | ")
+            if len(celdas) == 5:
+                for lin in celdas[3].split("<br>"):
+                    if re.match(r'(Sin paso|Paso —)', lin):
+                        errores.append(f"{cu}: la tabla de implementación tiene una respuesta sin paso")
+                    m = re.match(r'Paso (\d+(?:, \d+)*):', lin)
+                    if m:
+                        for n in map(int, m.group(1).split(", ")):
+                            if n not in pasos:
+                                errores.append(f"{cu}: la tabla de implementación cita el paso {n}, que el CUE no tiene")
+    # --- I3: el catálogo de cada documento dice los actores del CUA
+    sys.path.insert(0, D)
+    from actores_cu import SECUNDARIO
+    for nombre, texto, ini, fin in (("Casos-de-Uso.md", cas, "## 3. Cat", "## 4. Casos"),
+                                    ("Documento 0", plan, "## 8. Cat", "## 9. ")):
+        a_ = texto.find(ini)
+        if a_ < 0:
+            continue
+        b_ = texto.find(fin, a_ + 5)
+        cat_ = {m.group(1): set(re.findall(r'ACT-\d\d', m.group(2)))
+                for m in re.finditer(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \| ([^|]*)\|', texto[a_:b_ if b_ > 0 else len(texto)], re.M)}
+        cua_ = {m.group(1): set(re.findall(r'ACT-\d\d', m.group(2)))
+                for m in re.finditer(r'\*\*Código:\*\* (CU-\d+) \|[^\n]*\n\*\*Actor/es:\*\* ([^\n]*)', texto)}
+        malos = []
+        for cu, a in cat_.items():
+            sec_ = {f"ACT-{k}" for k, lst in SECUNDARIO.items() if cu in lst}
+            if cu in cua_ and (a - sec_) != (cua_[cu] - sec_):
+                malos.append(f"{cu}: catálogo {sorted(a)} y CUA {sorted(cua_[cu])}")
+        if malos:
+            errores.append(f"{nombre}: el catálogo y el CUA no dicen los mismos actores en {len(malos)} casos, p. ej. {malos[:3]}")
+    # --- I4: cifras derivadas de retirados.py y del catálogo
+    from retirados import RETIRADOS
+    n_ret, n_cat = len(RETIRADOS), len(catalogo)
+    palabra = {9: "Nueve", 10: "Diez", 11: "Once", 12: "Doce"}.get(n_ret, str(n_ret))
+    for nombre, texto in (("Casos-de-Uso.md", cas), ("0-Plan_Del_Proyecto.md", plan)):
+        m = re.search(r'Los (\d+) casos de la tabla se retiraron', texto)
+        if not m or int(m.group(1)) != n_ret:
+            errores.append(f"{nombre}: dice {m.group(1) if m else '?'} casos retirados y retirados.py tiene {n_ret}")
+        m = re.search(r'hay (\d+) números, (\d+) de casos del catálogo y (\d+) retirados', texto)
+        if not m or tuple(map(int, m.groups())) != (n_cat + n_ret, n_cat, n_ret):
+            errores.append(f"{nombre}: los recuentos de retirados dicen {m.groups() if m else '?'} y el catálogo {(n_cat + n_ret, n_cat, n_ret)}")
+    if f"{palabra} casos fueron retirados del catálogo" not in req:
+        errores.append(f"1-Requisitos.md: no dice «{palabra} casos fueron retirados del catálogo»")
+    por_actor = {k: sum(1 for a in catalogo.values() if f"ACT-{k}" in a) for k in ("01", "02", "03", "05")}
+    for nombre, texto in (("Casos-de-Uso.md", cas), ("0-Plan_Del_Proyecto.md", plan), ("1-Requisitos.md", req)):
+        for k, n in por_actor.items():
+            m = re.search(r'\| ACT-%s \| \*\*[^|\n]*\| [^|\n]*\| [^|\n]*?(?:Inicia|Participa en) (\d+) casos de uso' % k, texto)
+            if not m or int(m.group(1)) != n:
+                errores.append(f"{nombre}: la tabla de actores dice {m.group(1) if m else '?'} casos para ACT-{k} y el catálogo {n}")
+    # --- I7: CU reales con el nombre del catálogo
+    nombres = {m.group(1): m.group(2).strip() for m in re.finditer(r'^\| (CU-\d{3}) ([^|]+?) \| SS-\d\d \|', cas, re.M)}
+    s3 = dis[dis.index("## 3. Casos de Uso Reales"):dis.index("## 4. Diagramas de Interacción")]
+    for m in re.finditer(r'^### 3\.\d+ (CU-\d+)[^—\n]*— ([^\n]*)$', s3, re.M):
+        if nombres.get(m.group(1)) != m.group(2):
+            errores.append(f"Documento 3 §3: el encabezado de {m.group(1)} dice «{m.group(2)}» y el catálogo «{nombres.get(m.group(1))}»")
+    for m in re.finditer(r'\| \*\*Código\*\* \| (CU-\d+) \|\n\| \*\*Caso de Uso\*\* \| ([^|\n]*?) \|', s3):
+        if nombres.get(m.group(1)) != m.group(2):
+            errores.append(f"Documento 3 §3: el campo «Caso de Uso» de {m.group(1)} dice «{m.group(2)}» y el catálogo «{nombres.get(m.group(1))}»")
+    # --- M11: ningún DSD suelto después de la Trazabilidad y todos con el nombre del catálogo
+    z = cas.index("\n## Trazabilidad")
+    if re.search(r'^#{3,5} [^\n]*DSD — CU-', cas[z:cas.index("\n## 8. Tabla")], re.M):
+        errores.append("Casos-de-Uso.md: hay diagramas DSD después de «Trazabilidad», fuera de su subsistema")
+    for m in re.finditer(r'^#{3,5} (?:DSS|DSD) — (CU-\d+): ([^\n]*)$', cas, re.M):
+        if nombres.get(m.group(1)) != m.group(2).strip():
+            errores.append(f"Casos-de-Uso.md: el encabezado «{m.group(0)[:70]}» no usa el nombre del catálogo")
+    return errores
+
+_err_ti = verificar_tabla_implementacion()
+if _err_ti: FALLAS.append("Tabla de implementación, catálogo, cifras y CU reales")
+print(f"[{'OK' if not _err_ti else 'FALLA':5}] Tabla de implementación en Casos §8 y Documento 3 §4.25 (pasos que existen en el CUE), catálogo = CUA, cifras desde retirados.py y el catálogo, CU reales con el nombre del catálogo"
+      + (f" | {len(_err_ti)} errores: {_err_ti[:6]}" if _err_ti else ""))
+
+# ---------- verificadores de material-de-trabajo: se corren y se exige que hayan leído algo ----------
+def _correr(nombre, script, lee):
+    r = subprocess.run([sys.executable, D + "material-de-trabajo/" + script], capture_output=True, text=True)
+    salida = (r.stdout + r.stderr).strip()
+    vacio = not re.search(lee, salida)
+    if r.returncode or vacio:
+        FALLAS.append(nombre)
+    detalle = ""
+    if r.returncode or vacio:
+        detalle = " | " + (" ".join(salida.splitlines()[-6:]) if salida else "sin salida")[:600] + (" | leyó 0 elementos" if vacio else "")
+    print(f"[{'OK' if not (r.returncode or vacio) else 'FALLA':5}] {nombre}" + detalle)
+
+_correr("Cinco artefactos por caso de uso, diagramas por subsistema y estado uniforme (verificar-artefactos-cu.py)",
+        "verificar-artefactos-cu.py", r"Casos de uso en el catálogo: [1-9]\d*")
+_correr("Relaciones include/extend: fuente, diagramas, tabla §7.7 y CUE (verificar-relaciones-cu.py)",
+        "verificar-relaciones-cu.py", r"«include»: [1-9]\d* en la fuente, [1-9]\d* dibujados, [1-9]\d* en la tabla")
+_correr("Lenguaje esencial: ningún CUA ni CUE nombra rutas, códigos, clases ni infraestructura (verificar-lenguaje-esencial.py)",
+        "verificar-lenguaje-esencial.py", r"Textos revisados: [1-9]\d*")
 
 print()
 if FALLAS:

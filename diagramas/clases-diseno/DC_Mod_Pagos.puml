@@ -31,8 +31,7 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class PaymentsService <<fachada>> {
-  + crearCheckoutDePago(pedidoId: Identificador,\n      metodoDePago: MetodoDePago): Cadena
-  + crearCheckoutDePago(pedido: Pedido,\n      metodoDePago: MetodoDePago): Cadena
+  + crearCheckoutDePago(metodoDePago: MetodoDePago,\n      pedidoId: Identificador = ninguno,\n      pedido: Pedido = ninguno): Cadena
 }
 interface PaymentGatewayPort <<puerto>> {
   + createCheckout(pedido: Pedido, items: Registro,\n      pagador: Cadena): Cadena

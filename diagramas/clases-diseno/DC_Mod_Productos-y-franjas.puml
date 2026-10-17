@@ -33,9 +33,10 @@ skinparam ranksep 90
 class GasCylinderService <<fachada>> {
   + actualizarPrecioDelProducto(productoId: Identificador,\n      precio: Moneda): Producto
   + configurarPromocionesDelProducto(productoId: Identificador,\n      promociones: Lista): Producto
-  + consultarCatalogo(pagina: Entero, limite: Entero,\n      distribuidora: Cadena,\n      out total: Entero): Producto[*]
+  + consultarCatalogo(pagina: Entero, limite: Entero,\n      distribuidora: Cadena): Registro
+  + consultarDetalleDelProducto(productoId: Identificador): Producto
   + consultarProducto(productoId: Identificador): Producto
-  + consultarProductosDisponibles(distribuidora: Cadena,\n      out mediosDePago: MetodoDePago[*]): Producto[*]
+  + consultarProductosDisponibles(distribuidora: Cadena): Registro
   + consultarProductosInactivos(): Producto[*]
   + crearProducto(tipo: Cadena, peso: Decimal,\n      precio: Moneda, stockInicial: Entero,\n      descripcion: Cadena, promociones: Lista): Producto
   + desactivarProducto(productoId: Identificador): Cadena
@@ -54,7 +55,6 @@ class TimeSlotService <<fachada>> {
   + consultarFranjasHorarias(): FranjaHoraria[*]
   + crearFranjaHoraria(nombre: Cadena, horaInicio: Hora,\n      horaFin: Hora, capacidad: Entero): FranjaHoraria
   + desactivarFranjaHoraria(franjaId: Identificador): FranjaHoraria
-  + eliminarFranjaHoraria(franjaId: Identificador): FranjaHoraria
   + listarFranjas(distribuidora: Cadena): FranjaHoraria[*]
   + modificarFranjaHoraria(franjaId: Identificador,\n      nombre: Cadena, horaInicio: Hora, horaFin: Hora,\n      capacidad: Entero): FranjaHoraria
   + validarFranjaDelPedido(franjaId: Identificador,\n      fecha: Fecha): FranjaHoraria

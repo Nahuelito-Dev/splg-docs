@@ -55,7 +55,7 @@ class Chofer {
   + getEmpleado(): Empleado
   + getHistorialDeVehiculos(pagina: Entero): AsignacionVehiculo[*]
   + getPedidoEnCurso(): Pedido
-  + getPedidos(pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
+  + getPedidos(pagina: Entero, limite: Entero): Registro
   + getPedidosEnCurso(): Entero
   + getRendicionAbierta()
   + getSaldo(): Moneda
@@ -67,7 +67,6 @@ class Chofer {
   + liberarVehiculo()
   + puedeRecibirOferta(distribuidora: Distribuidora): Booleano
   + recalcularPromedio()
-  + registrarToken(token: Cadena)
   + registrarVehiculo(tipo: Cadena, capacidad: Entero,\n      patente: Cadena, marca: Cadena, modelo: Cadena,\n      anio: Entero, color: Cadena): Vehiculo
   + usarVehiculo(vehiculo: Vehiculo, nota: Cadena,\n      administrador: Usuario)
   + validar()

@@ -14,7 +14,6 @@ sequenceDiagram
             SIS-)CHO: notificarPedidoCancelado(pedido)
         end
         SIS-)ADM: notificarPedidoCancelado(pedido)
-        Note over SIS: Si el pedido tenía un<br/>pago aprobado por una<br/>pasarela (planificado,<br/>I-7), se reintegra con<br/>CU-168
     else El pedido es de otro cliente o de otra distribuidora
         SIS-->>CLI: recurso no encontrado
     else El pedido ya está entregado o cancelado

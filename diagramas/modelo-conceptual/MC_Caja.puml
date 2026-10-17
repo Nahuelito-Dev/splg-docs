@@ -2,11 +2,6 @@
 !include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam class<<referencia>> {
-  BackgroundColor #F1F1F1
-  BorderColor #8A97A3
-  FontColor #55616C
-}
 skinparam packageStyle rectangle
 hide circle
 hide methods
@@ -24,9 +19,9 @@ class SesionDeCaja {
   abierta el
   monto inicial
   cerrada el
-  monto esperado
+  /monto esperado
   monto contado
-  diferencia
+  /diferencia
   observaciones
 }
 class CategoriaDeCaja {
@@ -43,11 +38,11 @@ class MovimientoDeCaja {
   descripción
   origen
 }
-class Distribuidora <<referencia>>
-class Usuario <<referencia>>
-class RendicionChofer <<referencia>>
-class AsientoCuentaCorriente <<referencia>>
-class LiquidacionComisiones <<referencia>>
+class Distribuidora #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+class RendicionChofer #F1F1F1;line:8A97A3;text:55616C
+class AsientoCuentaCorriente #F1F1F1;line:8A97A3;text:55616C
+class LiquidacionComisiones #F1F1F1;line:8A97A3;text:55616C
 
 
 Distribuidora "1" *-- "0..*" Caja : define >

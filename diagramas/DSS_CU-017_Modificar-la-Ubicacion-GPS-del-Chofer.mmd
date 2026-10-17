@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSS — CU-017 Modificar la Ubicación GPS del Chofer
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+    actor CLI as Cliente (ACT-01)
+    actor ADM as Administrador (ACT-03)
+
+    loop Mientras el chofer está conectado
+        CHO->>SIS: actualizarUbicacion(usuarioId, latitud, longitud)
+        activate SIS
+        opt Los datos de posición son válidos
+            opt El chofer tiene un pedido en curso
+                SIS-)CLI: notificarUbicacionDelChofer(pedido, latitud, longitud)
+                SIS-)ADM: notificarUbicacionDelChofer(pedido, latitud, longitud)
+            end
+        end
+        deactivate SIS
+    end

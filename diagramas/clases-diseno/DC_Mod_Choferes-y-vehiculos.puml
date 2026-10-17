@@ -36,8 +36,8 @@ class DeliveryService <<fachada>> {
   + actualizarPerfilDelChofer(choferId: Identificador,\n      datos: Registro): Chofer
   + ajustarSaldoDelChofer(choferId: Identificador,\n      monto: Moneda): Chofer
   + buscarChoferPorUsuario(usuario: Usuario): Chofer
-  + consultarDetalleDelChofer(choferId: Identificador,\n      out usuario: Usuario, out rol: Rol): Chofer
-  + consultarPerfilDelChofer(usuario: Usuario,\n      out saldo: Moneda): Chofer
+  + consultarDetalleDelChofer(choferId: Identificador): Registro
+  + consultarPerfilDelChofer(usuario: Usuario): Chofer
   + desactivarChofer(choferId: Identificador): Chofer
   + desactivarDisponibilidad(usuario: Usuario): Registro
   + eliminarChofer(choferId: Identificador)
@@ -58,7 +58,7 @@ class "List<Chofer>" as List_Chofer <<colección>> {
 }
 class CarService <<fachada>> {
   + buscarVehiculoPorPatente(patente: Cadena): Vehiculo
-  + consultarDetalleDelVehiculo(vehiculoId: Identificador,\n      out chofer: Chofer): Vehiculo
+  + consultarDetalleDelVehiculo(vehiculoId: Identificador): Registro
   + consultarVehiculosDelChofer(usuario: Usuario): Vehiculo[*]
   + editarVehiculo(vehiculoId: Identificador,\n      datos: Registro): Vehiculo
   + eliminarVehiculo(vehiculoId: Identificador)
@@ -76,8 +76,8 @@ class "Map<String, Vehiculo>" as Map_String_Vehiculo <<colección>> {
 class VehicleAssignmentService <<fachada>> {
   + consultarHistorialDeChoferesDelVehiculo(vehiculoId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
   + consultarHistorialDeVehiculosDelChofer(choferId: Identificador,\n      pagina: Entero): AsignacionVehiculo[*]
-  + consultarMiVehiculoEnUso(out inhabilitado: Booleano): Vehiculo
-  + consultarVehiculoEnUso(choferId: Identificador,\n      out inhabilitado: Booleano): Vehiculo
+  + consultarMiVehiculoEnUso(): Registro
+  + consultarVehiculoEnUso(choferId: Identificador): Registro
   + getEmpleadoAl(vehiculo: Vehiculo,\n      fechaYHora: FechaHora): Empleado
   + liberarVehiculoEnUso(choferId: Identificador)
   + ponerVehiculoEnUso(choferId: Identificador,\n      vehiculoId: Identificador,\n      nota: Cadena): AsignacionVehiculo

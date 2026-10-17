@@ -38,18 +38,18 @@ class OrderService <<fachada>> {
   + completarDiasSinVentas(ventasPorDia: Registro): Registro
   + consultarGraficoDeVentas(): Cadena
   + consultarHistorialDeEstados(pedidoId: Identificador): CambioEstadoPedido[*]
-  + consultarHistorialDePedidos(cliente: Cliente,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
+  + consultarHistorialDePedidos(cliente: Cliente,\n      pagina: Entero, limite: Entero): Registro
   + consultarModalidadesDeEntrega(direccionId: Identificador): ModalidadDeEntrega[*]
   + consultarPedido(pedidoId: Identificador): Pedido
   + consultarPedidoEnCurso(): Pedido
-  + consultarPedidosAsignados(choferId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
+  + consultarPedidosAsignados(choferId: Identificador,\n      pagina: Entero, limite: Entero): Registro
   + consultarPedidosDisponibles(pagina: Entero,\n      limite: Entero): Cadena
   + consultarResumenDePedidos(): Registro
   + despacharPedidoExpress(pedidoId: Identificador): Booleano
   + distribuidorasConPedidosDisponibles(): Distribuidora[*]
   + findAvailableOrders(distribuidora: Distribuidora): Pedido[*]
   + indicarQuienRecibe(pedidoId: Identificador,\n      nombre: Cadena, documento: Cadena,\n      relacion: Cadena): Pedido
-  + listarPedidos(pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
+  + listarPedidos(pagina: Entero, limite: Entero): Registro
   + obtenerCodigoDeEntrega(pedidoId: Identificador): Cadena
   + realizarCompraExpress(tipoGarrafa: Cadena,\n      metodoDePago: MetodoDePago): Pedido
   + rechazarOferta(pedidoId: Identificador): Booleano
@@ -73,15 +73,15 @@ class QuoteOrderUseCase <<controlador>> {
   + cotizarPedido(items: Lista, metodoDePago: MetodoDePago,\n      direccionId: Identificador, cliente: Cliente,\n      pedidoId: Identificador): Registro
 }
 class OrderStatusHistorySubscriber <<fachada>> {
-  + registrarCambioDeEstado(pedidoId: Identificador,\n      estadoAnterior: Cadena, estadoNuevo: Cadena,\n      autor: Usuario, motivo: Cadena): CambioEstadoPedido
+  + registrarCambioDeEstado(pedidoId: Identificador,\n      estadoAnterior: Cadena, estadoNuevo: Cadena,\n      autor: Identificador,\n      motivo: Cadena): CambioEstadoPedido
 }
 class "Map<String, Pedido>" as Map_String_Pedido <<colección>> {
   + get(clave: Cadena): Pedido
 }
 class "List<Pedido>" as List_Pedido <<colección>> {
-  + buscarDeLaDistribuidora(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
-  + buscarDelCliente(cliente: Cliente, pagina: Entero,\n      limite: Entero, out total: Entero): Pedido[*]
-  + buscarDisponibles(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero,\n      out total: Entero): Pedido[*]
+  + buscarDeLaDistribuidora(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero): Registro
+  + buscarDelCliente(cliente: Cliente, pagina: Entero,\n      limite: Entero): Registro
+  + buscarDisponibles(distribuidoraId: Identificador,\n      pagina: Entero, limite: Entero): Registro
   + buscarPendientesConMercadoPagoAnterioresA(plazo: Entero): Pedido[*]
   + buscarReservas(distribuidoraId: Identificador): Pedido[*]
   + buscarReservasConSeniaPagaHasta(hoy: Fecha): Pedido[*]

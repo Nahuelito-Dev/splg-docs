@@ -37,8 +37,7 @@ class CustomersGateway <<fabricación pura>> {
   + notifyCustomer(cliente: Cliente, evento: Registro,\n      posicion: UbicacionGPS)
 }
 class AdminGateway <<fabricación pura>> {
-  + notifyAdmins(incidencia: Incidencia)
-  + notifyAdmins(evento: Registro, posicion: UbicacionGPS)
+  + notifyAdmins(evento: Registro = ninguno,\n      posicion: UbicacionGPS = ninguno,\n      incidencia: Incidencia = ninguno)
 }
 class RoutesService <<fachada>> {
   + consultarRutaDelPedido(pedidoId: Identificador,\n      desde: Cadena): Registro

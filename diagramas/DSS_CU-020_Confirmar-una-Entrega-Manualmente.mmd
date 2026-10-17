@@ -9,7 +9,6 @@ sequenceDiagram
     activate SIS
     alt El pedido está en camino y el motivo es válido
         SIS-->>ADM: entrega registrada (estado ENTREGADO)
-        Note over SIS: Si el pago es en efectivo,<br/>sigue pendiente de cobro
         SIS-)CLI: notificarPedidoEntregado(pedido)
     else El pedido es de otra distribuidora
         SIS-->>ADM: recurso no encontrado

@@ -58,9 +58,7 @@ class UbicacionDeStock {
   - tipo: TipoDeUbicacion
   + «create» UbicacionDeStock(depositoDeStock: Deposito)
   + acreditar(producto: Producto,\n      condicionDestino: CondicionDeStock,\n      cantidad: Entero)
-  + ajustar(motivoConciliacion: MotivoDeAjuste, nota: Cadena,\n      correccionDeVendible: Entero,\n      administrador: Usuario): AjusteDeStock
-  + ajustar(motivo: Cadena, nota: Cadena, items: Registro,\n      lote: Identificador,\n      administrador: Usuario): AjusteDeStock
-  + ajustar(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena,\n      renglonesDeAjuste: ItemAjusteDeStock[*],\n      lote: Identificador,\n      administrador: Usuario): AjusteDeStock
+  + ajustar(nota: Cadena, administrador: Usuario,\n      motivo: Cadena = ninguno,\n      items: Registro = ninguno,\n      lote: Identificador = ninguno,\n      motivoConteoInicial: MotivoDeAjuste = ninguno,\n      renglonesDeAjuste: ItemAjusteDeStock[*] = ninguno,\n      motivoConciliacion: MotivoDeAjuste = ninguno,\n      correccionDeVendible: Entero = ninguno): AjusteDeStock
   + descontar(producto: Producto,\n      condicionOrigen: CondicionDeStock,\n      cantidad: Entero): Booleano
   + diferenciasContra(items: Registro): ItemAjusteDeStock[*]
   + getSaldos(productoId: Identificador): SaldoDeStock[*]
@@ -103,9 +101,7 @@ class AjusteDeStock {
   - motivo: MotivoDeAjuste
   - nota: Cadena
   - fecha: FechaHora
-  + «create» AjusteDeStock(motivoConciliacion: MotivoDeAjuste,\n      nota: Cadena, administrador: Usuario)
-  + «create» AjusteDeStock(motivo: Cadena, nota: Cadena,\n      lote: Identificador, administrador: Usuario)
-  + «create» AjusteDeStock(motivoConteoInicial: MotivoDeAjuste,\n      nota: Cadena, lote: Identificador,\n      administrador: Usuario)
+  + «create» AjusteDeStock(nota: Cadena,\n      administrador: Usuario, motivo: Cadena = ninguno,\n      lote: Identificador = ninguno,\n      motivoConteoInicial: MotivoDeAjuste = ninguno,\n      motivoConciliacion: MotivoDeAjuste = ninguno)
   + getDetalle()
   + getRenglones(): ItemAjusteDeStock[*]
 }

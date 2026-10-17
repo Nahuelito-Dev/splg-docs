@@ -6,6 +6,7 @@
 Produce, en diagramas/uml/, el .puml y sus .png/.svg de:
 
   CU_Sistema_Actores               los cinco actores y el canal por el que operan
+  CU_Sistema_Diagrama-De-Subsistemas  los subsistemas como paquetes, con los actores y el límite del sistema
   CU_Sistema_Diagrama-De-Contexto  actores contra subsistemas (limite del sistema)
   CU_Sistema_Diagrama-Completo     los N casos de uso, uno por uno, en su subsistema
 
@@ -39,7 +40,7 @@ for m in re.finditer(r'\*\*Código:\*\*\s*(CU-\d+)\s*\|\s*\*\*Caso de Uso:\*\*\s
     def campo(n):
         mm = re.search(rf'\*\*{n}:\*\*\s*(.*?)(?=\n\s*\*\*|\n\s*---|\Z)', resto, re.S)
         return re.sub(r'\s+', ' ', mm.group(1)).strip() if mm else ""
-    crudo = campo("Actor/es")
+    crudo = campo("Actor/es").split("; actores secundarios")[0]     # los secundarios salen de actores_cu.py
     act = set(re.findall(r'ACT-(\d\d)', crudo))
     if not act:
         for trozo in re.split(r'\s*[,/]\s*|\s+y\s+', crudo):
@@ -73,25 +74,7 @@ from paleta import TINTE, BORDE, COLOR_ACT
 # Relaciones entre casos de uso. El catalogo no las tiene: dicen que una operacion
 # necesita de otra —tipicamente, escribir sobre algo exige leerlo antes—, y son lo
 # que la catedra pidio que se viera en los diagramas de cada ABM.
-INCLUYE = {
-  # Solo comportamiento obligatorio compartido: el caso incluido lo ejecuta siempre el caso base.
-  # Que una operación parta del listado o de la ficha del registro es navegación, no un «include».
-  "SS-01": [("CU-002", "CU-082"), ("CU-003", "CU-082")],
-  "SS-02": [("CU-147", "CU-121"), ("CU-005", "CU-169"), ("CU-008", "CU-169"), ("CU-009", "CU-169"), ("CU-010", "CU-169"), ("CU-147", "CU-169")],
-  "SS-05": [],
-  "SS-07": [("CU-105", "CU-139"), ("CU-142", "CU-139"), ("CU-155", "CU-159"), ("CU-157", "CU-160")],
-  "SS-08": [("CU-038", "CU-213"), ("CU-212", "CU-250"), ("CU-213", "CU-250"), ("CU-296", "CU-250"), ("CU-220", "CU-250"), ("CU-222", "CU-250"), ("CU-219", "CU-250"), ("CU-274", "CU-250"), ("CU-276", "CU-250"), ("CU-278", "CU-220")],
-  "SS-09": [],
-  "SS-10": [],
-  "SS-11": [],
-  "SS-12": [],
-  "SS-13": [("CU-135", "CU-133"), ("CU-134", "CU-133")],
-  "SS-16": [],
-  "SS-03": [],
-  "SS-19": [("CU-188", "CU-187")],
-  "SS-21": [("CU-233", "CU-228"), ("CU-237", "CU-228"), ("CU-243", "CU-309")],
-  "SS-20": [],
-}
+from relaciones_cu import INCLUYE, INCLUYE_EXTERNO, EXTIENDE, extensiones, pe_id
 
 # Casos de uso factorizados: comportamiento comun que otros casos reutilizan
 # (<<include>>) o que se agrega solo si se cumple una condicion (<<extend>>).
@@ -100,32 +83,7 @@ INCLUYE = {
 # declara y la catedra pide ver la relacion en el diagrama.
 FACTORIZADO = {}   # no hay casos de uso factorizados: un caso incluido o una extensión tiene código propio
 
-# Inclusiones entre subsistemas distintos: el caso incluido vive en otro
-# subsistema y se dibuja fuera del limite del que lo incluye, con su codigo.
-INCLUYE_EXTERNO = [("CU-031","CU-082"), ("CU-086","CU-082"), ("CU-087","CU-082"),
-                   ("CU-174","CU-159"), ("CU-175","CU-160"),
-                   ("CU-012","CU-246"), ("CU-013","CU-246"), ("CU-015","CU-246"),
-                   ("CU-217","CU-250"), ("CU-280","CU-250"), ("CU-012","CU-248"), ("CU-013","CU-248"), ("CU-015","CU-248"), ("CU-080","CU-248"),
-                   ("CU-236","CU-005"), ("CU-020","CU-220"), ("CU-079","CU-220"),
-                   ("CU-012","CU-169"), ("CU-015","CU-169"), ("CU-018","CU-169"), ("CU-020","CU-169"), ("CU-072","CU-169"),
-                   ("CU-075","CU-169"), ("CU-077","CU-169"), ("CU-079","CU-169")]
-
 INCLUYE_FACTOR = {}
-
-# extension -> base, con su punto de extension. La flecha de <<extend>> va
-# SIEMPRE desde el caso opcional hacia el caso base, al reves que <<include>>.
-EXTIENDE = {
-  "SS-03": [],
-  "SS-04": [],
-  "SS-05": [("CU-174","CU-023","el cliente adjunta evidencia fotográfica")],
-  "SS-14": [("CU-168","CU-008","el pedido cancelado tiene un pago aprobado por una pasarela"),
-            ("CU-168","CU-010","el pedido cancelado tiene un pago aprobado por una pasarela"),
-            ("CU-168","CU-149","el pedido express pasa a reparto común y ya estaba pagado en linea")],
-  "SS-13": [("CU-135","CU-068","el envase que se va a asignar está vencido")],
-  "SS-16": [("CU-130","CU-129","la ficha se abre desde un pedido, un reclamo o una calificación y hay que ubicar al cliente por su cuenta de usuario")],
-  "SS-19": [("CU-177","CU-003","el chofer que se registra todavía no tiene legajo")],
-  "SS-21": [("CU-228","CU-227","el arqueo da un sobrante"), ("CU-309","CU-227","el arqueo da un faltante")],
-}
 
 # ---------- actores secundarios y generalizacion ----------
 # Los tres actores externos no estan en el campo Actor/es de los casos: ese campo
@@ -280,6 +238,13 @@ ALTO_MAX = 1600                 # alto máximo de una lámina (en unidades del S
 _lam_n = 0
 _plan_lam = []          # (actor, parte, partes, casos)
 
+import uml_completo
+NOTAS_3COL = ["Tres columnas: el actor, los casos de uso que inicia y, a la derecha, los casos relacionados con ellos por «include» o «extend».",
+              "Asociación actor–caso de uso: línea continua sin punta · «include»: del caso base al incluido · «extend»: del caso que extiende al caso base "
+              "(línea discontinua, con su punto de extensión PE-n, que figura también en el compartimiento «puntos de extensión» del caso base).",
+              "Cada «include» y cada «extend» tiene su propio trazo, con el rótulo junto a su arranque. Con relleno rosado, los casos de uso planificados; "
+              "con borde discontinuo, los casos de uso que no inicia el actor de este diagrama o que son de otro subsistema, solo como referencia."]
+
 def _svg_lamina(_k, _i, _np, _propios):
     _ajenos = set()
     for a, b in inc:
@@ -288,22 +253,17 @@ def _svg_lamina(_k, _i, _np, _propios):
         if (a in _propios) != (b in _propios): _ajenos.add(b if a in _propios else a)
     _casos = {c: dict(casos[c]) for c in _propios}
     for c in _ajenos:
-        _casos[c] = {**casos[c], "ss": REF, "nombre": f'{casos[c]["nombre"]} ({casos[c]["ss"]})'}
-    _paq = [{"id": s, "titulo": f"{s} {SS[s]}",
-             "casos": sorted(c for c in _propios if casos[c]["ss"] == s)}
-            for s in subs if any(casos[c]["ss"] == s for c in _propios)]
-    if _ajenos:
-        _paq.append({"id": REF, "titulo": "Casos de uso de otros actores (solo como referencia)", "casos": sorted(_ajenos)})
-    _inc = [(a, b) for a, b in inc if a in _casos and b in _casos and (a in _propios or b in _propios)]
-    _ext = [(a, b, p) for a, b, p in ext if a in _casos and b in _casos and (a in _propios or b in _propios)]
-    _rel = [("include", a, b, None) for a, b in _inc] + [("extend", a, b, p) for a, b, p in _ext]
+        _casos[c] = {**casos[c], "nombre": f'{casos[c]["nombre"]} ({casos[c]["ss"]})'}
+    _rel = [("include", a, b, None) for a, b in inc if a in _casos and b in _casos and (a in _propios or b in _propios)]
+    _rel += [("extend", a, b, p) for a, b, p in ext if a in _casos and b in _casos and (a in _propios or b in _propios)]
     _nom = NOMBRE_ACT[_k]
     _parte = f" — parte {_i} de {_np}" if _np > 1 else ""
-    return uml_lamina.columna(
-        _casos, _paq, NOMBRE_ACT, [_k], _asociaciones(_propios, {_k}), _rel,
-        ESP, GEN, LIMITE_TXT,
+    _act = {c: [_k] for c in _propios}
+    for c in _ajenos: _act[c] = []
+    return uml_completo.completo(
+        _casos, _act, NOMBRE_ACT, _rel, ESP, GEN, LIMITE_TXT,
         f"Diagrama de casos de uso — {_nom} (ACT-{_k}){_parte} · {len(_propios)} casos de uso",
-        ref_ss=REF if _ajenos else None, ref_lateral=True)
+        ref=_ajenos, orden=lambda c: (casos[c]["ss"], c), notas=NOTAS_3COL)
 
 def _alto(svg_txt):
     return float(re.search(r'height="([\d.]+)"', svg_txt[:600]).group(1))
@@ -356,7 +316,7 @@ _actores_de = {c: sorted(set(directos(c)) | {k for k, v in SECUNDARIO.items() if
 _rel_c = [("include", a, b, None) for a, b in inc] + [("extend", a, b, p) for a, b, p in ext]
 LAMINAS["CU_Sistema_Diagrama-Completo"] = uml_completo.completo(
     {c: dict(casos[c]) for c in casos}, _actores_de, NOMBRE_ACT, _rel_c, ESP, GEN,
-    LIMITE_TXT, f"Diagrama de casos de uso del sistema — SPLG ({len(casos)} casos de uso)")
+    LIMITE_TXT, f"Diagrama de casos de uso del sistema — SPLG ({len(casos)} casos de uso)", copias=26)
 
 _casos_act = {c: dict(casos[c]) for c in usados}
 _asoc_act = [(k, c, "principal") for k, lst in REPRESENTATIVOS.items() for c in lst]
@@ -369,6 +329,13 @@ LAMINAS["CU_Sistema_Actores"] = uml_lamina.columna(
 LAMINAS["CU_Sistema_Diagrama-De-Contexto"] = uml_lamina.contexto(
     _orden_ctx, NOMBRE_ACT, ROL, _lineas_ss, ESP, GEN, "Sistema de Pedidos y Logística de Garrafas de Gas (SPLG)",
     "Diagrama de Contexto del Sistema — SPLG")
+import uml_subsistemas
+_ad_ss = {s_: set() for s_ in subs}
+for _c_ in casos:
+    _ad_ss[casos[_c_]["ss"]] |= set(directos(_c_)) | {k_ for k_, v_ in SECUNDARIO.items() if _c_ in v_}
+LAMINAS["CU_Sistema_Diagrama-De-Subsistemas"] = uml_subsistemas.subsistemas(
+    subs, SS, cnt, _ad_ss, NOMBRE_ACT, ESP, GEN, LIMITE_TXT,
+    f"Diagrama de casos de uso del sistema por subsistemas — SPLG ({len(subs)} subsistemas · {len(casos)} casos de uso)")
 LAMINAS["CU_Sistema_Mapa"] = uml_lamina.mapa(
     casos, subs, SS, NOMBRE_ACT, ORDEN_ACT, directos, SECUNDARIO, ESP, GEN, LIMITE_TXT)
 for _n, _svg in LAMINAS.items():
@@ -496,7 +463,7 @@ for i, s, nombre, tit, cs in unidades:
     sec = {k: [c for c in SECUNDARIO[k] if c in cs] for k in sorted(SECUNDARIO)}
     sec = {k: v for k, v in sec.items() if v}
     quienes |= set(sec)
-    ext_s = [(a, b, p_) for a, b, p_ in EXTIENDE.get(s, []) if b in cs or a in cs or b not in casos or casos[b]["ss"] != s]
+    ext_s = [(a, b, p_) for a, b, p_ in EXTIENDE.get(s, []) if a in cs or (b in cs and casos[b]["ss"] == s)]
     inc_f = [(a, b) for a, b in INCLUYE_FACTOR.get(s, []) if b in cs or b not in casos]
     usados_f = sorted({x for a, b in inc_f for x in (a, b) if x.startswith("F-")}
                       | {a for a, b, _ in ext_s if a.startswith("F-")})
@@ -513,24 +480,19 @@ for i, s, nombre, tit, cs in unidades:
                     | {x for a, b in mismas for x in (a, b) if x not in cs}
                     | {x for a, b, _ in mismas_ext for x in (a, b) if x not in cs})
     _c = {c: dict(casos[c]) for c in cs}
-    for f_ in usados_f:
-        _c[f_] = {"nombre": FACTORIZADO[f_], "ss": s}
     for b_ in ajenos:
-        _c[b_] = {**casos[b_], "ss": REF, "nombre": f'{casos[b_]["nombre"]} ({casos[b_]["ss"]})'}
-    paq = [{"id": s, "titulo": f"{s} {SS[s]}", "casos": list(cs) + usados_f}]
-    if ajenos:
-        paq.append({"id": REF, "titulo": "Casos de uso de otros subsistemas (solo como referencia)", "casos": ajenos})
+        _c[b_] = {**casos[b_], "nombre": f'{casos[b_]["nombre"]} ({casos[b_]["ss"]})'}
     rel = [("include", a, b, None) for a, b in INCLUYE.get(s, []) if a in cs and b in cs]
-    rel += [("include", a, b, None) for a, b in inc_f]
     rel += [("include", a, b, None) for a, b in externos + entrantes + mismas]
     rel += [("extend", a, b, p_) for a, b, p_ in ext_s if not ((a in casos and b in casos and casos[a]["ss"] == s and casos[b]["ss"] == s and (a in cs) != (b in cs)))]
     rel += [("extend", a, b, p_) for a, b, p_ in mismas_ext]
-    asoc = [(k, c, "principal") for c in cs for k in directos(c) if k in quienes]
-    asoc += [(k, c, "secundario") for k, v in sec.items() for c in v]
-    LAMINAS[nombre] = uml_lamina.columna(
-        _c, paq, NOMBRE_ACT, [k for k in ORDEN_ACT if k in quienes], asoc, rel, ESP, GEN,
-        f"{s} {SS[s]}{': ' + tit if tit else ''}", f"{s} — {SS[s]}{': ' + tit if tit else ''} ({len(cs)} {'caso' if len(cs) == 1 else 'casos'} de uso)",
-        factorizados=FACTORIZADO, ref_ss=REF if ajenos else None, ref_lateral=True)
+    rel = [r for r in rel if r[1] in _c and r[2] in _c]
+    _act = {c: sorted(set(directos(c)) | {k for k, v in SECUNDARIO.items() if c in v}) for c in cs}
+    for c in ajenos: _act[c] = []
+    LAMINAS[nombre] = uml_completo.completo(
+        _c, _act, NOMBRE_ACT, rel, ESP, GEN, LIMITE_TXT,
+        f"{s} — {SS[s]}{': ' + tit if tit else ''} ({len(cs)} {'caso' if len(cs) == 1 else 'casos'} de uso)",
+        ref=set(ajenos), notas=NOTAS_3COL)
     open(UML + nombre + ".svg", "w", encoding="utf-8").write(LAMINAS[nombre])
     if os.path.exists(UML + nombre + ".puml"): os.remove(UML + nombre + ".puml")
     SUBSISTEMAS.append(nombre)

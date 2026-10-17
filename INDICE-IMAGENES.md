@@ -47,61 +47,33 @@ una en `svg/`, que conviene si hay que ampliarla.
 | `CU_Sistema_Completo-Lamina-01_Cliente_Parte-1.png` |
 | `CU_Sistema_Completo-Lamina-02_Cliente_Parte-2.png` |
 | `CU_Sistema_Completo-Lamina-03_Cliente_Parte-3.png` |
-| `CU_Sistema_Completo-Lamina-04_Cliente_Parte-4.png` |
-| `CU_Sistema_Completo-Lamina-05_Cliente_Parte-5.png` |
-| `CU_Sistema_Completo-Lamina-06_Cliente_Parte-6.png` |
-| `CU_Sistema_Completo-Lamina-07_Cliente_Parte-7.png` |
-| `CU_Sistema_Completo-Lamina-08_Cliente_Parte-8.png` |
-| `CU_Sistema_Completo-Lamina-09_Cliente_Parte-9.png` |
-| `CU_Sistema_Completo-Lamina-10_Cliente_Parte-10.png` |
-| `CU_Sistema_Completo-Lamina-11_Cliente_Parte-11.png` |
-| `CU_Sistema_Completo-Lamina-12_Cliente_Parte-12.png` |
-| `CU_Sistema_Completo-Lamina-13_Cliente_Parte-13.png` |
-| `CU_Sistema_Completo-Lamina-14_Chofer_Parte-1.png` |
-| `CU_Sistema_Completo-Lamina-15_Chofer_Parte-2.png` |
-| `CU_Sistema_Completo-Lamina-16_Chofer_Parte-3.png` |
-| `CU_Sistema_Completo-Lamina-17_Chofer_Parte-4.png` |
-| `CU_Sistema_Completo-Lamina-18_Administrador_Parte-1.png` |
-| `CU_Sistema_Completo-Lamina-19_Administrador_Parte-2.png` |
-| `CU_Sistema_Completo-Lamina-20_Administrador_Parte-3.png` |
-| `CU_Sistema_Completo-Lamina-21_Administrador_Parte-4.png` |
-| `CU_Sistema_Completo-Lamina-22_Administrador_Parte-5.png` |
-| `CU_Sistema_Completo-Lamina-23_Administrador_Parte-6.png` |
-| `CU_Sistema_Completo-Lamina-24_Administrador_Parte-7.png` |
-| `CU_Sistema_Completo-Lamina-25_Administrador_Parte-8.png` |
-| `CU_Sistema_Completo-Lamina-26_Administrador_Parte-9.png` |
-| `CU_Sistema_Completo-Lamina-27_Administrador_Parte-10.png` |
-| `CU_Sistema_Completo-Lamina-28_Administrador_Parte-11.png` |
-| `CU_Sistema_Completo-Lamina-29_Administrador_Parte-12.png` |
-| `CU_Sistema_Completo-Lamina-30_Administrador_Parte-13.png` |
-| `CU_Sistema_Completo-Lamina-31_Administrador_Parte-14.png` |
-| `CU_Sistema_Completo-Lamina-32_Administrador_Parte-15.png` |
-| `CU_Sistema_Completo-Lamina-33_Administrador_Parte-16.png` |
-| `CU_Sistema_Completo-Lamina-34_Administrador_Parte-17.png` |
-| `CU_Sistema_Completo-Lamina-35_Administrador_Parte-18.png` |
-| `CU_Sistema_Completo-Lamina-36_Administrador_Parte-19.png` |
-| `CU_Sistema_Completo-Lamina-37_Administrador_Parte-20.png` |
-| `CU_Sistema_Completo-Lamina-38_Administrador_Parte-21.png` |
-| `CU_Sistema_Completo-Lamina-39_Administrador_Parte-22.png` |
-| `CU_Sistema_Completo-Lamina-40_Administrador_Parte-23.png` |
-| `CU_Sistema_Completo-Lamina-41_Administrador_Parte-24.png` |
-| `CU_Sistema_Completo-Lamina-42_Administrador_Parte-25.png` |
-| `CU_Sistema_Completo-Lamina-43_Administrador-General_Parte-1.png` |
-| `CU_Sistema_Completo-Lamina-44_Administrador-General_Parte-2.png` |
-| `CU_Sistema_Completo-Lamina-45_Administrador-General_Parte-3.png` |
-| `CU_Sistema_Completo-Lamina-46_Administrador-General_Parte-4.png` |
-| `CU_Sistema_Completo-Lamina-47_Administrador-General_Parte-5.png` |
-| `CU_Sistema_Completo-Lamina-48_Administrador-General_Parte-6.png` |
-| `CU_Sistema_Completo-Lamina-49_Sistema-Automatico_Parte-1.png` |
-| `CU_Sistema_Completo-Lamina-50_Sistema-Automatico_Parte-2.png` |
-| `CU_Sistema_Completo-Lamina-51_Operador-Tecnico.png` |
-| `CU_Sistema_Completo-Lamina-52_MercadoPago.png` |
-| `CU_Sistema_Completo-Lamina-53_Firebase_Parte-1.png` |
-| `CU_Sistema_Completo-Lamina-54_Firebase_Parte-2.png` |
-| `CU_Sistema_Completo-Lamina-55_Servicio-De-Correo.png` |
-| `CU_Sistema_Completo-Lamina-56_Plataforma-De-Despliegue.png` |
+| `CU_Sistema_Completo-Lamina-04_Chofer_Parte-1.png` |
+| `CU_Sistema_Completo-Lamina-05_Chofer_Parte-2.png` |
+| `CU_Sistema_Completo-Lamina-06_Administrador_Parte-1.png` |
+| `CU_Sistema_Completo-Lamina-07_Administrador_Parte-2.png` |
+| `CU_Sistema_Completo-Lamina-08_Administrador_Parte-3.png` |
+| `CU_Sistema_Completo-Lamina-09_Administrador_Parte-4.png` |
+| `CU_Sistema_Completo-Lamina-10_Administrador_Parte-5.png` |
+| `CU_Sistema_Completo-Lamina-11_Administrador_Parte-6.png` |
+| `CU_Sistema_Completo-Lamina-12_Administrador_Parte-7.png` |
+| `CU_Sistema_Completo-Lamina-13_Administrador_Parte-8.png` |
+| `CU_Sistema_Completo-Lamina-14_Administrador_Parte-9.png` |
+| `CU_Sistema_Completo-Lamina-15_Administrador_Parte-10.png` |
+| `CU_Sistema_Completo-Lamina-16_Administrador_Parte-11.png` |
+| `CU_Sistema_Completo-Lamina-17_Administrador_Parte-12.png` |
+| `CU_Sistema_Completo-Lamina-18_Administrador_Parte-13.png` |
+| `CU_Sistema_Completo-Lamina-19_Administrador-General_Parte-1.png` |
+| `CU_Sistema_Completo-Lamina-20_Administrador-General_Parte-2.png` |
+| `CU_Sistema_Completo-Lamina-21_Administrador-General_Parte-3.png` |
+| `CU_Sistema_Completo-Lamina-22_Sistema-Automatico.png` |
+| `CU_Sistema_Completo-Lamina-23_Operador-Tecnico.png` |
+| `CU_Sistema_Completo-Lamina-24_MercadoPago.png` |
+| `CU_Sistema_Completo-Lamina-25_Firebase.png` |
+| `CU_Sistema_Completo-Lamina-26_Servicio-De-Correo.png` |
+| `CU_Sistema_Completo-Lamina-27_Plataforma-De-Despliegue.png` |
 | `CU_Sistema_Diagrama-Completo.png` |
 | `CU_Sistema_Diagrama-De-Contexto.png` |
+| `CU_Sistema_Diagrama-De-Subsistemas.png` |
 | `CU_Sistema_Mapa.png` |
 | `CU_Sistema_Subsistemas.png` |
 
@@ -111,7 +83,6 @@ una en `svg/`, que conviene si hay que ampliarla.
 |---|---|---|---|
 | CU-001 | Iniciar Sesión | `DSS_CU-001_Iniciar-Sesion.png` | `DSD_CU-001_iniciarSesion.png` |
 | CU-002 | Registrarse como Cliente | `DSS_CU-002_Registrarse-Como-Cliente.png` | `DSD_CU-002_registrarse.png` |
-| CU-003 | Registrar un Chofer (Gestión de Usuarios) | `DSS_CU-003_Registrar-un-Chofer.png` | `DSD_CU-003_registrarChofer.png` |
 | CU-004 | Consultar el Perfil de Usuario | `DSS_CU-004_Consultar-el-Perfil-de-Usuario.png` | `DSD_CU-004_consultarPerfil.png` · `DSD_CU-004_consultarPerfilCliente.png` |
 | CU-005 | Crear un Pedido | `DSS_CU-005_Crear-un-Pedido.png` | `DSD_CU-005_crearPedido.png` |
 | CU-006 | Consultar el Detalle de un Pedido | `DSS_CU-006_Consultar-el-Detalle-de-un-Pedido.png` | `DSD_CU-006_consultarPedido.png` |
@@ -119,36 +90,36 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-008 | Cancelar un Pedido (Cliente) | `DSS_CU-008_Cancelar-un-Pedido.png` | `DSD_CU-008_cancelarMiPedido.png` |
 | CU-009 | Liberar un Pedido (Chofer) | `DSS_CU-009_Liberar-un-Pedido.png` | `DSD_CU-009_liberarPedido.png` |
 | CU-010 | Cancelar un Pedido (Administrador) | `DSS_CU-010_Cancelar-un-Pedido.png` | `DSD_CU-010_cancelarPedido.png` |
-| CU-011 | Listar Todos los Pedidos | `DSS_CU-011_Listar-Todos-Los-Pedidos.png` | `DSD_CU-011_listarPedidos.png` |
+| CU-011 | Consultar Todos los Pedidos | `DSS_CU-011_Consultar-Todos-Los-Pedidos.png` | `DSD_CU-011_listarPedidos.png` |
 | CU-012 | Asignar un Chofer Manualmente | `DSS_CU-012_Asignar-un-Chofer-Manualmente.png` | `DSD_CU-012_asignarChoferAPedido.png` |
 | CU-013 | Asignar un Pedido Automáticamente por Proximidad | `DSS_CU-013_Asignar-un-Pedido-Automaticamente-por-Proximidad.png` | `DSD_CU-013_ofrecerAlSiguienteChofer.png` |
 | CU-014 | Vencer la Oferta y Ofrecer al Siguiente Chofer | `DSS_CU-014_Vencer-la-Oferta-y-Ofrecer-al-Siguiente-Chofer.png` | `DSD_CU-014_vencerOfertasExpiradas.png` |
 | CU-015 | Aceptar un Pedido | `DSS_CU-015_Aceptar-un-Pedido.png` | `DSD_CU-015_aceptarPedido.png` |
 | CU-016 | Rechazar un Pedido Ofrecido | `DSS_CU-016_Rechazar-un-Pedido-Ofrecido.png` | `DSD_CU-016_rechazarOferta.png` |
-| CU-017 | Actualizar la Ubicación GPS del Chofer | `DSS_CU-017_Actualizar-la-Ubicacion-GPS-del-Chofer.png` | `DSD_CU-017_actualizarUbicacion.png` |
+| CU-017 | Modificar la Ubicación GPS del Chofer | `DSS_CU-017_Modificar-la-Ubicacion-GPS-del-Chofer.png` | `DSD_CU-017_actualizarUbicacion.png` |
 | CU-018 | Marcar un Pedido "En Camino" | `DSS_CU-018_Marcar-un-Pedido-En-Camino.png` | `DSD_CU-018_marcarPedidoEnCamino.png` |
 | CU-019 | Avisar la Llegada al Cliente | `DSS_CU-019_Avisar-la-Llegada-al-Cliente.png` | `DSD_CU-019_avisarLlegada.png` |
 | CU-020 | Confirmar una Entrega Manualmente | `DSS_CU-020_Confirmar-una-Entrega-Manualmente.png` | `DSD_CU-020_confirmarEntrega.png` |
 | CU-022 | Activar la Disponibilidad | `DSS_CU-022_Activar-la-Disponibilidad.png` | `DSD_CU-022_activarDisponibilidad.png` |
 | CU-023 | Registrar un Reclamo | `DSS_CU-023_Registrar-un-Reclamo.png` | `DSD_CU-023_registrarReclamo.png` |
-| CU-024 | Listar los Reclamos | `DSS_CU-024_Listar-los-Reclamos.png` | `DSD_CU-024_listarReclamos.png` |
+| CU-024 | Consultar los Reclamos | `DSS_CU-024_Consultar-los-Reclamos.png` | `DSD_CU-024_listarReclamos.png` |
 | CU-025 | Resolver un Reclamo | `DSS_CU-025_Resolver-un-Reclamo.png` | `DSD_CU-025_resolverReclamo.png` |
-| CU-026 | Ver el Tablero General | `DSS_CU-026_Ver-el-Tablero-General.png` | `DSD_CU-026_consultarGraficoDeVentas.png` · `DSD_CU-026_consultarResumenDePedidos.png` |
-| CU-027 | Ver el Reporte de Ventas por Chofer | `DSS_CU-027_Ver-el-Reporte-de-Ventas-por-Chofer.png` | `DSD_CU-027_consultarVentasPorChofer.png` |
-| CU-028 | Ver el Reporte de Ventas por Producto | `DSS_CU-028_Ver-el-Reporte-de-Ventas-por-Producto.png` | `DSD_CU-028_consultarVentasPorProducto.png` |
-| CU-029 | Ver el Reporte por Método de Pago | `DSS_CU-029_Ver-el-Reporte-por-Metodo-de-Pago.png` | `DSD_CU-029_consultarVentasPorMetodoDePago.png` |
-| CU-030 | Ver el Gráfico de Ventas (últimos 7 días) | `DSS_CU-030_Ver-el-Grafico-de-Ventas.png` | `DSD_CU-030_consultarEvolucionDeVentas.png` |
+| CU-026 | Consultar el Tablero General | `DSS_CU-026_Consultar-el-Tablero-General.png` | `DSD_CU-026_consultarGraficoDeVentas.png` · `DSD_CU-026_consultarResumenDePedidos.png` |
+| CU-027 | Consultar el Reporte de Ventas por Chofer | `DSS_CU-027_Consultar-el-Reporte-de-Ventas-por-Chofer.png` | `DSD_CU-027_consultarVentasPorChofer.png` |
+| CU-028 | Consultar el Reporte de Ventas por Producto | `DSS_CU-028_Consultar-el-Reporte-de-Ventas-por-Producto.png` | `DSD_CU-028_consultarVentasPorProducto.png` |
+| CU-029 | Consultar el Reporte por Método de Pago | `DSS_CU-029_Consultar-el-Reporte-por-Metodo-de-Pago.png` | `DSD_CU-029_consultarVentasPorMetodoDePago.png` |
+| CU-030 | Consultar el Gráfico de Ventas (últimos 7 días) | `DSS_CU-030_Consultar-el-Grafico-de-Ventas.png` | `DSD_CU-030_consultarEvolucionDeVentas.png` |
 | CU-031 | Registrar un Chofer (Gestión de la Flota) | `DSS_CU-031_Registrar-un-Chofer.png` | `DSD_CU-031_registrarChoferEnLaFlota.png` |
 | CU-032 | Validar un Chofer | `DSS_CU-032_Validar-un-Chofer.png` | `DSD_CU-032_validarChofer.png` |
 | CU-033 | Activar un Chofer | `DSS_CU-033_Activar-un-Chofer.png` | `DSD_CU-033_activarChofer.png` |
 | CU-034 | Registrar un Vehículo del Chofer | `DSS_CU-034_Registrar-un-Vehiculo-del-Chofer.png` | `DSD_CU-034_registrarVehiculo.png` |
 | CU-035 | Consultar el Listado de Choferes | `DSS_CU-035_Consultar-el-Listado-de-Choferes.png` | `DSD_CU-035_listarChoferes.png` · `DSD_CU-035_listarChoferesActivos.png` |
 | CU-036 | Crear un Producto (Garrafa) | `DSS_CU-036_Crear-un-Producto.png` | `DSD_CU-036_crearProducto.png` |
-| CU-037 | Actualizar el Precio de un Producto | `DSS_CU-037_Actualizar-el-Precio-de-un-Producto.png` | `DSD_CU-037_actualizarPrecioDelProducto.png` |
-| CU-038 | Actualizar el Stock de un Producto | `DSS_CU-038_Actualizar-el-Stock-de-un-Producto.png` | `DSD_CU-038_actualizarStock.png` |
+| CU-037 | Modificar el Precio de un Producto | `DSS_CU-037_Modificar-el-Precio-de-un-Producto.png` | `DSD_CU-037_actualizarPrecioDelProducto.png` |
+| CU-038 | Modificar el Stock de un Producto | `DSS_CU-038_Modificar-el-Stock-de-un-Producto.png` | `DSD_CU-038_actualizarStock.png` |
 | CU-039 | Configurar las Promociones por Cantidad | `DSS_CU-039_Configurar-las-Promociones-por-Cantidad.png` | `DSD_CU-039_configurarPromocionesDelProducto.png` |
 | CU-040 | Desactivar un Producto | `DSS_CU-040_Desactivar-un-Producto.png` | `DSD_CU-040_desactivarProducto.png` |
-| CU-041 | Consultar el Catálogo de Productos | `DSS_CU-041_Consultar-el-Catalogo-de-Productos.png` | `DSD_CU-041_consultarCatalogo.png` · `DSD_CU-041_consultarProducto.png` · `DSD_CU-041_consultarProductosDisponibles.png` |
+| CU-041 | Consultar el Catálogo de Productos (Cliente) | `DSS_CU-041_Consultar-el-Catalogo-de-Productos-Cliente.png` | `DSD_CU-041_consultarProducto.png` · `DSD_CU-041_consultarProductosDisponibles.png` |
 | CU-042 | Crear una Franja Horaria | `DSS_CU-042_Crear-una-Franja-Horaria.png` | `DSD_CU-042_crearFranjaHoraria.png` |
 | CU-043 | Modificar una Franja Horaria | `DSS_CU-043_Modificar-una-Franja-Horaria.png` | `DSD_CU-043_modificarFranjaHoraria.png` |
 | CU-044 | Seleccionar una Franja Horaria al Crear un Pedido | `DSS_CU-044_Seleccionar-una-Franja-Horaria-al-Crear-un-Pedido.png` | `DSD_CU-044_validarFranjaDelPedido.png` |
@@ -168,7 +139,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-058 | Validar la Cobertura de una Dirección | `DSS_CU-058_Validar-la-Cobertura-de-una-Direccion.png` | `DSD_CU-058_validarCobertura.png` |
 | CU-059 | Dar de Baja un Polígono de Cobertura | `DSS_CU-059_Dar-de-Baja-un-Poligono-de-Cobertura.png` | `DSD_CU-059_eliminarZonaDeCobertura.png` |
 | CU-060 | Registrar una Incidencia de Entrega | `DSS_CU-060_Registrar-una-Incidencia-de-Entrega.png` | `DSD_CU-060_registrarIncidencia.png` |
-| CU-061 | Listar las Incidencias | `DSS_CU-061_Listar-las-Incidencias.png` | `DSD_CU-061_listarIncidencias.png` |
+| CU-061 | Consultar las Incidencias | `DSS_CU-061_Consultar-las-Incidencias.png` | `DSD_CU-061_listarIncidencias.png` |
 | CU-062 | Consultar las Incidencias de un Pedido | `DSS_CU-062_Consultar-las-Incidencias-de-un-Pedido.png` | `DSD_CU-062_consultarIncidenciasDelPedido.png` |
 | CU-063 | Resolver una Incidencia | `DSS_CU-063_Resolver-una-Incidencia.png` | `DSD_CU-063_resolverIncidencia.png` |
 | CU-064 | Calificar un Pedido (cliente↔chofer) | `DSS_CU-064_Calificar-un-Pedido.png` | `DSD_CU-064_calificarPedido.png` |
@@ -180,35 +151,30 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-070 | Registrar un Movimiento de Envase (cambio de estado) | `DSS_CU-070_Registrar-un-Movimiento-de-Envase.png` | `DSD_CU-070_registrarMovimientoDeEnvase.png` |
 | CU-071 | Consultar el Historial de Movimientos de un Envase | `DSS_CU-071_Consultar-el-Historial-de-Movimientos-de-un-Envase.png` | `DSD_CU-071_consultarHistorialDelEnvase.png` |
 | CU-072 | Crear una Reserva Programada con Seña | `DSS_CU-072_Crear-una-Reserva-Programada-con-Sena.png` | `DSD_CU-072_crearReserva.png` |
-| CU-073 | Listar las Reservas y el Estado de la Seña | `DSS_CU-073_Listar-las-Reservas-y-el-Estado-de-la-Sena.png` | `DSD_CU-073_listarReservas.png` |
+| CU-073 | Consultar las Reservas y el Estado de la Seña | `DSS_CU-073_Consultar-las-Reservas-y-el-Estado-de-la-Sena.png` | `DSD_CU-073_listarReservas.png` |
 | CU-074 | Confirmar la Seña Cobrada en Efectivo | `DSS_CU-074_Confirmar-la-Sena-Cobrada-en-Efectivo.png` | `DSD_CU-074_confirmarSenia.png` |
 | CU-075 | Activar las Reservas Vencidas Automáticamente | `DSS_CU-075_Activar-las-Reservas-Vencidas-Automaticamente.png` | `DSD_CU-075_activarReservasDelDia.png` |
 | CU-076 | Expirar las Reservas sin Seña Pagada | `DSS_CU-076_Expirar-las-Reservas-sin-Sena-Pagada.png` | `DSD_CU-076_expirarReservasSinSenia.png` |
 | CU-077 | Expirar los Pedidos de MercadoPago sin Pagar | `DSS_CU-077_Expirar-los-Pedidos-de-MercadoPago-sin-Pagar.png` | `DSD_CU-077_expirarPedidosSinPagar.png` |
-| CU-078 | Obtener el Código de Entrega (QR del chofer) | `DSS_CU-078_Obtener-El-Codigo-De-Entrega.png` | `DSD_CU-078_obtenerCodigoDeEntrega.png` |
+| CU-078 | Consultar el Código de Entrega (QR del chofer) | `DSS_CU-078_Consultar-El-Codigo-De-Entrega.png` | `DSD_CU-078_obtenerCodigoDeEntrega.png` |
 | CU-079 | Confirmar una Entrega Escaneando el QR (cliente) | `DSS_CU-079_Confirmar-una-Entrega-Escaneando-el-QR.png` | `DSD_CU-079_confirmarEntregaConCodigo.png` |
 | CU-080 | Consultar el Pool de Pedidos Disponibles | `DSS_CU-080_Consultar-El-Pool-De-Pedidos-Disponibles.png` | `DSD_CU-080_consultarPedidosDisponibles.png` |
 | CU-081 | Consultar los Pedidos Asignados al Chofer | `DSS_CU-081_Consultar-Los-Pedidos-Asignados-Al-Chofer.png` | `DSD_CU-081_consultarPedidosAsignados.png` |
 | CU-082 | Crear un Usuario Base | `DSS_CU-082_Crear-un-Usuario-Base.png` | `DSD_CU-082_crearUsuarioBase.png` |
-| CU-083 | Listar los Usuarios | `DSS_CU-083_Listar-los-Usuarios.png` | `DSD_CU-083_listarUsuarios.png` |
-| CU-084 | Verificar la Existencia de un Usuario (pre-registro) | `DSS_CU-084_Verificar-la-Existencia-de-un-Usuario.png` | `DSD_CU-084_verificarExistenciaDeUsuario.png` |
-| CU-085 | Eliminar un Usuario (baja lógica) | `DSS_CU-085_Eliminar-un-Usuario.png` | `DSD_CU-085_eliminarUsuario.png` |
+| CU-083 | Consultar los Usuarios | `DSS_CU-083_Consultar-los-Usuarios.png` | `DSD_CU-083_listarUsuarios.png` |
+| CU-085 | Dar de Baja un Usuario | `DSS_CU-085_Dar-de-Baja-un-Usuario.png` | `DSD_CU-085_eliminarUsuario.png` |
 | CU-086 | Registrar un Administrador | `DSS_CU-086_Registrar-un-Administrador.png` | `DSD_CU-086_registrarAdministrador.png` |
 | CU-087 | Crear el Primer Administrador General | `DSS_CU-087_Crear-el-Primer-Administrador-General.png` | `DSD_CU-087_crearPrimerSuperAdministrador.png` |
 | CU-088 | Consultar los Administradores | `DSS_CU-088_Consultar-los-Administradores.png` | `DSD_CU-088_buscarAdministrador.png` · `DSD_CU-088_listarAdministradores.png` |
 | CU-089 | Consultar los Roles | `DSS_CU-089_Consultar-los-Roles.png` | `DSD_CU-089_listarRoles.png` |
-| CU-090 | Sembrar los Roles Iniciales | `DSS_CU-090_Sembrar-Los-Roles-Iniciales.png` | `DSD_CU-090_sembrarRolesIniciales.png` |
 | CU-092 | Consultar el Listado de Clientes | `DSS_CU-092_Consultar-el-Listado-de-Clientes.png` | `DSD_CU-092_listarClientes.png` |
-| CU-094 | Actualizar la Ubicación del Cliente | `DSS_CU-094_Actualizar-la-Ubicacion-del-Cliente.png` | `DSD_CU-094_actualizarUbicacionDelCliente.png` |
-| CU-095 | Eliminar un Cliente (baja lógica) | `DSS_CU-095_Eliminar-un-Cliente.png` | `DSD_CU-095_eliminarCliente.png` |
-| CU-096 | Actualizar el Perfil del Chofer | `DSS_CU-096_Actualizar-el-Perfil-del-Chofer.png` | `DSD_CU-096_actualizarPerfilDelChofer.png` |
-| CU-097 | Eliminar un Chofer (baja lógica) | `DSS_CU-097_Eliminar-un-Chofer.png` | `DSD_CU-097_eliminarChofer.png` |
-| CU-098 | Registrar el Token de Notificaciones del Dispositivo | `DSS_CU-098_Registrar-El-Token-De-Notificaciones-Del-Dispositivo.png` | `DSD_CU-098_registrarTokenDeNotificaciones.png` |
-| CU-099 | Consultar los Tokens de un Usuario | `DSS_CU-099_Consultar-Los-Tokens-De-Un-Usuario.png` | `DSD_CU-099_consultarTokensDelUsuario.png` |
+| CU-094 | Modificar la Ubicación del Cliente | `DSS_CU-094_Modificar-la-Ubicacion-del-Cliente.png` | `DSD_CU-094_actualizarUbicacionDelCliente.png` |
+| CU-095 | Dar de Baja un Cliente | `DSS_CU-095_Dar-de-Baja-un-Cliente.png` | `DSD_CU-095_eliminarCliente.png` |
+| CU-096 | Modificar el Perfil del Chofer | `DSS_CU-096_Modificar-el-Perfil-del-Chofer.png` | `DSD_CU-096_actualizarPerfilDelChofer.png` |
+| CU-097 | Dar de Baja un Chofer | `DSS_CU-097_Dar-de-Baja-un-Chofer.png` | `DSD_CU-097_eliminarChofer.png` |
 | CU-100 | Enviar una Notificación de Prueba | `DSS_CU-100_Enviar-una-Notificacion-de-Prueba.png` | `DSD_CU-100_enviarNotificacionDePrueba.png` |
 | CU-101 | Reenviar la Notificación de Confirmación de Pedido | `DSS_CU-101_Reenviar-la-Notificacion-de-Confirmacion-de-Pedido.png` | `DSD_CU-101_reenviarConfirmacionDePedido.png` |
 | CU-102 | Probar el Servicio de Correo | `DSS_CU-102_Probar-El-Servicio-De-Correo.png` | `DSD_CU-102_probarServicioDeCorreo.png` |
-| CU-103 | Eliminar una Franja Horaria | `DSS_CU-103_Eliminar-una-Franja-Horaria.png` | `DSD_CU-103_eliminarFranjaHoraria.png` |
 | CU-104 | Verificar la Salud del Sistema (vida y disponibilidad) | `DSS_CU-104_Verificar-La-Salud-Del-Sistema.png` | `DSD_CU-104_verificarDisponibilidad.png` · `DSD_CU-104_verificarSalud.png` · `DSD_CU-104_verificarVida.png` |
 | CU-105 | Planificar el Mantenimiento y las Habilitaciones de la Flota | `DSS_CU-105_Planificar-El-Mantenimiento-Y-Las-Habilitaciones-De-La-Flota.png` | `DSD_CU-105_aceptarVentanaDeMantenimiento.png` · `DSD_CU-105_confirmarVentanaDeTaller.png` · `DSD_CU-105_planificarMantenimientoDeFlota.png` |
 | CU-106 | Anticipar la Recompra por Consumo Estimado | `DSS_CU-106_Anticipar-La-Recompra-Por-Consumo-Estimado.png` | `DSD_CU-106_aceptarInvitacionDeRecompra.png` · `DSD_CU-106_anticiparRecompras.png` |
@@ -216,15 +182,15 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-108 | Recuperar Envases No Devueltos | `DSS_CU-108_Recuperar-Envases-No-Devueltos.png` | `DSD_CU-108_aceptarRetiroEnLaEntrega.png` · `DSD_CU-108_gestionarEnvasesNoDevueltos.png` · `DSD_CU-108_resolverCasoDeRecupero.png` |
 | CU-109 | Consultar el Detalle del Chofer | `DSS_CU-109_Consultar-el-Detalle-del-Chofer.png` | `DSD_CU-109_consultarDetalleDelChofer.png` |
 | CU-110 | Buscar un Chofer por Usuario | `DSS_CU-110_Buscar-un-Chofer-por-Usuario.png` | `DSD_CU-110_buscarChoferPorUsuario.png` |
-| CU-111 | Editar un Vehículo | `DSS_CU-111_Editar-un-Vehiculo.png` | `DSD_CU-111_editarVehiculo.png` |
-| CU-112 | Eliminar un Vehículo | `DSS_CU-112_Eliminar-un-Vehiculo.png` | `DSD_CU-112_eliminarVehiculo.png` |
+| CU-111 | Modificar un Vehículo | `DSS_CU-111_Modificar-un-Vehiculo.png` | `DSD_CU-111_editarVehiculo.png` |
+| CU-112 | Dar de Baja un Vehículo | `DSS_CU-112_Dar-de-Baja-un-Vehiculo.png` | `DSD_CU-112_eliminarVehiculo.png` |
 | CU-113 | Consultar el Detalle del Vehículo | `DSS_CU-113_Consultar-el-Detalle-del-Vehiculo.png` | `DSD_CU-113_consultarDetalleDelVehiculo.png` |
 | CU-114 | Buscar un Vehículo por Patente | `DSS_CU-114_Buscar-un-Vehiculo-por-Patente.png` | `DSD_CU-114_buscarVehiculoPorPatente.png` |
 | CU-115 | Consultar los Vehículos de un Chofer | `DSS_CU-115_Consultar-los-Vehiculos-de-un-Chofer.png` | `DSD_CU-115_consultarVehiculosDelChofer.png` |
 | CU-116 | Registrar una Dirección de Entrega | `DSS_CU-116_Registrar-una-Direccion-de-Entrega.png` | `DSD_CU-116_registrarDireccionDeEntrega.png` |
 | CU-117 | Consultar Detalle de una Dirección de Entrega | `DSS_CU-117_Consultar-Detalle-de-una-Direccion-de-Entrega.png` | `DSD_CU-117_consultarDireccionDeEntrega.png` |
-| CU-118 | Editar una Dirección de Entrega | `DSS_CU-118_Editar-una-Direccion-de-Entrega.png` | `DSD_CU-118_editarDireccionDeEntrega.png` |
-| CU-119 | Eliminar una Dirección de Entrega | `DSS_CU-119_Eliminar-una-Direccion-de-Entrega.png` | `DSD_CU-119_eliminarDireccionDeEntrega.png` |
+| CU-118 | Modificar una Dirección de Entrega | `DSS_CU-118_Modificar-una-Direccion-de-Entrega.png` | `DSD_CU-118_editarDireccionDeEntrega.png` |
+| CU-119 | Dar de Baja una Dirección de Entrega | `DSS_CU-119_Dar-de-Baja-una-Direccion-de-Entrega.png` | `DSD_CU-119_eliminarDireccionDeEntrega.png` |
 | CU-120 | Marcar una Dirección como Predeterminada | `DSS_CU-120_Marcar-una-Direccion-como-Predeterminada.png` | `DSD_CU-120_marcarDireccionPredeterminada.png` |
 | CU-121 | Consultar la Dirección Predeterminada | `DSS_CU-121_Consultar-la-Direccion-Predeterminada.png` | `DSD_CU-121_consultarDireccionPredeterminada.png` |
 | CU-122 | Agregar un Ítem al Carrito | `DSS_CU-122_Agregar-un-Item-al-Carrito.png` | `DSD_CU-122_agregarItemAlCarrito.png` |
@@ -236,7 +202,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-128 | Indicar Quién Recibe el Pedido | `DSS_CU-128_Indicar-Quien-Recibe-el-Pedido.png` | `DSD_CU-128_indicarQuienRecibe.png` |
 | CU-129 | Consultar el Detalle del Cliente | `DSS_CU-129_Consultar-el-Detalle-del-Cliente.png` | `DSD_CU-129_consultarDetalleDelCliente.png` |
 | CU-130 | Buscar un Cliente por Usuario | `DSS_CU-130_Buscar-un-Cliente-por-Usuario.png` | `DSD_CU-130_buscarClientePorUsuario.png` |
-| CU-131 | Editar los Datos del Cliente | `DSS_CU-131_Editar-los-Datos-del-Cliente.png` | `DSD_CU-131_editarDatosDelCliente.png` |
+| CU-131 | Modificar los Datos del Cliente | `DSS_CU-131_Modificar-los-Datos-del-Cliente.png` | `DSD_CU-131_editarDatosDelCliente.png` |
 | CU-132 | Registrar la Revisión Periódica de un Envase | `DSS_CU-132_Registrar-la-Revision-Periodica-de-un-Envase.png` | `DSD_CU-132_registrarRevisionDeEnvase.png` |
 | CU-133 | Consultar la Vigencia de un Envase | `DSS_CU-133_Consultar-la-Vigencia-de-un-Envase.png` | `DSD_CU-133_consultarVigenciaDelEnvase.png` |
 | CU-134 | Consultar los Envases Próximos a Vencer | `DSS_CU-134_Consultar-los-Envases-Proximos-a-Vencer.png` | `DSD_CU-134_consultarEnvasesProximosAVencer.png` |
@@ -249,7 +215,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-141 | Registrar un Mantenimiento Realizado | `DSS_CU-141_Registrar-un-Mantenimiento-Realizado.png` | `DSD_CU-141_cerrarTareaDeFlota.png` |
 | CU-142 | Avisar los Vencimientos Próximos de la Flota | `DSS_CU-142_Avisar-los-Vencimientos-Proximos-de-la-Flota.png` | `DSD_CU-142_avisarVencimientosDeLaFlota.png` |
 | CU-143 | Declarar el Consumo Promedio al Registrarse | `DSS_CU-143_Declarar-el-Consumo-Promedio-al-Registrarse.png` | `DSD_CU-143_declararConsumoPromedio.png` |
-| CU-144 | Actualizar el Consumo Promedio Declarado | `DSS_CU-144_Actualizar-el-Consumo-Promedio-Declarado.png` | `DSD_CU-144_actualizarConsumoPromedio.png` |
+| CU-144 | Modificar el Consumo Promedio Declarado | `DSS_CU-144_Modificar-el-Consumo-Promedio-Declarado.png` | `DSD_CU-144_actualizarConsumoPromedio.png` |
 | CU-145 | Configurar los Días de Aviso Previo a la Recompra | `DSS_CU-145_Configurar-los-Dias-de-Aviso-Previo-a-la-Recompra.png` | `DSD_CU-145_configurarDiasDeAviso.png` |
 | CU-146 | Consultar la Fecha Estimada de Recompra | `DSS_CU-146_Consultar-la-Fecha-Estimada-de-Recompra.png` | `DSD_CU-146_consultarRecomprasEstimadas.png` |
 | CU-147 | Realizar una Compra Express | `DSS_CU-147_Realizar-una-Compra-Express.png` | `DSD_CU-147_realizarCompraExpress.png` |
@@ -258,7 +224,6 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-150 | Programar la Vigencia de un Polígono de Cobertura | `DSS_CU-150_Programar-la-Vigencia-de-un-Poligono-de-Cobertura.png` | `DSD_CU-150_programarVigenciaDeZona.png` |
 | CU-151 | Desactivar los Polígonos de Cobertura Vencidos | `DSS_CU-151_Desactivar-los-Poligonos-de-Cobertura-Vencidos.png` | `DSD_CU-151_desactivarZonasVencidas.png` |
 | CU-152 | Consultar el Registro de Auditoría | `DSS_CU-152_Consultar-El-Registro-De-Auditoria.png` | `DSD_CU-152_consultarAuditoria.png` · `DSD_CU-152_consultarAuditoriaDeDatos.png` |
-| CU-153 | Registrar Toda Operación de Escritura | `DSS_CU-153_Registrar-Toda-Operacion-De-Escritura.png` | `DSD_CU-153_registrarAuditoriaDeDato.png` · `DSD_CU-153_registrarOperacion.png` |
 | CU-154 | Consultar el Listado de Franjas Horarias | `DSS_CU-154_Consultar-el-Listado-de-Franjas-Horarias.png` | `DSD_CU-154_consultarFranjasHorarias.png` |
 | CU-155 | Adjuntar un Archivo a una Tarea de Flota | `DSS_CU-155_Adjuntar-un-Archivo-a-una-Tarea-de-Flota.png` | `DSD_CU-155_adjuntarArchivoALaTarea.png` |
 | CU-156 | Consultar los Adjuntos de una Tarea de Flota | `DSS_CU-156_Consultar-los-Adjuntos-de-una-Tarea-de-Flota.png` | `DSD_CU-156_consultarAdjuntosDeLaTarea.png` |
@@ -359,10 +324,10 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-251 | Modificar el Perfil de Usuario | `DSS_CU-251_Modificar-el-Perfil-de-Usuario.png` | `DSD_CU-251_actualizarPerfil.png` |
 | CU-252 | Crear un Rol | `DSS_CU-252_Crear-un-Rol.png` | `DSD_CU-252_crearRol.png` |
 | CU-253 | Modificar un Rol | `DSS_CU-253_Modificar-un-Rol.png` | `DSD_CU-253_actualizarRol.png` |
-| CU-254 | Eliminar un Rol | `DSS_CU-254_Eliminar-un-Rol.png` | `DSD_CU-254_eliminarRol.png` |
+| CU-254 | Dar de Baja un Rol | `DSS_CU-254_Dar-de-Baja-un-Rol.png` | `DSD_CU-254_eliminarRol.png` |
 | CU-255 | Crear un Puesto de Trabajo | `DSS_CU-255_Crear-un-Puesto-de-Trabajo.png` | `DSD_CU-255_crearPuestoDeTrabajo.png` |
 | CU-256 | Modificar un Puesto de Trabajo | `DSS_CU-256_Modificar-un-Puesto-de-Trabajo.png` | `DSD_CU-256_modificarPuestoDeTrabajo.png` |
-| CU-257 | Eliminar un Puesto de Trabajo | `DSS_CU-257_Eliminar-un-Puesto-de-Trabajo.png` | `DSD_CU-257_eliminarPuestoDeTrabajo.png` |
+| CU-257 | Dar de Baja un Puesto de Trabajo | `DSS_CU-257_Dar-de-Baja-un-Puesto-de-Trabajo.png` | `DSD_CU-257_eliminarPuestoDeTrabajo.png` |
 | CU-258 | Registrar un Depósito | `DSS_CU-258_Registrar-un-Deposito.png` | `DSD_CU-258_registrarDeposito.png` |
 | CU-259 | Modificar un Depósito | `DSS_CU-259_Modificar-un-Deposito.png` | `DSD_CU-259_actualizarDeposito.png` |
 | CU-260 | Dar de Baja un Depósito | `DSS_CU-260_Dar-de-Baja-un-Deposito.png` | `DSD_CU-260_darDeBajaDeposito.png` |
@@ -409,14 +374,14 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-301 | Confirmar una Transferencia | `DSS_CU-301_Confirmar-una-Transferencia.png` | `DSD_CU-301_confirmarTransferencia.png` |
 | CU-302 | Cotizar un Pedido | `DSS_CU-302_Cotizar-un-Pedido.png` | `DSD_CU-302_cotizarPedido.png` |
 | CU-303 | Consultar la Ruta de un Pedido | `DSS_CU-303_Consultar-la-Ruta-de-un-Pedido.png` | `DSD_CU-303_consultarRutaDelPedido.png` |
-| CU-304 | Ver los Cobros Pendientes | `DSS_CU-304_Ver-los-Cobros-Pendientes.png` | `DSD_CU-304_consultarCobrosPendientes.png` |
+| CU-304 | Consultar los Cobros Pendientes | `DSS_CU-304_Consultar-los-Cobros-Pendientes.png` | `DSD_CU-304_consultarCobrosPendientes.png` |
 | CU-305 | Modificar un Polígono de Cobertura | `DSS_CU-305_Modificar-un-Poligono-de-Cobertura.png` | `DSD_CU-305_modificarZonaDeCobertura.png` |
 | CU-306 | Consultar un Polígono de Cobertura | `DSS_CU-306_Consultar-un-Poligono-de-Cobertura.png` | `DSD_CU-306_consultarZonaDeCobertura.png` |
 | CU-307 | Activar un Polígono de Cobertura | `DSS_CU-307_Activar-un-Poligono-de-Cobertura.png` | `DSD_CU-307_activarZonaDeCobertura.png` |
 | CU-308 | Desactivar un Polígono de Cobertura | `DSS_CU-308_Desactivar-un-Poligono-de-Cobertura.png` | `DSD_CU-308_desactivarZonaDeCobertura.png` |
 | CU-309 | Registrar una Salida de Dinero de la Caja | `DSS_CU-309_Registrar-una-Salida-de-Dinero-de-la-Caja.png` | `DSD_CU-309_registrarSalidaDeDinero.png` |
 | CU-310 | Transferir Fondos entre Cajas | `DSS_CU-310_Transferir-Fondos-entre-Cajas.png` | `DSD_CU-310_transferirEntreCajas.png` |
-| CU-311 | Eliminar el Legajo de un Empleado | `DSS_CU-311_Eliminar-el-Legajo-de-un-Empleado.png` | `DSD_CU-311_eliminarEmpleado.png` |
+| CU-311 | Dar de Baja el Legajo de un Empleado | `DSS_CU-311_Dar-de-Baja-el-Legajo-de-un-Empleado.png` | `DSD_CU-311_eliminarEmpleado.png` |
 | CU-312 | Reingresar a un Empleado | `DSS_CU-312_Reingresar-a-un-Empleado.png` | `DSD_CU-312_reingresarEmpleado.png` |
 | CU-313 | Corregir la Asistencia de un Empleado | `DSS_CU-313_Corregir-la-Asistencia-de-un-Empleado.png` | `DSD_CU-313_corregirAsistencia.png` |
 | CU-314 | Consultar la Asistencia de los Empleados | `DSS_CU-314_Consultar-la-Asistencia-de-los-Empleados.png` | `DSD_CU-314_consultarAsistencias.png` |
@@ -449,12 +414,13 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-341 | Modificar un Pedido Pendiente (Cliente) | `DSS_CU-341_Modificar-un-Pedido-Pendiente.png` | `DSD_CU-341_modificarMiPedido.png` |
 | CU-342 | Activar una Franja Horaria | `DSS_CU-342_Activar-una-Franja-Horaria.png` | `DSD_CU-342_activarFranjaHoraria.png` |
 | CU-343 | Desactivar una Franja Horaria | `DSS_CU-343_Desactivar-una-Franja-Horaria.png` | `DSD_CU-343_desactivarFranjaHoraria.png` |
+| CU-344 | Consultar el Catálogo de Productos (Administrador) | `DSS_CU-344_Consultar-el-Catalogo-de-Productos-Administrador.png` | `DSD_CU-344_consultarCatalogo.png` · `DSD_CU-344_consultarDetalleDelProducto.png` |
 
 ## Módulos de gestión planificados: modelos y estados
 
 Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras, caja y rendición): modelo conceptual, modelo físico, entidad-relación conceptual, clases de dominio y de diseño, y diagramas de estados. Las tablas planificadas se dibujan con el estereotipo «propuesto».
 
-### Personal y legajos (iteración I-11)
+### Personal y legajos (iteración C-08)
 
 | Imagen | Qué es |
 |---|---|
@@ -463,11 +429,11 @@ Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras,
 | `diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png` | Modelo entidad-relación conceptual — Personal |
 | `diagramas/clases-diseno/DC_Personal.png` | Clases de dominio: personal |
 | `diagramas/clases-diseno/DC_Mod_Personal.png` | Clases de diseño: módulo personal |
-| `diagramas/uml/UML_Estados_Empleado.png` | Diagrama de estados — Empleado (egreso y reingreso construidos; «de licencia» planificado, I-11) |
-| `diagramas/uml/UML_Estados_Licencia.png` | Diagrama de estados — Licencia laboral (planificado, I-11) |
-| `diagramas/uml/UML_Estados_Jornada.png` | Diagrama de estados — Jornada de trabajo (planificado, I-11) |
+| `diagramas/uml/UML_Estados_Empleado.png` | Diagrama de estados — Empleado (egreso y reingreso construidos; «de licencia» planificado, C-08) |
+| `diagramas/uml/UML_Estados_Licencia.png` | Diagrama de estados — Licencia laboral (planificado, C-08) |
+| `diagramas/uml/UML_Estados_Jornada.png` | Diagrama de estados — Jornada de trabajo (planificado, C-08) |
 
-### Flota ampliada (iteración I-12)
+### Flota ampliada (iteración C-18)
 
 | Imagen | Qué es |
 |---|---|
@@ -476,13 +442,13 @@ Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras,
 | `diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png` | Modelo entidad-relación conceptual — Gastos de la flota |
 | `diagramas/clases-diseno/DC_Gastos-de-flota.png` | Clases de dominio: gastos de flota |
 | `diagramas/clases-diseno/DC_Mod_Flota-gastos.png` | Clases de diseño: módulo flota gastos |
-| `diagramas/uml/UML_Estados_CargaCombustible.png` | Diagrama de estados — Carga de combustible (planificado, I-12) |
-| `diagramas/uml/UML_Estados_MultaTransito.png` | Diagrama de estados — Multa de tránsito (planificado, I-12) |
-| `diagramas/uml/UML_Estados_Siniestro.png` | Diagrama de estados — Siniestro (planificado, I-12) |
-| `diagramas/uml/UML_Estados_Neumatico.png` | Diagrama de estados — Neumático (planificado, I-12, opcional) |
-| `diagramas/uml/UML_Estados_PolizaDelVehiculo.png` | Diagrama de estados — Vigencia de la póliza y de la habilitación (planificado, I-12) |
+| `diagramas/uml/UML_Estados_CargaCombustible.png` | Diagrama de estados — Carga de combustible (planificado, C-18) |
+| `diagramas/uml/UML_Estados_MultaTransito.png` | Diagrama de estados — Multa de tránsito (planificado, C-18) |
+| `diagramas/uml/UML_Estados_Siniestro.png` | Diagrama de estados — Siniestro (planificado, C-18) |
+| `diagramas/uml/UML_Estados_Neumatico.png` | Diagrama de estados — Neumático (planificado, C-18, opcional) |
+| `diagramas/uml/UML_Estados_PolizaDelVehiculo.png` | Diagrama de estados — Vigencia de la póliza y de la habilitación (planificado, C-18) |
 
-### Stock y compras (iteración I-13)
+### Stock y compras (iteración C-09)
 
 | Imagen | Qué es |
 |---|---|
@@ -504,7 +470,7 @@ Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras,
 | `diagramas/uml/UML_Estados_RecepcionDeCompra.png` | Diagrama de estados — Recepción de compra |
 | `diagramas/uml/UML_Estados_CargaDeCamion.png` | Diagrama de estados — Carga de camión |
 
-### Caja y rendición (iteración I-14)
+### Caja y rendición (iteración C-20)
 
 | Imagen | Qué es |
 |---|---|

@@ -11,7 +11,6 @@ sequenceDiagram
     alt Otra instancia ya está ejecutando el proceso
         SIS-->>SAU: ejecución salteada
     else Hay rendiciones atrasadas
-        Note over SAU,SIS: Marca cada rendición como avisada
         SIS-)ADM: notificarRendicionesSinCerrar(rendiciones)
         SIS-->>SAU: avisos enviados (cantidad)
     else No hay rendiciones atrasadas

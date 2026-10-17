@@ -5,17 +5,17 @@
 
 Por cada CU de `Casos-de-Uso.md` §3 comprueba:
 
-  1. CU     aparece en el diagrama de casos de uso de su subsistema (`diagramas/uml/CU_SS-xx_*.puml`)
+  1. CU     aparece en el diagrama de casos de uso de su subsistema (`diagramas/uml/CU_SS-xx_*.svg`, atributo `data-cu`)
   2. CUA    alto nivel en el Documento 0 §7 y en `Casos-de-Uso.md` §4
   3. CUE    expandido en el Documento 1 §7 y en `Casos-de-Uso.md` §5, con su campo Estado
   4. DSS    diagrama de secuencia del sistema en el Documento 2 y en `Casos-de-Uso.md` §6,
-            con su `.mmd`, su PNG y su SVG. Un caso incluido (ningún actor lo inicia) no tiene
-            diagrama propio: en los dos documentos lleva la nota que remite a su caso base
+            con su `.mmd`, su PNG y su SVG. Un caso incluido también lo tiene: el actor es el de su caso
+            base principal y el DSS lleva la nota «Caso incluido»
   5. DSD    diagrama de interacción de diseño en el Documento 3 y en `Casos-de-Uso.md` §7,
             con su `.mmd`, su PNG y su SVG
 
 y el estado: el campo Estado del CUE es «Implementado», «Implementado, con funcionalidad
-planificada…» o «Planificado (I-n)…», con la misma redacción en todos los planificados, y la
+planificada…» o «Planificado (C-nn)…», con la misma redacción en todos los planificados, y la
 columna Estado de los dos catálogos coincide con él. Sale 0 si todo cierra, 1 y el detalle si no.
 """
 import re, os, glob, sys
@@ -84,16 +84,17 @@ def tiene_dia(t, tipo, cu):
     return re.search(pat, t, re.M) is not None or re.search(rf'^\s*title {tipo} — {cu}\b', t, re.M) is not None
 
 
-# ---- diagramas de casos de uso por subsistema
-puml = {}
-for f in glob.glob(D + "diagramas/uml/CU_SS-*.puml"):
+# ---- diagramas de casos de uso por subsistema (SVG propios: cada óvalo lleva data-cu)
+svg_cu = {}
+svg_ss = {}
+for f in glob.glob(D + "diagramas/uml/CU_SS-*.svg"):
     txt = open(f, encoding="utf-8").read()
-    for n in re.findall(r'usecase "CU-(\d{3})\\n', txt):
-        puml.setdefault(f"CU-{n}", set()).add(os.path.basename(f))
-puml_ss = {}
-for f in glob.glob(D + "diagramas/uml/CU_SS-*.puml"):
-    ss = re.match(r'CU_(SS-\d\d)_', os.path.basename(f)).group(1)
-    puml_ss[os.path.basename(f)] = ss
+    b = os.path.basename(f)
+    svg_ss[b] = re.match(r'CU_(SS-\d\d)_', b).group(1)
+    for n in set(re.findall(r'data-cu="CU-(\d{3})"', txt)):
+        svg_cu.setdefault(f"CU-{n}", set()).add(b)
+if not svg_cu:
+    sys.exit("No encuentro ningún óvalo (data-cu) en diagramas/uml/CU_SS-*.svg: el verificador no puede dar OK sin leer diagramas")
 
 # ---- imágenes
 def imagenes(tipo, cu):
@@ -106,15 +107,15 @@ def imagenes(tipo, cu):
     return res
 
 
-ESTADO_PLAN = re.compile(r'^Planificado \((I-\d+)\)\. Registrado en el Documento 0, plan de construcción de los casos de uso planificados\.$')
-ESTADO_PARCIAL = re.compile(r'^Implementado, con funcionalidad planificada(?: \((I-\d+(?:, I-\d+)*)\))?: .+\.$')
+ESTADO_PLAN = re.compile(r'^Planificado \((C-\d+)\)\. Registrado en el Documento 0, plan de construcción de los casos de uso planificados\.$')
+ESTADO_PARCIAL = re.compile(r'^Implementado, con funcionalidad planificada(?: \((C-\d+(?:, C-\d+)*)\))?: .+\.$')
 
 n_plan = n_parcial = 0
 for cu in codigos:
     m = cat_cas[cu]
     ss = m.group(3)
     # 1. diagrama del subsistema
-    if not any(puml_ss.get(a) == ss for a in puml.get(cu, ())):
+    if not any(svg_ss.get(a) == ss for a in svg_cu.get(cu, ())):
         falta(cu, f"no está en el diagrama de casos de uso de {ss}")
     # 2. CUA
     if not tiene_cua(CUA_PLAN, cu):
@@ -126,28 +127,26 @@ for cu in codigos:
         falta(cu, "sin CUE en el Documento 1")
     if not tiene_cue(CUE_CAS, cu):
         falta(cu, "sin CUE en Casos-de-Uso.md")
-    # 4. DSS (un caso incluido no tiene diagrama propio, pero sí su nota)
+    # 4. DSS: un caso incluido también tiene su diagrama (el actor es el de su caso base principal) y lleva además la nota
+    #    que remite a los casos que lo incluyen
     incluido = es_incluido(cu)
+    if not tiene_dia(DSS_ANA, "DSS", cu):
+        falta(cu, "sin DSS en el Documento 2")
+    if not tiene_dia(DSS_CAS, "DSS", cu):
+        falta(cu, "sin DSS en Casos-de-Uso.md")
     if incluido:
-        if not tiene_nota_de_incluido(DSS_ANA, cu):
-            falta(cu, "caso incluido sin la nota que remite a su caso base en el Documento 2")
-        if not tiene_nota_de_incluido(DSS_CAS, cu):
-            falta(cu, "caso incluido sin la nota que remite a su caso base en Casos-de-Uso.md")
-        if imagenes("DSS", cu):
-            falta(cu, "caso incluido con diagrama de secuencia propio")
-    else:
-        if not tiene_dia(DSS_ANA, "DSS", cu):
-            falta(cu, "sin DSS en el Documento 2")
-        if not tiene_dia(DSS_CAS, "DSS", cu):
-            falta(cu, "sin DSS en Casos-de-Uso.md")
+        for _doc, _dn in ((DSS_ANA, "el Documento 2"), (DSS_CAS, "Casos-de-Uso.md")):
+            _h = re.search(rf'^#{{3,5}}\s+[^\n]*DSS\s+—\s+{cu}:[^\n]*\n', _doc, re.M)
+            _fin = re.search(r'^#{3,5}\s', _doc[_h.end():], re.M) if _h else None
+            _cuerpo = _doc[_h.end(): _h.end() + _fin.start()] if _h and _fin else (_doc[_h.end():] if _h else "")
+            if "Caso incluido" not in _cuerpo:
+                falta(cu, f"caso incluido: su DSS no lleva la nota «Caso incluido» en {_dn}")
     # 5. DSD
     if not tiene_dia(DSD_DIS, "DSD", cu):
         falta(cu, "sin DSD en el Documento 3")
     if not tiene_dia(DSD_CAS, "DSD", cu):
         falta(cu, "sin DSD en Casos-de-Uso.md")
     for tipo in ("DSS", "DSD"):
-        if tipo == "DSS" and incluido:
-            continue
         ims = imagenes(tipo, cu)
         if not ims:
             falta(cu, f"sin .mmd de {tipo}")

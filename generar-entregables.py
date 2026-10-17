@@ -65,7 +65,9 @@ def copiar(origen, nombre, descripcion, vectorial=False):
 
 n = 0
 copiar("CU_Sistema_Diagrama-Completo", "00-Diagrama-de-Casos-de-Uso-Completo",
-       "Diagrama de casos de uso del sistema: los 340 casos de uso en una sola imagen (también SVG y PDF vectoriales)", True)
+       "Diagrama de casos de uso del sistema: los 334 casos de uso en una sola imagen, en tres columnas (también SVG y PDF vectoriales)", True)
+n += 1
+copiar("CU_Sistema_Diagrama-De-Subsistemas", f"{n:02d}-Diagrama-por-subsistemas", "Diagrama de casos de uso del sistema por subsistemas: los paquetes con los actores y el límite del sistema")
 n += 1
 copiar("CU_Sistema_Actores", f"{n:02d}-Actores", "Los actores del sistema y la generalización del Administrador General en el Administrador")
 for p in sorted(glob.glob(UML + "CU_Sistema_Completo-Lamina-*.png")):
@@ -92,8 +94,8 @@ txt = ["DIAGRAMAS DE CASOS DE USO — SPLG (Sistema de Pedidos y Logística de G
        "Cada imagen se lee sola: lleva su título, el nombre del sistema en el límite y la leyenda de la notación.",
        "Los PNG están exportados al doble de tamaño (el diagrama 00, a la escala máxima que admite un PNG: 32.000 px de alto);",
        "para ampliar o imprimir en A4 sin perder nitidez, usar el SVG o el PDF de la imagen 00.", "",
-       "Notación: UML 2.5. Rosado = caso de uso planificado. «include» y «extend» con arco discontinuo dentro de un grupo;",
-       "hacia otro grupo, un trazo corto con el código del caso al que remiten.", "", "ÍNDICE", ""]
+       "Notación: UML 2.5. Rosado = caso de uso planificado. Cada «include» y cada «extend» tiene su propio trazo discontinuo, con",
+       "el estereotipo junto al trazo; un caso de otro actor o de otro subsistema figura con borde discontinuo, solo como referencia.", "", "ÍNDICE", ""]
 for nombre, desc, vec in indice:
     txt.append(f"  {nombre}.png" + (" (+ .svg, .pdf)" if vec else ""))
     txt.append(f"      {desc}")

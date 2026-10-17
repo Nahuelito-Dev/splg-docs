@@ -17,49 +17,49 @@ language es
 -- Fase de Elaboración --
 [E-01 Elaboración] as [E01] starts 2026-04-28 and ends 2026-05-19
 [E01] is colored in #8FB996
--- Fase de Construcción --
+-- Fase de Construcción: hasta el Release 2.0 --
 [C-01 Autenticación y base] as [C01] starts 2026-05-19 and ends 2026-06-02
 [C-02 Pedidos, stock y despacho] as [C02] starts 2026-06-02 and ends 2026-06-23
 [C-03 Tiempo real y App Chofer] as [C03] starts 2026-06-23 and ends 2026-07-14
 [C-04 Reclamos, reportes y Panel] as [C04] starts 2026-07-14 and ends 2026-08-04
 [C-05 App Cliente y Release 2.0] as [C05] starts 2026-08-04 and ends 2026-09-08
-[C-06 Alcance ampliado] as [C06] starts 2026-09-09 and ends 2026-10-20
+[C-06 Modelo de datos, auditoría y flota] as [C06] starts 2026-09-09 and ends 2026-09-30
 [C01] is colored in #D9A66B
 [C02] is colored in #D9A66B
 [C03] is colored in #D9A66B
 [C04] is colored in #D9A66B
 [C05] is colored in #D9A66B
 [C06] is colored in #D9A66B
--- Iteraciones de C-06 que cierran el 20/10 (I-1, I-2, I-3 e I-5) --
-[I-1 Cimientos] as [I1] starts 2026-10-01 and lasts 5 days
-[I-2 Vigencia de envases] as [I2] starts at [I1]'s end and lasts 5 days
-[I-3 Carrito persistente] as [I3] starts at [I1]'s end and lasts 6 days
-[I-5 Consumo declarado y reclamos con imagen] as [I5] starts at [I1]'s end and lasts 6 days
-[I1] is colored in #E6C7A0
-[I2] is colored in #E6C7A0
-[I3] is colored in #E6C7A0
-[I5] is colored in #E6C7A0
--- Iteraciones postergadas a después de la defensa (fechas estimadas) --
-[I-4 Pedido en curso] as [I4] starts 2026-10-14 and lasts 9 days
-[I-6 Recompra (M3)] as [I6] starts 2026-10-21 and lasts 6 days
-[I-8 Recupero de envases (M5)] as [I8] starts 2026-10-21 and lasts 6 days
-[I-10 Flota (M2)] as [I10] starts 2026-10-21 and lasts 10 days
-[I-7 Compra express y reintegros] as [I7] starts at [I4]'s end and lasts 8 days
-[I-9 Recorridos (M4)] as [I9] starts at [I7]'s end and lasts 8 days
-[I-11 Personal y legajos] as [I11] starts 2026-10-07 and lasts 21 days
-[I-12 Flota ampliada] as [I12] starts 2026-11-06 and lasts 10 days
-[I-13 Stock y compras] as [I13] starts 2026-10-11 and lasts 4 days
-[I-14 Caja y rendición] as [I14] starts 2026-11-23 and lasts 20 days
-[I4] is colored in #F0E1CC
-[I6] is colored in #F0E1CC
-[I7] is colored in #F0E1CC
-[I8] is colored in #F0E1CC
-[I9] is colored in #F0E1CC
-[I10] is colored in #F0E1CC
-[I11] is colored in #F0E1CC
-[I12] is colored in #F0E1CC
-[I13] is colored in #F0E1CC
-[I14] is colored in #F0E1CC
+-- Fase de Construcción: alcance ampliado, iteraciones iniciadas --
+[C-07 Cimientos y huecos cortos (C-07)] as [C07] starts 2026-10-01 and ends 2026-10-21
+[C-08 Personal y legajos (C-08)] as [C08] starts 2026-10-04 and ends 2026-11-05
+[C-09 Stock y compras (C-09)] as [C09] starts 2026-10-11 and ends 2026-10-14
+[C-10 Pedido en curso (C-10)] as [C10] starts 2026-10-14 and ends 2026-10-29
+[C07] is colored in #E6C7A0
+[C08] is colored in #E6C7A0
+[C09] is colored in #E6C7A0
+[C10] is colored in #E6C7A0
+-- Fase de Construcción: alcance ampliado, iteraciones pendientes (fechas estimadas) --
+[C-11 Vigencia de envases (C-11)] as [C11] starts 2026-10-19 and ends 2026-10-23
+[C-12 Carrito persistente (C-12)] as [C12] starts 2026-10-19 and ends 2026-10-26
+[C-13 Consumo declarado (C-13)] as [C13] starts 2026-10-19 and ends 2026-10-26
+[C-14 Flota, módulo M2 (C-14)] as [C14] starts 2026-10-19 and ends 2026-10-30
+[C-15 Recupero de envases, M5 (C-15)] as [C15] starts 2026-10-26 and ends 2026-11-02
+[C-16 Recompra, M3 (C-16)] as [C16] starts 2026-10-27 and ends 2026-11-03
+[C-17 Compra express y reintegros (C-17)] as [C17] starts 2026-10-30 and ends 2026-11-10
+[C-18 Flota ampliada (C-18)] as [C18] starts 2026-11-06 and ends 2026-11-19
+[C-19 Recorridos, M4 (C-19)] as [C19] starts 2026-11-11 and ends 2026-11-20
+[C-20 Caja y rendición (C-20)] as [C20] starts 2026-11-23 and ends 2026-12-18
+[C11] is colored in #F0E1CC
+[C12] is colored in #F0E1CC
+[C13] is colored in #F0E1CC
+[C14] is colored in #F0E1CC
+[C15] is colored in #F0E1CC
+[C16] is colored in #F0E1CC
+[C17] is colored in #F0E1CC
+[C18] is colored in #F0E1CC
+[C19] is colored in #F0E1CC
+[C20] is colored in #F0E1CC
 -- Fase de Transición --
 [T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-12-21 and ends 2027-02-19
 [T01] is colored in #B58AC2
@@ -68,6 +68,6 @@ language es
 [Plan del Proyecto aprobado] happens 2026-04-28
 [Arquitectura validada] happens 2026-05-19
 [Release 2.0] happens 2026-09-08
-[Cierre de C-06: I-1, I-2, I-3 e I-5] happens 2026-10-20
+[Construcción terminada] happens 2026-12-18
 [Sistema en producción] happens 2027-02-19
 @endgantt

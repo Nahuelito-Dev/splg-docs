@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-131 Modificar los Datos del Cliente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: editarDatosDelCliente(clienteId, cambios)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: ficha actualizada
+    else el cliente no existe o nunca le compró a la distribuidora del administrador
+        SIS-->>ADM: recurso no encontrado
+    end
+    deactivate SIS

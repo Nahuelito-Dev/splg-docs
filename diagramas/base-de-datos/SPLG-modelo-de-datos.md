@@ -1352,7 +1352,7 @@ No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN 
 
 ### 1. Recargo express y tipo de vehículo
 
-**Casos de uso:** CU-147 a CU-149 (I-7). **Qué resuelve:** Explicar el total de un pedido express y reconocer la moto sin depender de un texto libre.
+**Casos de uso:** CU-147 a CU-149 (C-17). **Qué resuelve:** Explicar el total de un pedido express y reconocer la moto sin depender de un texto libre.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1366,7 +1366,7 @@ Tipo enumerado `vehicle_type_enum`: `motorcycle`, `car`, `van`.
 
 ### 2. Baja del envase y oferta de retiro
 
-**Casos de uso:** CU-108 (I-8). **Qué resuelve:** Poder dar un envase de baja y atar la oferta de retiro a la entrega programada.
+**Casos de uso:** CU-108 (C-15). **Qué resuelve:** Poder dar un envase de baja y atar la oferta de retiro a la entrega programada.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1378,7 +1378,7 @@ Tipo enumerado `vehicle_type_enum`: `motorcycle`, `car`, `van`.
 
 ### 3. Configuración del despacho y de las tareas programadas
 
-**Casos de uso:** CU-171 y CU-173 (I-1). **Qué resuelve:** Que el administrador configure el despacho y la frecuencia de las tareas de su distribuidora.
+**Casos de uso:** CU-171 y CU-173 (C-07). **Qué resuelve:** Que el administrador configure el despacho y la frecuencia de las tareas de su distribuidora.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1390,7 +1390,7 @@ Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `sche
 
 ### 4. Caja, rendición del chofer, cuentas corrientes y comisiones
 
-**Casos de uso:** CU-225 a CU-245 (I-14). **Qué resuelve:** Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.
+**Casos de uso:** CU-225 a CU-245 (C-20). **Qué resuelve:** Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1580,7 +1580,7 @@ Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
 
 ### 5. Personal y legajos
 
-**Casos de uso:** CU-183 a CU-194 y CU-246 (I-11). **Qué resuelve:** Llevar la asistencia, las licencias y la documentación con vencimiento de cada persona que trabaja en la distribuidora, y que ese control inhabilite para el despacho a quien no esté en regla.
+**Casos de uso:** CU-183 a CU-194 y CU-246 (C-08). **Qué resuelve:** Llevar la asistencia, las licencias y la documentación con vencimiento de cada persona que trabaja en la distribuidora, y que ese control inhabilite para el despacho a quien no esté en regla.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1630,7 +1630,7 @@ Valores nuevos del tipo enumerado `maintenance_subject_enum`: `employee`.
 
 ### 6. Flota ampliada: combustible, multas y siniestros
 
-**Casos de uso:** CU-195 a CU-202 (I-12). **Qué resuelve:** Llevar las cargas de combustible, las multas de tránsito y los siniestros de cada vehículo, para conocer su consumo y su costo.
+**Casos de uso:** CU-195 a CU-202 (C-18). **Qué resuelve:** Llevar las cargas de combustible, las multas de tránsito y los siniestros de cada vehículo, para conocer su consumo y su costo.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1708,11 +1708,11 @@ Tipo enumerado `fuel_payment_method_enum`: `cash_box`, `driver_cash`, `card`, `f
 Tipo enumerado `traffic_fine_status_enum`: `pending`, `appealed`, `paid`, `voided`.
 Tipo enumerado `vehicle_accident_status_enum`: `reported`, `under_review`, `repairing`, `closed`.
 
-> **Decisión de modelado.** La carga de combustible, la multa y el siniestro son registros propios del vehículo y no columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo. El siniestro no se mezcla con `incident`, que es el contratiempo de calidad de un pedido. El empleado se referencia por `employee_id` y no por `delivery`, porque el responsable de una multa o el que carga combustible puede ser un empleado sin cuenta de acceso. `cash_movement_id` queda sin clave foránea hasta que exista el módulo de caja (I-14).
+> **Decisión de modelado.** La carga de combustible, la multa y el siniestro son registros propios del vehículo y no columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo. El siniestro no se mezcla con `incident`, que es el contratiempo de calidad de un pedido. El empleado se referencia por `employee_id` y no por `delivery`, porque el responsable de una multa o el que carga combustible puede ser un empleado sin cuenta de acceso. `cash_movement_id` queda sin clave foránea hasta que exista el módulo de caja (C-20).
 
 ### 7. Flota ampliada: neumáticos
 
-**Casos de uso:** CU-205 y CU-206 (I-12, opcional). **Qué resuelve:** Llevar cada neumático y sus movimientos —montaje, desmontaje, rotación, recapado y baja— para saber cuántos kilómetros recorrió.
+**Casos de uso:** CU-205 y CU-206 (C-18, opcional). **Qué resuelve:** Llevar cada neumático y sus movimientos —montaje, desmontaje, rotación, recapado y baja— para saber cuántos kilómetros recorrió.
 
 | Tabla | Columna | Tipo | Obligatoria | Qué guarda |
 |---|---|---|:-:|---|
@@ -1754,7 +1754,7 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `attachment_owner_type_enum` | `employee`, `fuel_load`, `traffic_fine`, `vehicle_accident`, `purchase_receipt`, `stock_adjustment`, `driver_settlement`, `cash_movement`, `customer_account_entry` | implementado |
 | `audit_result_enum` | `success`, `failure` | implementado |
 | `claims_status_enum` | `pending`, `in_process`, `resolved`, `rejected` | implementado |
-| `configurable_process_enum` | `fleet_planner`, `repurchase`, `route_batching`, `cylinder_recovery`, `express_dispatch`, `stock_control` | implementado |
+| `configurable_process_enum` | `fleet_planner`, `repurchase`, `route_batching`, `cylinder_recovery`, `express_dispatch`, `stock_control`, `dispatch`, `scheduled_tasks` | implementado |
 | `coverage_zone_surcharge_type_enum` | `fixed`, `percentage` | implementado |
 | `cylinder_inspection_result_enum` | `approved`, `conditional`, `rejected` | implementado |
 | `cylinder_movement_from_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |

@@ -40,8 +40,7 @@ class CashLedgerService <<fachada>> {
   + anularMovimientoDeCaja(movimientoId: Identificador,\n      motivo: Cadena): MovimientoDeCaja
   + consultarMovimientosDeCaja(cajaId: Identificador,\n      desde: Fecha, hasta: Fecha): MovimientoDeCaja[*]
   + registrarEntradaDeDinero(cajaId: Identificador,\n      importe: Moneda, categoriaId: Identificador,\n      medio: MedioDeCaja,\n      motivo: Cadena): MovimientoDeCaja
-  + registrarMovimientoDeCaja(cajaId: Identificador,\n      sentido: SentidoDeCaja, diferencia: Entero,\n      diferenciaDeCaja: CategoriaDeCaja,\n      enEfectivo: MedioDeCaja): MovimientoDeCaja
-  + registrarMovimientoDeCaja(cajaId: Identificador,\n      sentidoDeCaja: SentidoDeCaja, total: Moneda,\n      pagoDeComisiones: CategoriaDeCaja,\n      medioDeCaja: MedioDeCaja): MovimientoDeCaja
+  + registrarMovimientoDeCaja(cajaId: Identificador,\n      sentido: SentidoDeCaja = ninguno,\n      diferencia: Entero = ninguno,\n      diferenciaDeCaja: CategoriaDeCaja = ninguno,\n      enEfectivo: MedioDeCaja = ninguno,\n      sentidoDeCaja: SentidoDeCaja = ninguno,\n      total: Moneda = ninguno,\n      pagoDeComisiones: CategoriaDeCaja = ninguno,\n      medioDeCaja: MedioDeCaja = ninguno): MovimientoDeCaja
   + registrarSalidaDeDinero(cajaId: Identificador,\n      importe: Moneda, categoriaId: Identificador,\n      medio: MedioDeCaja,\n      motivo: Cadena): MovimientoDeCaja
   + transferirEntreCajas(cajaOrigenId: Identificador,\n      cajaDestinoId: Identificador,\n      importe: Moneda): MovimientoDeCaja[*]
 }

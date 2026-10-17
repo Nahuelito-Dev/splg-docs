@@ -8542,9 +8542,9 @@
      "abierta el",
      "monto inicial",
      "cerrada el",
-     "monto esperado",
+     "/monto esperado",
      "monto contado",
-     "diferencia",
+     "/diferencia",
      "observaciones"
     ],
     "planificado": true,

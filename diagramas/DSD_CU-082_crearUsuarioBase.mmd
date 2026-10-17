@@ -5,7 +5,7 @@ sequenceDiagram
     participant COL as :Map#lt;String, Usuario#gt;
     participant FBA as :FirebaseAuthPort
 
-    Note over SRV: Caso incluido desde CU-002, CU-003, CU-031, CU-086 y CU-087
+    Note over SRV: Caso incluido desde CU-002, CU-031, CU-086 y CU-087
     SRV->>+SRV: registrar(datosPersonales, rol, distribuidoraId)
     SRV->>SRV: autorizarAlta(solicitante, rol, distribuidoraId)
     SRV->>COL: verificarDisponibilidad(correo, telefono)

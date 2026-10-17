@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSS — CU-083 Consultar los Usuarios
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: listarUsuarios(pagina, limite, textoDeBusqueda)
+    activate SIS
+    SIS-->>ADM: página de usuarios (total, cantidad, listado)
+    deactivate SIS

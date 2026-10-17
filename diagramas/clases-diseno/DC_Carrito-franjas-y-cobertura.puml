@@ -72,8 +72,7 @@ class ZonaCobertura {
   + «create» ZonaCobertura(nombre: Cadena,\n      poligono: Poligono, recargo: Moneda,\n      activa: Booleano)
   + activar()
   + calcularRecargo(subtotalItems: Moneda): Moneda
-  + cubre(direccion: DireccionEntrega): Booleano
-  + cubre(latitud: Decimal, longitud: Decimal): Booleano
+  + cubre(direccion: DireccionEntrega = ninguno,\n      latitud: Decimal = ninguno,\n      longitud: Decimal = ninguno): Booleano
   + darDeBaja()
   + desactivar()
   + getRecargo(): Moneda

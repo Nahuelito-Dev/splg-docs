@@ -587,7 +587,7 @@ def documento(indice, vistas_mod, deps):
           "§4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que "
           "recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se "
           "mandan mensajes decide la relación que los une. Se construye a partir de los "
-          f"{len(X.leer_dsd())} diagramas de interacción en la notación de Larman y del modelo "
+          f"{sum(open(f, encoding='utf-8').read().count('title DSD — ') for f in X.glob.glob(X.D + 'diagramas/DSD_*.mmd'))} diagramas de interacción en la notación de Larman y del modelo "
           "conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de "
           "ellos.", "",
           "**Cómo se deriva.**", "",
@@ -608,9 +608,11 @@ def documento(indice, vistas_mod, deps):
           "dominio son las del modelo conceptual (`Pedido`, `ItemPedido`) y los controladores, "
           "fabricaciones puras y puertos llevan su nombre real (`CreateOrderUseCase`, "
           "`OrderPricingService`, `NotificationPort`). Una operación sin retorno es una "
-          "que el DSD no muestra devolviendo nada. Una operación tiene un solo retorno: cuando el "
-          "DSD devuelve varios valores, el primero es el retorno y los demás son parámetros de "
-          "salida (`out nombre: Tipo`).", "",
+          "que el DSD no muestra devolviendo nada. Una operación tiene una sola firma por clase y un "
+          "solo retorno: cuando el DSD devuelve varios valores, el retorno es un `Registro`; un "
+          "argumento que no todas las llamadas pasan se marca opcional (`= ninguno`). Los argumentos "
+          "son variables con su tipo, nunca valores literales; los importes son `Moneda` y las horas, "
+          "`Hora` o `FechaHora`.", "",
           "**Tipos.** Los primitivos son los del catálogo de operaciones del Documento 2; los de los "
           "atributos de dominio salen de las columnas del backend, y los de los argumentos y retornos, "
           "del catálogo o del modelo conceptual.", "",

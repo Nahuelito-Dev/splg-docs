@@ -8,7 +8,6 @@ sequenceDiagram
     Note over SAU: Se ejecuta con la<br/>periodicidad configurada
     SAU->>SIS: agruparPedidosPorRecorrido()
     activate SIS
-    Note over SIS: Agrupa por zona,<br/>proximidad, franja<br/>horaria y capacidad de<br/>carga, y ordena las<br/>paradas por secuencia de<br/>entrega
 
     loop Por cada lote armado
         loop Por cada chofer candidato no contactado
@@ -17,7 +16,6 @@ sequenceDiagram
                 CHO->>SIS: aceptarRecorrido(recorridoId)
                 SIS-->>CHO: pedidos asignados en el orden establecido
             end
-            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la oferta<br/>y se pasa al candidato<br/>siguiente
         end
 
         alt Ningún chofer tomó el lote

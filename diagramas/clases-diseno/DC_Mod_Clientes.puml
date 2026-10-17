@@ -38,13 +38,13 @@ class CustomersService <<fachada>> {
   + consultarPerfilCliente(usuario: Usuario): Cliente
   + editarDatosDelCliente(cliente: Cliente,\n      cambios: Registro): Cliente
   + eliminarCliente(cliente: Cliente): Cadena
-  + listarClientes(pagina: Entero, limite: Entero,\n      out total: Entero): Cliente[*]
+  + listarClientes(pagina: Entero, limite: Entero): Registro
 }
 class "Map<String, Cliente>" as Map_String_Cliente <<colección>> {
   + get(clave: Cadena): Cliente
 }
 class "List<Cliente>" as List_Cliente <<colección>> {
-  + buscar(pagina: Entero, limite: Entero,\n      out total: Entero): Cliente[*]
+  + buscar(pagina: Entero, limite: Entero): Registro
   + buscarConHistorialSuficiente(): Cliente[*]
   + buscarConRecompraEstimadaDentroDe(dias: Entero): Cliente[*]
 }

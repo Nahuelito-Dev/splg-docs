@@ -32,7 +32,7 @@ skinparam nodesep 25
 skinparam ranksep 90
 class CartService <<fachada>> {
   + agregarItemAlCarrito(productoId: Identificador,\n      cantidad: Entero): Carrito
-  + consultarCarrito(out total: Moneda): Carrito
+  + consultarCarrito(): Carrito
   + modificarCantidadDelItem(itemId: Identificador,\n      cantidad: Entero): Carrito
   + quitarItemDelCarrito(itemId: Identificador): Carrito
   + vaciarCarrito(): Carrito
@@ -42,8 +42,7 @@ class RepurchaseForecastService <<fachada>> {
   + anticiparRecompras()
 }
 class ConsumptionEstimatorService <<fabricación pura>> {
-  + estimarProximaRecompra(cliente: Cliente): Fecha
-  + estimarProximaRecompra(ultimaCompra: Fecha,\n      cantidadPorMes: Decimal): Fecha
+  + estimarProximaRecompra(cliente: Cliente = ninguno,\n      ultimaCompra: Fecha = ninguno,\n      cantidadPorMes: Decimal = ninguno): Fecha
 }
 class ConsumptionService <<fachada>> {
   + actualizarConsumoPromedio(cantidadPorMes: Decimal): Cliente

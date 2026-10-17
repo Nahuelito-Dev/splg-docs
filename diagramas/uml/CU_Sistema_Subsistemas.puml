@@ -1,5 +1,5 @@
 @startuml
-title Subsistemas del Proyecto — SPLG (21 subsistemas · 340 casos de uso)
+title Subsistemas del Proyecto — SPLG (21 subsistemas · 334 casos de uso)
 !include ../estilo-vp.iuml
 skinparam nodesep 25
 skinparam ranksep 55
@@ -7,7 +7,7 @@ skinparam ranksep 55
 left to right direction
 
 package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
-  package "SS-01 Autenticación y Usuarios\n(14 casos de uso)" as MSS01 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-01 Autenticación y Usuarios\n(12 casos de uso)" as MSS01 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
   package "SS-02 Gestión de Pedidos\n(36 casos de uso)" as MSS02 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
@@ -21,9 +21,9 @@ package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
   }
   package "SS-07 Gestión de Choferes y Vehículos\n(60 casos de uso)" as MSS07 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-08 Gestión de Productos e Inventario\n(42 casos de uso)" as MSS08 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-08 Gestión de Productos e Inventario\n(43 casos de uso)" as MSS08 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-09 Franjas Horarias\n(8 casos de uso)" as MSS09 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-09 Franjas Horarias\n(7 casos de uso)" as MSS09 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
   package "SS-11 Cobertura Geográfica\n(10 casos de uso)" as MSS11 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
@@ -45,11 +45,11 @@ package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
 package "Subsistemas de soporte" as GSOP #back:FFFFFF;line:5A5896 {
   package "SS-10 Multi-Distribuidora\n(4 casos de uso)" as MSS10 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-16 Administración de Cuentas y Roles\n(14 casos de uso)" as MSS16 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-16 Administración de Cuentas y Roles\n(13 casos de uso)" as MSS16 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-17 Notificaciones y Mensajería\n(5 casos de uso)" as MSS17 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-17 Notificaciones y Mensajería\n(3 casos de uso)" as MSS17 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-18 Observabilidad y Operación\n(5 casos de uso)" as MSS18 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-18 Observabilidad y Operación\n(4 casos de uso)" as MSS18 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
 }
 

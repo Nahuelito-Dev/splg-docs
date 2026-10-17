@@ -27,11 +27,6 @@ TINTA = "#2C4257"
 CAB = f"""!include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam class<<referencia>> {{
-  BackgroundColor #F1F1F1
-  BorderColor #8A97A3
-  FontColor #55616C
-}}
 skinparam packageStyle rectangle
 hide circle
 hide methods
@@ -41,7 +36,7 @@ hide empty members
 def declarar(nombre, con_atributos, referencia=False):
     c, atrs, abstracta = CLASES[nombre]
     tipo = "abstract class" if abstracta else "class"
-    est = " <<referencia>>" if referencia else ""
+    est = " #F1F1F1;line:8A97A3;text:55616C" if referencia else ""
     if referencia or not con_atributos or not atrs:
         return [f'{tipo} {nombre}{est}']
     return [f'{tipo} {nombre} {{'] + [f"  {a}" for a in atrs] + ["}"]

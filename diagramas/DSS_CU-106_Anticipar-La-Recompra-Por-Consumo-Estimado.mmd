@@ -8,7 +8,6 @@ sequenceDiagram
     Note over SAU: Se ejecuta una vez por<br/>día
     SAU->>SIS: anticiparRecompras()
     activate SIS
-    Note over SIS: Estima el ritmo de<br/>consumo de cada cliente<br/>ponderado por kilaje y<br/>corregido por<br/>estacionalidad, y<br/>proyecta la fecha de<br/>agotamiento
 
     loop Por cada cliente dentro de la ventana de anticipación
         opt El cliente no tiene pedido activo ni invitación reciente
@@ -17,9 +16,7 @@ sequenceDiagram
                 CLI->>SIS: aceptarInvitacionDeRecompra(invitacionId)
                 SIS-->>CLI: pedido creado y en búsqueda de chofer
             end
-            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la<br/>invitación y se registra la<br/>fecha del intervalo mínimo
         end
-        Note over SIS: Si el cliente está excluido,<br/>no se emite invitación
     end
     SIS-->>SAU: invitaciones emitidas y caducadas procesadas
     deactivate SIS

@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSD — CU-344 Consultar el Catálogo de Productos (Administrador) · consultarDetalleDelProducto
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SRV as :GasCylinderService
+    participant COL as :Map#lt;String, Producto#gt;
+
+    ADM->>+SRV: consultarDetalleDelProducto(productoId)
+    SRV->>+COL: get(productoId)
+    COL-->>-SRV: producto
+    SRV-->>-ADM: producto

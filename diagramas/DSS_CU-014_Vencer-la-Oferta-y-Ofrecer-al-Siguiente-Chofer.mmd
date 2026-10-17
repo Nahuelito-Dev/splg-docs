@@ -9,12 +9,9 @@ sequenceDiagram
     SAU->>SIS: vencerOfertasExpiradas()
     activate SIS
     loop Por cada oferta cuya vigencia expiró
-        Note over SIS: Marca la oferta como<br/>vencida
         opt El pedido sigue pendiente y sin chofer
             SIS-)CHO: notificarOferta(pedido)
-            Note over SIS: Reutiliza la búsqueda de<br/>CU-013 con el siguiente<br/>chofer
         end
-        Note over SIS: Si el pedido ya fue aceptado<br/>o cancelado, no se vuelve<br/>a ofrecer
     end
     SIS-->>SAU: ofertas procesadas
     deactivate SIS

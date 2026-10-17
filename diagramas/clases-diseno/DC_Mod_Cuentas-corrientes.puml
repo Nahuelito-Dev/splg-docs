@@ -31,8 +31,8 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class CustomerAccountService <<fachada>> {
-  + consultarAntiguedadDeDeuda(out total: Moneda): Registro
-  + consultarEstadoDeCuenta(cuentaId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha,\n      out saldoInicial: Moneda): AsientoCuentaCorriente[*]
+  + consultarAntiguedadDeDeuda(): Registro
+  + consultarEstadoDeCuenta(cuentaId: Identificador,\n      fechaDesde: Fecha,\n      fechaHasta: Fecha): AsientoCuentaCorriente[*]
   + habilitarCuentaCorriente(clienteId: Identificador,\n      razonSocial: Cadena, cuit: Cadena,\n      condicionFiscal: CondicionFiscal,\n      limiteDeCredito: Moneda,\n      plazoEnDias: Entero): CuentaCorriente
   + modificarCuentaCorriente(cuentaId: Identificador,\n      datos: Registro): CuentaCorriente
   + registrarAjusteDeCuentaCorriente(cuentaId: Identificador,\n      tipo: TipoDeAsiento, importe: Moneda,\n      motivo: Cadena): AsientoCuentaCorriente

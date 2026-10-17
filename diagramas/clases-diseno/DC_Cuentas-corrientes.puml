@@ -57,9 +57,7 @@ class AsientoCuentaCorriente {
   - medioDePago: MedioDeCaja
   - fecha: FechaHora
   - descripcion: Cadena
-  + «create» AsientoCuentaCorriente(tipoDeAsiento: TipoDeAsiento,\n      importe: Moneda, motivo: Cadena)
-  + «create» AsientoCuentaCorriente(pedido: Pedido,\n      importe: Moneda, vencimiento: Fecha)
-  + «create» AsientoCuentaCorriente(tipoDeAsiento: TipoDeAsiento,\n      importe: Moneda, medio: MedioDeCaja,\n      movimiento: MovimientoDeCaja)
+  + «create» AsientoCuentaCorriente(importe: Moneda,\n      tipoDeAsiento: TipoDeAsiento = ninguno,\n      medio: MedioDeCaja = ninguno,\n      movimiento: MovimientoDeCaja = ninguno,\n      motivo: Cadena = ninguno, pedido: Pedido = ninguno,\n      vencimiento: Fecha = ninguno)
   + asignarARendicion(rendicion: RendicionChofer)
 }
 class ImputacionCuentaCorriente {

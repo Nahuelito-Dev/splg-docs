@@ -186,7 +186,7 @@
  {
   "archivo": "DSS_CU-011_cu-011-listar-todos-los-pedidos.mmd",
   "tipo": "DSS",
-  "titulo": "DSS — CU-011: Listar Todos los Pedidos",
+  "titulo": "DSS — CU-011: Consultar Todos los Pedidos",
   "cus": [
    11
   ]
@@ -266,7 +266,7 @@
  {
   "archivo": "DSS_CU-078_cu-078-obtener-el-código-de-entrega-qr-del-chofer.mmd",
   "tipo": "DSS",
-  "titulo": "DSS — CU-078: Obtener el Código de Entrega (QR del chofer)",
+  "titulo": "DSS — CU-078: Consultar el Código de Entrega (QR del chofer)",
   "cus": [
    78
   ]
@@ -1097,7 +1097,7 @@
  {
   "archivo": "DSD_CU-011_cu-011-listar-todos-los-pedidos.mmd",
   "tipo": "DSD",
-  "titulo": "DSD — CU-011: Listar Todos los Pedidos",
+  "titulo": "DSD — CU-011: Consultar Todos los Pedidos",
   "cus": [
    11
   ]

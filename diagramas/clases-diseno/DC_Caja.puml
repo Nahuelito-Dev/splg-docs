@@ -34,7 +34,7 @@ class Caja {
   - requiereSesion: Booleano
   - activa: Booleano
   + «create» Caja(nombre: Cadena, tipoDeCaja: TipoDeCaja,\n      requiereSesion: Booleano)
-  + abrirSesion(montoInicial: Moneda, administrador: Usuario,\n      out diferencia: Entero): SesionDeCaja
+  + abrirSesion(montoInicial: Moneda,\n      administrador: Usuario): Registro
   + actualizarSaldo(sentido: SentidoDeCaja, importe: Moneda)
   + calcularDiferencia(montoContado: Moneda): Moneda
   + contraasentar(movimiento: MovimientoDeCaja,\n      motivo: Cadena): MovimientoDeCaja
@@ -51,13 +51,12 @@ class SesionDeCaja {
   - abiertaEl: FechaHora
   - montoInicial: Moneda
   - cerradaEl: FechaHora
-  - montoEsperado: Moneda
+  - /montoEsperado: Moneda
   - montoContado: Moneda
-  - diferencia: Moneda
+  - /diferencia: Moneda
   - observaciones: Cadena
   + «create» SesionDeCaja(montoInicial: Moneda,\n      administrador: Usuario)
-  + cerrar(montoContado: Moneda, diferencia: Moneda,\n      administrador: Usuario)
-  + getCaja(): Caja
+  + cerrar(montoContado: Moneda, administrador: Usuario)
   + validarAbierta()
 }
 class CategoriaDeCaja {
@@ -76,8 +75,7 @@ class MovimientoDeCaja {
   - fecha: FechaHora
   - descripcion: Cadena
   - origen: OrigenDelMovimiento
-  + «create» MovimientoDeCaja(movimiento: MovimientoDeCaja,\n      motivo: Cadena)
-  + «create» MovimientoDeCaja(sentido: SentidoDeCaja,\n      importe: Moneda, categoria: CategoriaDeCaja,\n      medio: MedioDeCaja, descripcion: Cadena,\n      referencia: OrigenDelMovimiento)
+  + «create» MovimientoDeCaja(sentido: SentidoDeCaja = ninguno,\n      importe: Moneda = ninguno,\n      categoria: CategoriaDeCaja = ninguno,\n      medio: MedioDeCaja = ninguno,\n      descripcion: Cadena = ninguno,\n      referencia: OrigenDelMovimiento = ninguno,\n      movimiento: MovimientoDeCaja = ninguno,\n      motivo: Cadena = ninguno)
   + getCaja(): Caja
   + validarAnulable()
 }
@@ -89,7 +87,7 @@ class LiquidacionComisiones <<referencia>>
 
 Distribuidora "1" *--> "0..*" Caja : define
 Distribuidora "1" *--> "0..*" CategoriaDeCaja : define
-Caja "1" *--> "0..*" SesionDeCaja : registra
+Caja "1" *-- "0..*" SesionDeCaja : registra
 Caja "1" *--> "0..*" MovimientoDeCaja : asienta
 SesionDeCaja "0..1" -- "0..*" MovimientoDeCaja : agrupa
 CategoriaDeCaja "1" -- "0..*" MovimientoDeCaja : clasifica

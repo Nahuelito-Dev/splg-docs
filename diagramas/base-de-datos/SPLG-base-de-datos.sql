@@ -90,7 +90,9 @@ CREATE TYPE public.configurable_process_enum AS ENUM (
     'route_batching',
     'cylinder_recovery',
     'express_dispatch',
-    'stock_control'
+    'stock_control',
+    'dispatch',
+    'scheduled_tasks'
 );
 
 

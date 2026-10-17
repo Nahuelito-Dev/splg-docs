@@ -60,8 +60,7 @@ class RedisService <<fabricación pura>> {
   + ping(): Booleano
 }
 class S3Service <<fabricación pura>> {
-  + getSignedDownload(adjunto: AdjuntoTarea): Cadena
-  + getSignedDownload(clave: Cadena,\n      nombreDeDescarga: Cadena): Cadena
+  + getSignedDownload(adjunto: AdjuntoTarea = ninguno,\n      clave: Cadena = ninguno,\n      nombreDeDescarga: Cadena = ninguno): Cadena
   + put(clave: Cadena, archivo: Archivo, tipo: Cadena)
 }
 class S3CleanupService <<fabricación pura>> {

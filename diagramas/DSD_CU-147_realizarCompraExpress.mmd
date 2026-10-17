@@ -14,11 +14,11 @@ sequenceDiagram
     create participant PED as :Pedido
     SRV->>PED: «create»(cliente, direccion, express, medioDePago)
     SRV->>PRO: reservar(1)
-    SRV->>+PED: agregarItem(producto, 1)
+    SRV->>+PED: agregarItem(producto, cantidad)
     PED->>+PRO: precioPara(1)
     PRO-->>-PED: precioUnitario, subtotal
     create participant ITM as :ItemPedido
-    PED->>ITM: «create»(producto, 1, precioUnitario, subtotal)
+    PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
     deactivate PED
     SRV->>+PED: calcularTotal()
     PED->>PED: aplicarRecargoExpress()

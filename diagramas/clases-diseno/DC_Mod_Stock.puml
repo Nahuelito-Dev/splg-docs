@@ -33,20 +33,18 @@ skinparam ranksep 90
 class StockDeliveryService <<fachada>> {
   + descartarGarrafa(producto: Producto)
   + elegirOrigen(ubicacionDelCamion: UbicacionDeStock)
-  + registrarEntrega(entrega: MotivoDeMovimiento): Booleano
-  + registrarEntrega(pedido: Pedido, items: Registro)
+  + registrarEntrega(entrega: MotivoDeMovimiento = ninguno,\n      pedido: Pedido = ninguno,\n      items: Registro = ninguno): Booleano
 }
 class CatalogStockAdjustmentUseCase <<controlador>> {
   + actualizarStock(productoId: Identificador,\n      variacion: Entero): Producto
 }
 class StockAdjustmentUseCase <<controlador>> {
-  + registrarAjusteDeStock(ubicacionId: Identificador,\n      motivo: Cadena, nota: Cadena,\n      items: Lista): AjusteDeStock
-  + registrarAjusteDeStock(ubicacionDeStock: UbicacionDeStock,\n      motivoRecuento: MotivoDeAjuste, nota: Cadena,\n      producto: Producto,\n      variacion: Entero): AjusteDeStock
+  + registrarAjusteDeStock(nota: Cadena,\n      ubicacionDeStock: UbicacionDeStock = ninguno,\n      motivoRecuento: MotivoDeAjuste = ninguno,\n      producto: Producto = ninguno,\n      variacion: Entero = ninguno,\n      ubicacionId: Identificador = ninguno,\n      motivo: Cadena = ninguno,\n      items: Lista = ninguno): AjusteDeStock
   + validarItemsDeAjuste(motivo: Cadena, items: Registro)
 }
 class WarehouseService <<fachada>> {
   + actualizarDeposito(depositoId: Identificador,\n      datos: Registro): Deposito
-  + consultarDeposito(depositoId: Identificador,\n      out saldos: SaldoDeStock[*]): Deposito
+  + consultarDeposito(depositoId: Identificador): Registro
   + consultarDepositos(incluirInactivos: Booleano): Deposito[*]
   + darDeBajaDeposito(depositoId: Identificador)
   + marcarDepositoPredeterminado(depositoId: Identificador): Deposito
@@ -56,9 +54,9 @@ class "Map<String, Deposito>" as Map_String_Deposito <<colección>> {
   + get(clave: Cadena): Deposito
 }
 class StockQueryService <<fachada>> {
-  + consultarAjusteDeStock(ajusteId: Identificador,\n      out renglonesDeAjuste: ItemAjusteDeStock[*]): AjusteDeStock
-  + consultarAjustesDeStock(desde: FechaHora,\n      hasta: FechaHora, motivo: Cadena,\n      out cantidadDeAjustes: Entero): Registro
-  + consultarMovimientosDeStock(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora, pagina: Entero,\n      out cantidadDeMovimientos: Entero): MovimientoDeCaja[*]
+  + consultarAjusteDeStock(ajusteId: Identificador): Registro
+  + consultarAjustesDeStock(desde: FechaHora,\n      hasta: FechaHora, motivo: Cadena): Registro
+  + consultarMovimientosDeStock(productoId: Identificador,\n      ubicacionId: Identificador, motivo: Cadena,\n      desde: FechaHora, hasta: FechaHora,\n      pagina: Entero): Registro
   + consultarResumenDeStock(): Registro
   + consultarStockPorUbicacion(ubicacionId: Identificador,\n      productoId: Identificador): SaldoDeStock[*]
   + saldos(ubicacionDeStock: UbicacionDeStock): SaldoDeStock[*]
@@ -92,16 +90,8 @@ class StockTransferUseCase <<controlador>> {
   + transferirStock(origenId: Identificador,\n      destinoId: Identificador, items: Lista,\n      nota: Cadena): Identificador
 }
 class StockLedgerService <<fachada>> {
-  + aplicar(movimientos: MovimientoDeCaja[*]): Identificador
-  + aplicar(operacion: Cadena): Identificador
-  + aplicar(ubicacionDeStock: UbicacionDeStock,\n      itemsRecibidos: ItemRecepcion[*]): Identificador
-  + aplicar(ubicacionDeStock: UbicacionDeStock,\n      renglonesDeAjuste: ItemAjusteDeStock[*]): Identificador
-  + aplicar(ubicacionDeStock: UbicacionDeStock,\n      motivo: Cadena, items: Registro): Identificador
-  + aplicar(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      renglones: MovimientoDeStock[*]): Identificador
-  + aplicar(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      plan: PlanMantenimiento): Identificador
-  + aplicar(ubicacionOrigen: UbicacionDeStock,\n      ubicacionDestino: UbicacionDeStock,\n      items: Registro,\n      traslado: MotivoDeMovimiento): Identificador
-  + contraasentar(loteDeLaRecepcion: Identificador): Identificador
-  + contraasentar(loteId: Identificador, nota: Cadena)
+  + aplicar(ubicacionOrigen: UbicacionDeStock = ninguno,\n      ubicacionDestino: UbicacionDeStock = ninguno,\n      items: Registro = ninguno,\n      traslado: MotivoDeMovimiento = ninguno,\n      ubicacionDeStock: UbicacionDeStock = ninguno,\n      motivo: Cadena = ninguno,\n      itemsRecibidos: ItemRecepcion[*] = ninguno,\n      renglones: MovimientoDeStock[*] = ninguno,\n      movimientos: MovimientoDeCaja[*] = ninguno,\n      plan: PlanMantenimiento = ninguno,\n      operacion: Cadena = ninguno,\n      renglonesDeAjuste: ItemAjusteDeStock[*] = ninguno): Identificador
+  + contraasentar(loteId: Identificador = ninguno,\n      nota: Cadena = ninguno,\n      loteDeLaRecepcion: Identificador = ninguno): Identificador
   + validarMovimiento(movimiento: MovimientoDeCaja)
 }
 class StockReconciliationCron <<fachada>> {

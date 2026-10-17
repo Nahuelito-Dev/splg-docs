@@ -1598,10 +1598,27 @@
         }
       ],
       "casosDeUso": [
-        "CU-041"
+        "CU-344"
       ],
       "actores": [
-        "ACT-01",
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "consultarDetalleDelProducto",
+      "firma": "consultarDetalleDelProducto(productoId)",
+      "firmaConTipos": "consultarDetalleDelProducto(productoId identificador)",
+      "parametros": [
+        {
+          "nombre": "productoId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-344"
+      ],
+      "actores": [
         "ACT-03"
       ],
       "cambiaEstado": false
@@ -2227,8 +2244,7 @@
         "CU-041"
       ],
       "actores": [
-        "ACT-01",
-        "ACT-03"
+        "ACT-01"
       ],
       "cambiaEstado": false
     },
@@ -2246,8 +2262,7 @@
         "CU-041"
       ],
       "actores": [
-        "ACT-01",
-        "ACT-03"
+        "ACT-01"
       ],
       "cambiaEstado": false
     },
@@ -2329,26 +2344,6 @@
         "CU-245"
       ],
       "actores": [
-        "ACT-03"
-      ],
-      "cambiaEstado": false
-    },
-    {
-      "nombre": "consultarTokensDelUsuario",
-      "firma": "consultarTokensDelUsuario(usuarioId)",
-      "firmaConTipos": "consultarTokensDelUsuario(usuarioId identificador)",
-      "parametros": [
-        {
-          "nombre": "usuarioId",
-          "tipo": "identificador"
-        }
-      ],
-      "casosDeUso": [
-        "CU-099"
-      ],
-      "actores": [
-        "ACT-01",
-        "ACT-02",
         "ACT-03"
       ],
       "cambiaEstado": false
@@ -3098,24 +3093,6 @@
       ],
       "actores": [
         "ACT-01"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "eliminarFranjaHoraria",
-      "firma": "eliminarFranjaHoraria(franjaId)",
-      "firmaConTipos": "eliminarFranjaHoraria(franjaId identificador)",
-      "parametros": [
-        {
-          "nombre": "franjaId",
-          "tipo": "identificador"
-        }
-      ],
-      "casosDeUso": [
-        "CU-103"
-      ],
-      "actores": [
-        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -4438,98 +4415,6 @@
       "cambiaEstado": true
     },
     {
-      "nombre": "registrarOperacion",
-      "firma": "registrarOperacion(autor, rol, distribuidoraId, operacion, recurso, origen, resultado, codigo, motivo)",
-      "firmaConTipos": "registrarOperacion(autor identificador, rol cadena, distribuidoraId identificador, operacion cadena, recurso cadena, origen cadena, resultado cadena, codigo cadena, motivo cadena)",
-      "parametros": [
-        {
-          "nombre": "autor",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "rol",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "distribuidoraId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "operacion",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "recurso",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "origen",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "resultado",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "codigo",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "motivo",
-          "tipo": "cadena"
-        }
-      ],
-      "casosDeUso": [
-        "CU-153"
-      ],
-      "actores": [
-        "ACT-04"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "registrarAuditoriaDeDato",
-      "firma": "registrarAuditoriaDeDato(autor, ip, distribuidoraId, entidad, registro, tipoDeAccion, detalles)",
-      "firmaConTipos": "registrarAuditoriaDeDato(autor identificador, ip cadena, distribuidoraId identificador, entidad cadena, registro cadena, tipoDeAccion entero, detalles lista)",
-      "parametros": [
-        {
-          "nombre": "autor",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "ip",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "distribuidoraId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "entidad",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "registro",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "tipoDeAccion",
-          "tipo": "entero"
-        },
-        {
-          "nombre": "detalles",
-          "tipo": "lista"
-        }
-      ],
-      "casosDeUso": [
-        "CU-153"
-      ],
-      "actores": [
-        "ACT-04"
-      ],
-      "cambiaEstado": true
-    },
-    {
       "nombre": "registrarPagoDeCuentaCorriente",
       "firma": "registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)",
       "firmaConTipos": "registrarPagoDeCuentaCorriente(cuentaId identificador, importe moneda, medio cadena, cajaId identificador)",
@@ -4647,34 +4532,6 @@
       ],
       "actores": [
         "ACT-01"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "registrarTokenDeNotificaciones",
-      "firma": "registrarTokenDeNotificaciones(usuarioId, token, plataforma)",
-      "firmaConTipos": "registrarTokenDeNotificaciones(usuarioId identificador, token cadena, plataforma cadena)",
-      "parametros": [
-        {
-          "nombre": "usuarioId",
-          "tipo": "identificador"
-        },
-        {
-          "nombre": "token",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "plataforma",
-          "tipo": "cadena"
-        }
-      ],
-      "casosDeUso": [
-        "CU-098"
-      ],
-      "actores": [
-        "ACT-01",
-        "ACT-02",
-        "ACT-03"
       ],
       "cambiaEstado": true
     },
@@ -4816,19 +4673,6 @@
       ],
       "actores": [
         "ACT-03"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "sembrarRolesIniciales",
-      "firma": "sembrarRolesIniciales()",
-      "firmaConTipos": "sembrarRolesIniciales()",
-      "parametros": [],
-      "casosDeUso": [
-        "CU-090"
-      ],
-      "actores": [
-        "ACT-05"
       ],
       "cambiaEstado": true
     },
@@ -4999,30 +4843,6 @@
       ],
       "actores": [
         "ACT-09"
-      ],
-      "cambiaEstado": false
-    },
-    {
-      "nombre": "verificarExistenciaDeUsuario",
-      "firma": "verificarExistenciaDeUsuario(correo, telefono)",
-      "firmaConTipos": "verificarExistenciaDeUsuario(correo cadena, telefono cadena)",
-      "parametros": [
-        {
-          "nombre": "correo",
-          "tipo": "cadena"
-        },
-        {
-          "nombre": "telefono",
-          "tipo": "cadena"
-        }
-      ],
-      "casosDeUso": [
-        "CU-084"
-      ],
-      "actores": [
-        "ACT-01",
-        "ACT-02",
-        "ACT-03"
       ],
       "cambiaEstado": false
     },
@@ -7733,32 +7553,6 @@
       "cambiaEstado": true
     },
     {
-      "nombre": "registrarChofer",
-      "firma": "registrarChofer(datosPersonales, datosDelChofer, distribuidoraId)",
-      "firmaConTipos": "registrarChofer(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)",
-      "parametros": [
-        {
-          "nombre": "datosPersonales",
-          "tipo": "registro"
-        },
-        {
-          "nombre": "datosDelChofer",
-          "tipo": "registro"
-        },
-        {
-          "nombre": "distribuidoraId",
-          "tipo": "identificador"
-        }
-      ],
-      "casosDeUso": [
-        "CU-003"
-      ],
-      "actores": [
-        "ACT-03"
-      ],
-      "cambiaEstado": true
-    },
-    {
       "nombre": "registrarChoferEnLaFlota",
       "firma": "registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)",
       "firmaConTipos": "registrarChoferEnLaFlota(datosPersonales registro, datosDelChofer registro, distribuidoraId identificador)",
@@ -7880,6 +7674,186 @@
       ],
       "casosDeUso": [
         "CU-343"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "crearUsuarioBase",
+      "firma": "crearUsuarioBase(rol, datosPersonales, distribuidoraId)",
+      "firmaConTipos": "crearUsuarioBase(rol cadena, datosPersonales registro, distribuidoraId identificador)",
+      "parametros": [
+        {
+          "nombre": "rol",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "datosPersonales",
+          "tipo": "registro"
+        },
+        {
+          "nombre": "distribuidoraId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-082"
+      ],
+      "actores": [
+        "ACT-01"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "almacenarArchivo",
+      "firma": "almacenarArchivo(clave, contenido, tipo)",
+      "firmaConTipos": "almacenarArchivo(clave cadena, contenido archivo, tipo cadena)",
+      "parametros": [
+        {
+          "nombre": "clave",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "contenido",
+          "tipo": "archivo"
+        },
+        {
+          "nombre": "tipo",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-159"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "recuperarArchivo",
+      "firma": "recuperarArchivo(clave, nombreDeDescarga)",
+      "firmaConTipos": "recuperarArchivo(clave cadena, nombreDeDescarga cadena)",
+      "parametros": [
+        {
+          "nombre": "clave",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "nombreDeDescarga",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-160"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "registrarCambioDeEstado",
+      "firma": "registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)",
+      "firmaConTipos": "registrarCambioDeEstado(pedidoId identificador, estadoAnterior cadena, estadoNuevo cadena, autor identificador, motivo cadena)",
+      "parametros": [
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "estadoAnterior",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "estadoNuevo",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "autor",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "motivo",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-169"
+      ],
+      "actores": [
+        "ACT-01"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "descontarStockDeLaEntrega",
+      "firma": "descontarStockDeLaEntrega(pedidoId)",
+      "firmaConTipos": "descontarStockDeLaEntrega(pedidoId identificador)",
+      "parametros": [
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-220"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "verificarHabilitacionLaboral",
+      "firma": "verificarHabilitacionLaboral(choferId)",
+      "firmaConTipos": "verificarHabilitacionLaboral(choferId identificador)",
+      "parametros": [
+        {
+          "nombre": "choferId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-246"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "verificarCargaDeCamionAbierta",
+      "firma": "verificarCargaDeCamionAbierta(choferId)",
+      "firmaConTipos": "verificarCargaDeCamionAbierta(choferId identificador)",
+      "parametros": [
+        {
+          "nombre": "choferId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-248"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "aplicarMovimientoDeStock",
+      "firma": "aplicarMovimientoDeStock(operacion)",
+      "firmaConTipos": "aplicarMovimientoDeStock(operacion registro)",
+      "parametros": [
+        {
+          "nombre": "operacion",
+          "tipo": "registro"
+        }
+      ],
+      "casosDeUso": [
+        "CU-250"
       ],
       "actores": [
         "ACT-03"

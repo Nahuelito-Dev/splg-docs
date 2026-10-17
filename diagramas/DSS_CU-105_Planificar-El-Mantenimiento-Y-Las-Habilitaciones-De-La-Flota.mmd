@@ -9,7 +9,6 @@ sequenceDiagram
     Note over SAU: Se ejecuta una vez por<br/>día, a la hora<br/>configurada
     SAU->>SIS: planificarMantenimientoDeFlota()
     activate SIS
-    Note over SIS: Estima el consumo diario<br/>de cada vehículo,<br/>proyecta los<br/>vencimientos y arma las<br/>ventanas que no dejan la<br/>zona bajo el mínimo
 
     loop Por cada tarea dentro de la ventana de anticipación
         loop Por cada ventana alternativa, de mejor a peor
@@ -18,7 +17,6 @@ sequenceDiagram
                 CHO->>SIS: aceptarVentanaDeMantenimiento(propuestaId)
                 SIS-->>CHO: ventana aceptada, pendiente de la confirmación del administrador
             end
-            Note over SIS: Si rechaza o vence la<br/>vigencia, se cierra la<br/>propuesta y se pasa a la<br/>siguiente ventana
         end
 
         opt Se agotaron las ventanas sin acuerdo
@@ -26,11 +24,9 @@ sequenceDiagram
             ADM->>SIS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
             SIS-->>ADM: tarea programada
         end
-        Note over SIS: Si la ventana quedó acordada<br/>con el chofer, se registra la<br/>tarea como programada
     end
 
     opt Hay una habilitación bloqueante vencida
-        Note over SIS: Deja el vehículo fuera<br/>de servicio
         SIS-)ADM: notificarVehiculoInhabilitado(vehiculo)
     end
     SIS-->>SAU: planificación resuelta

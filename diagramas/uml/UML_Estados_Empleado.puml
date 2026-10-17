@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de estados — Empleado (planificado, I-11)
+title Diagrama de estados — Empleado (planificado, C-08)
 !include ../estilo-vp.iuml
 hide empty description
 state "Activo\n(active)" as ACTIVE {

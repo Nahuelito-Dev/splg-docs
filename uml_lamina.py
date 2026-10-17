@@ -17,6 +17,8 @@ fuera del límite, cada caso con su actor y las relaciones iguales a las del cat
 import math, re
 from html import escape
 
+from relaciones_cu import pe_id
+
 from estilo_vp import (FUENTE, FONDO, RELLENO, RELLENO_CLARO, BORDE, TINTA, SUAVE,
                        PLAN_RELLENO, PLAN_BORDE, GROSOR)
 
@@ -58,6 +60,34 @@ def _actor(x, y, cod, nombre, ext=False, fs=11):
     g.append(_texto(x, y + r + 44 + 14 + (len(ls) - 1) * fs * 0.6, ls, fs))
     g.append("</g>")
     return "".join(g)
+
+
+def pe_de_base(rel=None):
+    """{caso base: [PE-n, ...]}: los puntos de extensión de cada caso base, todos, estén o no sus extensiones en el diagrama."""
+    from relaciones_cu import extensiones
+    out = {}
+    for e, b, _ in extensiones():
+        out.setdefault(b, []).append(pe_id(e, b))
+    return {b: sorted(v) for b, v in out.items()}
+
+
+def texto_ovalo(cx, cy, rx, ry, ls, pe, fs=11, negrita_primera=True, color="#000000"):
+    """Texto de un caso de uso. Si es la base de una extensión, la elipse lleva abajo el compartimiento
+    «puntos de extensión» con los identificadores PE-n, separado por una línea (notación UML)."""
+    if not pe:
+        return _texto(cx, cy, ls, fs, negrita_primera, color=color)
+    il = fs * 1.2
+    n = len(ls) + 1 + 2                       # texto + separador + título del compartimiento + identificadores
+    y0 = cy - il * (n - 1) / 2
+    ysep = y0 + il * len(ls) - il / 2 + il * 0.5
+    dy = (ysep - cy) / ry
+    mitad = rx * math.sqrt(max(0.0, 1 - dy * dy))
+    g = _texto(cx, y0 + il * (len(ls) - 1) / 2, ls, fs, negrita_primera, color=color, interlinea=il)
+    g += (f'<path class="compartimiento" d="M{cx - mitad:.1f} {ysep:.1f} H{cx + mitad:.1f}" stroke="{BORDE}" '
+          f'stroke-width="{GROSOR}" fill="none"/>')
+    g += _texto(cx, ysep + il, ["puntos de extensión"], fs - 1, False, color=SUAVE)
+    g += _texto(cx, ysep + 2 * il, [", ".join(pe)], fs - 1, True, color=color)
+    return g
 
 
 def _defs():
@@ -199,9 +229,11 @@ def columna(casos, paquetes, nombres_act, actores, asoc, rel, esp, gen, limite_t
     paquetes = [dict(p, casos=_afinar(sorted(p["casos"], key=clave), clave, rel, paquetes)) for p in paquetes]
     # alto de cada caso según las líneas de su nombre
     info = {}
+    pe_base = pe_de_base(rel)
     for cu, c in casos.items():
         ls = ([cu] if not cu.startswith("F-") else []) + _lineas(c["nombre"], ANCHO_TXT)
-        info[cu] = {"ls": ls, "ry": max(RYMIN, 6.2 * len(ls) + 8)}
+        n_ls = len(ls) + (3 if cu in pe_base else 0)
+        info[cu] = {"ls": ls, "ry": max(RYMIN, 6.2 * n_ls + 8), "pe": pe_base.get(cu)}
     pos = {}
     y = Y0 + 34                         # debajo del nombre del sistema
     cajas = []
@@ -255,7 +287,7 @@ def columna(casos, paquetes, nombres_act, actores, asoc, rel, esp, gen, limite_t
     def _etiqueta_fuera(r):
         tt, a_, b_, _p = r
         if grupo_de:
-            pe_ = f" PE-{[x for x in rel_num if x[0] == 'extend'].index(r) + 1}" if tt == "extend" else ""
+            pe_ = f" {pe_id(a_, b_)}" if tt == "extend" else ""
             return f"«{tt}»{pe_} {b_}"
         otro = a_ if a_ not in pos else b_
         m_ = re.search(r"\((lámina \d+)\)", casos[otro]["nombre"])
@@ -390,7 +422,7 @@ def columna(casos, paquetes, nombres_act, actores, asoc, rel, esp, gen, limite_t
             if (tt, c_) in rot: continue
             rot[(tt, c_)] = True
             k_ = sum(1 for (q, w_) in rot if w_ == c_) - 1
-            txt = f"«{tt}»" + (f" PE-{[r for r in rel_num if r[0] == 'extend'].index((tt, a_, b_, _p)) + 1}" if tt == "extend" else "")
+            txt = f"«{tt}»" + (f" {pe_id(a_, b_)}" if tt == "extend" else "")
             wl = len(txt) * 5.6 + 6
             lx, ly_ = x_ref - RX - 44, pos[c_][1] - 6 + 13 * k_
             o.append(f'<g class="etiqueta" data-tipo="{tt}" data-hasta="{b_}"><rect x="{lx - wl / 2:.1f}" y="{ly_ - 7:.1f}" width="{wl:.1f}" height="14" fill="#FFFFFF"/>'
@@ -438,8 +470,8 @@ def columna(casos, paquetes, nombres_act, actores, asoc, rel, esp, gen, limite_t
 
     # casos de uso
     pe = {}
-    for i, (t, a, b, punto) in enumerate([r for r in rel_num if r[0] == "extend"], 1):
-        pe.setdefault(b, []).append(f"PE-{i}")
+    for (t, a, b, punto) in [r for r in rel_num if r[0] == "extend"]:
+        pe.setdefault(b, []).append(pe_id(a, b))
     for cu, (cx, cy) in pos.items():
         ry = info[cu]["ry"]
         c = casos[cu]
@@ -455,7 +487,8 @@ def columna(casos, paquetes, nombres_act, actores, asoc, rel, esp, gen, limite_t
         o.append(f'<g class="cu" data-cu="{cu}" data-x="{cx:.0f}" data-y="{cy:.0f}">'
                  f'<ellipse cx="{cx:.1f}" cy="{cy:.1f}" rx="{RX}" ry="{ry:.1f}" fill="{fill}" stroke="{stroke}" '
                  f'stroke-width="{GROSOR}"{dash}/>'
-                 + _texto(cx, cy, info[cu]["ls"], 11, bool(not cu.startswith("F-")), color="#000000" if not ref else SUAVE)
+                 + texto_ovalo(cx, cy, RX, ry, info[cu]["ls"], info[cu]["pe"], 11, bool(not cu.startswith("F-")),
+                               color="#000000" if not ref else SUAVE)
                  + "</g>")
 
     # etiquetas de las relaciones (sobre un fondo blanco, en el ápice del arco)
@@ -485,7 +518,7 @@ def columna(casos, paquetes, nombres_act, actores, asoc, rel, esp, gen, limite_t
         xb_ = pos[b][0] + RX
         mx = (xa_ + xb_) / 2 + 0.75 * d + (46 if t == "extend" else 0)
         my = (ya + yb) / 2
-        txt = f"«{t}»" + (f" PE-{[r for r in rel_num if r[0]=='extend'].index((t, a, b, punto)) + 1}" if t == "extend" else "")
+        txt = f"«{t}»" + (f" {pe_id(a, b)}" if t == "extend" else "")
         wl = len(txt) * 5.6 + 6
         r = (mx - wl / 2, my - 7, mx + wl / 2, my + 7)
         for q in puestas:
@@ -522,9 +555,9 @@ def columna(casos, paquetes, nombres_act, actores, asoc, rel, esp, gen, limite_t
                 o.append(_texto(X_LIM, ly, [lin], 10, False, "start", TINTA)); ly += 14
             ly += 2
         exts = [r for r in rel_num if r[0] == "extend" and r[1] in pos and r[2] in pos]
-        for i, (t, a, b, punto) in enumerate(exts, 1):
+        for (t, a, b, punto) in exts:
             na = (factorizados or {}).get(a) or a
-            for lin in _lineas(f"PE-{i}  {na} extiende a {b}: cuando {punto}", int((W - X_LIM - 20) / 5.3)):
+            for lin in _lineas(f"{pe_id(a, b)}  {na} extiende a {b}: cuando {punto}", int((W - X_LIM - 20) / 5.3)):
                 o.append(_texto(X_LIM, ly, [lin], 10, False, "start", TINTA)); ly += 14
             ly += 1
         o.append("</g>")

@@ -31,11 +31,9 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class NotificationsService <<fachada>> {
-  + consultarTokensDelUsuario(usuario: Usuario): Cadena[*]
   + enviarNotificacionDePrueba(token: Cadena, titulo: Cadena,\n      mensaje: Cadena): Cadena
   + escalateToAdmin(caso: CasoRecupero)
   + reenviarConfirmacionDePedido(usuario: Usuario,\n      pedidoId: Identificador): Cadena
-  + registrarTokenDeNotificaciones(usuario: Usuario,\n      token: Cadena, plataforma: Cadena): Cadena
   + sendBatchOffer(chofer: Chofer, recorrido: LoteRecorrido)
   + sendOfferPushToDriver(chofer: Chofer, pedido: Pedido)
   + sendOrderConfirmation(cliente: Cliente, pedido: Pedido)
@@ -49,29 +47,21 @@ class EmailService <<fachada>> {
   + solicitarRecuperacionDeClave(correo: Cadena): Cadena
 }
 interface EmailSenderPort <<puerto>> {
-  + send(destinatario: Cadena)
-  + send(verificacionDeCorreo: Registro)
-  + send(administrador: Usuario, vencimientos: Registro)
-  + send(administradores: Administrador[*], detalle: Registro)
-  + send(administrador: Usuario,\n      rendiciones: RendicionChofer[*])
+  + send(destinatario: Cadena = ninguno,\n      administrador: Usuario = ninguno,\n      vencimientos: Registro = ninguno,\n      administradores: Administrador[*] = ninguno,\n      detalle: Registro = ninguno,\n      rendiciones: RendicionChofer[*] = ninguno,\n      verificacionDeCorreo: Registro = ninguno)
 }
 class FirebaseAuthPort <<referencia>>
 class "Map<String, Usuario>" as Map_String_Usuario <<referencia>>
 class FcmPort <<referencia>>
-class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class "Map<String, Cliente>" as Map_String_Cliente <<referencia>>
 class Usuario <<referencia>>
-class Chofer <<referencia>>
 class Cliente <<referencia>>
 
 EmailService --> "1" EmailSenderPort
 EmailService --> "1" FirebaseAuthPort
 EmailService --> "1" Map_String_Usuario
 NotificationsService --> "1" FcmPort
-NotificationsService --> "1" Map_String_Chofer
 NotificationsService --> "1" Map_String_Cliente
 EmailService ..> Usuario
-NotificationsService ..> Chofer
 NotificationsService ..> Cliente
 
 legend bottom right

@@ -74,13 +74,23 @@ for n,(i,m) in enumerate(idx):
             if c[0] == "Campo" or set(c[0]) <= set("-: "): break
             out.append({"paso":c[0], "accion":c[1]})
         return out
+    def rendimiento():
+        # tabla Paso | Cota de tiempo; si el caso todavía usa la fila de una línea, se toma esa
+        mm = re.search(r'\*\*Rendimiento\*\*\s*\n\n\|[^\n]*\|\s*\n\|[-\s|]+\|\s*\n((?:\|.*\|\s*\n)+)', cuerpo)
+        if not mm: return fila("Rendimiento")
+        partes = []
+        for f in mm.group(1).strip().split("\n"):
+            c = [x.strip() for x in f.strip().strip("|").split("|")]
+            if len(c) >= 2 and c[0] != "Campo" and not set(c[0]) <= set("-: "):
+                partes.append(f"paso {c[0]}: {c[1]}" if c[0].isdigit() else f"{c[0]}: {c[1]}")
+        return "; ".join(partes)
     post = re.search(r'\*\*Postcondición:\*\*\s*(.+?)(?=\n\n|\Z)', cuerpo, re.S)
     cue[m.group(2)] = {"prioridad":m.group(1).strip(), "nombre":m.group(3).strip(),
       "objetivos":fila("Objetivos asociados"), "requisitos":fila("Requisitos asociados"),
       "descripcion":fila("Descripción"), "precondicion":fila("Precondición"),
       "estado":fila("Estado"), "secuencia":tabla("Secuencia Normal"),
       "postcondicion":re.sub(r'\s+',' ',post.group(1)).strip() if post else "",
-      "excepciones":tabla("Excepciones"), "rendimiento":fila("Rendimiento"),
+      "excepciones":tabla("Excepciones"), "rendimiento":rendimiento(),
       "frecuencia":fila("Frecuencia"), "estabilidad":fila("Estabilidad"),
       "comentarios":fila("Comentarios"), "especificacion":fila("Especificación expandida")}
 

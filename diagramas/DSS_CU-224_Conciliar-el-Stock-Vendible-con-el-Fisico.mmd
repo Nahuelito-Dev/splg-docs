@@ -11,7 +11,6 @@ sequenceDiagram
         activate SIS
         alt hay una diferencia nueva entre el vendible y el físico, o entregas sin descuento
             SIS-)ADM: notificarDiferenciaDeStock(diferencias)
-            Note over SIS: El aviso sale por correo<br/>a los administradores de<br/>cada distribuidora
             SIS-->>SAU: diferencias avisadas
         else todo cierra, o la diferencia ya se avisó
             SIS-->>SAU: conciliación sin novedades

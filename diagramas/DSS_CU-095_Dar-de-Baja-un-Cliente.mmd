@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSS — CU-095 Dar de Baja un Cliente
+    autonumber
+    actor ADM as Administrador General (ACT-05)
+    participant SIS as :Sistema
+
+    ADM->>SIS: eliminarCliente(clienteId)
+    activate SIS
+    alt el cliente existe
+        SIS-->>ADM: cliente dado de baja (se conserva su histórico de pedidos)
+    else el cliente no existe o nunca le compró a la distribuidora en contexto
+        SIS-->>ADM: recurso no encontrado
+    else quien pide es un administrador de empresa
+        SIS-->>ADM: acceso denegado (la baja la hace el Administrador General)
+    end
+    deactivate SIS

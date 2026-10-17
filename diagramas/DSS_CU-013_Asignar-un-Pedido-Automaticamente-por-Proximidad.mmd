@@ -8,7 +8,6 @@ sequenceDiagram
     Note over SAU: Se dispara al crearse el<br/>pedido
     SAU->>SIS: ofrecerAlSiguienteChofer(pedidoId)
     activate SIS
-    Note over SIS: Recorre los radios 5,<br/>10, 15 y 20 km y<br/>descarta los choferes ya<br/>contactados y los de<br/>otra distribuidora
     alt Hay un candidato disponible
         SIS-)CHO: notificarOferta(pedido)
         SIS-->>SAU: oferta registrada (vence en 30 s)

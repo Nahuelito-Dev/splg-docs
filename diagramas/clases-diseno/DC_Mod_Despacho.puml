@@ -34,8 +34,7 @@ class DispatchOrchestratorService <<fachada>> {
   + distribuidorasConOfertasVencidas(): Distribuidora[*]
   + ensureOffered(pedido: Pedido)
   + handleExpiredOffers(corren: Distribuidora[*])
-  + ofrecerAlSiguienteChofer(pedidoId: Identificador): Chofer
-  + ofrecerAlSiguienteChofer(pedido: Pedido)
+  + ofrecerAlSiguienteChofer(pedidoId: Identificador = ninguno,\n      pedido: Pedido = ninguno): Chofer
 }
 class DispatchService <<fachada>> {
   + vencerOfertasExpiradas()
@@ -45,18 +44,15 @@ interface DispatchOfferRepositoryPort <<puerto>> {
 }
 interface RealtimeDispatchPort <<puerto>> {
   + findNearbyDrivers(destino: Coordenada,\n      radioKm: Decimal): Chofer[*]
-  + notifyAdmins(pedido: Pedido)
-  + notifyAdmins(evento: Registro, aviso: AvisoRecupero)
-  + notifyCustomer(cliente: Cliente, llegada: FechaHora)
-  + notifyCustomer(cliente: Cliente, pedido: Pedido,\n      tipo: Cadena)
+  + notifyAdmins(pedido: Pedido = ninguno,\n      evento: Registro = ninguno,\n      aviso: AvisoRecupero = ninguno)
+  + notifyCustomer(cliente: Cliente,\n      llegada: FechaHora = ninguno,\n      pedido: Pedido = ninguno, tipo: Cadena = ninguno)
   + notifyDriverNewOrder(chofer: Chofer, pedido: Pedido)
   + notifyDriverOrderAddressChanged(chofer: Chofer,\n      cambio: CambioEstadoPedido)
   + notifyDriverOrderCancelled(choferAnterior: Chofer,\n      pedido: Pedido)
   + stopTracking(choferAnterior: Chofer)
 }
 class RouteBatchPlannerService <<fachada>> {
-  + aceptarRecorrido(recorridoId: Identificador): Pedido[*]
-  + aceptarRecorrido(recorrido: LoteRecorrido)
+  + aceptarRecorrido(recorridoId: Identificador = ninguno,\n      recorrido: LoteRecorrido = ninguno): Pedido[*]
   + agruparPedidosPorRecorrido()
   + agruparPorProximidad(pedidos: Pedido[*]): LoteRecorrido[*]
 }

@@ -55,7 +55,7 @@ class Distribuidora {
   + getDepositos(incluirInactivos: Booleano): Deposito[*]
   + getExigirCargaDeCamionAbierta(): Booleano
   + getFranjasActivas(): FranjaHoraria[*]
-  + getProductosActivos(pagina: Entero, limite: Entero,\n      out total: Entero): Producto[*]
+  + getProductosActivos(pagina: Entero,\n      limite: Entero): Registro
   + getProductosDisponibles(): Producto[*]
   + getProveedor(proveedorId: Identificador): Proveedor
   + getProveedores(termino: Cadena, tipo: Cadena,\n      incluirInactivos: Booleano): Proveedor[*]
@@ -90,10 +90,7 @@ class Usuario {
   - correo: Cadena
   - telefono: Cadena
   - bloqueado: Booleano
-  + «create» Usuario(datosPersonales: Registro,\n      rolChofer: TipoDeRol, cuenta: Registro)
-  + «create» Usuario(datosPersonales: Registro, rol: Rol,\n      cuenta: Registro)
-  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, tipoDeRol: TipoDeRol,\n      cuenta: Registro)
-  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, rol: Rol, cuenta: Registro)
+  + «create» Usuario(cuenta: Registro,\n      nombreCompleto: Cadena = ninguno,\n      correo: Cadena = ninguno,\n      telefono: Cadena = ninguno,\n      tipoDeRol: TipoDeRol = ninguno,\n      datosPersonales: Registro = ninguno,\n      rolChofer: TipoDeRol = ninguno, rol: Rol = ninguno)
   + actualizarPerfil(datos: Registro)
   + bloquear()
   + calcularPromedio(): Decimal
@@ -106,7 +103,7 @@ class Usuario {
   + getChofer(): Chofer
   + getEmpleado(): Empleado
   + getPerfilDeChofer(): Chofer
-  + getResumenDeCalificaciones(out cantidad: Entero): Decimal
+  + getResumenDeCalificaciones(): Registro
   + getRol(): Rol
 }
 class Rol {
@@ -126,21 +123,16 @@ class AsientoAuditoria {
   - resultado: ResultadoDeAuditoria
   - cambios: Registro
   - fecha: FechaHora
-  + «create» AsientoAuditoria(autor: Usuario, rol: Rol,\n      distribuidoraId: Identificador, operacion: Cadena,\n      recurso: Cadena, origen: Cadena, resultado: Cadena,\n      codigo: Entero, motivo: Cadena)
-  + depurarCredenciales()
 }
 class Auditoria {
   - entidadAfectada: Cadena
   - fechaYHora: FechaHora
-  + «create» Auditoria(tipoDeAccion: Entero, autor: Usuario,\n      ip: Cadena, distribuidoraId: Identificador,\n      entidad: Cadena, registro: Cadena)
-  + agregarDetalle(campo: Cadena, valorAnterior: Cadena,\n      valorNuevo: Cadena)
   + getDetalles(): DetalleAuditoria[*]
 }
 class DetalleAuditoria {
   - campo: Cadena
   - valorAnterior: Cadena
   - valorNuevo: Cadena
-  + «create» DetalleAuditoria(campo: Cadena,\n      valorAnterior: Cadena, valorNuevo: Cadena)
 }
 class TipoAccionAuditoria {
   - nombre: Cadena
@@ -160,7 +152,7 @@ Distribuidora "1" *--> "0..*" ConfiguracionModulo : parametriza
 Usuario "0..1" -- "0..*" AsientoAuditoria : origina
 Usuario "0..1" -- "0..*" Auditoria : realiza
 Distribuidora "0..1" -- "0..*" Auditoria : delimita
-Auditoria "1" *--> "0..*" DetalleAuditoria : detalla con
+Auditoria "1" *-- "0..*" DetalleAuditoria : detalla con
 TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica
 Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de
 Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de

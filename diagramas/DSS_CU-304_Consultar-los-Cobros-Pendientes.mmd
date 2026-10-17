@@ -1,0 +1,15 @@
+sequenceDiagram
+    title DSS — CU-304 Consultar los Cobros Pendientes
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: consultarCobrosPendientes(desde, hasta)
+    activate SIS
+    alt las fechas son válidas
+        SIS-->>ADM: cobros pendientes por categoría
+    else una fecha es inválida o desde es posterior a hasta
+        SIS-->>ADM: solicitud inválida
+    end
+    deactivate SIS
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)

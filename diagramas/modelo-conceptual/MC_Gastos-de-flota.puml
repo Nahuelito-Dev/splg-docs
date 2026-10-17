@@ -2,11 +2,6 @@
 !include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam class<<referencia>> {
-  BackgroundColor #F1F1F1
-  BorderColor #8A97A3
-  FontColor #55616C
-}
 skinparam packageStyle rectangle
 hide circle
 hide methods
@@ -73,9 +68,9 @@ class MovimientoNeumatico {
   kilometraje
   fecha
 }
-class Vehiculo <<referencia>>
-class Empleado <<referencia>>
-class Distribuidora <<referencia>>
+class Vehiculo #F1F1F1;line:8A97A3;text:55616C
+class Empleado #F1F1F1;line:8A97A3;text:55616C
+class Distribuidora #F1F1F1;line:8A97A3;text:55616C
 
 
 Vehiculo "1" *-- "0..*" CargaCombustible : registra >

@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de estados — Licencia laboral (planificado, I-11)
+title Diagrama de estados — Licencia laboral (planificado, C-08)
 !include ../estilo-vp.iuml
 hide empty description
 state "Solicitada\n(requested)" as REQUESTED

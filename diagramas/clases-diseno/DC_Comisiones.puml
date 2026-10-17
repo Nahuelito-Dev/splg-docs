@@ -43,9 +43,7 @@ class AsientoComision {
   - importe: Moneda
   - fecha: FechaHora
   - descripcion: Cadena
-  + «create» AsientoComision(tipoDeAsientoDeComision: TipoDeAsientoDeComision,\n      importe: Moneda, rendicion: RendicionChofer)
-  + «create» AsientoComision(pedido: Pedido,\n      regla: ReglaComision, importe: Moneda)
-  + «create» AsientoComision(tipoDeAsientoDeComision: TipoDeAsientoDeComision,\n      saldoDeudor: Moneda,\n      liquidacion: LiquidacionComisiones)
+  + «create» AsientoComision(tipoDeAsientoDeComision: TipoDeAsientoDeComision = ninguno,\n      importe: Moneda = ninguno,\n      rendicion: RendicionChofer = ninguno,\n      pedido: Pedido = ninguno,\n      regla: ReglaComision = ninguno,\n      saldoDeudor: Moneda = ninguno,\n      liquidacion: LiquidacionComisiones = ninguno)
   + asignarALiquidacion(liquidacion: LiquidacionComisiones)
   + liberar()
 }

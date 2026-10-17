@@ -78,7 +78,7 @@ class Envase {
   + fueDevuelto(): Booleano
   + getMovimientos(): MovimientoEnvase[*]
   + getResumen(): Registro
-  + getVigencia(out dias: Entero): Fecha
+  + getVigencia(): Registro
   + marcarParaRetiro(pedido: Pedido)
   + pasarA(estadoDestino: EstadoDelEnvase, pedido: Pedido,\n      cliente: Cliente, observacion: Cadena)
   + registrarRevision(fecha: Fecha, resultado: Cadena,\n      vencimiento: Fecha)
@@ -89,9 +89,7 @@ class MovimientoEnvase {
   - desde: EstadoDelEnvase
   - hacia: EstadoDelEnvase
   - fecha: FechaHora
-  + «create» MovimientoEnvase(estadoDestino: EstadoDelEnvase)
-  + «create» MovimientoEnvase(pedido: Pedido,\n      usuario: Usuario, nota: Cadena)
-  + «create» MovimientoEnvase(estadoOrigen: EstadoDelEnvase,\n      estadoDestino: EstadoDelEnvase, pedido: Pedido,\n      usuario: Usuario, observacion: Cadena)
+  + «create» MovimientoEnvase(estadoDestino: EstadoDelEnvase = ninguno,\n      pedido: Pedido = ninguno,\n      usuario: Usuario = ninguno, nota: Cadena = ninguno,\n      estadoOrigen: EstadoDelEnvase = ninguno,\n      observacion: Cadena = ninguno)
 }
 class RevisionEnvase {
   - fecha: FechaHora

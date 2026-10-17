@@ -12,18 +12,18 @@
 
 | Iteración | Casos de uso | Tamaño | Qué se puede mostrar al cerrarla |
 |---|---|:---:|---|
-| **I-1** Cimientos y huecos cortos | CU-043, CU-151 y las piezas transversales T1 a T5 | M | La franja se edita sin darla de baja; una zona vencida se desactiva sola; la configuración de procesos se edita desde el panel. |
-| **I-2** Vigencia de envases | CU-132, CU-133, CU-134, CU-135 | M | Un envase con la revisión vencida no puede asignarse a ningún pedido. |
-| **I-3** Carrito persistente | CU-122, CU-123, CU-124, CU-125, CU-126 | L | El cliente arma el carrito, cierra la app, la vuelve a abrir y el carrito sigue ahí. |
-| **I-4** Pedido en curso | CU-127, CU-128 | M | El cliente cambia la dirección de un pedido en curso y el chofer lo ve, con quién recibe. |
-| **I-5** Consumo declarado | CU-143, CU-144, CU-145, CU-146 | M | El administrador ve qué clientes se quedan sin gas esta semana. |
-| **I-6** Módulo M3: recompra | CU-106 | L | Un cliente recibe la invitación a reponer y, al aceptarla, el pedido entra al despacho. |
-| **I-7** Compra express | CU-148, CU-147 (más CU-149, que no está en la lista pero es su condición) | L | Un pedido express sale a un chofer en moto o se degrada a programado avisándole al cliente. |
-| **I-8** Módulo M5: recupero de envases | CU-108 | L | Un envase retenido abre su caso, escala y el administrador lo resuelve. |
-| **I-9** Módulo M4: agrupación por recorrido | CU-107 | L | Tres pedidos programados cercanos se ofrecen como un solo recorrido ordenado. |
-| **I-10** Módulo M2: flota | CU-105 | L+ | El planificador propone una ventana de taller al chofer y escala si se agotan. |
+| **C-07** Cimientos y huecos cortos | CU-043, CU-151 y las piezas transversales T1 a T5 | M | La franja se edita sin darla de baja; una zona vencida se desactiva sola; la configuración de procesos se edita desde el panel. |
+| **C-11** Vigencia de envases | CU-132, CU-133, CU-134, CU-135 | M | Un envase con la revisión vencida no puede asignarse a ningún pedido. |
+| **C-12** Carrito persistente | CU-122, CU-123, CU-124, CU-125, CU-126 | L | El cliente arma el carrito, cierra la app, la vuelve a abrir y el carrito sigue ahí. |
+| **C-10** Pedido en curso | CU-127, CU-128 | M | El cliente cambia la dirección de un pedido en curso y el chofer lo ve, con quién recibe. |
+| **C-13** Consumo declarado | CU-143, CU-144, CU-145, CU-146 | M | El administrador ve qué clientes se quedan sin gas esta semana. |
+| **C-16** Módulo M3: recompra | CU-106 | L | Un cliente recibe la invitación a reponer y, al aceptarla, el pedido entra al despacho. |
+| **C-17** Compra express | CU-148, CU-147 (más CU-149, que no está en la lista pero es su condición) | L | Un pedido express sale a un chofer en moto o se degrada a programado avisándole al cliente. |
+| **C-15** Módulo M5: recupero de envases | CU-108 | L | Un envase retenido abre su caso, escala y el administrador lo resuelve. |
+| **C-19** Módulo M4: agrupación por recorrido | CU-107 | L | Tres pedidos programados cercanos se ofrecen como un solo recorrido ordenado. |
+| **C-14** Módulo M2: flota | CU-105 | L+ | El planificador propone una ventana de taller al chofer y escala si se agotan. |
 
-**Iteración recomendada para empezar: I-1.** Es chica, no depende de nada y deja
+**Iteración recomendada para empezar: C-07.** Es chica, no depende de nada y deja
 construidas tres cosas que después usan casi todos los demás grupos:
 
 1. **La configuración de procesos (`module_config`)**: la tabla y la entidad ya existen
@@ -43,12 +43,12 @@ la ampliación: es el único de los 23 que la documentación daba por construido
 estaba.
 
 Si se prefiere arrancar por el grupo funcional de más peso en la defensa, la alternativa
-es **I-2**: tiene dos casos Críticos (CU-132 y CU-135), vive entero en el backend y el
+es **C-11**: tiene dos casos Críticos (CU-132 y CU-135), vive entero en el backend y el
 panel, toca un solo módulo y cumple uno de los hitos de cierre de C-06.
 
 **Sobre los plazos.** La iteración C-06 cierra el 20/10/2026, en 19 días. La suma de las
 diez iteraciones ronda las 55 a 60 jornadas de trabajo de una persona (sección 5.11). No
-entra completa en C-06 ni aun repartiendo en worktrees: las metas de C-06 cubren I-1 a I-5
+entra completa en C-06 ni aun repartiendo en worktrees: las metas de C-06 cubren C-07 a C-13
 y la express, y los cuatro módulos inteligentes no figuran entre ellas. La sección 5.12
 propone cómo repartir en carriles paralelos y qué recortar si el tiempo no alcanza.
 
@@ -65,8 +65,8 @@ propone cómo repartir en carriles paralelos y qué recortar si el tiempo no alc
 | `splg-app-cliente`, `splg-app-chofer`, `splg-lib` | `develop` | Limpios. |
 
 Este plan se armó contra el árbol de trabajo tal como está, incluido lo no commiteado.
-**Condición previa a I-1:** integrar a `develop` (con el ok de nahue) el trabajo en curso
-del backend y del panel, porque I-1 toca `order` y `coverage-zone`, que hoy tienen cambios
+**Condición previa a C-07:** integrar a `develop` (con el ok de nahue) el trabajo en curso
+del backend y del panel, porque C-07 toca `order` y `coverage-zone`, que hoy tienen cambios
 pendientes, y CU-105, CU-107 y CU-147 dependen del vehículo en uso del chofer, que está en
 esa misma tanda sin integrar.
 
@@ -116,7 +116,7 @@ procesos.
 
 ## 3. Piezas transversales
 
-Se construyen en I-1, salvo que se indique otra cosa, y las reutilizan las iteraciones
+Se construyen en C-07, salvo que se indique otra cosa, y las reutilizan las iteraciones
 siguientes.
 
 **T1. Configuración de procesos por distribuidora.** `ModuleConfigService` en
@@ -131,8 +131,8 @@ Cada iteración que agrega un módulo agrega su DTO y su formulario.
 **T2. Evento `pedido.entregado`.** Constante en el módulo `order`, emitido después del
 commit en el camino que pasa el pedido a `DELIVERED` (`UpdateOrderStatusUseCase` y
 `ConfirmDeliveryUseCase`), con `orderId`, `distributorId`, `customerId`, `deliveryId`,
-`deliveredAt` y el kilaje entregado. Lo escuchan `customer`/recompra (I-5, I-6), `fleet`
-(I-10) y, si se decide, el recupero (I-8). Sigue la regla de CONVENCIONES §4: lo que otro
+`deliveredAt` y el kilaje entregado. Lo escuchan `customer`/recompra (C-13, C-16), `fleet`
+(C-14) y, si se decide, el recupero (C-15). Sigue la regla de CONVENCIONES §4: lo que otro
 módulo tiene que enterarse va por evento, no por llamada.
 
 **T3. Plantilla de proceso temporal.** El patrón de `DispatchService`: `@Cron`, cerrojo con
@@ -150,7 +150,7 @@ caso.
 **T5. Datos de demostración.** `scripts/seed-demo.ts` se amplía en cada iteración con lo
 que el caso necesita para verse: envases vencidos y por vencer, clientes con consumo
 declarado y fechas estimadas dentro de la semana, zonas con `valid_until` pasado, etc. Hoy
-el seed deja **cero choferes a propósito**: la express (I-7) y los módulos M4 y M2 necesitan
+el seed deja **cero choferes a propósito**: la express (C-17) y los módulos M4 y M2 necesitan
 choferes en línea, así que requieren un guion de simulación aparte, no un cambio en el seed.
 
 **T6. Contratos.** Todo endpoint nuevo con Swagger completo y claves en camelCase; los
@@ -353,7 +353,7 @@ esté cerrado. Tamaño del grupo: **L**, por la reescritura del estado del carri
   normalizado: `Car.typeCar` es texto libre y la express depende de reconocer una moto; se
   recomienda una columna enum con *backfill* desde `typeCar`.
 - **Endpoint.** `GET /orders/delivery-modes?addressId=` (CUSTOMER).
-- **Depende de.** T1; el vehículo en uso del chofer (trabajo sin integrar, §2.1); I-3, porque
+- **Depende de.** T1; el vehículo en uso del chofer (trabajo sin integrar, §2.1); C-12, porque
   la elección ocurre dentro del checkout del carrito.
 - **Riesgos.** (1) El DSD guarda el pedido dentro de `modalidadesDisponibles`; una consulta
   previa a crear el pedido no tiene qué guardar: la modalidad se persiste al crear el
@@ -466,7 +466,7 @@ esté cerrado. Tamaño del grupo: **L**, por la reescritura del estado del carri
 de `customer` (`CreateOrderUseCase` usa `CustomersService`), y CONVENCIONES §4 prohíbe el
 ciclo y el `forwardRef`. Se propone un **módulo núcleo `repurchase`** que depende de
 `customer` y de la consulta de pedidos, y que aloja el estimador, el listado de CU-146, el
-listener de `pedido.entregado` y, en I-6, el proceso de CU-106. `CustomersService` queda
+listener de `pedido.entregado` y, en C-16, el proceso de CU-106. `CustomersService` queda
 como dueño de los campos (persistir, validar rango) y `estimarProximaRecompra` pasa a ser
 una función pura que recibe la fecha de la última compra. Los nombres del DSD se conservan;
 cambia dónde vive cada operación, y eso se refleja en el DSD.
@@ -558,7 +558,7 @@ Decisiones comunes:
 - **Jobs.** Estimación e invitaciones, diario; vencimiento de invitaciones, horario.
 - **Parámetros.** Mínimo de pedidos, anticipación (la del cliente, CU-145, tiene prioridad;
   0 desactiva), vigencia, intervalo mínimo de reiteración, coeficientes por mes, hora.
-- **Depende de.** CU-143, CU-144, CU-145 (I-5), T1, T2, T3.
+- **Depende de.** CU-143, CU-144, CU-145 (C-13), T1, T2, T3.
 - **Riesgos.** (1) La invitación necesita una distribuidora y el cliente se comparte: se
   toma la de la última compra; sin compras, no hay invitación (ver CU-146). (2) Los
   coeficientes estacionales no tienen datos reales detrás: van en 1 por omisión y se
@@ -590,7 +590,7 @@ Decisiones comunes:
   (CUSTOMER).
 - **Parámetros.** Tolerancia, plazo de cada escalón, umbral de importe, vigencia de la
   oferta de retiro, hora.
-- **Depende de.** I-2 (mismo módulo y mismo ciclo; deja la vigencia expuesta), T1, T3.
+- **Depende de.** C-11 (mismo módulo y mismo ciclo; deja la vigencia expuesta), T1, T3.
 - **Riesgos.** (1) **El rubro trabaja con canje de envase por envase.** Si el chofer no
   registra el vacío que se lleva en cada entrega, todos los clientes aparecen reteniendo un
   envase y el módulo produce ruido. Sin registro sistemático de devoluciones, el módulo no
@@ -674,7 +674,7 @@ integra, prueba contra la API levantada (incluido el caso de error y el de otra
 distribuidora), pantallas vistas en Chrome con la paleta SPLG, revisión cruzada del diff,
 documentación actualizada (T7) y ok de nahue antes de commitear.
 
-### 5.1 I-1 Cimientos y huecos cortos — M
+### 5.1 C-07 Cimientos y huecos cortos — M
 
 - **Casos.** CU-043, CU-151.
 - **Transversales.** T1 (servicio y endpoints; el formulario del panel con un primer módulo,
@@ -685,36 +685,36 @@ documentación actualizada (T7) y ok de nahue antes de commitear.
   inactiva sola en menos de 5 minutos y sigue visible en el panel.
 - **Por qué primero.** Ver sección 1.
 
-### 5.2 I-2 Vigencia de envases — M
+### 5.2 C-11 Vigencia de envases — M
 
 - **Casos.** CU-132 → CU-133 → CU-134 → CU-135, en ese orden.
 - **Migración.** Índice `cylinder(distributor_id, expires_at)`.
 - **Hito de C-06.** "Un envase con la revisión vencida no puede asignarse a ningún pedido",
   probado desde la App Chofer y desde el panel.
-- **Paralelizable** con I-3 o I-4: toca `cylinder`, el panel y una pantalla de la App Chofer.
+- **Paralelizable** con C-12 o C-10: toca `cylinder`, el panel y una pantalla de la App Chofer.
 
-### 5.3 I-3 Carrito persistente — L
+### 5.3 C-12 Carrito persistente — L
 
 - **Casos.** CU-122, CU-125, CU-123, CU-124, CU-126 (primero lo que permite ver el carrito).
 - **Contrato.** `fromCart` en `CreateOrderDto`; vaciado en la transacción del pedido.
 - **Hito de C-06.** "El cliente arma su carrito, cierra la aplicación, la vuelve a abrir y el
   carrito sigue ahí."
 
-### 5.4 I-4 Pedido en curso — M
+### 5.4 C-10 Pedido en curso — M
 
 - **Casos.** CU-128 (chico, abre el camino en la App Chofer) y CU-127.
 - **Hito de C-06.** "El cliente cambia la dirección de un pedido en curso y el chofer lo ve."
-- **Paralelizable** con I-3 en backend; en la App Cliente conviene hacerlas en serie, porque
+- **Paralelizable** con C-12 en backend; en la App Cliente conviene hacerlas en serie, porque
   las dos tocan el checkout y el detalle del pedido.
 
-### 5.5 I-5 Consumo declarado — M
+### 5.5 C-13 Consumo declarado — M
 
 - **Casos.** CU-143, CU-145, CU-144, CU-146.
 - **Estructura.** Abre el módulo `repurchase` (sección 4.5).
 - **Migración.** Índice `customer(next_repurchase_estimate_at)`.
 - **Hito.** El administrador consulta los clientes que se quedan sin gas en los próximos 7 días.
 
-### 5.6 I-6 Módulo M3: recompra por consumo estimado — L
+### 5.6 C-16 Módulo M3: recompra por consumo estimado — L
 
 - **Caso.** CU-106.
 - **Por qué acá y no al final.** Es el módulo inteligente que se apoya en lo que ya quedó
@@ -724,9 +724,9 @@ documentación actualizada (T7) y ok de nahue antes de commitear.
 - **Hito de C-06 (adaptado).** "Un cliente sin historial recibe el aviso de recompra en la
   fecha que corresponde a su consumo declarado."
 - **Alternativa.** Si la compra express (Crítico y meta de C-06) tiene prioridad sobre
-  adelantar un módulo, se intercambian I-6 e I-7; no hay dependencia entre ellas.
+  adelantar un módulo, se intercambian C-16 e C-17; no hay dependencia entre ellas.
 
-### 5.7 I-7 Compra express — L
+### 5.7 C-17 Compra express — L
 
 - **Casos.** CU-148 → CU-147, con CU-149 como condición.
 - **Migraciones.** `order.express_surcharge_amount`; tipo de vehículo normalizado.
@@ -734,7 +734,7 @@ documentación actualizada (T7) y ok de nahue antes de commitear.
 - **Hito de C-06.** "Un pedido express se entrega dentro de la hora, o se degrada a
   programado avisándole al cliente."
 
-### 5.8 I-8 Módulo M5: recupero de envases — L
+### 5.8 C-15 Módulo M5: recupero de envases — L
 
 - **Caso.** CU-108.
 - **Antes de construir.** Medir sobre la base cuántos envases quedan en `WITH_CUSTOMER` sin
@@ -743,13 +743,13 @@ documentación actualizada (T7) y ok de nahue antes de commitear.
 - **Migraciones.** `cylinder_recovery_notice.order_id`; único parcial de caso abierto; baja
   del envase.
 
-### 5.9 I-9 Módulo M4: agrupación por recorrido — L
+### 5.9 C-19 Módulo M4: agrupación por recorrido — L
 
 - **Caso.** CU-107.
 - **Decisión previa.** Qué pedidos se agrupan (riesgo 1 de CU-107).
 - **Migraciones.** Índices de oferta y parada.
 
-### 5.10 I-10 Módulo M2: flota — L+
+### 5.10 C-14 Módulo M2: flota — L+
 
 - **Caso.** CU-105.
 - **Decisiones previas.** Zona del vehículo; aceptación del chofer frente a confirmación
@@ -762,37 +762,37 @@ documentación actualizada (T7) y ok de nahue antes de commitear.
 
 | Iteración | Jornadas aproximadas |
 |---|:---:|
-| I-1 | 3 |
-| I-2 | 4 a 5 |
-| I-3 | 5 a 6 |
-| I-4 | 3 |
-| I-5 | 4 a 5 |
-| I-6 | 6 |
-| I-7 | 6 a 7 |
-| I-8 | 6 |
-| I-9 | 7 a 8 |
-| I-10 | 9 a 10 |
+| C-07 | 3 |
+| C-11 | 4 a 5 |
+| C-12 | 5 a 6 |
+| C-10 | 3 |
+| C-13 | 4 a 5 |
+| C-16 | 6 |
+| C-17 | 6 a 7 |
+| C-15 | 6 |
+| C-19 | 7 a 8 |
+| C-14 | 9 a 10 |
 | **Total** | **53 a 59** |
 
 ### 5.12 Carriles paralelos y recorte
 
-Después de I-1, el trabajo se reparte en cuatro carriles que tocan módulos distintos del
+Después de C-07, el trabajo se reparte en cuatro carriles que tocan módulos distintos del
 backend y pueden ir en worktrees separados (`orq nuevo`):
 
 | Carril | Secuencia | Módulos del backend | App que toca |
 |---|---|---|---|
-| A — Envases | I-2 → I-8 | `cylinder` | Chofer, panel |
-| B — Pedido | I-3 → I-4 → I-7 → I-9 | `cart`, `order` | Cliente, chofer |
-| C — Cliente | I-5 → I-6 | `customer`, `repurchase` | Cliente, panel |
-| D — Flota | I-10 | `fleet` | Chofer, panel |
+| A — Envases | C-11 → C-15 | `cylinder` | Chofer, panel |
+| B — Pedido | C-12 → C-10 → C-17 → C-19 | `cart`, `order` | Cliente, chofer |
+| C — Cliente | C-13 → C-16 | `customer`, `repurchase` | Cliente, panel |
+| D — Flota | C-14 | `fleet` | Chofer, panel |
 
 Conflictos a vigilar: B y C tocan `CreateOrderUseCase` (B por el carrito y la express; C
 sólo lo llama al aceptar la invitación) y los dos tocan la App Cliente, que conviene
 integrar en serie. D no arranca hasta que el vehículo en uso esté integrado.
 
 Si el tiempo no alcanza antes de la defensa, el orden de recorte recomendado, de lo primero
-que se posterga a lo último: I-10 parte (b), I-9, I-8, I-10 parte (a). Lo que no conviene
-postergar: I-1, I-2 (dos Críticos), I-7 (Crítico) e I-6 (el módulo inteligente más barato
+que se posterga a lo último: C-14 parte (b), C-19, C-15, C-14 parte (a). Lo que no conviene
+postergar: C-07, C-11 (dos Críticos), C-17 (Crítico) e C-16 (el módulo inteligente más barato
 de mostrar funcionando).
 
 ---
@@ -874,7 +874,7 @@ discrepancias de documentación se corrigen en el doc, no se "arreglan" en el c�
 | D14 | Cobro del depósito | CU-108 | Registrar la decisión o cobrar por pasarela. | Registrar la decisión y el importe. |
 | D15 | Zona del vehículo | CU-105 | Derivada de las entregas, asignada a mano, o sin restricción por zona. | Derivada de las entregas de los últimos N días. |
 | D16 | Quién programa la ventana de taller | CU-105 | El chofer al aceptar, o el administrador al confirmar el gasto. | Chofer acepta, administrador confirma. |
-| D17 | CU-149 fuera de la lista | CU-147 | Incluirlo o dejar la express sin despacho propio. | Incluirlo en I-7. |
+| D17 | CU-149 fuera de la lista | CU-147 | Incluirlo o dejar la express sin despacho propio. | Incluirlo en C-17. |
 
 Discrepancias de documentación halladas al relevar (para corregir en el doc):
 
@@ -899,7 +899,7 @@ Discrepancias de documentación halladas al relevar (para corregir en el doc):
 | Trabajo sin commitear en backend y panel sobre los mismos módulos | Conflictos al integrar cada iteración | Condición previa de §2.1. |
 | Plazo de C-06 (20/10) frente a 53 a 59 jornadas | No entra todo | Carriles paralelos y orden de recorte de §5.12. |
 | Datos de demostración sin choferes | La express, M4 y M2 no se pueden mostrar | Guion de simulación de choferes en línea (T5). |
-| Parámetros fijos en el código | Incumple C4 de la cátedra | T1 en I-1; todo parámetro nuevo nace en `module_config`. |
+| Parámetros fijos en el código | Incumple C4 de la cátedra | T1 en C-07; todo parámetro nuevo nace en `module_config`. |
 | Crons duplicados con varias instancias | Invitaciones, avisos o lotes repetidos | Cerrojo en todo proceso nuevo (T3). Fuera de alcance: `FleetAlertsCron` hoy no toma cerrojo; se anota. |
 | Notificaciones push sin token | El cliente no se entera de la invitación o del recupero | Las invitaciones y avisos también se consultan por endpoint (`/mine`) desde la app. |
 | `cruzar-dsd-clases.py` con excepciones obsoletas | El script falla al construir lo propuesto | T7 en el mismo cambio que el código. |

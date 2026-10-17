@@ -70,21 +70,21 @@ def manifiesto():
 # Clases del diseño que todavía no existen en el código (módulos planificados del Documento 3).
 # Un DSD de un caso planificado puede nombrarlas; en uno implementado, no.
 PROPUESTAS_CLASE = {
-  # Carrito persistente (I-3)
+  # Carrito persistente (C-12)
   "CartController": "CU-122 a CU-126: endpoints del carrito; el módulo cart solo registra las entidades",
   "CartService": "CU-122 a CU-126: agregar, modificar, quitar, consultar y vaciar el carrito",
-  # Consumo declarado y recompra (I-5, I-6): módulo repurchase (D8)
+  # Consumo declarado y recompra (C-13, C-16): módulo repurchase (D8)
   "ConsumptionService": "CU-143, CU-144: orquesta el consumo declarado fuera de customer, para no crear un ciclo con order",
   "ConsumptionEstimatorService": "CU-143, CU-144, CU-106: estimador de la fecha de recompra (función pura en el módulo repurchase)",
   "RepurchaseController": "CU-144, CU-146: endpoints de consumo y de recompras estimadas, en el módulo repurchase",
   "RepurchaseEstimatesService": "CU-146: listado administrativo de recompras estimadas",
   "RepurchaseForecastService": "CU-106: proceso diario que estima e invita",
   "RepurchaseInvitationRepositoryPort": "CU-106: persistencia de las invitaciones de recompra",
-  # Recupero de envases (I-8)
+  # Recupero de envases (C-15)
   "CylinderRecoveryService": "CU-108: proceso diario del recupero de envases",
   "DepositLedgerService": "CU-108: registra la liberación y la decisión sobre el depósito, sin cobro por pasarela (D14)",
   "RecoveryCaseRepositoryPort": "CU-108: persistencia de los casos de recupero",
-  # Módulos inteligentes de flota y recorrido (I-9, I-10)
+  # Módulos inteligentes de flota y recorrido (C-19, C-14)
   "DemandForecastService": "CU-105: demanda proyectada por franja y zona",
   "FleetAvailabilityPort": "CU-105: puerto que consulta el despacho para saber si un vehículo está apto",
   "FleetCapacityService": "CU-107: capacidad de carga del vehículo en uso",
@@ -96,11 +96,11 @@ PROPUESTAS_CLASE = {
   "RouteBatchPlannerService": "CU-107: proceso que agrupa pedidos programados en recorridos (D13)",
   "RouteBatchRepositoryPort": "CU-107: persistencia de lotes, paradas y ofertas",
   "RouteSequencerService": "CU-107: orden de las paradas de un lote",
-  # Pequeños huecos (I-1)
+  # Pequeños huecos (C-07)
   "CoverageZoneCronService": "CU-151: barrido que desactiva las zonas vencidas",
-  # Configuración de los procesos automáticos (I-1); el despacho y las tareas (CU-171, CU-173) ya están construidos
+  # Configuración de los procesos automáticos (C-07); el despacho y las tareas (CU-171, CU-173) ya están construidos
   "ProcessConfigService": "CU-172: valida los parámetros de un proceso automático contra el esquema de ese proceso y los guarda con ModuleConfigService",
-  # Caja, rendición, cuentas corrientes y comisiones (I-14)
+  # Caja, rendición, cuentas corrientes y comisiones (C-20)
   "CashBoxService": "CU-225 a CU-227, CU-264: cajas y sesiones de caja con arqueo, módulo cash",
   "CashLedgerService": "CU-228, CU-229: punto único de escritura del libro de caja y de los saldos",
   "CashCategoryService": "CU-230, CU-265: categorías de ingresos y gastos de caja",
@@ -110,15 +110,15 @@ PROPUESTAS_CLASE = {
   "CustomerAccountService": "CU-235 a CU-239: cuentas corrientes, cargos, pagos, ajustes y consultas",
   "CommissionService": "CU-240 a CU-244: reglas, comisiones por entrega y liquidaciones",
   "FinanceDashboardService": "CU-245: tablero financiero",
-  # Reintegro de pagos (I-7)
+  # Reintegro de pagos (C-17)
   "ReintegroListener": "CU-168: escucha el evento de pedido cancelado",
   "RefundPaymentUseCase": "CU-168: devuelve el pago por la pasarela, fuera de la transacción de la cancelación",
-  # Personal y legajos (I-11): módulo employee. Puestos, legajos, egreso y cuenta ya están construidos.
+  # Personal y legajos (C-08): módulo employee. Puestos, legajos, egreso y cuenta ya están construidos.
   "AttendanceService": "CU-189, CU-190: jornadas de trabajo, cargadas por el panel o marcadas por el chofer",
   "LeaveService": "CU-191, CU-192: licencias y ausencias, su solicitud y su resolución",
   "PersonnelDashboardService": "CU-194: cifras del tablero de personal",
   "VacationPolicy": "CU-193: función pura de los días de vacaciones por antigüedad, LCT art. 150 (domain/vacaciones.ts)",
-  # Flota ampliada (I-12): módulo fleet-expense
+  # Flota ampliada (C-18): módulo fleet-expense
   "FuelLoadService": "CU-195, CU-196: cargas de combustible y consumo de un vehículo, en el módulo fleet-expense",
   "FuelConsumptionCalculator": "CU-195, CU-196: función pura del consumo por tramo entre cargas de tanque lleno y de su desvío (domain/consumo.ts)",
   "TrafficFineService": "CU-198 a CU-200: multas de tránsito, su pago y su imputación al chofer",
@@ -145,9 +145,11 @@ EXTERNAS = {"QueryRunner", "EntityManager", "Repository", "DataSource", "Decimal
 # catálogo. Su DSD es el fragmento que realiza el caso incluido: el primer mensaje sale del
 # controlador del caso base (`controladores`) y lleva la `firma` de acá; una nota «Caso incluido
 # desde CU-…» nombra a los casos base. Nombre de archivo: DSD_CU-xxx_<operacion>.mmd.
-# Diagrama de secuencia del sistema de cada caso incluido: lo inicia el actor del caso base principal (el DSS
-# es la vista de caja negra del fragmento que el caso base ejecuta); la operación no es del catálogo.
-DSS_INCLUIDOS = {
+# Los ocho casos incluidos (CU-082, 159, 160, 169, 220, 246, 248, 250) tienen su operación en el catálogo
+# (operaciones-sistema.json), con su DSS desde el actor del caso base principal y, si cambia estado, su contrato.
+# Su DSD es el fragmento que el caso base ejecuta: el primer mensaje sale del controlador del caso base y lleva
+# la `firma` de diseño de acá; una nota «Caso incluido desde CU-…» nombra los casos base.
+INCLUIDOS = {
     "crearUsuarioBase": {"cu": "CU-082", "actores": ["ACT-01"],
                          "firma": "crearUsuarioBase(rol, datosPersonales, distribuidoraId)"},
     "almacenarArchivo": {"cu": "CU-159", "actores": ["ACT-03"], "firma": "almacenarArchivo(clave, contenido, tipo)"},
@@ -161,7 +163,7 @@ DSS_INCLUIDOS = {
 }
 
 INCLUIDOS = {
-    "crearUsuarioBase": {"casos": ["CU-082"], "bases": ["CU-002", "CU-003", "CU-031", "CU-086", "CU-087"],
+    "crearUsuarioBase": {"casos": ["CU-082"], "bases": ["CU-002", "CU-031", "CU-086", "CU-087"],
                          "controladores": {"RegistroService"},
                          "firma": "registrar(datosPersonales, rol, distribuidoraId)"},
     "almacenarArchivo": {"casos": ["CU-159"], "bases": ["CU-155", "CU-174"],
@@ -173,7 +175,7 @@ INCLUIDOS = {
     # No es un caso incluido sino una operación interna: ningún actor la invoca y no es del
     # catálogo; la ejecuta CreateOrderUseCase dentro de crearPedido, crearReserva y
     # realizarCompraExpress. Se la trata igual (primer mensaje desde el controlador del caso base).
-    # Planificado (I-11): el gate de despacho ampliado con la situación laboral del chofer.
+    # Planificado (C-08): el gate de despacho ampliado con la situación laboral del chofer.
     "verificarHabilitacionLaboral": {"casos": ["CU-246"], "bases": ["CU-012", "CU-013", "CU-015"],
                                      "controladores": {"OrderService", "DispatchOrchestratorService",
                                                        "UpdateOrderStatusUseCase"},
@@ -351,7 +353,6 @@ def verificar(estricto=False, solo=None):
         o = ops.get(nombre_op)
         if inc and not o:
             o = {"casosDeUso": inc["casos"], "firma": inc["firma"], "actores": [], "cambiaEstado": False}
-            incluidos_hechos.add(nombre_op)
         if not o:
             e(f"la operación {nombre_op} no está en el catálogo ni entre los casos incluidos")
             continue
@@ -374,8 +375,9 @@ def verificar(estricto=False, solo=None):
             e("no tiene mensajes")
             continue
         m1 = d["mensajes"][0]
-        if m1["texto"] != o["firma"]:
-            e(f"el primer mensaje {m1['texto']!r} no es la firma del catálogo {o['firma']!r}")
+        firma_ok = inc["firma"] if inc else o["firma"]
+        if m1["texto"] != firma_ok:
+            e(f"el primer mensaje {m1['texto']!r} no es la firma {'de diseño del caso incluido' if inc else 'del catálogo'} {firma_ok!r}")
         et = d["actores"].get(m1["de"])
         if inc:
             # fragmento de un caso incluido: sale del controlador del caso base, no de un actor

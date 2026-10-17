@@ -1,11 +1,11 @@
-"""Tablas planificadas del módulo de flota ampliada (iteración I-12).
+"""Tablas planificadas del módulo de flota ampliada (iteración C-18).
 
 Las lee `generar-modelo-datos.py` y se suman a la constante PROPUESTO: se dibujan aparte, con el
 estereotipo <<propuesto>>, hasta que la migración las cree. Cada agregado dice a qué casos de uso
 responde, qué columnas nuevas lleva una tabla existente y qué tablas nuevas aparecen.
 
 Las referencias al empleado (`employee_id`) apuntan a la tabla `employee` del módulo de personal
-(iteración I-11), que ya está en la base; la vigencia y el detalle de las tareas de
+(iteración C-08), que ya está en la base; la vigencia y el detalle de las tareas de
 mantenimiento (`valid_from`, `details`) los define `propuesto_personal.py`.
 """
 
@@ -36,8 +36,8 @@ def _creada(updated=True):
 AGREGADOS = [
   {
     "clave": "flota-gastos",
-    "casos": "CU-195 a CU-202 (I-12)",
-    "nota": "La carga de combustible, la multa y el siniestro son registros propios del vehículo y no columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo. El siniestro no se mezcla con `incident`, que es el contratiempo de calidad de un pedido. El empleado se referencia por `employee_id` y no por `delivery`, porque el responsable de una multa o el que carga combustible puede ser un empleado sin cuenta de acceso. `cash_movement_id` queda sin clave foránea hasta que exista el módulo de caja (I-14).",
+    "casos": "CU-195 a CU-202 (C-18)",
+    "nota": "La carga de combustible, la multa y el siniestro son registros propios del vehículo y no columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo. El siniestro no se mezcla con `incident`, que es el contratiempo de calidad de un pedido. El empleado se referencia por `employee_id` y no por `delivery`, porque el responsable de una multa o el que carga combustible puede ser un empleado sin cuenta de acceso. `cash_movement_id` queda sin clave foránea hasta que exista el módulo de caja (C-20).",
     "titulo": "Flota ampliada: combustible, multas y siniestros",
     "pedido": "Llevar las cargas de combustible, las multas de tránsito y los siniestros de cada vehículo, para conocer su consumo y su costo.",
     "enums": {
@@ -172,7 +172,7 @@ AGREGADOS = [
   },
   {
     "clave": "flota-neumaticos",
-    "casos": "CU-205 y CU-206 (I-12, opcional)",
+    "casos": "CU-205 y CU-206 (C-18, opcional)",
     "nota": "Funcionalidad opcional del módulo, que se puede construir aparte. Los movimientos del neumático son un libro que no se modifica: el estado y la posición actuales del neumático se guardan en `tire` para no recorrer el historial en cada consulta.",
     "titulo": "Flota ampliada: neumáticos",
     "pedido": "Llevar cada neumático y sus movimientos —montaje, desmontaje, rotación, recapado y baja— para saber cuántos kilómetros recorrió.",

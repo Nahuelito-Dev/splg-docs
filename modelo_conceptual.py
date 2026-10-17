@@ -178,8 +178,8 @@ _c("ItemRecepcion", "Compras",
     "existencia previa", "existencia previa leída el"])
 _c("Caja", "CajaYFinanzas", ["nombre", "tipo", "saldo", "requiere sesión", "activa"])
 _c("SesionDeCaja", "CajaYFinanzas",
-   ["estado", "abierta el", "monto inicial", "cerrada el", "monto esperado", "monto contado",
-    "diferencia", "observaciones"])
+   ["estado", "abierta el", "monto inicial", "cerrada el", "/monto esperado", "monto contado",
+    "/diferencia", "observaciones"])
 _c("CategoriaDeCaja", "CajaYFinanzas", ["nombre", "sentido", "código de sistema", "activa"])
 _c("MovimientoDeCaja", "CajaYFinanzas",
    ["sentido", "importe", "medio", "fecha", "descripción", "origen"])
@@ -356,7 +356,7 @@ ASOCIACIONES = [
     ("Usuario", "1", "-", "0..*", "CargaDeCamion", "abre", TR),
     ("Usuario", "0..1", "-", "0..*", "CargaDeCamion", "cierra", TR),
     ("Empleado", "0..1", "-", "0..*", "CargaDeCamion", "ayuda en", TR),
-    # Caja y finanzas (módulo planificado, iteración I-14)
+    # Caja y finanzas (módulo planificado, iteración C-20)
     ("Distribuidora", "1", "*", "0..*", "Caja", "define", PL),
     ("Distribuidora", "1", "*", "0..*", "CategoriaDeCaja", "define", PL),
     ("Distribuidora", "1", "*", "0..*", "CuentaCorriente", "lleva", PL),
@@ -494,7 +494,7 @@ TABLA = {
     "ItemCarga": "truck_load_item", "Proveedor": "supplier", "OrdenDeCompra": "purchase_order",
     "ItemOrdenDeCompra": "purchase_order_item", "RecepcionDeCompra": "purchase_receipt",
     "ItemRecepcion": "purchase_receipt_item",
-    # Caja y rendición (planificado, I-14)
+    # Caja y rendición (planificado, C-20)
     "Caja": "cash_box", "SesionDeCaja": "cash_session", "CategoriaDeCaja": "cash_category",
     "MovimientoDeCaja": "cash_movement", "RendicionChofer": "driver_settlement",
     "PedidoRendido": "driver_settlement_order", "GastoDeRendicion": "driver_settlement_expense",
@@ -506,22 +506,22 @@ TABLA = {
 
 
 # Conceptos de los módulos de gestión de la distribuidora que todavía no tienen tabla en la base
-# (concepto -> iteración en que se construyen): las jornadas y licencias del personal (I-11; los puestos y los
-# legajos ya están construidos), la flota ampliada (I-12), el stock y
-# las compras (I-13) y la caja y rendición (I-14). Sus tablas están en `propuesto_personal.py`, `propuesto_flota.py` y la constante
+# (concepto -> iteración en que se construyen): las jornadas y licencias del personal (C-08; los puestos y los
+# legajos ya están construidos), la flota ampliada (C-18), el stock y
+# las compras (C-09) y la caja y rendición (C-20). Sus tablas están en `propuesto_personal.py`, `propuesto_flota.py` y la constante
 # PROPUESTO de `generar-modelo-datos.py`. Todo lo que contrasta el modelo con la base los trata aparte.
-PLANIFICADOS = {c: "I-11" for c in ("JornadaDeTrabajo", "LicenciaLaboral")}
-PLANIFICADOS.update({c: "I-12" for c in ("CargaCombustible", "MultaTransito", "Siniestro", "Neumatico",
+PLANIFICADOS = {c: "C-08" for c in ("JornadaDeTrabajo", "LicenciaLaboral")}
+PLANIFICADOS.update({c: "C-18" for c in ("CargaCombustible", "MultaTransito", "Siniestro", "Neumatico",
                                          "MovimientoNeumatico")})
-PLANIFICADOS.update({c: "I-14" for c in (
+PLANIFICADOS.update({c: "C-20" for c in (
     "Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja", "RendicionChofer",
     "PedidoRendido", "GastoDeRendicion", "CuentaCorriente", "AsientoCuentaCorriente",
     "ImputacionCuentaCorriente", "ReglaComision", "AsientoComision", "LiquidacionComisiones")})
 # Atributos planificados de conceptos que ya existen: (concepto, atributo).
-ATRIBUTOS_PLANIFICADOS = {("PlanMantenimiento", "documento que controla"): "I-11",
-                          ("PlanMantenimiento", "aplica a"): "I-11",
-                          ("TareaMantenimiento", "vigente desde"): "I-11", ("TareaMantenimiento", "detalle"): "I-11",
-                          ("Vehiculo", "tipo de combustible"): "I-12", ("Vehiculo", "capacidad del tanque"): "I-12"}
+ATRIBUTOS_PLANIFICADOS = {("PlanMantenimiento", "documento que controla"): "C-08",
+                          ("PlanMantenimiento", "aplica a"): "C-08",
+                          ("TareaMantenimiento", "vigente desde"): "C-08", ("TareaMantenimiento", "detalle"): "C-08",
+                          ("Vehiculo", "tipo de combustible"): "C-18", ("Vehiculo", "capacidad del tanque"): "C-18"}
 # Módulo del backend de cada concepto planificado (y del Adjunto, que ya está implementado).
 MODULO_PLANIFICADO = {"JornadaDeTrabajo": "employee", "LicenciaLaboral": "employee", "Adjunto": "attachment",
                       "CargaCombustible": "fleet-expense", "MultaTransito": "fleet-expense",
@@ -782,8 +782,8 @@ ATRIBUTOS = {
     "Caja": {"nombre": "name", "tipo": "kind", "saldo": "balance",
              "requiere sesión": "requires_session", "activa": "is_active"},
     "SesionDeCaja": {"estado": "status", "abierta el": "opened_at", "monto inicial": "opening_amount",
-                     "cerrada el": "closed_at", "monto esperado": "expected_amount",
-                     "monto contado": "counted_amount", "diferencia": "difference",
+                     "cerrada el": "closed_at", "/monto esperado": "expected_amount",
+                     "monto contado": "counted_amount", "/diferencia": "difference",
                      "observaciones": "notes"},
     "CategoriaDeCaja": {"nombre": "name", "sentido": "direction", "código de sistema": "system_code",
                         "activa": "is_active"},

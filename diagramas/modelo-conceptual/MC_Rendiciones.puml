@@ -2,11 +2,6 @@
 !include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam class<<referencia>> {
-  BackgroundColor #F1F1F1
-  BorderColor #8A97A3
-  FontColor #55616C
-}
 skinparam packageStyle rectangle
 hide circle
 hide methods
@@ -34,13 +29,13 @@ class GastoDeRendicion {
   importe
   descripción
 }
-class Chofer <<referencia>>
-class Pedido <<referencia>>
-class Caja <<referencia>>
-class MovimientoDeCaja <<referencia>>
-class CategoriaDeCaja <<referencia>>
-class AsientoCuentaCorriente <<referencia>>
-class AsientoComision <<referencia>>
+class Chofer #F1F1F1;line:8A97A3;text:55616C
+class Pedido #F1F1F1;line:8A97A3;text:55616C
+class Caja #F1F1F1;line:8A97A3;text:55616C
+class MovimientoDeCaja #F1F1F1;line:8A97A3;text:55616C
+class CategoriaDeCaja #F1F1F1;line:8A97A3;text:55616C
+class AsientoCuentaCorriente #F1F1F1;line:8A97A3;text:55616C
+class AsientoComision #F1F1F1;line:8A97A3;text:55616C
 
 
 Chofer "1" *-- "0..*" RendicionChofer : presenta >

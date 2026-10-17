@@ -7,7 +7,6 @@ sequenceDiagram
 
     SAU->>SIS: despacharPedidoExpress(pedidoId)
     activate SIS
-    Note over SIS: Ofrece el pedido al<br/>chofer en moto más<br/>cercano, con una ventana<br/>de aceptación más corta
     alt Un chofer en moto acepta
         SIS-->>SAU: pedido asignado
         SIS-)CLI: notificarPedidoAceptado(pedido)

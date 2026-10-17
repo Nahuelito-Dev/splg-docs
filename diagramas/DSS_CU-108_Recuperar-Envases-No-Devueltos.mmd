@@ -9,11 +9,9 @@ sequenceDiagram
     Note over SAU: Se ejecuta con la<br/>periodicidad configurada
     SAU->>SIS: gestionarEnvasesNoDevueltos()
     activate SIS
-    Note over SIS: Detecta los envases<br/>retenidos por encima del<br/>plazo de tolerancia<br/>configurado
 
     loop Por cada envase retenido
         loop Por cada escalón de la secuencia
-            Note over SAU,SIS: Si el envase ya volvió, se cierra<br/>el caso y se libera el depósito
             opt El envase sigue retenido
                 SIS-)CLI: notificarEscalonDeRecupero(caso, escalon)
                 opt Hay una entrega programada al mismo cliente
@@ -32,7 +30,6 @@ sequenceDiagram
             Note over SAU,ADM: decision: cobrar el depósito, dar de baja el<br/>envase o cerrar el caso sin cargo
             SIS-->>ADM: resolución registrada
         end
-        Note over SAU,SIS: Si el envase volvió o el importe<br/>no llega al umbral, se cierra<br/>el caso según corresponda
     end
     SIS-->>SAU: casos de recupero procesados
     deactivate SIS

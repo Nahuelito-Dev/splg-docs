@@ -1,0 +1,21 @@
+sequenceDiagram
+    title DSS — CU-041 Consultar el Catálogo de Productos (Cliente)
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: consultarProductosDisponibles(distribuidora)
+    activate SIS
+    SIS-->>CLI: productos activos con stock disponible, con los métodos de pago y su recargo
+    deactivate SIS
+
+    opt detalle de un producto
+        CLI->>SIS: consultarProducto(productoId)
+        activate SIS
+        alt el producto existe
+            SIS-->>CLI: detalle del producto
+        else el producto no existe
+            SIS-->>CLI: recurso no encontrado
+        end
+        deactivate SIS
+    end

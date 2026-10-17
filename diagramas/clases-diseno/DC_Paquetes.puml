@@ -120,6 +120,7 @@ package "Stock y compras" as area_Stock_y_compras #F4EEF7 {
 }
 attachment ..> employee
 attachment ..> s3
+auth ..> firebase
 auth ..> users
 car ..> delivery
 car ..> fleet
@@ -201,7 +202,6 @@ health ..> redis
 incident ..> gateways
 incident ..> order
 notifications ..> customer
-notifications ..> delivery
 notifications ..> firebase
 order ..> coverage_zone
 order ..> customer

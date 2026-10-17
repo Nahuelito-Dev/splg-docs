@@ -36,9 +36,9 @@ entity SesionDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} abierta el
   {field} monto inicial
   {field} cerrada el
-  {field} monto esperado
+  {field} /monto esperado
   {field} monto contado
-  {field} diferencia
+  {field} /diferencia
   {field} observaciones
 }
 entity CategoriaDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {

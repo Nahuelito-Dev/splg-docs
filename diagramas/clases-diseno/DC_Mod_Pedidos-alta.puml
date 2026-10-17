@@ -33,7 +33,7 @@ skinparam ranksep 90
 class CreateOrderUseCase <<controlador>> {
   + calcularTotales(subtotal: Moneda, zona: ZonaCobertura,\n      metodoDePago: MetodoDePago): Registro
   + crearPedido(items: Lista, direccionId: Identificador,\n      franjaId: Identificador, fechaAgendada: Fecha,\n      metodoDePago: Cadena)
-  + crearReserva(items: Lista, direccionId: Identificador,\n      fechaAgendada: Fecha, franjaId: Identificador,\n      metodoDePago: Cadena, montoDeLaSenia: Moneda,\n      out enlaceDePago: Cadena): Pedido
+  + crearReserva(items: Lista, direccionId: Identificador,\n      fechaAgendada: Fecha, franjaId: Identificador,\n      metodoDePago: Cadena,\n      montoDeLaSenia: Moneda): Registro
   + resolverZona(direccion: DireccionEntrega): ZonaCobertura
   + valorizarRenglon(producto: Producto,\n      item: ItemPedido): Registro
   + venderACuentaCorriente(cliente: Cliente,\n      direccionId: Identificador, items: Lista): Pedido

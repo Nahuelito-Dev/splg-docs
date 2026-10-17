@@ -88,7 +88,7 @@ class Empleado {
   + registrarArrastre(liquidacion: LiquidacionComisiones,\n      saldoDeudor: Moneda)
   + registrarComision(pedido: Pedido, regla: ReglaComision)
   + registrarFaltante(rendicion: RendicionChofer,\n      importe: Moneda)
-  + registrarJornada(ingreso: SentidoDeCaja,\n      egreso: SentidoDeCaja,\n      origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
+  + registrarJornada(ingreso: FechaHora, egreso: FechaHora,\n      origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
   + reingresar(fechaDeIngreso: Fecha)
   + solicitarLicencia(tipoDeLicencia: TipoDeLicencia,\n      fechaDesde: Fecha, fechaHasta: Fecha,\n      motivo: Cadena): LicenciaLaboral
   + validarSinComisionPrevia(pedido: Pedido)
@@ -100,8 +100,7 @@ class JornadaDeTrabajo {
   - egreso: FechaHora
   - origen: OrigenDeLaJornada
   - observacion: Cadena
-  + «create» JornadaDeTrabajo(ahora: FechaHora,\n      origenDeJornada: OrigenDeLaJornada)
-  + «create» JornadaDeTrabajo(ingreso: SentidoDeCaja,\n      egreso: SentidoDeCaja,\n      origenDeJornada: OrigenDeLaJornada)
+  + «create» JornadaDeTrabajo(origenDeJornada: OrigenDeLaJornada,\n      ingreso: FechaHora = ninguno,\n      egreso: FechaHora = ninguno,\n      ahora: FechaHora = ninguno)
   + assertNotaObligatoria(nota: Cadena)
   + cerrar(ahora: FechaHora)
   + corregir(datos: Registro, nota: Cadena)

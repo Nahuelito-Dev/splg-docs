@@ -53,7 +53,7 @@ class CloseTruckLoadUseCase <<controlador>> {
   + cerrarRendicionDeStock(cargaId: Identificador,\n      nota: Cadena): Booleano
 }
 class TruckLoadQueryService <<fachada>> {
-  + consultarCargaActual(out exigida: Booleano): CargaDeCamion
+  + consultarCargaActual(): Registro
   + consultarCargaDelCamion(cargaId: Identificador): CargaDeCamion
   + consultarCargasDelCamion(estado: Cadena, desde: Fecha,\n      hasta: Fecha, vehiculoId: Identificador,\n      choferId: Identificador): CargaDeCamion[*]
 }

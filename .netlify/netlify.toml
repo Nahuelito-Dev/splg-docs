@@ -6,7 +6,7 @@ redirects = []
 [functions."*"]
 
 [build]
-publish = "/Users/nahuelwagner/Desktop/myprojects/gearthlogic/projects/garrafitas/splg-docs"
+publish = "/Users/nahuelwagner/Desktop/myprojects/gearthlogic/projects/garrafitas/.worktrees/splg-docs/catedra-artefactos"
 publishOrigin = "default"
 
 [build.environment]

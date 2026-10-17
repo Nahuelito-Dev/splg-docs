@@ -2,11 +2,6 @@
 !include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam class<<referencia>> {
-  BackgroundColor #F1F1F1
-  BorderColor #8A97A3
-  FontColor #55616C
-}
 skinparam packageStyle rectangle
 hide circle
 hide methods
@@ -31,9 +26,9 @@ class Reclamo {
   resolución
   fotografía
 }
-class Usuario <<referencia>>
-class Pedido <<referencia>>
-class Cliente <<referencia>>
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+class Pedido #F1F1F1;line:8A97A3;text:55616C
+class Cliente #F1F1F1;line:8A97A3;text:55616C
 
 
 Pedido "1" -- "0..*" Reclamo : origina >

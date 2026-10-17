@@ -8,7 +8,6 @@ sequenceDiagram
     SAU->>SIS: registrarCargoDeCuentaCorriente(pedidoId)
     activate SIS
     alt El pedido es a cuenta y no tiene cargo
-        Note over SAU,SIS: Asienta el cargo y actualiza el saldo de la cuenta
         SIS-->>SAU: cargo registrado
     else El pedido no es a cuenta o ya tiene su cargo
         SIS-->>SAU: sin cambios

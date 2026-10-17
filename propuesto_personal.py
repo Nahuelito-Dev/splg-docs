@@ -1,4 +1,4 @@
-"""Modelo de datos planificado del módulo Personal (iteración I-11): lo que todavía no está construido.
+"""Modelo de datos planificado del módulo Personal (iteración C-08): lo que todavía no está construido.
 
 Las tablas `job_position` y `employee` y sus enumerados ya están en la base (puestos y legajos, CU-176 a CU-182 y
 CU-255 a CU-257) y salen de ella; acá quedan las jornadas, las licencias y las columnas de la documentación del personal.
@@ -41,7 +41,7 @@ def _marcas():
 AGREGADOS = [
     {
         "clave": "personal-y-legajos",
-        "casos": "CU-183 a CU-194 y CU-246 (I-11)",
+        "casos": "CU-183 a CU-194 y CU-246 (C-08)",
         "nota": "Los puestos (`job_position`) y los legajos (`employee`) ya están construidos y salen de la base: todo empleado existe como legajo, tenga o no cuenta de acceso, un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). Falta construir lo que cuelga del legajo. La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no solo el servicio.",
         "titulo": "Personal y legajos",
         "pedido": "Llevar la asistencia, las licencias y la documentación con vencimiento de cada persona que trabaja en la distribuidora, y que ese control inhabilite para el despacho a quien no esté en regla.",

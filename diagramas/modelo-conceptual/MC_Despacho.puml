@@ -2,11 +2,6 @@
 !include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam class<<referencia>> {
-  BackgroundColor #F1F1F1
-  BorderColor #8A97A3
-  FontColor #55616C
-}
 skinparam packageStyle rectangle
 hide circle
 hide methods
@@ -25,11 +20,11 @@ class LoteRecorrido {
 class ParadaLote {
   orden
 }
-class PropuestaVentanaTaller <<referencia>>
-class InvitacionRecompra <<referencia>>
-class AvisoRecupero <<referencia>>
-class Pedido <<referencia>>
-class Chofer <<referencia>>
+class PropuestaVentanaTaller #F1F1F1;line:8A97A3;text:55616C
+class InvitacionRecompra #F1F1F1;line:8A97A3;text:55616C
+class AvisoRecupero #F1F1F1;line:8A97A3;text:55616C
+class Pedido #F1F1F1;line:8A97A3;text:55616C
+class Chofer #F1F1F1;line:8A97A3;text:55616C
 
 PropuestaConVigencia <|-- OfertaDespacho : {disjoint, complete}
 PropuestaConVigencia <|-- OfertaLote

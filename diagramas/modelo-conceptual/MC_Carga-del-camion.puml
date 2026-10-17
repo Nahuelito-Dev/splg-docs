@@ -2,11 +2,6 @@
 !include ../estilo-vp.iuml
 skinparam nodesep 40
 skinparam ranksep 55
-skinparam class<<referencia>> {
-  BackgroundColor #F1F1F1
-  BorderColor #8A97A3
-  FontColor #55616C
-}
 skinparam packageStyle rectangle
 hide circle
 hide methods
@@ -37,11 +32,11 @@ class ItemCarga {
   diferencia de llenas
   diferencia de vacías
 }
-class Vehiculo <<referencia>>
-class Chofer <<referencia>>
-class UbicacionDeStock <<referencia>>
-class Producto <<referencia>>
-class Usuario <<referencia>>
+class Vehiculo #F1F1F1;line:8A97A3;text:55616C
+class Chofer #F1F1F1;line:8A97A3;text:55616C
+class UbicacionDeStock #F1F1F1;line:8A97A3;text:55616C
+class Producto #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
 
 
 Vehiculo "1" -- "0..*" CargaDeCamion : transporta >

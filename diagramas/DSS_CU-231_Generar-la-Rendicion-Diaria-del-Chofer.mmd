@@ -10,7 +10,6 @@ sequenceDiagram
     alt Otra instancia ya está ejecutando el proceso
         SIS-->>SAU: ejecución salteada
     else Hay choferes con efectivo sin rendir
-        Note over SAU,SIS: Abre una rendición por chofer<br/>con sus pedidos y sus cobros
         SIS-->>SAU: rendiciones abiertas (cantidad)
     else El chofer ya tiene una rendición abierta
         SIS-->>SAU: rendición completada con lo nuevo

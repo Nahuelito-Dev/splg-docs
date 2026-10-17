@@ -42,8 +42,7 @@ class Pedido {
   - cobroConfirmadoEl: FechaHora
   - cobroResueltoEl: FechaHora
   - notaDeResolucionDelCobro: Cadena
-  + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega, express: Booleano,\n      metodoDePago: MetodoDePago)
-  + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega, franja: FranjaHoraria,\n      zona: ZonaCobertura, fechaAgendada: Fecha,\n      metodoDePago: MetodoDePago, montoDeLaSenia: Moneda)
+  + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega,\n      metodoDePago: MetodoDePago,\n      franja: FranjaHoraria = ninguno,\n      zona: ZonaCobertura = ninguno,\n      fechaAgendada: Fecha = ninguno,\n      montoDeLaSenia: Moneda = ninguno,\n      express: Booleano = ninguno)
   + aceptar(chofer: Chofer, vehiculo: Vehiculo)
   + activar()
   + agregarItem(producto: Producto, cantidad: Entero)
@@ -90,13 +89,11 @@ class Pedido {
   + getTotal(): Moneda
   + incluirRetiro(envase: Envase)
   + indicarQuienRecibe(nombre: Cadena, documento: Cadena,\n      relacion: Cadena)
-  + informarImpago(chofer: Chofer, nota: Cadena): Incidencia
-  + informarImpago(administrador: Usuario,\n      motivo: Cadena): Incidencia
+  + informarImpago(chofer: Chofer = ninguno,\n      nota: Cadena = ninguno,\n      administrador: Usuario = ninguno,\n      motivo: Cadena = ninguno): Incidencia
   + liberar()
   + marcarEnCamino()
   + marcarPagado(identificadorDelPago: Identificador)
-  + modificar(datos: Registro)
-  + modificar(cliente: Cliente, datos: Registro)
+  + modificar(datos: Registro, cliente: Cliente = ninguno)
   + ofrecerA(chofer: Chofer, venceEn: Entero)
   + pasarARepartoComun(): Moneda
   + puedeCalificar(usuario: Usuario): Booleano
@@ -136,10 +133,7 @@ class CambioEstadoPedido {
   - hacia: EstadoPedido
   - motivo: Cadena
   - fecha: FechaHora
-  + «create» CambioEstadoPedido(motivo: Cadena)
-  + «create» CambioEstadoPedido(detalle: Registro)
-  + «create» CambioEstadoPedido(entregado: EstadoPedido,\n      motivo: Cadena)
-  + «create» CambioEstadoPedido(estadoAnterior: Cadena,\n      estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
+  + «create» CambioEstadoPedido(entregado: EstadoPedido = ninguno,\n      motivo: Cadena = ninguno,\n      estadoAnterior: Cadena = ninguno,\n      estadoNuevo: Cadena = ninguno,\n      autor: Usuario = ninguno,\n      detalle: Registro = ninguno)
   + getUltimoHaciaCancelado(): Fecha
 }
 class CambioDireccion {
@@ -150,7 +144,7 @@ class CambioDireccion {
 class Pago {
   - importe: Moneda
   - pasarela: Pasarela
-  - estado: EstadoDelPago
+  - estado: EstadoDelCobroEnPasarela
   - esSenia: Booleano
   - fecha: FechaHora
   + «create» Pago(pedido: Pedido,\n      distribuidora: Distribuidora, importe: Moneda,\n      esSenia: Booleano)

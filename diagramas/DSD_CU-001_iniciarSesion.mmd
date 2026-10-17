@@ -2,7 +2,7 @@ sequenceDiagram
     title DSD — CU-001 Iniciar Sesión · iniciarSesion
     autonumber
     actor CLI as Cliente (ACT-01)
-    actor FIR as Firebase (ACT-07)
+    participant FIR as :FirebaseAuthPort
     participant SRV as :AuthService
     participant COL as :Map#lt;String, Usuario#gt;
     participant USR as usuario:Usuario

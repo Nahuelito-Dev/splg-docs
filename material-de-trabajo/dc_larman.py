@@ -57,8 +57,8 @@ ENUMERACIONES = {
     "MaintenanceSubject": "SujetoDeMantenimiento", "IncidentType": "TipoDeIncidencia",
     "IncidentStatus": "EstadoDeIncidencia", "IncidentMoment": "MomentoDeIncidencia",
     "RouteBatchStatus": "EstadoDelLote", "PrecisionDeGeocodificacion": "PrecisionDeGeocodificacion",
-    "RoleType": "TipoDeRol", "PaymentGateway": "Pasarela", "LedgerPaymentStatus": "EstadoDelPago", "RaterRole": "RolDelCalificador",
-    # Flota ampliada (I-12): enumeraciones planificadas
+    "RoleType": "TipoDeRol", "PaymentGateway": "Pasarela", "LedgerPaymentStatus": "EstadoDelCobroEnPasarela", "RaterRole": "RolDelCalificador",
+    # Flota ampliada (C-18): enumeraciones planificadas
     "FuelType": "TipoDeCombustible", "FuelPaymentMethod": "MedioDePagoDeCombustible",
     "TrafficFineStatus": "EstadoDeLaMulta", "VehicleAccidentStatus": "EstadoDelSiniestro",
     "TireStatus": "EstadoDelNeumatico", "TireEventType": "TipoDeMovimientoDeNeumatico",
@@ -82,7 +82,7 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
     ("DireccionEntrega", "punto"): "Coordenada",
     ("DireccionEntrega", "precisión"): "PrecisionDeGeocodificacion",
     ("Pedido", "modalidad de entrega"): "ModalidadDeEntrega",
-    # Stock y compras (planificado, I-13): conceptos sin entidad en el código
+    # Stock y compras (planificado, C-09): conceptos sin entidad en el código
     ("Deposito", "nombre"): "Cadena",
     ("Deposito", "código"): "Cadena",
     ("Deposito", "tipo"): "Cadena",
@@ -168,9 +168,9 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
     ("SesionDeCaja", "abierta el"): "FechaHora",
     ("SesionDeCaja", "monto inicial"): "Moneda",
     ("SesionDeCaja", "cerrada el"): "FechaHora",
-    ("SesionDeCaja", "monto esperado"): "Moneda",
+    ("SesionDeCaja", "/monto esperado"): "Moneda",
     ("SesionDeCaja", "monto contado"): "Moneda",
-    ("SesionDeCaja", "diferencia"): "Moneda",
+    ("SesionDeCaja", "/diferencia"): "Moneda",
     ("SesionDeCaja", "observaciones"): "Cadena",
     ("CategoriaDeCaja", "nombre"): "Cadena",
     ("CategoriaDeCaja", "sentido"): "SentidoDeCaja",
@@ -402,7 +402,7 @@ def tipo_de_atributo(concepto, atributo):
     raise KeyError(f"sin tipo para {concepto}.{atributo}")
 
 
-# Tipos de las columnas planificadas (módulo Personal, I-11): salen de `propuesto_personal.py`.
+# Tipos de las columnas planificadas (módulo Personal, C-08): salen de `propuesto_personal.py`.
 ENUM_PLANIFICADO = {
     "job_position_category_enum": "CategoriaDePuesto", "employee_status_enum": "EstadoDelEmpleado",
     "employee_termination_reason_enum": "MotivoDeEgreso", "employment_type_enum": "ModalidadDeContratacion",
@@ -560,7 +560,7 @@ GLOSARIO = {
     "cancelado": "EstadoPedido", "aceptado": "EstadoPedido", "enCamino": "Booleano",
     "entregado": "EstadoPedido", "enProceso": "EstadoDelReclamo", "despachado": "EstadoDelEnvase",
     "enDeposito": "EstadoDelEnvase", "gasCylinderId": "Identificador",
-    # Stock y compras (I-13)
+    # Stock y compras (C-09)
     "minimos": "Registro", "minimoDeLlenos": "Entero", "condicion": "Cadena", "items": "Registro",
     "devueltos": "Registro", "datosDeContacto": "Registro", "plazoDePago": "Entero",
     "tipoDeComprobante": "Cadena", "numeroDeComprobante": "Cadena", "estadoDePago": "Cadena",
@@ -597,7 +597,7 @@ GLOSARIO = {
 }
 
 GLOSARIO.update({
-    # Flota ampliada (I-12)
+    # Flota ampliada (C-18)
     "litros": "Decimal", "desvio": "Decimal", "consumo": "Registro", "fechaYHora": "FechaHora",
     "claveDelPlan": "Cadena", "vigenteDesde": "Fecha", "numero": "Cadena", "prestador": "Cadena",
     "claveDeActa": "Cadena", "jurisdiccion": "Cadena", "numeroDeActa": "Cadena",
@@ -614,6 +614,9 @@ ALIAS_PARAMETRO = {
     ("TruckLoadGateService", "elegibles"): ("choferes", "Chofer[*]"),
     ("StockLedgerService", "renglones"): ("renglones", "MovimientoDeStock[*]"),
     ("ItemCarga", "vaciasDeclaradas"): ("vaciasDeclaradas", "Entero"),
+    # Personal: ingreso y egreso de una jornada son instantes (en Caja, los mismos nombres son el sentido del movimiento)
+    ("Empleado", "ingreso"): ("ingreso", "FechaHora"), ("Empleado", "egreso"): ("egreso", "FechaHora"),
+    ("JornadaDeTrabajo", "ingreso"): ("ingreso", "FechaHora"), ("JornadaDeTrabajo", "egreso"): ("egreso", "FechaHora"),
     ("CargaDeCamion", "vehiculoEnUso"): ("vehiculoEnUso", "Vehiculo"),
     ("Pedido", "pendiente"): ("estadoDestino", "EstadoPedido"),
     ("Pedido", "cancelado"): ("estadoDestino", "EstadoPedido"),
@@ -637,7 +640,7 @@ ALIAS_PARAMETRO = {
     ("AsientoAuditoria", "origen"): ("origen", "Cadena"),
     ("AsientoAuditoria", "codigo"): ("codigo", "Entero"),
     ("Usuario", "cuenta"): ("cuenta", "Registro"),
-    # Flota ampliada (I-12): el estado destino es del tipo enumerado de cada concepto
+    # Flota ampliada (C-18): el estado destino es del tipo enumerado de cada concepto
     ("MultaTransito", "estadoDestino"): ("estadoDestino", "EstadoDeLaMulta"),
     ("Siniestro", "estadoDestino"): ("estadoDestino", "EstadoDelSiniestro"),
     ("Neumatico", "estadoDestino"): ("estadoDestino", "EstadoDelNeumatico"),
@@ -657,7 +660,7 @@ ALIAS_PARAMETRO = {
 }
 
 
-# Stock y compras (I-13): nombres de los DSD que resuelven a una clase del módulo.
+# Stock y compras (C-09): nombres de los DSD que resuelven a una clase del módulo.
 ALIAS_CLASE.update({
     "carga": "CargaDeCamion", "cargas": "CargaDeCamion", "ajuste": "AjusteDeStock", "ajustes": "AjusteDeStock",
     "depositoDeStock": "Deposito", "depositos": "Deposito", "orden": "OrdenDeCompra", "ordenes": "OrdenDeCompra",
@@ -669,7 +672,7 @@ ALIAS_CLASE.update({
 _PLURALES |= {"cargas", "ajustes", "depositos", "ordenes", "proveedores", "recepciones", "saldos", "umbrales",
               "movimientosDeStock"}
 GLOSARIO.update({"lote": "Identificador", "llenos": "Entero", "domicilio": "Cadena"})
-# Enumeraciones del módulo de stock y compras (I-13): todavía no existen en el código.
+# Enumeraciones del módulo de stock y compras (C-09): todavía no existen en el código.
 ENUMERACIONES.update({
     "StockCondition": "CondicionDeStock", "StockMovementReason": "MotivoDeMovimiento",
     "StockAdjustmentReason": "MotivoDeAjuste", "WarehouseKind": "TipoDeDeposito",
@@ -970,8 +973,8 @@ PREDICADO = re.compile(r'^(es[A-Z]|esta[A-Z]|tiene[A-Z]|is[A-Z]|existe|cubre$|co
 
 def _tipo_de_retorno(texto, clase=None, op=None):
     """(retorno, salidas) de un mensaje de retorno: el primer valor que devuelve es el retorno
-    de la operación y los demás son parámetros de salida (`out`); una operación nunca tiene
-    dos retornos. Retorno None si el DSD no lo precisa (códigos de error, prosa, acuses)."""
+    de la operación; cuando el DSD devuelve varios valores el retorno es un Registro: una operación
+    tiene un solo retorno y ningún parámetro de salida. Retorno None si el DSD no lo precisa (códigos de error, prosa, acuses)."""
     if (clase, op) in RETORNO_ESPECIFICO:
         r = RETORNO_ESPECIFICO[(clase, op)]
         return (r, []) if r is None or isinstance(r, str) else r
@@ -993,7 +996,10 @@ def _tipo_de_retorno(texto, clase=None, op=None):
             nombres.append(camel(tk) if " " in tk else tk)
     if not tipos:
         return None, []
-    return tipos[0], list(zip(nombres[1:], tipos[1:]))
+    if len(tipos) > 1 and not all(t == "Moneda" for t in tipos[1:]) and tipos[0] != "Registro":
+        # varios valores devueltos son partes de un mismo resultado: la operación tiene un solo retorno, un Registro
+        return "Registro", []
+    return tipos[0], []
 
 
 def leer_dsd():
@@ -1162,6 +1168,7 @@ def construir():
         _asignar_modulo_y_papel(dc, cl, primeros)
     _fusionar_sobrecargas(dc)
     _deduplicar_firmas(dc)
+    _unificar_firmas_en_conflicto(dc)
     _tipar_getters(dc)
     _tipar_consultas(dc)
     _relaciones(dc, mensajes, creaciones)
@@ -1274,6 +1281,35 @@ def _deduplicar_firmas(dc):
                                    for i in range(len(tipos))]
                 op = Op(nombre, list(zip(nombres, tipos)), next((o.retorno for o in ops if o.retorno), None),
                         crea=crea, salidas=op.salidas)
+            nuevas[op.clave()] = op
+        cl.ops = nuevas
+
+
+def _unificar_firmas_en_conflicto(dc):
+    """Una operación tiene una sola firma por clase. Si los DSD la llaman con argumentos distintos (la variante con y la
+    variante sin franja, el pedido o su identificador), queda una sola operación con todos los argumentos; los que no
+    pasan todas las variantes se marcan opcionales (`= ninguno`, la notación UML de un valor por omisión) y se
+    ordenan después de los obligatorios."""
+    for cl in dc.clases.values():
+        por = collections.OrderedDict()
+        for k, op in cl.ops.items():
+            por.setdefault((op.crea, op.nombre), []).append(op)
+        if all(len(v) == 1 for v in por.values()):
+            continue
+        nuevas = collections.OrderedDict()
+        for (crea, nombre), ops in por.items():
+            if len(ops) == 1:
+                nuevas[ops[0].clave()] = ops[0]
+                continue
+            todos = []
+            for o in ops:
+                for n, t in o.params:
+                    if n not in [x for x, _ in todos]:
+                        todos.append((n, t))
+            en_todas = [n for n, _ in todos if all(n in [x for x, _ in o.params] for o in ops)]
+            oblig = [(n, t) for n, t in todos if n in en_todas]
+            opcion = [(n, t + " = ninguno") for n, t in todos if n not in en_todas]
+            op = Op(nombre, oblig + opcion, next((o.retorno for o in ops if o.retorno), None), crea=crea)
             nuevas[op.clave()] = op
         cl.ops = nuevas
 
@@ -1527,8 +1563,18 @@ def verificar_dc():
     # 4: notación UML, sin sintaxis del código
     for c, v in clases.items():
         for o in v["ops"]:
-            if not re.match(r'^(?:«create» )?\w+\((?:(?:out )?\w+: [\wáéíóú\[\]*]+(?:, (?:out )?\w+: [\wáéíóú\[\]*]+)*)?\)(?:: [\w\[\]*]+)?$', o):
+            if not re.match(r'^(?:«create» )?\w+\((?:\w+: [\wáéíóú\[\]*]+(?: = ninguno)?(?:, \w+: [\wáéíóú\[\]*]+(?: = ninguno)?)*)?\)(?:: [\w\[\]*]+)?$', o):
                 errores.append(f"{c}: la operación «{o}» no está en notación UML (+ nombre(parámetro: Tipo): Retorno)")
+        firmas = collections.defaultdict(set)
+        for o in v["ops"]:
+            if re.search(r'\bout \w+:', o):
+                errores.append(f"{c}: la operación «{o}» tiene un parámetro de salida (`out`): una operación tiene un solo retorno")
+            m_ = re.match(r'^(?:«create» )?(\w+)\((.*)\)', o)
+            if m_:
+                firmas[m_.group(1)].add(m_.group(2))
+        for nombre_, fs_ in firmas.items():
+            if len(fs_) > 1:
+                errores.append(f"{c}: la operación {nombre_} tiene {len(fs_)} firmas distintas (sobrecarga en conflicto)")
         for a in v["attrs"]:
             if not re.match(r'^/?\w+: [\w\[\]*]+$', a):
                 errores.append(f"{c}: el atributo «{a}» no está en notación UML (- nombre: Tipo)")
