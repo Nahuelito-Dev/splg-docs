@@ -9,8 +9,8 @@ state "Cerrada\n(closed)" as CER
 [*] --> ACT : habilitarCuentaCorriente(clienteId, ...)\n[el cliente no tiene cuenta vigente]
 ACT --> BLO : modificarCuentaCorriente(estado)\n[lo decide el administrador]
 BLO --> ACT : modificarCuentaCorriente(estado)
-ACT --> CER : modificarCuentaCorriente(estado) [saldo igual a cero]
-BLO --> CER : modificarCuentaCorriente(estado) [saldo igual a cero]
+ACT --> CER : modificarCuentaCorriente(estado)\n[saldo igual a cero y sin pedidos a cuenta por entregar]
+BLO --> CER : modificarCuentaCorriente(estado)\n[saldo igual a cero y sin pedidos a cuenta por entregar]
 CER --> [*]
 
 note bottom of BLO

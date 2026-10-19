@@ -5,7 +5,6 @@ sequenceDiagram
     participant SRV as :FuelLoadService
     participant COV as :Map#lt;String, Vehiculo#gt;
     participant VEH as vehiculo:Vehiculo
-    participant CAL as :FuelConsumptionCalculator
     participant MAI as :EmailSenderPort
 
     ADM->>+SRV: registrarCargaDeCombustible(vehiculoId, datos)
@@ -18,8 +17,7 @@ sequenceDiagram
     VEH->>CAR: «create»(datos)
     VEH->>VEH: actualizarKilometraje(kilometraje)
     VEH-->>-SRV: cargaCombustible
-    SRV->>+CAL: calcularDesvio(cargaCombustible, vehiculo)
-    CAL-->>-SRV: desvio
+    SRV->>SRV: calcularDesvio(cargaCombustible, vehiculo)
     opt El desvío supera el 25 % del promedio de las últimas cinco cargas
         SRV->>CAR: marcarAnomala()
         SRV-)MAI: send(administradores, detalle)

@@ -118,6 +118,7 @@ package "Stock y compras" as area_Stock_y_compras #F4EEF7 {
   package "truck-load" as truck_load {
   }
 }
+admin ..> users
 attachment ..> employee
 attachment ..> s3
 auth ..> firebase
@@ -127,10 +128,7 @@ car ..> fleet
 car ..> fleet_expense
 cart ..> customer
 cart ..> gascylinder
-cash ..> commission
-cash ..> customer_account
 cash ..> distributor
-cash ..> driver_settlement
 claims ..> customer
 claims ..> order
 claims ..> s3
@@ -153,10 +151,8 @@ cylinder ..> distributor
 cylinder ..> notifications
 cylinder ..> order
 delivery ..> car
-delivery ..> customer_account
 delivery ..> distributor
 delivery ..> driver_settlement
-delivery ..> order
 delivery ..> users
 distributor ..> cash
 distributor ..> commission
@@ -179,12 +175,18 @@ driver_settlement ..> employee
 email ..> firebase
 email ..> users
 employee ..> attachment
+employee ..> attendance
 employee ..> commission
 employee ..> delivery
 employee ..> distributor
 employee ..> fleet
+employee ..> leave
 employee ..> registro
 employee ..> users
+finance ..> cash
+finance ..> commission
+finance ..> customer_account
+finance ..> driver_settlement
 fleet ..> car
 fleet ..> delivery
 fleet ..> distributor
@@ -203,6 +205,7 @@ incident ..> gateways
 incident ..> order
 notifications ..> customer
 notifications ..> firebase
+order ..> cash
 order ..> coverage_zone
 order ..> customer
 order ..> customer_account
@@ -230,7 +233,6 @@ registro ..> delivery
 registro ..> employee
 registro ..> firebase
 registro ..> users
-reports ..> car
 reports ..> order
 repurchase ..> customer
 repurchase ..> notifications

@@ -66,7 +66,9 @@ class "List<Administrador>" as List_Administrador <<colección>> {
 }
 class AdminService <<fachada>> {
   + buscarAdministrador(termino: Cadena): Usuario
+  + darDeBajaAdministrador(administradorId: Identificador): Cadena
   + listarAdministradores(): Administrador[*]
+  + modificarAdministrador(administradorId: Identificador,\n      nombreCompleto: Cadena, telefono: Cadena): Usuario
 }
 class "Map<String, Administrador>" as Map_String_Administrador <<colección>> {
   + get(clave: Cadena): Usuario
@@ -109,6 +111,7 @@ RoleService --> "1" Map_String_Rol
 UsersService --> "1" FirebaseAuthPort
 UsersService --> "1" List_Usuario
 UsersService --> "1" Map_String_Usuario
+AdminService ..> Usuario
 DataAuditService ..> Auditoria
 RoleService ..> "<<create>>" Rol
 UsersService ..> Chofer

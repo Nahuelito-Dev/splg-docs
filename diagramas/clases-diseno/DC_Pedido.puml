@@ -85,6 +85,7 @@ class Pedido {
   + getPagosAprobados(): Pago[*]
   + getPuntoDeEntrega(): Coordenada
   + getReceptorDeCalificacion(usuario: Usuario): Usuario
+  + getReintegros(): Registro
   + getRenglones(): Registro
   + getTotal(): Moneda
   + incluirRetiro(envase: Envase)
@@ -152,6 +153,16 @@ class Pago {
   + registrarResultado(identificadorDelPago: Identificador,\n      estado: Cadena)
   + reintegrar()
 }
+class ReintegroDePago {
+  - tipo: TipoDeReintegro
+  - importe: Moneda
+  - estado: EstadoDelReintegro
+  - intentos: Entero
+  - reintegradoEl: FechaHora
+  - referenciaEnLaPasarela: Cadena
+  - mensajeDeError: Cadena
+  - devueltoAntesDelIntento: Moneda
+}
 class Cliente <<referencia>>
 class Chofer <<referencia>>
 class Producto <<referencia>>
@@ -174,6 +185,8 @@ CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
 Usuario "1" -- "0..*" CambioDireccion : realiza
 Chofer "0..1" -- "0..*" Pedido : entrega
 Pedido "1" -- "0..*" Pago : se salda con
+Pago "1" -- "0..*" ReintegroDePago : se devuelve con
+ReintegroDePago "0..*" -- "1" Pedido : devuelve el cobro de
 Pedido ..> Producto
 
 legend bottom right

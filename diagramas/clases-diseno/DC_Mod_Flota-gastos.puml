@@ -32,14 +32,12 @@ skinparam nodesep 25
 skinparam ranksep 90
 class FuelLoadService <<fachada>> {
   + anularCargaDeCombustible(cargaId: Identificador): CargaCombustible
+  + calcularConsumo(cargas: CargaDeCamion[*])
+  + calcularDesvio(cargaCombustible: CargaCombustible,\n      vehiculo: Vehiculo)
   + consultarCargasDeCombustible(filtros: Registro): CargaCombustible[*]
   + consultarConsumoDeCombustible(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
   + modificarCargaDeCombustible(cargaId: Identificador,\n      datos: Registro): CargaCombustible
   + registrarCargaDeCombustible(vehiculoId: Identificador,\n      datos: Registro): CargaCombustible
-}
-class FuelConsumptionCalculator <<fabricación pura>> {
-  + calcularConsumo(cargas: CargaCombustible[*]): Registro
-  + calcularDesvio(cargaCombustible: CargaCombustible,\n      vehiculo: Vehiculo): Decimal
 }
 class TrafficFineService <<fachada>> {
   + anularMultaDeTransito(multaId: Identificador,\n      motivo: Cadena): MultaTransito
@@ -62,6 +60,11 @@ class VehicleAccidentService <<fachada>> {
 class "Map<String, Siniestro>" as Map_String_Siniestro <<colección>> {
   + get(clave: Cadena): Siniestro
 }
+class FleetCostService <<fachada>> {
+  + consultarCostoDeUnVehiculo(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
+  + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
+  + ordenarPorCostoPorKilometro(costos: Registro): Registro
+}
 class TireService <<fachada>> {
   + registrarMovimientoDeNeumatico(neumaticoId: Identificador,\n      datos: Registro): MovimientoNeumatico
   + registrarNeumatico(datos: Registro): Neumatico
@@ -80,7 +83,7 @@ class "List<MultaTransito>" as List_MultaTransito <<colección>> {
   + filtrar(filtros: Registro): MultaTransito[*]
   + getPendientesPorVencer(dias: Entero): MultaTransito[*]
 }
-class FleetExpenseAlertsCron <<fachada>> {
+class FineDueAlertsCron <<fachada>> {
   + avisarMultasPorVencer()
 }
 class "List<Siniestro>" as List_Siniestro <<colección>> {
@@ -88,11 +91,6 @@ class "List<Siniestro>" as List_Siniestro <<colección>> {
 }
 class "Map<String, Empleado>" as Map_String_Empleado <<colección>> {
   + get(clave: Cadena): Empleado
-}
-class FleetCostReportService <<fachada>> {
-  + consultarCostoDeUnVehiculo(vehiculoId: Identificador,\n      fechaDesde: Fecha, fechaHasta: Fecha): Registro
-  + consultarTableroDeCostosDeLaFlota(fechaDesde: Fecha,\n      fechaHasta: Fecha): Registro
-  + ordenarPorCostoPorKilometro(costos: Registro): Registro
 }
 class "List<Vehiculo>" as List_Vehiculo <<colección>> {
   + getActivos(): Vehiculo[*]
@@ -104,10 +102,10 @@ class MultaTransito <<referencia>>
 class Siniestro <<referencia>>
 class Neumatico <<referencia>>
 class CargaCombustible <<referencia>>
-class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
 class EmailSenderPort <<referencia>>
-class VehicleAssignmentService <<referencia>>
+class "Map<String, Vehiculo>" as Map_String_Vehiculo <<referencia>>
 class Distribuidora <<referencia>>
+class VehicleAssignmentService <<referencia>>
 
 List_Vehiculo "1" o--> "0..*" Vehiculo
 Map_String_Empleado "1" o--> "0..*" Empleado
@@ -118,12 +116,10 @@ Map_String_CargaCombustible "1" o--> "0..*" CargaCombustible
 List_CargaCombustible "1" o--> "0..*" CargaCombustible
 List_MultaTransito "1" o--> "0..*" MultaTransito
 List_Siniestro "1" o--> "0..*" Siniestro
-FleetCostReportService --> "1" List_Vehiculo
-FleetCostReportService --> "1" Map_String_Vehiculo
-FleetExpenseAlertsCron --> "1" EmailSenderPort
-FleetExpenseAlertsCron --> "1" List_MultaTransito
-FuelLoadService --> "1" EmailSenderPort
-FuelLoadService --> "1" FuelConsumptionCalculator
+FineDueAlertsCron --> "1" EmailSenderPort
+FineDueAlertsCron --> "1" List_MultaTransito
+FleetCostService --> "1" List_Vehiculo
+FleetCostService --> "1" Map_String_Vehiculo
 FuelLoadService --> "1" List_CargaCombustible
 FuelLoadService --> "1" Map_String_CargaCombustible
 FuelLoadService --> "1" Map_String_Vehiculo
@@ -133,20 +129,21 @@ TrafficFineService --> "1" List_MultaTransito
 TrafficFineService --> "1" Map_String_Empleado
 TrafficFineService --> "1" Map_String_MultaTransito
 TrafficFineService --> "1" Map_String_Vehiculo
-TrafficFineService --> "1" VehicleAssignmentService
-VehicleAccidentService --> "1" EmailSenderPort
 VehicleAccidentService --> "1" List_Siniestro
 VehicleAccidentService --> "1" Map_String_Siniestro
 VehicleAccidentService --> "1" Map_String_Vehiculo
-FleetCostReportService ..> Vehiculo
-FleetExpenseAlertsCron ..> Distribuidora
-FleetExpenseAlertsCron ..> MultaTransito
+FineDueAlertsCron ..> Distribuidora
+FineDueAlertsCron ..> MultaTransito
+FleetCostService ..> Vehiculo
 FuelLoadService ..> CargaCombustible
+FuelLoadService ..> EmailSenderPort
 FuelLoadService ..> Vehiculo
 TireService ..> Distribuidora
 TireService ..> Neumatico
 TrafficFineService ..> MultaTransito
+TrafficFineService ..> VehicleAssignmentService
 TrafficFineService ..> Vehiculo
+VehicleAccidentService ..> EmailSenderPort
 VehicleAccidentService ..> Siniestro
 VehicleAccidentService ..> Vehiculo
 

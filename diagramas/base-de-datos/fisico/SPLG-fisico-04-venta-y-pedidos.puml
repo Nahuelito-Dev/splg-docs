@@ -104,7 +104,8 @@ entity "order" as e_order {
   {field} payment_resolution_note : text
   {field} payment_resolved_at : timestamptz
   {field} payment_resolved_by : uuid
-  {field} <color:#1F5E8C>express_surcharge_amount : numeric(12,2) * <<propuesto>></color>
+  {field} express_surcharge_amount : numeric(10,2) *
+  {field} express_degraded_at : timestamptz
 }
 entity "order_address_change" as e_order_address_change {
   {field} **change_id** : uuid * <<PK>>
@@ -161,7 +162,6 @@ e_order ||--o{ e_order_status_history : order_id
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |
 |<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
-|<#FFF6D9> **propuesto** | columna planificada, todavía sin aplicar a la base |
 endlegend
 note as N
   Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case

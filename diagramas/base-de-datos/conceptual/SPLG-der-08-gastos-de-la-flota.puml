@@ -20,7 +20,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity CargaCombustible <<propuesto>> #FFF6D9;line:1F5E8C {
+entity CargaCombustible {
   * identificador
   --
   {field} fecha y hora
@@ -37,7 +37,7 @@ entity CargaCombustible <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} observación
   {field} anulada el
 }
-entity MultaTransito <<propuesto>> #FFF6D9;line:1F5E8C {
+entity MultaTransito {
   * identificador
   --
   {field} fecha de la infracción
@@ -54,7 +54,7 @@ entity MultaTransito <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} avisada el
   {field} motivo de anulación
 }
-entity Siniestro <<propuesto>> #FFF6D9;line:1F5E8C {
+entity Siniestro {
   * identificador
   --
   {field} fecha
@@ -73,7 +73,7 @@ entity Siniestro <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} franquicia
   {field} cerrado el
 }
-entity Neumatico <<propuesto>> #FFF6D9;line:1F5E8C {
+entity Neumatico {
   * identificador
   --
   {field} número de serie
@@ -84,7 +84,7 @@ entity Neumatico <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} posición
   {field} kilometraje de montaje
 }
-entity MovimientoNeumatico <<propuesto>> #FFF6D9;line:1F5E8C {
+entity MovimientoNeumatico {
   * identificador
   --
   {field} tipo
@@ -100,14 +100,14 @@ entity Distribuidora #F1F1F1 {
 
 Vehiculo ||--o{ CargaCombustible : registra >
 Empleado |o--o{ CargaCombustible : carga >
-Distribuidora ||--o{ Neumatico : posee >
 Vehiculo |o--o{ Neumatico : monta >
+Distribuidora ||--o{ Neumatico : posee >
 Vehiculo ||--o{ MultaTransito : acumula >
 Empleado |o--o{ MultaTransito : responde por >
 Vehiculo ||--o{ Siniestro : sufre >
 Empleado |o--o{ Siniestro : interviene en >
-Neumatico ||--o{ MovimientoNeumatico : registra >
 MovimientoNeumatico }o--o| Vehiculo : ocurre en >
+Neumatico ||--o{ MovimientoNeumatico : registra >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

@@ -40,7 +40,6 @@ class EmployeeService <<fachada>> {
   + consultarDocumentacionDelEmpleado(empleadoId: Identificador): TareaMantenimiento[*]
   + consultarEmpleado(empleadoId: Identificador): Empleado
   + consultarEmpleados(filtros: Registro): Empleado[*]
-  + consultarSaldoDeVacaciones(empleadoId: Identificador,\n      anio: Entero): Entero
   + eliminarEmpleado(empleadoId: Identificador): Cadena
   + modificarEmpleado(empleadoId: Identificador,\n      datos: Registro): Empleado
   + registrarEmpleado(datos: Registro): Empleado
@@ -73,18 +72,20 @@ class LeaveService <<fachada>> {
   + aprobarLicencia(licenciaId: Identificador): LicenciaLaboral
   + cancelarLicencia(licenciaId: Identificador): LicenciaLaboral
   + consultarLicencias(estado: Cadena, desde: Fecha,\n      hasta: Fecha): LicenciaLaboral[*]
+  + consultarSaldoDeVacaciones(empleadoId: Identificador,\n      anio: Entero): Entero
+  + diasCorrespondientes(fechaDeIngreso: Fecha, anio: Entero)
   + modificarLicencia(licenciaId: Identificador,\n      datos: Registro): LicenciaLaboral
   + rechazarLicencia(licenciaId: Identificador,\n      motivo: Cadena): LicenciaLaboral
   + registrarLicencia(empleadoId: Identificador,\n      tipo: Cadena, desde: Fecha, hasta: Fecha,\n      motivo: Cadena): LicenciaLaboral
 }
-class "Map<String, LicenciaLaboral>" as Map_String_LicenciaLaboral <<colección>> {
-  + get(clave: Cadena): LicenciaLaboral
-}
-class VacationPolicy <<fabricación pura>> {
-  + diasCorrespondientes(fechaDeIngreso: Fecha,\n      anio: Entero): Entero
-}
 class PersonnelDashboardService <<fachada>> {
   + consultarTableroDePersonal(): Registro
+}
+class "Map<String, JornadaDeTrabajo>" as Map_String_JornadaDeTrabajo <<colección>> {
+  + get(clave: Cadena): JornadaDeTrabajo
+}
+class "Map<String, LicenciaLaboral>" as Map_String_LicenciaLaboral <<colección>> {
+  + get(clave: Cadena): LicenciaLaboral
 }
 class "List<JornadaDeTrabajo>" as List_JornadaDeTrabajo <<colección>> {
   + getAbiertasDeHoy(): JornadaDeTrabajo[*]
@@ -93,9 +94,6 @@ class "List<JornadaDeTrabajo>" as List_JornadaDeTrabajo <<colección>> {
 class "List<LicenciaLaboral>" as List_LicenciaLaboral <<colección>> {
   + filtrar(estado: Cadena, desde: FechaHora,\n      hasta: FechaHora): LicenciaLaboral[*]
   + getAprobadasQueCubren(hoy: Fecha): LicenciaLaboral[*]
-}
-class "Map<String, JornadaDeTrabajo>" as Map_String_JornadaDeTrabajo <<colección>> {
-  + get(clave: Cadena): JornadaDeTrabajo
 }
 class PuestoDeTrabajo <<referencia>>
 class Empleado <<referencia>>
@@ -121,7 +119,6 @@ AttendanceService --> "1" Map_String_JornadaDeTrabajo
 EmployeeService --> "1" List_Empleado
 EmployeeService --> "1" Map_String_Empleado
 EmployeeService --> "1" Map_String_PuestoDeTrabajo
-EmployeeService --> "1" VacationPolicy
 GrantEmployeeAccountUseCase --> "1" Map_String_Empleado
 GrantEmployeeAccountUseCase --> "1" RegistroService
 JobPositionService --> "1" Map_String_PuestoDeTrabajo

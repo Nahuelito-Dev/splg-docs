@@ -45,7 +45,7 @@ entity Empleado {
   {field} modalidad de contratación
   {field} estado
 }
-entity JornadaDeTrabajo <<propuesto>> #FFF6D9;line:1F5E8C {
+entity JornadaDeTrabajo {
   * identificador
   --
   {field} día
@@ -54,7 +54,7 @@ entity JornadaDeTrabajo <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} origen
   {field} observación
 }
-entity LicenciaLaboral <<propuesto>> #FFF6D9;line:1F5E8C {
+entity LicenciaLaboral {
   * identificador
   --
   {field} tipo
@@ -103,8 +103,8 @@ Empleado }o--|| PuestoDeTrabajo : ocupa >
 Empleado |o--o| Usuario : accede con >
 ReglaComision }o--o| Empleado : se aplica a >
 Empleado ||--o{ JornadaDeTrabajo : registra >
-Empleado ||--o{ LicenciaLaboral : solicita >
 Usuario |o--o{ LicenciaLaboral : resuelve >
+Empleado ||--o{ LicenciaLaboral : solicita >
 Empleado |o--o{ CargaCombustible : carga >
 TareaMantenimiento }o--o| Empleado : habilita >
 Empleado |o--o{ MultaTransito : responde por >

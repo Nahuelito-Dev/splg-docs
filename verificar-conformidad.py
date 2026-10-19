@@ -175,7 +175,8 @@ _n = str(len(TODOS))
 # Se buscan los totales que el catalogo dejo atras, no cualquier numero: hay frases
 # legitimas que cuentan una parte ("25 casos de uso reales", "45 casos" del relevamiento
 # inicial), y marcarlas seria ruido.
-SUPERADOS = {"104", "108", "115", "131", "159", "166", "174", "249"}
+# 249 ya no es un total viejo: es lo que inicia el Administrador (ACT-03).
+SUPERADOS = {"104", "108", "115", "131", "159", "166", "174"}
 _viejos = set()
 for _f in ("README.md", "Casos-de-Uso.md", "0-Plan_Del_Proyecto.md", "1-Requisitos.md",
            "2-Analisis.md", "3-Diseño.md", "GUIA-actualizar-drive.md", "INDICE-IMAGENES.md"):

@@ -85,7 +85,6 @@ class Empleado {
   + getTareasBloqueantesVencidas(): TareaMantenimiento[*]
   + liquidar(fechaDesde: Fecha,\n      fechaHasta: Fecha): LiquidacionComisiones
   + modificar(datos: Registro)
-  + registrarArrastre(liquidacion: LiquidacionComisiones,\n      saldoDeudor: Moneda)
   + registrarComision(pedido: Pedido, regla: ReglaComision)
   + registrarFaltante(rendicion: RendicionChofer,\n      importe: Moneda)
   + registrarJornada(ingreso: FechaHora, egreso: FechaHora,\n      origenDeJornada: OrigenDeLaJornada): JornadaDeTrabajo
@@ -98,7 +97,7 @@ class JornadaDeTrabajo {
   - dia: Fecha
   - ingreso: FechaHora
   - egreso: FechaHora
-  - origen: OrigenDeLaJornada
+  - origen: Registro
   - observacion: Cadena
   + «create» JornadaDeTrabajo(origenDeJornada: OrigenDeLaJornada,\n      ingreso: FechaHora = ninguno,\n      egreso: FechaHora = ninguno,\n      ahora: FechaHora = ninguno)
   + assertNotaObligatoria(nota: Cadena)
@@ -107,11 +106,11 @@ class JornadaDeTrabajo {
   + getDuracion(): Decimal
 }
 class LicenciaLaboral {
-  - tipo: TipoDeLicencia
-  - desde: Fecha
-  - hasta: Fecha
+  - tipo: Registro
+  - desde: Cadena
+  - hasta: Cadena
   - /dias: Entero
-  - estado: EstadoDeLaLicencia
+  - estado: Registro
   - motivo: Cadena
   - motivoDeRechazo: Cadena
   - resueltaEl: FechaHora

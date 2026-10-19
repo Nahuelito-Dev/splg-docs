@@ -4,7 +4,7 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: resolverCobroImpago(pedidoId, resolucion, nota)
+    ADM->>SIS: resolverCobroImpago(pedidoId, resolucion, nota, cajaId)
     activate SIS
     alt el pago está impago y la resolución es válida
         SIS-->>ADM: cobro resuelto (pagado o perdido)

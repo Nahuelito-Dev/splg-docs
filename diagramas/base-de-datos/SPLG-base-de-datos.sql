@@ -69,6 +69,99 @@ CREATE TYPE public.audit_result_enum AS ENUM (
 
 
 --
+-- Name: cash_box_kind_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cash_box_kind_enum AS ENUM (
+    'cash',
+    'bank',
+    'wallet'
+);
+
+
+--
+-- Name: cash_category_direction_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cash_category_direction_enum AS ENUM (
+    'income',
+    'expense'
+);
+
+
+--
+-- Name: cash_category_system_code_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cash_category_system_code_enum AS ENUM (
+    'driver_settlement',
+    'customer_payment',
+    'commission_payment',
+    'cash_surplus',
+    'cash_shortage',
+    'transfer_in',
+    'transfer_out',
+    'purchase',
+    'fuel',
+    'traffic_fine',
+    'order_payment'
+);
+
+
+--
+-- Name: cash_movement_direction_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cash_movement_direction_enum AS ENUM (
+    'in',
+    'out'
+);
+
+
+--
+-- Name: cash_movement_method_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cash_movement_method_enum AS ENUM (
+    'cash',
+    'transfer',
+    'card',
+    'mercadopago',
+    'check'
+);
+
+
+--
+-- Name: cash_movement_reference_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cash_movement_reference_type_enum AS ENUM (
+    'manual',
+    'session_opening',
+    'session_closing',
+    'driver_settlement',
+    'customer_payment',
+    'purchase_receipt',
+    'fuel_load',
+    'traffic_fine',
+    'driver_liquidation',
+    'box_transfer',
+    'reversal',
+    'order_payment'
+);
+
+
+--
+-- Name: cash_session_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.cash_session_status_enum AS ENUM (
+    'open',
+    'closed'
+);
+
+
+--
 -- Name: claims_status_enum; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -77,6 +170,30 @@ CREATE TYPE public.claims_status_enum AS ENUM (
     'in_process',
     'resolved',
     'rejected'
+);
+
+
+--
+-- Name: commission_entry_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.commission_entry_type_enum AS ENUM (
+    'delivery_commission',
+    'settlement_shortage',
+    'traffic_fine',
+    'adjustment',
+    'legacy_balance'
+);
+
+
+--
+-- Name: commission_rule_basis_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.commission_rule_basis_enum AS ENUM (
+    'per_unit',
+    'per_order',
+    'percent_of_total'
 );
 
 
@@ -103,6 +220,41 @@ CREATE TYPE public.configurable_process_enum AS ENUM (
 CREATE TYPE public.coverage_zone_surcharge_type_enum AS ENUM (
     'fixed',
     'percentage'
+);
+
+
+--
+-- Name: customer_account_entry_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.customer_account_entry_type_enum AS ENUM (
+    'sale_charge',
+    'payment',
+    'credit_note',
+    'debit_note'
+);
+
+
+--
+-- Name: customer_account_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.customer_account_status_enum AS ENUM (
+    'active',
+    'blocked',
+    'closed'
+);
+
+
+--
+-- Name: customer_account_tax_condition_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.customer_account_tax_condition_enum AS ENUM (
+    'registered',
+    'monotax',
+    'exempt',
+    'final_consumer'
 );
 
 
@@ -170,12 +322,87 @@ CREATE TYPE public.distributor_status_enum AS ENUM (
 
 
 --
+-- Name: driver_liquidation_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.driver_liquidation_status_enum AS ENUM (
+    'draft',
+    'approved',
+    'paid',
+    'voided'
+);
+
+
+--
+-- Name: driver_settlement_difference_resolution_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.driver_settlement_difference_resolution_enum AS ENUM (
+    'none',
+    'charged_to_driver',
+    'absorbed'
+);
+
+
+--
+-- Name: driver_settlement_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.driver_settlement_status_enum AS ENUM (
+    'open',
+    'submitted',
+    'approved'
+);
+
+
+--
+-- Name: employee_attendance_source_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.employee_attendance_source_enum AS ENUM (
+    'panel',
+    'driver_app'
+);
+
+
+--
 -- Name: employee_document_type_enum; Type: TYPE; Schema: public; Owner: -
 --
 
 CREATE TYPE public.employee_document_type_enum AS ENUM (
     'dni',
     'passport',
+    'other'
+);
+
+
+--
+-- Name: employee_leave_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.employee_leave_status_enum AS ENUM (
+    'requested',
+    'approved',
+    'rejected',
+    'cancelled'
+);
+
+
+--
+-- Name: employee_leave_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.employee_leave_type_enum AS ENUM (
+    'vacation',
+    'sick',
+    'work_accident',
+    'study',
+    'marriage',
+    'birth',
+    'bereavement',
+    'unpaid',
+    'suspension',
+    'unjustified_absence',
     'other'
 );
 
@@ -223,6 +450,30 @@ CREATE TYPE public.fleet_status_enum AS ENUM (
     'active',
     'in_service',
     'grounded'
+);
+
+
+--
+-- Name: fuel_payment_method_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.fuel_payment_method_enum AS ENUM (
+    'cash_box',
+    'driver_cash',
+    'card',
+    'fuel_account'
+);
+
+
+--
+-- Name: fuel_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.fuel_type_enum AS ENUM (
+    'diesel',
+    'gasoline',
+    'cng',
+    'lpg'
 );
 
 
@@ -292,7 +543,8 @@ CREATE TYPE public.maintenance_criticality_enum AS ENUM (
 
 CREATE TYPE public.maintenance_subject_enum AS ENUM (
     'vehicle',
-    'driver'
+    'driver',
+    'employee'
 );
 
 
@@ -351,7 +603,8 @@ CREATE TYPE public.order_dispatch_offer_status_enum AS ENUM (
 CREATE TYPE public.order_paymentmethod_enum AS ENUM (
     'cash',
     'mercadopago',
-    'transfer'
+    'transfer',
+    'account'
 );
 
 
@@ -374,7 +627,8 @@ CREATE TYPE public.order_paymentstatus_enum AS ENUM (
 
 CREATE TYPE public.order_paymenttype_enum AS ENUM (
     'cash',
-    'online'
+    'online',
+    'account'
 );
 
 
@@ -423,6 +677,27 @@ CREATE TYPE public.payment_integration_enum AS ENUM (
 
 
 --
+-- Name: payment_refund_kind_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.payment_refund_kind_enum AS ENUM (
+    'full',
+    'express_surcharge'
+);
+
+
+--
+-- Name: payment_refund_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.payment_refund_status_enum AS ENUM (
+    'pending',
+    'succeeded',
+    'failed'
+);
+
+
+--
 -- Name: payment_status_enum; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -432,6 +707,23 @@ CREATE TYPE public.payment_status_enum AS ENUM (
     'rejected',
     'cancelled',
     'refunded'
+);
+
+
+--
+-- Name: plan_document_kind_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.plan_document_kind_enum AS ENUM (
+    'insurance',
+    'vtv',
+    'hazmat_vehicle_permit',
+    'driver_license',
+    'hazmat_driver_course',
+    'psychophysical',
+    'art_coverage',
+    'service',
+    'generic'
 );
 
 
@@ -633,6 +925,42 @@ CREATE TYPE public.supplier_kind_enum AS ENUM (
 
 
 --
+-- Name: tire_event_type_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.tire_event_type_enum AS ENUM (
+    'mount',
+    'unmount',
+    'rotate',
+    'retread',
+    'retire'
+);
+
+
+--
+-- Name: tire_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.tire_status_enum AS ENUM (
+    'in_stock',
+    'mounted',
+    'retired'
+);
+
+
+--
+-- Name: traffic_fine_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.traffic_fine_status_enum AS ENUM (
+    'pending',
+    'appealed',
+    'paid',
+    'voided'
+);
+
+
+--
 -- Name: truck_load_status_enum; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -643,6 +971,18 @@ CREATE TYPE public.truck_load_status_enum AS ENUM (
     'closed',
     'closed_with_difference',
     'cancelled'
+);
+
+
+--
+-- Name: vehicle_accident_status_enum; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.vehicle_accident_status_enum AS ENUM (
+    'reported',
+    'under_review',
+    'repairing',
+    'closed'
 );
 
 
@@ -693,6 +1033,53 @@ CREATE FUNCTION public.audit_log_inmutable() RETURNS trigger
           RETURN NEW;
         END IF;
         RAISE EXCEPTION 'audit_log es de sólo escritura: no se modifican ni se borran asientos';
+      END;
+      $$;
+
+
+--
+-- Name: employee_leave_no_overlap(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.employee_leave_no_overlap() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+      BEGIN
+        IF NEW."status" IN ('requested', 'approved') THEN
+          PERFORM pg_advisory_xact_lock(hashtext('employee_leave'), hashtext(NEW."employee_id"::text));
+          IF EXISTS (
+            SELECT 1 FROM "employee_leave" l
+            WHERE l."employee_id" = NEW."employee_id"
+              AND l."leave_id" <> NEW."leave_id"
+              AND l."status" IN ('requested', 'approved')
+              AND l."start_date" <= NEW."end_date"
+              AND l."end_date" >= NEW."start_date"
+          ) THEN
+            RAISE EXCEPTION 'La licencia se superpone con otra del mismo empleado'
+              USING ERRCODE = '23P01';
+          END IF;
+        END IF;
+        RETURN NEW;
+      END;
+      $$;
+
+
+--
+-- Name: libro_de_solo_agregar(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.libro_de_solo_agregar() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+      BEGIN
+        IF TG_OP = 'DELETE' AND pg_trigger_depth() > 1 THEN
+          RETURN OLD;
+        END IF;
+        IF TG_TABLE_NAME = 'commission_entry' AND TG_OP = 'UPDATE'
+           AND (to_jsonb(NEW) - 'liquidation_id') = (to_jsonb(OLD) - 'liquidation_id') THEN
+          RETURN NEW;
+        END IF;
+        RAISE EXCEPTION '% es un libro de sólo agregar: no se modifican ni se borran asientos', TG_TABLE_NAME;
       END;
       $$;
 
@@ -831,7 +1218,9 @@ CREATE TABLE public.car (
     odometer_km integer,
     fleet_status public.fleet_status_enum DEFAULT 'active'::public.fleet_status_enum NOT NULL,
     in_service_since timestamp with time zone,
-    photo_key character varying(512)
+    photo_key character varying(512),
+    fuel_type public.fuel_type_enum,
+    tank_capacity_liters numeric(6,2)
 );
 
 
@@ -861,6 +1250,86 @@ CREATE TABLE public.cart_item (
 
 
 --
+-- Name: cash_box; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cash_box (
+    cash_box_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    name character varying(80) NOT NULL,
+    kind public.cash_box_kind_enum NOT NULL,
+    balance numeric(14,2) DEFAULT '0'::numeric NOT NULL,
+    requires_session boolean DEFAULT false NOT NULL,
+    is_active boolean DEFAULT true NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "deletedAt" timestamp with time zone,
+    CONSTRAINT "CHK_cash_box_efectivo_no_negativo" CHECK (((kind <> 'cash'::public.cash_box_kind_enum) OR (balance >= (0)::numeric)))
+);
+
+
+--
+-- Name: cash_category; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cash_category (
+    category_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    name character varying(80) NOT NULL,
+    direction public.cash_category_direction_enum NOT NULL,
+    system_code public.cash_category_system_code_enum,
+    is_active boolean DEFAULT true NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: cash_movement; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cash_movement (
+    movement_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    cash_box_id uuid NOT NULL,
+    session_id uuid,
+    direction public.cash_movement_direction_enum NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    category_id uuid NOT NULL,
+    method public.cash_movement_method_enum DEFAULT 'cash'::public.cash_movement_method_enum NOT NULL,
+    occurred_at timestamp with time zone DEFAULT now() NOT NULL,
+    description character varying(255) NOT NULL,
+    reference_type public.cash_movement_reference_type_enum DEFAULT 'manual'::public.cash_movement_reference_type_enum NOT NULL,
+    reference_id uuid,
+    reverses_movement_id uuid,
+    created_by_user_id uuid NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_cash_movement_importe" CHECK ((amount > (0)::numeric))
+);
+
+
+--
+-- Name: cash_session; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cash_session (
+    session_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    cash_box_id uuid NOT NULL,
+    status public.cash_session_status_enum DEFAULT 'open'::public.cash_session_status_enum NOT NULL,
+    opened_at timestamp with time zone DEFAULT now() NOT NULL,
+    opened_by_user_id uuid NOT NULL,
+    opening_amount numeric(14,2) NOT NULL,
+    closed_at timestamp with time zone,
+    closed_by_user_id uuid,
+    expected_amount numeric(14,2),
+    counted_amount numeric(14,2),
+    difference numeric(14,2),
+    notes text
+);
+
+
+--
 -- Name: claims; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -876,6 +1345,50 @@ CREATE TABLE public.claims (
     "resolutionNote" text,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     photo_key character varying(512)
+);
+
+
+--
+-- Name: commission_entry; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.commission_entry (
+    entry_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    employee_id uuid NOT NULL,
+    delivery_id uuid,
+    type public.commission_entry_type_enum NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    order_id uuid,
+    rule_id uuid,
+    rule_snapshot jsonb,
+    liquidation_id uuid,
+    reference_id uuid,
+    description character varying(255) NOT NULL,
+    occurred_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by_user_id uuid,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: commission_rule; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.commission_rule (
+    rule_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    employee_id uuid,
+    gas_cylinder_id uuid,
+    basis public.commission_rule_basis_enum NOT NULL,
+    value numeric(10,4) NOT NULL,
+    valid_from date NOT NULL,
+    valid_to date,
+    is_active boolean DEFAULT true NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_commission_rule_valor" CHECK ((value >= (0)::numeric)),
+    CONSTRAINT "CHK_commission_rule_vigencia" CHECK (((valid_to IS NULL) OR (valid_to >= valid_from)))
 );
 
 
@@ -918,6 +1431,66 @@ CREATE TABLE public.customer (
     declared_cylinder_type_id uuid,
     repurchase_notice_days integer DEFAULT 3,
     next_repurchase_estimate_at timestamp with time zone
+);
+
+
+--
+-- Name: customer_account; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.customer_account (
+    account_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    customer_user_id uuid NOT NULL,
+    business_name character varying(120) NOT NULL,
+    tax_id character varying(11),
+    tax_condition public.customer_account_tax_condition_enum NOT NULL,
+    credit_limit numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    payment_terms_days integer DEFAULT 30 NOT NULL,
+    status public.customer_account_status_enum DEFAULT 'active'::public.customer_account_status_enum NOT NULL,
+    balance numeric(14,2) DEFAULT '0'::numeric NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "deletedAt" timestamp with time zone,
+    CONSTRAINT "CHK_customer_account_limite" CHECK ((credit_limit >= (0)::numeric)),
+    CONSTRAINT "CHK_customer_account_plazo" CHECK ((payment_terms_days > 0))
+);
+
+
+--
+-- Name: customer_account_allocation; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.customer_account_allocation (
+    allocation_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    account_id uuid NOT NULL,
+    debit_entry_id uuid NOT NULL,
+    credit_entry_id uuid NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    CONSTRAINT "CHK_customer_account_allocation_importe" CHECK ((amount > (0)::numeric))
+);
+
+
+--
+-- Name: customer_account_entry; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.customer_account_entry (
+    entry_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    account_id uuid NOT NULL,
+    type public.customer_account_entry_type_enum NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    order_id uuid,
+    due_date date,
+    payment_method character varying(20),
+    cash_movement_id uuid,
+    collected_by_delivery_id uuid,
+    description character varying(255),
+    occurred_at timestamp with time zone DEFAULT now() NOT NULL,
+    created_by_user_id uuid,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_customer_account_entry_importe" CHECK ((amount > (0)::numeric))
 );
 
 
@@ -1066,6 +1639,103 @@ CREATE TABLE public.document_sequence (
 
 
 --
+-- Name: driver_liquidation; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.driver_liquidation (
+    liquidation_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    number integer NOT NULL,
+    employee_id uuid NOT NULL,
+    period_from date NOT NULL,
+    period_to date NOT NULL,
+    gross numeric(12,2) NOT NULL,
+    deductions numeric(12,2) NOT NULL,
+    net numeric(12,2) NOT NULL,
+    status public.driver_liquidation_status_enum DEFAULT 'draft'::public.driver_liquidation_status_enum NOT NULL,
+    approved_at timestamp with time zone,
+    approved_by_user_id uuid,
+    paid_at timestamp with time zone,
+    paid_by_user_id uuid,
+    voided_at timestamp with time zone,
+    cash_movement_id uuid,
+    created_by_user_id uuid NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: driver_settlement; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.driver_settlement (
+    settlement_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    delivery_id uuid NOT NULL,
+    number integer NOT NULL,
+    truck_load_id uuid,
+    business_date date NOT NULL,
+    status public.driver_settlement_status_enum DEFAULT 'open'::public.driver_settlement_status_enum NOT NULL,
+    expected_cash numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    declared_cash numeric(12,2),
+    driver_expenses numeric(12,2) DEFAULT '0'::numeric NOT NULL,
+    difference numeric(12,2),
+    difference_resolution public.driver_settlement_difference_resolution_enum,
+    destination_cash_box_id uuid,
+    cash_movement_id uuid,
+    submitted_at timestamp with time zone,
+    submitted_by_user_id uuid,
+    approved_at timestamp with time zone,
+    approved_by_user_id uuid,
+    notes text,
+    overdue_alerted_at timestamp with time zone,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: driver_settlement_collection; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.driver_settlement_collection (
+    collection_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    settlement_id uuid NOT NULL,
+    entry_id uuid NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: driver_settlement_expense; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.driver_settlement_expense (
+    expense_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    settlement_id uuid NOT NULL,
+    category_id uuid NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    description character varying(255),
+    CONSTRAINT "CHK_driver_settlement_expense_importe" CHECK ((amount > (0)::numeric))
+);
+
+
+--
+-- Name: driver_settlement_order; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.driver_settlement_order (
+    settlement_order_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    settlement_id uuid NOT NULL,
+    order_id uuid NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    payment_method character varying(20) NOT NULL
+);
+
+
+--
 -- Name: employee; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1103,6 +1773,81 @@ CREATE TABLE public.employee (
     photo_key character varying(512),
     CONSTRAINT "CHK_employee_status_termination" CHECK (((status = 'terminated'::public.employee_status_enum) = (termination_date IS NOT NULL))),
     CONSTRAINT "CHK_employee_termination_date" CHECK (((termination_date IS NULL) OR (termination_date >= hire_date)))
+);
+
+
+--
+-- Name: employee_attendance; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.employee_attendance (
+    attendance_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    employee_id uuid NOT NULL,
+    work_date date NOT NULL,
+    check_in_at timestamp with time zone NOT NULL,
+    check_out_at timestamp with time zone,
+    source public.employee_attendance_source_enum NOT NULL,
+    recorded_by_user_id uuid,
+    notes text,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_employee_attendance_period" CHECK (((check_out_at IS NULL) OR (check_out_at > check_in_at)))
+);
+
+
+--
+-- Name: employee_leave; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.employee_leave (
+    leave_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    employee_id uuid NOT NULL,
+    type public.employee_leave_type_enum NOT NULL,
+    start_date date NOT NULL,
+    end_date date NOT NULL,
+    days integer NOT NULL,
+    status public.employee_leave_status_enum DEFAULT 'requested'::public.employee_leave_status_enum NOT NULL,
+    reason text,
+    rejection_reason text,
+    requested_by_user_id uuid,
+    decided_by_user_id uuid,
+    decided_at timestamp with time zone,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_employee_leave_period" CHECK ((end_date >= start_date))
+);
+
+
+--
+-- Name: fuel_load; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.fuel_load (
+    fuel_load_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    car_id uuid NOT NULL,
+    employee_id uuid,
+    loaded_at timestamp with time zone NOT NULL,
+    fuel_type public.fuel_type_enum NOT NULL,
+    liters numeric(10,2) NOT NULL,
+    unit_price numeric(12,3) NOT NULL,
+    total_amount numeric(12,2) NOT NULL,
+    odometer_km integer NOT NULL,
+    is_full_tank boolean DEFAULT true NOT NULL,
+    station character varying(120),
+    payment_method public.fuel_payment_method_enum NOT NULL,
+    receipt_number character varying(40),
+    anomaly boolean DEFAULT false NOT NULL,
+    notes text,
+    odometer_correction_note text,
+    created_by_user_id uuid NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "deletedAt" timestamp with time zone,
+    CONSTRAINT "CHK_fuel_load_liters" CHECK ((liters > (0)::numeric)),
+    CONSTRAINT "CHK_fuel_load_total" CHECK ((total_amount >= (0)::numeric))
 );
 
 
@@ -1194,7 +1939,9 @@ CREATE TABLE public.maintenance_plan (
     lead_time_days integer NOT NULL,
     criticality public.maintenance_criticality_enum NOT NULL,
     car_type character varying,
-    is_active boolean DEFAULT true NOT NULL
+    is_active boolean DEFAULT true NOT NULL,
+    document_kind public.plan_document_kind_enum,
+    applies_to_categories character varying[]
 );
 
 
@@ -1220,7 +1967,10 @@ CREATE TABLE public.maintenance_task (
     reference_number character varying(60),
     category character varying(10),
     alerted_at timestamp with time zone,
-    notes text
+    notes text,
+    valid_from timestamp with time zone,
+    employee_id uuid,
+    details jsonb
 );
 
 
@@ -1334,7 +2084,9 @@ CREATE TABLE public."order" (
     payment_confirmed_by uuid,
     payment_resolution_note text,
     payment_resolved_at timestamp with time zone,
-    payment_resolved_by uuid
+    payment_resolved_by uuid,
+    express_surcharge_amount numeric(10,2) DEFAULT '0'::numeric NOT NULL,
+    express_degraded_at timestamp with time zone
 );
 
 
@@ -1418,6 +2170,29 @@ CREATE TABLE public.payment (
     metadata jsonb,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: payment_refund; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.payment_refund (
+    refund_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    payment_id uuid NOT NULL,
+    order_id uuid NOT NULL,
+    distributor_id uuid,
+    kind public.payment_refund_kind_enum NOT NULL,
+    amount numeric(10,2) NOT NULL,
+    status public.payment_refund_status_enum DEFAULT 'pending'::public.payment_refund_status_enum NOT NULL,
+    gateway_refund_id character varying(100),
+    error_message text,
+    attempts integer DEFAULT 0 NOT NULL,
+    refunded_at timestamp with time zone,
+    requested_by_user_id uuid,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    refunded_baseline numeric(10,2)
 );
 
 
@@ -1782,6 +2557,74 @@ CREATE TABLE public.time_slot (
 
 
 --
+-- Name: tire; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tire (
+    tire_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    serial_number character varying(60) NOT NULL,
+    brand character varying(60) NOT NULL,
+    size character varying(40) NOT NULL,
+    cost numeric(12,2) NOT NULL,
+    status public.tire_status_enum DEFAULT 'in_stock'::public.tire_status_enum NOT NULL,
+    car_id uuid,
+    "position" character varying(6),
+    mounted_odometer_km integer,
+    km_traveled integer DEFAULT 0 NOT NULL,
+    retread_count integer DEFAULT 0 NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: tire_event; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tire_event (
+    event_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    tire_id uuid NOT NULL,
+    distributor_id uuid NOT NULL,
+    type public.tire_event_type_enum NOT NULL,
+    car_id uuid,
+    "position" character varying(6),
+    odometer_km integer NOT NULL,
+    created_by_user_id uuid NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
+-- Name: traffic_fine; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.traffic_fine (
+    fine_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    car_id uuid NOT NULL,
+    employee_id uuid,
+    occurred_at timestamp with time zone NOT NULL,
+    jurisdiction character varying(80) NOT NULL,
+    act_number character varying(40) NOT NULL,
+    infraction text NOT NULL,
+    amount numeric(12,2) NOT NULL,
+    voluntary_payment_amount numeric(12,2),
+    due_date date,
+    status public.traffic_fine_status_enum DEFAULT 'pending'::public.traffic_fine_status_enum NOT NULL,
+    paid_at timestamp with time zone,
+    paid_amount numeric(12,2),
+    charged_to_employee boolean DEFAULT false NOT NULL,
+    void_reason text,
+    voided_at timestamp with time zone,
+    alerted_at timestamp with time zone,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_traffic_fine_amount" CHECK ((amount > (0)::numeric))
+);
+
+
+--
 -- Name: truck_load; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1879,6 +2722,36 @@ CREATE TABLE public.user_address (
 
 
 --
+-- Name: vehicle_accident; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.vehicle_accident (
+    accident_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    distributor_id uuid NOT NULL,
+    car_id uuid NOT NULL,
+    employee_id uuid,
+    occurred_at timestamp with time zone NOT NULL,
+    location public.geometry(Point,4326),
+    address text,
+    description text NOT NULL,
+    injuries boolean DEFAULT false NOT NULL,
+    third_parties_involved boolean DEFAULT false NOT NULL,
+    hazmat_release boolean DEFAULT false NOT NULL,
+    police_report_number character varying(40),
+    insurer_claim_number character varying(40),
+    status public.vehicle_accident_status_enum DEFAULT 'reported'::public.vehicle_accident_status_enum NOT NULL,
+    vehicle_unusable boolean DEFAULT false NOT NULL,
+    repair_cost numeric(12,2),
+    insurer_reimbursement numeric(12,2),
+    deductible_amount numeric(12,2),
+    closed_at timestamp with time zone,
+    created_by_user_id uuid NOT NULL,
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+--
 -- Name: vehicle_assignment; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1938,11 +2811,35 @@ ALTER TABLE ONLY public.vehicle_assignment
 
 
 --
+-- Name: cash_session PK_0405f0f75e0ea603b67f56512a0; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_session
+    ADD CONSTRAINT "PK_0405f0f75e0ea603b67f56512a0" PRIMARY KEY (session_id);
+
+
+--
+-- Name: traffic_fine PK_070a6dff8acb17a6bbfecad41df; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.traffic_fine
+    ADD CONSTRAINT "PK_070a6dff8acb17a6bbfecad41df" PRIMARY KEY (fine_id);
+
+
+--
 -- Name: admin PK_08603203f2c50664bda27b1ff89; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.admin
     ADD CONSTRAINT "PK_08603203f2c50664bda27b1ff89" PRIMARY KEY (admin_id);
+
+
+--
+-- Name: driver_settlement_expense PK_08eefdada00e317b45b6010c36e; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_expense
+    ADD CONSTRAINT "PK_08eefdada00e317b45b6010c36e" PRIMARY KEY (expense_id);
 
 
 --
@@ -1994,6 +2891,14 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: tire PK_1cd585e4893980c1fdc669df3da; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire
+    ADD CONSTRAINT "PK_1cd585e4893980c1fdc669df3da" PRIMARY KEY (tire_id);
+
+
+--
 -- Name: stock_movement PK_208ac76bb0d2e300ce89781b22b; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2015,6 +2920,22 @@ ALTER TABLE ONLY public.purchase_order_item
 
 ALTER TABLE ONLY public.attachment
     ADD CONSTRAINT "PK_31d5367aee6b3ad16c69cce1cde" PRIMARY KEY (attachment_id);
+
+
+--
+-- Name: driver_settlement_order PK_32d328e79201459a738eb2f2071; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_order
+    ADD CONSTRAINT "PK_32d328e79201459a738eb2f2071" PRIMARY KEY (settlement_order_id);
+
+
+--
+-- Name: fuel_load PK_365d58e595b7370dd809570d41e; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fuel_load
+    ADD CONSTRAINT "PK_365d58e595b7370dd809570d41e" PRIMARY KEY (fuel_load_id);
 
 
 --
@@ -2090,6 +3011,14 @@ ALTER TABLE ONLY public."order"
 
 
 --
+-- Name: customer_account_allocation PK_656ecedc3cc77c138bd4f5ed181; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_allocation
+    ADD CONSTRAINT "PK_656ecedc3cc77c138bd4f5ed181" PRIMARY KEY (allocation_id);
+
+
+--
 -- Name: audit_action_type PK_66dcf5c5aab6bba8e40c9b16e86; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2103,6 +3032,14 @@ ALTER TABLE ONLY public.audit_action_type
 
 ALTER TABLE ONLY public.gas_cylinder
     ADD CONSTRAINT "PK_6768507f2214b15ab4653ef28c9" PRIMARY KEY (gas_cylinder_id);
+
+
+--
+-- Name: driver_settlement PK_6fac21943a903481ccf2fbc72e3; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "PK_6fac21943a903481ccf2fbc72e3" PRIMARY KEY (settlement_id);
 
 
 --
@@ -2154,6 +3091,14 @@ ALTER TABLE ONLY public.purchase_receipt
 
 
 --
+-- Name: employee_leave PK_84fc148f29a528aa770fb590a1f; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_leave
+    ADD CONSTRAINT "PK_84fc148f29a528aa770fb590a1f" PRIMARY KEY (leave_id);
+
+
+--
 -- Name: warehouse PK_897d6a7341d8b835d3368b91b8c; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2175,6 +3120,14 @@ ALTER TABLE ONLY public.cylinder_movement
 
 ALTER TABLE ONLY public.cylinder_recovery_notice
     ADD CONSTRAINT "PK_8bf6cdcdc12feb57a8514f5550d" PRIMARY KEY (notice_id);
+
+
+--
+-- Name: tire_event PK_8f948fe5b4246a2a92915126dad; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire_event
+    ADD CONSTRAINT "PK_8f948fe5b4246a2a92915126dad" PRIMARY KEY (event_id);
 
 
 --
@@ -2202,11 +3155,27 @@ ALTER TABLE ONLY public.time_slot
 
 
 --
+-- Name: cash_category PK_9ed23398638cf60f931c58a6254; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_category
+    ADD CONSTRAINT "PK_9ed23398638cf60f931c58a6254" PRIMARY KEY (category_id);
+
+
+--
 -- Name: delivery PK_9f4d2062bce95d9b75e00d145ee; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.delivery
     ADD CONSTRAINT "PK_9f4d2062bce95d9b75e00d145ee" PRIMARY KEY (delivery_id);
+
+
+--
+-- Name: driver_settlement_collection PK_9fb2ab779fdce604bd99c6e03d4; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_collection
+    ADD CONSTRAINT "PK_9fb2ab779fdce604bd99c6e03d4" PRIMARY KEY (collection_id);
 
 
 --
@@ -2242,6 +3211,22 @@ ALTER TABLE ONLY public.cart_item
 
 
 --
+-- Name: commission_entry PK_af74ef71d43b41c3a39141fda1c; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "PK_af74ef71d43b41c3a39141fda1c" PRIMARY KEY (entry_id);
+
+
+--
+-- Name: payment_refund PK_b2ceff76c7c89bdd2259d27a8a7; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_refund
+    ADD CONSTRAINT "PK_b2ceff76c7c89bdd2259d27a8a7" PRIMARY KEY (refund_id);
+
+
+--
 -- Name: user_address PK_b3bdd98c49956021c44c23a48c4; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2266,11 +3251,35 @@ ALTER TABLE ONLY public.route_batch_offer
 
 
 --
+-- Name: employee_attendance PK_ba49c1b4279ee383655a5065e06; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_attendance
+    ADD CONSTRAINT "PK_ba49c1b4279ee383655a5065e06" PRIMARY KEY (attendance_id);
+
+
+--
 -- Name: truck_load_item PK_bad04888d48307d2e2cefb5e4ab; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.truck_load_item
     ADD CONSTRAINT "PK_bad04888d48307d2e2cefb5e4ab" PRIMARY KEY (item_id);
+
+
+--
+-- Name: cash_movement PK_c3fc21001d0a2ada9461504eeb8; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "PK_c3fc21001d0a2ada9461504eeb8" PRIMARY KEY (movement_id);
+
+
+--
+-- Name: vehicle_accident PK_c6448a95ffc706c4e8c25d007f1; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_accident
+    ADD CONSTRAINT "PK_c6448a95ffc706c4e8c25d007f1" PRIMARY KEY (accident_id);
 
 
 --
@@ -2311,6 +3320,22 @@ ALTER TABLE ONLY public.repurchase_invitation
 
 ALTER TABLE ONLY public.gas_cylinder_promotion
     ADD CONSTRAINT "PK_cf52f52e1b6843b4de1496556b1" PRIMARY KEY (promotion_id);
+
+
+--
+-- Name: customer_account PK_d1e5a9401cb7dcb5604168f96ea; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account
+    ADD CONSTRAINT "PK_d1e5a9401cb7dcb5604168f96ea" PRIMARY KEY (account_id);
+
+
+--
+-- Name: cash_box PK_d48c98d81a07966df57824713cd; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_box
+    ADD CONSTRAINT "PK_d48c98d81a07966df57824713cd" PRIMARY KEY (cash_box_id);
 
 
 --
@@ -2370,6 +3395,22 @@ ALTER TABLE ONLY public.supplier
 
 
 --
+-- Name: customer_account_entry PK_e1c743cf21d5ab0b30d342404dc; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "PK_e1c743cf21d5ab0b30d342404dc" PRIMARY KEY (entry_id);
+
+
+--
+-- Name: commission_rule PK_e46763ead31c4f2fceeb5faefdd; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_rule
+    ADD CONSTRAINT "PK_e46763ead31c4f2fceeb5faefdd" PRIMARY KEY (rule_id);
+
+
+--
 -- Name: claims PK_e8c55807de8dde683de34399da3; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2391,6 +3432,14 @@ ALTER TABLE ONLY public.stock_adjustment
 
 ALTER TABLE ONLY public.stock_adjustment_item
     ADD CONSTRAINT "PK_ed34c9fcbcbed4fe6d1bcff37c2" PRIMARY KEY (item_id);
+
+
+--
+-- Name: driver_liquidation PK_efb13a8e9ee929dd7477906021c; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "PK_efb13a8e9ee929dd7477906021c" PRIMARY KEY (liquidation_id);
 
 
 --
@@ -2535,6 +3584,14 @@ ALTER TABLE ONLY public.gas_cylinder
 
 ALTER TABLE ONLY public.module_config
     ADD CONSTRAINT "UQ_module_config_distributor_module" UNIQUE (distributor_id, module);
+
+
+--
+-- Name: payment_refund UQ_payment_refund_payment_kind; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_refund
+    ADD CONSTRAINT "UQ_payment_refund_payment_kind" UNIQUE (payment_id, kind);
 
 
 --
@@ -2779,6 +3836,13 @@ CREATE INDEX "IDX_903b537f13281f56613047bcdc" ON public.cylinder USING btree (cu
 
 
 --
+-- Name: IDX_9649d0833082fad8f431ff1381; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_9649d0833082fad8f431ff1381" ON public.payment_refund USING btree (distributor_id);
+
+
+--
 -- Name: IDX_968ad11170db2741bb5c0c47bb; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2790,6 +3854,13 @@ CREATE INDEX "IDX_968ad11170db2741bb5c0c47bb" ON public.cylinder_movement USING 
 --
 
 CREATE INDEX "IDX_990b829fdf06cb282d835a5d72" ON public.gas_cylinder USING btree (distributor_id);
+
+
+--
+-- Name: IDX_9b1ba9fb797de22fc87b598f50; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_9b1ba9fb797de22fc87b598f50" ON public.payment_refund USING btree (payment_id);
 
 
 --
@@ -2818,6 +3889,13 @@ CREATE INDEX "IDX_9ff85bc9c62717502d1ad68216" ON public.order_dispatch_offer USI
 --
 
 CREATE INDEX "IDX_a2223c18baa97faf54118f95bd" ON public.incident USING btree (distributor_id);
+
+
+--
+-- Name: IDX_a2ae8bef86602c9f97be8e0b41; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_a2ae8bef86602c9f97be8e0b41" ON public.payment_refund USING btree (status);
 
 
 --
@@ -2919,10 +3997,136 @@ CREATE INDEX "IDX_c270386a78fdf46067bc9a94a7" ON public.delivery USING gist (loc
 
 
 --
+-- Name: IDX_cash_box_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_box_distributor" ON public.cash_box USING btree (distributor_id);
+
+
+--
+-- Name: IDX_cash_category_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_category_distributor" ON public.cash_category USING btree (distributor_id);
+
+
+--
+-- Name: IDX_cash_movement_caja_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_movement_caja_fecha" ON public.cash_movement USING btree (cash_box_id, occurred_at);
+
+
+--
+-- Name: IDX_cash_movement_distribuidora_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_movement_distribuidora_fecha" ON public.cash_movement USING btree (distributor_id, occurred_at);
+
+
+--
+-- Name: IDX_cash_movement_referencia; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_movement_referencia" ON public.cash_movement USING btree (reference_type, reference_id);
+
+
+--
+-- Name: IDX_cash_movement_sesion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_movement_sesion" ON public.cash_movement USING btree (session_id);
+
+
+--
+-- Name: IDX_cash_session_caja_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_session_caja_fecha" ON public.cash_session USING btree (cash_box_id, opened_at);
+
+
+--
+-- Name: IDX_cash_session_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_cash_session_distributor" ON public.cash_session USING btree (distributor_id);
+
+
+--
 -- Name: IDX_cd7812c96209c5bdd48a6b858b; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "IDX_cd7812c96209c5bdd48a6b858b" ON public."order" USING btree (customer_id);
+
+
+--
+-- Name: IDX_commission_entry_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_commission_entry_distributor" ON public.commission_entry USING btree (distributor_id);
+
+
+--
+-- Name: IDX_commission_entry_empleado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_commission_entry_empleado" ON public.commission_entry USING btree (employee_id, occurred_at);
+
+
+--
+-- Name: IDX_commission_entry_liquidacion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_commission_entry_liquidacion" ON public.commission_entry USING btree (liquidation_id);
+
+
+--
+-- Name: IDX_commission_rule_distribuidora; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_commission_rule_distribuidora" ON public.commission_rule USING btree (distributor_id, is_active);
+
+
+--
+-- Name: IDX_customer_account_allocation_credito; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_customer_account_allocation_credito" ON public.customer_account_allocation USING btree (credit_entry_id);
+
+
+--
+-- Name: IDX_customer_account_allocation_cuenta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_customer_account_allocation_cuenta" ON public.customer_account_allocation USING btree (account_id);
+
+
+--
+-- Name: IDX_customer_account_allocation_debito; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_customer_account_allocation_debito" ON public.customer_account_allocation USING btree (debit_entry_id);
+
+
+--
+-- Name: IDX_customer_account_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_customer_account_distributor" ON public.customer_account USING btree (distributor_id);
+
+
+--
+-- Name: IDX_customer_account_entry_cuenta_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_customer_account_entry_cuenta_fecha" ON public.customer_account_entry USING btree (account_id, occurred_at);
+
+
+--
+-- Name: IDX_customer_account_entry_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_customer_account_entry_distributor" ON public.customer_account_entry USING btree (distributor_id);
 
 
 --
@@ -2933,10 +4137,73 @@ CREATE INDEX "IDX_d6bb53d55c3556b23295d5ac5a" ON public.cylinder_recovery_case U
 
 
 --
+-- Name: IDX_ddf9b0a3d9abeee97fa77f0f20; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_ddf9b0a3d9abeee97fa77f0f20" ON public.payment_refund USING btree (order_id);
+
+
+--
 -- Name: IDX_df56039592a4bbbd3fa4a19f14; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX "IDX_df56039592a4bbbd3fa4a19f14" ON public."order" USING btree (distributor_id);
+
+
+--
+-- Name: IDX_driver_liquidation_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_liquidation_distributor" ON public.driver_liquidation USING btree (distributor_id);
+
+
+--
+-- Name: IDX_driver_liquidation_empleado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_liquidation_empleado" ON public.driver_liquidation USING btree (employee_id, status);
+
+
+--
+-- Name: IDX_driver_settlement_chofer; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_settlement_chofer" ON public.driver_settlement USING btree (delivery_id);
+
+
+--
+-- Name: IDX_driver_settlement_collection_rendicion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_settlement_collection_rendicion" ON public.driver_settlement_collection USING btree (settlement_id);
+
+
+--
+-- Name: IDX_driver_settlement_estado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_settlement_estado" ON public.driver_settlement USING btree (distributor_id, status);
+
+
+--
+-- Name: IDX_driver_settlement_expense_rendicion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_settlement_expense_rendicion" ON public.driver_settlement_expense USING btree (settlement_id);
+
+
+--
+-- Name: IDX_driver_settlement_fecha; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_settlement_fecha" ON public.driver_settlement USING btree (distributor_id, business_date);
+
+
+--
+-- Name: IDX_driver_settlement_order_rendicion; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_driver_settlement_order_rendicion" ON public.driver_settlement_order USING btree (settlement_id);
 
 
 --
@@ -2979,6 +4246,34 @@ CREATE INDEX "IDX_ec96001f6fe2869ae6b40f2dc8" ON public.maintenance_task USING b
 --
 
 CREATE INDEX "IDX_ef8ba785cbfbb81849828b38e7" ON public.user_address USING gist (location);
+
+
+--
+-- Name: IDX_employee_attendance_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_employee_attendance_day" ON public.employee_attendance USING btree (distributor_id, work_date);
+
+
+--
+-- Name: IDX_employee_attendance_employee; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_employee_attendance_employee" ON public.employee_attendance USING btree (employee_id, work_date);
+
+
+--
+-- Name: IDX_employee_leave_distributor; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_employee_leave_distributor" ON public.employee_leave USING btree (distributor_id, status);
+
+
+--
+-- Name: IDX_employee_leave_employee; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_employee_leave_employee" ON public.employee_leave USING btree (employee_id, status, start_date, end_date);
 
 
 --
@@ -3028,6 +4323,27 @@ CREATE INDEX "IDX_f5df1954571306276a5db7930f" ON public.rating USING btree (hidd
 --
 
 CREATE INDEX "IDX_f63c2b78c253c8c92398d88fd5" ON public.job_position USING btree (distributor_id);
+
+
+--
+-- Name: IDX_fuel_load_car_loaded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_fuel_load_car_loaded_at" ON public.fuel_load USING btree (car_id, loaded_at);
+
+
+--
+-- Name: IDX_fuel_load_distributor_loaded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_fuel_load_distributor_loaded_at" ON public.fuel_load USING btree (distributor_id, loaded_at);
+
+
+--
+-- Name: IDX_maintenance_task_employee; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_maintenance_task_employee" ON public.maintenance_task USING btree (employee_id);
 
 
 --
@@ -3185,6 +4501,27 @@ CREATE INDEX "IDX_supplier_distributor" ON public.supplier USING btree (distribu
 
 
 --
+-- Name: IDX_tire_event_tire; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_tire_event_tire" ON public.tire_event USING btree (tire_id, "createdAt");
+
+
+--
+-- Name: IDX_traffic_fine_car; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_traffic_fine_car" ON public.traffic_fine USING btree (car_id, occurred_at);
+
+
+--
+-- Name: IDX_traffic_fine_status_due; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_traffic_fine_status_due" ON public.traffic_fine USING btree (distributor_id, status, due_date);
+
+
+--
 -- Name: IDX_truck_load_camion; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3227,6 +4564,20 @@ CREATE INDEX "IDX_user_email_lower" ON public."user" USING btree (lower((email):
 
 
 --
+-- Name: IDX_vehicle_accident_car; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_vehicle_accident_car" ON public.vehicle_accident USING btree (car_id, occurred_at);
+
+
+--
+-- Name: IDX_vehicle_accident_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX "IDX_vehicle_accident_status" ON public.vehicle_accident USING btree (distributor_id, status);
+
+
+--
 -- Name: IDX_warehouse_distributor; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3245,6 +4596,118 @@ CREATE UNIQUE INDEX "UQ_admin_user" ON public.admin USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX "UQ_car_patente_vigente" ON public.car USING btree (car_patent) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_cash_box_nombre_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_cash_box_nombre_vigente" ON public.cash_box USING btree (distributor_id, name) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_cash_category_nombre_activa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_cash_category_nombre_activa" ON public.cash_category USING btree (distributor_id, direction, name) WHERE ((is_active = true) AND (system_code IS NULL));
+
+
+--
+-- Name: UQ_cash_category_sistema; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_cash_category_sistema" ON public.cash_category USING btree (distributor_id, system_code) WHERE (system_code IS NOT NULL);
+
+
+--
+-- Name: UQ_cash_movement_anula; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_cash_movement_anula" ON public.cash_movement USING btree (reverses_movement_id) WHERE (reverses_movement_id IS NOT NULL);
+
+
+--
+-- Name: UQ_cash_session_abierta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_cash_session_abierta" ON public.cash_session USING btree (cash_box_id) WHERE (status = 'open'::public.cash_session_status_enum);
+
+
+--
+-- Name: UQ_commission_entry_faltante; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_commission_entry_faltante" ON public.commission_entry USING btree (reference_id) WHERE (type = 'settlement_shortage'::public.commission_entry_type_enum);
+
+
+--
+-- Name: UQ_commission_entry_pedido; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_commission_entry_pedido" ON public.commission_entry USING btree (order_id) WHERE (type = 'delivery_commission'::public.commission_entry_type_enum);
+
+
+--
+-- Name: UQ_customer_account_cliente_vigente; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_customer_account_cliente_vigente" ON public.customer_account USING btree (distributor_id, customer_user_id) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_customer_account_entry_cargo_pedido; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_customer_account_entry_cargo_pedido" ON public.customer_account_entry USING btree (order_id) WHERE (type = 'sale_charge'::public.customer_account_entry_type_enum);
+
+
+--
+-- Name: UQ_driver_liquidation_numero; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_driver_liquidation_numero" ON public.driver_liquidation USING btree (distributor_id, number);
+
+
+--
+-- Name: UQ_driver_settlement_carga; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_driver_settlement_carga" ON public.driver_settlement USING btree (truck_load_id) WHERE (truck_load_id IS NOT NULL);
+
+
+--
+-- Name: UQ_driver_settlement_chofer_dia; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_driver_settlement_chofer_dia" ON public.driver_settlement USING btree (delivery_id, business_date);
+
+
+--
+-- Name: UQ_driver_settlement_collection_asiento; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_driver_settlement_collection_asiento" ON public.driver_settlement_collection USING btree (entry_id);
+
+
+--
+-- Name: UQ_driver_settlement_numero; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_driver_settlement_numero" ON public.driver_settlement USING btree (distributor_id, number);
+
+
+--
+-- Name: UQ_driver_settlement_order_pedido; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_driver_settlement_order_pedido" ON public.driver_settlement_order USING btree (order_id);
+
+
+--
+-- Name: UQ_employee_attendance_abierta; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_employee_attendance_abierta" ON public.employee_attendance USING btree (employee_id) WHERE (check_out_at IS NULL);
 
 
 --
@@ -3402,6 +4865,27 @@ CREATE UNIQUE INDEX "UQ_supplier_cuit_vigente" ON public.supplier USING btree (d
 
 
 --
+-- Name: UQ_tire_posicion_ocupada; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_tire_posicion_ocupada" ON public.tire USING btree (car_id, "position") WHERE (status = 'mounted'::public.tire_status_enum);
+
+
+--
+-- Name: UQ_tire_serial; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_tire_serial" ON public.tire USING btree (distributor_id, serial_number);
+
+
+--
+-- Name: UQ_traffic_fine_act; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_traffic_fine_act" ON public.traffic_fine USING btree (distributor_id, jurisdiction, act_number);
+
+
+--
 -- Name: UQ_truck_load_camion_abierta; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3507,10 +4991,70 @@ CREATE TRIGGER audit_log_inmutable BEFORE DELETE OR UPDATE ON public.audit_log F
 
 
 --
+-- Name: cash_movement cash_movement_solo_agregar; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER cash_movement_solo_agregar BEFORE DELETE OR UPDATE ON public.cash_movement FOR EACH ROW EXECUTE FUNCTION public.libro_de_solo_agregar();
+
+
+--
+-- Name: commission_entry commission_entry_solo_agregar; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER commission_entry_solo_agregar BEFORE DELETE OR UPDATE ON public.commission_entry FOR EACH ROW EXECUTE FUNCTION public.libro_de_solo_agregar();
+
+
+--
+-- Name: customer_account_entry customer_account_entry_solo_agregar; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER customer_account_entry_solo_agregar BEFORE DELETE OR UPDATE ON public.customer_account_entry FOR EACH ROW EXECUTE FUNCTION public.libro_de_solo_agregar();
+
+
+--
+-- Name: employee_leave employee_leave_no_overlap; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER employee_leave_no_overlap BEFORE INSERT OR UPDATE ON public.employee_leave FOR EACH ROW EXECUTE FUNCTION public.employee_leave_no_overlap();
+
+
+--
 -- Name: stock_movement stock_movement_inmutable; Type: TRIGGER; Schema: public; Owner: -
 --
 
 CREATE TRIGGER stock_movement_inmutable BEFORE DELETE OR UPDATE ON public.stock_movement FOR EACH ROW EXECUTE FUNCTION public.stock_movement_inmutable();
+
+
+--
+-- Name: driver_settlement_order FK_00b78dc2e95eff06336c982de3c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_order
+    ADD CONSTRAINT "FK_00b78dc2e95eff06336c982de3c" FOREIGN KEY (settlement_id) REFERENCES public.driver_settlement(settlement_id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_settlement FK_034a404a6b3c046410baaccd6bf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_034a404a6b3c046410baaccd6bf" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: customer_account_allocation FK_040f1307a22c0877436239c49ea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_allocation
+    ADD CONSTRAINT "FK_040f1307a22c0877436239c49ea" FOREIGN KEY (debit_entry_id) REFERENCES public.customer_account_entry(entry_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: customer_account FK_05d48d2b9438d97c70797088f72; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account
+    ADD CONSTRAINT "FK_05d48d2b9438d97c70797088f72" FOREIGN KEY (customer_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3546,11 +5090,43 @@ ALTER TABLE ONLY public.gas_cylinder_promotion
 
 
 --
+-- Name: commission_entry FK_0b03f8315648bdfda67d1f3f4fa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_0b03f8315648bdfda67d1f3f4fa" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: tire_event FK_0be6bc39d234517b95e758d916f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire_event
+    ADD CONSTRAINT "FK_0be6bc39d234517b95e758d916f" FOREIGN KEY (tire_id) REFERENCES public.tire(tire_id) ON DELETE CASCADE;
+
+
+--
 -- Name: maintenance_task FK_0c10df10892879498bf6037f951; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.maintenance_task
     ADD CONSTRAINT "FK_0c10df10892879498bf6037f951" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_liquidation FK_0c2c60d341a621185c48d35e975; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_0c2c60d341a621185c48d35e975" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: employee_leave FK_0c529fe51d5cdcf84876085d637; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_leave
+    ADD CONSTRAINT "FK_0c529fe51d5cdcf84876085d637" FOREIGN KEY (decided_by_user_id) REFERENCES public."user"(user_id) ON DELETE SET NULL;
 
 
 --
@@ -3594,6 +5170,14 @@ ALTER TABLE ONLY public.admin
 
 
 --
+-- Name: driver_settlement_order FK_1022fc8018671046aefdab2f8fd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_order
+    ADD CONSTRAINT "FK_1022fc8018671046aefdab2f8fd" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: vehicle_assignment FK_10efb252b7fde3ea22e9151b677; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3623,6 +5207,38 @@ ALTER TABLE ONLY public.order_dispatch_offer
 
 ALTER TABLE ONLY public.purchase_order
     ADD CONSTRAINT "FK_135e724d2360c7c75d6ea398636" FOREIGN KEY (destination_warehouse_id) REFERENCES public.warehouse(warehouse_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: customer_account_entry FK_1401ec5da7e64330b406b3fbfa9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_1401ec5da7e64330b406b3fbfa9" FOREIGN KEY (collected_by_delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: cash_category FK_1528db3a4ea037a767795b0d9c9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_category
+    ADD CONSTRAINT "FK_1528db3a4ea037a767795b0d9c9" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: customer_account_allocation FK_15d961bae7cbf44cda5649a10a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_allocation
+    ADD CONSTRAINT "FK_15d961bae7cbf44cda5649a10a6" FOREIGN KEY (credit_entry_id) REFERENCES public.customer_account_entry(entry_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: driver_settlement FK_1751ff46c2e373bb36f760c3607; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_1751ff46c2e373bb36f760c3607" FOREIGN KEY (truck_load_id) REFERENCES public.truck_load(load_id) ON DELETE RESTRICT;
 
 
 --
@@ -3666,6 +5282,14 @@ ALTER TABLE ONLY public.maintenance_window_proposal
 
 
 --
+-- Name: tire FK_1aacb8a04f755929167e6f8117d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire
+    ADD CONSTRAINT "FK_1aacb8a04f755929167e6f8117d" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE SET NULL;
+
+
+--
 -- Name: cylinder_movement FK_1c48ac355fa0315ba792b680456; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3706,6 +5330,14 @@ ALTER TABLE ONLY public.cylinder_inspection
 
 
 --
+-- Name: vehicle_accident FK_1e015d25e77f2e6f5174cb1036c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_accident
+    ADD CONSTRAINT "FK_1e015d25e77f2e6f5174cb1036c" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE SET NULL;
+
+
+--
 -- Name: order FK_1ec11b9220a926133a2e15dad92; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3719,6 +5351,14 @@ ALTER TABLE ONLY public."order"
 
 ALTER TABLE ONLY public.vehicle_assignment
     ADD CONSTRAINT "FK_1f986e62c32ac5ee2d8d7eb1330" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: vehicle_accident FK_2000ad7aae034d1996f07d9efda; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_accident
+    ADD CONSTRAINT "FK_2000ad7aae034d1996f07d9efda" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3738,11 +5378,27 @@ ALTER TABLE ONLY public.purchase_order
 
 
 --
+-- Name: customer_account_entry FK_24670e6df94198c58ad163ecce4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_24670e6df94198c58ad163ecce4" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: maintenance_window_proposal FK_24b20b6fcfe92abf85bc56c9072; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.maintenance_window_proposal
     ADD CONSTRAINT "FK_24b20b6fcfe92abf85bc56c9072" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE CASCADE;
+
+
+--
+-- Name: cash_session FK_24c1c29632e21025336adc2d2c1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_session
+    ADD CONSTRAINT "FK_24c1c29632e21025336adc2d2c1" FOREIGN KEY (opened_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3778,11 +5434,27 @@ ALTER TABLE ONLY public.vehicle_usage_log
 
 
 --
+-- Name: employee_attendance FK_2f436573780c5731f76c5833944; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_attendance
+    ADD CONSTRAINT "FK_2f436573780c5731f76c5833944" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
 -- Name: stock_adjustment_item FK_2fa4ce3625472a3239024cc8312; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.stock_adjustment_item
     ADD CONSTRAINT "FK_2fa4ce3625472a3239024cc8312" FOREIGN KEY (adjustment_id) REFERENCES public.stock_adjustment(adjustment_id) ON DELETE CASCADE;
+
+
+--
+-- Name: cash_movement FK_309ab225b94de04ab0ee244d6a9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_309ab225b94de04ab0ee244d6a9" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -3810,6 +5482,22 @@ ALTER TABLE ONLY public.stock_balance
 
 
 --
+-- Name: driver_settlement FK_353df4e2e3c3e8ffca5e83f1ede; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_353df4e2e3c3e8ffca5e83f1ede" FOREIGN KEY (approved_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: traffic_fine FK_367a6b8c0709f0a75bb2102ed37; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.traffic_fine
+    ADD CONSTRAINT "FK_367a6b8c0709f0a75bb2102ed37" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE CASCADE;
+
+
+--
 -- Name: cart_item FK_38a83baf23c61fcb6a28521e4cd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3826,11 +5514,35 @@ ALTER TABLE ONLY public.route_batch
 
 
 --
+-- Name: customer_account_entry FK_39f5f1bf029ec0921d6c9d81795; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_39f5f1bf029ec0921d6c9d81795" FOREIGN KEY (cash_movement_id) REFERENCES public.cash_movement(movement_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: truck_load FK_3b6b13c2d3f23575097fca51f2b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.truck_load
     ADD CONSTRAINT "FK_3b6b13c2d3f23575097fca51f2b" FOREIGN KEY (opened_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: commission_entry FK_3c627d2c84dbd71130d917eb276; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_3c627d2c84dbd71130d917eb276" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: commission_entry FK_3cdb19a54a48a911ecedbc38841; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_3cdb19a54a48a911ecedbc38841" FOREIGN KEY (rule_id) REFERENCES public.commission_rule(rule_id) ON DELETE SET NULL;
 
 
 --
@@ -3858,6 +5570,14 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: customer_account_entry FK_3f917672bdb3f9fa953b197a1d6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_3f917672bdb3f9fa953b197a1d6" FOREIGN KEY (account_id) REFERENCES public.customer_account(account_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: stock_balance FK_425c43cce61e9a14028ec1115d1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3871,6 +5591,14 @@ ALTER TABLE ONLY public.stock_balance
 
 ALTER TABLE ONLY public.truck_load_item
     ADD CONSTRAINT "FK_440db97a6d338b1392d613087c6" FOREIGN KEY (load_id) REFERENCES public.truck_load(load_id) ON DELETE CASCADE;
+
+
+--
+-- Name: customer_account_entry FK_461301da4afa2be775baa570c22; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_461301da4afa2be775baa570c22" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -3911,6 +5639,30 @@ ALTER TABLE ONLY public.order_address_change
 
 ALTER TABLE ONLY public.truck_load
     ADD CONSTRAINT "FK_4d54b2fe75eceaccd133cd852c8" FOREIGN KEY (closed_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: tire FK_4d9a885cbe45d32a05b0083b906; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire
+    ADD CONSTRAINT "FK_4d9a885cbe45d32a05b0083b906" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_settlement FK_4e7b4890ff3e759f07c7c215501; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_4e7b4890ff3e759f07c7c215501" FOREIGN KEY (destination_cash_box_id) REFERENCES public.cash_box(cash_box_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: employee_attendance FK_4ea40b73b24bf50777c9601f180; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_attendance
+    ADD CONSTRAINT "FK_4ea40b73b24bf50777c9601f180" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE RESTRICT;
 
 
 --
@@ -3962,6 +5714,30 @@ ALTER TABLE ONLY public.stock_adjustment
 
 
 --
+-- Name: customer_account FK_564bc79a7c5208b8a2e451f33ee; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account
+    ADD CONSTRAINT "FK_564bc79a7c5208b8a2e451f33ee" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: cash_session FK_566ccda1abee03369e83fbdac52; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_session
+    ADD CONSTRAINT "FK_566ccda1abee03369e83fbdac52" FOREIGN KEY (cash_box_id) REFERENCES public.cash_box(cash_box_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: driver_liquidation FK_573612e2fab26969026ec1af128; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_573612e2fab26969026ec1af128" FOREIGN KEY (paid_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: claims FK_573f53b0981b244cd25223e3ce7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3994,6 +5770,14 @@ ALTER TABLE ONLY public.truck_load
 
 
 --
+-- Name: driver_settlement_collection FK_5a1110f63b59aadf68c65085ee0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_collection
+    ADD CONSTRAINT "FK_5a1110f63b59aadf68c65085ee0" FOREIGN KEY (entry_id) REFERENCES public.customer_account_entry(entry_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: customer FK_5d1f609371a285123294fddcf3a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4002,11 +5786,43 @@ ALTER TABLE ONLY public.customer
 
 
 --
+-- Name: traffic_fine FK_5d3ee796a650efff7dc859091cf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.traffic_fine
+    ADD CONSTRAINT "FK_5d3ee796a650efff7dc859091cf" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_liquidation FK_5ed664156f365d251740f9643f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_5ed664156f365d251740f9643f6" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: traffic_fine FK_61447819bfe7d42839be95fb820; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.traffic_fine
+    ADD CONSTRAINT "FK_61447819bfe7d42839be95fb820" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE SET NULL;
+
+
+--
 -- Name: audit_log FK_617015cb20b8887ecb699504a84; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.audit_log
     ADD CONSTRAINT "FK_617015cb20b8887ecb699504a84" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE SET NULL;
+
+
+--
+-- Name: customer_account_allocation FK_61ea8a58fa0af69e8d60b92da68; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_allocation
+    ADD CONSTRAINT "FK_61ea8a58fa0af69e8d60b92da68" FOREIGN KEY (account_id) REFERENCES public.customer_account(account_id) ON DELETE RESTRICT;
 
 
 --
@@ -4042,6 +5858,30 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: driver_liquidation FK_74adb440c22c7f7036811c76599; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_74adb440c22c7f7036811c76599" FOREIGN KEY (approved_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: driver_settlement FK_75d32540838e7084b7c0eb113e0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_75d32540838e7084b7c0eb113e0" FOREIGN KEY (cash_movement_id) REFERENCES public.cash_movement(movement_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: fuel_load FK_76c156efd52997ef49bfd8a9b9f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fuel_load
+    ADD CONSTRAINT "FK_76c156efd52997ef49bfd8a9b9f" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE CASCADE;
+
+
+--
 -- Name: cylinder_recovery_case FK_77cd8b4b3c44851b932ca9c12df; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4058,6 +5898,22 @@ ALTER TABLE ONLY public.route_batch_stop
 
 
 --
+-- Name: commission_rule FK_7b250de6da53a02d3a91d255a68; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_rule
+    ADD CONSTRAINT "FK_7b250de6da53a02d3a91d255a68" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: tire_event FK_7b5154eec31cbcbdb3b14456b21; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire_event
+    ADD CONSTRAINT "FK_7b5154eec31cbcbdb3b14456b21" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE SET NULL;
+
+
+--
 -- Name: maintenance_plan FK_7ee5533ee6d3b24f7d74a2c61ce; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4066,11 +5922,43 @@ ALTER TABLE ONLY public.maintenance_plan
 
 
 --
+-- Name: driver_settlement_expense FK_81dfc131cc2b6c5d5aa5b4a854f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_expense
+    ADD CONSTRAINT "FK_81dfc131cc2b6c5d5aa5b4a854f" FOREIGN KEY (settlement_id) REFERENCES public.driver_settlement(settlement_id) ON DELETE CASCADE;
+
+
+--
 -- Name: order_dispatch_offer FK_830f3888d1424414675f1c184d9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_dispatch_offer
     ADD CONSTRAINT "FK_830f3888d1424414675f1c184d9" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: maintenance_task FK_8358c952b2c0b0dab8df7965f83; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.maintenance_task
+    ADD CONSTRAINT "FK_8358c952b2c0b0dab8df7965f83" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE CASCADE;
+
+
+--
+-- Name: vehicle_accident FK_83c35413f94f6c3a1c8c05ad4f1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_accident
+    ADD CONSTRAINT "FK_83c35413f94f6c3a1c8c05ad4f1" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_settlement FK_841e7f13d74799b8be10aab1fbf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_841e7f13d74799b8be10aab1fbf" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id) ON DELETE RESTRICT;
 
 
 --
@@ -4114,6 +6002,14 @@ ALTER TABLE ONLY public.delivery
 
 
 --
+-- Name: commission_rule FK_8c9d53a2fe9227838bf1790976a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_rule
+    ADD CONSTRAINT "FK_8c9d53a2fe9227838bf1790976a" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: vehicle_usage_log FK_8d4be9c7008fc808b4900a83a5d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4122,11 +6018,27 @@ ALTER TABLE ONLY public.vehicle_usage_log
 
 
 --
+-- Name: cash_movement FK_8e5c5ff29d543ee1e3a3d26a4a7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_8e5c5ff29d543ee1e3a3d26a4a7" FOREIGN KEY (reverses_movement_id) REFERENCES public.cash_movement(movement_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: order_item FK_8ea8fa760695e81b4624345fc72; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_item
     ADD CONSTRAINT "FK_8ea8fa760695e81b4624345fc72" FOREIGN KEY (gas_cylinder_id) REFERENCES public.gas_cylinder(gas_cylinder_id);
+
+
+--
+-- Name: cash_session FK_8fd04897962bec0681603f29421; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_session
+    ADD CONSTRAINT "FK_8fd04897962bec0681603f29421" FOREIGN KEY (closed_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -4154,6 +6066,14 @@ ALTER TABLE ONLY public.purchase_receipt_item
 
 
 --
+-- Name: commission_rule FK_93f6151205640d2f5a157024b35; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_rule
+    ADD CONSTRAINT "FK_93f6151205640d2f5a157024b35" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
 -- Name: maintenance_task FK_953928a930bb8d120a8c3fe0a04; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4175,6 +6095,14 @@ ALTER TABLE ONLY public.supplier
 
 ALTER TABLE ONLY public."order"
     ADD CONSTRAINT "FK_962eec87d3d029c51525f259fba" FOREIGN KEY (delivery_id) REFERENCES public.delivery(delivery_id);
+
+
+--
+-- Name: payment_refund FK_9649d0833082fad8f431ff1381f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_refund
+    ADD CONSTRAINT "FK_9649d0833082fad8f431ff1381f" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -4210,6 +6138,22 @@ ALTER TABLE ONLY public.gas_cylinder
 
 
 --
+-- Name: vehicle_accident FK_99b58b33529b87aebd788f77686; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_accident
+    ADD CONSTRAINT "FK_99b58b33529b87aebd788f77686" FOREIGN KEY (car_id) REFERENCES public.car(car_id) ON DELETE CASCADE;
+
+
+--
+-- Name: payment_refund FK_9b1ba9fb797de22fc87b598f509; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_refund
+    ADD CONSTRAINT "FK_9b1ba9fb797de22fc87b598f509" FOREIGN KEY (payment_id) REFERENCES public.payment(payment_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: cylinder FK_9e8b3d9c0ecf2651f6e836aca46; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4231,6 +6175,14 @@ ALTER TABLE ONLY public.stock_movement
 
 ALTER TABLE ONLY public.audit
     ADD CONSTRAINT "FK_9ffdecf0e48efaf0ae09b844d43" FOREIGN KEY (action_type_id) REFERENCES public.audit_action_type(action_type_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: commission_entry FK_a0c3335a8b5af840c818b5334a0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_a0c3335a8b5af840c818b5334a0" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -4298,6 +6250,14 @@ ALTER TABLE ONLY public."order"
 
 
 --
+-- Name: commission_entry FK_a53df91c9e50ec2b0ebd364ad9a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_a53df91c9e50ec2b0ebd364ad9a" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: purchase_receipt FK_a5906b092909ffdf5c1a75b308b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4314,6 +6274,22 @@ ALTER TABLE ONLY public.stock_movement
 
 
 --
+-- Name: fuel_load FK_a70b641640176492d8d0634b818; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fuel_load
+    ADD CONSTRAINT "FK_a70b641640176492d8d0634b818" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: employee_leave FK_a7720c43add56423460fa1a2aaa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_leave
+    ADD CONSTRAINT "FK_a7720c43add56423460fa1a2aaa" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: vehicle_assignment FK_a7cb484055004c370b38d80e880; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4327,6 +6303,14 @@ ALTER TABLE ONLY public.vehicle_assignment
 
 ALTER TABLE ONLY public.order_address_change
     ADD CONSTRAINT "FK_a8e249e6f7a18773fba8dba6abb" FOREIGN KEY (changed_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: cash_movement FK_a9b982c8aec7c799a146f449e25; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_a9b982c8aec7c799a146f449e25" FOREIGN KEY (cash_box_id) REFERENCES public.cash_box(cash_box_id) ON DELETE RESTRICT;
 
 
 --
@@ -4354,6 +6338,14 @@ ALTER TABLE ONLY public.truck_load
 
 
 --
+-- Name: cash_movement FK_b1f34c53c367143701b9164785e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_b1f34c53c367143701b9164785e" FOREIGN KEY (category_id) REFERENCES public.cash_category(category_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: purchase_receipt_item FK_b391d5552738cae006c0b9bf801; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4378,6 +6370,14 @@ ALTER TABLE ONLY public.rating
 
 
 --
+-- Name: cash_movement FK_b4ddcca770fe0f7b5b7c8131d25; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_b4ddcca770fe0f7b5b7c8131d25" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: stock_adjustment_item FK_b5df54839d2bc61c3be8207b4ff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4391,6 +6391,22 @@ ALTER TABLE ONLY public.stock_adjustment_item
 
 ALTER TABLE ONLY public.cart_item
     ADD CONSTRAINT "FK_b6b2a4f1f533d89d218e70db941" FOREIGN KEY (cart_id) REFERENCES public.cart(cart_id) ON DELETE CASCADE;
+
+
+--
+-- Name: commission_entry FK_b7d839b89e77ecff89abda761e5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_b7d839b89e77ecff89abda761e5" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: employee_leave FK_b8923c061b86827456de74e7ea8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_leave
+    ADD CONSTRAINT "FK_b8923c061b86827456de74e7ea8" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -4442,6 +6458,14 @@ ALTER TABLE ONLY public.stock_adjustment
 
 
 --
+-- Name: tire_event FK_c88fcd0fe7dc9f9228db77cfb6f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire_event
+    ADD CONSTRAINT "FK_c88fcd0fe7dc9f9228db77cfb6f" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
 -- Name: car FK_c8d34198d86de9e96aae03b8990; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4455,6 +6479,14 @@ ALTER TABLE ONLY public.car
 
 ALTER TABLE ONLY public.purchase_receipt
     ADD CONSTRAINT "FK_c92afda2aff490f63e02ea303bb" FOREIGN KEY (received_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: cash_session FK_cba986fb1ad57b98770e517d9b8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_session
+    ADD CONSTRAINT "FK_cba986fb1ad57b98770e517d9b8" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
 
 
 --
@@ -4474,11 +6506,35 @@ ALTER TABLE ONLY public."order"
 
 
 --
+-- Name: cash_box FK_cf2a6266f8dc0f2d942fe88aa6e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_box
+    ADD CONSTRAINT "FK_cf2a6266f8dc0f2d942fe88aa6e" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: fuel_load FK_d083e0be3bb71d18990f4d76153; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fuel_load
+    ADD CONSTRAINT "FK_d083e0be3bb71d18990f4d76153" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
 -- Name: audit FK_d214d146099cc53049201a1efd5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.audit
     ADD CONSTRAINT "FK_d214d146099cc53049201a1efd5" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE SET NULL;
+
+
+--
+-- Name: employee_leave FK_d417e890ac4cb96aaa6da2fb239; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_leave
+    ADD CONSTRAINT "FK_d417e890ac4cb96aaa6da2fb239" FOREIGN KEY (requested_by_user_id) REFERENCES public."user"(user_id) ON DELETE SET NULL;
 
 
 --
@@ -4506,6 +6562,14 @@ ALTER TABLE ONLY public.cylinder_recovery_case
 
 
 --
+-- Name: cash_movement FK_d704d3ac4a86b13e238da3d4083; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_d704d3ac4a86b13e238da3d4083" FOREIGN KEY (session_id) REFERENCES public.cash_session(session_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: purchase_receipt FK_d8373964f8a5c4fa998a23fc0d2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4522,6 +6586,38 @@ ALTER TABLE ONLY public.stock_location
 
 
 --
+-- Name: customer_account_entry FK_d9a03fad3dae8ac9c53de957b96; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_d9a03fad3dae8ac9c53de957b96" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: tire_event FK_d9e58b451d933032d487f8b08e5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tire_event
+    ADD CONSTRAINT "FK_d9e58b451d933032d487f8b08e5" FOREIGN KEY (created_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: driver_settlement FK_dce1f0f1e826575bf49d6a5776f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_dce1f0f1e826575bf49d6a5776f" FOREIGN KEY (submitted_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: payment_refund FK_ddf9b0a3d9abeee97fa77f0f204; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_refund
+    ADD CONSTRAINT "FK_ddf9b0a3d9abeee97fa77f0f204" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: order FK_df56039592a4bbbd3fa4a19f141; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4535,6 +6631,14 @@ ALTER TABLE ONLY public."order"
 
 ALTER TABLE ONLY public.document_sequence
     ADD CONSTRAINT "FK_document_sequence_distributor" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_settlement_expense FK_e1279555100a50a59f7d6225db7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_expense
+    ADD CONSTRAINT "FK_e1279555100a50a59f7d6225db7" FOREIGN KEY (category_id) REFERENCES public.cash_category(category_id) ON DELETE RESTRICT;
 
 
 --
@@ -4594,6 +6698,14 @@ ALTER TABLE ONLY public.time_slot
 
 
 --
+-- Name: employee_attendance FK_e8e6684056188b645f01dc2f24e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_attendance
+    ADD CONSTRAINT "FK_e8e6684056188b645f01dc2f24e" FOREIGN KEY (recorded_by_user_id) REFERENCES public."user"(user_id) ON DELETE SET NULL;
+
+
+--
 -- Name: order_item FK_e9674a6053adbaa1057848cddfa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4631,6 +6743,14 @@ ALTER TABLE ONLY public.repurchase_invitation
 
 ALTER TABLE ONLY public.maintenance_task
     ADD CONSTRAINT "FK_ec96001f6fe2869ae6b40f2dc8a" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: fuel_load FK_ee48925b2fcea12a694e512681c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fuel_load
+    ADD CONSTRAINT "FK_ee48925b2fcea12a694e512681c" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE SET NULL;
 
 
 --
@@ -4682,6 +6802,22 @@ ALTER TABLE ONLY public.job_position
 
 
 --
+-- Name: driver_liquidation FK_f87255c83855b6e635e95862da8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_f87255c83855b6e635e95862da8" FOREIGN KEY (employee_id) REFERENCES public.employee(employee_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: driver_liquidation FK_f897f43191611d24ac38cb9f3da; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_f897f43191611d24ac38cb9f3da" FOREIGN KEY (cash_movement_id) REFERENCES public.cash_movement(movement_id) ON DELETE RESTRICT;
+
+
+--
 -- Name: stock_balance FK_f8b2b588f7e7c8868a2756192d4; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4703,6 +6839,22 @@ ALTER TABLE ONLY public."user"
 
 ALTER TABLE ONLY public.cart
     ADD CONSTRAINT "FK_fe7495dc822eabf84bf1dc84e0f" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: commission_entry FK_feba91de77750347b3623fcf849; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_feba91de77750347b3623fcf849" FOREIGN KEY (liquidation_id) REFERENCES public.driver_liquidation(liquidation_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: driver_settlement_collection FK_ffffe9c244ec6bc721223a622a6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement_collection
+    ADD CONSTRAINT "FK_ffffe9c244ec6bc721223a622a6" FOREIGN KEY (settlement_id) REFERENCES public.driver_settlement(settlement_id) ON DELETE CASCADE;
 
 
 --

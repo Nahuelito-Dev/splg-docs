@@ -1183,6 +1183,15 @@ PROPUESTO += propuesto_personal.AGREGADOS
 import propuesto_flota
 PROPUESTO += propuesto_flota.AGREGADOS
 
+# Lo que la base ya tiene deja de ser propuesto (configuración del despacho y las tareas, personal, flota
+# ampliada, caja y rendición): sus tablas salen de la base y estos agregados quedan como registro y como fuente de
+# las etiquetas de negocio. La columna `car.vehicle_type` no se construyó: la moto se reconoce por `car.type_car`.
+_REALIZADOS = {"configuracion-despacho-y-tareas", "caja-rendicion-cuentas-corrientes", "personal-y-legajos",
+               "flota-gastos", "flota-neumaticos"}
+PROPUESTO_IMPLEMENTADO += [_a for _a in PROPUESTO if _a["clave"] in _REALIZADOS]
+PROPUESTO = [_a for _a in PROPUESTO
+             if _a["clave"] not in _REALIZADOS | {"express-recargo-y-tipo-de-vehiculo"}]
+
 # ---------------------------------------------------------------- verificaciones
 # El diccionario conceptual mapea etiqueta del negocio -> columna real. Si una
 # etiqueta apunta a una columna que no existe, el script corta: en el modelo
@@ -1235,6 +1244,12 @@ CONCEPTO = {
                                      ("subtotal", "subtotal")]),
   "order_dispatch_offer": ("Oferta de despacho", [("estado", "status"), ("vence", "expiresAt")]),
   "payment": ("Pago", [("importe", "amount"), ("pasarela", "gateway"), ("estado", "status")]),
+  "payment_refund": ("Reintegro de pago", [("tipo", "kind"), ("importe", "amount"), ("estado", "status"),
+                                            ("intentos", "attempts"), ("reintegrado el", "refunded_at"),
+                                            ("referencia en la pasarela", "gateway_refund_id"),
+                                            ("mensaje de error", "error_message"),
+                                            ("devuelto antes del intento", "refunded_baseline")]),
+  "driver_settlement_collection": ("Cobro de rendición", [("importe", "amount")]),
   "maintenance_task_attachment": ("Adjunto de tarea de mantenimiento",
     [("nombre original", "original_name"), ("tipo de archivo", "mime_type"),
      ("tamaño", "size_bytes"), ("subido el", "uploaded_at")]),
@@ -1621,7 +1636,7 @@ CONTEXTOS = [
                                         "cylinder_recovery_notice"]),
   ("Venta y pedidos", ["cart", "cart_item", "order", "order_item", "order_status_history",
                        "order_address_change", "coverage_zone", "time_slot"]),
-  ("Pagos", ["payment"]),
+  ("Pagos", ["payment", "payment_refund"]),
   ("Despacho y logística", ["order_dispatch_offer", "route_batch", "route_batch_stop",
                             "route_batch_offer"]),
   ("Flota y choferes", ["delivery", "car", "vehicle_assignment", "maintenance_plan", "maintenance_task",
@@ -1637,7 +1652,8 @@ CONTEXTOS = [
                "purchase_receipt_item"]),
   ("Tablas técnicas", sorted(MC.TABLAS_TECNICAS)),
   ("Caja y finanzas", ["cash_box", "cash_session", "cash_category", "cash_movement", "driver_settlement",
-                       "driver_settlement_order", "driver_settlement_expense", "customer_account",
+                       "driver_settlement_order", "driver_settlement_expense", "driver_settlement_collection",
+                       "customer_account",
                        "customer_account_entry", "customer_account_allocation", "commission_rule",
                        "commission_entry", "driver_liquidation"]),
 ]

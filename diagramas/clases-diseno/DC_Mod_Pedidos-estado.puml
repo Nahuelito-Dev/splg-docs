@@ -66,8 +66,8 @@ class ConfirmDeliveryUseCase <<controlador>> {
 class CashCollectionUseCase <<controlador>> {
   + confirmarCobroEnEfectivo(pedidoId: Identificador): Pedido
   + confirmarTransferencia(pedidoId: Identificador,\n      recibida: Booleano, motivo: Cadena): Pedido
-  + registrarCobroEnEfectivoPorAdmin(pedidoId: Identificador,\n      motivo: Cadena): Pedido
-  + resolverCobroImpago(pedidoId: Identificador,\n      resolucion: Cadena, nota: Cadena): Pedido
+  + registrarCobroEnEfectivoPorAdmin(pedidoId: Identificador,\n      motivo: Cadena, cajaId: Identificador): Pedido
+  + resolverCobroImpago(pedidoId: Identificador,\n      resolucion: Cadena, nota: Cadena,\n      cajaId: Identificador): Pedido
 }
 class QuoteOrderUseCase <<controlador>> {
   + cotizarPedido(items: Lista, metodoDePago: MetodoDePago,\n      direccionId: Identificador, cliente: Cliente,\n      pedidoId: Identificador): Registro
@@ -93,7 +93,6 @@ class "List<Pedido>" as List_Pedido <<colección>> {
   + getCanceladosYPagados(desde: FechaHora,\n      hasta: FechaHora): Registro
   + getConCobroPendiente(desde: FechaHora,\n      hasta: FechaHora): AsientoCuentaCorriente[*]
   + getEnCursoDelChofer(chofer: Chofer,\n      inicioDelDia: FechaHora): Pedido
-  + getEnEfectivoSinRendir(chofer: Chofer,\n      hoy: Fecha): Pedido[*]
   + getEntregados(): Pedido[*]
   + getEntregadosSinMovimiento(): Pedido[*]
   + getReservado(producto: Producto): Entero
@@ -110,8 +109,8 @@ class "List<Chofer>" as List_Chofer <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
 class NotificationPort <<referencia>>
 class RealtimeDispatchPort <<referencia>>
-class RefundPaymentUseCase <<referencia>>
 class CreateOrderUseCase <<referencia>>
+class CashLedgerService <<referencia>>
 class Incidencia <<referencia>>
 class Chofer <<referencia>>
 class Cliente <<referencia>>
@@ -119,6 +118,7 @@ class NotificationsService <<referencia>>
 class OfertaDespacho <<referencia>>
 class PaymentsService <<referencia>>
 class Producto <<referencia>>
+class RefundsService <<referencia>>
 class TruckLoadGateService <<referencia>>
 class ZonaCobertura <<referencia>>
 class Envase <<referencia>>
@@ -139,12 +139,12 @@ OrderService --> "1" Map_String_Chofer
 OrderService --> "1" Map_String_Pedido
 OrderService --> "1" NotificationPort
 OrderService --> "1" RealtimeDispatchPort
-OrderService --> "1" RefundPaymentUseCase
 QuoteOrderUseCase --> "1" CreateOrderUseCase
 QuoteOrderUseCase --> "1" Map_String_Pedido
 UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
 UpdateOrderStatusUseCase --> "1" Map_String_Pedido
 UpdateOrderStatusUseCase --> "1" NotificationPort
+CashCollectionUseCase ..> CashLedgerService
 CashCollectionUseCase ..> Incidencia
 CashCollectionUseCase ..> Pedido
 ConfirmDeliveryUseCase ..> NotificationPort
@@ -158,6 +158,7 @@ OrderService ..> OfertaDespacho
 OrderService ..> PaymentsService
 OrderService ..> "<<create>>" Pedido
 OrderService ..> Producto
+OrderService ..> RefundsService
 OrderService ..> TruckLoadGateService
 OrderService ..> ZonaCobertura
 OrderStatusHistorySubscriber ..> Pedido

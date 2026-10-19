@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Rehace en los documentos el bloque del diagrama de casos de uso del sistema: la imagen única con los
-334 casos de uso y, como complemento, las láminas por actor (`diagramas/uml/CU_Sistema_Completo-Lamina-*.png`).
+338 casos de uso y, como complemento, las láminas por actor (`diagramas/uml/CU_Sistema_Completo-Lamina-*.png`).
 
     python3 actualizar-laminas-docs.py
 
@@ -81,7 +81,7 @@ def reestructurar(t, numerada, f):
     mapa = m.group(0).rstrip("\n") if m else ""
     if m: t = t[:m.start()] + t[m.end():]
     n_ss = 21
-    intro = SUBS_TXT.format(n=334, s=n_ss)
+    intro = SUBS_TXT.format(n=338, s=n_ss)
     if f == "0-Plan_Del_Proyecto.md":
         a = t.index("## 6. Diagrama de Casos de Uso del Sistema") + len("## 6. Diagrama de Casos de Uso del Sistema")
         b = t.index(INI)

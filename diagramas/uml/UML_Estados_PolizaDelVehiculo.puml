@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de estados — Vigencia de la póliza y de la habilitación (planificado, C-18)
+title Diagrama de estados — Vigencia de la póliza y de la habilitación
 !include ../estilo-vp.iuml
 hide empty description
 state "Vigente\n(current)" as CURRENT

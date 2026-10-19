@@ -1,6 +1,6 @@
 # Modelo de Datos — SPLG
 
-63 tablas y 150 claves foráneas, leídas de la base en ejecución.
+85 tablas y 230 claves foráneas, leídas de la base en ejecución.
 
 | Sección | Qué contiene |
 |---|---|
@@ -135,6 +135,8 @@
 | `fleet_status` | fleet_status_enum | sí |  |  | `'active'::fleet_status_enum` | _(sin descripción documentada en el código)_ |
 | `in_service_since` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `photo_key` | varchar(512) | no |  |  |  | Key de la foto del vehículo en el bucket (`cars/{distribuidora}/{vehículo}/{uuid}.{ext}`). |
+| `fuel_type` | fuel_type_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `tank_capacity_liters` | numeric(6,2) | no |  |  |  | Capacidad del tanque en litros: tope de cada carga de combustible (+5 %). |
 
 Índices (además de la clave primaria):
 - `IDX_e823ac113ba2af8cbe72ddcbe8`: `CREATE INDEX "IDX_e823ac113ba2af8cbe72ddcbe8" ON public.car USING btree (distributor_id)`
@@ -169,6 +171,99 @@ Claves únicas compuestas: (`cart_id`, `gas_cylinder_id`).
 Índices (además de la clave primaria):
 - `UQ_cart_item_cart_gascylinder`: `CREATE UNIQUE INDEX "UQ_cart_item_cart_gascylinder" ON public.cart_item USING btree (cart_id, gas_cylinder_id)`
 
+### `cash_box` — Caja
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `cash_box_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `name` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `kind` | cash_box_kind_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `balance` | numeric(14,2) | sí |  |  | `'0'::numeric` | _(sin descripción documentada en el código)_ |
+| `requires_session` | boolean | sí |  |  | `false` | Si exige una sesión abierta (con arqueo al cerrar) para mover dinero. |
+| `is_active` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_cash_box_efectivo_no_negativo`: `CHECK (((kind <> 'cash'::cash_box_kind_enum) OR (balance >= (0)::numeric)))`
+
+Índices (además de la clave primaria):
+- `IDX_cash_box_distributor`: `CREATE INDEX "IDX_cash_box_distributor" ON public.cash_box USING btree (distributor_id)`
+- `UQ_cash_box_nombre_vigente`: `CREATE UNIQUE INDEX "UQ_cash_box_nombre_vigente" ON public.cash_box USING btree (distributor_id, name) WHERE ("deletedAt" IS NULL)`
+
+### `cash_category` — CategoriaDeCaja
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `category_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `name` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `direction` | cash_category_direction_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `system_code` | cash_category_system_code_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `is_active` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_cash_category_distributor`: `CREATE INDEX "IDX_cash_category_distributor" ON public.cash_category USING btree (distributor_id)`
+- `UQ_cash_category_nombre_activa`: `CREATE UNIQUE INDEX "UQ_cash_category_nombre_activa" ON public.cash_category USING btree (distributor_id, direction, name) WHERE ((is_active = true) AND (system_code IS NULL))`
+- `UQ_cash_category_sistema`: `CREATE UNIQUE INDEX "UQ_cash_category_sistema" ON public.cash_category USING btree (distributor_id, system_code) WHERE (system_code IS NOT NULL)`
+
+### `cash_movement` — MovimientoDeCaja
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `movement_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `cash_box_id` | uuid | sí | FK | `cash_box.cash_box_id` |  | _(sin descripción documentada en el código)_ |
+| `session_id` | uuid | no | FK | `cash_session.session_id` |  | _(sin descripción documentada en el código)_ |
+| `direction` | cash_movement_direction_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `category_id` | uuid | sí | FK | `cash_category.category_id` |  | _(sin descripción documentada en el código)_ |
+| `method` | cash_movement_method_enum | sí |  |  | `'cash'::cash_movement_method_enum` | _(sin descripción documentada en el código)_ |
+| `occurred_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `description` | varchar(255) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `reference_type` | cash_movement_reference_type_enum | sí |  |  | `'manual'::cash_movement_reference_type_enum` | _(sin descripción documentada en el código)_ |
+| `reference_id` | uuid | no |  |  |  | Documento que originó el movimiento (rendición, liquidación, pago…). Sin clave foránea a propósito: apunta a tablas de distintos módulos según `referenceType`. |
+| `reverses_movement_id` | uuid | no | FK | `cash_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
+| `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_cash_movement_importe`: `CHECK ((amount > (0)::numeric))`
+
+Índices (además de la clave primaria):
+- `IDX_cash_movement_caja_fecha`: `CREATE INDEX "IDX_cash_movement_caja_fecha" ON public.cash_movement USING btree (cash_box_id, occurred_at)`
+- `IDX_cash_movement_distribuidora_fecha`: `CREATE INDEX "IDX_cash_movement_distribuidora_fecha" ON public.cash_movement USING btree (distributor_id, occurred_at)`
+- `IDX_cash_movement_referencia`: `CREATE INDEX "IDX_cash_movement_referencia" ON public.cash_movement USING btree (reference_type, reference_id)`
+- `IDX_cash_movement_sesion`: `CREATE INDEX "IDX_cash_movement_sesion" ON public.cash_movement USING btree (session_id)`
+- `UQ_cash_movement_anula`: `CREATE UNIQUE INDEX "UQ_cash_movement_anula" ON public.cash_movement USING btree (reverses_movement_id) WHERE (reverses_movement_id IS NOT NULL)`
+
+### `cash_session` — SesionDeCaja
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `session_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `cash_box_id` | uuid | sí | FK | `cash_box.cash_box_id` |  | _(sin descripción documentada en el código)_ |
+| `status` | cash_session_status_enum | sí |  |  | `'open'::cash_session_status_enum` | _(sin descripción documentada en el código)_ |
+| `opened_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `opened_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `opening_amount` | numeric(14,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `closed_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `closed_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `expected_amount` | numeric(14,2) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `counted_amount` | numeric(14,2) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `difference` | numeric(14,2) | no |  |  |  | Contado menos esperado: negativa es faltante, positiva sobrante. |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_cash_session_caja_fecha`: `CREATE INDEX "IDX_cash_session_caja_fecha" ON public.cash_session USING btree (cash_box_id, opened_at)`
+- `IDX_cash_session_distributor`: `CREATE INDEX "IDX_cash_session_distributor" ON public.cash_session USING btree (distributor_id)`
+- `UQ_cash_session_abierta`: `CREATE UNIQUE INDEX "UQ_cash_session_abierta" ON public.cash_session USING btree (cash_box_id) WHERE (status = 'open'::cash_session_status_enum)`
+
 ### `claims` — Reclamo
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -187,6 +282,56 @@ Claves únicas compuestas: (`cart_id`, `gas_cylinder_id`).
 
 Índices (además de la clave primaria):
 - `IDX_870bf1e0dc6005837ff0643b5f`: `CREATE INDEX "IDX_870bf1e0dc6005837ff0643b5f" ON public.claims USING btree (distributor_id)`
+
+### `commission_entry` — AsientoComision
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `entry_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `employee_id` | uuid | sí | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `delivery_id` | uuid | no | FK | `delivery.delivery_id` |  | _(sin descripción documentada en el código)_ |
+| `type` | commission_entry_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `order_id` | uuid | no | FK | `order.order_id` |  | _(sin descripción documentada en el código)_ |
+| `rule_id` | uuid | no | FK | `commission_rule.rule_id` |  | _(sin descripción documentada en el código)_ |
+| `rule_snapshot` | jsonb | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `liquidation_id` | uuid | no | FK | `driver_liquidation.liquidation_id` |  | _(sin descripción documentada en el código)_ |
+| `reference_id` | uuid | no |  |  |  | Documento que originó la deducción (la rendición, la multa). Sin clave foránea a propósito: apunta a tablas de distintos módulos según `type`. |
+| `description` | varchar(255) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `occurred_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `created_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_commission_entry_distributor`: `CREATE INDEX "IDX_commission_entry_distributor" ON public.commission_entry USING btree (distributor_id)`
+- `IDX_commission_entry_empleado`: `CREATE INDEX "IDX_commission_entry_empleado" ON public.commission_entry USING btree (employee_id, occurred_at)`
+- `IDX_commission_entry_liquidacion`: `CREATE INDEX "IDX_commission_entry_liquidacion" ON public.commission_entry USING btree (liquidation_id)`
+- `UQ_commission_entry_faltante`: `CREATE UNIQUE INDEX "UQ_commission_entry_faltante" ON public.commission_entry USING btree (reference_id) WHERE (type = 'settlement_shortage'::commission_entry_type_enum)`
+- `UQ_commission_entry_pedido`: `CREATE UNIQUE INDEX "UQ_commission_entry_pedido" ON public.commission_entry USING btree (order_id) WHERE (type = 'delivery_commission'::commission_entry_type_enum)`
+
+### `commission_rule` — ReglaComision
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `rule_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `employee_id` | uuid | no | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `gas_cylinder_id` | uuid | no | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
+| `basis` | commission_rule_basis_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `value` | numeric(10,4) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `valid_from` | date | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `valid_to` | date | no |  |  |  | `null`: sin fecha de fin. |
+| `is_active` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_commission_rule_valor`: `CHECK ((value >= (0)::numeric))`
+- `CHK_commission_rule_vigencia`: `CHECK (((valid_to IS NULL) OR (valid_to >= valid_from)))`
+
+Índices (además de la clave primaria):
+- `IDX_commission_rule_distribuidora`: `CREATE INDEX "IDX_commission_rule_distribuidora" ON public.commission_rule USING btree (distributor_id, is_active)`
 
 ### `coverage_zone` — ZonaCobertura
 
@@ -233,6 +378,77 @@ Restricciones `CHECK`:
 Índices (además de la clave primaria):
 - `IDX_0124ec56df62d9a9ba58cb41a2`: `CREATE INDEX "IDX_0124ec56df62d9a9ba58cb41a2" ON public.customer USING gist (location)`
 - `REL_5d1f609371a285123294fddcf3`: `CREATE UNIQUE INDEX "REL_5d1f609371a285123294fddcf3" ON public.customer USING btree (user_id)`
+
+### `customer_account` — CuentaCorriente
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `account_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `customer_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `business_name` | varchar(120) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `tax_id` | varchar(11) | no |  |  |  | CUIT: once dígitos, sin guiones. |
+| `tax_condition` | customer_account_tax_condition_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `credit_limit` | numeric(12,2) | sí |  |  | `'0'::numeric` | _(sin descripción documentada en el código)_ |
+| `payment_terms_days` | integer | sí |  |  | `30` | _(sin descripción documentada en el código)_ |
+| `status` | customer_account_status_enum | sí |  |  | `'active'::customer_account_status_enum` | _(sin descripción documentada en el código)_ |
+| `balance` | numeric(14,2) | sí |  |  | `'0'::numeric` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_customer_account_limite`: `CHECK ((credit_limit >= (0)::numeric))`
+- `CHK_customer_account_plazo`: `CHECK ((payment_terms_days > 0))`
+
+Índices (además de la clave primaria):
+- `IDX_customer_account_distributor`: `CREATE INDEX "IDX_customer_account_distributor" ON public.customer_account USING btree (distributor_id)`
+- `UQ_customer_account_cliente_vigente`: `CREATE UNIQUE INDEX "UQ_customer_account_cliente_vigente" ON public.customer_account USING btree (distributor_id, customer_user_id) WHERE ("deletedAt" IS NULL)`
+
+### `customer_account_allocation` — ImputacionCuentaCorriente
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `allocation_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `account_id` | uuid | sí | FK | `customer_account.account_id` |  | _(sin descripción documentada en el código)_ |
+| `debit_entry_id` | uuid | sí | FK | `customer_account_entry.entry_id` |  | _(sin descripción documentada en el código)_ |
+| `credit_entry_id` | uuid | sí | FK | `customer_account_entry.entry_id` |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_customer_account_allocation_importe`: `CHECK ((amount > (0)::numeric))`
+
+Índices (además de la clave primaria):
+- `IDX_customer_account_allocation_credito`: `CREATE INDEX "IDX_customer_account_allocation_credito" ON public.customer_account_allocation USING btree (credit_entry_id)`
+- `IDX_customer_account_allocation_cuenta`: `CREATE INDEX "IDX_customer_account_allocation_cuenta" ON public.customer_account_allocation USING btree (account_id)`
+- `IDX_customer_account_allocation_debito`: `CREATE INDEX "IDX_customer_account_allocation_debito" ON public.customer_account_allocation USING btree (debit_entry_id)`
+
+### `customer_account_entry` — AsientoCuentaCorriente
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `entry_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `account_id` | uuid | sí | FK | `customer_account.account_id` |  | _(sin descripción documentada en el código)_ |
+| `type` | customer_account_entry_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `order_id` | uuid | no | FK | `order.order_id` |  | _(sin descripción documentada en el código)_ |
+| `due_date` | date | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_method` | varchar(20) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `cash_movement_id` | uuid | no | FK | `cash_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
+| `collected_by_delivery_id` | uuid | no | FK | `delivery.delivery_id` |  | _(sin descripción documentada en el código)_ |
+| `description` | varchar(255) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `occurred_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `created_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_customer_account_entry_importe`: `CHECK ((amount > (0)::numeric))`
+
+Índices (además de la clave primaria):
+- `IDX_customer_account_entry_cuenta_fecha`: `CREATE INDEX "IDX_customer_account_entry_cuenta_fecha" ON public.customer_account_entry USING btree (account_id, occurred_at)`
+- `IDX_customer_account_entry_distributor`: `CREATE INDEX "IDX_customer_account_entry_distributor" ON public.customer_account_entry USING btree (distributor_id)`
+- `UQ_customer_account_entry_cargo_pedido`: `CREATE UNIQUE INDEX "UQ_customer_account_entry_cargo_pedido" ON public.customer_account_entry USING btree (order_id) WHERE (type = 'sale_charge'::customer_account_entry_type_enum)`
 
 ### `cylinder` — Envase
 
@@ -389,6 +605,118 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `doc_type` | varchar(40) | sí | PK |  |  | _(sin descripción documentada en el código)_ |
 | `last_number` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
 
+### `driver_liquidation` — LiquidacionComisiones
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `liquidation_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `number` | integer | sí |  |  |  | Número correlativo por distribuidora (`document_sequence`). |
+| `employee_id` | uuid | sí | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `period_from` | date | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `period_to` | date | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `gross` | numeric(12,2) | sí |  |  |  | Σ de los asientos que suman. |
+| `deductions` | numeric(12,2) | sí |  |  |  | Σ (en positivo) de las deducciones. |
+| `net` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `status` | driver_liquidation_status_enum | sí |  |  | `'draft'::driver_liquidation_status_enum` | _(sin descripción documentada en el código)_ |
+| `approved_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `approved_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `paid_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `paid_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `voided_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `cash_movement_id` | uuid | no | FK | `cash_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
+| `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`distributor_id`, `number`).
+
+Índices (además de la clave primaria):
+- `IDX_driver_liquidation_distributor`: `CREATE INDEX "IDX_driver_liquidation_distributor" ON public.driver_liquidation USING btree (distributor_id)`
+- `IDX_driver_liquidation_empleado`: `CREATE INDEX "IDX_driver_liquidation_empleado" ON public.driver_liquidation USING btree (employee_id, status)`
+- `UQ_driver_liquidation_numero`: `CREATE UNIQUE INDEX "UQ_driver_liquidation_numero" ON public.driver_liquidation USING btree (distributor_id, number)`
+
+### `driver_settlement` — RendicionChofer
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `settlement_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `delivery_id` | uuid | sí | FK | `delivery.delivery_id` |  | _(sin descripción documentada en el código)_ |
+| `number` | integer | sí |  |  |  | Número correlativo por distribuidora (`document_sequence`). |
+| `truck_load_id` | uuid | no | FK | `truck_load.load_id` |  | _(sin descripción documentada en el código)_ |
+| `business_date` | date | sí |  |  |  | Día de negocio en hora argentina (YYYY-MM-DD). |
+| `status` | driver_settlement_status_enum | sí |  |  | `'open'::driver_settlement_status_enum` | _(sin descripción documentada en el código)_ |
+| `expected_cash` | numeric(12,2) | sí |  |  | `'0'::numeric` | Efectivo que el chofer debería entregar. Se recalcula al presentar. |
+| `declared_cash` | numeric(12,2) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `driver_expenses` | numeric(12,2) | sí |  |  | `'0'::numeric` | Gastos que el chofer pagó con la cobranza (combustible, peaje). |
+| `difference` | numeric(12,2) | no |  |  |  | Declarado + gastos − esperado: negativa es faltante, positiva sobrante. |
+| `difference_resolution` | driver_settlement_difference_resolution_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `destination_cash_box_id` | uuid | no | FK | `cash_box.cash_box_id` |  | _(sin descripción documentada en el código)_ |
+| `cash_movement_id` | uuid | no | FK | `cash_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
+| `submitted_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `submitted_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `approved_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `approved_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `overdue_alerted_at` | timestamptz | no |  |  |  | Cuándo se avisó por mail que quedó sin cerrar; evita repetir el aviso. |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`delivery_id`, `business_date`), (`distributor_id`, `number`).
+
+Índices (además de la clave primaria):
+- `IDX_driver_settlement_chofer`: `CREATE INDEX "IDX_driver_settlement_chofer" ON public.driver_settlement USING btree (delivery_id)`
+- `IDX_driver_settlement_estado`: `CREATE INDEX "IDX_driver_settlement_estado" ON public.driver_settlement USING btree (distributor_id, status)`
+- `IDX_driver_settlement_fecha`: `CREATE INDEX "IDX_driver_settlement_fecha" ON public.driver_settlement USING btree (distributor_id, business_date)`
+- `UQ_driver_settlement_carga`: `CREATE UNIQUE INDEX "UQ_driver_settlement_carga" ON public.driver_settlement USING btree (truck_load_id) WHERE (truck_load_id IS NOT NULL)`
+- `UQ_driver_settlement_chofer_dia`: `CREATE UNIQUE INDEX "UQ_driver_settlement_chofer_dia" ON public.driver_settlement USING btree (delivery_id, business_date)`
+- `UQ_driver_settlement_numero`: `CREATE UNIQUE INDEX "UQ_driver_settlement_numero" ON public.driver_settlement USING btree (distributor_id, number)`
+
+### `driver_settlement_collection` — CobroDeRendicion
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `collection_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `settlement_id` | uuid | sí | FK | `driver_settlement.settlement_id` |  | _(sin descripción documentada en el código)_ |
+| `entry_id` | uuid | sí | FK | `customer_account_entry.entry_id` |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_driver_settlement_collection_rendicion`: `CREATE INDEX "IDX_driver_settlement_collection_rendicion" ON public.driver_settlement_collection USING btree (settlement_id)`
+- `UQ_driver_settlement_collection_asiento`: `CREATE UNIQUE INDEX "UQ_driver_settlement_collection_asiento" ON public.driver_settlement_collection USING btree (entry_id)`
+
+### `driver_settlement_expense` — GastoDeRendicion
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `expense_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `settlement_id` | uuid | sí | FK | `driver_settlement.settlement_id` |  | _(sin descripción documentada en el código)_ |
+| `category_id` | uuid | sí | FK | `cash_category.category_id` |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `description` | varchar(255) | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_driver_settlement_expense_importe`: `CHECK ((amount > (0)::numeric))`
+
+Índices (además de la clave primaria):
+- `IDX_driver_settlement_expense_rendicion`: `CREATE INDEX "IDX_driver_settlement_expense_rendicion" ON public.driver_settlement_expense USING btree (settlement_id)`
+
+### `driver_settlement_order` — PedidoRendido
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `settlement_order_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `settlement_id` | uuid | sí | FK | `driver_settlement.settlement_id` |  | _(sin descripción documentada en el código)_ |
+| `order_id` | uuid | sí | FK | `order.order_id` |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | Lo que el chofer cobraba: el total menos la seña ya paga. |
+| `payment_method` | varchar(20) | sí |  |  |  | Medio de pago del pedido al rendirlo (copia). |
+
+Índices (además de la clave primaria):
+- `IDX_driver_settlement_order_rendicion`: `CREATE INDEX "IDX_driver_settlement_order_rendicion" ON public.driver_settlement_order USING btree (settlement_id)`
+- `UQ_driver_settlement_order_pedido`: `CREATE UNIQUE INDEX "UQ_driver_settlement_order_pedido" ON public.driver_settlement_order USING btree (order_id)`
+
 ### `employee` — Empleado
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -437,6 +765,91 @@ Restricciones `CHECK`:
 - `UQ_employee_document_vigente`: `CREATE UNIQUE INDEX "UQ_employee_document_vigente" ON public.employee USING btree (distributor_id, document_number) WHERE ("deletedAt" IS NULL)`
 - `UQ_employee_file_number_vigente`: `CREATE UNIQUE INDEX "UQ_employee_file_number_vigente" ON public.employee USING btree (distributor_id, file_number) WHERE ("deletedAt" IS NULL)`
 - `UQ_employee_user_vigente`: `CREATE UNIQUE INDEX "UQ_employee_user_vigente" ON public.employee USING btree (user_id) WHERE ((user_id IS NOT NULL) AND ("deletedAt" IS NULL))`
+
+### `employee_attendance` — JornadaDeTrabajo
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `attendance_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `employee_id` | uuid | sí | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `work_date` | date | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `check_in_at` | timestamptz | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `check_out_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `source` | employee_attendance_source_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `recorded_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_employee_attendance_period`: `CHECK (((check_out_at IS NULL) OR (check_out_at > check_in_at)))`
+
+Índices (además de la clave primaria):
+- `IDX_employee_attendance_day`: `CREATE INDEX "IDX_employee_attendance_day" ON public.employee_attendance USING btree (distributor_id, work_date)`
+- `IDX_employee_attendance_employee`: `CREATE INDEX "IDX_employee_attendance_employee" ON public.employee_attendance USING btree (employee_id, work_date)`
+- `UQ_employee_attendance_abierta`: `CREATE UNIQUE INDEX "UQ_employee_attendance_abierta" ON public.employee_attendance USING btree (employee_id) WHERE (check_out_at IS NULL)`
+
+### `employee_leave` — LicenciaLaboral
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `leave_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `employee_id` | uuid | sí | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `type` | employee_leave_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `start_date` | date | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `end_date` | date | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `days` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `status` | employee_leave_status_enum | sí |  |  | `'requested'::employee_leave_status_enum` | _(sin descripción documentada en el código)_ |
+| `reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `rejection_reason` | text | no |  |  |  | Por qué se rechazó (obligatorio al rechazar). |
+| `requested_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `decided_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `decided_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_employee_leave_period`: `CHECK ((end_date >= start_date))`
+
+Índices (además de la clave primaria):
+- `IDX_employee_leave_distributor`: `CREATE INDEX "IDX_employee_leave_distributor" ON public.employee_leave USING btree (distributor_id, status)`
+- `IDX_employee_leave_employee`: `CREATE INDEX "IDX_employee_leave_employee" ON public.employee_leave USING btree (employee_id, status, start_date, end_date)`
+
+### `fuel_load` — CargaCombustible
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `fuel_load_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `car_id` | uuid | sí | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
+| `employee_id` | uuid | no | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `loaded_at` | timestamptz | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `fuel_type` | fuel_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `liters` | numeric(10,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `unit_price` | numeric(12,3) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `total_amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `odometer_km` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `is_full_tank` | boolean | sí |  |  | `true` | El consumo se mide entre cargas de tanque lleno. |
+| `station` | varchar(120) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `payment_method` | fuel_payment_method_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `receipt_number` | varchar(40) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `anomaly` | boolean | sí |  |  | `false` | El consumo del tramo se apartó más de un 25 % del habitual. |
+| `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `odometer_correction_note` | text | no |  |  |  | Nota de quien forzó un kilometraje menor que el de la carga anterior. |
+| `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_fuel_load_liters`: `CHECK ((liters > (0)::numeric))`
+- `CHK_fuel_load_total`: `CHECK ((total_amount >= (0)::numeric))`
+
+Índices (además de la clave primaria):
+- `IDX_fuel_load_car_loaded_at`: `CREATE INDEX "IDX_fuel_load_car_loaded_at" ON public.fuel_load USING btree (car_id, loaded_at)`
+- `IDX_fuel_load_distributor_loaded_at`: `CREATE INDEX "IDX_fuel_load_distributor_loaded_at" ON public.fuel_load USING btree (distributor_id, loaded_at)`
 
 ### `gas_cylinder` — Producto
 
@@ -534,6 +947,8 @@ Restricciones `CHECK`:
 | `criticality` | maintenance_criticality_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `car_type` | varchar | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `is_active` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
+| `document_kind` | plan_document_kind_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `applies_to_categories` | _varchar | no |  |  |  | Categorías de puesto a las que aplica un plan de personal (CU-183 a CU-185). `null` = a todas. |
 
 Índices (además de la clave primaria):
 - `IDX_7ee5533ee6d3b24f7d74a2c61c`: `CREATE INDEX "IDX_7ee5533ee6d3b24f7d74a2c61c" ON public.maintenance_plan USING btree (distributor_id)`
@@ -560,9 +975,13 @@ Restricciones `CHECK`:
 | `category` | varchar(10) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `alerted_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `valid_from` | timestamptz | no |  |  |  | Inicio de la vigencia del documento (póliza, habilitación). Fecha de calendario, normalizada como `dueAt`. Sin ella, el costo del vehículo prorratea la póliza con un año hacia atrás desde el vencimiento. |
+| `employee_id` | uuid | no | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `details` | jsonb | no |  |  |  | Datos propios del tipo de documento (número de certificado, aseguradora, fecha del examen...). La forma la fija `plan.documentKind` (`domain/document-details.ts`). |
 
 Índices (además de la clave primaria):
 - `IDX_ec96001f6fe2869ae6b40f2dc8`: `CREATE INDEX "IDX_ec96001f6fe2869ae6b40f2dc8" ON public.maintenance_task USING btree (distributor_id)`
+- `IDX_maintenance_task_employee`: `CREATE INDEX "IDX_maintenance_task_employee" ON public.maintenance_task USING btree (employee_id)`
 
 ### `maintenance_task_attachment` — AdjuntoTarea
 
@@ -661,6 +1080,8 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `payment_resolution_note` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `payment_resolved_at` | timestamptz | no |  |  |  | Motivo con el que el admin resolvió un impago. |
 | `payment_resolved_by` | uuid | no |  |  |  | Admin que resolvió el impago. |
+| `express_surcharge_amount` | numeric(10,2) | sí |  |  | `'0'::numeric` | Recargo express que se cobró al pedir (CU-147). Queda guardado aunque el pedido pase al reparto común (`express_degraded_at`), para poder explicar el total y saber cuánto reintegrar; el `total_amount` ya no lo incluye en ese caso. |
+| `express_degraded_at` | timestamptz | no |  |  |  | Cuándo ningún chofer en moto aceptó y el pedido pasó al reparto común (CU-149). |
 
 Índices (además de la clave primaria):
 - `IDX_3adf34152c77fdb4e8f7346c5f`: `CREATE UNIQUE INDEX "IDX_3adf34152c77fdb4e8f7346c5f" ON public."order" USING btree ("gatewayPaymentId") WHERE ("gatewayPaymentId" IS NOT NULL)`
@@ -755,6 +1176,35 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 - `IDX_05b8eaefed5471a643ee578c74`: `CREATE UNIQUE INDEX "IDX_05b8eaefed5471a643ee578c74" ON public.payment USING btree (gateway_payment_id) WHERE (gateway_payment_id IS NOT NULL)`
 - `IDX_0cdad15fa39dd1ebace139096f`: `CREATE INDEX "IDX_0cdad15fa39dd1ebace139096f" ON public.payment USING btree (distributor_id)`
 - `IDX_f5221735ace059250daac9d980`: `CREATE INDEX "IDX_f5221735ace059250daac9d980" ON public.payment USING btree (order_id)`
+
+### `payment_refund` — ReintegroDePago
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `refund_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `payment_id` | uuid | sí | FK | `payment.payment_id` |  | _(sin descripción documentada en el código)_ |
+| `order_id` | uuid | sí | FK | `order.order_id` |  | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | no | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `kind` | payment_refund_kind_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(10,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `status` | payment_refund_status_enum | sí |  |  | `'pending'::payment_refund_status_enum` | _(sin descripción documentada en el código)_ |
+| `gateway_refund_id` | varchar(100) | no |  |  |  | Id de la devolución en la pasarela (null si no la hubo o ya estaba devuelto). |
+| `error_message` | text | no |  |  |  | Por qué falló el último intento. |
+| `attempts` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+| `refunded_at` | timestamptz | no |  |  |  | Cuándo la pasarela confirmó la devolución. |
+| `requested_by_user_id` | uuid | no |  |  |  | Quién pidió el último reintento manual (null: lo hizo el sistema). |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `refunded_baseline` | numeric(10,2) | no |  |  |  | Lo que la pasarela ya había devuelto del pago antes del último intento: permite saber, después de un corte o un timeout, si ese intento se aplicó. |
+
+Claves únicas compuestas: (`payment_id`, `kind`).
+
+Índices (además de la clave primaria):
+- `IDX_9649d0833082fad8f431ff1381`: `CREATE INDEX "IDX_9649d0833082fad8f431ff1381" ON public.payment_refund USING btree (distributor_id)`
+- `IDX_9b1ba9fb797de22fc87b598f50`: `CREATE INDEX "IDX_9b1ba9fb797de22fc87b598f50" ON public.payment_refund USING btree (payment_id)`
+- `IDX_a2ae8bef86602c9f97be8e0b41`: `CREATE INDEX "IDX_a2ae8bef86602c9f97be8e0b41" ON public.payment_refund USING btree (status)`
+- `IDX_ddf9b0a3d9abeee97fa77f0f20`: `CREATE INDEX "IDX_ddf9b0a3d9abeee97fa77f0f20" ON public.payment_refund USING btree (order_id)`
+- `UQ_payment_refund_payment_kind`: `CREATE UNIQUE INDEX "UQ_payment_refund_payment_kind" ON public.payment_refund USING btree (payment_id, kind)`
 
 ### `purchase_order` — OrdenDeCompra
 
@@ -1173,6 +1623,83 @@ Restricciones `CHECK`:
 Índices (además de la clave primaria):
 - `IDX_e87ae54beaee42b885813deb8e`: `CREATE INDEX "IDX_e87ae54beaee42b885813deb8e" ON public.time_slot USING btree (distributor_id)`
 
+### `tire` — Neumatico
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `tire_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `serial_number` | varchar(60) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `brand` | varchar(60) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `size` | varchar(40) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `cost` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `status` | tire_status_enum | sí |  |  | `'in_stock'::tire_status_enum` | _(sin descripción documentada en el código)_ |
+| `car_id` | uuid | no | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
+| `position` | varchar(6) | no |  |  |  | Código corto de la posición en el vehículo (p. ej. DI = delantero izquierdo). |
+| `mounted_odometer_km` | integer | no |  |  |  | Kilometraje del vehículo en el montaje vigente. |
+| `km_traveled` | integer | sí |  |  | `0` | Km recorridos en los montajes ya cerrados (desmontaje, baja). |
+| `retread_count` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`distributor_id`, `serial_number`).
+
+Índices (además de la clave primaria):
+- `UQ_tire_posicion_ocupada`: `CREATE UNIQUE INDEX "UQ_tire_posicion_ocupada" ON public.tire USING btree (car_id, "position") WHERE (status = 'mounted'::tire_status_enum)`
+- `UQ_tire_serial`: `CREATE UNIQUE INDEX "UQ_tire_serial" ON public.tire USING btree (distributor_id, serial_number)`
+
+### `tire_event` — MovimientoNeumatico
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `event_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `tire_id` | uuid | sí | FK | `tire.tire_id` |  | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `type` | tire_event_type_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `car_id` | uuid | no | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
+| `position` | varchar(6) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `odometer_km` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_tire_event_tire`: `CREATE INDEX "IDX_tire_event_tire" ON public.tire_event USING btree (tire_id, "createdAt")`
+
+### `traffic_fine` — MultaTransito
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `fine_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `car_id` | uuid | sí | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
+| `employee_id` | uuid | no | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `occurred_at` | timestamptz | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `jurisdiction` | varchar(80) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `act_number` | varchar(40) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `infraction` | text | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `voluntary_payment_amount` | numeric(12,2) | no |  |  |  | Importe con el descuento de pago voluntario. |
+| `due_date` | date | no |  |  |  | Fecha de calendario `YYYY-MM-DD`. |
+| `status` | traffic_fine_status_enum | sí |  |  | `'pending'::traffic_fine_status_enum` | _(sin descripción documentada en el código)_ |
+| `paid_at` | timestamptz | no |  |  |  | Día del pago, como el inicio de ese día en hora argentina. |
+| `paid_amount` | numeric(12,2) | no |  |  |  | Lo efectivamente pagado: suele ser el del pago voluntario, menor que `amount`. |
+| `charged_to_employee` | boolean | sí |  |  | `false` | Imputada al chofer (CU-200): la asume el empleado y no cuenta como costo del vehículo. |
+| `void_reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `voided_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `alerted_at` | timestamptz | no |  |  |  | Cuándo se avisó el vencimiento (CU-326); `null` = sin avisar. |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`distributor_id`, `jurisdiction`, `act_number`).
+
+Restricciones `CHECK`:
+- `CHK_traffic_fine_amount`: `CHECK ((amount > (0)::numeric))`
+
+Índices (además de la clave primaria):
+- `IDX_traffic_fine_car`: `CREATE INDEX "IDX_traffic_fine_car" ON public.traffic_fine USING btree (car_id, occurred_at)`
+- `IDX_traffic_fine_status_due`: `CREATE INDEX "IDX_traffic_fine_status_due" ON public.traffic_fine USING btree (distributor_id, status, due_date)`
+- `UQ_traffic_fine_act`: `CREATE UNIQUE INDEX "UQ_traffic_fine_act" ON public.traffic_fine USING btree (distributor_id, jurisdiction, act_number)`
+
 ### `truck_load` — CargaDeCamion
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -1286,6 +1813,37 @@ Restricciones `CHECK`:
 Índices (además de la clave primaria):
 - `IDX_ef8ba785cbfbb81849828b38e7`: `CREATE INDEX "IDX_ef8ba785cbfbb81849828b38e7" ON public.user_address USING gist (location)`
 
+### `vehicle_accident` — Siniestro
+
+| Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
+|---|---|:-:|:-:|---|---|---|
+| `accident_id` | uuid | sí | PK |  | `uuid_generate_v4()` | _(sin descripción documentada en el código)_ |
+| `distributor_id` | uuid | sí | FK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
+| `car_id` | uuid | sí | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
+| `employee_id` | uuid | no | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
+| `occurred_at` | timestamptz | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `location` | geometry | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `address` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `description` | text | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `injuries` | boolean | sí |  |  | `false` | _(sin descripción documentada en el código)_ |
+| `third_parties_involved` | boolean | sí |  |  | `false` | _(sin descripción documentada en el código)_ |
+| `hazmat_release` | boolean | sí |  |  | `false` | Fuga o derrame de gas: obliga a avisar de inmediato a los administradores. |
+| `police_report_number` | varchar(40) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `insurer_claim_number` | varchar(40) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `status` | vehicle_accident_status_enum | sí |  |  | `'reported'::vehicle_accident_status_enum` | _(sin descripción documentada en el código)_ |
+| `vehicle_unusable` | boolean | sí |  |  | `false` | Si quedó inutilizable, el vehículo pasó a fuera de servicio al registrarlo. |
+| `repair_cost` | numeric(12,2) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `insurer_reimbursement` | numeric(12,2) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `deductible_amount` | numeric(12,2) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `closed_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
+| `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Índices (además de la clave primaria):
+- `IDX_vehicle_accident_car`: `CREATE INDEX "IDX_vehicle_accident_car" ON public.vehicle_accident USING btree (car_id, occurred_at)`
+- `IDX_vehicle_accident_status`: `CREATE INDEX "IDX_vehicle_accident_status" ON public.vehicle_accident USING btree (distributor_id, status)`
+
 ### `vehicle_assignment` — AsignacionVehiculo
 
 | Columna | Tipo | Obligatoria | Clave | Referencia | Default | Descripción |
@@ -1344,27 +1902,13 @@ Claves únicas compuestas: (`car_id`, `day`).
 - `UQ_warehouse_code_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_code_vigente" ON public.warehouse USING btree (distributor_id, code) WHERE ("deletedAt" IS NULL)`
 - `UQ_warehouse_default_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL))`
 
-> **Cobertura de las descripciones.** 111 de 676 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 154 de 972 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
-No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 150 relaciones del dominio están todas declaradas.
+No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 230 relaciones del dominio están todas declaradas.
 
-### 1. Recargo express y tipo de vehículo
-
-**Casos de uso:** CU-147 a CU-149 (C-17). **Qué resuelve:** Explicar el total de un pedido express y reconocer la moto sin depender de un texto libre.
-
-| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
-|---|---|---|:-:|---|
-| `order` | `express_surcharge_amount` | numeric(12,2) | sí | Recargo de la modalidad express incluido en el total; cero en el reparto común. |
-| `car` | `vehicle_type` | vehicle_type_enum | no | Tipo de vehículo normalizado, rellenado desde `type_car`; vacío hasta el relleno. |
-
-
-Tipo enumerado `vehicle_type_enum`: `motorcycle`, `car`, `van`.
-
-> **Decisión de modelado.** La compra express guarda el recargo para poder explicar el total después, igual que el pedido guarda la zona que lo originó. El tipo de vehículo es hoy texto libre (`type_car`: «Moto», «Auto»…) y la express depende de reconocer una moto: se agrega una columna enumerada y se rellena desde `type_car`.
-
-### 2. Baja del envase y oferta de retiro
+### 1. Baja del envase y oferta de retiro
 
 **Casos de uso:** CU-108 (C-15). **Qué resuelve:** Poder dar un envase de baja y atar la oferta de retiro a la entrega programada.
 
@@ -1376,376 +1920,6 @@ Tipo enumerado `vehicle_type_enum`: `motorcycle`, `car`, `van`.
 
 > **Decisión de modelado.** El ciclo del envase no tiene un estado de baja: se agrega una baja lógica en vez de un valor de estado, para no tocar la máquina de estados que ya usan el despacho y la devolución. El aviso de recupero necesita saber a qué entrega se ató la oferta de retiro.
 
-### 3. Configuración del despacho y de las tareas programadas
-
-**Casos de uso:** CU-171 y CU-173 (C-07). **Qué resuelve:** Que el administrador configure el despacho y la frecuencia de las tareas de su distribuidora.
-
-| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
-|---|---|---|:-:|---|
-
-
-Valores nuevos del tipo enumerado `configurable_process_enum`: `dispatch`, `scheduled_tasks`.
-
-> **Decisión de modelado.** Los parámetros del despacho y la frecuencia de las tareas programadas usan la misma tabla de configuración por distribuidora que los módulos inteligentes: solo hace falta ampliar el tipo enumerado de procesos configurables.
-
-### 4. Caja, rendición del chofer, cuentas corrientes y comisiones
-
-**Casos de uso:** CU-225 a CU-245 (C-20). **Qué resuelve:** Llevar el dinero de la distribuidora —cajas con arqueo, rendición diaria del chofer, venta a crédito y comisiones por entrega— con un libro auditable en vez de saldos sueltos.
-
-| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
-|---|---|---|:-:|---|
-| `cash_box` **(tabla nueva)** | `cash_box_id` | uuid | sí | Identificador. |
-| `cash_box` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `cash_box` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre de la caja. |
-| `cash_box` **(tabla nueva)** | `kind` | cash_box_kind_enum | sí | Efectivo, banco o billetera. |
-| `cash_box` **(tabla nueva)** | `balance` | numeric(14,2) | sí | Saldo; una restricción impide que una caja de efectivo quede en negativo. |
-| `cash_box` **(tabla nueva)** | `requires_session` | boolean | sí | Si exige una sesión abierta para registrar movimientos. |
-| `cash_box` **(tabla nueva)** | `is_active` | boolean | sí | Si la caja está activa. |
-| `cash_box` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `cash_box` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `cash_box` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
-| `cash_session` **(tabla nueva)** | `session_id` | uuid | sí | Identificador. |
-| `cash_session` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `cash_session` **(tabla nueva)** | `cash_box_id` | uuid | sí | Caja que se abre. |
-| `cash_session` **(tabla nueva)** | `status` | cash_session_status_enum | sí | Abierta o cerrada. |
-| `cash_session` **(tabla nueva)** | `opened_at` | timestamptz | sí | Apertura. |
-| `cash_session` **(tabla nueva)** | `opened_by_user_id` | uuid | sí | Administrador que la abrió. |
-| `cash_session` **(tabla nueva)** | `opening_amount` | numeric(12,2) | sí | Monto con que se abrió. |
-| `cash_session` **(tabla nueva)** | `closed_at` | timestamptz | no | Cierre. |
-| `cash_session` **(tabla nueva)** | `closed_by_user_id` | uuid | no | Administrador que la cerró. |
-| `cash_session` **(tabla nueva)** | `expected_amount` | numeric(12,2) | no | Monto que debía haber: el inicial más los movimientos de la sesión. |
-| `cash_session` **(tabla nueva)** | `counted_amount` | numeric(12,2) | no | Monto contado en el arqueo. |
-| `cash_session` **(tabla nueva)** | `difference` | numeric(12,2) | no | Contado menos esperado; negativa es faltante. |
-| `cash_session` **(tabla nueva)** | `notes` | text | no | Observaciones del arqueo. |
-| `cash_category` **(tabla nueva)** | `category_id` | uuid | sí | Identificador. |
-| `cash_category` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `cash_category` **(tabla nueva)** | `name` | varchar(80) | sí | Nombre de la categoría. |
-| `cash_category` **(tabla nueva)** | `direction` | cash_direction_enum | sí | Ingreso o egreso. |
-| `cash_category` **(tabla nueva)** | `system_code` | cash_system_code_enum | no | Código con que los procesos automáticos la buscan; vacío en las propias. |
-| `cash_category` **(tabla nueva)** | `is_active` | boolean | sí | Si se ofrece para movimientos nuevos. |
-| `cash_category` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `cash_category` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `cash_movement` **(tabla nueva)** | `movement_id` | uuid | sí | Identificador. |
-| `cash_movement` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `cash_movement` **(tabla nueva)** | `cash_box_id` | uuid | sí | Caja del asiento. |
-| `cash_movement` **(tabla nueva)** | `session_id` | uuid | no | Sesión en que se asentó. |
-| `cash_movement` **(tabla nueva)** | `direction` | cash_direction_enum | sí | Ingreso o egreso. |
-| `cash_movement` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe, siempre mayor que cero. |
-| `cash_movement` **(tabla nueva)** | `category_id` | uuid | sí | Categoría del movimiento. |
-| `cash_movement` **(tabla nueva)** | `method` | cash_method_enum | sí | Medio, informativo. |
-| `cash_movement` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
-| `cash_movement` **(tabla nueva)** | `description` | varchar(255) | no | Descripción libre. |
-| `cash_movement` **(tabla nueva)** | `reference_type` | cash_reference_type_enum | sí | Qué lo originó: carga manual, rendición, pago, liquidación, transferencia o anulación. |
-| `cash_movement` **(tabla nueva)** | `reference_id` | uuid | no | Identificador de lo que lo originó. |
-| `cash_movement` **(tabla nueva)** | `reverses_movement_id` | uuid | no | Movimiento al que anula; único: un movimiento se anula una sola vez. |
-| `cash_movement` **(tabla nueva)** | `created_by_user_id` | uuid | sí | Quien lo asentó. |
-| `cash_movement` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `driver_settlement` **(tabla nueva)** | `settlement_id` | uuid | sí | Identificador. |
-| `driver_settlement` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `driver_settlement` **(tabla nueva)** | `delivery_id` | uuid | sí | Chofer que rinde. |
-| `driver_settlement` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
-| `driver_settlement` **(tabla nueva)** | `business_date` | date | sí | Día argentino que se rinde. |
-| `driver_settlement` **(tabla nueva)** | `status` | driver_settlement_status_enum | sí | Abierta, presentada o aprobada. |
-| `driver_settlement` **(tabla nueva)** | `expected_cash` | numeric(12,2) | sí | Efectivo que debería entregar. |
-| `driver_settlement` **(tabla nueva)** | `declared_cash` | numeric(12,2) | no | Efectivo que declara entregar. |
-| `driver_settlement` **(tabla nueva)** | `driver_expenses` | numeric(12,2) | sí | Gastos pagados con la cobranza. |
-| `driver_settlement` **(tabla nueva)** | `difference` | numeric(12,2) | no | Declarado más gastos menos esperado; negativa es faltante. |
-| `driver_settlement` **(tabla nueva)** | `difference_resolution` | settlement_difference_resolution_enum | no | Cómo se resolvió la diferencia. |
-| `driver_settlement` **(tabla nueva)** | `destination_cash_box_id` | uuid | no | Caja donde entró el efectivo. |
-| `driver_settlement` **(tabla nueva)** | `cash_movement_id` | uuid | no | Ingreso a caja de la aprobación. |
-| `driver_settlement` **(tabla nueva)** | `submitted_at` | timestamptz | no | Cuándo se presentó. |
-| `driver_settlement` **(tabla nueva)** | `submitted_by_user_id` | uuid | no | Quien la presentó. |
-| `driver_settlement` **(tabla nueva)** | `approved_at` | timestamptz | no | Cuándo se aprobó. |
-| `driver_settlement` **(tabla nueva)** | `approved_by_user_id` | uuid | no | Administrador que la aprobó. |
-| `driver_settlement` **(tabla nueva)** | `alerted_at` | timestamptz | no | Cuándo se avisó que seguía sin cerrar. |
-| `driver_settlement` **(tabla nueva)** | `notes` | text | no | Observaciones. |
-| `driver_settlement` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `driver_settlement_order` **(tabla nueva)** | `settlement_order_id` | uuid | sí | Identificador. |
-| `driver_settlement_order` **(tabla nueva)** | `settlement_id` | uuid | sí | Rendición que lo incluye. |
-| `driver_settlement_order` **(tabla nueva)** | `order_id` | uuid | sí | Pedido rendido; único. |
-| `driver_settlement_order` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe cobrado. |
-| `driver_settlement_order` **(tabla nueva)** | `payment_method` | order_paymentmethod_enum | sí | Medio de pago del pedido al rendirlo. |
-| `driver_settlement_expense` **(tabla nueva)** | `expense_id` | uuid | sí | Identificador. |
-| `driver_settlement_expense` **(tabla nueva)** | `settlement_id` | uuid | sí | Rendición que lo declara. |
-| `driver_settlement_expense` **(tabla nueva)** | `category_id` | uuid | sí | Categoría del gasto. |
-| `driver_settlement_expense` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe pagado. |
-| `driver_settlement_expense` **(tabla nueva)** | `description` | varchar(255) | no | Descripción libre. |
-| `customer_account` **(tabla nueva)** | `account_id` | uuid | sí | Identificador. |
-| `customer_account` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `customer_account` **(tabla nueva)** | `customer_user_id` | uuid | sí | Cliente titular. |
-| `customer_account` **(tabla nueva)** | `business_name` | varchar(120) | sí | Razón social. |
-| `customer_account` **(tabla nueva)** | `tax_id` | varchar(11) | no | CUIT. |
-| `customer_account` **(tabla nueva)** | `tax_condition` | tax_condition_enum | sí | Condición fiscal. |
-| `customer_account` **(tabla nueva)** | `credit_limit` | numeric(12,2) | sí | Límite de crédito. |
-| `customer_account` **(tabla nueva)** | `payment_terms_days` | integer | sí | Plazo de pago en días. |
-| `customer_account` **(tabla nueva)** | `status` | customer_account_status_enum | sí | Activa, bloqueada o cerrada. |
-| `customer_account` **(tabla nueva)** | `balance` | numeric(14,2) | sí | Saldo; positivo es deuda del cliente. |
-| `customer_account` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `customer_account` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `customer_account` **(tabla nueva)** | `deletedAt` | timestamptz | no | Baja lógica. |
-| `customer_account_entry` **(tabla nueva)** | `entry_id` | uuid | sí | Identificador. |
-| `customer_account_entry` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `customer_account_entry` **(tabla nueva)** | `account_id` | uuid | sí | Cuenta del asiento. |
-| `customer_account_entry` **(tabla nueva)** | `type` | customer_entry_type_enum | sí | Cargo, pago, nota o anulación. |
-| `customer_account_entry` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe; el signo lo da el tipo. |
-| `customer_account_entry` **(tabla nueva)** | `order_id` | uuid | no | Pedido que originó el cargo. |
-| `customer_account_entry` **(tabla nueva)** | `due_date` | date | no | Vencimiento del cargo. |
-| `customer_account_entry` **(tabla nueva)** | `payment_method` | cash_method_enum | no | Medio del pago. |
-| `customer_account_entry` **(tabla nueva)** | `cash_movement_id` | uuid | no | Ingreso a caja del pago. |
-| `customer_account_entry` **(tabla nueva)** | `collected_by_delivery_id` | uuid | no | Chofer que cobró en la calle. |
-| `customer_account_entry` **(tabla nueva)** | `settlement_id` | uuid | no | Rendición en que entró lo cobrado. |
-| `customer_account_entry` **(tabla nueva)** | `reverses_entry_id` | uuid | no | Asiento al que anula; único. |
-| `customer_account_entry` **(tabla nueva)** | `description` | varchar(255) | no | Descripción o motivo. |
-| `customer_account_entry` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
-| `customer_account_entry` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quien lo asentó. |
-| `customer_account_entry` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `customer_account_allocation` **(tabla nueva)** | `allocation_id` | uuid | sí | Identificador. |
-| `customer_account_allocation` **(tabla nueva)** | `debit_entry_id` | uuid | sí | Cargo que se cancela. |
-| `customer_account_allocation` **(tabla nueva)** | `credit_entry_id` | uuid | sí | Pago o nota que lo cancela. |
-| `customer_account_allocation` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe aplicado. |
-| `commission_rule` **(tabla nueva)** | `rule_id` | uuid | sí | Identificador. |
-| `commission_rule` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `commission_rule` **(tabla nueva)** | `employee_id` | uuid | no | Empleado de la regla; vacío vale para todos los choferes. |
-| `commission_rule` **(tabla nueva)** | `gas_cylinder_id` | uuid | no | Producto de la regla; vacío vale para todos. |
-| `commission_rule` **(tabla nueva)** | `basis` | commission_basis_enum | sí | Por unidad, por pedido o porcentaje del total. |
-| `commission_rule` **(tabla nueva)** | `value` | numeric(10,4) | sí | Monto o porcentaje, según la base. |
-| `commission_rule` **(tabla nueva)** | `valid_from` | date | sí | Inicio de la vigencia. |
-| `commission_rule` **(tabla nueva)** | `valid_to` | date | no | Fin de la vigencia. |
-| `commission_rule` **(tabla nueva)** | `is_active` | boolean | sí | Si la regla está activa. |
-| `commission_rule` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `commission_rule` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `commission_entry` **(tabla nueva)** | `entry_id` | uuid | sí | Identificador. |
-| `commission_entry` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `commission_entry` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado del asiento. |
-| `commission_entry` **(tabla nueva)** | `type` | commission_entry_type_enum | sí | Comisión, faltante, multa, ajuste, saldo heredado o arrastre. |
-| `commission_entry` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe con signo; las deducciones son negativas. |
-| `commission_entry` **(tabla nueva)** | `order_id` | uuid | no | Pedido que devengó la comisión. |
-| `commission_entry` **(tabla nueva)** | `rule_id` | uuid | no | Regla aplicada. |
-| `commission_entry` **(tabla nueva)** | `rule_snapshot` | jsonb | no | Copia de la regla con que se calculó. |
-| `commission_entry` **(tabla nueva)** | `settlement_id` | uuid | no | Rendición que originó un faltante. |
-| `commission_entry` **(tabla nueva)** | `liquidation_id` | uuid | no | Liquidación que lo incluye; vacío si está libre. |
-| `commission_entry` **(tabla nueva)** | `description` | varchar(255) | no | Descripción o motivo. |
-| `commission_entry` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
-| `commission_entry` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quien lo asentó; vacío si fue el sistema. |
-| `commission_entry` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-| `driver_liquidation` **(tabla nueva)** | `liquidation_id` | uuid | sí | Identificador. |
-| `driver_liquidation` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `driver_liquidation` **(tabla nueva)** | `number` | integer | sí | Número correlativo por distribuidora. |
-| `driver_liquidation` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado liquidado. |
-| `driver_liquidation` **(tabla nueva)** | `period_from` | date | sí | Inicio del período. |
-| `driver_liquidation` **(tabla nueva)** | `period_to` | date | sí | Fin del período. |
-| `driver_liquidation` **(tabla nueva)** | `gross` | numeric(12,2) | sí | Suma de las comisiones. |
-| `driver_liquidation` **(tabla nueva)** | `deductions` | numeric(12,2) | sí | Suma de las deducciones. |
-| `driver_liquidation` **(tabla nueva)** | `net` | numeric(12,2) | sí | Neto a pagar. |
-| `driver_liquidation` **(tabla nueva)** | `status` | driver_liquidation_status_enum | sí | Borrador, aprobada, pagada, cerrada sin pago o anulada. |
-| `driver_liquidation` **(tabla nueva)** | `approved_at` | timestamptz | no | Cuándo se aprobó. |
-| `driver_liquidation` **(tabla nueva)** | `approved_by_user_id` | uuid | no | Administrador que la aprobó. |
-| `driver_liquidation` **(tabla nueva)** | `paid_at` | timestamptz | no | Cuándo se pagó. |
-| `driver_liquidation` **(tabla nueva)** | `cash_movement_id` | uuid | no | Egreso de caja del pago. |
-| `driver_liquidation` **(tabla nueva)** | `createdAt` | timestamptz | sí | Alta. |
-
-`cash_box` — Cuenta de fondos de la distribuidora: efectivo, banco o billetera. Su saldo solo cambia por el libro. Clave primaria `cash_box_id`. Referencias: `distributor_id` → `distributor`.
-`cash_session` — Período entre una apertura y un cierre con arqueo de una caja. Clave primaria `session_id`. Referencias: `distributor_id` → `distributor`, `cash_box_id` → `cash_box`, `opened_by_user_id` → `user`, `closed_by_user_id` → `user`.
-`cash_category` — Categoría de ingreso o de gasto; las de sistema se siembran y no se modifican. Clave primaria `category_id`. Referencias: `distributor_id` → `distributor`. Única: (`distributor_id`, `system_code`).
-`cash_movement` — Asiento del libro de una caja; de solo agregar, se corrige con un contraasiento. Clave primaria `movement_id`. Referencias: `distributor_id` → `distributor`, `cash_box_id` → `cash_box`, `session_id` → `cash_session`, `category_id` → `cash_category`, `reverses_movement_id` → `cash_movement`, `created_by_user_id` → `user`. Única: (`reverses_movement_id`).
-`driver_settlement` — Rendición diaria del efectivo que cobró un chofer. Clave primaria `settlement_id`. Referencias: `distributor_id` → `distributor`, `delivery_id` → `delivery`, `destination_cash_box_id` → `cash_box`, `cash_movement_id` → `cash_movement`, `submitted_by_user_id` → `user`, `approved_by_user_id` → `user`.
-`driver_settlement_order` — Pedido en efectivo incluido en una rendición; un pedido se rinde una sola vez. Clave primaria `settlement_order_id`. Referencias: `settlement_id` → `driver_settlement`, `order_id` → `order`. Única: (`order_id`).
-`driver_settlement_expense` — Gasto que el chofer pagó con la cobranza. Clave primaria `expense_id`. Referencias: `settlement_id` → `driver_settlement`, `category_id` → `cash_category`.
-`customer_account` — Cuenta corriente de un cliente en una distribuidora: crédito, plazo y saldo. Clave primaria `account_id`. Referencias: `distributor_id` → `distributor`, `customer_user_id` → `user`.
-`customer_account_entry` — Asiento del libro de una cuenta corriente: cargo, pago, nota de crédito o de débito. Clave primaria `entry_id`. Referencias: `distributor_id` → `distributor`, `account_id` → `customer_account`, `order_id` → `order`, `cash_movement_id` → `cash_movement`, `collected_by_delivery_id` → `delivery`, `settlement_id` → `driver_settlement`, `reverses_entry_id` → `customer_account_entry`, `created_by_user_id` → `user`. Única: (`reverses_entry_id`).
-`customer_account_allocation` — Aplicación de un pago o una nota de crédito a un cargo; alimenta la antigüedad de la deuda. Clave primaria `allocation_id`. Referencias: `debit_entry_id` → `customer_account_entry`, `credit_entry_id` → `customer_account_entry`.
-`commission_rule` — Cuánto gana un chofer por entrega, con su alcance y su vigencia. Clave primaria `rule_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `gas_cylinder_id` → `gas_cylinder`.
-`commission_entry` — Asiento del libro de comisiones de un chofer: comisión, deducción o saldo heredado. Clave primaria `entry_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `order_id` → `order`, `rule_id` → `commission_rule`, `settlement_id` → `driver_settlement`, `liquidation_id` → `driver_liquidation`, `created_by_user_id` → `user`.
-`driver_liquidation` — Liquidación de las comisiones y las deducciones de un chofer en un período. Clave primaria `liquidation_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `approved_by_user_id` → `user`, `cash_movement_id` → `cash_movement`.
-
-Tipo enumerado `cash_box_kind_enum`: `cash`, `bank`, `wallet`.
-Tipo enumerado `cash_session_status_enum`: `open`, `closed`.
-Tipo enumerado `cash_direction_enum`: `income`, `expense`.
-Tipo enumerado `cash_system_code_enum`: `driver_settlement`, `customer_payment`, `purchase`, `fuel`, `traffic_fine`, `commission_payment`, `cash_difference`, `box_transfer`.
-Tipo enumerado `cash_method_enum`: `cash`, `transfer`, `card`, `mercadopago`, `check`.
-Tipo enumerado `cash_reference_type_enum`: `manual`, `driver_settlement`, `customer_payment`, `purchase_receipt`, `fuel_load`, `traffic_fine`, `driver_liquidation`, `box_transfer`, `reversal`.
-Tipo enumerado `driver_settlement_status_enum`: `open`, `submitted`, `approved`.
-Tipo enumerado `settlement_difference_resolution_enum`: `none`, `charged_to_driver`, `absorbed`.
-Tipo enumerado `tax_condition_enum`: `registered`, `monotax`, `exempt`, `final_consumer`.
-Tipo enumerado `customer_account_status_enum`: `active`, `blocked`, `closed`.
-Tipo enumerado `customer_entry_type_enum`: `sale_charge`, `payment`, `credit_note`, `debit_note`, `reversal`.
-Tipo enumerado `commission_basis_enum`: `per_unit`, `per_order`, `percent_of_total`.
-Tipo enumerado `commission_entry_type_enum`: `delivery_commission`, `settlement_shortage`, `traffic_fine`, `adjustment`, `legacy_balance`, `carry_forward`.
-Tipo enumerado `driver_liquidation_status_enum`: `draft`, `approved`, `paid`, `closed`, `voided`.
-
-Valores nuevos del tipo enumerado `order_paymentmethod_enum`: `account`.
-Valores nuevos del tipo enumerado `order_paymenttype_enum`: `account`.
-
-> **Decisión de modelado.** Cinco libros de solo agregar (`cash_movement`, `customer_account_entry`, `commission_entry`, y las rendiciones y liquidaciones que los alimentan) sostienen el dinero de la distribuidora. Los libros se corrigen con contraasiento y rechazan todo `UPDATE` y todo `DELETE` por un disparador, igual que `audit_log`. El saldo de `cash_box` y de `customer_account` es una copia del libro que solo cambia por el punto único de escritura, y una conciliación nocturna compara las dos. Hay dos índices únicos parciales que este modelo no puede dibujar: una sesión abierta por caja (`WHERE status = 'open'`) y una cuenta vigente por cliente y distribuidora (`WHERE "deletedAt" IS NULL`). El turno del camión (`truck_load_id`) y la carga de combustible (`fuel_load_id`) se agregan a la rendición y a sus gastos cuando se integren los módulos de stock y de flota ampliada; hoy esas tablas no existen. Las comisiones cuelgan del empleado (`employee`, del módulo de personal, que ya está construido), de modo que un chofer cobra comisión como empleado.
-
-### 5. Personal y legajos
-
-**Casos de uso:** CU-183 a CU-194 y CU-246 (C-08). **Qué resuelve:** Llevar la asistencia, las licencias y la documentación con vencimiento de cada persona que trabaja en la distribuidora, y que ese control inhabilite para el despacho a quien no esté en regla.
-
-| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
-|---|---|---|:-:|---|
-| `maintenance_plan` | `document_kind` | maintenance_document_kind_enum | no | Qué documento controla el plan: le dice al panel qué formulario mostrar y al sistema qué forma de detalle validar. |
-| `maintenance_plan` | `applies_to_categories` | job_position_category_enum[] | no | Categorías de puesto a las que aplica el plan; vacío significa todas. |
-| `maintenance_task` | `employee_id` | uuid | no | Empleado dueño de la tarea; obligatorio si el plan es de sujeto empleado. |
-| `maintenance_task` | `valid_from` | timestamptz | no | Inicio de la vigencia del documento (póliza, habilitación o documentación del personal); lo usa el prorrateo de la prima. |
-| `maintenance_task` | `details` | jsonb | no | Datos propios del tipo de documento (número de certificado, aseguradora, póliza, cobertura, franquicia, cuotas), con la forma que fija cada plan. |
-| `employee_attendance` **(tabla nueva)** | `attendance_id` | uuid | sí | Identificador. |
-| `employee_attendance` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `employee_attendance` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado de la jornada. |
-| `employee_attendance` **(tabla nueva)** | `work_date` | date | sí | Día argentino del ingreso. |
-| `employee_attendance` **(tabla nueva)** | `check_in_at` | timestamptz | sí | Ingreso. |
-| `employee_attendance` **(tabla nueva)** | `check_out_at` | timestamptz | no | Egreso; vacío mientras la jornada está abierta. |
-| `employee_attendance` **(tabla nueva)** | `source` | attendance_source_enum | sí | Panel o aplicación del chofer. |
-| `employee_attendance` **(tabla nueva)** | `recorded_by_user_id` | uuid | no | Usuario que la cargó. |
-| `employee_attendance` **(tabla nueva)** | `notes` | text | no | Observación; obligatoria al corregir. |
-| `employee_attendance` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
-| `employee_attendance` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
-| `employee_leave` **(tabla nueva)** | `leave_id` | uuid | sí | Identificador. |
-| `employee_leave` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `employee_leave` **(tabla nueva)** | `employee_id` | uuid | sí | Empleado de la licencia. |
-| `employee_leave` **(tabla nueva)** | `type` | employee_leave_type_enum | sí | Tipo de licencia o ausencia. |
-| `employee_leave` **(tabla nueva)** | `start_date` | date | sí | Primer día. |
-| `employee_leave` **(tabla nueva)** | `end_date` | date | sí | Último día, inclusive. |
-| `employee_leave` **(tabla nueva)** | `days` | integer | sí | Días corridos del período. |
-| `employee_leave` **(tabla nueva)** | `status` | employee_leave_status_enum | sí | Solicitada, aprobada, rechazada o cancelada. |
-| `employee_leave` **(tabla nueva)** | `reason` | text | no | Motivo de la solicitud. |
-| `employee_leave` **(tabla nueva)** | `rejection_reason` | text | no | Motivo del rechazo; obligatorio al rechazar. |
-| `employee_leave` **(tabla nueva)** | `requested_by_user_id` | uuid | no | Usuario que la cargó. |
-| `employee_leave` **(tabla nueva)** | `decided_by_user_id` | uuid | no | Administrador que la resolvió. |
-| `employee_leave` **(tabla nueva)** | `decided_at` | timestamptz | no | Cuándo se resolvió. |
-| `employee_leave` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se creó. |
-| `employee_leave` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Cuándo se modificó por última vez. |
-
-`employee_attendance` — Una jornada de un empleado: su ingreso y su egreso. Clave primaria `attendance_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `recorded_by_user_id` → `user`.
-`employee_leave` — Licencia o ausencia de un empleado, con su período y su estado. Clave primaria `leave_id`. Referencias: `distributor_id` → `distributor`, `employee_id` → `employee`, `requested_by_user_id` → `user`, `decided_by_user_id` → `user`.
-
-Tipo enumerado `attendance_source_enum`: `panel`, `driver_app`.
-Tipo enumerado `employee_leave_type_enum`: `vacation`, `sick`, `work_accident`, `study`, `marriage`, `birth`, `bereavement`, `unpaid`, `suspension`, `unjustified_absence`, `other`.
-Tipo enumerado `employee_leave_status_enum`: `requested`, `approved`, `rejected`, `cancelled`.
-Tipo enumerado `maintenance_document_kind_enum`: `insurance`, `vtv`, `hazmat_vehicle_permit`, `driver_license`, `hazmat_driver_course`, `psychophysical`, `art_coverage`, `service`, `generic`.
-
-Valores nuevos del tipo enumerado `maintenance_subject_enum`: `employee`.
-
-> **Decisión de modelado.** Los puestos (`job_position`) y los legajos (`employee`) ya están construidos y salen de la base: todo empleado existe como legajo, tenga o no cuenta de acceso, un chofer es un empleado cuya cuenta tiene el perfil de reparto, y ayudantes, depósito y vendedores son legajos sin cuenta (sin roles nuevos). Falta construir lo que cuelga del legajo. La documentación con vencimiento del personal —licencia de conducir, curso de mercancías peligrosas, examen psicofísico, alta en la ART— no tiene tabla propia: reutiliza el plan y la tarea de mantenimiento con un dueño empleado, y hereda los adjuntos, la pantalla de vencimientos, el aviso diario y el bloqueo de despacho que ya leen esas tablas; `delivery_id` queda como columna heredada. Los adjuntos del legajo van en una tabla genérica con dueño (`owner_type`, `owner_id`), sin clave foránea a propósito porque el dueño es polimórfico: lo valida un puerto que registra cada módulo. Dos licencias del mismo empleado no pueden superponerse: lo impide una restricción de exclusión de la base (`btree_gist`), no solo el servicio.
-
-### 6. Flota ampliada: combustible, multas y siniestros
-
-**Casos de uso:** CU-195 a CU-202 (C-18). **Qué resuelve:** Llevar las cargas de combustible, las multas de tránsito y los siniestros de cada vehículo, para conocer su consumo y su costo.
-
-| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
-|---|---|---|:-:|---|
-| `car` | `fuel_type` | fuel_type_enum | no | Combustible que usa el vehículo; es el que se propone en cada carga. |
-| `car` | `tank_capacity_liters` | numeric(6,2) | no | Litros que entran en el tanque; una carga no puede superarlos en más de un 5 %. |
-| `fuel_load` **(tabla nueva)** | `fuel_load_id` | uuid | sí | Identificador. |
-| `fuel_load` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `fuel_load` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo que cargó. |
-| `fuel_load` **(tabla nueva)** | `employee_id` | uuid | no | Empleado que hizo la carga. |
-| `fuel_load` **(tabla nueva)** | `loaded_at` | timestamptz | sí | Cuándo se hizo la carga. |
-| `fuel_load` **(tabla nueva)** | `fuel_type` | fuel_type_enum | sí | Combustible cargado; por omisión el del vehículo. |
-| `fuel_load` **(tabla nueva)** | `liters` | numeric(10,2) | sí | Litros cargados; mayores que cero. |
-| `fuel_load` **(tabla nueva)** | `unit_price` | numeric(12,3) | sí | Precio de cada litro. |
-| `fuel_load` **(tabla nueva)** | `total_amount` | numeric(12,2) | sí | Importe total; coincide con litros por precio, con un 1 % de tolerancia. |
-| `fuel_load` **(tabla nueva)** | `odometer_km` | integer | sí | Kilometraje del tablero; no puede ser menor que el de la carga anterior. |
-| `fuel_load` **(tabla nueva)** | `is_full_tank` | boolean | sí | Si se llenó el tanque: base del cálculo de consumo. |
-| `fuel_load` **(tabla nueva)** | `station` | varchar(120) | no | Estación de servicio. |
-| `fuel_load` **(tabla nueva)** | `payment_method` | fuel_payment_method_enum | sí | Caja, efectivo del chofer, tarjeta o cuenta corriente de combustible. |
-| `fuel_load` **(tabla nueva)** | `receipt_number` | varchar(40) | no | Número del comprobante. |
-| `fuel_load` **(tabla nueva)** | `cash_movement_id` | uuid | no | Movimiento de caja que originó el pago; lo completa el módulo de caja. |
-| `fuel_load` **(tabla nueva)** | `anomaly` | boolean | sí | El consumo del tramo se aparta más de un 25 % del promedio. |
-| `fuel_load` **(tabla nueva)** | `notes` | text | no | Observaciones de quien cargó. |
-| `fuel_load` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quién la registró. |
-| `fuel_load` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
-| `fuel_load` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `fuel_load` **(tabla nueva)** | `deletedAt` | timestamptz | no | Cuándo se anuló; una carga anulada no cuenta en los cálculos. |
-| `traffic_fine` **(tabla nueva)** | `fine_id` | uuid | sí | Identificador. |
-| `traffic_fine` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `traffic_fine` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo multado. |
-| `traffic_fine` **(tabla nueva)** | `employee_id` | uuid | no | Empleado responsable; se deduce de la asignación de vehículo abierta al momento de la infracción. |
-| `traffic_fine` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió la infracción. |
-| `traffic_fine` **(tabla nueva)** | `jurisdiction` | varchar(80) | sí | Jurisdicción que labró el acta. |
-| `traffic_fine` **(tabla nueva)** | `act_number` | varchar(40) | sí | Número del acta; único por distribuidora y jurisdicción. |
-| `traffic_fine` **(tabla nueva)** | `infraction` | text | sí | Descripción de la infracción. |
-| `traffic_fine` **(tabla nueva)** | `amount` | numeric(12,2) | sí | Importe de la multa. |
-| `traffic_fine` **(tabla nueva)** | `voluntary_payment_amount` | numeric(12,2) | no | Importe con el descuento por pagar antes. |
-| `traffic_fine` **(tabla nueva)** | `due_date` | date | no | Fecha de vencimiento del pago. |
-| `traffic_fine` **(tabla nueva)** | `status` | traffic_fine_status_enum | sí | Pendiente, apelada, pagada o anulada. |
-| `traffic_fine` **(tabla nueva)** | `paid_at` | timestamptz | no | Cuándo se pagó. |
-| `traffic_fine` **(tabla nueva)** | `paid_amount` | numeric(12,2) | no | Importe efectivamente pagado. |
-| `traffic_fine` **(tabla nueva)** | `charged_to_employee` | boolean | sí | Si la asume el empleado: se descuenta en su liquidación. |
-| `traffic_fine` **(tabla nueva)** | `cash_movement_id` | uuid | no | Movimiento de caja del pago; lo completa el módulo de caja. |
-| `traffic_fine` **(tabla nueva)** | `void_reason` | text | no | Motivo con el que se anuló; obligatorio al anular. |
-| `traffic_fine` **(tabla nueva)** | `alerted_at` | timestamptz | no | Cuándo se avisó del vencimiento, para no repetir el aviso. |
-| `traffic_fine` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
-| `traffic_fine` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `vehicle_accident` **(tabla nueva)** | `accident_id` | uuid | sí | Identificador. |
-| `vehicle_accident` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `vehicle_accident` **(tabla nueva)** | `car_id` | uuid | sí | Vehículo siniestrado. |
-| `vehicle_accident` **(tabla nueva)** | `employee_id` | uuid | no | Empleado que conducía. |
-| `vehicle_accident` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
-| `vehicle_accident` **(tabla nueva)** | `location` | geometry(Point,4326) | no | Punto donde ocurrió. |
-| `vehicle_accident` **(tabla nueva)** | `address` | text | no | Domicilio aproximado. |
-| `vehicle_accident` **(tabla nueva)** | `description` | text | sí | Qué pasó. |
-| `vehicle_accident` **(tabla nueva)** | `injuries` | boolean | sí | Si hubo personas heridas. |
-| `vehicle_accident` **(tabla nueva)** | `third_parties_involved` | boolean | sí | Si hubo terceros involucrados. |
-| `vehicle_accident` **(tabla nueva)** | `hazmat_release` | boolean | sí | Si hubo fuga o derrame de gas: obliga a avisar a los administradores. |
-| `vehicle_accident` **(tabla nueva)** | `police_report_number` | varchar(40) | no | Número de la denuncia policial. |
-| `vehicle_accident` **(tabla nueva)** | `insurer_claim_number` | varchar(40) | no | Número del reclamo a la aseguradora. |
-| `vehicle_accident` **(tabla nueva)** | `status` | vehicle_accident_status_enum | sí | Denunciado, en revisión, en reparación o cerrado. |
-| `vehicle_accident` **(tabla nueva)** | `vehicle_unusable` | boolean | sí | Si el vehículo no puede circular: pasa a fuera de servicio. |
-| `vehicle_accident` **(tabla nueva)** | `repair_cost` | numeric(12,2) | no | Costo de la reparación. |
-| `vehicle_accident` **(tabla nueva)** | `insurer_reimbursement` | numeric(12,2) | no | Lo que reintegró la aseguradora. |
-| `vehicle_accident` **(tabla nueva)** | `deductible_amount` | numeric(12,2) | no | Franquicia a cargo de la distribuidora. |
-| `vehicle_accident` **(tabla nueva)** | `closed_at` | timestamptz | no | Cuándo se cerró. |
-| `vehicle_accident` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
-| `vehicle_accident` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-
-`fuel_load` — Una carga de combustible de un vehículo, con su kilometraje y su importe. Clave primaria `fuel_load_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `employee_id` → `employee`, `created_by_user_id` → `user`.
-`traffic_fine` — Una multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada. Clave primaria `fine_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `employee_id` → `employee`. Única: (`distributor_id`, `jurisdiction`, `act_number`).
-`vehicle_accident` — Un siniestro de un vehículo, de denunciado a cerrado, con sus costos. Clave primaria `accident_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`, `employee_id` → `employee`.
-
-Tipo enumerado `fuel_type_enum`: `diesel`, `gasoline`, `cng`, `lpg`.
-Tipo enumerado `fuel_payment_method_enum`: `cash_box`, `driver_cash`, `card`, `fuel_account`.
-Tipo enumerado `traffic_fine_status_enum`: `pending`, `appealed`, `paid`, `voided`.
-Tipo enumerado `vehicle_accident_status_enum`: `reported`, `under_review`, `repairing`, `closed`.
-
-> **Decisión de modelado.** La carga de combustible, la multa y el siniestro son registros propios del vehículo y no columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo. El siniestro no se mezcla con `incident`, que es el contratiempo de calidad de un pedido. El empleado se referencia por `employee_id` y no por `delivery`, porque el responsable de una multa o el que carga combustible puede ser un empleado sin cuenta de acceso. `cash_movement_id` queda sin clave foránea hasta que exista el módulo de caja (C-20).
-
-### 7. Flota ampliada: neumáticos
-
-**Casos de uso:** CU-205 y CU-206 (C-18, opcional). **Qué resuelve:** Llevar cada neumático y sus movimientos —montaje, desmontaje, rotación, recapado y baja— para saber cuántos kilómetros recorrió.
-
-| Tabla | Columna | Tipo | Obligatoria | Qué guarda |
-|---|---|---|:-:|---|
-| `tire` **(tabla nueva)** | `tire_id` | uuid | sí | Identificador. |
-| `tire` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `tire` **(tabla nueva)** | `car_id` | uuid | no | Vehículo en el que está montado, si lo está. |
-| `tire` **(tabla nueva)** | `serial` | varchar(40) | sí | Número de serie del neumático; único por distribuidora. |
-| `tire` **(tabla nueva)** | `brand` | varchar(60) | sí | Marca. |
-| `tire` **(tabla nueva)** | `size` | varchar(30) | sí | Medida del neumático. |
-| `tire` **(tabla nueva)** | `cost` | numeric(12,2) | sí | Costo de compra. |
-| `tire` **(tabla nueva)** | `status` | tire_status_enum | sí | En depósito, montado o dado de baja. |
-| `tire` **(tabla nueva)** | `position` | varchar(6) | no | Código corto de la posición en el vehículo. |
-| `tire` **(tabla nueva)** | `mounted_odometer_km` | integer | no | Kilometraje del vehículo al montarlo. |
-| `tire` **(tabla nueva)** | `createdAt` | timestamptz | sí | Cuándo se registró. |
-| `tire` **(tabla nueva)** | `updatedAt` | timestamptz | sí | Última modificación. |
-| `tire_event` **(tabla nueva)** | `event_id` | uuid | sí | Identificador. |
-| `tire_event` **(tabla nueva)** | `distributor_id` | uuid | sí | Distribuidora dueña. |
-| `tire_event` **(tabla nueva)** | `tire_id` | uuid | sí | Neumático movido. |
-| `tire_event` **(tabla nueva)** | `car_id` | uuid | no | Vehículo del movimiento, si corresponde. |
-| `tire_event` **(tabla nueva)** | `event_type` | tire_event_type_enum | sí | Montaje, desmontaje, rotación, recapado o baja. |
-| `tire_event` **(tabla nueva)** | `odometer_km` | integer | sí | Kilometraje del vehículo en el movimiento. |
-| `tire_event` **(tabla nueva)** | `position` | varchar(6) | no | Posición de destino, en un montaje o una rotación. |
-| `tire_event` **(tabla nueva)** | `occurred_at` | timestamptz | sí | Cuándo ocurrió. |
-| `tire_event` **(tabla nueva)** | `created_by_user_id` | uuid | no | Quién lo registró. |
-
-`tire` — Un neumático de la distribuidora, en depósito, montado en un vehículo o dado de baja. Clave primaria `tire_id`. Referencias: `distributor_id` → `distributor`, `car_id` → `car`. Única: (`distributor_id`, `serial`).
-`tire_event` — Un movimiento de un neumático; el libro no se modifica. Clave primaria `event_id`. Referencias: `distributor_id` → `distributor`, `tire_id` → `tire`, `car_id` → `car`, `created_by_user_id` → `user`.
-
-Tipo enumerado `tire_status_enum`: `in_stock`, `mounted`, `retired`.
-Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, `retire`.
-
-> **Decisión de modelado.** Funcionalidad opcional del módulo, que se puede construir aparte. Los movimientos del neumático son un libro que no se modifica: el estado y la posición actuales del neumático se guardan en `tire` para no recorrer el historial en cada consulta.
-
 ## Tipos enumerados
 
 | Tipo | Valores | Estado |
@@ -1753,37 +1927,60 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `address_geocode_precision_enum` | `exact`, `approximate`, `unresolved` | implementado |
 | `attachment_owner_type_enum` | `employee`, `fuel_load`, `traffic_fine`, `vehicle_accident`, `purchase_receipt`, `stock_adjustment`, `driver_settlement`, `cash_movement`, `customer_account_entry` | implementado |
 | `audit_result_enum` | `success`, `failure` | implementado |
+| `cash_box_kind_enum` | `cash`, `bank`, `wallet` | implementado |
+| `cash_category_direction_enum` | `income`, `expense` | implementado |
+| `cash_category_system_code_enum` | `driver_settlement`, `customer_payment`, `commission_payment`, `cash_surplus`, `cash_shortage`, `transfer_in`, `transfer_out`, `purchase`, `fuel`, `traffic_fine`, `order_payment` | implementado |
+| `cash_movement_direction_enum` | `in`, `out` | implementado |
+| `cash_movement_method_enum` | `cash`, `transfer`, `card`, `mercadopago`, `check` | implementado |
+| `cash_movement_reference_type_enum` | `manual`, `session_opening`, `session_closing`, `driver_settlement`, `customer_payment`, `purchase_receipt`, `fuel_load`, `traffic_fine`, `driver_liquidation`, `box_transfer`, `reversal`, `order_payment` | implementado |
+| `cash_session_status_enum` | `open`, `closed` | implementado |
 | `claims_status_enum` | `pending`, `in_process`, `resolved`, `rejected` | implementado |
+| `commission_entry_type_enum` | `delivery_commission`, `settlement_shortage`, `traffic_fine`, `adjustment`, `legacy_balance` | implementado |
+| `commission_rule_basis_enum` | `per_unit`, `per_order`, `percent_of_total` | implementado |
 | `configurable_process_enum` | `fleet_planner`, `repurchase`, `route_batching`, `cylinder_recovery`, `express_dispatch`, `stock_control`, `dispatch`, `scheduled_tasks` | implementado |
 | `coverage_zone_surcharge_type_enum` | `fixed`, `percentage` | implementado |
+| `customer_account_entry_type_enum` | `sale_charge`, `payment`, `credit_note`, `debit_note` | implementado |
+| `customer_account_status_enum` | `active`, `blocked`, `closed` | implementado |
+| `customer_account_tax_condition_enum` | `registered`, `monotax`, `exempt`, `final_consumer` | implementado |
 | `cylinder_inspection_result_enum` | `approved`, `conditional`, `rejected` | implementado |
 | `cylinder_movement_from_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |
 | `cylinder_movement_to_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |
 | `cylinder_state_enum` | `in_depot`, `filled`, `dispatched`, `with_customer`, `empty_returned`, `retired` | implementado |
 | `distributor_status_enum` | `active`, `suspended` | implementado |
+| `driver_liquidation_status_enum` | `draft`, `approved`, `paid`, `voided` | implementado |
+| `driver_settlement_difference_resolution_enum` | `none`, `charged_to_driver`, `absorbed` | implementado |
+| `driver_settlement_status_enum` | `open`, `submitted`, `approved` | implementado |
+| `employee_attendance_source_enum` | `panel`, `driver_app` | implementado |
 | `employee_document_type_enum` | `dni`, `passport`, `other` | implementado |
+| `employee_leave_status_enum` | `requested`, `approved`, `rejected`, `cancelled` | implementado |
+| `employee_leave_type_enum` | `vacation`, `sick`, `work_accident`, `study`, `marriage`, `birth`, `bereavement`, `unpaid`, `suspension`, `unjustified_absence`, `other` | implementado |
 | `employee_status_enum` | `active`, `terminated` | implementado |
 | `employee_termination_reason_enum` | `resignation`, `dismissal`, `end_of_contract`, `retirement`, `other` | implementado |
 | `employment_type_enum` | `permanent`, `fixed_term`, `part_time`, `contractor` | implementado |
 | `fleet_status_enum` | `active`, `in_service`, `grounded` | implementado |
+| `fuel_payment_method_enum` | `cash_box`, `driver_cash`, `card`, `fuel_account` | implementado |
+| `fuel_type_enum` | `diesel`, `gasoline`, `cng`, `lpg` | implementado |
 | `incident_moment_enum` | `pre_delivery`, `in_delivery`, `post_delivery` | implementado |
 | `incident_status_enum` | `open`, `resolved`, `discarded` | implementado |
 | `incident_type_enum` | `damaged`, `out_of_stock`, `no_show`, `unpaid_collection`, `other` | implementado |
 | `job_position_category_enum` | `driver`, `helper`, `warehouse`, `administration`, `sales`, `management`, `other` | implementado |
 | `maintenance_criticality_enum` | `blocking`, `non_blocking` | implementado |
-| `maintenance_subject_enum` | `vehicle`, `driver` | implementado |
+| `maintenance_subject_enum` | `vehicle`, `driver`, `employee` | implementado |
 | `maintenance_task_status_enum` | `forecast`, `scheduled`, `in_progress`, `done`, `overdue`, `cancelled` | implementado |
 | `maintenance_trigger_enum` | `by_km`, `by_time`, `by_fixed_date` | implementado |
 | `order_delivery_mode_enum` | `standard`, `express` | implementado |
 | `order_dispatch_offer_status_enum` | `offered`, `accepted`, `rejected`, `expired`, `superseded` | implementado |
-| `order_paymentmethod_enum` | `cash`, `mercadopago`, `transfer` | implementado |
+| `order_paymentmethod_enum` | `cash`, `mercadopago`, `transfer`, `account` | implementado |
 | `order_paymentstatus_enum` | `pending`, `paid`, `failed`, `unpaid`, `written_off` | implementado |
-| `order_paymenttype_enum` | `cash`, `online` | implementado |
+| `order_paymenttype_enum` | `cash`, `online`, `account` | implementado |
 | `order_status_enum` | `reserved`, `pending`, `accepted`, `on_the_way`, `delivered`, `cancelled` | implementado |
 | `order_zone_surcharge_type_enum` | `fixed`, `percentage` | implementado |
 | `payment_gateway_enum` | `mercadopago`, `cash` | implementado |
 | `payment_integration_enum` | `checkout_pro`, `cash` | implementado |
+| `payment_refund_kind_enum` | `full`, `express_surcharge` | implementado |
+| `payment_refund_status_enum` | `pending`, `succeeded`, `failed` | implementado |
 | `payment_status_enum` | `pending`, `approved`, `rejected`, `cancelled`, `refunded` | implementado |
+| `plan_document_kind_enum` | `insurance`, `vtv`, `hazmat_vehicle_permit`, `driver_license`, `hazmat_driver_course`, `psychophysical`, `art_coverage`, `service`, `generic` | implementado |
 | `proposal_status_enum` | `pending`, `accepted`, `rejected`, `expired` | implementado |
 | `purchase_order_status_enum` | `draft`, `sent`, `partially_received`, `received`, `closed_short`, `cancelled` | implementado |
 | `purchase_payment_status_enum` | `unpaid`, `paid` | implementado |
@@ -1800,30 +1997,9 @@ Tipo enumerado `tire_event_type_enum`: `mount`, `unmount`, `rotate`, `retread`, 
 | `stock_movement_reference_type_enum` | `order`, `purchase_receipt`, `truck_load`, `stock_adjustment`, `transfer`, `initial` | implementado |
 | `supplier_document_type_enum` | `delivery_note`, `invoice` | implementado |
 | `supplier_kind_enum` | `filling_plant`, `other` | implementado |
+| `tire_event_type_enum` | `mount`, `unmount`, `rotate`, `retread`, `retire` | implementado |
+| `tire_status_enum` | `in_stock`, `mounted`, `retired` | implementado |
+| `traffic_fine_status_enum` | `pending`, `appealed`, `paid`, `voided` | implementado |
 | `truck_load_status_enum` | `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled` | implementado |
+| `vehicle_accident_status_enum` | `reported`, `under_review`, `repairing`, `closed` | implementado |
 | `warehouse_kind_enum` | `depot`, `branch` | implementado |
-| `attendance_source_enum` | `panel`, `driver_app` | propuesto |
-| `cash_box_kind_enum` | `cash`, `bank`, `wallet` | propuesto |
-| `cash_direction_enum` | `income`, `expense` | propuesto |
-| `cash_method_enum` | `cash`, `transfer`, `card`, `mercadopago`, `check` | propuesto |
-| `cash_reference_type_enum` | `manual`, `driver_settlement`, `customer_payment`, `purchase_receipt`, `fuel_load`, `traffic_fine`, `driver_liquidation`, `box_transfer`, `reversal` | propuesto |
-| `cash_session_status_enum` | `open`, `closed` | propuesto |
-| `cash_system_code_enum` | `driver_settlement`, `customer_payment`, `purchase`, `fuel`, `traffic_fine`, `commission_payment`, `cash_difference`, `box_transfer` | propuesto |
-| `commission_basis_enum` | `per_unit`, `per_order`, `percent_of_total` | propuesto |
-| `commission_entry_type_enum` | `delivery_commission`, `settlement_shortage`, `traffic_fine`, `adjustment`, `legacy_balance`, `carry_forward` | propuesto |
-| `customer_account_status_enum` | `active`, `blocked`, `closed` | propuesto |
-| `customer_entry_type_enum` | `sale_charge`, `payment`, `credit_note`, `debit_note`, `reversal` | propuesto |
-| `driver_liquidation_status_enum` | `draft`, `approved`, `paid`, `closed`, `voided` | propuesto |
-| `driver_settlement_status_enum` | `open`, `submitted`, `approved` | propuesto |
-| `employee_leave_status_enum` | `requested`, `approved`, `rejected`, `cancelled` | propuesto |
-| `employee_leave_type_enum` | `vacation`, `sick`, `work_accident`, `study`, `marriage`, `birth`, `bereavement`, `unpaid`, `suspension`, `unjustified_absence`, `other` | propuesto |
-| `fuel_payment_method_enum` | `cash_box`, `driver_cash`, `card`, `fuel_account` | propuesto |
-| `fuel_type_enum` | `diesel`, `gasoline`, `cng`, `lpg` | propuesto |
-| `maintenance_document_kind_enum` | `insurance`, `vtv`, `hazmat_vehicle_permit`, `driver_license`, `hazmat_driver_course`, `psychophysical`, `art_coverage`, `service`, `generic` | propuesto |
-| `settlement_difference_resolution_enum` | `none`, `charged_to_driver`, `absorbed` | propuesto |
-| `tax_condition_enum` | `registered`, `monotax`, `exempt`, `final_consumer` | propuesto |
-| `tire_event_type_enum` | `mount`, `unmount`, `rotate`, `retread`, `retire` | propuesto |
-| `tire_status_enum` | `in_stock`, `mounted`, `retired` | propuesto |
-| `traffic_fine_status_enum` | `pending`, `appealed`, `paid`, `voided` | propuesto |
-| `vehicle_accident_status_enum` | `reported`, `under_review`, `repairing`, `closed` | propuesto |
-| `vehicle_type_enum` | `motorcycle`, `car`, `van` | propuesto |

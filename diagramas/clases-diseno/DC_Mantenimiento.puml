@@ -33,8 +33,8 @@ class PlanMantenimiento {
   - intervalo: Entero
   - anticipacion: Entero
   - criticidad: Criticidad
-  - documentoQueControla: DocumentoControlado
-  - aplicaA: CategoriaDePuesto[*]
+  - documentoQueControla: Registro
+  - aplicaA: Registro
   + assertAplicaA(empleado: Empleado)
   + assertSujetoCoherente(recurso: Cadena)
   + assertSujetoEmpleado()

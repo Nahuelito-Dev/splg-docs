@@ -35,12 +35,12 @@ class Caja {
   - activa: Booleano
   + «create» Caja(nombre: Cadena, tipoDeCaja: TipoDeCaja,\n      requiereSesion: Booleano)
   + abrirSesion(montoInicial: Moneda,\n      administrador: Usuario): Registro
-  + actualizarSaldo(sentido: SentidoDeCaja, importe: Moneda)
+  + actualizarSaldo(importe: Moneda,\n      sentido: SentidoDeCaja = ninguno,\n      entrada: MovimientoDeCaja = ninguno)
   + calcularDiferencia(montoContado: Moneda): Moneda
   + contraasentar(movimiento: MovimientoDeCaja,\n      motivo: Cadena): MovimientoDeCaja
   + getMovimientos(desde: FechaHora,\n      hasta: FechaHora): MovimientoDeCaja[*]
   + modificar(datos: Registro)
-  + registrarMovimiento(sentido: SentidoDeCaja,\n      importe: Moneda, categoria: CategoriaDeCaja,\n      medio: MedioDeCaja, descripcion: Cadena,\n      referencia: OrigenDelMovimiento): MovimientoDeCaja
+  + registrarMovimiento(referencia: OrigenDelMovimiento,\n      sentido: SentidoDeCaja = ninguno,\n      importe: Moneda = ninguno,\n      categoria: CategoriaDeCaja = ninguno,\n      medio: MedioDeCaja = ninguno,\n      descripcion: Cadena = ninguno,\n      entrada: MovimientoDeCaja = ninguno,\n      saldoACobrar: Moneda = ninguno,\n      cobroDePedido: CategoriaDeCaja = ninguno,\n      enEfectivo: MedioDeCaja = ninguno,\n      motivo: Cadena = ninguno): MovimientoDeCaja
   + validarCambio(datos: Registro)
   + validarPuedeAbrirse()
   + validarSaldoSuficiente(sentido: SentidoDeCaja,\n      importe: Moneda)
@@ -75,7 +75,7 @@ class MovimientoDeCaja {
   - fecha: FechaHora
   - descripcion: Cadena
   - origen: OrigenDelMovimiento
-  + «create» MovimientoDeCaja(sentido: SentidoDeCaja = ninguno,\n      importe: Moneda = ninguno,\n      categoria: CategoriaDeCaja = ninguno,\n      medio: MedioDeCaja = ninguno,\n      descripcion: Cadena = ninguno,\n      referencia: OrigenDelMovimiento = ninguno,\n      movimiento: MovimientoDeCaja = ninguno,\n      motivo: Cadena = ninguno)
+  + «create» MovimientoDeCaja(sentido: SentidoDeCaja = ninguno,\n      importe: Moneda = ninguno,\n      categoria: CategoriaDeCaja = ninguno,\n      medio: MedioDeCaja = ninguno,\n      descripcion: Cadena = ninguno,\n      referencia: OrigenDelMovimiento = ninguno,\n      movimiento: MovimientoDeCaja = ninguno,\n      motivo: Cadena = ninguno,\n      entrada: MovimientoDeCaja = ninguno,\n      saldoACobrar: Moneda = ninguno,\n      cobroDePedido: CategoriaDeCaja = ninguno,\n      enEfectivo: MedioDeCaja = ninguno)
   + getCaja(): Caja
   + validarAnulable()
 }

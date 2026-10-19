@@ -8,7 +8,7 @@ sequenceDiagram
     participant RT as :RealtimeDispatchPort
     participant CHO as chofer:Chofer
     participant NOT as :NotificationsService
-    participant REF as :RefundPaymentUseCase
+    participant REF as :RefundsService
 
     SIS->>+SRV: despacharPedidoExpress(pedidoId)
     SRV->>+PEDS: get(pedidoId)

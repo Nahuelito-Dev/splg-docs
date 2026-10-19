@@ -65,6 +65,7 @@ de las tablas: la entidad se llama como el concepto y lleva sus atributos. La re
 | ZonaCobertura | ZonaCobertura | `coverage_zone` |
 | FranjaHoraria | FranjaHoraria | `time_slot` |
 | Pago | Pago | `payment` |
+| ReintegroDePago | ReintegroDePago | `payment_refund` |
 | PropuestaConVigencia | — | — |
 | OfertaDespacho | OfertaDespacho | `order_dispatch_offer` |
 | LoteRecorrido | LoteRecorrido | `route_batch` |
@@ -113,6 +114,7 @@ de las tablas: la entidad se llama como el concepto y lleva sus atributos. La re
 | RendicionChofer | RendicionChofer | `driver_settlement` |
 | PedidoRendido | PedidoRendido | `driver_settlement_order` |
 | GastoDeRendicion | GastoDeRendicion | `driver_settlement_expense` |
+| CobroDeRendicion | CobroDeRendicion | `driver_settlement_collection` |
 | CuentaCorriente | CuentaCorriente | `customer_account` |
 | AsientoCuentaCorriente | AsientoCuentaCorriente | `customer_account_entry` |
 | ImputacionCuentaCorriente | ImputacionCuentaCorriente | `customer_account_allocation` |
@@ -141,8 +143,8 @@ pedidos, cada uno con el motivo por el que está.
 
 Si además se quiere que revise el DDL, sumar
 **`SPLG-base-de-datos-completa-portable.sql`**, que es el modelo entero en
-menos de 55 KB.
-No conviene pegar `SPLG-base-de-datos.sql`: son 137 KB
+menos de 56 KB.
+No conviene pegar `SPLG-base-de-datos.sql`: son 203 KB
 en su mayoría de índices y funciones de PostGIS que no aportan al análisis del
 modelo.
 

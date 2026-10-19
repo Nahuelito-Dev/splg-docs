@@ -36,10 +36,29 @@ entity "payment" as e_payment {
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
 }
+entity "payment_refund" as e_payment_refund {
+  {field} **refund_id** : uuid * <<PK>>
+  {field} //payment_id// : uuid * <<FK>>
+  {field} //order_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid <<FK>>
+  {field} kind : payment_refund_kind_enum *
+  {field} amount : numeric(10,2) *
+  {field} status : payment_refund_status_enum *
+  {field} gateway_refund_id : varchar(100)
+  {field} error_message : text
+  {field} attempts : integer *
+  {field} refunded_at : timestamptz
+  {field} requested_by_user_id : uuid
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} refunded_baseline : numeric(10,2)
+}
 entity "order" as e_order #F1F1F1 {
 }
 
 e_order ||--o{ e_payment : order_id
+e_order ||--o{ e_payment_refund : order_id
+e_payment ||--o{ e_payment_refund : payment_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

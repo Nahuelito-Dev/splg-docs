@@ -42,11 +42,12 @@ class RepurchaseForecastService <<fachada>> {
   + anticiparRecompras()
 }
 class ConsumptionEstimatorService <<fabricación pura>> {
-  + estimarProximaRecompra(cliente: Cliente = ninguno,\n      ultimaCompra: Fecha = ninguno,\n      cantidadPorMes: Decimal = ninguno): Fecha
+  + estimarProximaRecompra(cliente: Cliente): Fecha
 }
 class ConsumptionService <<fachada>> {
   + actualizarConsumoPromedio(cantidadPorMes: Decimal): Cliente
   + declararConsumoPromedio(tipoGarrafa: Cadena,\n      cantidadPorMes: Decimal): Cliente
+  + estimarProximaRecompra(ultimaCompra: Fecha,\n      cantidadPorMes: Decimal)
 }
 class RepurchaseEstimatesService <<fachada>> {
   + consultarRecomprasEstimadas(dias: Entero): InvitacionRecompra[*]
@@ -64,7 +65,6 @@ class Producto <<referencia>>
 class InvitacionRecompra <<referencia>>
 
 CartService --> "1" Map_String_Producto
-ConsumptionService --> "1" ConsumptionEstimatorService
 ConsumptionService --> "1" List_Pedido
 ConsumptionService --> "1" Map_String_Cliente
 RepurchaseEstimatesService --> "1" List_Cliente

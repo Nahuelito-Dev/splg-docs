@@ -1,6 +1,6 @@
 # DER de SPLG, en Mermaid — generado
 
-Generado por `generar-modelo-datos.py` desde la base en ejecución: 63 tablas, 150 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
+Generado por `generar-modelo-datos.py` desde la base en ejecución: 85 tablas, 230 relaciones. Se pega tal cual en `3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado (uno por contexto de negocio) más una lámina final con las relaciones que cruzan de un contexto a otro.
 
 ### Organización y acceso
 
@@ -351,6 +351,8 @@ erDiagram
         text payment_resolution_note "nullable"
         timestamptz payment_resolved_at "nullable"
         uuid payment_resolved_by "nullable"
+        decimal express_surcharge_amount
+        timestamptz express_degraded_at "nullable"
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK
@@ -384,6 +386,7 @@ erDiagram
 
 ```mermaid
 erDiagram
+    PAYMENT_REFUND }o--|| PAYMENT : "payment_id"
 
     PAYMENT {
         uuid payment_id PK
@@ -402,6 +405,23 @@ erDiagram
         jsonb metadata "nullable"
         timestamptz createdAt
         timestamptz updatedAt
+    }
+    PAYMENT_REFUND {
+        uuid refund_id PK
+        uuid payment_id FK
+        uuid order_id FK
+        uuid distributor_id FK "nullable"
+        enum kind
+        decimal amount
+        enum status
+        varchar gateway_refund_id "nullable"
+        text error_message "nullable"
+        int attempts
+        timestamptz refunded_at "nullable"
+        uuid requested_by_user_id "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        decimal refunded_baseline "nullable"
     }
 ```
 
@@ -471,6 +491,8 @@ erDiagram
         enum criticality
         varchar car_type "nullable"
         boolean is_active
+        enum document_kind "nullable"
+        _varchar applies_to_categories "nullable"
     }
     CAR {
         uuid car_id PK
@@ -492,6 +514,8 @@ erDiagram
         enum fleet_status
         timestamptz in_service_since "nullable"
         varchar photo_key "nullable"
+        enum fuel_type "nullable"
+        decimal tank_capacity_liters "nullable"
     }
     DELIVERY {
         uuid delivery_id PK
@@ -529,6 +553,9 @@ erDiagram
         varchar category "nullable"
         timestamptz alerted_at "nullable"
         text notes "nullable"
+        timestamptz valid_from "nullable"
+        uuid employee_id FK "nullable"
+        jsonb details "nullable"
     }
     VEHICLE_ASSIGNMENT {
         uuid assignment_id PK
@@ -625,7 +652,7 @@ erDiagram
     }
 ```
 
-### Personal (en parte planificado)
+### Personal
 
 ```mermaid
 erDiagram
@@ -697,7 +724,7 @@ erDiagram
         date work_date
         timestamptz check_in_at
         timestamptz check_out_at "nullable"
-        attendance_source_enum source
+        enum source
         uuid recorded_by_user_id FK "nullable"
         text notes "nullable"
         timestamptz createdAt
@@ -707,11 +734,11 @@ erDiagram
         uuid leave_id PK
         uuid distributor_id FK
         uuid employee_id FK
-        employee_leave_type_enum type
+        enum type
         date start_date
         date end_date
         int days
-        employee_leave_status_enum status
+        enum status
         text reason "nullable"
         text rejection_reason "nullable"
         uuid requested_by_user_id FK "nullable"
@@ -722,7 +749,7 @@ erDiagram
     }
 ```
 
-### Gastos de la flota (planificado)
+### Gastos de la flota
 
 ```mermaid
 erDiagram
@@ -734,19 +761,19 @@ erDiagram
         uuid car_id FK
         uuid employee_id FK "nullable"
         timestamptz loaded_at
-        fuel_type_enum fuel_type
+        enum fuel_type
         decimal liters
         decimal unit_price
         decimal total_amount
         int odometer_km
         boolean is_full_tank
         varchar station "nullable"
-        fuel_payment_method_enum payment_method
+        enum payment_method
         varchar receipt_number "nullable"
-        uuid cash_movement_id "nullable"
         boolean anomaly
         text notes "nullable"
-        uuid created_by_user_id FK "nullable"
+        text odometer_correction_note "nullable"
+        uuid created_by_user_id FK
         timestamptz createdAt
         timestamptz updatedAt
         timestamptz deletedAt "nullable"
@@ -754,14 +781,16 @@ erDiagram
     TIRE {
         uuid tire_id PK
         uuid distributor_id FK
-        uuid car_id FK "nullable"
-        varchar serial
+        varchar serial_number
         varchar brand
         varchar size
         decimal cost
-        tire_status_enum status
+        enum status
+        uuid car_id FK "nullable"
         varchar position "nullable"
         int mounted_odometer_km "nullable"
+        int km_traveled
+        int retread_count
         timestamptz createdAt
         timestamptz updatedAt
     }
@@ -777,12 +806,12 @@ erDiagram
         decimal amount
         decimal voluntary_payment_amount "nullable"
         date due_date "nullable"
-        traffic_fine_status_enum status
+        enum status
         timestamptz paid_at "nullable"
         decimal paid_amount "nullable"
         boolean charged_to_employee
-        uuid cash_movement_id "nullable"
         text void_reason "nullable"
+        timestamptz voided_at "nullable"
         timestamptz alerted_at "nullable"
         timestamptz createdAt
         timestamptz updatedAt
@@ -801,25 +830,26 @@ erDiagram
         boolean hazmat_release
         varchar police_report_number "nullable"
         varchar insurer_claim_number "nullable"
-        vehicle_accident_status_enum status
+        enum status
         boolean vehicle_unusable
         decimal repair_cost "nullable"
         decimal insurer_reimbursement "nullable"
         decimal deductible_amount "nullable"
         timestamptz closed_at "nullable"
+        uuid created_by_user_id FK
         timestamptz createdAt
         timestamptz updatedAt
     }
     TIRE_EVENT {
         uuid event_id PK
-        uuid distributor_id FK
         uuid tire_id FK
+        uuid distributor_id FK
+        enum type
         uuid car_id FK "nullable"
-        tire_event_type_enum event_type
-        int odometer_km
         varchar position "nullable"
-        timestamptz occurred_at
-        uuid created_by_user_id FK "nullable"
+        int odometer_km
+        uuid created_by_user_id FK
+        timestamptz createdAt
     }
 ```
 
@@ -1072,36 +1102,36 @@ erDiagram
     }
 ```
 
-### Caja y finanzas (planificado)
+### Caja y finanzas
 
 ```mermaid
 erDiagram
     CASH_SESSION }o--|| CASH_BOX : "cash_box_id"
     CASH_MOVEMENT }o--|| CASH_BOX : "cash_box_id"
-    CASH_MOVEMENT }o--o| CASH_SESSION : "session_id"
     CASH_MOVEMENT }o--|| CASH_CATEGORY : "category_id"
-    CASH_MOVEMENT |o--o| CASH_MOVEMENT : "reverses_movement_id"
-    DRIVER_LIQUIDATION }o--o| CASH_MOVEMENT : "cash_movement_id"
-    DRIVER_SETTLEMENT }o--o| CASH_BOX : "destination_cash_box_id"
-    DRIVER_SETTLEMENT }o--o| CASH_MOVEMENT : "cash_movement_id"
-    COMMISSION_ENTRY }o--o| COMMISSION_RULE : "rule_id"
-    COMMISSION_ENTRY }o--o| DRIVER_SETTLEMENT : "settlement_id"
-    COMMISSION_ENTRY }o--o| DRIVER_LIQUIDATION : "liquidation_id"
+    CASH_MOVEMENT }o--o| CASH_MOVEMENT : "reverses_movement_id"
+    CASH_MOVEMENT }o--o| CASH_SESSION : "session_id"
     CUSTOMER_ACCOUNT_ENTRY }o--|| CUSTOMER_ACCOUNT : "account_id"
     CUSTOMER_ACCOUNT_ENTRY }o--o| CASH_MOVEMENT : "cash_movement_id"
-    CUSTOMER_ACCOUNT_ENTRY }o--o| DRIVER_SETTLEMENT : "settlement_id"
-    CUSTOMER_ACCOUNT_ENTRY |o--o| CUSTOMER_ACCOUNT_ENTRY : "reverses_entry_id"
-    DRIVER_SETTLEMENT_EXPENSE }o--|| DRIVER_SETTLEMENT : "settlement_id"
-    DRIVER_SETTLEMENT_EXPENSE }o--|| CASH_CATEGORY : "category_id"
-    DRIVER_SETTLEMENT_ORDER }o--|| DRIVER_SETTLEMENT : "settlement_id"
-    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "debit_entry_id"
+    DRIVER_LIQUIDATION }o--o| CASH_MOVEMENT : "cash_movement_id"
+    COMMISSION_ENTRY }o--o| DRIVER_LIQUIDATION : "liquidation_id"
+    COMMISSION_ENTRY }o--o| COMMISSION_RULE : "rule_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT : "account_id"
     CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "credit_entry_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "debit_entry_id"
+    DRIVER_SETTLEMENT }o--o| CASH_MOVEMENT : "cash_movement_id"
+    DRIVER_SETTLEMENT }o--o| CASH_BOX : "destination_cash_box_id"
+    DRIVER_SETTLEMENT_COLLECTION |o--|| CUSTOMER_ACCOUNT_ENTRY : "entry_id"
+    DRIVER_SETTLEMENT_COLLECTION }o--|| DRIVER_SETTLEMENT : "settlement_id"
+    DRIVER_SETTLEMENT_EXPENSE }o--|| CASH_CATEGORY : "category_id"
+    DRIVER_SETTLEMENT_EXPENSE }o--|| DRIVER_SETTLEMENT : "settlement_id"
+    DRIVER_SETTLEMENT_ORDER }o--|| DRIVER_SETTLEMENT : "settlement_id"
 
     CASH_BOX {
         uuid cash_box_id PK
         uuid distributor_id FK
         varchar name
-        cash_box_kind_enum kind
+        enum kind
         decimal balance
         boolean requires_session
         boolean is_active
@@ -1113,8 +1143,8 @@ erDiagram
         uuid category_id PK
         uuid distributor_id FK
         varchar name
-        cash_direction_enum direction
-        cash_system_code_enum system_code "nullable"
+        enum direction
+        enum system_code "nullable"
         boolean is_active
         timestamptz createdAt
         timestamptz updatedAt
@@ -1123,7 +1153,7 @@ erDiagram
         uuid session_id PK
         uuid distributor_id FK
         uuid cash_box_id FK
-        cash_session_status_enum status
+        enum status
         timestamptz opened_at
         uuid opened_by_user_id FK
         decimal opening_amount
@@ -1140,10 +1170,10 @@ erDiagram
         uuid customer_user_id FK
         varchar business_name
         varchar tax_id "nullable"
-        tax_condition_enum tax_condition
+        enum tax_condition
         decimal credit_limit
         int payment_terms_days
-        customer_account_status_enum status
+        enum status
         decimal balance
         timestamptz createdAt
         timestamptz updatedAt
@@ -1154,13 +1184,13 @@ erDiagram
         uuid distributor_id FK
         uuid cash_box_id FK
         uuid session_id FK "nullable"
-        cash_direction_enum direction
+        enum direction
         decimal amount
         uuid category_id FK
-        cash_method_enum method
+        enum method
         timestamptz occurred_at
-        varchar description "nullable"
-        cash_reference_type_enum reference_type
+        varchar description
+        enum reference_type
         uuid reference_id "nullable"
         uuid reverses_movement_id FK "nullable"
         uuid created_by_user_id FK
@@ -1171,13 +1201,29 @@ erDiagram
         uuid distributor_id FK
         uuid employee_id FK "nullable"
         uuid gas_cylinder_id FK "nullable"
-        commission_basis_enum basis
+        enum basis
         decimal value
         date valid_from
         date valid_to "nullable"
         boolean is_active
         timestamptz createdAt
         timestamptz updatedAt
+    }
+    CUSTOMER_ACCOUNT_ENTRY {
+        uuid entry_id PK
+        uuid distributor_id FK
+        uuid account_id FK
+        enum type
+        decimal amount
+        uuid order_id FK "nullable"
+        date due_date "nullable"
+        varchar payment_method "nullable"
+        uuid cash_movement_id FK "nullable"
+        uuid collected_by_delivery_id FK "nullable"
+        varchar description "nullable"
+        timestamptz occurred_at
+        uuid created_by_user_id FK "nullable"
+        timestamptz createdAt
     }
     DRIVER_LIQUIDATION {
         uuid liquidation_id PK
@@ -1189,67 +1235,70 @@ erDiagram
         decimal gross
         decimal deductions
         decimal net
-        driver_liquidation_status_enum status
+        enum status
         timestamptz approved_at "nullable"
         uuid approved_by_user_id FK "nullable"
         timestamptz paid_at "nullable"
+        uuid paid_by_user_id FK "nullable"
+        timestamptz voided_at "nullable"
         uuid cash_movement_id FK "nullable"
+        uuid created_by_user_id FK
         timestamptz createdAt
+        timestamptz updatedAt
+    }
+    COMMISSION_ENTRY {
+        uuid entry_id PK
+        uuid distributor_id FK
+        uuid employee_id FK
+        uuid delivery_id FK "nullable"
+        enum type
+        decimal amount
+        uuid order_id FK "nullable"
+        uuid rule_id FK "nullable"
+        jsonb rule_snapshot "nullable"
+        uuid liquidation_id FK "nullable"
+        uuid reference_id "nullable"
+        varchar description
+        timestamptz occurred_at
+        uuid created_by_user_id FK "nullable"
+        timestamptz createdAt
+    }
+    CUSTOMER_ACCOUNT_ALLOCATION {
+        uuid allocation_id PK
+        uuid account_id FK
+        uuid debit_entry_id FK
+        uuid credit_entry_id FK
+        decimal amount
     }
     DRIVER_SETTLEMENT {
         uuid settlement_id PK
         uuid distributor_id FK
         uuid delivery_id FK
         int number
+        uuid truck_load_id FK "nullable"
         date business_date
-        driver_settlement_status_enum status
+        enum status
         decimal expected_cash
         decimal declared_cash "nullable"
         decimal driver_expenses
         decimal difference "nullable"
-        settlement_difference_resolution_enum difference_resolution "nullable"
+        enum difference_resolution "nullable"
         uuid destination_cash_box_id FK "nullable"
         uuid cash_movement_id FK "nullable"
         timestamptz submitted_at "nullable"
         uuid submitted_by_user_id FK "nullable"
         timestamptz approved_at "nullable"
         uuid approved_by_user_id FK "nullable"
-        timestamptz alerted_at "nullable"
         text notes "nullable"
+        timestamptz overdue_alerted_at "nullable"
         timestamptz createdAt
+        timestamptz updatedAt
     }
-    COMMISSION_ENTRY {
-        uuid entry_id PK
-        uuid distributor_id FK
-        uuid employee_id FK
-        commission_entry_type_enum type
+    DRIVER_SETTLEMENT_COLLECTION {
+        uuid collection_id PK
+        uuid settlement_id FK
+        uuid entry_id FK, UK
         decimal amount
-        uuid order_id FK "nullable"
-        uuid rule_id FK "nullable"
-        jsonb rule_snapshot "nullable"
-        uuid settlement_id FK "nullable"
-        uuid liquidation_id FK "nullable"
-        varchar description "nullable"
-        timestamptz occurred_at
-        uuid created_by_user_id FK "nullable"
-        timestamptz createdAt
-    }
-    CUSTOMER_ACCOUNT_ENTRY {
-        uuid entry_id PK
-        uuid distributor_id FK
-        uuid account_id FK
-        customer_entry_type_enum type
-        decimal amount
-        uuid order_id FK "nullable"
-        date due_date "nullable"
-        cash_method_enum payment_method "nullable"
-        uuid cash_movement_id FK "nullable"
-        uuid collected_by_delivery_id FK "nullable"
-        uuid settlement_id FK "nullable"
-        uuid reverses_entry_id FK "nullable"
-        varchar description "nullable"
-        timestamptz occurred_at
-        uuid created_by_user_id FK "nullable"
         timestamptz createdAt
     }
     DRIVER_SETTLEMENT_EXPENSE {
@@ -1262,15 +1311,9 @@ erDiagram
     DRIVER_SETTLEMENT_ORDER {
         uuid settlement_order_id PK
         uuid settlement_id FK
-        uuid order_id FK
+        uuid order_id FK, UK
         decimal amount
-        enum payment_method
-    }
-    CUSTOMER_ACCOUNT_ALLOCATION {
-        uuid allocation_id PK
-        uuid debit_entry_id FK
-        uuid credit_entry_id FK
-        decimal amount
+        varchar payment_method
     }
 ```
 
@@ -1283,8 +1326,8 @@ erDiagram
     ATTACHMENT }o--|| USER : "uploaded_by_user_id"
     CAR }o--|| USER : "user_id"
     CART }o--|| USER : "user_id"
-    CASH_SESSION }o--|| USER : "opened_by_user_id"
     CASH_SESSION }o--o| USER : "closed_by_user_id"
+    CASH_SESSION }o--|| USER : "opened_by_user_id"
     CUSTOMER }o--o| GAS_CYLINDER : "declared_cylinder_type_id"
     CUSTOMER |o--|| USER : "user_id"
     CUSTOMER_ACCOUNT }o--|| USER : "customer_user_id"
@@ -1299,11 +1342,11 @@ erDiagram
     COMMISSION_RULE }o--o| EMPLOYEE : "employee_id"
     COMMISSION_RULE }o--o| GAS_CYLINDER : "gas_cylinder_id"
     EMPLOYEE_ATTENDANCE }o--o| USER : "recorded_by_user_id"
-    EMPLOYEE_LEAVE }o--o| USER : "requested_by_user_id"
     EMPLOYEE_LEAVE }o--o| USER : "decided_by_user_id"
+    EMPLOYEE_LEAVE }o--o| USER : "requested_by_user_id"
     FUEL_LOAD }o--|| CAR : "car_id"
+    FUEL_LOAD }o--|| USER : "created_by_user_id"
     FUEL_LOAD }o--o| EMPLOYEE : "employee_id"
-    FUEL_LOAD }o--o| USER : "created_by_user_id"
     MAINTENANCE_TASK }o--o| EMPLOYEE : "employee_id"
     ORDER }o--|| USER_ADDRESS : "address_id"
     ORDER }o--|| USER : "customer_id"
@@ -1317,18 +1360,21 @@ erDiagram
     TRAFFIC_FINE }o--|| CAR : "car_id"
     TRAFFIC_FINE }o--o| EMPLOYEE : "employee_id"
     VEHICLE_ACCIDENT }o--|| CAR : "car_id"
+    VEHICLE_ACCIDENT }o--|| USER : "created_by_user_id"
     VEHICLE_ACCIDENT }o--o| EMPLOYEE : "employee_id"
     VEHICLE_ASSIGNMENT }o--o| USER : "assigned_by_user_id"
     VEHICLE_ASSIGNMENT }o--o| USER : "released_by_user_id"
     CLAIMS }o--|| USER : "customer_id"
     CLAIMS }o--|| ORDER : "order_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| DELIVERY : "collected_by_delivery_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| USER : "created_by_user_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| ORDER : "order_id"
     CYLINDER }o--o| USER : "current_customer_id"
     CYLINDER }o--o| ORDER : "current_order_id"
-    DRIVER_LIQUIDATION }o--|| EMPLOYEE : "employee_id"
     DRIVER_LIQUIDATION }o--o| USER : "approved_by_user_id"
-    DRIVER_SETTLEMENT }o--|| DELIVERY : "delivery_id"
-    DRIVER_SETTLEMENT }o--o| USER : "submitted_by_user_id"
-    DRIVER_SETTLEMENT }o--o| USER : "approved_by_user_id"
+    DRIVER_LIQUIDATION }o--|| USER : "created_by_user_id"
+    DRIVER_LIQUIDATION }o--|| EMPLOYEE : "employee_id"
+    DRIVER_LIQUIDATION }o--o| USER : "paid_by_user_id"
     INCIDENT }o--|| ORDER : "order_id"
     INCIDENT }o--|| USER : "reported_by"
     MAINTENANCE_TASK_ATTACHMENT }o--|| USER : "uploaded_by_user_id"
@@ -1354,24 +1400,27 @@ erDiagram
     STOCK_MOVEMENT }o--o| USER : "actor_user_id"
     STOCK_MOVEMENT }o--|| GAS_CYLINDER : "gas_cylinder_id"
     TIRE_EVENT }o--o| CAR : "car_id"
-    TIRE_EVENT }o--o| USER : "created_by_user_id"
+    TIRE_EVENT }o--|| USER : "created_by_user_id"
     TRUCK_LOAD }o--|| CAR : "car_id"
     TRUCK_LOAD }o--o| USER : "closed_by_user_id"
     TRUCK_LOAD }o--|| DELIVERY : "delivery_id"
     TRUCK_LOAD }o--o| EMPLOYEE : "helper_employee_id"
     TRUCK_LOAD }o--|| USER : "opened_by_user_id"
+    COMMISSION_ENTRY }o--o| USER : "created_by_user_id"
+    COMMISSION_ENTRY }o--o| DELIVERY : "delivery_id"
     COMMISSION_ENTRY }o--|| EMPLOYEE : "employee_id"
     COMMISSION_ENTRY }o--o| ORDER : "order_id"
-    COMMISSION_ENTRY }o--o| USER : "created_by_user_id"
-    CUSTOMER_ACCOUNT_ENTRY }o--o| ORDER : "order_id"
-    CUSTOMER_ACCOUNT_ENTRY }o--o| DELIVERY : "collected_by_delivery_id"
-    CUSTOMER_ACCOUNT_ENTRY }o--o| USER : "created_by_user_id"
     CYLINDER_MOVEMENT }o--o| USER : "actor_user_id"
     CYLINDER_MOVEMENT }o--o| ORDER : "order_id"
     CYLINDER_RECOVERY_CASE }o--o| USER : "resolved_by_user_id"
     CYLINDER_RECOVERY_CASE }o--|| USER : "user_id"
-    DRIVER_SETTLEMENT_ORDER |o--|| ORDER : "order_id"
+    DRIVER_SETTLEMENT }o--o| USER : "approved_by_user_id"
+    DRIVER_SETTLEMENT }o--|| DELIVERY : "delivery_id"
+    DRIVER_SETTLEMENT }o--o| USER : "submitted_by_user_id"
+    DRIVER_SETTLEMENT }o--o| TRUCK_LOAD : "truck_load_id"
+    PAYMENT_REFUND }o--|| ORDER : "order_id"
     STOCK_ADJUSTMENT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     TRUCK_LOAD_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     CYLINDER_RECOVERY_NOTICE }o--o| ORDER : "order_id"
+    DRIVER_SETTLEMENT_ORDER |o--|| ORDER : "order_id"
 ```

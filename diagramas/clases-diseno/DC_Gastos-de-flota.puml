@@ -121,7 +121,7 @@ class Distribuidora <<referencia>>
 
 Vehiculo "1" *-- "0..*" CargaCombustible : registra
 Vehiculo "1" *--> "0..*" MultaTransito : acumula
-Vehiculo "1" *-- "0..*" Siniestro : sufre
+Vehiculo "1" *--> "0..*" Siniestro : sufre
 Vehiculo "0..1" -- "0..*" Neumatico : monta
 Distribuidora "1" *--> "0..*" Neumatico : posee
 Neumatico "1" *--> "0..*" MovimientoNeumatico : registra

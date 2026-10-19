@@ -20,7 +20,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity CuentaCorriente <<propuesto>> #FFF6D9;line:1F5E8C {
+entity CuentaCorriente {
   * identificador
   --
   {field} razón social
@@ -31,7 +31,7 @@ entity CuentaCorriente <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} estado
   {field} saldo
 }
-entity AsientoCuentaCorriente <<propuesto>> #FFF6D9;line:1F5E8C {
+entity AsientoCuentaCorriente {
   * identificador
   --
   {field} tipo
@@ -41,7 +41,7 @@ entity AsientoCuentaCorriente <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} fecha
   {field} descripción
 }
-entity ImputacionCuentaCorriente <<propuesto>> #FFF6D9;line:1F5E8C {
+entity ImputacionCuentaCorriente {
   * identificador
   --
   {field} importe
@@ -56,19 +56,19 @@ entity MovimientoDeCaja #F1F1F1 {
 }
 entity Chofer #F1F1F1 {
 }
-entity RendicionChofer #F1F1F1 {
+entity CobroDeRendicion #F1F1F1 {
 }
 
-Distribuidora ||--o{ CuentaCorriente : lleva >
 Cliente ||--o{ CuentaCorriente : tiene habilitada >
+Distribuidora ||--o{ CuentaCorriente : lleva >
 CuentaCorriente ||--o{ AsientoCuentaCorriente : registra >
-Pedido |o--o{ AsientoCuentaCorriente : origina >
 AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
 Chofer |o--o{ AsientoCuentaCorriente : cobra >
-RendicionChofer |o--o{ AsientoCuentaCorriente : incluye >
-AsientoCuentaCorriente |o--o| AsientoCuentaCorriente : anula a >
-ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : salda >
+Pedido |o--o{ AsientoCuentaCorriente : origina >
+CuentaCorriente ||--o{ ImputacionCuentaCorriente : contiene >
 ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : se aplica con >
+ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : salda >
+CobroDeRendicion |o--|| AsientoCuentaCorriente : rinde >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

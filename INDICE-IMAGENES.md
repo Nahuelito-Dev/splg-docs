@@ -415,6 +415,10 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-342 | Activar una Franja Horaria | `DSS_CU-342_Activar-una-Franja-Horaria.png` | `DSD_CU-342_activarFranjaHoraria.png` |
 | CU-343 | Desactivar una Franja Horaria | `DSS_CU-343_Desactivar-una-Franja-Horaria.png` | `DSD_CU-343_desactivarFranjaHoraria.png` |
 | CU-344 | Consultar el Catálogo de Productos (Administrador) | `DSS_CU-344_Consultar-el-Catalogo-de-Productos-Administrador.png` | `DSD_CU-344_consultarCatalogo.png` · `DSD_CU-344_consultarDetalleDelProducto.png` |
+| CU-345 | Modificar un Administrador | `DSS_CU-345_Modificar-un-Administrador.png` | `DSD_CU-345_modificarAdministrador.png` |
+| CU-346 | Dar de Baja un Administrador | `DSS_CU-346_Dar-de-Baja-un-Administrador.png` | `DSD_CU-346_darDeBajaAdministrador.png` |
+| CU-347 | Anular el Pago de una Liquidación | `DSS_CU-347_Anular-el-Pago-de-una-Liquidación.png` | `DSD_CU-347_anularPagoDeLiquidacion.png` |
+| CU-348 | Consultar el Reintegro de un Pedido | `DSS_CU-348_Consultar-el-Reintegro-de-un-Pedido.png` | `DSD_CU-348_consultarReintegroDelPedido.png` |
 
 ## Módulos de gestión planificados: modelos y estados
 

@@ -19,7 +19,7 @@ class RendicionChofer {
   presentada el
   aprobada el
   observaciones
-  aviso enviado el
+  vencida avisada el
 }
 class PedidoRendido {
   importe
@@ -29,6 +29,9 @@ class GastoDeRendicion {
   importe
   descripción
 }
+class CobroDeRendicion {
+  importe
+}
 class Chofer #F1F1F1;line:8A97A3;text:55616C
 class Pedido #F1F1F1;line:8A97A3;text:55616C
 class Caja #F1F1F1;line:8A97A3;text:55616C
@@ -36,6 +39,7 @@ class MovimientoDeCaja #F1F1F1;line:8A97A3;text:55616C
 class CategoriaDeCaja #F1F1F1;line:8A97A3;text:55616C
 class AsientoCuentaCorriente #F1F1F1;line:8A97A3;text:55616C
 class AsientoComision #F1F1F1;line:8A97A3;text:55616C
+class CargaDeCamion #F1F1F1;line:8A97A3;text:55616C
 
 
 Chofer "1" *-- "0..*" RendicionChofer : presenta >
@@ -45,8 +49,9 @@ RendicionChofer "1" *-- "0..*" PedidoRendido : rinde >
 PedidoRendido "0..1" -- "1" Pedido : corresponde a >
 RendicionChofer "1" *-- "0..*" GastoDeRendicion : declara >
 GastoDeRendicion "0..*" -- "1" CategoriaDeCaja : se clasifica en >
-RendicionChofer "0..1" -- "0..*" AsientoCuentaCorriente : incluye >
-RendicionChofer "0..1" -- "0..*" AsientoComision : origina >
+RendicionChofer "1" *-- "0..*" CobroDeRendicion : incluye >
+CobroDeRendicion "0..1" -- "1" AsientoCuentaCorriente : rinde >
+CargaDeCamion "0..1" -- "0..*" RendicionChofer : respalda >
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran solo como referencia.

@@ -111,7 +111,7 @@ entity MultaTransito #F1F1F1 {
 }
 entity Siniestro #F1F1F1 {
 }
-entity RendicionChofer #F1F1F1 {
+entity AsientoCuentaCorriente #F1F1F1 {
 }
 entity OfertaDespacho #F1F1F1 {
 }
@@ -121,7 +121,9 @@ entity MovimientoNeumatico #F1F1F1 {
 }
 entity CargaDeCamion #F1F1F1 {
 }
-entity AsientoCuentaCorriente #F1F1F1 {
+entity AsientoComision #F1F1F1 {
+}
+entity RendicionChofer #F1F1F1 {
 }
 
 Chofer ||--o{ Vehiculo : tiene registrado >
@@ -130,8 +132,8 @@ Chofer |o--|| Usuario : es un >
 Vehiculo ||--o{ CargaCombustible : registra >
 TareaMantenimiento }o--o| Vehiculo : habilita >
 TareaMantenimiento }o--o| Chofer : habilita >
-PlanMantenimiento ||--o{ TareaMantenimiento : genera >
 TareaMantenimiento }o--o| Empleado : habilita >
+PlanMantenimiento ||--o{ TareaMantenimiento : genera >
 Chofer |o--o{ Pedido : entrega >
 Chofer |o--o{ LoteRecorrido : acepta >
 Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
@@ -141,7 +143,7 @@ Vehiculo ||--o{ Siniestro : sufre >
 Vehiculo ||--o{ AsignacionVehiculo : figura en >
 Chofer ||--o{ AsignacionVehiculo : figura en >
 Vehiculo ||--o{ RegistroUsoVehiculo : acumula >
-Chofer ||--o{ RendicionChofer : presenta >
+Chofer |o--o{ AsientoCuentaCorriente : cobra >
 TareaMantenimiento ||--o{ AdjuntoTarea : adjunta >
 PropuestaVentanaTaller }o--|| Chofer : se dirige a >
 TareaMantenimiento ||--o{ PropuestaVentanaTaller : origina >
@@ -150,7 +152,8 @@ OfertaLote }o--|| Chofer : se dirige a >
 MovimientoNeumatico }o--o| Vehiculo : ocurre en >
 Vehiculo ||--o{ CargaDeCamion : transporta >
 Chofer ||--o{ CargaDeCamion : reparte con >
-Chofer |o--o{ AsientoCuentaCorriente : cobra >
+Chofer |o--o{ AsientoComision : genera >
+Chofer ||--o{ RendicionChofer : presenta >
 Empleado |o--o| Chofer : actúa como >
 
 legend bottom right

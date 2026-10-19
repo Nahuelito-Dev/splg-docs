@@ -58,6 +58,7 @@ class CambioDireccion
 class ZonaCobertura
 class FranjaHoraria
 class Pago
+class ReintegroDePago
 abstract class PropuestaConVigencia
 class OfertaDespacho
 class LoteRecorrido
@@ -105,6 +106,7 @@ class CategoriaDeCaja
 class MovimientoDeCaja
 class RendicionChofer
 class PedidoRendido
+class CobroDeRendicion
 class GastoDeRendicion
 class CuentaCorriente
 class AsientoCuentaCorriente
@@ -160,6 +162,8 @@ CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
 Chofer "0..1" -- "0..*" Pedido
 Pedido "1" -- "0..*" Pago
+Pago "1" -- "0..*" ReintegroDePago
+ReintegroDePago "0..*" -- "1" Pedido
 Pedido "1" *--> "0..*" OfertaDespacho
 OfertaDespacho "0..*" -- "1" Chofer
 LoteRecorrido "1" *--> "1..*" ParadaLote
@@ -195,7 +199,7 @@ Empleado "1" *--> "0..*" Adjunto
 TareaMantenimiento "0..*" <--> "0..1" Empleado
 Vehiculo "1" *-- "0..*" CargaCombustible
 Vehiculo "1" *--> "0..*" MultaTransito
-Vehiculo "1" *-- "0..*" Siniestro
+Vehiculo "1" *--> "0..*" Siniestro
 Vehiculo "0..1" -- "0..*" Neumatico
 Distribuidora "1" *--> "0..*" Neumatico
 Neumatico "1" *--> "0..*" MovimientoNeumatico
@@ -254,28 +258,30 @@ Usuario "1" -- "0..*" MovimientoDeCaja
 Chofer "1" *-- "0..*" RendicionChofer
 RendicionChofer "0..*" --> "0..1" Caja
 RendicionChofer "0..1" -- "0..1" MovimientoDeCaja
-RendicionChofer "1" *--> "0..*" PedidoRendido
+RendicionChofer "1" *-- "0..*" PedidoRendido
 PedidoRendido "0..1" -- "1" Pedido
 RendicionChofer "1" *--> "0..*" GastoDeRendicion
 GastoDeRendicion "0..*" -- "1" CategoriaDeCaja
 Cliente "1" -- "0..*" CuentaCorriente
 CuentaCorriente "1" *--> "0..*" AsientoCuentaCorriente
+CuentaCorriente "1" --> "0..*" ImputacionCuentaCorriente
 Pedido "0..1" -- "0..*" AsientoCuentaCorriente
 AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja
 Chofer "0..1" -- "0..*" AsientoCuentaCorriente
-RendicionChofer "0..1" --> "0..*" AsientoCuentaCorriente
-AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente
+RendicionChofer "1" *-- "0..*" CobroDeRendicion
+CobroDeRendicion "0..1" -- "1" AsientoCuentaCorriente
+CargaDeCamion "0..1" -- "0..*" RendicionChofer
 ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda
 ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con
 ReglaComision "0..*" <-- "0..1" Empleado
 ReglaComision "0..*" -- "0..1" Producto
 Empleado "1" *--> "0..*" AsientoComision
-Empleado "1" *-- "0..*" LiquidacionComisiones
+Empleado "1" *--> "0..*" LiquidacionComisiones
 Empleado "0..1" -- "0..1" Chofer
 AsientoComision "0..*" -- "0..1" Pedido
 ReglaComision "0..1" -- "0..*" AsientoComision
 LiquidacionComisiones "0..1" --> "0..*" AsientoComision
-RendicionChofer "0..1" -- "0..*" AsientoComision
+Chofer "0..1" -- "0..*" AsientoComision
 LiquidacionComisiones "0..1" -- "0..1" MovimientoDeCaja
 (Chofer, Vehiculo) .. AsignacionVehiculo
 

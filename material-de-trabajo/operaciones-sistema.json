@@ -3079,6 +3079,90 @@
       "cambiaEstado": true
     },
     {
+      "nombre": "modificarAdministrador",
+      "firma": "modificarAdministrador(administradorId, nombreCompleto, telefono)",
+      "firmaConTipos": "modificarAdministrador(administradorId identificador, nombreCompleto cadena, telefono cadena)",
+      "parametros": [
+        {
+          "nombre": "administradorId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "nombreCompleto",
+          "tipo": "cadena"
+        },
+        {
+          "nombre": "telefono",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-345"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "darDeBajaAdministrador",
+      "firma": "darDeBajaAdministrador(administradorId)",
+      "firmaConTipos": "darDeBajaAdministrador(administradorId identificador)",
+      "parametros": [
+        {
+          "nombre": "administradorId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-346"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "anularPagoDeLiquidacion",
+      "firma": "anularPagoDeLiquidacion(liquidacionId, motivo)",
+      "firmaConTipos": "anularPagoDeLiquidacion(liquidacionId identificador, motivo cadena)",
+      "parametros": [
+        {
+          "nombre": "liquidacionId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "motivo",
+          "tipo": "cadena"
+        }
+      ],
+      "casosDeUso": [
+        "CU-347"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "consultarReintegroDelPedido",
+      "firma": "consultarReintegroDelPedido(pedidoId)",
+      "firmaConTipos": "consultarReintegroDelPedido(pedidoId identificador)",
+      "parametros": [
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        }
+      ],
+      "casosDeUso": [
+        "CU-348"
+      ],
+      "actores": [
+        "ACT-01"
+      ],
+      "cambiaEstado": false
+    },
+    {
       "nombre": "eliminarDireccionDeEntrega",
       "firma": "eliminarDireccionDeEntrega(direccionId)",
       "firmaConTipos": "eliminarDireccionDeEntrega(direccionId identificador)",
@@ -6725,8 +6809,8 @@
     },
     {
       "nombre": "resolverCobroImpago",
-      "firma": "resolverCobroImpago(pedidoId, resolucion, nota)",
-      "firmaConTipos": "resolverCobroImpago(pedidoId identificador, resolucion cadena, nota cadena)",
+      "firma": "resolverCobroImpago(pedidoId, resolucion, nota, cajaId)",
+      "firmaConTipos": "resolverCobroImpago(pedidoId identificador, resolucion cadena, nota cadena, cajaId identificador)",
       "parametros": [
         {
           "nombre": "pedidoId",
@@ -6751,8 +6835,8 @@
     },
     {
       "nombre": "registrarCobroEnEfectivoPorAdmin",
-      "firma": "registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)",
-      "firmaConTipos": "registrarCobroEnEfectivoPorAdmin(pedidoId identificador, motivo cadena)",
+      "firma": "registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)",
+      "firmaConTipos": "registrarCobroEnEfectivoPorAdmin(pedidoId identificador, motivo cadena, cajaId identificador)",
       "parametros": [
         {
           "nombre": "pedidoId",

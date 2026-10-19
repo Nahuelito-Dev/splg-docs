@@ -36,10 +36,8 @@ class DriverSettlementService <<fachada>> {
   + reabrirRendicion(rendicionId: Identificador): RendicionChofer
 }
 class DriverSettlementCron <<fachada>> {
-  + generarRendicionesDelDia()
-}
-class SettlementOverdueCron <<fachada>> {
   + avisarRendicionesSinCerrar()
+  + generarRendicionesDelDia()
 }
 class "Map<String, RendicionChofer>" as Map_String_RendicionChofer <<colección>> {
   + get(clave: Cadena): RendicionChofer
@@ -49,23 +47,23 @@ class "List<RendicionChofer>" as List_RendicionChofer <<colección>> {
   + getSinCerrarDeDiasAnteriores(hoy: Fecha): RendicionChofer[*]
 }
 class RendicionChofer <<referencia>>
+class EmailSenderPort <<referencia>>
 class "List<Chofer>" as List_Chofer <<referencia>>
 class "Map<String, Caja>" as Map_String_Caja <<referencia>>
-class EmailSenderPort <<referencia>>
 class Chofer <<referencia>>
 class Distribuidora <<referencia>>
 
 Map_String_RendicionChofer "1" o--> "0..*" RendicionChofer
 List_RendicionChofer "1" o--> "0..*" RendicionChofer
+DriverSettlementCron --> "1" EmailSenderPort
 DriverSettlementCron --> "1" List_Chofer
+DriverSettlementCron --> "1" List_RendicionChofer
 DriverSettlementService --> "1" Map_String_Caja
 DriverSettlementService --> "1" Map_String_RendicionChofer
-SettlementOverdueCron --> "1" EmailSenderPort
-SettlementOverdueCron --> "1" List_RendicionChofer
 DriverSettlementCron ..> Chofer
+DriverSettlementCron ..> Distribuidora
+DriverSettlementCron ..> RendicionChofer
 DriverSettlementService ..> RendicionChofer
-SettlementOverdueCron ..> Distribuidora
-SettlementOverdueCron ..> RendicionChofer
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.

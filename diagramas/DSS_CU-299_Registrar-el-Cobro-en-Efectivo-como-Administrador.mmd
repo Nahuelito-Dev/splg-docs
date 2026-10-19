@@ -4,7 +4,7 @@ sequenceDiagram
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
 
-    ADM->>SIS: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo)
+    ADM->>SIS: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)
     activate SIS
     alt el pedido está entregado, es en efectivo y su pago está pendiente
         SIS-->>ADM: cobro registrado (pago saldado)

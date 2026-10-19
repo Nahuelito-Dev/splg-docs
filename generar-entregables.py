@@ -65,7 +65,7 @@ def copiar(origen, nombre, descripcion, vectorial=False):
 
 n = 0
 copiar("CU_Sistema_Diagrama-Completo", "00-Diagrama-de-Casos-de-Uso-Completo",
-       "Diagrama de casos de uso del sistema: los 334 casos de uso en una sola imagen, en tres columnas (también SVG y PDF vectoriales)", True)
+       "Diagrama de casos de uso del sistema: los 338 casos de uso en una sola imagen, en tres columnas (también SVG y PDF vectoriales)", True)
 n += 1
 copiar("CU_Sistema_Diagrama-De-Subsistemas", f"{n:02d}-Diagrama-por-subsistemas", "Diagrama de casos de uso del sistema por subsistemas: los paquetes con los actores y el límite del sistema")
 n += 1

@@ -68,6 +68,16 @@ class Pago {
   es seña
   fecha
 }
+class ReintegroDePago {
+  tipo
+  importe
+  estado
+  intentos
+  reintegrado el
+  referencia en la pasarela
+  mensaje de error
+  devuelto antes del intento
+}
 class Cliente #F1F1F1;line:8A97A3;text:55616C
 class Chofer #F1F1F1;line:8A97A3;text:55616C
 class Producto #F1F1F1;line:8A97A3;text:55616C
@@ -98,6 +108,8 @@ CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia >
 Usuario "1" -- "0..*" CambioDireccion : realiza >
 Chofer "0..1" -- "0..*" Pedido : entrega >
 Pedido "1" -- "0..*" Pago : se salda con >
+Pago "1" -- "0..*" ReintegroDePago : se devuelve con >
+ReintegroDePago "0..*" -- "1" Pedido : devuelve el cobro de >
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran solo como referencia.

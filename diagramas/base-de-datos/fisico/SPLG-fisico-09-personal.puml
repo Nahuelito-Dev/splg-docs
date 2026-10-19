@@ -75,35 +75,35 @@ entity "employee" as e_employee {
   {field} deletedAt : timestamptz
   {field} photo_key : varchar(512)
 }
-entity "employee_attendance" as e_employee_attendance <<propuesto>> {
-  {field} <color:#1F5E8C>**attendance_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//employee_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>work_date : date * <<propuesto>></color>
-  {field} <color:#1F5E8C>check_in_at : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>check_out_at : timestamptz <<propuesto>></color>
-  {field} <color:#1F5E8C>source : attendance_source_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>//recorded_by_user_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>notes : text <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+entity "employee_attendance" as e_employee_attendance {
+  {field} **attendance_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //employee_id// : uuid * <<FK>>
+  {field} work_date : date *
+  {field} check_in_at : timestamptz *
+  {field} check_out_at : timestamptz
+  {field} source : employee_attendance_source_enum *
+  {field} //recorded_by_user_id// : uuid <<FK>>
+  {field} notes : text
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
 }
-entity "employee_leave" as e_employee_leave <<propuesto>> {
-  {field} <color:#1F5E8C>**leave_id** : uuid * <<PK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//distributor_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//employee_id// : uuid * <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>type : employee_leave_type_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>start_date : date * <<propuesto>></color>
-  {field} <color:#1F5E8C>end_date : date * <<propuesto>></color>
-  {field} <color:#1F5E8C>days : integer * <<propuesto>></color>
-  {field} <color:#1F5E8C>status : employee_leave_status_enum * <<propuesto>></color>
-  {field} <color:#1F5E8C>reason : text <<propuesto>></color>
-  {field} <color:#1F5E8C>rejection_reason : text <<propuesto>></color>
-  {field} <color:#1F5E8C>//requested_by_user_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>//decided_by_user_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>decided_at : timestamptz <<propuesto>></color>
-  {field} <color:#1F5E8C>createdAt : timestamptz * <<propuesto>></color>
-  {field} <color:#1F5E8C>updatedAt : timestamptz * <<propuesto>></color>
+entity "employee_leave" as e_employee_leave {
+  {field} **leave_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //employee_id// : uuid * <<FK>>
+  {field} type : employee_leave_type_enum *
+  {field} start_date : date *
+  {field} end_date : date *
+  {field} days : integer *
+  {field} status : employee_leave_status_enum *
+  {field} reason : text
+  {field} rejection_reason : text
+  {field} //requested_by_user_id// : uuid <<FK>>
+  {field} //decided_by_user_id// : uuid <<FK>>
+  {field} decided_at : timestamptz
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
 }
 entity "user" as e_user #F1F1F1 {
 }
@@ -111,16 +111,15 @@ entity "user" as e_user #F1F1F1 {
 e_user ||--o{ e_attachment : uploaded_by_user_id
 e_job_position ||--o{ e_employee : position_id
 e_user |o--o{ e_employee : user_id
-e_employee ||--o{ e_employee_attendance #line:1F5E8C;text:1F5E8C : employee_id
-e_user |o--o{ e_employee_attendance #line:1F5E8C;text:1F5E8C : recorded_by_user_id
-e_employee ||--o{ e_employee_leave #line:1F5E8C;text:1F5E8C : employee_id
-e_user |o--o{ e_employee_leave #line:1F5E8C;text:1F5E8C : requested_by_user_id
-e_user |o--o{ e_employee_leave #line:1F5E8C;text:1F5E8C : decided_by_user_id
+e_employee ||--o{ e_employee_attendance : employee_id
+e_user |o--o{ e_employee_attendance : recorded_by_user_id
+e_user |o--o{ e_employee_leave : decided_by_user_id
+e_employee ||--o{ e_employee_leave : employee_id
+e_user |o--o{ e_employee_leave : requested_by_user_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |
 |<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
-|<#FFF6D9> **propuesto** | columna planificada, todavía sin aplicar a la base |
 endlegend
 note as N
   Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case

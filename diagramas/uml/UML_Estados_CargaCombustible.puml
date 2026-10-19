@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de estados — Carga de combustible (planificado, C-18)
+title Diagrama de estados — Carga de combustible
 !include ../estilo-vp.iuml
 hide empty description
 state "Normal" as NORMAL

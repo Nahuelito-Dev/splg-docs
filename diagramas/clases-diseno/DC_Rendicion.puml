@@ -42,8 +42,7 @@ class RendicionChofer {
   - avisoEnviadoEl: FechaHora
   + «create» RendicionChofer(hoy: Fecha)
   + absorberDiferencia()
-  + agregarCobro(cobro: AsientoCuentaCorriente)
-  + agregarPedido(pedido: Pedido)
+  + agregarCobro(asiento: AsientoCuentaCorriente)
   + aprobar(caja: Caja,\n      resolucionDeDiferencia: ResolucionDeDiferencia)
   + calcularDiferencia(): Moneda
   + calcularEfectivoEsperado(): Moneda
@@ -57,12 +56,14 @@ class RendicionChofer {
 class PedidoRendido {
   - importe: Moneda
   - medioDePago: MetodoDePago
-  + «create» PedidoRendido(pedido: Pedido)
 }
 class GastoDeRendicion {
   - importe: Moneda
   - descripcion: Cadena
   + «create» GastoDeRendicion(categoria: CategoriaDeCaja,\n      importe: Moneda, descripcion: Cadena)
+}
+class CobroDeRendicion {
+  - importe: Moneda
 }
 class Chofer <<referencia>>
 class Empleado <<referencia>>
@@ -70,16 +71,20 @@ class Pedido <<referencia>>
 class Caja <<referencia>>
 class MovimientoDeCaja <<referencia>>
 class CategoriaDeCaja <<referencia>>
-class AsientoComision <<referencia>>
+class AsientoCuentaCorriente <<referencia>>
+class CargaDeCamion <<referencia>>
 
 Chofer "1" *-- "0..*" RendicionChofer : presenta
 RendicionChofer "0..*" --> "0..1" Caja : ingresa en
 RendicionChofer "0..1" -- "0..1" MovimientoDeCaja : genera
-RendicionChofer "1" *--> "0..*" PedidoRendido : rinde
+RendicionChofer "1" *-- "0..*" PedidoRendido : rinde
 PedidoRendido "0..1" -- "1" Pedido : corresponde a
 RendicionChofer "1" *--> "0..*" GastoDeRendicion : declara
 GastoDeRendicion "0..*" -- "1" CategoriaDeCaja : se clasifica en
-RendicionChofer "0..1" -- "0..*" AsientoComision : origina
+RendicionChofer "1" *-- "0..*" CobroDeRendicion : incluye
+CobroDeRendicion "0..1" -- "1" AsientoCuentaCorriente : rinde
+CargaDeCamion "0..1" -- "0..*" RendicionChofer : respalda
+RendicionChofer ..> AsientoCuentaCorriente
 RendicionChofer ..> Empleado
 
 legend bottom right

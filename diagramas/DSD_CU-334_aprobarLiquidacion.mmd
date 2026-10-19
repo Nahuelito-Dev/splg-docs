@@ -2,26 +2,15 @@ sequenceDiagram
     title DSD — CU-334 Aprobar una Liquidación de Comisiones · aprobarLiquidacion
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :CommissionService
+    participant SRV as :DriverLiquidationService
     participant LIQS as :Map#lt;String, LiquidacionComisiones#gt;
     participant LIQ as liquidacion:LiquidacionComisiones
-    participant EMP as empleado:Empleado
 
     ADM->>+SRV: aprobarLiquidacion(liquidacionId)
     SRV->>+LIQS: get(liquidacionId)
     LIQS-->>-SRV: liquidacion
     SRV->>+LIQ: aprobar(administrador)
     LIQ->>LIQ: validarBorrador()
-    alt El neto es mayor que cero
-        LIQ->>LIQ: marcarAprobada()
-    else El neto es cero
-        LIQ->>LIQ: cerrarSinPago()
-    else El neto es negativo
-        LIQ->>LIQ: cerrarSinPago()
-        LIQ->>+EMP: registrarArrastre(liquidacion, saldoDeudor)
-        create participant NAC as nuevo:AsientoComision
-        EMP->>NAC: «create»(tipoDeAsientoDeComision, saldoDeudor, liquidacion)
-        deactivate EMP
-    end
+    LIQ->>LIQ: marcarAprobada()
     deactivate LIQ
     SRV-->>-ADM: liquidacion

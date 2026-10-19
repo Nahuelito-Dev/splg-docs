@@ -30,44 +30,39 @@ language es
 [C04] is colored in #D9A66B
 [C05] is colored in #D9A66B
 [C06] is colored in #D9A66B
--- Fase de Construcción: alcance ampliado, iteraciones iniciadas --
-[C-07 Cimientos y huecos cortos (C-07)] as [C07] starts 2026-10-01 and ends 2026-10-21
-[C-08 Personal y legajos (C-08)] as [C08] starts 2026-10-04 and ends 2026-11-05
+-- Fase de Construcción: alcance ampliado, iteraciones iniciadas o construidas --
+[C-07 Cimientos y huecos cortos (C-07)] as [C07] starts 2026-10-01 and ends 2026-10-17
+[C-08 Personal y legajos (C-08)] as [C08] starts 2026-10-04 and ends 2026-10-17
 [C-09 Stock y compras (C-09)] as [C09] starts 2026-10-11 and ends 2026-10-14
 [C-10 Pedido en curso (C-10)] as [C10] starts 2026-10-14 and ends 2026-10-29
+[C-11 Vigencia de envases (C-11)] as [C11] happens 2026-10-17
+[C-12 Carrito persistente (C-12)] as [C12] happens 2026-10-17
+[C-13 Consumo declarado (C-13)] as [C13] starts 2026-10-17 and ends 2026-10-26
+[C-17 Compra express y reintegros (C-17)] as [C17] happens 2026-10-17
+[C-18 Flota ampliada (C-18)] as [C18] happens 2026-10-17
+[C-20 Caja y rendición (C-20)] as [C20] happens 2026-10-17
 [C07] is colored in #E6C7A0
 [C08] is colored in #E6C7A0
 [C09] is colored in #E6C7A0
 [C10] is colored in #E6C7A0
+[C13] is colored in #E6C7A0
 -- Fase de Construcción: alcance ampliado, iteraciones pendientes (fechas estimadas) --
-[C-11 Vigencia de envases (C-11)] as [C11] starts 2026-10-19 and ends 2026-10-23
-[C-12 Carrito persistente (C-12)] as [C12] starts 2026-10-19 and ends 2026-10-26
-[C-13 Consumo declarado (C-13)] as [C13] starts 2026-10-19 and ends 2026-10-26
 [C-14 Flota, módulo M2 (C-14)] as [C14] starts 2026-10-19 and ends 2026-10-30
 [C-15 Recupero de envases, M5 (C-15)] as [C15] starts 2026-10-26 and ends 2026-11-02
 [C-16 Recompra, M3 (C-16)] as [C16] starts 2026-10-27 and ends 2026-11-03
-[C-17 Compra express y reintegros (C-17)] as [C17] starts 2026-10-30 and ends 2026-11-10
-[C-18 Flota ampliada (C-18)] as [C18] starts 2026-11-06 and ends 2026-11-19
 [C-19 Recorridos, M4 (C-19)] as [C19] starts 2026-11-11 and ends 2026-11-20
-[C-20 Caja y rendición (C-20)] as [C20] starts 2026-11-23 and ends 2026-12-18
-[C11] is colored in #F0E1CC
-[C12] is colored in #F0E1CC
-[C13] is colored in #F0E1CC
 [C14] is colored in #F0E1CC
 [C15] is colored in #F0E1CC
 [C16] is colored in #F0E1CC
-[C17] is colored in #F0E1CC
-[C18] is colored in #F0E1CC
 [C19] is colored in #F0E1CC
-[C20] is colored in #F0E1CC
 -- Fase de Transición --
-[T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-12-21 and ends 2027-02-19
+[T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-11-23 and ends 2027-01-22
 [T01] is colored in #B58AC2
 
 -- Hitos --
 [Plan del Proyecto aprobado] happens 2026-04-28
 [Arquitectura validada] happens 2026-05-19
 [Release 2.0] happens 2026-09-08
-[Construcción terminada] happens 2026-12-18
-[Sistema en producción] happens 2027-02-19
+[Construcción terminada] happens 2026-11-20
+[Sistema en producción] happens 2027-01-22
 @endgantt

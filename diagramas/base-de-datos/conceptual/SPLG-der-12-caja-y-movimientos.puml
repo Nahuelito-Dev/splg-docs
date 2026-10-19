@@ -20,7 +20,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity Caja <<propuesto>> #FFF6D9;line:1F5E8C {
+entity Caja {
   * identificador
   --
   {field} nombre
@@ -29,7 +29,7 @@ entity Caja <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} requiere sesión
   {field} activa
 }
-entity SesionDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
+entity SesionDeCaja {
   * identificador
   --
   {field} estado
@@ -41,7 +41,7 @@ entity SesionDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} /diferencia
   {field} observaciones
 }
-entity CategoriaDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
+entity CategoriaDeCaja {
   * identificador
   --
   {field} nombre
@@ -49,7 +49,7 @@ entity CategoriaDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} código de sistema
   {field} activa
 }
-entity MovimientoDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
+entity MovimientoDeCaja {
   * identificador
   --
   {field} sentido
@@ -60,6 +60,8 @@ entity MovimientoDeCaja <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} origen
 }
 entity Distribuidora #F1F1F1 {
+}
+entity Usuario #F1F1F1 {
 }
 entity RendicionChofer #F1F1F1 {
 }
@@ -74,13 +76,14 @@ Distribuidora ||--o{ Caja : define >
 Distribuidora ||--o{ CategoriaDeCaja : define >
 Caja ||--o{ SesionDeCaja : registra >
 Caja ||--o{ MovimientoDeCaja : asienta >
-SesionDeCaja |o--o{ MovimientoDeCaja : agrupa >
 CategoriaDeCaja ||--o{ MovimientoDeCaja : clasifica >
+Usuario ||--o{ MovimientoDeCaja : registró >
 MovimientoDeCaja |o--o| MovimientoDeCaja : anula a >
-LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
-RendicionChofer }o--o| Caja : ingresa en >
-RendicionChofer |o--o| MovimientoDeCaja : genera >
+SesionDeCaja |o--o{ MovimientoDeCaja : agrupa >
 AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
+LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
+RendicionChofer |o--o| MovimientoDeCaja : genera >
+RendicionChofer }o--o| Caja : ingresa en >
 GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
 
 legend bottom right

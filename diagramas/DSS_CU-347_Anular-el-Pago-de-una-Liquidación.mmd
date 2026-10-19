@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSS — CU-347 Anular el Pago de una Liquidación
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: anularPagoDeLiquidacion(liquidacionId, motivo)
+    activate SIS
+    alt la liquidación está pagada y conserva el movimiento de su pago
+        SIS-->>ADM: liquidación aprobada, con el dinero devuelto a la caja
+    else el motivo falta
+        SIS-->>ADM: error de solicitud
+    else el Administrador General no indica la distribuidora
+        SIS-->>ADM: error de solicitud (Falta la distribuidora)
+    else la liquidación no existe o es de otra distribuidora
+        SIS-->>ADM: recurso no encontrado
+    else la liquidación no está pagada o no conserva el movimiento de su pago
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

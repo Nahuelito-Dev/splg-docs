@@ -5,9 +5,6 @@ sequenceDiagram
     participant SRV as :VehicleAccidentService
     participant COS as :Map#lt;String, Siniestro#gt;
     participant SIN as siniestro:Siniestro
-    participant VEH as vehiculo:Vehiculo
-    participant LST as :List#lt;AsignacionVehiculo#gt;
-    participant AGN as asignacion:AsignacionVehiculo
 
     ADM->>+SRV: modificarSiniestro(siniestroId, datos)
     SRV->>+COS: get(siniestroId)
@@ -15,11 +12,5 @@ sequenceDiagram
     SRV->>+SIN: modificar(datos)
     SIN->>SIN: assertNoCerrado()
     SIN->>SIN: validarTransicion(estadoDestino)
-    opt El vehículo quedó inutilizable
-        SIN->>VEH: ponerFueraDeServicio()
-        VEH->>+LST: getAbierta()
-        LST-->>-VEH: asignacion
-        VEH->>AGN: cerrar(ahora)
-    end
     deactivate SIN
     SRV-->>-ADM: siniestro

@@ -6,13 +6,24 @@ sequenceDiagram
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
     participant INC as incidencia:Incidencia
+    participant LDG as :CashLedgerService
+    participant CAJ as caja:Caja
 
-    ADM->>+CCU: resolverCobroImpago(pedidoId, resolucion, nota)
+    ADM->>+CCU: resolverCobroImpago(pedidoId, resolucion, nota, cajaId)
     CCU->>+PEDS: get(pedidoId)
     PEDS-->>-CCU: pedido
     CCU->>+PED: resolverImpago(administrador, resolucion, nota)
     PED->>PED: validarImpago()
     PED-->>-CCU: pedido
+    opt La resolución es cobrado y hay cajas de efectivo
+        CCU->>+LDG: registrarMovimientoDeCaja(cajaId, ingreso, saldoACobrar, cobroDePedido, enEfectivo)
+        LDG->>+CAJ: registrarMovimiento(entrada, saldoACobrar, cobroDePedido, enEfectivo, referencia)
+        create participant NMO as nuevo:MovimientoDeCaja
+        CAJ->>NMO: «create»(entrada, saldoACobrar, cobroDePedido, enEfectivo, referencia)
+        CAJ->>CAJ: actualizarSaldo(entrada, saldoACobrar)
+        CAJ-->>-LDG: movimiento
+        LDG-->>-CCU: movimiento
+    end
     CCU->>+PED: getIncidenciaDeCobro()
     PED-->>-CCU: incidencia
     CCU->>INC: resolver(nota)

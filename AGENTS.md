@@ -17,7 +17,7 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 ## Reglas
 
 - `README.md` explica qué archivo es qué. Los cinco documentos numerados son los que se
-  entregan; `Casos-de-Uso.md` reúne los 334 CU con sus cuatro artefactos.
+  entregan; `Casos-de-Uso.md` reúne los 338 CU con sus cuatro artefactos.
 - Los `.md` son la fuente; los HTML se generan. No se editan HTML a mano.
 - Toda afirmación sobre el sistema (endpoint, regla, estado) se comprueba contra la API
   corriendo antes de escribirla. Leer el código no alcanza.

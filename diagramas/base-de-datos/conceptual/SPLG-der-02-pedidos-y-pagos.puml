@@ -99,6 +99,18 @@ entity Pago {
   {field} es seña
   {field} fecha
 }
+entity ReintegroDePago {
+  * identificador
+  --
+  {field} tipo
+  {field} importe
+  {field} estado
+  {field} intentos
+  {field} reintegrado el
+  {field} referencia en la pasarela
+  {field} mensaje de error
+  {field} devuelto antes del intento
+}
 entity Cliente #F1F1F1 {
 }
 entity Chofer #F1F1F1 {
@@ -113,6 +125,8 @@ entity Distribuidora #F1F1F1 {
 }
 entity Reclamo #F1F1F1 {
 }
+entity AsientoCuentaCorriente #F1F1F1 {
+}
 entity Envase #F1F1F1 {
 }
 entity Incidencia #F1F1F1 {
@@ -126,8 +140,6 @@ entity InvitacionRecompra #F1F1F1 {
 entity ParadaLote #F1F1F1 {
 }
 entity AsientoComision #F1F1F1 {
-}
-entity AsientoCuentaCorriente #F1F1F1 {
 }
 entity MovimientoEnvase #F1F1F1 {
 }
@@ -146,6 +158,7 @@ Chofer |o--o{ Pedido : entrega >
 Distribuidora ||--o{ Pedido : gestiona >
 Pedido }o--o| FranjaHoraria : se programa en >
 Pedido ||--o{ Reclamo : origina >
+Pedido |o--o{ AsientoCuentaCorriente : origina >
 Pedido |o--o{ Envase : despacha >
 Pedido ||--o{ Incidencia : origina >
 Usuario ||--o{ CambioDireccion : realiza >
@@ -162,8 +175,9 @@ Pedido ||--o{ Calificacion : recibe [0..2] >
 InvitacionRecompra |o--o| Pedido : se convierte en >
 ParadaLote }o--|| Pedido : atiende >
 AsientoComision }o--o| Pedido : corresponde a >
-Pedido |o--o{ AsientoCuentaCorriente : origina >
 Pedido |o--o{ MovimientoEnvase : origina >
+ReintegroDePago }o--|| Pedido : devuelve el cobro de >
+Pago ||--o{ ReintegroDePago : se devuelve con >
 PedidoRendido |o--|| Pedido : corresponde a >
 Usuario |o--o{ Pedido : confirmó el cobro de >
 Usuario |o--o{ Pedido : resolvió el cobro de >

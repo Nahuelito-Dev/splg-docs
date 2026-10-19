@@ -39,8 +39,10 @@ interface PaymentGatewayPort <<puerto>> {
   + refundPayment(pago: Pago, importe: Moneda): Cadena
   + verifyWebhookSignature(firma: Cadena,\n      identificadorDelPago: Identificador): Booleano
 }
-class RefundPaymentUseCase <<controlador>> {
+class RefundsService <<fachada>> {
+  + consultarReintegroDelPedido(pedidoId: Identificador): Registro
   + reintegrarPagoDelPedido(pedidoId: Identificador,\n      importe: Moneda): Booleano
+  + validarQueElPedidoEsDelCliente()
 }
 class ConfirmPaymentUseCase <<controlador>> {
   + notificarResultadoDePago(tipoDeNotificacion: Cadena,\n      identificadorDelPago: Cadena, firma: Cadena)
@@ -64,9 +66,8 @@ ConfirmPaymentUseCase --> "1" NotificationPort
 ConfirmPaymentUseCase --> "1" RealtimeDispatchPort
 PaymentsService --> "1" Map_String_Pedido
 PaymentsService --> "1" PaymentGatewayPort
-RefundPaymentUseCase --> "1" Map_String_Pedido
-RefundPaymentUseCase --> "1" PaymentGatewayPort
-RefundPaymentUseCase --> "1" RealtimeDispatchPort
+RefundsService --> "1" Map_String_Pedido
+RefundsService --> "1" PaymentGatewayPort
 ReservationService --> "1" List_Pedido
 ReservationService --> "1" Map_String_Pedido
 ConfirmPaymentUseCase ..> Pago
@@ -74,8 +75,9 @@ ConfirmPaymentUseCase ..> PaymentGatewayPort
 ConfirmPaymentUseCase ..> Pedido
 PaymentsService ..> "<<create>>" Pago
 PaymentsService ..> Pedido
-RefundPaymentUseCase ..> Pago
-RefundPaymentUseCase ..> Pedido
+RefundsService ..> Pago
+RefundsService ..> Pedido
+RefundsService ..> RealtimeDispatchPort
 ReservationService ..> Pedido
 
 legend bottom right

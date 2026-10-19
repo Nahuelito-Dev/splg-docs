@@ -71,11 +71,8 @@ def manifiesto():
 # Un DSD de un caso planificado puede nombrarlas; en uno implementado, no.
 PROPUESTAS_CLASE = {
   # Carrito persistente (C-12)
-  "CartController": "CU-122 a CU-126: endpoints del carrito; el módulo cart solo registra las entidades",
-  "CartService": "CU-122 a CU-126: agregar, modificar, quitar, consultar y vaciar el carrito",
   # Consumo declarado y recompra (C-13, C-16): módulo repurchase (D8)
-  "ConsumptionService": "CU-143, CU-144: orquesta el consumo declarado fuera de customer, para no crear un ciclo con order",
-  "ConsumptionEstimatorService": "CU-143, CU-144, CU-106: estimador de la fecha de recompra (función pura en el módulo repurchase)",
+  "ConsumptionEstimatorService": "CU-106: estimador de la fecha de recompra (función pura en el módulo repurchase)",
   "RepurchaseController": "CU-144, CU-146: endpoints de consumo y de recompras estimadas, en el módulo repurchase",
   "RepurchaseEstimatesService": "CU-146: listado administrativo de recompras estimadas",
   "RepurchaseForecastService": "CU-106: proceso diario que estima e invita",
@@ -97,35 +94,11 @@ PROPUESTAS_CLASE = {
   "RouteBatchRepositoryPort": "CU-107: persistencia de lotes, paradas y ofertas",
   "RouteSequencerService": "CU-107: orden de las paradas de un lote",
   # Pequeños huecos (C-07)
-  "CoverageZoneCronService": "CU-151: barrido que desactiva las zonas vencidas",
   # Configuración de los procesos automáticos (C-07); el despacho y las tareas (CU-171, CU-173) ya están construidos
-  "ProcessConfigService": "CU-172: valida los parámetros de un proceso automático contra el esquema de ese proceso y los guarda con ModuleConfigService",
   # Caja, rendición, cuentas corrientes y comisiones (C-20)
-  "CashBoxService": "CU-225 a CU-227, CU-264: cajas y sesiones de caja con arqueo, módulo cash",
-  "CashLedgerService": "CU-228, CU-229: punto único de escritura del libro de caja y de los saldos",
-  "CashCategoryService": "CU-230, CU-265: categorías de ingresos y gastos de caja",
-  "DriverSettlementService": "CU-232, CU-233: presentación, aprobación y reapertura de la rendición del chofer",
-  "DriverSettlementCron": "CU-231: proceso diario que abre las rendiciones",
-  "SettlementOverdueCron": "CU-234: proceso diario que avisa las rendiciones sin cerrar",
-  "CustomerAccountService": "CU-235 a CU-239: cuentas corrientes, cargos, pagos, ajustes y consultas",
-  "CommissionService": "CU-240 a CU-244: reglas, comisiones por entrega y liquidaciones",
-  "FinanceDashboardService": "CU-245: tablero financiero",
   # Reintegro de pagos (C-17)
-  "ReintegroListener": "CU-168: escucha el evento de pedido cancelado",
-  "RefundPaymentUseCase": "CU-168: devuelve el pago por la pasarela, fuera de la transacción de la cancelación",
   # Personal y legajos (C-08): módulo employee. Puestos, legajos, egreso y cuenta ya están construidos.
-  "AttendanceService": "CU-189, CU-190: jornadas de trabajo, cargadas por el panel o marcadas por el chofer",
-  "LeaveService": "CU-191, CU-192: licencias y ausencias, su solicitud y su resolución",
-  "PersonnelDashboardService": "CU-194: cifras del tablero de personal",
-  "VacationPolicy": "CU-193: función pura de los días de vacaciones por antigüedad, LCT art. 150 (domain/vacaciones.ts)",
   # Flota ampliada (C-18): módulo fleet-expense
-  "FuelLoadService": "CU-195, CU-196: cargas de combustible y consumo de un vehículo, en el módulo fleet-expense",
-  "FuelConsumptionCalculator": "CU-195, CU-196: función pura del consumo por tramo entre cargas de tanque lleno y de su desvío (domain/consumo.ts)",
-  "TrafficFineService": "CU-198 a CU-200: multas de tránsito, su pago y su imputación al chofer",
-  "FleetExpenseAlertsCron": "CU-198: aviso diario de las multas por vencer, 08:00 hora argentina",
-  "VehicleAccidentService": "CU-201, CU-202: siniestros de los vehículos, su avance y su cierre",
-  "FleetCostReportService": "CU-203, CU-204: modelo de lectura del costo por vehículo y de la flota, en el módulo reports",
-  "TireService": "CU-205, CU-206: neumáticos y sus movimientos (funcionalidad opcional)",
 }
 
 

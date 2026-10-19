@@ -1,0 +1,22 @@
+sequenceDiagram
+    title DSS — CU-345 Modificar un Administrador
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: modificarAdministrador(administradorId, nombreCompleto, telefono)
+    activate SIS
+    alt los datos son válidos y quien pide puede modificarlo
+        SIS-->>ADM: administrador con el nombre y el teléfono nuevos
+    else el nombre o el teléfono no son válidos
+        SIS-->>ADM: error de solicitud
+    else el Administrador General no indica la distribuidora al modificar a un administrador de empresa
+        SIS-->>ADM: error de solicitud (Falta la distribuidora)
+    else el administrador no existe, está dado de baja, es de otra distribuidora, o es un Administrador General y quien pide es de empresa
+        SIS-->>ADM: recurso no encontrado
+    else un administrador de empresa intenta modificar su propio perfil
+        SIS-->>ADM: acceso denegado (no se puede)
+    else el teléfono ya lo usa otra cuenta
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

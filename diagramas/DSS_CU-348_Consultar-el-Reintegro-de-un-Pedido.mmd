@@ -1,0 +1,14 @@
+sequenceDiagram
+    title DSS — CU-348 Consultar el Reintegro de un Pedido
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant SIS as :Sistema
+
+    CLI->>SIS: consultarReintegroDelPedido(pedidoId)
+    activate SIS
+    alt el pedido es del cliente
+        SIS-->>CLI: devoluciones del pago del pedido, de la más vieja a la más nueva (vacío si no hubo ninguna)
+    else el pedido no existe o es de otro cliente
+        SIS-->>CLI: recurso no encontrado
+    end
+    deactivate SIS

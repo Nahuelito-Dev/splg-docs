@@ -2,19 +2,17 @@ sequenceDiagram
     title DSD — CU-193 Consultar el Saldo de Vacaciones de un Empleado · consultarSaldoDeVacaciones
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :EmployeeService
+    participant SRV as :LeaveService
     participant COE as :Map#lt;String, Empleado#gt;
     participant EMP as empleado:Empleado
     participant LIC as licencia:LicenciaLaboral
-    participant VAC as :VacationPolicy
 
     ADM->>+SRV: consultarSaldoDeVacaciones(empleadoId, anio)
     SRV->>+COE: get(empleadoId)
     COE-->>-SRV: empleado
     SRV->>+EMP: getFechaDeIngreso()
     EMP-->>-SRV: fechaDeIngreso
-    SRV->>+VAC: diasCorrespondientes(fechaDeIngreso, anio)
-    VAC-->>-SRV: correspondientes
+    SRV->>SRV: diasCorrespondientes(fechaDeIngreso, anio)
     SRV->>+EMP: getDiasTomados(anio)
     loop Por cada licencia de vacaciones aprobada del año
         EMP->>LIC: getDias()

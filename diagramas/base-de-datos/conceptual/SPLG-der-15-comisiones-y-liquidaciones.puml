@@ -38,7 +38,7 @@ entity Empleado {
   {field} modalidad de contratación
   {field} estado
 }
-entity ReglaComision <<propuesto>> #FFF6D9;line:1F5E8C {
+entity ReglaComision {
   * identificador
   --
   {field} base
@@ -47,7 +47,7 @@ entity ReglaComision <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} vigente hasta
   {field} activa
 }
-entity AsientoComision <<propuesto>> #FFF6D9;line:1F5E8C {
+entity AsientoComision {
   * identificador
   --
   {field} tipo
@@ -55,7 +55,7 @@ entity AsientoComision <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} fecha
   {field} descripción
 }
-entity LiquidacionComisiones <<propuesto>> #FFF6D9;line:1F5E8C {
+entity LiquidacionComisiones {
   * identificador
   --
   {field} número
@@ -77,8 +77,6 @@ entity Pedido #F1F1F1 {
 entity MovimientoDeCaja #F1F1F1 {
 }
 entity Distribuidora #F1F1F1 {
-}
-entity RendicionChofer #F1F1F1 {
 }
 entity PuestoDeTrabajo #F1F1F1 {
 }
@@ -113,14 +111,14 @@ Empleado |o--o{ CargaCombustible : carga >
 TareaMantenimiento }o--o| Empleado : habilita >
 Empleado |o--o{ MultaTransito : responde por >
 Empleado |o--o{ Siniestro : interviene en >
-Empleado ||--o{ LiquidacionComisiones : percibe >
 LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
+Empleado ||--o{ LiquidacionComisiones : percibe >
 Empleado |o--o{ CargaDeCamion : ayuda en >
+Chofer |o--o{ AsientoComision : genera >
 Empleado ||--o{ AsientoComision : devenga >
+LiquidacionComisiones |o--o{ AsientoComision : incluye >
 AsientoComision }o--o| Pedido : corresponde a >
 ReglaComision |o--o{ AsientoComision : determina >
-RendicionChofer |o--o{ AsientoComision : origina >
-LiquidacionComisiones |o--o{ AsientoComision : incluye >
 Empleado ||--o{ Adjunto : conserva >
 Empleado |o--o| Chofer : actúa como >
 

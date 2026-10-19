@@ -94,6 +94,9 @@ _c("ZonaCobertura", "VentaYPedidos",
 _c("FranjaHoraria", "VentaYPedidos", ["desde", "hasta", "cupo", "activa"])
 
 _c("Pago", "Pagos", ["importe", "pasarela", "estado", "es seña", "fecha"])
+_c("ReintegroDePago", "Pagos",
+   ["tipo", "importe", "estado", "intentos", "reintegrado el", "referencia en la pasarela",
+    "mensaje de error", "devuelto antes del intento"])
 
 _c("PropuestaConVigencia", "DespachoYLogistica", ["estado", "vence"], abstracta=True)
 _c("OfertaDespacho", "DespachoYLogistica")
@@ -188,6 +191,7 @@ _c("RendicionChofer", "CajaYFinanzas",
     "/gastos del chofer", "/diferencia", "resolución de la diferencia", "presentada el",
     "aprobada el", "observaciones", "aviso enviado el"])
 _c("PedidoRendido", "CajaYFinanzas", ["importe", "medio de pago"])
+_c("CobroDeRendicion", "CajaYFinanzas", ["importe"])
 _c("GastoDeRendicion", "CajaYFinanzas", ["importe", "descripción"])
 _c("CuentaCorriente", "CajaYFinanzas",
    ["razón social", "CUIT", "condición fiscal", "límite de crédito", "plazo de pago en días",
@@ -260,6 +264,8 @@ ASOCIACIONES = [
     ("Usuario", "1", "-", "0..*", "CambioDireccion", "realiza", TR),
     ("Chofer", "0..1", "-", "0..*", "Pedido", "entrega", TR),
     ("Pedido", "1", "-", "0..*", "Pago", "se salda con", TR),
+    ("Pago", "1", "-", "0..*", "ReintegroDePago", "se devuelve con", TR),
+    ("ReintegroDePago", "0..*", "-", "1", "Pedido", "devuelve el cobro de", TR),
 
     ("Pedido", "1", "*", "0..*", "OfertaDespacho", "genera", TR),
     ("OfertaDespacho", "0..*", "-", "1", "Chofer", "se dirige a", TR),
@@ -376,11 +382,13 @@ ASOCIACIONES = [
     ("GastoDeRendicion", "0..*", "-", "1", "CategoriaDeCaja", "se clasifica en", DE),
     ("Cliente", "1", "-", "0..*", "CuentaCorriente", "tiene habilitada", UG),
     ("CuentaCorriente", "1", "*", "0..*", "AsientoCuentaCorriente", "registra", RG),
+    ("CuentaCorriente", "1", "-", "0..*", "ImputacionCuentaCorriente", "contiene", TR),
     ("Pedido", "0..1", "-", "0..*", "AsientoCuentaCorriente", "origina", TR),
     ("AsientoCuentaCorriente", "0..1", "-", "0..1", "MovimientoDeCaja", "se asienta en", TR),
     ("Chofer", "0..1", "-", "0..*", "AsientoCuentaCorriente", "cobra", TR),
-    ("RendicionChofer", "0..1", "-", "0..*", "AsientoCuentaCorriente", "incluye", TR),
-    ("AsientoCuentaCorriente", "0..1", "-", "0..1", "AsientoCuentaCorriente", "anula a", TR),
+    ("RendicionChofer", "1", "*", "0..*", "CobroDeRendicion", "incluye", LT),
+    ("CobroDeRendicion", "0..1", "-", "1", "AsientoCuentaCorriente", "rinde", DE),
+    ("CargaDeCamion", "0..1", "-", "0..*", "RendicionChofer", "respalda", TR),
     ("ImputacionCuentaCorriente", "0..*", "-", "1", "AsientoCuentaCorriente", "salda", TR),
     ("ImputacionCuentaCorriente", "0..*", "-", "1", "AsientoCuentaCorriente", "se aplica con", TR),
     ("ReglaComision", "0..*", "-", "0..1", "Empleado", "se aplica a", DE),
@@ -391,7 +399,7 @@ ASOCIACIONES = [
     ("AsientoComision", "0..*", "-", "0..1", "Pedido", "corresponde a", DE),
     ("ReglaComision", "0..1", "-", "0..*", "AsientoComision", "determina", TR),
     ("LiquidacionComisiones", "0..1", "-", "0..*", "AsientoComision", "incluye", TR),
-    ("RendicionChofer", "0..1", "-", "0..*", "AsientoComision", "origina", TR),
+    ("Chofer", "0..1", "-", "0..*", "AsientoComision", "genera", TR),
     ("LiquidacionComisiones", "0..1", "-", "0..1", "MovimientoDeCaja", "se paga con", TR),
 ]
 
@@ -410,7 +418,7 @@ VISTAS = [
      ["Chofer", "Producto", "Pedido"]),
     ("Pedidos y pagos", "MC_Pedidos",
      ["Pedido", "ItemPedido", "Carrito", "ItemCarrito", "CambioEstadoPedido",
-      "CambioDireccion", "ZonaCobertura", "FranjaHoraria", "Pago"],
+      "CambioDireccion", "ZonaCobertura", "FranjaHoraria", "Pago", "ReintegroDePago"],
      ["Cliente", "Chofer", "Producto", "DireccionEntrega", "Usuario", "Distribuidora"]),
     ("Despacho y propuestas con vigencia", "MC_Despacho",
      ["PropuestaConVigencia", "OfertaDespacho", "OfertaLote", "LoteRecorrido", "ParadaLote"],
@@ -446,9 +454,9 @@ VISTAS = [
      ["Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja"],
      ["Distribuidora", "Usuario", "RendicionChofer", "AsientoCuentaCorriente", "LiquidacionComisiones"]),
     ("Rendiciones de choferes", "MC_Rendiciones",
-     ["RendicionChofer", "PedidoRendido", "GastoDeRendicion"],
+     ["RendicionChofer", "PedidoRendido", "GastoDeRendicion", "CobroDeRendicion"],
      ["Chofer", "Pedido", "Caja", "MovimientoDeCaja", "CategoriaDeCaja", "AsientoCuentaCorriente",
-      "AsientoComision"]),
+      "AsientoComision", "CargaDeCamion"]),
     ("Cuentas corrientes", "MC_Cuentas-corrientes",
      ["CuentaCorriente", "AsientoCuentaCorriente", "ImputacionCuentaCorriente"],
      ["Cliente", "Distribuidora", "Pedido", "MovimientoDeCaja", "Chofer", "RendicionChofer"]),
@@ -472,7 +480,7 @@ TABLA = {
     "AvisoRecupero": "cylinder_recovery_notice", "Carrito": "cart", "ItemCarrito": "cart_item",
     "Pedido": "order", "ItemPedido": "order_item", "CambioEstadoPedido": "order_status_history",
     "CambioDireccion": "order_address_change", "ZonaCobertura": "coverage_zone",
-    "FranjaHoraria": "time_slot", "Pago": "payment", "PropuestaConVigencia": None,
+    "FranjaHoraria": "time_slot", "Pago": "payment", "ReintegroDePago": "payment_refund", "PropuestaConVigencia": None,
     "OfertaDespacho": "order_dispatch_offer", "LoteRecorrido": "route_batch",
     "ParadaLote": "route_batch_stop", "OfertaLote": "route_batch_offer",
     "Chofer": "delivery", "Vehiculo": "car", "AsignacionVehiculo": "vehicle_assignment",
@@ -498,6 +506,7 @@ TABLA = {
     "Caja": "cash_box", "SesionDeCaja": "cash_session", "CategoriaDeCaja": "cash_category",
     "MovimientoDeCaja": "cash_movement", "RendicionChofer": "driver_settlement",
     "PedidoRendido": "driver_settlement_order", "GastoDeRendicion": "driver_settlement_expense",
+    "CobroDeRendicion": "driver_settlement_collection",
     "CuentaCorriente": "customer_account", "AsientoCuentaCorriente": "customer_account_entry",
     "ImputacionCuentaCorriente": "customer_account_allocation",
     "ReglaComision": "commission_rule", "AsientoComision": "commission_entry",
@@ -505,24 +514,13 @@ TABLA = {
 }
 
 
-# Conceptos de los módulos de gestión de la distribuidora que todavía no tienen tabla en la base
-# (concepto -> iteración en que se construyen): las jornadas y licencias del personal (C-08; los puestos y los
-# legajos ya están construidos), la flota ampliada (C-18), el stock y
-# las compras (C-09) y la caja y rendición (C-20). Sus tablas están en `propuesto_personal.py`, `propuesto_flota.py` y la constante
-# PROPUESTO de `generar-modelo-datos.py`. Todo lo que contrasta el modelo con la base los trata aparte.
-PLANIFICADOS = {c: "C-08" for c in ("JornadaDeTrabajo", "LicenciaLaboral")}
-PLANIFICADOS.update({c: "C-18" for c in ("CargaCombustible", "MultaTransito", "Siniestro", "Neumatico",
-                                         "MovimientoNeumatico")})
-PLANIFICADOS.update({c: "C-20" for c in (
-    "Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja", "RendicionChofer",
-    "PedidoRendido", "GastoDeRendicion", "CuentaCorriente", "AsientoCuentaCorriente",
-    "ImputacionCuentaCorriente", "ReglaComision", "AsientoComision", "LiquidacionComisiones")})
+# Conceptos que todavía no tienen tabla en la base (concepto -> iteración en que se construyen). Hoy no hay ninguno:
+# el personal, la flota ampliada, el stock, las compras, la caja y la rendición ya están construidos y sus tablas salen
+# de la base. Todo lo que contrasta el modelo con la base lo trata aparte si vuelve a haber alguno.
+PLANIFICADOS = {}
 # Atributos planificados de conceptos que ya existen: (concepto, atributo).
-ATRIBUTOS_PLANIFICADOS = {("PlanMantenimiento", "documento que controla"): "C-08",
-                          ("PlanMantenimiento", "aplica a"): "C-08",
-                          ("TareaMantenimiento", "vigente desde"): "C-08", ("TareaMantenimiento", "detalle"): "C-08",
-                          ("Vehiculo", "tipo de combustible"): "C-18", ("Vehiculo", "capacidad del tanque"): "C-18"}
-# Módulo del backend de cada concepto planificado (y del Adjunto, que ya está implementado).
+ATRIBUTOS_PLANIFICADOS = {}
+# Módulo del backend de cada concepto de los módulos de gestión de la distribuidora.
 MODULO_PLANIFICADO = {"JornadaDeTrabajo": "employee", "LicenciaLaboral": "employee", "Adjunto": "attachment",
                       "CargaCombustible": "fleet-expense", "MultaTransito": "fleet-expense",
                       "Siniestro": "fleet-expense", "Neumatico": "fleet-expense",
@@ -535,8 +533,9 @@ MODULO_PLANIFICADO = {"JornadaDeTrabajo": "employee", "LicenciaLaboral": "employ
                       "GastoDeRendicion": "driver-settlement", "CuentaCorriente": "customer-account",
                       "AsientoCuentaCorriente": "customer-account", "ImputacionCuentaCorriente": "customer-account",
                       "ReglaComision": "commission", "AsientoComision": "commission",
-                      "LiquidacionComisiones": "commission"}
-# Tipo de cada atributo planificado, para el diagrama de clases de diseño: el código no lo tiene todavía.
+                      "LiquidacionComisiones": "commission", "ReintegroDePago": "payments",
+                      "CobroDeRendicion": "driver-settlement"}
+# Tipo de cada atributo de los módulos de gestión, para el diagrama de clases de diseño.
 TIPOS_PLANIFICADOS = {
     ("Vehiculo", "tipo de combustible"): "TipoDeCombustible",
     ("Vehiculo", "capacidad del tanque"): "Decimal",
@@ -666,6 +665,9 @@ ATRIBUTOS = {
                       "vigente desde": "valid_from", "vigente hasta": "valid_until", "activa": "isActive"},
     "FranjaHoraria": {"desde": "startTime", "hasta": "endTime", "cupo": "capacity",
                       "activa": "isActive"},
+    "ReintegroDePago": {"tipo": "kind", "importe": "amount", "estado": "status", "intentos": "attempts",
+                        "reintegrado el": "refunded_at", "referencia en la pasarela": "gateway_refund_id",
+                        "mensaje de error": "error_message", "devuelto antes del intento": "refunded_baseline"},
     "Pago": {"importe": "amount", "pasarela": "gateway", "estado": "status",
              "es seña": "is_deposit", "fecha": "createdAt"},
     "OfertaDespacho": {"estado": "status", "vence": "expiresAt"},
@@ -729,10 +731,10 @@ ATRIBUTOS = {
                   "vehículo inutilizable": "vehicle_unusable", "costo de reparación": "repair_cost",
                   "reintegro del seguro": "insurer_reimbursement", "franquicia": "deductible_amount",
                   "cerrado el": "closed_at"},
-    "Neumatico": {"número de serie": "serial", "marca": "brand", "medida": "size", "costo": "cost",
+    "Neumatico": {"número de serie": "serial_number", "marca": "brand", "medida": "size", "costo": "cost",
                   "estado": "status", "posición": "position",
                   "kilometraje de montaje": "mounted_odometer_km"},
-    "MovimientoNeumatico": {"tipo": "event_type", "kilometraje": "odometer_km", "fecha": "occurred_at"},
+    "MovimientoNeumatico": {"tipo": "type", "kilometraje": "odometer_km", "fecha": "createdAt"},
     # Stock físico, compras y carga del camión (implementados)
     "Deposito": {"nombre": "name", "código": "code", "tipo": "kind", "dirección": "address",
                  "predeterminado": "is_default", "activo": "is_active"},
@@ -795,8 +797,9 @@ ATRIBUTOS = {
                         "/gastos del chofer": "driver_expenses", "/diferencia": "difference",
                         "resolución de la diferencia": "difference_resolution",
                         "presentada el": "submitted_at", "aprobada el": "approved_at",
-                        "observaciones": "notes", "aviso enviado el": "alerted_at"},
+                        "observaciones": "notes", "aviso enviado el": "overdue_alerted_at"},
     "PedidoRendido": {"importe": "amount", "medio de pago": "payment_method"},
+    "CobroDeRendicion": {"importe": "amount"},
     "GastoDeRendicion": {"importe": "amount", "descripción": "description"},
     "CuentaCorriente": {"razón social": "business_name", "CUIT": "tax_id",
                         "condición fiscal": "tax_condition", "límite de crédito": "credit_limit",
@@ -859,7 +862,6 @@ NOMBRE_POR_COLUMNA = {
     ("customer_account_allocation", "debit_entry_id"): "salda",
     ("customer_account_allocation", "credit_entry_id"): "se aplica con",
     ("cash_movement", "reverses_movement_id"): "anula a",
-    ("customer_account_entry", "reverses_entry_id"): "anula a",
 }
 
 # Columnas que solo dicen quién hizo algo: no son asociaciones del dominio.
@@ -871,10 +873,11 @@ AUTORIA_TECNICA = {("maintenance_task_attachment", "uploaded_by_user_id"),
                    ("employee_attendance", "recorded_by_user_id"),
                    ("fuel_load", "created_by_user_id"), ("tire_event", "created_by_user_id"),
                    ("cash_session", "opened_by_user_id"), ("cash_session", "closed_by_user_id"),
-                   ("cash_movement", "created_by_user_id"), ("driver_settlement", "submitted_by_user_id"),
+                   ("driver_settlement", "submitted_by_user_id"),
                    ("driver_settlement", "approved_by_user_id"),
                    ("customer_account_entry", "created_by_user_id"), ("commission_entry", "created_by_user_id"),
-                   ("driver_liquidation", "approved_by_user_id")}
+                   ("driver_liquidation", "approved_by_user_id"), ("driver_liquidation", "paid_by_user_id"),
+                   ("driver_liquidation", "created_by_user_id"), ("vehicle_accident", "created_by_user_id")}
 
 def asociacion_de_fk(tabla, col, destino):
     """La asociación del modelo conceptual que sostiene una clave foránea, o None

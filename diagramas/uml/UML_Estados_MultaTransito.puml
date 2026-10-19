@@ -1,5 +1,5 @@
 @startuml
-title Diagrama de estados — Multa de tránsito (planificado, C-18)
+title Diagrama de estados — Multa de tránsito
 !include ../estilo-vp.iuml
 hide empty description
 state "Pendiente\n(pending)" as PENDING

@@ -30,15 +30,22 @@ hide empty members
 left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
-class CommissionService <<fachada>> {
-  + anularLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
-  + aprobarLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
-  + consultarMisComisiones(fechaDesde: Fecha,\n      fechaHasta: Fecha): AsientoComision[*]
+class CommissionRuleService <<fachada>> {
   + crearReglaDeComision(empleadoId: Identificador,\n      productoId: Identificador, base: BaseDeComision,\n      valor: Decimal, vigenteDesde: Fecha): ReglaComision
-  + liquidarComisionesDelChofer(empleadoId: Identificador,\n      fechaDesde: Fecha,\n      fechaHasta: Fecha): LiquidacionComisiones
   + modificarReglaDeComision(reglaId: Identificador,\n      datos: Registro): ReglaComision
-  + pagarLiquidacion(liquidacionId: Identificador,\n      cajaId: Identificador): LiquidacionComisiones
+}
+class CommissionLedgerService <<fachada>> {
   + registrarComisionDeEntrega(pedidoId: Identificador)
+}
+class DriverLiquidationService <<fachada>> {
+  + anularLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
+  + anularPagoDeLiquidacion(liquidacionId: Identificador,\n      motivo: Cadena): LiquidacionComisiones
+  + aprobarLiquidacion(liquidacionId: Identificador): LiquidacionComisiones
+  + liquidarComisionesDelChofer(empleadoId: Identificador,\n      fechaDesde: Fecha,\n      fechaHasta: Fecha): LiquidacionComisiones
+  + pagarLiquidacion(liquidacionId: Identificador,\n      cajaId: Identificador): LiquidacionComisiones
+}
+class CommissionQueryService <<fachada>> {
+  + consultarMisComisiones(fechaDesde: Fecha,\n      fechaHasta: Fecha): AsientoComision[*]
 }
 class "Map<String, ReglaComision>" as Map_String_ReglaComision <<colección>> {
   + get(clave: Cadena): ReglaComision
@@ -60,34 +67,38 @@ class Empleado <<referencia>>
 class ReglaComision <<referencia>>
 class AsientoComision <<referencia>>
 class LiquidacionComisiones <<referencia>>
-class CashLedgerService <<referencia>>
-class "Map<String, Caja>" as Map_String_Caja <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class "Map<String, Producto>" as Map_String_Producto <<referencia>>
+class CashLedgerService <<referencia>>
+class "Map<String, Caja>" as Map_String_Caja <<referencia>>
 class Chofer <<referencia>>
-class Distribuidora <<referencia>>
 class Pedido <<referencia>>
+class Distribuidora <<referencia>>
 
 Map_String_Empleado "1" o--> "0..*" Empleado
 List_ReglaComision "1" o--> "0..*" ReglaComision
 List_AsientoComision "1" o--> "0..*" AsientoComision
 Map_String_LiquidacionComisiones "1" o--> "0..*" LiquidacionComisiones
 Map_String_ReglaComision "1" o--> "0..*" ReglaComision
-CommissionService --> "1" CashLedgerService
-CommissionService --> "1" List_AsientoComision
-CommissionService --> "1" List_ReglaComision
-CommissionService --> "1" Map_String_Caja
-CommissionService --> "1" Map_String_Empleado
-CommissionService --> "1" Map_String_LiquidacionComisiones
-CommissionService --> "1" Map_String_Pedido
-CommissionService --> "1" Map_String_Producto
-CommissionService --> "1" Map_String_ReglaComision
-CommissionService ..> Chofer
-CommissionService ..> Distribuidora
-CommissionService ..> Empleado
-CommissionService ..> LiquidacionComisiones
-CommissionService ..> Pedido
-CommissionService ..> ReglaComision
+CommissionLedgerService --> "1" List_ReglaComision
+CommissionLedgerService --> "1" Map_String_Pedido
+CommissionQueryService --> "1" List_AsientoComision
+CommissionQueryService --> "1" Map_String_Empleado
+CommissionRuleService --> "1" Map_String_Empleado
+CommissionRuleService --> "1" Map_String_Producto
+CommissionRuleService --> "1" Map_String_ReglaComision
+DriverLiquidationService --> "1" CashLedgerService
+DriverLiquidationService --> "1" Map_String_Caja
+DriverLiquidationService --> "1" Map_String_Empleado
+DriverLiquidationService --> "1" Map_String_LiquidacionComisiones
+CommissionLedgerService ..> Chofer
+CommissionLedgerService ..> Empleado
+CommissionLedgerService ..> Pedido
+CommissionQueryService ..> Empleado
+CommissionRuleService ..> Distribuidora
+CommissionRuleService ..> ReglaComision
+DriverLiquidationService ..> Empleado
+DriverLiquidationService ..> LiquidacionComisiones
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.

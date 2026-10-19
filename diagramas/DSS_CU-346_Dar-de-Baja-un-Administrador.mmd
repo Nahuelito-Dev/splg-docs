@@ -1,0 +1,20 @@
+sequenceDiagram
+    title DSS — CU-346 Dar de Baja un Administrador
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+
+    ADM->>SIS: darDeBajaAdministrador(administradorId)
+    activate SIS
+    alt el administrador puede darse de baja
+        SIS-->>ADM: administrador dado de baja y sin acceso
+    else el Administrador General no indica la distribuidora al dar de baja a un administrador de empresa
+        SIS-->>ADM: error de solicitud (Falta la distribuidora)
+    else el administrador no existe, ya está dado de baja, es de otra distribuidora, o es un Administrador General y quien pide es de empresa
+        SIS-->>ADM: recurso no encontrado
+    else quien pide es el administrador a dar de baja (nadie se da de baja a sí mismo, tampoco el Administrador General)
+        SIS-->>ADM: acceso denegado (no se puede)
+    else es el último administrador activo de la distribuidora o el último Administrador General
+        SIS-->>ADM: conflicto
+    end
+    deactivate SIS

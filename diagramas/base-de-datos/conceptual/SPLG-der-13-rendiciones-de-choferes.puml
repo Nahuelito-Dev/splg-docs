@@ -20,7 +20,7 @@ hide circle
 skinparam nodesep 25
 skinparam ranksep 45
 
-entity RendicionChofer <<propuesto>> #FFF6D9;line:1F5E8C {
+entity RendicionChofer {
   * identificador
   --
   {field} número
@@ -34,19 +34,24 @@ entity RendicionChofer <<propuesto>> #FFF6D9;line:1F5E8C {
   {field} presentada el
   {field} aprobada el
   {field} observaciones
-  {field} aviso enviado el
+  {field} vencida avisada el
 }
-entity PedidoRendido <<propuesto>> #FFF6D9;line:1F5E8C {
+entity PedidoRendido {
   * identificador
   --
   {field} importe
   {field} medio de pago
 }
-entity GastoDeRendicion <<propuesto>> #FFF6D9;line:1F5E8C {
+entity GastoDeRendicion {
   * identificador
   --
   {field} importe
   {field} descripción
+}
+entity CobroDeRendicion {
+  * identificador
+  --
+  {field} importe
 }
 entity Chofer #F1F1F1 {
 }
@@ -60,18 +65,19 @@ entity CategoriaDeCaja #F1F1F1 {
 }
 entity AsientoCuentaCorriente #F1F1F1 {
 }
-entity AsientoComision #F1F1F1 {
+entity CargaDeCamion #F1F1F1 {
 }
 
+RendicionChofer |o--o| MovimientoDeCaja : genera >
 Chofer ||--o{ RendicionChofer : presenta >
 RendicionChofer }o--o| Caja : ingresa en >
-RendicionChofer |o--o| MovimientoDeCaja : genera >
-RendicionChofer |o--o{ AsientoComision : origina >
-RendicionChofer |o--o{ AsientoCuentaCorriente : incluye >
-RendicionChofer ||--o{ GastoDeRendicion : declara >
+CargaDeCamion |o--o{ RendicionChofer : respalda >
+CobroDeRendicion |o--|| AsientoCuentaCorriente : rinde >
+RendicionChofer ||--o{ CobroDeRendicion : incluye >
 GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
-RendicionChofer ||--o{ PedidoRendido : rinde >
+RendicionChofer ||--o{ GastoDeRendicion : declara >
 PedidoRendido |o--|| Pedido : corresponde a >
+RendicionChofer ||--o{ PedidoRendido : rinde >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

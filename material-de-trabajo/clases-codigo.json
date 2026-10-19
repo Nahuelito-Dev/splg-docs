@@ -121,6 +121,88 @@
    }
   ]
  },
+ "EmployeeAttendance": {
+  "kind": "entity",
+  "file": "attendance/entities/employee-attendance.entity.ts",
+  "tabla": "employee_attendance",
+  "atributos": [
+   {
+    "nombre": "attendanceId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "workDate",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "checkInAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "checkOutAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "source",
+    "tipo": "AttendanceSource",
+    "nulo": false
+   },
+   {
+    "nombre": "recordedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "recordedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
  "AuditActionType": {
   "kind": "entity",
   "file": "audit/entities/audit-action-type.entity.ts",
@@ -439,6 +521,16 @@
     "nulo": false
    },
    {
+    "nombre": "fuelType",
+    "tipo": "FuelType",
+    "nulo": true
+   },
+   {
+    "nombre": "tankCapacityLiters",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
     "nombre": "inServiceSince",
     "tipo": "Date",
     "nulo": true
@@ -640,6 +732,344 @@
    }
   ]
  },
+ "CashBox": {
+  "kind": "entity",
+  "file": "cash/entities/cash-box.entity.ts",
+  "tabla": "cash_box",
+  "atributos": [
+   {
+    "nombre": "cashBoxId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "name",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "kind",
+    "tipo": "CashBoxKind",
+    "nulo": false
+   },
+   {
+    "nombre": "balance",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "requiresSession",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "isActive",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "CashCategory": {
+  "kind": "entity",
+  "file": "cash/entities/cash-category.entity.ts",
+  "tabla": "cash_category",
+  "atributos": [
+   {
+    "nombre": "categoryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "name",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "direction",
+    "tipo": "CategoryDirection",
+    "nulo": false
+   },
+   {
+    "nombre": "systemCode",
+    "tipo": "CashSystemCode",
+    "nulo": true
+   },
+   {
+    "nombre": "isActive",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "CashMovement": {
+  "kind": "entity",
+  "file": "cash/entities/cash-movement.entity.ts",
+  "tabla": "cash_movement",
+  "atributos": [
+   {
+    "nombre": "movementId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "cashBoxId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "sessionId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "direction",
+    "tipo": "CashDirection",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "categoryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "method",
+    "tipo": "CashMethod",
+    "nulo": false
+   },
+   {
+    "nombre": "occurredAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "description",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "referenceType",
+    "tipo": "CashReferenceType",
+    "nulo": false
+   },
+   {
+    "nombre": "referenceId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "reversesMovementId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "cashBox",
+    "destino": "CashBox",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "session",
+    "destino": "CashSession",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "category",
+    "destino": "CashCategory",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "reverses",
+    "destino": "CashMovement",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "CashSession": {
+  "kind": "entity",
+  "file": "cash/entities/cash-session.entity.ts",
+  "tabla": "cash_session",
+  "atributos": [
+   {
+    "nombre": "sessionId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "cashBoxId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "CashSessionStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "openedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "openedByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "openingAmount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "closedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "closedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "expectedAmount",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "countedAmount",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "difference",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "cashBox",
+    "destino": "CashBox",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "openedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "closedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
  "Claim": {
   "kind": "entity",
   "file": "claims/entities/claim.entity.ts",
@@ -716,6 +1146,354 @@
    },
    {
     "campo": "customer",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "CommissionEntry": {
+  "kind": "entity",
+  "file": "commission/entities/commission-entry.entity.ts",
+  "tabla": "commission_entry",
+  "atributos": [
+   {
+    "nombre": "entryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "deliveryId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "type",
+    "tipo": "CommissionEntryType",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "orderId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "ruleId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "ruleSnapshot",
+    "tipo": "ReglaAplicada[]",
+    "nulo": true
+   },
+   {
+    "nombre": "liquidationId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "referenceId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "description",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "occurredAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "delivery",
+    "destino": "Delivery",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "order",
+    "destino": "Order",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "rule",
+    "destino": "CommissionRule",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "liquidation",
+    "destino": "DriverLiquidation",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "CommissionRule": {
+  "kind": "entity",
+  "file": "commission/entities/commission-rule.entity.ts",
+  "tabla": "commission_rule",
+  "atributos": [
+   {
+    "nombre": "ruleId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "gasCylinderId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "basis",
+    "tipo": "CommissionBasis",
+    "nulo": false
+   },
+   {
+    "nombre": "value",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "validFrom",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "validTo",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "isActive",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "gasCylinder",
+    "destino": "GasCylinder",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "DriverLiquidation": {
+  "kind": "entity",
+  "file": "commission/entities/driver-liquidation.entity.ts",
+  "tabla": "driver_liquidation",
+  "atributos": [
+   {
+    "nombre": "liquidationId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "number",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "periodFrom",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "periodTo",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "gross",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "deductions",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "net",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "LiquidationStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "approvedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "approvedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "paidAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "paidByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "voidedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "cashMovementId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "approvedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "paidBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "cashMovement",
+    "destino": "CashMovement",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "createdBy",
     "destino": "User",
     "tipo": "ManyToOne",
     "nulo": false
@@ -807,6 +1585,259 @@
    {
     "campo": "distributor",
     "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "CustomerAccountAllocation": {
+  "kind": "entity",
+  "file": "customer-account/entities/customer-account-allocation.entity.ts",
+  "tabla": "customer_account_allocation",
+  "atributos": [
+   {
+    "nombre": "allocationId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "accountId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "debitEntryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "creditEntryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "account",
+    "destino": "CustomerAccount",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "debitEntry",
+    "destino": "CustomerAccountEntry",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "creditEntry",
+    "destino": "CustomerAccountEntry",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "CustomerAccountEntry": {
+  "kind": "entity",
+  "file": "customer-account/entities/customer-account-entry.entity.ts",
+  "tabla": "customer_account_entry",
+  "atributos": [
+   {
+    "nombre": "entryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "accountId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "type",
+    "tipo": "CustomerEntryType",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "orderId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "dueDate",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "paymentMethod",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "cashMovementId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "collectedByDeliveryId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "description",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "occurredAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "account",
+    "destino": "CustomerAccount",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "order",
+    "destino": "Order",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "cashMovement",
+    "destino": "CashMovement",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "collectedByDelivery",
+    "destino": "Delivery",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "CustomerAccount": {
+  "kind": "entity",
+  "file": "customer-account/entities/customer-account.entity.ts",
+  "tabla": "customer_account",
+  "atributos": [
+   {
+    "nombre": "accountId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "customerUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "businessName",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "taxId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "taxCondition",
+    "tipo": "TaxCondition",
+    "nulo": false
+   },
+   {
+    "nombre": "creditLimit",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "paymentTermsDays",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "CustomerAccountStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "balance",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "customer",
+    "destino": "User",
     "tipo": "ManyToOne",
     "nulo": false
    }
@@ -1611,6 +2642,323 @@
    }
   ]
  },
+ "DriverSettlementCollection": {
+  "kind": "entity",
+  "file": "driver-settlement/entities/driver-settlement-collection.entity.ts",
+  "tabla": "driver_settlement_collection",
+  "atributos": [
+   {
+    "nombre": "collectionId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "settlementId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "entryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "settlement",
+    "destino": "DriverSettlement",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "entry",
+    "destino": "CustomerAccountEntry",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "DriverSettlementExpense": {
+  "kind": "entity",
+  "file": "driver-settlement/entities/driver-settlement-expense.entity.ts",
+  "tabla": "driver_settlement_expense",
+  "atributos": [
+   {
+    "nombre": "expenseId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "settlementId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "categoryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "description",
+    "tipo": "string",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "settlement",
+    "destino": "DriverSettlement",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "category",
+    "destino": "CashCategory",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "DriverSettlementOrder": {
+  "kind": "entity",
+  "file": "driver-settlement/entities/driver-settlement-order.entity.ts",
+  "tabla": "driver_settlement_order",
+  "atributos": [
+   {
+    "nombre": "settlementOrderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "settlementId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "orderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "paymentMethod",
+    "tipo": "string",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "settlement",
+    "destino": "DriverSettlement",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "order",
+    "destino": "Order",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "DriverSettlement": {
+  "kind": "entity",
+  "file": "driver-settlement/entities/driver-settlement.entity.ts",
+  "tabla": "driver_settlement",
+  "atributos": [
+   {
+    "nombre": "settlementId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "deliveryId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "number",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "truckLoadId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "businessDate",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "DriverSettlementStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "expectedCash",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "declaredCash",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "driverExpenses",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "difference",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "differenceResolution",
+    "tipo": "DifferenceResolution",
+    "nulo": true
+   },
+   {
+    "nombre": "destinationCashBoxId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "cashMovementId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "submittedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "submittedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "approvedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "approvedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "overdueAlertedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "delivery",
+    "destino": "Delivery",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "truckLoad",
+    "destino": "TruckLoad",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "destinationCashBox",
+    "destino": "CashBox",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "cashMovement",
+    "destino": "CashMovement",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "submittedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "approvedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "orders",
+    "destino": "DriverSettlementOrder",
+    "tipo": "OneToMany",
+    "nulo": false
+   },
+   {
+    "campo": "expenses",
+    "destino": "DriverSettlementExpense",
+    "tipo": "OneToMany",
+    "nulo": false
+   },
+   {
+    "campo": "collections",
+    "destino": "DriverSettlementCollection",
+    "tipo": "OneToMany",
+    "nulo": false
+   }
+  ]
+ },
  "Employee": {
   "kind": "entity",
   "file": "employee/entities/employee.entity.ts",
@@ -1853,6 +3201,583 @@
    }
   ]
  },
+ "FuelLoad": {
+  "kind": "entity",
+  "file": "fleet-expense/entities/fuel-load.entity.ts",
+  "tabla": "fuel_load",
+  "atributos": [
+   {
+    "nombre": "fuelLoadId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "carId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "loadedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "fuelType",
+    "tipo": "FuelType",
+    "nulo": false
+   },
+   {
+    "nombre": "liters",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "unitPrice",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "totalAmount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "odometerKm",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "isFullTank",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "station",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "paymentMethod",
+    "tipo": "FuelPaymentMethod",
+    "nulo": false
+   },
+   {
+    "nombre": "receiptNumber",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "anomaly",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "notes",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "odometerCorrectionNote",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "deletedAt",
+    "tipo": "Date",
+    "nulo": true
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "car",
+    "destino": "Car",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "TireEvent": {
+  "kind": "entity",
+  "file": "fleet-expense/entities/tire-event.entity.ts",
+  "tabla": "tire_event",
+  "atributos": [
+   {
+    "nombre": "eventId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "tireId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "type",
+    "tipo": "TireEventType",
+    "nulo": false
+   },
+   {
+    "nombre": "carId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "position",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "odometerKm",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "tire",
+    "destino": "Tire",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "car",
+    "destino": "Car",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
+ "Tire": {
+  "kind": "entity",
+  "file": "fleet-expense/entities/tire.entity.ts",
+  "tabla": "tire",
+  "atributos": [
+   {
+    "nombre": "tireId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "serialNumber",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "brand",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "size",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "cost",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "TireStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "carId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "position",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "mountedOdometerKm",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "kmTraveled",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "retreadCount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "car",
+    "destino": "Car",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "TrafficFine": {
+  "kind": "entity",
+  "file": "fleet-expense/entities/traffic-fine.entity.ts",
+  "tabla": "traffic_fine",
+  "atributos": [
+   {
+    "nombre": "fineId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "carId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "occurredAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "jurisdiction",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "actNumber",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "infraction",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "voluntaryPaymentAmount",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "dueDate",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "status",
+    "tipo": "TrafficFineStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "paidAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "paidAmount",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "chargedToEmployee",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "voidReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "voidedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "alertedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "car",
+    "destino": "Car",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "VehicleAccident": {
+  "kind": "entity",
+  "file": "fleet-expense/entities/vehicle-accident.entity.ts",
+  "tabla": "vehicle_accident",
+  "atributos": [
+   {
+    "nombre": "accidentId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "carId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "occurredAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "location",
+    "tipo": "Point",
+    "nulo": true
+   },
+   {
+    "nombre": "address",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "description",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "injuries",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "thirdPartiesInvolved",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "hazmatRelease",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "policeReportNumber",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "insurerClaimNumber",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "status",
+    "tipo": "VehicleAccidentStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "vehicleUnusable",
+    "tipo": "boolean",
+    "nulo": false
+   },
+   {
+    "nombre": "repairCost",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "insurerReimbursement",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "deductibleAmount",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "closedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "createdByUserId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "car",
+    "destino": "Car",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "createdBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": false
+   }
+  ]
+ },
  "MaintenancePlan": {
   "kind": "entity",
   "file": "fleet/entities/maintenance-plan.entity.ts",
@@ -1906,6 +3831,16 @@
    {
     "nombre": "carType",
     "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "documentKind",
+    "tipo": "MaintenanceDocumentKind",
+    "nulo": true
+   },
+   {
+    "nombre": "appliesToCategories",
+    "tipo": "JobPositionCategory[]",
     "nulo": true
    },
    {
@@ -2031,9 +3966,19 @@
     "nulo": true
    },
    {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
     "nombre": "status",
     "tipo": "MaintenanceTaskStatus",
     "nulo": false
+   },
+   {
+    "nombre": "validFrom",
+    "tipo": "Date",
+    "nulo": true
    },
    {
     "nombre": "dueAt",
@@ -2094,6 +4039,11 @@
     "nombre": "notes",
     "tipo": "string",
     "nulo": true
+   },
+   {
+    "nombre": "details",
+    "tipo": "Record<string, string>",
+    "nulo": true
    }
   ],
   "relaciones": [
@@ -2118,6 +4068,12 @@
    {
     "campo": "delivery",
     "destino": "Delivery",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
     "tipo": "ManyToOne",
     "nulo": true
    },
@@ -2476,6 +4432,114 @@
     "destino": "User",
     "tipo": "ManyToOne",
     "nulo": false
+   }
+  ]
+ },
+ "EmployeeLeave": {
+  "kind": "entity",
+  "file": "leave/entities/employee-leave.entity.ts",
+  "tabla": "employee_leave",
+  "atributos": [
+   {
+    "nombre": "leaveId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "employeeId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "type",
+    "tipo": "LeaveType",
+    "nulo": false
+   },
+   {
+    "nombre": "startDate",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "endDate",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "days",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "LeaveStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "reason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "rejectionReason",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "requestedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "decidedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "decidedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "employee",
+    "destino": "Employee",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "requestedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
+   },
+   {
+    "campo": "decidedBy",
+    "destino": "User",
+    "tipo": "ManyToOne",
+    "nulo": true
    }
   ]
  },
@@ -2897,6 +4961,16 @@
     "nulo": false
    },
    {
+    "nombre": "expressSurchargeAmount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "expressDegradedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
     "nombre": "coverageZoneId",
     "tipo": "string",
     "nulo": true
@@ -3130,6 +5204,108 @@
    {
     "campo": "delivery",
     "destino": "Delivery",
+    "tipo": "ManyToOne",
+    "nulo": true
+   }
+  ]
+ },
+ "PaymentRefund": {
+  "kind": "entity",
+  "file": "payments/entities/payment-refund.entity.ts",
+  "tabla": "payment_refund",
+  "atributos": [
+   {
+    "nombre": "refundId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "paymentId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "orderId",
+    "tipo": "string",
+    "nulo": false
+   },
+   {
+    "nombre": "distributorId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "kind",
+    "tipo": "RefundKind",
+    "nulo": false
+   },
+   {
+    "nombre": "amount",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "status",
+    "tipo": "RefundStatus",
+    "nulo": false
+   },
+   {
+    "nombre": "gatewayRefundId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "errorMessage",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "attempts",
+    "tipo": "number",
+    "nulo": false
+   },
+   {
+    "nombre": "refundedBaseline",
+    "tipo": "number",
+    "nulo": true
+   },
+   {
+    "nombre": "refundedAt",
+    "tipo": "Date",
+    "nulo": true
+   },
+   {
+    "nombre": "requestedByUserId",
+    "tipo": "string",
+    "nulo": true
+   },
+   {
+    "nombre": "createdAt",
+    "tipo": "Date",
+    "nulo": false
+   },
+   {
+    "nombre": "updatedAt",
+    "tipo": "Date",
+    "nulo": false
+   }
+  ],
+  "relaciones": [
+   {
+    "campo": "payment",
+    "destino": "Payment",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "order",
+    "destino": "Order",
+    "tipo": "ManyToOne",
+    "nulo": false
+   },
+   {
+    "campo": "distributor",
+    "destino": "Distributor",
     "tipo": "ManyToOne",
     "nulo": true
    }
@@ -5326,6 +7502,196 @@
   "dependencias": [],
   "estereotipo": "interface"
  },
+ "AttendanceController": {
+  "kind": "controller",
+  "file": "attendance/attendance.controller.ts",
+  "metodos": [
+   {
+    "nombre": "register",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: RegisterAttendanceDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<AttendanceResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryAttendanceDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<AttendancePageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "correct",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CorrectAttendanceDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<AttendanceResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "current",
+    "parametros": "@CurrentUser('user_id') userId: string, @Res({ passthrough: true }) res: Response",
+    "retorno": "Promise<AttendanceResponseDto | undefined>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "checkIn",
+    "parametros": "@CurrentUser('user_id') userId: string, @Res({ passthrough: true }) res: Response",
+    "retorno": "Promise<AttendanceResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "checkOut",
+    "parametros": "@CurrentUser('user_id') userId: string",
+    "retorno": "Promise<AttendanceResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "AttendanceService"
+  ],
+  "estereotipo": "controller"
+ },
+ "AttendanceMapper": {
+  "kind": "mapper",
+  "file": "attendance/attendance.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "jornada: JornadaConLegajo",
+    "retorno": "AttendanceResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "AttendanceService": {
+  "kind": "service",
+  "file": "attendance/attendance.service.ts",
+  "metodos": [
+   {
+    "nombre": "register",
+    "parametros": "employeeId: string, dto: RegisterAttendanceDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<JornadaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "correct",
+    "parametros": "id: string, dto: CorrectAttendanceDto, distributorId: string",
+    "retorno": "Promise<JornadaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "query: QueryAttendanceDto, distributorId: string",
+    "retorno": "Promise<PaginaDeJornadas>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "checkIn",
+    "parametros": "userId: string",
+    "retorno": "Promise<InicioDeJornada>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "checkOut",
+    "parametros": "userId: string",
+    "retorno": "Promise<JornadaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "jornadaAbierta",
+    "parametros": "userId: string",
+    "retorno": "Promise<JornadaConLegajo | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "abiertasAnteriores",
+    "parametros": "dia: string",
+    "retorno": "Promise<EmployeeAttendance[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contarPresentes",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tieneJornadas",
+    "parametros": "manager: EntityManager, employeeId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "abrir",
+    "parametros": "manager: EntityManager, empleado: Employee, datos: { ingreso: Date; egreso: Date | null; source: AttendanceSource; actorUserId: string; }",
+    "retorno": "Promise<JornadaConLegajo>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertSinSuperposicion",
+    "parametros": "manager: EntityManager, employeeId: string, ingreso: Date, egreso: Date | null, excepto?: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "legajoDeLaCuenta",
+    "parametros": "manager: EntityManager, userId: string",
+    "retorno": "Promise<Employee>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "noEncontrada",
+    "parametros": "id: string",
+    "retorno": "NotFoundException",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource",
+   "EmployeeService"
+  ],
+  "estereotipo": null
+ },
  "AuditController": {
   "kind": "controller",
   "file": "audit/audit.controller.ts",
@@ -6011,6 +8377,38 @@
     "abstracto": false
    },
    {
+    "nombre": "actualizarOdometro",
+    "parametros": "manager: EntityManager, carId: string, km: number",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bajarOdometro",
+    "parametros": "manager: EntityManager, carId: string, kmQueDejaDeValer: number, kmVigenteRestante: number | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, carId: string, distributorId: string",
+    "retorno": "Promise<Car>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cambiarEstadoDeFlota",
+    "parametros": "manager: EntityManager, carId: string, distributorId: string, hacia: FleetStatus, desde?: FleetStatus",
+    "retorno": "Promise<Car>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findByPatent",
     "parametros": "patent: string, distributorId?: string | null",
     "retorno": "Promise<Car | null>",
@@ -6071,9 +8469,25 @@
     "abstracto": false
    },
    {
-    "nombre": "assertSinViajeEnCurso",
+    "nombre": "hayViajeEnCurso",
     "parametros": "deliveryId: string, manager: EntityManager",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertSinViajeEnCurso",
+    "parametros": "deliveryId: string, manager: EntityManager, accion = 'No se puede modificar el vehículo de un chofer con un pedido en curso (aceptado o en camino)'",
     "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargaAbiertaDe",
+    "parametros": "manager: EntityManager, deliveryIds: string[], carId: string | null",
+    "retorno": "Promise<number | null>",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
@@ -6090,6 +8504,22 @@
     "nombre": "liberarSiTieneUno",
     "parametros": "deliveryId: string, manager: EntityManager, opciones: { motivo?: string; actorUserId?: string } = {}",
     "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "liberarDelVehiculo",
+    "parametros": "carId: string, manager: EntityManager, opciones: { motivo: string; actorUserId?: string }",
+    "retorno": "Promise<ResultadoDeLiberacion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "choferDelVehiculoEn",
+    "parametros": "carId: string, distributorId: string, en: Date",
+    "retorno": "Promise<string | null>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -6141,6 +8571,14 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "choferesEnMoto",
+    "parametros": "driverUserIds: string[], distributorId?: string | null",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -6168,6 +8606,777 @@
    "VehicleAssignmentService"
   ],
   "estereotipo": "listener"
+ },
+ "CartController": {
+  "kind": "controller",
+  "file": "cart/cart.controller.ts",
+  "metodos": [
+   {
+    "nombre": "aDto",
+    "parametros": "consultado: CarritoConsultado, distributorId: string",
+    "retorno": "CartResponseDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "consultar",
+    "parametros": "@CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CartResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "agregar",
+    "parametros": "@Body() dto: AddCartItemDto, @CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CartResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cambiarCantidad",
+    "parametros": "@Param('itemId', ParseUUIDPipe) itemId: string, @Body() dto: UpdateCartItemDto, @CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CartResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitar",
+    "parametros": "@Param('itemId', ParseUUIDPipe) itemId: string, @CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CartResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vaciar",
+    "parametros": "@CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CartResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CartService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CartMapper": {
+  "kind": "mapper",
+  "file": "cart/cart.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "cart: Cart | null, distributorId: string, vista: VistaDelCarrito",
+    "retorno": "CartResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "CartService": {
+  "kind": "service",
+  "file": "cart/cart.service.ts",
+  "metodos": [
+   {
+    "nombre": "consultar",
+    "parametros": "userId: string, distributorId: string",
+    "retorno": "Promise<CarritoConsultado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "agregarItem",
+    "parametros": "userId: string, distributorId: string, gasCylinderId: string, quantity: number",
+    "retorno": "Promise<CarritoConsultado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cambiarCantidad",
+    "parametros": "userId: string, distributorId: string, cartItemId: string, quantity: number",
+    "retorno": "Promise<CarritoConsultado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "quitarItem",
+    "parametros": "userId: string, distributorId: string, cartItemId: string",
+    "retorno": "Promise<CarritoConsultado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vaciar",
+    "parametros": "userId: string, distributorId: string",
+    "retorno": "Promise<CarritoConsultado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vaciarEnTransaccion",
+    "parametros": "manager: EntityManager, userId: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "transaccion",
+    "parametros": "trabajo: (manager: EntityManager) => Promise<T>",
+    "retorno": "Promise<T>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "itemsParaPedido",
+    "parametros": "manager: EntityManager, userId: string, distributorId: string, bloquear: boolean",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "modificarItem",
+    "parametros": "userId: string, distributorId: string, cartItemId: string, operacion: (manager: EntityManager, item: CartItem) => Promise<void>",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "carritoParaEscribir",
+    "parametros": "manager: EntityManager, userId: string, distributorId: string",
+    "retorno": "Promise<Cart>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tocar",
+    "parametros": "manager: EntityManager, cart: Cart",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vistaDe",
+    "parametros": "cart: Cart, repo: Repository<CartItem>",
+    "retorno": "Promise<VistaDelCarrito>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository",
+   "DataSource",
+   "GasCylinderService"
+  ],
+  "estereotipo": null
+ },
+ "CashBoxService": {
+  "kind": "service",
+  "file": "cash/application/cash-box.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryCashBoxDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<CajaConSesion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "dto: CreateCashBoxDto, distributorId: string",
+    "retorno": "Promise<CajaConSesion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateCashBoxDto, distributorId: string",
+    "retorno": "Promise<CajaConSesion>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarCajaCentral",
+    "parametros": "manager: EntityManager, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumenParaTablero",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<\n    Array<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "sesionesAbiertas",
+    "parametros": "ids: string[]",
+    "retorno": "Promise<Map<string, string>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarNombreLibre",
+    "parametros": "nombre: string, distributorId: string, excluirId: string | null, manager?: EntityManager",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource",
+   "CashCategoryService"
+  ],
+  "estereotipo": null
+ },
+ "CashCategoryService": {
+  "kind": "service",
+  "file": "cash/application/cash-category.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryCashCategoryDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<CashCategory>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "dto: CreateCashCategoryDto, distributorId: string",
+    "retorno": "Promise<CashCategory>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateCashCategoryDto, distributorId: string",
+    "retorno": "Promise<CashCategory>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "deactivate",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<CashCategory>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "deSistema",
+    "parametros": "manager: EntityManager, distributorId: string, code: CashSystemCode",
+    "retorno": "Promise<CashCategory>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "sembrarDeSistema",
+    "parametros": "manager: EntityManager, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarNoEsDeSistema",
+    "parametros": "categoria: CashCategory",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarNombreLibre",
+    "parametros": "nombre: string, direction: CategoryDirection, distributorId: string, excluirId: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository"
+  ],
+  "estereotipo": null
+ },
+ "CashLedgerService": {
+  "kind": "service",
+  "file": "cash/application/cash-ledger.service.ts",
+  "metodos": [
+   {
+    "nombre": "bloquearCajas",
+    "parametros": "manager: EntityManager, ids: string[], distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrar",
+    "parametros": "manager: EntityManager, entrada: RegistrarMovimiento",
+    "retorno": "Promise<CashMovement>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "sesionDelMovimiento",
+    "parametros": "manager: EntityManager, caja: FilaCaja, entrada: RegistrarMovimiento",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": null
+ },
+ "CashMovementService": {
+  "kind": "service",
+  "file": "cash/application/cash-movement.service.ts",
+  "metodos": [
+   {
+    "nombre": "registrar",
+    "parametros": "dto: CreateCashMovementDto, distributorId: string, userId: string",
+    "retorno": "Promise<MovimientoConNombres>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "transferir",
+    "parametros": "dto: TransferCashDto, distributorId: string, userId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "anular",
+    "parametros": "movementId: string, reason: string, distributorId: string, userId: string",
+    "retorno": "Promise<MovimientoConNombres>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "anularTransferencia",
+    "parametros": "movementId: string, reason: string, distributorId: string, userId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contraasiento",
+    "parametros": "manager: EntityManager, original: CashMovement, reason: string, distributorId: string, userId: string",
+    "retorno": "Promise<CashMovement>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "consultar",
+    "parametros": "distributorId: string, query: QueryCashMovementDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "totalesDelDia",
+    "parametros": "distributorId: string, dia: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conNombres",
+    "parametros": "movimientos: CashMovement[]",
+    "retorno": "Promise<MovimientoConNombres[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "CashLedgerService",
+   "CashCategoryService"
+  ],
+  "estereotipo": null
+ },
+ "CashSeedListener": {
+  "kind": "listener",
+  "file": "cash/application/cash-seed.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: DistribuidoraCreadaEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "CashBoxService"
+  ],
+  "estereotipo": "listener"
+ },
+ "CashSessionService": {
+  "kind": "service",
+  "file": "cash/application/cash-session.service.ts",
+  "metodos": [
+   {
+    "nombre": "abrir",
+    "parametros": "cashBoxId: string, dto: OpenCashSessionDto, distributorId: string, userId: string",
+    "retorno": "Promise<SesionConCaja>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cerrar",
+    "parametros": "sessionId: string, dto: CloseCashSessionDto, distributorId: string, userId: string",
+    "retorno": "Promise<SesionConCaja>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "sessionId: string, distributorId: string",
+    "retorno": "Promise<SesionConCaja>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "movimientosDe",
+    "parametros": "sessionId: string",
+    "retorno": "Promise<CashMovement[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findByBox",
+    "parametros": "cashBoxId: string, distributorId: string, query: QueryCashSessionDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "totales",
+    "parametros": "manager: EntityManager, sessionId: string",
+    "retorno": "Promise<",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asentarAjuste",
+    "parametros": "manager: EntityManager, a: { distributorId: string; cashBoxId: string; sessionId: string; userId: string; diferencia: Decimal; referenceType: CashReferenceType; descripcion: string; }",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "CashLedgerService",
+   "CashCategoryService"
+  ],
+  "estereotipo": null
+ },
+ "CashMapper": {
+  "kind": "mapper",
+  "file": "cash/cash.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "caja",
+    "parametros": "c: CashBox, openSessionId: string | null",
+    "retorno": "CashBoxResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "categoria",
+    "parametros": "c: CashCategory",
+    "retorno": "CashCategoryResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "sesion",
+    "parametros": "s: CashSession, cashBoxName: string",
+    "retorno": "CashSessionResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "sesionConDetalle",
+    "parametros": "s: CashSession, cashBoxName: string, detalle: { currentBalance: number; totalIn: number; totalOut: number; movements: CashMovementResponseDto[]; }",
+    "retorno": "CashSessionDetailDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "llenarSesion",
+    "parametros": "dto: T, s: CashSession, cashBoxName: string",
+    "retorno": "T",
+    "visibilidad": "-",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "movimiento",
+    "parametros": "m: CashMovement, extra: { cashBoxName: string; categoryName: string; reversed: boolean }",
+    "retorno": "CashMovementResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "CashBoxController": {
+  "kind": "controller",
+  "file": "cash/presentation/cash-box.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryCashBoxDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashBoxPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateCashBoxDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashBoxResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashBoxResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCashBoxDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashBoxResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "open",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: OpenCashSessionDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<CashSessionResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "sessions",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: QueryCashSessionDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashSessionPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CashBoxService",
+   "CashSessionService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CashCategoryController": {
+  "kind": "controller",
+  "file": "cash/presentation/cash-category.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryCashCategoryDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashCategoryPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateCashCategoryDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashCategoryResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCashCategoryDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashCategoryResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "remove",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashCategoryResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CashCategoryService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CashMovementController": {
+  "kind": "controller",
+  "file": "cash/presentation/cash-movement.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryCashMovementDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashMovementPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateCashMovementDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<CashMovementResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "transfer",
+    "parametros": "@Body() dto: TransferCashDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<CashTransferResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reverse",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReverseCashMovementDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<CashMovementResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reverseTransfer",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ReverseCashMovementDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<CashTransferResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CashMovementService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CashSessionController": {
+  "kind": "controller",
+  "file": "cash/presentation/cash-session.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CashSessionDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "close",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CloseCashSessionDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<CashSessionResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CashSessionService",
+   "CashMovementService",
+   "CashBoxService"
+  ],
+  "estereotipo": "controller"
  },
  "ClaimsController": {
   "kind": "controller",
@@ -6448,6 +9657,449 @@
   ],
   "estereotipo": null
  },
+ "CommissionLedgerService": {
+  "kind": "service",
+  "file": "commission/application/commission-ledger.service.ts",
+  "metodos": [
+   {
+    "nombre": "devengarPorPedido",
+    "parametros": "orderId: string",
+    "retorno": "Promise<ResultadoDeDevengo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarFaltante",
+    "parametros": "manager: EntityManager, datos: { distributorId: string; deliveryId: string; faltante: Decimal.Value; settlementId: string; settlementNumber: number; userId: string; }",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "barrer",
+    "parametros": "",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "CommissionQueryService": {
+  "kind": "service",
+  "file": "commission/application/commission-query.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryCommissionEntryDto",
+    "retorno": "Promise<PaginaDeAsientos>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "mias",
+    "parametros": "userId: string, distributorId: string, query: QueryMyCommissionsDto",
+    "retorno": "Promise<\n    PaginaDeAsientos &",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pendienteDeLiquidar",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "acotarPeriodo",
+    "parametros": "qb: SelectQueryBuilder<CommissionEntry>, from?: string, to?: string",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pagina",
+    "parametros": "qb: SelectQueryBuilder<CommissionEntry>, page: number, limit: number",
+    "retorno": "Promise<PaginaDeAsientos>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conNombres",
+    "parametros": "asientos: CommissionEntry[]",
+    "retorno": "Promise<AsientoConNombre[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "CommissionRuleService": {
+  "kind": "service",
+  "file": "commission/application/commission-rule.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryCommissionRuleDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "dto: CreateCommissionRuleDto, distributorId: string",
+    "retorno": "Promise<ReglaConNombres>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateCommissionRuleDto, distributorId: string",
+    "retorno": "Promise<ReglaConNombres>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearReglasDe",
+    "parametros": "manager: EntityManager, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarAlcance",
+    "parametros": "manager: EntityManager, distributorId: string, employeeId: string | null, gasCylinderId: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asegurarSinSolapamiento",
+    "parametros": "manager: EntityManager, regla: CommissionRule",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conNombres",
+    "parametros": "reglas: CommissionRule[]",
+    "retorno": "Promise<ReglaConNombres[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "CommissionListener": {
+  "kind": "listener",
+  "file": "commission/application/commission.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: PedidoEntregadoEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CommissionLedgerService"
+  ],
+  "estereotipo": "listener"
+ },
+ "DriverLiquidationService": {
+  "kind": "service",
+  "file": "commission/application/driver-liquidation.service.ts",
+  "metodos": [
+   {
+    "nombre": "crear",
+    "parametros": "dto: CreateDriverLiquidationDto, distributorId: string, userId: string",
+    "retorno": "Promise<LiquidacionConEmpleado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aprobar",
+    "parametros": "id: string, distributorId: string, userId: string",
+    "retorno": "Promise<LiquidacionConEmpleado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pagar",
+    "parametros": "id: string, cashBoxId: string, distributorId: string, userId: string",
+    "retorno": "Promise<LiquidacionConEmpleado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "anularPago",
+    "parametros": "id: string, reason: string, distributorId: string, userId: string",
+    "retorno": "Promise<LiquidacionConEmpleado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "anular",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<LiquidacionConEmpleado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryDriverLiquidationDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<DriverLiquidation>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "conEmpleados",
+    "parametros": "liquidaciones: DriverLiquidation[]",
+    "retorno": "Promise<LiquidacionConEmpleado[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "DocumentSequenceService",
+   "CashLedgerService",
+   "CashCategoryService"
+  ],
+  "estereotipo": null
+ },
+ "CommissionRuleController": {
+  "kind": "controller",
+  "file": "commission/presentation/commission-rule.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryCommissionRuleDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CommissionRulePageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateCommissionRuleDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CommissionRuleResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCommissionRuleDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CommissionRuleResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CommissionRuleService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CommissionController": {
+  "kind": "controller",
+  "file": "commission/presentation/commission.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryCommissionEntryDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CommissionEntryPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "mine",
+    "parametros": "@Query() query: QueryMyCommissionsDto, @CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<MyCommissionsDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CommissionQueryService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CommissionMapper": {
+  "kind": "mapper",
+  "file": "commission/presentation/commission.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "regla",
+    "parametros": "r: ReglaConNombres",
+    "retorno": "CommissionRuleResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "asiento",
+    "parametros": "a: AsientoConNombre",
+    "retorno": "CommissionEntryResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "asientoDe",
+    "parametros": "a: CommissionEntry, employeeName: string",
+    "retorno": "CommissionEntryResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "liquidacion",
+    "parametros": "l: LiquidacionConEmpleado",
+    "retorno": "DriverLiquidationResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "liquidacionConAsientos",
+    "parametros": "l: LiquidacionConEmpleado, asientos: CommissionEntry[]",
+    "retorno": "DriverLiquidationDetailDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "llenar",
+    "parametros": "dto: T, l: LiquidacionConEmpleado",
+    "retorno": "T",
+    "visibilidad": "-",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "DriverLiquidationController": {
+  "kind": "controller",
+  "file": "commission/presentation/driver-liquidation.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryDriverLiquidationDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverLiquidationPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateDriverLiquidationDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<DriverLiquidationResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverLiquidationDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "approve",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<DriverLiquidationResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pay",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: PayDriverLiquidationDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<DriverLiquidationResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "unpay",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UnpayDriverLiquidationDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<DriverLiquidationResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "void",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverLiquidationResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DriverLiquidationService"
+  ],
+  "estereotipo": "controller"
+ },
  "AppThrottlerGuard": {
   "kind": "guard",
   "file": "common/guards/app-throttler.guard.ts",
@@ -6699,6 +10351,14 @@
     "abstracto": false
    },
    {
+    "nombre": "validarNoVencida",
+    "parametros": "hasta: Date | null, activa: boolean",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "create",
     "parametros": "dto: CreateCoverageZoneDto, distributorId: string",
     "retorno": "Promise<CoverageZone>",
@@ -6760,6 +10420,309 @@
    "CoverageZonePricingService"
   ],
   "estereotipo": null
+ },
+ "CustomerAccountQueryService": {
+  "kind": "service",
+  "file": "customer-account/application/customer-account-query.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryCustomerAccountDto",
+    "retorno": "Promise<CustomerAccountPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<CustomerAccountDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "entries",
+    "parametros": "id: string, distributorId: string, query: QueryCustomerEntryDto",
+    "retorno": "Promise<CustomerStatementDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aging",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<AgingReportDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargosAbiertos",
+    "parametros": "distributorId: string, accountId?: string",
+    "retorno": "Promise<CargoAbierto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bucketsDe",
+    "parametros": "cargos: CargoAbierto[]",
+    "retorno": "AgingBucketsDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "armar",
+    "parametros": "distributorId: string, filas: FilaDeCuenta[]",
+    "retorno": "Promise<CustomerAccountResponseDto[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "CustomerAccountService": {
+  "kind": "service",
+  "file": "customer-account/application/customer-account.service.ts",
+  "metodos": [
+   {
+    "nombre": "habilitar",
+    "parametros": "dto: CreateCustomerAccountDto, distributorId: string",
+    "retorno": "Promise<CustomerAccount>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "modificar",
+    "parametros": "id: string, dto: UpdateCustomerAccountDto, distributorId: string",
+    "retorno": "Promise<CustomerAccount>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertCredito",
+    "parametros": "manager: EntityManager, distributorId: string, customerId: string, total: Decimal.Value",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumenDeDeuda",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pedidosAbiertos",
+    "parametros": "manager: EntityManager, distributorId: string, customerId: string",
+    "retorno": "Promise<Decimal>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "CustomerChargeListener": {
+  "kind": "listener",
+  "file": "customer-account/application/customer-charge.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: PedidoEntregadoEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CustomerLedgerService"
+  ],
+  "estereotipo": "listener"
+ },
+ "CustomerLedgerService": {
+  "kind": "service",
+  "file": "customer-account/application/customer-ledger.service.ts",
+  "metodos": [
+   {
+    "nombre": "registrarPago",
+    "parametros": "accountId: string, dto: RegisterPaymentDto, distributorId: string, actor: Actor",
+    "retorno": "Promise<AsientoAsentado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarAjuste",
+    "parametros": "accountId: string, dto: RegisterAdjustmentDto, distributorId: string, userId: string",
+    "retorno": "Promise<AsientoAsentado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asentarCargo",
+    "parametros": "orderId: string",
+    "retorno": "Promise<ResultadoDelCargo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "barrer",
+    "parametros": "",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, accountId: string, distributorId: string",
+    "retorno": "Promise<CustomerAccount>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "existeCuenta",
+    "parametros": "manager: EntityManager, accountId: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asentar",
+    "parametros": "manager: EntityManager, cuenta: CustomerAccount, n: NuevoAsiento",
+    "retorno": "Promise<AsientoAsentado>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "imputar",
+    "parametros": "manager: EntityManager, accountId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "CashLedgerService",
+   "CashCategoryService",
+   "DriverSettlementService"
+  ],
+  "estereotipo": null
+ },
+ "CustomerAccountController": {
+  "kind": "controller",
+  "file": "customer-account/presentation/customer-account.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryCustomerAccountDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CustomerAccountPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateCustomerAccountDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CustomerAccountDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aging",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<AgingReportDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CustomerAccountDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateCustomerAccountDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CustomerAccountDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "entries",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: QueryCustomerEntryDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CustomerStatementDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registerPayment",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: RegisterPaymentDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CustomerEntryResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registerAdjustment",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: RegisterAdjustmentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<CustomerEntryResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CustomerAccountService",
+   "CustomerAccountQueryService",
+   "CustomerLedgerService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CustomerAccountMapper": {
+  "kind": "mapper",
+  "file": "customer-account/presentation/customer-account.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "asiento",
+    "parametros": "a: AsientoAsentado, ocultarSaldo = false",
+    "retorno": "CustomerEntryResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
  },
  "CustomersController": {
   "kind": "controller",
@@ -6860,6 +10823,14 @@
     "nombre": "crearPerfil",
     "parametros": "manager: EntityManager, userId: string, datos: PerfilDeClienteNuevo",
     "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardarConsumo",
+    "parametros": "userId: string, consumo: ConsumoDeclarado",
+    "retorno": "Promise<Customer>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -6974,6 +10945,65 @@
   ],
   "estereotipo": null
  },
+ "CylinderVigenciaService": {
+  "kind": "service",
+  "file": "cylinder/cylinder-vigencia.service.ts",
+  "metodos": [
+   {
+    "nombre": "registerInspection",
+    "parametros": "cylinderId: string, dto: RegisterInspectionDto, distributorId: string, actorUserId?: string",
+    "retorno": "Promise<VigenciaDeEnvase>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getVigencia",
+    "parametros": "cylinderId: string, distributorId?: string | null",
+    "retorno": "Promise<VigenciaDeEnvase>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getVigenciaBySerial",
+    "parametros": "serial: string, distributorId?: string | null",
+    "retorno": "Promise<VigenciaDeEnvase>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findExpiring",
+    "parametros": "days: number, distributorId?: string | null, limit = 100, offset = 0",
+    "retorno": "Promise<VencimientosDelParque>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "armar",
+    "parametros": "cylinder: Cylinder",
+    "retorno": "Promise<VigenciaDeEnvase>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<Cylinder>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository"
+  ],
+  "estereotipo": null
+ },
  "CylinderController": {
   "kind": "controller",
   "file": "cylinder/cylinder.controller.ts",
@@ -7003,9 +11033,41 @@
     "abstracto": false
    },
    {
+    "nombre": "expiring",
+    "parametros": "@Query() query: QueryExpiringCylindersDto, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<ExpiringCylindersResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vigenciaBySerial",
+    "parametros": "@Param('serial') serial: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CylinderVigenciaResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findOne",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
     "retorno": "Promise<CylinderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getVigencia",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<CylinderVigenciaResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registerInspection",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: RegisterInspectionDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<CylinderVigenciaResponseDto>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -7044,7 +11106,8 @@
    }
   ],
   "dependencias": [
-   "CylinderService"
+   "CylinderService",
+   "CylinderVigenciaService"
   ],
   "estereotipo": "controller"
  },
@@ -7065,6 +11128,46 @@
     "parametros": "m: CylinderMovement",
     "retorno": "CylinderMovementResponseDto",
     "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "inspectionToDto",
+    "parametros": "i: CylinderInspection",
+    "retorno": "CylinderInspectionResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "vencimientoToDto",
+    "parametros": "e: EnvaseConVigencia",
+    "retorno": "CylinderVencimientoDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "vigenciaToDto",
+    "parametros": "v: VigenciaDeEnvase",
+    "retorno": "CylinderVigenciaResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "vencimientosToDto",
+    "parametros": "v: VencimientosDelParque",
+    "retorno": "ExpiringCylindersResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "llenarVencimiento",
+    "parametros": "dto: CylinderVencimientoDto, e: EnvaseConVigencia",
+    "retorno": "void",
+    "visibilidad": "-",
     "estatico": true,
     "abstracto": false
    }
@@ -7149,6 +11252,22 @@
     "abstracto": false
    },
    {
+    "nombre": "avisarSiHayVencidos",
+    "parametros": "error: unknown, distributorId: string, orderId: string | null",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearPorSerial",
+    "parametros": "manager: EntityManager, serials: string[], distributorId: string",
+    "retorno": "Promise<Cylinder[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "onOrderDelivered",
     "parametros": "orderId: string, distributorId?: string | null, manager?: EntityManager",
     "retorno": "Promise<number>",
@@ -7177,9 +11296,28 @@
    "Repository",
    "Repository",
    "OrderLookupService",
-   "GasCylinderService"
+   "GasCylinderService",
+   "EventEmitter2"
   ],
   "estereotipo": null
+ },
+ "DespachoBloqueadoListener": {
+  "kind": "listener",
+  "file": "cylinder/events/despacho-bloqueado.listener.ts",
+  "metodos": [
+   {
+    "nombre": "handle",
+    "parametros": "evento: DespachoBloqueadoEvent",
+    "retorno": "void",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "AdminGateway"
+  ],
+  "estereotipo": "listener"
  },
  "DeliveryController": {
   "kind": "controller",
@@ -7896,6 +12034,66 @@
   ],
   "estereotipo": null
  },
+ "ExpressConfigController": {
+  "kind": "controller",
+  "file": "distributor/express-config.controller.ts",
+  "metodos": [
+   {
+    "nombre": "get",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<ExpressConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "put",
+    "parametros": "@Body() dto: ExpressConfigDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<ExpressConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ExpressSettingsService"
+  ],
+  "estereotipo": "controller"
+ },
+ "ExpressSettingsService": {
+  "kind": "service",
+  "file": "distributor/express-settings.service.ts",
+  "metodos": [
+   {
+    "nombre": "obtener",
+    "parametros": "distributorId: string | null | undefined",
+    "retorno": "Promise<ExpressSettings>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vigentes",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<ExpressSettingsVigentes>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "distributorId: string, settings: Partial<ExpressSettings>, actorUserId: string",
+    "retorno": "Promise<ExpressSettingsVigentes>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ModuleConfigService"
+  ],
+  "estereotipo": null
+ },
  "ModuleConfigController": {
   "kind": "controller",
   "file": "distributor/module-config.controller.ts",
@@ -7931,11 +12129,36 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "getProcesses",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<ProcessConfigResponseDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "getProcess",
+    "parametros": "@Param('process') process: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<ProcessConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "putProcess",
+    "parametros": "@Param('process') process: string, @Body() body: Record<string, unknown>, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<ProcessConfigResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
    "DispatchSettingsService",
-   "ScheduledTasksSettingsService"
+   "ScheduledTasksSettingsService",
+   "ProcessConfigService"
   ],
   "estereotipo": "controller"
  },
@@ -7970,6 +12193,56 @@
   ],
   "dependencias": [
    "Repository"
+  ],
+  "estereotipo": null
+ },
+ "ProcessConfigService": {
+  "kind": "service",
+  "file": "distributor/process-config.service.ts",
+  "metodos": [
+   {
+    "nombre": "procesoConfigurable",
+    "parametros": "proceso: string",
+    "retorno": "ProcesoAutomatico",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "obtener",
+    "parametros": "distributorId: string, proceso: ProcesoAutomatico",
+    "retorno": "Promise<ValoresDeProceso>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vigentes",
+    "parametros": "distributorId: string, proceso: ProcesoAutomatico",
+    "retorno": "Promise<ProcesoVigente>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "todos",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<ProcesoVigente[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "distributorId: string, proceso: ProcesoAutomatico, cuerpo: unknown, actorUserId: string",
+    "retorno": "Promise<ProcesoVigente>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ModuleConfigService"
   ],
   "estereotipo": null
  },
@@ -8087,6 +12360,242 @@
   ],
   "dependencias": [],
   "estereotipo": null
+ },
+ "DriverSettlementQueryService": {
+  "kind": "service",
+  "file": "driver-settlement/application/driver-settlement-query.service.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryDriverSettlementDto",
+    "retorno": "Promise<DriverSettlementPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "detalle",
+    "parametros": "id: string, distributorId: string, soloDelUsuario?: string",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "miRendicionId",
+    "parametros": "userId: string, distributorId: string, date?: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumenDelDia",
+    "parametros": "distributorId: string, date: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "esperadoEnVivo",
+    "parametros": "manager: EntityManager, s: DriverSettlement",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "armarDetalle",
+    "parametros": "s: DriverSettlement",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pedidosRendidos",
+    "parametros": "manager: EntityManager, settlementId: string",
+    "retorno": "Promise<Awaited<ReturnType<typeof pedidosSinRendir>>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumen",
+    "parametros": "s: DriverSettlement, driverName: string, esperado: ReturnType<typeof dec>",
+    "retorno": "DriverSettlementResponseDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "nombresDeChoferes",
+    "parametros": "rendiciones: DriverSettlement[]",
+    "retorno": "Promise<Map<string, string>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": null
+ },
+ "DriverSettlementService": {
+  "kind": "service",
+  "file": "driver-settlement/application/driver-settlement.service.ts",
+  "metodos": [
+   {
+    "nombre": "abrir",
+    "parametros": "distributorId: string, deliveryId: string, businessDate: string, estricto: boolean",
+    "retorno": "Promise<DriverSettlement>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "generarDelDia",
+    "parametros": "businessDate: string = diaArgentino()",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "presentar",
+    "parametros": "id: string, dto: SubmitDriverSettlementDto, distributorId: string, userId: string, soloDelUsuario?: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aprobar",
+    "parametros": "id: string, dto: ApproveDriverSettlementDto, distributorId: string, userId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reabrir",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearAbiertaDelChofer",
+    "parametros": "manager: EntityManager, distributorId: string, deliveryId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vincularCobro",
+    "parametros": "manager: EntityManager, datos: { settlementId: string; entryId: string; amount: Decimal.Value }",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquear",
+    "parametros": "manager: EntityManager, id: string, distributorId: string, soloDelUsuario?: string",
+    "retorno": "Promise<DriverSettlement>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "validarCategoriasDeGasto",
+    "parametros": "manager: EntityManager, distributorId: string, ids: string[]",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "DocumentSequenceService",
+   "CashLedgerService",
+   "CashCategoryService",
+   "CommissionLedgerService",
+   "DriverSettlementQueryService"
+  ],
+  "estereotipo": null
+ },
+ "DriverSettlementController": {
+  "kind": "controller",
+  "file": "driver-settlement/presentation/driver-settlement.controller.ts",
+  "metodos": [
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryDriverSettlementDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverSettlementPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "open",
+    "parametros": "@Body() dto: OpenDriverSettlementDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "mine",
+    "parametros": "@Query() query: QueryMySettlementDto, @CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "submit",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: SubmitDriverSettlementDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "approve",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ApproveDriverSettlementDto, @CurrentUser('user_id') userId: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reopen",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<DriverSettlementDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DriverSettlementService",
+   "DriverSettlementQueryService"
+  ],
+  "estereotipo": "controller"
  },
  "BienvenidaListener": {
   "kind": "listener",
@@ -8630,9 +13139,81 @@
     "abstracto": false
    },
    {
+    "nombre": "findActivo",
+    "parametros": "id: string, distributorId: string, manager?: EntityManager",
+    "retorno": "Promise<EmployeeConPuesto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findByUserIds",
+    "parametros": "userIds: string[], distributorId?: string | null",
+    "retorno": "Promise<EmployeeConPuesto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findByUserId",
+    "parametros": "userId: string",
+    "retorno": "Promise<EmployeeConPuesto | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findActivos",
+    "parametros": "distributorId: string, category?: JobPositionCategory",
+    "retorno": "Promise<EmployeeConPuesto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contarActivosPorPuesto",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<\n    Array<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "distribuidorasConChoferesActivos",
+    "parametros": "",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findByIds",
+    "parametros": "ids: string[], distributorId: string",
+    "retorno": "Promise<EmployeeConPuesto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "bloquearConPuesto",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<Employee &",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "bloquear",
     "parametros": "manager: EntityManager, id: string, distributorId: string",
     "retorno": "Promise<Employee>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findByUserIdEnDistribuidora",
+    "parametros": "userId: string, distributorId: string",
+    "retorno": "Promise<Employee | null>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -8899,6 +13480,46 @@
   ],
   "estereotipo": null
  },
+ "FinanceService": {
+  "kind": "service",
+  "file": "finance/application/finance.service.ts",
+  "metodos": [
+   {
+    "nombre": "dashboard",
+    "parametros": "distributorId: string, fecha?: string",
+    "retorno": "Promise<FinanceDashboardDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CashBoxService",
+   "CashMovementService",
+   "DriverSettlementQueryService",
+   "CustomerAccountService",
+   "CommissionQueryService"
+  ],
+  "estereotipo": null
+ },
+ "FinanceController": {
+  "kind": "controller",
+  "file": "finance/presentation/finance.controller.ts",
+  "metodos": [
+   {
+    "nombre": "dashboard",
+    "parametros": "@Query() query: QueryFinanceDashboardDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<FinanceDashboardDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "FinanceService"
+  ],
+  "estereotipo": "controller"
+ },
  "FcmAdapter": {
   "kind": "service",
   "file": "firebase/infrastructure/fcm.adapter.ts",
@@ -9061,6 +13682,903 @@
   "dependencias": [],
   "estereotipo": "interface"
  },
+ "CarFleetController": {
+  "kind": "controller",
+  "file": "fleet-expense/car-fleet.controller.ts",
+  "metodos": [
+   {
+    "nombre": "consumo",
+    "parametros": "@Param('carId', ParseUUIDPipe) carId: string, @Query() query: QueryRangeDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<FuelEfficiencyDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "costoDelVehiculo",
+    "parametros": "@Param('carId', ParseUUIDPipe) carId: string, @Query() query: QueryRangeDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CarCostDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tablero",
+    "parametros": "@Query() query: QueryRangeDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<FleetCostSummaryDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "neumaticos",
+    "parametros": "@Param('carId', ParseUUIDPipe) carId: string, @Query() query: QueryTireDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TirePageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "FuelLoadService",
+   "FleetCostService",
+   "TireService"
+  ],
+  "estereotipo": "controller"
+ },
+ "DriverContextService": {
+  "kind": "service",
+  "file": "fleet-expense/driver-context.service.ts",
+  "metodos": [
+   {
+    "nombre": "vehiculoEnUso",
+    "parametros": "userId: string, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "legajoDe",
+    "parametros": "userId: string, distributorId: string",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "legajoDelVehiculoEn",
+    "parametros": "carId: string, distributorId: string, en: Date",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertLegajoDeLaDistribuidora",
+    "parametros": "employeeId: string, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DeliveryService",
+   "VehicleAssignmentService",
+   "EmployeeService"
+  ],
+  "estereotipo": null
+ },
+ "FleetCostService": {
+  "kind": "service",
+  "file": "fleet-expense/fleet-cost.service.ts",
+  "metodos": [
+   {
+    "nombre": "costoDelVehiculo",
+    "parametros": "carId: string, distributorId: string, from: string, to: string",
+    "retorno": "Promise<CarCostDetailDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tablero",
+    "parametros": "distributorId: string, from: string, to: string",
+    "retorno": "Promise<FleetCostSummaryDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumen",
+    "parametros": "car: Car, c: CostoDeVehiculo",
+    "retorno": "FleetCostSummaryDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "calcular",
+    "parametros": "distributorId: string, vehiculos: Car[], from: string, to: string",
+    "retorno": "Promise<Map<string, CostoDeVehiculo>>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository",
+   "Repository",
+   "CarService",
+   "FleetCostSourceService"
+  ],
+  "estereotipo": null
+ },
+ "FleetExpenseNotifierListener": {
+  "kind": "listener",
+  "file": "fleet-expense/fleet-expense-notifier.listener.ts",
+  "metodos": [
+   {
+    "nombre": "cargaAnomala",
+    "parametros": "evento: CargaDeCombustibleAnomalaEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "derrame",
+    "parametros": "evento: SiniestroConDerrameEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "asignacionPendiente",
+    "parametros": "evento: SiniestroConAsignacionPendienteEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "patente",
+    "parametros": "carId: string, distributorId: string",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "avisar",
+    "parametros": "distributorId: string, subject: string, html: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CarService",
+   "AdminService",
+   "EmailSenderPort"
+  ],
+  "estereotipo": "listener"
+ },
+ "FleetExpenseMapper": {
+  "kind": "mapper",
+  "file": "fleet-expense/fleet-expense.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "fuelLoad",
+    "parametros": "f: FuelLoad",
+    "retorno": "FuelLoadResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "trafficFine",
+    "parametros": "m: TrafficFine",
+    "retorno": "TrafficFineResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "vehicleAccident",
+    "parametros": "a: VehicleAccident",
+    "retorno": "VehicleAccidentResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "siniestroRegistrado",
+    "parametros": "r: { siniestro: VehicleAccident; assignmentKept: boolean; assignmentKeptReason: string | null; }",
+    "retorno": "VehicleAccidentCreatedDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "tireEvent",
+    "parametros": "e: TireEvent",
+    "retorno": "TireEventResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   },
+   {
+    "nombre": "tire",
+    "parametros": "t: Tire, events?: TireEvent[]",
+    "retorno": "TireResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "FuelLoadController": {
+  "kind": "controller",
+  "file": "fleet-expense/fuel-load.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateFuelLoadDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<FuelLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "createMine",
+    "parametros": "@Body() dto: CreateMyFuelLoadDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<FuelLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryFuelLoadDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<FuelLoadPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<FuelLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateFuelLoadDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<FuelLoadResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "anular",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "FuelLoadService"
+  ],
+  "estereotipo": "controller"
+ },
+ "FuelLoadService": {
+  "kind": "service",
+  "file": "fleet-expense/fuel-load.service.ts",
+  "metodos": [
+   {
+    "nombre": "registrar",
+    "parametros": "dto: CreateFuelLoadDto, distributorId: string, userId: string",
+    "retorno": "Promise<FuelLoad>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarPropia",
+    "parametros": "dto: CreateMyFuelLoadDto, distributorId: string, userId: string",
+    "retorno": "Promise<FuelLoad>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "instante",
+    "parametros": "loadedAt: string | undefined",
+    "retorno": "Date",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "carId: string, datos: DatosDeCarga, loadedAt: Date, employeeId: string | null, distributorId: string, userId: string, permitirCorreccion: boolean",
+    "retorno": "Promise<FuelLoad>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "modificar",
+    "parametros": "id: string, dto: UpdateFuelLoadDto, distributorId: string",
+    "retorno": "Promise<FuelLoad>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "anular",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<MessageResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<FuelLoad>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryFuelLoadDto",
+    "retorno": "Promise<PaginaDeCargas>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "consumo",
+    "parametros": "carId: string, distributorId: string, from: string, to: string",
+    "retorno": "Promise<FuelEfficiencyDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cargarParaEscribir",
+    "parametros": "manager: EntityManager, id: string, distributorId: string",
+    "retorno": "Promise<FuelLoad>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertImporteYTanque",
+    "parametros": "liters: number, unitPrice: number, totalAmount: number, capacidad: number | null",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertKilometraje",
+    "parametros": "manager: EntityManager, carId: string, loadedAt: Date, odometerKm: number, excluirId: string | null, correccion: boolean, nota: string | null",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "evaluarAnomalia",
+    "parametros": "manager: EntityManager, carId: string, fuelLoadId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "kilometrajeMaximoVigente",
+    "parametros": "manager: EntityManager, carId: string, distributorId: string",
+    "retorno": "Promise<number | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recalcularOdometro",
+    "parametros": "manager: EntityManager, carId: string, kmAnterior: number, kmNuevo: number, distributorId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource",
+   "CarService",
+   "DriverContextService",
+   "EventEmitter2",
+   "FleetCostSourceService"
+  ],
+  "estereotipo": null
+ },
+ "TireMovementResponseDto": {
+  "kind": "controller",
+  "file": "fleet-expense/tire.controller.ts",
+  "metodos": [],
+  "dependencias": [],
+  "estereotipo": "controller"
+ },
+ "TireController": {
+  "kind": "controller",
+  "file": "fleet-expense/tire.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateTireDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TireResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryTireDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TirePageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TireResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registerEvent",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CreateTireEventDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<TireMovementResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "TireService"
+  ],
+  "estereotipo": "controller"
+ },
+ "TireService": {
+  "kind": "service",
+  "file": "fleet-expense/tire.service.ts",
+  "metodos": [
+   {
+    "nombre": "registrar",
+    "parametros": "dto: CreateTireDto, distributorId: string",
+    "retorno": "Promise<Tire>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<Tire>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "historial",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<TireEvent[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryTireDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "delVehiculo",
+    "parametros": "carId: string, distributorId: string, query: QueryTireDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarMovimiento",
+    "parametros": "id: string, dto: CreateTireEventDto, distributorId: string, userId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "aplicar",
+    "parametros": "manager: EntityManager, t: Tire, dto: CreateTireEventDto, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cerrarMontaje",
+    "parametros": "t: Tire, odometerKm: number",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "soltar",
+    "parametros": "t: Tire",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertPosicionLibre",
+    "parametros": "manager: EntityManager, carId: string, position: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository",
+   "DataSource",
+   "CarService"
+  ],
+  "estereotipo": null
+ },
+ "TrafficFineController": {
+  "kind": "controller",
+  "file": "fleet-expense/traffic-fine.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateTrafficFineDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TrafficFineResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryTrafficFineDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TrafficFinePageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TrafficFineResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateTrafficFineDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TrafficFineResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pay",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: PayTrafficFineDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TrafficFineResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "chargeToEmployee",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: ChargeTrafficFineDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TrafficFineResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "void",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: VoidTrafficFineDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<TrafficFineResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "TrafficFineService"
+  ],
+  "estereotipo": "controller"
+ },
+ "TrafficFineService": {
+  "kind": "service",
+  "file": "fleet-expense/traffic-fine.service.ts",
+  "metodos": [
+   {
+    "nombre": "registrar",
+    "parametros": "dto: CreateTrafficFineDto, distributorId: string",
+    "retorno": "Promise<TrafficFine>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "modificar",
+    "parametros": "id: string, dto: UpdateTrafficFineDto, distributorId: string",
+    "retorno": "Promise<TrafficFine>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pagar",
+    "parametros": "id: string, dto: PayTrafficFineDto, distributorId: string",
+    "retorno": "Promise<TrafficFine>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "imputar",
+    "parametros": "id: string, dto: ChargeTrafficFineDto, distributorId: string",
+    "retorno": "Promise<TrafficFine>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "anular",
+    "parametros": "id: string, dto: VoidTrafficFineDto, distributorId: string",
+    "retorno": "Promise<TrafficFine>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<TrafficFine>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryTrafficFineDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "mutar",
+    "parametros": "id: string, distributorId: string, cambio: ( manager: EntityManager, multa: TrafficFine, ) => void | Promise<void>",
+    "retorno": "Promise<TrafficFine>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertAbierta",
+    "parametros": "multa: TrafficFine, mensaje: string",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertImportes",
+    "parametros": "amount: number, voluntario: number | null",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertActaLibre",
+    "parametros": "jurisdiction: string, actNumber: string, distributorId: string, excluirId: string | null, manager?: EntityManager",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource",
+   "CarService",
+   "DriverContextService"
+  ],
+  "estereotipo": null
+ },
+ "VehicleAccidentController": {
+  "kind": "controller",
+  "file": "fleet-expense/vehicle-accident.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Body() dto: CreateVehicleAccidentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<VehicleAccidentCreatedDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "createMine",
+    "parametros": "@Body() dto: CreateMyVehicleAccidentDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') userId: string",
+    "retorno": "Promise<VehicleAccidentCreatedDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryVehicleAccidentDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<VehicleAccidentPageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<VehicleAccidentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateVehicleAccidentDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<VehicleAccidentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "close",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CloseVehicleAccidentDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<VehicleAccidentResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "VehicleAccidentService"
+  ],
+  "estereotipo": "controller"
+ },
+ "VehicleAccidentService": {
+  "kind": "service",
+  "file": "fleet-expense/vehicle-accident.service.ts",
+  "metodos": [
+   {
+    "nombre": "registrar",
+    "parametros": "dto: CreateVehicleAccidentDto, distributorId: string, userId: string",
+    "retorno": "Promise<SiniestroRegistrado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarPropio",
+    "parametros": "dto: CreateMyVehicleAccidentDto, distributorId: string, userId: string",
+    "retorno": "Promise<SiniestroRegistrado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "instante",
+    "parametros": "occurredAt: string",
+    "retorno": "Date",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "guardar",
+    "parametros": "carId: string, datos: CreateMyVehicleAccidentDto, occurredAt: Date, employeeId: string | null, distributorId: string, userId: string",
+    "retorno": "Promise<SiniestroRegistrado>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "modificar",
+    "parametros": "id: string, dto: UpdateVehicleAccidentDto, distributorId: string",
+    "retorno": "Promise<VehicleAccident>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cerrar",
+    "parametros": "id: string, dto: CloseVehicleAccidentDto, distributorId: string",
+    "retorno": "Promise<VehicleAccident>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findOne",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<VehicleAccident>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "distributorId: string, query: QueryVehicleAccidentDto",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "mutar",
+    "parametros": "id: string, distributorId: string, cambio: (siniestro: VehicleAccident, manager: EntityManager) => void",
+    "retorno": "Promise<VehicleAccident>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertAbierto",
+    "parametros": "siniestro: VehicleAccident, mensaje: string",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource",
+   "CarService",
+   "VehicleAssignmentService",
+   "DriverContextService",
+   "EventEmitter2"
+  ],
+  "estereotipo": null
+ },
  "CarAssignmentsController": {
   "kind": "controller",
   "file": "fleet/car-assignments.controller.ts",
@@ -9094,6 +14612,25 @@
   ],
   "dependencias": [
    "FleetTaskService"
+  ],
+  "estereotipo": "controller"
+ },
+ "CarReactivationController": {
+  "kind": "controller",
+  "file": "fleet/car-reactivation.controller.ts",
+  "metodos": [
+   {
+    "nombre": "reactivar",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CarResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "FleetVehicleStatusService",
+   "CarPhotoService"
   ],
   "estereotipo": "controller"
  },
@@ -9175,6 +14712,94 @@
   ],
   "estereotipo": "controller"
  },
+ "EmployeeDocumentsController": {
+  "kind": "controller",
+  "file": "fleet/employee-documents.controller.ts",
+  "metodos": [
+   {
+    "nombre": "find",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<EmployeeDocumentsResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "EmployeeDocumentsService"
+  ],
+  "estereotipo": "controller"
+ },
+ "EmployeeDocumentsService": {
+  "kind": "service",
+  "file": "fleet/employee-documents.service.ts",
+  "metodos": [
+   {
+    "nombre": "documentsOf",
+    "parametros": "employeeId: string, distributorId: string",
+    "retorno": "Promise<DocumentacionDelEmpleado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "faltantesBloqueantesDeChoferes",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<\n    Array<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contarPorEstadoDeVencimiento",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<Record<ExpirationStatus, number>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "planesActivos",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<MaintenancePlan[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "planesFaltantes",
+    "parametros": "empleado: EmployeeConPuesto, planes: MaintenancePlan[], abiertasDelEmpleado: MaintenanceTask[]",
+    "retorno": "MaintenancePlan[]",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "esSuyaPorPerfil",
+    "parametros": "tarea: MaintenanceTask, empleado: EmployeeConPuesto",
+    "retorno": "boolean",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tareasDe",
+    "parametros": "empleados: EmployeeConPuesto[], distributorId: string",
+    "retorno": "Promise<MaintenanceTask[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository",
+   "EmployeeService",
+   "DeliveryService",
+   "LeaveService"
+  ],
+  "estereotipo": null
+ },
  "FleetAttachmentMapper": {
   "kind": "mapper",
   "file": "fleet/fleet-attachment.mapper.ts",
@@ -9252,6 +14877,49 @@
   ],
   "estereotipo": null
  },
+ "FleetCostSourceService": {
+  "kind": "service",
+  "file": "fleet/fleet-cost-source.service.ts",
+  "metodos": [
+   {
+    "nombre": "mantenimiento",
+    "parametros": "distributorId: string, carIds: string[], desde: Date, hasta: Date",
+    "retorno": "Promise<CostoDeMantenimiento[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "kmMaximoDeTareasHechas",
+    "parametros": "distributorId: string, carId: string",
+    "retorno": "Promise<number | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "seguros",
+    "parametros": "distributorId: string, carIds: string[], desde: Date",
+    "retorno": "Promise<CostoDeSeguro[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "kmDeUso",
+    "parametros": "distributorId: string, carIds: string[], desdeDia: string, hastaDia: string",
+    "retorno": "Promise<KmDeUso[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository"
+  ],
+  "estereotipo": null
+ },
  "FleetDispatchLockService": {
   "kind": "service",
   "file": "fleet/fleet-dispatch-lock.service.ts",
@@ -9260,6 +14928,22 @@
     "nombre": "choferesInhabilitados",
     "parametros": "driverUserIds: string[], distributorId?: string | null",
     "retorno": "Promise<Set<string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "choferesEnMoto",
+    "parametros": "driverUserIds: string[], distributorId?: string | null",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertEnMoto",
+    "parametros": "driverUserId: string, distributorId?: string | null",
+    "retorno": "Promise<void>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -9298,7 +14982,7 @@
    },
    {
     "nombre": "tareasAbiertasDe",
-    "parametros": "deliveryIds: string[], carIds: string[], distributorId?: string | null",
+    "parametros": "deliveryIds: string[], carIds: string[], employeeIds: string[], distributorId?: string | null",
     "retorno": "Promise<MaintenanceTask[]>",
     "visibilidad": "-",
     "estatico": false,
@@ -9324,7 +15008,9 @@
   "dependencias": [
    "Repository",
    "VehicleAssignmentService",
-   "DeliveryService"
+   "DeliveryService",
+   "EmployeeService",
+   "LeaveService"
   ],
   "estereotipo": null
  },
@@ -9352,9 +15038,25 @@
   "metodos": [
    {
     "nombre": "find",
-    "parametros": "distributorId: string, withinDays: number",
+    "parametros": "distributorId: string, query: FleetExpirationsQueryDto",
     "retorno": "Promise<FleetExpirationsResponseDto>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enLaCategoria",
+    "parametros": "legajo: EmployeeConPuesto, query: FleetExpirationsQueryDto",
+    "retorno": "boolean",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "grupoDeEmpleado",
+    "parametros": "mapa: Map<string, FleetEmployeeExpirationsDto>, legajo: EmployeeConPuesto",
+    "retorno": "FleetEmployeeExpirationsDto",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -9384,7 +15086,8 @@
    }
   ],
   "dependencias": [
-   "Repository"
+   "Repository",
+   "EmployeeService"
   ],
   "estereotipo": null
  },
@@ -9714,6 +15417,14 @@
     "abstracto": false
    },
    {
+    "nombre": "assertVigenciaCoherente",
+    "parametros": "plan: MaintenancePlan, validFrom: Date | null | undefined, dueAt: Date | null | undefined",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "assertAbierta",
     "parametros": "task: MaintenanceTask",
     "retorno": "void",
@@ -9732,7 +15443,23 @@
    {
     "nombre": "assertSujetoCoherente",
     "parametros": "plan: MaintenancePlan, dto: CreateFleetTaskDto, distributorId: string",
-    "retorno": "Promise<void>",
+    "retorno": "Promise<EmployeeConPuesto | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertDatosDelDocumento",
+    "parametros": "plan: MaintenancePlan, dto: CreateFleetTaskDto, empleado: EmployeeConPuesto | null",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "detalleValidado",
+    "parametros": "plan: MaintenancePlan, dto: Pick<CreateFleetTaskDto, 'details'>",
+    "retorno": "Record<string, string> | null",
     "visibilidad": "-",
     "estatico": false,
     "abstracto": false
@@ -9743,7 +15470,28 @@
    "Repository",
    "CarService",
    "DeliveryService",
+   "EmployeeService",
    "FleetDispatchLockService"
+  ],
+  "estereotipo": null
+ },
+ "FleetVehicleStatusService": {
+  "kind": "service",
+  "file": "fleet/fleet-vehicle-status.service.ts",
+  "metodos": [
+   {
+    "nombre": "reactivar",
+    "parametros": "carId: string, distributorId: string",
+    "retorno": "Promise<Car>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CarService",
+   "FleetTaskService",
+   "DataSource"
   ],
   "estereotipo": null
  },
@@ -9859,6 +15607,14 @@
     "abstracto": false
    },
    {
+    "nombre": "findInactive",
+    "parametros": "@Query() query: PaginationDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<CatalogoDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "findOne",
     "parametros": "@Param('id', ParseUUIDPipe) id: string",
     "retorno": "Promise<GasCylinderResponseDto>",
@@ -9885,6 +15641,14 @@
    {
     "nombre": "update",
     "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() updateGasCylinderDto: UpdateGasCylinderDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<GasCylinderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reactivate",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": "Promise<GasCylinderResponseDto>",
     "visibilidad": "+",
     "estatico": false,
@@ -10017,6 +15781,22 @@
     "nombre": "remove",
     "parametros": "id: string, distributorId: string",
     "retorno": "Promise<BajaDeProductoDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findInactive",
+    "parametros": "paginationDto: PaginationDto, distributorId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reactivate",
+    "parametros": "id: string, distributorId: string",
+    "retorno": "Promise<GasCylinder>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -10255,6 +16035,14 @@
    },
    {
     "nombre": "notifyOrderCancelled",
+    "parametros": "driverId: string, payload: unknown",
+    "retorno": "void",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "notifyOrderAddressChanged",
     "parametros": "driverId: string, payload: unknown",
     "retorno": "void",
     "visibilidad": "+",
@@ -10690,6 +16478,228 @@
   ],
   "estereotipo": null
  },
+ "LeaveController": {
+  "kind": "controller",
+  "file": "leave/leave.controller.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: CreateLeaveDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<LeaveResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vacationBalance",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Query() query: QueryVacationBalanceDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<VacationBalanceDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "@Query() query: QueryLeaveDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<LeavePageDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateLeaveDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<LeaveResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "approve",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<LeaveResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reject",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @Body() dto: RejectLeaveDto, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<LeaveResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cancel",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser('user_id') actorUserId: string",
+    "retorno": "Promise<LeaveResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "LeaveService"
+  ],
+  "estereotipo": "controller"
+ },
+ "LeaveMapper": {
+  "kind": "mapper",
+  "file": "leave/leave.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "licencia: LicenciaConLegajo",
+    "retorno": "LeaveResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "LeaveService": {
+  "kind": "service",
+  "file": "leave/leave.service.ts",
+  "metodos": [
+   {
+    "nombre": "create",
+    "parametros": "employeeId: string, dto: CreateLeaveDto, distributorId: string, actorUserId: string",
+    "retorno": "Promise<LicenciaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "update",
+    "parametros": "id: string, dto: UpdateLeaveDto, distributorId: string",
+    "retorno": "Promise<LicenciaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "approve",
+    "parametros": "id: string, distributorId: string, actorUserId: string",
+    "retorno": "Promise<LicenciaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reject",
+    "parametros": "id: string, reason: string, distributorId: string, actorUserId: string",
+    "retorno": "Promise<LicenciaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cancel",
+    "parametros": "id: string, distributorId: string, actorUserId: string",
+    "retorno": "Promise<LicenciaConLegajo>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findAll",
+    "parametros": "query: QueryLeaveDto, distributorId: string",
+    "retorno": "Promise<PaginaDeLicencias>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "vacationBalance",
+    "parametros": "employeeId: string, distributorId: string, year?: number",
+    "retorno": "Promise<VacationBalanceDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "empleadosDeLicenciaEn",
+    "parametros": "employeeIds: string[], dia: string",
+    "retorno": "Promise<Set<string>>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "contarDeLicenciaEn",
+    "parametros": "distributorId: string, dia: string",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tieneLicencias",
+    "parametros": "manager: EntityManager, employeeId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "tomar",
+    "parametros": "manager: EntityManager, id: string, distributorId: string, conLegajo: boolean",
+    "retorno": "Promise<LicenciaConLegajo>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolver",
+    "parametros": "id: string, distributorId: string, aplicar: (licencia: LicenciaConLegajo) => void",
+    "retorno": "Promise<LicenciaConLegajo>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "noEncontrada",
+    "parametros": "id: string",
+    "retorno": "NotFoundException",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertPeriodo",
+    "parametros": "inicio: string, fin: string",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertSinSuperposicion",
+    "parametros": "manager: EntityManager, employeeId: string, inicio: string, fin: string, excepto?: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertTransicion",
+    "parametros": "rechazo: RechazoDeLicencia | null, licencia: EmployeeLeave",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "DataSource",
+   "EmployeeService"
+  ],
+  "estereotipo": null
+ },
  "NotificationsController": {
   "kind": "controller",
   "file": "notifications/notifications.controller.ts",
@@ -10801,6 +16811,14 @@
     "abstracto": false
    },
    {
+    "nombre": "sendOrderNoticePush",
+    "parametros": "customerUserId: string, orderId: string, aviso: { title: string; body: string; event: string }",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "saveNotificationToken",
     "parametros": "userId: string, token: string, platform: string",
     "retorno": "Promise<ResultadoDeEnvioDto>",
@@ -10829,6 +16847,14 @@
     "abstracto": false
    },
    {
+    "nombre": "reintegrarPago",
+    "parametros": "orderId: string",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "notify",
     "parametros": "order: Order, previousDriverUserId: string | null, role: CancelActor",
     "retorno": "void",
@@ -10842,7 +16868,8 @@
    "GasCylinderService",
    "RealtimeDispatchPort",
    "ReleaseOrderUseCase",
-   "DispatchOrchestratorService"
+   "DispatchOrchestratorService",
+   "RefundsService"
   ],
   "estereotipo": "usecase"
  },
@@ -10952,6 +16979,54 @@
   ],
   "estereotipo": "usecase"
  },
+ "ChangeOrderAddressUseCase": {
+  "kind": "usecase",
+  "file": "order/application/change-order-address.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "orderId: string, dto: ChangeOrderAddressDto, customerUserId: string, distributorId: string | null",
+    "retorno": "Promise<Order>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "enTransaccion",
+    "parametros": "orderId: string, dto: ChangeOrderAddressDto, customerUserId: string, distributorId: string | null",
+    "retorno": "Promise<CambioAplicado>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "detalle",
+    "parametros": "motivo: string | undefined, totalAnterior: number, totalNuevo: number",
+    "retorno": "string",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "efectosPosteriores",
+    "parametros": "tx: CambioAplicado",
+    "retorno": "Promise<Order>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "CreateOrderUseCase",
+   "UserAddressService",
+   "OrderRepositoryPort",
+   "RealtimeDispatchPort",
+   "DispatchOrchestratorService",
+   "RedisService"
+  ],
+  "estereotipo": "usecase"
+ },
  "ConfirmDeliveryUseCase": {
   "kind": "usecase",
   "file": "order/application/confirm-delivery.use-case.ts",
@@ -11006,7 +17081,8 @@
    "PaymentsService",
    "DispatchOrchestratorService",
    "RealtimeDispatchPort",
-   "NotificationPort"
+   "NotificationPort",
+   "RefundsService"
   ],
   "estereotipo": "usecase"
  },
@@ -11064,8 +17140,24 @@
    },
    {
     "nombre": "calcularTotales",
-    "parametros": "subtotalItems: Decimal.Value, coverageZone: ZonaParaRecargo | null, paymentMethod: PaymentMethod",
+    "parametros": "subtotalItems: Decimal.Value, coverageZone: ZonaParaRecargo | null, paymentMethod: PaymentMethod, expressSurcharge: Decimal.Value = 0",
     "retorno": "",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "assertExpressCompatible",
+    "parametros": "dto: { isReservation?: boolean; timeSlotId?: string; scheduledDate?: string; }",
+    "retorno": "void",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "recargoExpress",
+    "parametros": "distributorId: string | null | undefined, address: { location?: Point | null }",
+    "retorno": "Promise<number>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -11111,7 +17203,30 @@
    "DistributorService",
    "TimeSlotService",
    "CoverageZoneService",
-   "CoverageZonePricingService"
+   "CoverageZonePricingService",
+   "CartService",
+   "ExpressAvailabilityService",
+   "CustomerAccountPort"
+  ],
+  "estereotipo": "usecase"
+ },
+ "DeliveryOptionsUseCase": {
+  "kind": "usecase",
+  "file": "order/application/delivery-options.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "query: DeliveryOptionsQueryDto, distributorId: string | null, actor: { userId: string; role: RoleType }",
+    "retorno": "Promise<DeliveryOptionsResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "UserAddressService",
+   "ExpressAvailabilityService",
+   "DistributorService"
   ],
   "estereotipo": "usecase"
  },
@@ -11132,6 +17247,22 @@
     "parametros": "order: Order",
     "retorno": "Promise<string | null>",
     "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "offerExpress",
+    "parametros": "fresco: Order",
+    "retorno": "Promise<",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "choferesEnMotoCerca",
+    "parametros": "lat: number, lng: number, distributorId: string | null | undefined, radiusKm: number",
+    "retorno": "Promise<string[]>",
+    "visibilidad": "+",
     "estatico": false,
     "abstracto": false
    },
@@ -11216,6 +17347,14 @@
     "abstracto": false
    },
    {
+    "nombre": "esExpress",
+    "parametros": "orderId: string",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "isReofferable",
     "parametros": "order: Order",
     "retorno": "boolean",
@@ -11257,9 +17396,123 @@
    "FleetDispatchLockService",
    "RedisService",
    "TruckLoadGatePort",
-   "DispatchSettingsService"
+   "DispatchSettingsService",
+   "ExpressSettingsService",
+   "ExpressDegradeService"
   ],
   "estereotipo": null
+ },
+ "ExpressAvailabilityService": {
+  "kind": "service",
+  "file": "order/application/express-availability.service.ts",
+  "metodos": [
+   {
+    "nombre": "evaluar",
+    "parametros": "distributorId: string, address: { location?: Point | null }, ahora: Date = new Date()",
+    "retorno": "Promise<DisponibilidadExpress>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ExpressSettingsService",
+   "CoverageZoneService",
+   "DispatchOrchestratorService"
+  ],
+  "estereotipo": null
+ },
+ "ExpressDegradeService": {
+  "kind": "service",
+  "file": "order/application/express-degrade.service.ts",
+  "metodos": [
+   {
+    "nombre": "pasarAlRepartoComun",
+    "parametros": "orderId: string",
+    "retorno": "Promise<PaseAlRepartoComun | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "avisar",
+    "parametros": "order: Order, pase: PaseAlRepartoComun",
+    "retorno": "void",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "RefundsService",
+   "RealtimeDispatchPort",
+   "NotificationPort"
+  ],
+  "estereotipo": null
+ },
+ "ExpressPurchaseUseCase": {
+  "kind": "usecase",
+  "file": "order/application/express-purchase.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "preview",
+    "parametros": "dto: ExpressPurchaseDto, customerId: string, distributorId: string | null",
+    "retorno": "Promise<ExpressPreviewResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "buy",
+    "parametros": "dto: ExpressPurchaseDto, customerId: string, distributorId: string | null",
+    "retorno": "Promise<CreateOrderResult>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "distribuidora",
+    "parametros": "distributorId: string | null",
+    "retorno": "Promise<string>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "cuerpoDeCotizacion",
+    "parametros": "dto: ExpressPurchaseDto, customerId: string, compra: CompraExpress",
+    "retorno": "QuoteOrderDto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resolver",
+    "parametros": "dto: ExpressPurchaseDto, customerId: string, distributorId: string",
+    "retorno": "Promise<CompraExpress>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "garrafaHabitual",
+    "parametros": "customerId: string, distributorId: string",
+    "retorno": "Promise<string | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource",
+   "UserAddressService",
+   "ExpressAvailabilityService",
+   "QuoteOrderUseCase",
+   "CreateOrderUseCase",
+   "DistributorService"
+  ],
+  "estereotipo": "usecase"
  },
  "OrderDriverPhotoService": {
   "kind": "service",
@@ -11304,6 +17557,14 @@
   "file": "order/application/quote-order.use-case.ts",
   "metodos": [
    {
+    "nombre": "itemsDelCarrito",
+    "parametros": "customerId: string | undefined, distributorId: string | null",
+    "retorno": null,
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "execute",
     "parametros": "dto: QuoteOrderDto, distributorId: string | null, actor: { userId: string; role: RoleType }",
     "retorno": "Promise<QuoteResponseDto>",
@@ -11342,9 +17603,38 @@
    "UserAddressService",
    "DistributorService",
    "TimeSlotService",
-   "DataSource"
+   "DataSource",
+   "CartService"
   ],
   "estereotipo": "usecase"
+ },
+ "ReintegroListener": {
+  "kind": "listener",
+  "file": "order/application/reintegro.listener.ts",
+  "metodos": [
+   {
+    "nombre": "onReintegrado",
+    "parametros": "evento: PagoReintegradoEvent",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "onFallido",
+    "parametros": "evento: ReintegroFallidoEvent",
+    "retorno": "void",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "OrderLookupService",
+   "RealtimeDispatchPort",
+   "NotificationPort"
+  ],
+  "estereotipo": "listener"
  },
  "ReleaseOrderUseCase": {
   "kind": "usecase",
@@ -11470,6 +17760,24 @@
   ],
   "estereotipo": null
  },
+ "SetOrderReceiverUseCase": {
+  "kind": "usecase",
+  "file": "order/application/set-order-receiver.use-case.ts",
+  "metodos": [
+   {
+    "nombre": "execute",
+    "parametros": "orderId: string, dto: SetOrderReceiverDto, customerUserId: string, distributorId: string | null",
+    "retorno": "Promise<string>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DataSource"
+  ],
+  "estereotipo": "usecase"
+ },
  "UpdateOrderStatusUseCase": {
   "kind": "usecase",
   "file": "order/application/update-order-status.use-case.ts",
@@ -11479,6 +17787,14 @@
     "parametros": "id: string, status: OrderStatus, deliveryId?: string, role?: RoleType, actorUserId?: string, reason?: string",
     "retorno": "Promise<Order>",
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "publicarEntrega",
+    "parametros": "order: Order",
+    "retorno": "Promise<void>",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -11577,7 +17893,8 @@
    "StockDeliveryPort",
    "EntityPhotoService",
    "TruckLoadGatePort",
-   "DispatchOfferRepositoryPort"
+   "DispatchOfferRepositoryPort",
+   "EventEmitter2"
   ],
   "estereotipo": "usecase"
  },
@@ -11680,7 +17997,8 @@
    "OrderService",
    "RedisService",
    "DispatchOrchestratorService",
-   "ScheduledTasksSettingsService"
+   "ScheduledTasksSettingsService",
+   "RefundsService"
   ],
   "estereotipo": null
  },
@@ -11715,6 +18033,22 @@
   ],
   "dependencias": [],
   "estereotipo": null
+ },
+ "CustomerAccountPort": {
+  "kind": "port",
+  "file": "order/domain/ports/customer-account.port.ts",
+  "metodos": [
+   {
+    "nombre": "assertCredito",
+    "parametros": "manager: EntityManager, distributorId: string, customerId: string, total: Decimal.Value",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "interface"
  },
  "CylinderLifecyclePort": {
   "kind": "port",
@@ -11855,6 +18189,14 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": true
+   },
+   {
+    "nombre": "sendOrderNoticePush",
+    "parametros": "customerId: string, orderId: string, aviso: { title: string; body: string; event: string }",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
    }
   ],
   "dependencias": [],
@@ -11898,7 +18240,7 @@
    },
    {
     "nombre": "findAvailable",
-    "parametros": "limit: number, offset: number, distributorId?: string | null",
+    "parametros": "limit: number, offset: number, distributorId?: string | null, /** Los pedidos express no están en el pool del chofer salvo que se pidan. */ incluirExpress?: boolean",
     "retorno": "Promise<PaginatedOrders>",
     "visibilidad": "+",
     "estatico": false,
@@ -11979,6 +18321,14 @@
    {
     "nombre": "notifyDriverOrderCancelled",
     "parametros": "driverId: string, payload: unknown",
+    "retorno": "void",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
+    "nombre": "notifyDriverOrderAddressChanged",
+    "parametros": "driverUserId: string, payload: unknown",
     "retorno": "void",
     "visibilidad": "+",
     "estatico": false,
@@ -12075,6 +18425,59 @@
   ],
   "dependencias": [],
   "estereotipo": "interface"
+ },
+ "ExpressOrderController": {
+  "kind": "controller",
+  "file": "order/express-order.controller.ts",
+  "metodos": [
+   {
+    "nombre": "options",
+    "parametros": "@Query() query: DeliveryOptionsQueryDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
+    "retorno": "Promise<DeliveryOptionsResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "preview",
+    "parametros": "@Body() dto: ExpressPurchaseDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<ExpressPreviewResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "buy",
+    "parametros": "@Body() dto: ExpressPurchaseDto, @CurrentUser() user: AuthenticatedUser, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<OrderResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "DeliveryOptionsUseCase",
+   "ExpressPurchaseUseCase"
+  ],
+  "estereotipo": "controller"
+ },
+ "CustomerAccountAdapter": {
+  "kind": "service",
+  "file": "order/infrastructure/customer-account.adapter.ts",
+  "metodos": [
+   {
+    "nombre": "assertCredito",
+    "parametros": "manager: EntityManager, distributorId: string, customerId: string, total: Decimal.Value",
+    "retorno": "Promise<void>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CustomerAccountService"
+  ],
+  "estereotipo": null
  },
  "CylinderLifecycleAdapter": {
   "kind": "service",
@@ -12221,6 +18624,14 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "sendOrderNoticePush",
+    "parametros": "customerId: string, orderId: string, aviso: { title: string; body: string; event: string }",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -12308,7 +18719,7 @@
    },
    {
     "nombre": "findAvailable",
-    "parametros": "limit: number, offset: number, distributorId?: string | null",
+    "parametros": "limit: number, offset: number, distributorId?: string | null, incluirExpress = false",
     "retorno": "Promise<PaginatedOrders>",
     "visibilidad": "+",
     "estatico": false,
@@ -12397,6 +18808,14 @@
     "abstracto": false
    },
    {
+    "nombre": "notifyDriverOrderAddressChanged",
+    "parametros": "driverUserId: string, payload: unknown",
+    "retorno": "void",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "notifyCustomer",
     "parametros": "customerId: string, event: string, payload: unknown",
     "retorno": "void",
@@ -12445,6 +18864,14 @@
     "nombre": "findRef",
     "parametros": "orderId: string, distributorId?: string | null",
     "retorno": "Promise<OrderRef | null>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "findForRefund",
+    "parametros": "orderId: string, distributorId?: string | null",
+    "retorno": "Promise<OrderRefundRef | null>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
@@ -12520,6 +18947,14 @@
     "visibilidad": "+",
     "estatico": false,
     "abstracto": false
+   },
+   {
+    "nombre": "ultimaCompraEntregada",
+    "parametros": "customerId: string",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
    }
   ],
   "dependencias": [
@@ -12552,6 +18987,14 @@
     "parametros": "@Body() createOrderDto: CreateOrderDto, @CurrentUser() user: AuthenticatedUser, // Opcional para compatibilidad: si el cliente no manda X-Distributor (apps // previas al multi-tenant), el use-case cae a la distribuidora default. @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
     "retorno": null,
     "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "exigirClienteParaCarrito",
+    "parametros": "fromCart: boolean | undefined, user: AuthenticatedUser",
+    "retorno": "void",
+    "visibilidad": "-",
     "estatico": false,
     "abstracto": false
    },
@@ -12732,6 +19175,22 @@
     "abstracto": false
    },
    {
+    "nombre": "changeAddress",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: ChangeOrderAddressDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "setReceiver",
+    "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @Body() dto: SetOrderReceiverDto, @CurrentDistributor({ required: 'staff' }) distributorId: string | null",
+    "retorno": null,
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "cancelOrder",
     "parametros": "@CurrentUser() user: AuthenticatedUser, @Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
     "retorno": null,
@@ -12795,7 +19254,9 @@
    "CashCollectionUseCase",
    "QuoteOrderUseCase",
    "OrderDriverPhotoService",
-   "TruckLoadGatePort"
+   "TruckLoadGatePort",
+   "ChangeOrderAddressUseCase",
+   "SetOrderReceiverUseCase"
   ],
   "estereotipo": "controller"
  },
@@ -12973,7 +19434,7 @@
    },
    {
     "nombre": "findAvailableOrders",
-    "parametros": "paginationDto: PaginationDto, distributorId?: string | null",
+    "parametros": "paginationDto: PaginationDto, distributorId?: string | null, incluirExpress = false",
     "retorno": null,
     "visibilidad": "+",
     "estatico": false,
@@ -13164,6 +19625,172 @@
   ],
   "estereotipo": null
  },
+ "RefundsService": {
+  "kind": "service",
+  "file": "payments/application/refunds.service.ts",
+  "metodos": [
+   {
+    "nombre": "reintegrarPorCancelacion",
+    "parametros": "orderId: string",
+    "retorno": "Promise<PaymentRefund[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reintegrarRecargoExpress",
+    "parametros": "orderId: string, amount: number",
+    "retorno": "Promise<PaymentRefund[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarRecargoExpress",
+    "parametros": "manager: EntityManager, orderId: string, amount: number",
+    "retorno": "Promise<boolean>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "retomarPendientes",
+    "parametros": "edadMs: number = PENDIENTE_VIEJA_MS, limite = 20",
+    "retorno": "Promise<number>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reintentar",
+    "parametros": "orderId: string, distributorId: string, actorUserId: string",
+    "retorno": "Promise<PaymentRefund[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "listarDelPedido",
+    "parametros": "orderId: string, distributorId: string",
+    "retorno": "Promise<PaymentRefund[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "listar",
+    "parametros": "distributorId: string, filtros: FiltrosDeReintegros",
+    "retorno": "Promise<",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "pagosAprobados",
+    "parametros": "orderId: string",
+    "retorno": "Promise<Payment[]>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "solicitudParaCancelacion",
+    "parametros": "pago: Payment",
+    "retorno": "Promise<PaymentRefund | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "solicitudNueva",
+    "parametros": "pago: Payment, kind: RefundKind, amount: number",
+    "retorno": "Promise<PaymentRefund>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "ejecutar",
+    "parametros": "solicitud: PaymentRefund, pago: Payment, actorUserId: string | null",
+    "retorno": "Promise<PaymentRefund>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "subioLoDevuelto",
+    "parametros": "antes: GatewayPayment | null, despues: GatewayPayment | null, monto: number",
+    "retorno": "boolean",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "seAplico",
+    "parametros": "solicitud: PaymentRefund, estado: GatewayPayment | null",
+    "retorno": "boolean",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "claveDeIntento",
+    "parametros": "solicitud: PaymentRefund, estado: GatewayPayment | null",
+    "retorno": "string",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "estadoEnPasarela",
+    "parametros": "gatewayPaymentId: string",
+    "retorno": "Promise<GatewayPayment | null>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "montoDevolvible",
+    "parametros": "pedido: number, estado: GatewayPayment | null",
+    "retorno": "number",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarExito",
+    "parametros": "solicitud: PaymentRefund, pago: Payment, gatewayRefundId: string | null, actorUserId: string | null",
+    "retorno": "Promise<PaymentRefund>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "registrarFallo",
+    "parametros": "solicitud: PaymentRefund, motivo: string, actorUserId: string | null",
+    "retorno": "Promise<PaymentRefund>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "resumen",
+    "parametros": "r: PaymentRefund",
+    "retorno": "ReintegroResuelto",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "Repository",
+   "Repository",
+   "PaymentGatewayPort",
+   "OrderLookupService",
+   "EventEmitter2"
+  ],
+  "estereotipo": null
+ },
  "PaymentGatewayPort": {
   "kind": "port",
   "file": "payments/domain/ports/payment-gateway.port.ts",
@@ -13180,6 +19807,14 @@
     "nombre": "getPayment",
     "parametros": "paymentId: string",
     "retorno": "Promise<GatewayPayment>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": true
+   },
+   {
+    "nombre": "refundPayment",
+    "parametros": "input: RefundPaymentInput",
+    "retorno": "Promise<RefundPaymentResult>",
     "visibilidad": "+",
     "estatico": false,
     "abstracto": true
@@ -13217,6 +19852,14 @@
     "abstracto": false
    },
    {
+    "nombre": "refundPayment",
+    "parametros": "input: RefundPaymentInput",
+    "retorno": "Promise<RefundPaymentResult>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
     "nombre": "verifyWebhookSignature",
     "parametros": "input: VerifyWebhookSignatureInput",
     "retorno": "boolean",
@@ -13246,6 +19889,95 @@
   "dependencias": [
    "PaymentsService",
    "EventEmitter2"
+  ],
+  "estereotipo": "controller"
+ },
+ "RefundsController": {
+  "kind": "controller",
+  "file": "payments/presentation/refunds.controller.ts",
+  "metodos": [
+   {
+    "nombre": "listar",
+    "parametros": "@Query() query: QueryRefundsDto, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<RefundListResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "delPedido",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<RefundResponseDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "reintentar",
+    "parametros": "@Param('id', ParseUUIDPipe) id: string, @CurrentDistributor({ required: true }) distributorId: string, @CurrentUser() user: AuthenticatedUser",
+    "retorno": "Promise<RefundResponseDto[]>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "RefundsService"
+  ],
+  "estereotipo": "controller"
+ },
+ "RefundMapper": {
+  "kind": "mapper",
+  "file": "payments/refund.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "r: PaymentRefund",
+    "retorno": "RefundResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "PersonnelDashboardService": {
+  "kind": "service",
+  "file": "personnel/personnel-dashboard.service.ts",
+  "metodos": [
+   {
+    "nombre": "consultar",
+    "parametros": "distributorId: string",
+    "retorno": "Promise<PersonnelDashboardDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "EmployeeService",
+   "AttendanceService",
+   "LeaveService",
+   "EmployeeDocumentsService"
+  ],
+  "estereotipo": null
+ },
+ "PersonnelController": {
+  "kind": "controller",
+  "file": "personnel/personnel.controller.ts",
+  "metodos": [
+   {
+    "nombre": "consultar",
+    "parametros": "@CurrentDistributor({ required: true }) distributorId: string",
+    "retorno": "Promise<PersonnelDashboardDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "PersonnelDashboardService"
   ],
   "estereotipo": "controller"
  },
@@ -14367,7 +21099,7 @@
    },
    {
     "nombre": "crearPerfil",
-    "parametros": "manager: EntityManager, userId: string, alta: AltaAutorizada, datos: RegistrarUsuarioDto",
+    "parametros": "manager: EntityManager, userId: string, alta: AltaAutorizada, datos: RegistrarUsuarioDto, consumo?: ConsumoDeclarado",
     "retorno": "Promise<void>",
     "visibilidad": "-",
     "estatico": false,
@@ -14400,7 +21132,8 @@
    "AdminService",
    "DistributorService",
    "EmployeeService",
-   "EventEmitter2"
+   "EventEmitter2",
+   "ConsumptionService"
   ],
   "estereotipo": null
  },
@@ -14518,6 +21251,108 @@
   "dependencias": [
    "Repository",
    "Repository"
+  ],
+  "estereotipo": null
+ },
+ "ConsumptionController": {
+  "kind": "controller",
+  "file": "repurchase/consumption.controller.ts",
+  "metodos": [
+   {
+    "nombre": "obtener",
+    "parametros": "@CurrentUser('user_id') userId: string",
+    "retorno": "Promise<ConsumptionResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "actualizar",
+    "parametros": "@Body() dto: UpdateConsumptionDto, @CurrentUser('user_id') userId: string, @CurrentDistributor() distributorId: string | null",
+    "retorno": "Promise<ConsumptionResponseDto>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "ConsumptionService"
+  ],
+  "estereotipo": "controller"
+ },
+ "ConsumptionMapper": {
+  "kind": "mapper",
+  "file": "repurchase/consumption.mapper.ts",
+  "metodos": [
+   {
+    "nombre": "toDto",
+    "parametros": "customer: Customer",
+    "retorno": "ConsumptionResponseDto",
+    "visibilidad": "+",
+    "estatico": true,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [],
+  "estereotipo": "mapper"
+ },
+ "ConsumptionService": {
+  "kind": "service",
+  "file": "repurchase/consumption.service.ts",
+  "metodos": [
+   {
+    "nombre": "calcularDeclaracion",
+    "parametros": "declaracion: DeclaracionDeConsumo & { cylinderTypeId: string; quantityPerMonth: number; }, ahora: Date = new Date()",
+    "retorno": "Promise<ConsumoDeclarado>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "actualizar",
+    "parametros": "userId: string, declaracion: DeclaracionDeConsumo, distributorId?: string | null, ahora: Date = new Date()",
+    "retorno": "Promise<Customer>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "obtener",
+    "parametros": "userId: string",
+    "retorno": "Promise<Customer>",
+    "visibilidad": "+",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "kilosDeActualizacion",
+    "parametros": "actual: Customer, garrafa: GasCylinder, declaracion: DeclaracionDeConsumo",
+    "retorno": "number",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "garrafaHabitual",
+    "parametros": "id: string, distributorId?: string | null",
+    "retorno": "Promise<GasCylinder>",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   },
+   {
+    "nombre": "kilosValidados",
+    "parametros": "garrafa: GasCylinder, declaracion: DeclaracionDeConsumo & { quantityPerMonth: number }",
+    "retorno": "number",
+    "visibilidad": "-",
+    "estatico": false,
+    "abstracto": false
+   }
+  ],
+  "dependencias": [
+   "CustomersService",
+   "GasCylinderService",
+   "OrderLookupService"
   ],
   "estereotipo": null
  },

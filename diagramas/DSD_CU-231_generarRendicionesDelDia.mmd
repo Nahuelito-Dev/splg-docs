@@ -5,9 +5,6 @@ sequenceDiagram
     participant CRN as :DriverSettlementCron
     participant CHFS as :List#lt;Chofer#gt;
     participant CHF as chofer:Chofer
-    participant PEDS as :List#lt;Pedido#gt;
-    participant ASIS as :List#lt;AsientoCuentaCorriente#gt;
-    participant ASC as cobro:AsientoCuentaCorriente
 
     SAU->>+CRN: generarRendicionesDelDia()
     Note over SAU,CRN: Una sola instancia toma el proceso
@@ -20,21 +17,6 @@ sequenceDiagram
             CHF->>NRE: «create»(hoy)
         else El chofer ya tiene una rendición abierta
             CHF->>CHF: getRendicionAbierta()
-        end
-        CHF->>+PEDS: getEnEfectivoSinRendir(chofer, hoy)
-        PEDS-->>-CHF: pedidos
-        loop Por cada pedido en efectivo sin rendir
-            CHF->>+NRE: agregarPedido(pedido)
-            create participant NPR as nuevo:PedidoRendido
-            NRE->>NPR: «create»(pedido)
-            deactivate NRE
-        end
-        CHF->>+ASIS: getCobrosEnLaCalleSinRendir(chofer, hoy)
-        ASIS-->>-CHF: cobros
-        loop Por cada cobro de cuenta corriente sin rendir
-            CHF->>+NRE: agregarCobro(cobro)
-            NRE->>ASC: asignarARendicion(rendicion)
-            deactivate NRE
         end
         CHF->>NRE: calcularEfectivoEsperado()
         CHF-->>-CRN: rendicion

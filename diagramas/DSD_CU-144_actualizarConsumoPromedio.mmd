@@ -6,7 +6,6 @@ sequenceDiagram
     participant COL as :Map#lt;String, Cliente#gt;
     participant CLE as cliente:Cliente
     participant PEDS as :List#lt;Pedido#gt;
-    participant EST as :ConsumptionEstimatorService
 
     CLI->>+CON: actualizarConsumoPromedio(cantidadPorMes)
     CON->>+COL: get(usuarioId)
@@ -16,7 +15,6 @@ sequenceDiagram
     deactivate CLE
     CON->>+PEDS: getUltimoEntregado(cliente)
     PEDS-->>-CON: ultimaCompra
-    CON->>+EST: estimarProximaRecompra(ultimaCompra, cantidadPorMes)
-    EST-->>-CON: fechaEstimada
+    CON->>CON: estimarProximaRecompra(ultimaCompra, cantidadPorMes)
     CON->>CLE: registrarEstimacion(fechaEstimada)
     CON-->>-CLI: cliente

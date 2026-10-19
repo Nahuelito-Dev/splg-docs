@@ -30,8 +30,8 @@ entity "maintenance_plan" as e_maintenance_plan {
   {field} criticality : maintenance_criticality_enum *
   {field} car_type : varchar
   {field} is_active : boolean *
-  {field} <color:#1F5E8C>document_kind : maintenance_document_kind_enum <<propuesto>></color>
-  {field} <color:#1F5E8C>applies_to_categories : job_position_category_enum[] <<propuesto>></color>
+  {field} document_kind : plan_document_kind_enum
+  {field} applies_to_categories : _varchar
 }
 entity "car" as e_car {
   {field} **car_id** : uuid * <<PK>>
@@ -53,9 +53,8 @@ entity "car" as e_car {
   {field} fleet_status : fleet_status_enum *
   {field} in_service_since : timestamptz
   {field} photo_key : varchar(512)
-  {field} <color:#1F5E8C>vehicle_type : vehicle_type_enum <<propuesto>></color>
-  {field} <color:#1F5E8C>fuel_type : fuel_type_enum <<propuesto>></color>
-  {field} <color:#1F5E8C>tank_capacity_liters : numeric(6,2) <<propuesto>></color>
+  {field} fuel_type : fuel_type_enum
+  {field} tank_capacity_liters : numeric(6,2)
 }
 entity "delivery" as e_delivery {
   {field} **delivery_id** : uuid * <<PK>>
@@ -93,9 +92,9 @@ entity "maintenance_task" as e_maintenance_task {
   {field} category : varchar(10)
   {field} alerted_at : timestamptz
   {field} notes : text
-  {field} <color:#1F5E8C>//employee_id// : uuid <<FK>> <<propuesto>></color>
-  {field} <color:#1F5E8C>valid_from : timestamptz <<propuesto>></color>
-  {field} <color:#1F5E8C>details : jsonb <<propuesto>></color>
+  {field} valid_from : timestamptz
+  {field} //employee_id// : uuid <<FK>>
+  {field} details : jsonb
 }
 entity "vehicle_assignment" as e_vehicle_assignment {
   {field} **assignment_id** : uuid * <<PK>>
@@ -149,8 +148,8 @@ e_user ||--o{ e_car : user_id
 e_user ||--o| e_delivery : user_id
 e_car |o--o{ e_maintenance_task : car_id
 e_delivery |o--o{ e_maintenance_task : delivery_id
+e_employee |o--o{ e_maintenance_task : employee_id
 e_maintenance_plan ||--o{ e_maintenance_task : plan_id
-e_employee |o--o{ e_maintenance_task #line:1F5E8C;text:1F5E8C : employee_id
 e_user |o--o{ e_vehicle_assignment : assigned_by_user_id
 e_car ||--o{ e_vehicle_assignment : car_id
 e_delivery ||--o{ e_vehicle_assignment : delivery_id
@@ -164,7 +163,6 @@ e_maintenance_task ||--o{ e_maintenance_window_proposal : task_id
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |
 |<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
-|<#FFF6D9> **propuesto** | columna planificada, todavía sin aplicar a la base |
 endlegend
 note as N
   Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case

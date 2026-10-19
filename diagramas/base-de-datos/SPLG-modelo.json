@@ -51,7 +51,8 @@
    [
     "Pagos",
     [
-     "payment"
+     "payment",
+     "payment_refund"
     ]
    ],
    [
@@ -89,7 +90,19 @@
     [
      "job_position",
      "employee",
+     "employee_attendance",
+     "employee_leave",
      "attachment"
+    ]
+   ],
+   [
+    "Gastos de la flota",
+    [
+     "fuel_load",
+     "traffic_fine",
+     "vehicle_accident",
+     "tire",
+     "tire_event"
     ]
    ],
    [
@@ -122,6 +135,25 @@
      "document_sequence",
      "stock_reconciliation_alert",
      "storage_orphan"
+    ]
+   ],
+   [
+    "Caja y finanzas",
+    [
+     "cash_box",
+     "cash_session",
+     "cash_category",
+     "cash_movement",
+     "driver_settlement",
+     "driver_settlement_order",
+     "driver_settlement_expense",
+     "driver_settlement_collection",
+     "customer_account",
+     "customer_account_entry",
+     "customer_account_allocation",
+     "commission_rule",
+     "commission_entry",
+     "driver_liquidation"
     ]
    ]
   ],
@@ -839,6 +871,22 @@
       "pk": false,
       "unico": false,
       "fk": null
+     },
+     {
+      "nombre": "fuel_type",
+      "tipo": "fuel_type_enum",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "tank_capacity_liters",
+      "tipo": "numeric(6,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
      }
     ],
     "pk": [
@@ -990,6 +1038,538 @@
      ]
     ]
    },
+   "cash_box": {
+    "columnas": [
+     {
+      "nombre": "cash_box_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "name",
+      "tipo": "varchar(80)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "kind",
+      "tipo": "cash_box_kind_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "balance",
+      "tipo": "numeric(14,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "requires_session",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "is_active",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "deletedAt",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "cash_box_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_cash_box_distributor",
+      "CREATE INDEX \"IDX_cash_box_distributor\" ON public.cash_box USING btree (distributor_id)"
+     ],
+     [
+      "UQ_cash_box_nombre_vigente",
+      "CREATE UNIQUE INDEX \"UQ_cash_box_nombre_vigente\" ON public.cash_box USING btree (distributor_id, name) WHERE (\"deletedAt\" IS NULL)"
+     ]
+    ]
+   },
+   "cash_category": {
+    "columnas": [
+     {
+      "nombre": "category_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "name",
+      "tipo": "varchar(80)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "direction",
+      "tipo": "cash_category_direction_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "system_code",
+      "tipo": "cash_category_system_code_enum",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "is_active",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "category_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_cash_category_distributor",
+      "CREATE INDEX \"IDX_cash_category_distributor\" ON public.cash_category USING btree (distributor_id)"
+     ],
+     [
+      "UQ_cash_category_nombre_activa",
+      "CREATE UNIQUE INDEX \"UQ_cash_category_nombre_activa\" ON public.cash_category USING btree (distributor_id, direction, name) WHERE ((is_active = true) AND (system_code IS NULL))"
+     ],
+     [
+      "UQ_cash_category_sistema",
+      "CREATE UNIQUE INDEX \"UQ_cash_category_sistema\" ON public.cash_category USING btree (distributor_id, system_code) WHERE (system_code IS NOT NULL)"
+     ]
+    ]
+   },
+   "cash_movement": {
+    "columnas": [
+     {
+      "nombre": "movement_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "cash_box_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_box",
+       "destcol": "cash_box_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "session_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_session",
+       "destcol": "session_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "direction",
+      "tipo": "cash_movement_direction_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "category_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_category",
+       "destcol": "category_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "method",
+      "tipo": "cash_movement_method_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "occurred_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "description",
+      "tipo": "varchar(255)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "reference_type",
+      "tipo": "cash_movement_reference_type_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "reference_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "reverses_movement_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_movement",
+       "destcol": "movement_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "created_by_user_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "movement_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_cash_movement_caja_fecha",
+      "CREATE INDEX \"IDX_cash_movement_caja_fecha\" ON public.cash_movement USING btree (cash_box_id, occurred_at)"
+     ],
+     [
+      "IDX_cash_movement_distribuidora_fecha",
+      "CREATE INDEX \"IDX_cash_movement_distribuidora_fecha\" ON public.cash_movement USING btree (distributor_id, occurred_at)"
+     ],
+     [
+      "IDX_cash_movement_referencia",
+      "CREATE INDEX \"IDX_cash_movement_referencia\" ON public.cash_movement USING btree (reference_type, reference_id)"
+     ],
+     [
+      "IDX_cash_movement_sesion",
+      "CREATE INDEX \"IDX_cash_movement_sesion\" ON public.cash_movement USING btree (session_id)"
+     ],
+     [
+      "UQ_cash_movement_anula",
+      "CREATE UNIQUE INDEX \"UQ_cash_movement_anula\" ON public.cash_movement USING btree (reverses_movement_id) WHERE (reverses_movement_id IS NOT NULL)"
+     ]
+    ]
+   },
+   "cash_session": {
+    "columnas": [
+     {
+      "nombre": "session_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "cash_box_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_box",
+       "destcol": "cash_box_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "status",
+      "tipo": "cash_session_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "opened_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "opened_by_user_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "opening_amount",
+      "tipo": "numeric(14,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "closed_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "closed_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "expected_amount",
+      "tipo": "numeric(14,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "counted_amount",
+      "tipo": "numeric(14,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "difference",
+      "tipo": "numeric(14,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "notes",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "session_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_cash_session_caja_fecha",
+      "CREATE INDEX \"IDX_cash_session_caja_fecha\" ON public.cash_session USING btree (cash_box_id, opened_at)"
+     ],
+     [
+      "IDX_cash_session_distributor",
+      "CREATE INDEX \"IDX_cash_session_distributor\" ON public.cash_session USING btree (distributor_id)"
+     ],
+     [
+      "UQ_cash_session_abierta",
+      "CREATE UNIQUE INDEX \"UQ_cash_session_abierta\" ON public.cash_session USING btree (cash_box_id) WHERE (status = 'open'::cash_session_status_enum)"
+     ]
+    ]
+   },
    "claims": {
     "columnas": [
      {
@@ -1107,6 +1687,318 @@
      [
       "IDX_870bf1e0dc6005837ff0643b5f",
       "CREATE INDEX \"IDX_870bf1e0dc6005837ff0643b5f\" ON public.claims USING btree (distributor_id)"
+     ]
+    ]
+   },
+   "commission_entry": {
+    "columnas": [
+     {
+      "nombre": "entry_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "delivery_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "delivery",
+       "destcol": "delivery_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "type",
+      "tipo": "commission_entry_type_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "order_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "order",
+       "destcol": "order_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "rule_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "commission_rule",
+       "destcol": "rule_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "rule_snapshot",
+      "tipo": "jsonb",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "liquidation_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "driver_liquidation",
+       "destcol": "liquidation_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "reference_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "description",
+      "tipo": "varchar(255)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "occurred_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "created_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "entry_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_commission_entry_distributor",
+      "CREATE INDEX \"IDX_commission_entry_distributor\" ON public.commission_entry USING btree (distributor_id)"
+     ],
+     [
+      "IDX_commission_entry_empleado",
+      "CREATE INDEX \"IDX_commission_entry_empleado\" ON public.commission_entry USING btree (employee_id, occurred_at)"
+     ],
+     [
+      "IDX_commission_entry_liquidacion",
+      "CREATE INDEX \"IDX_commission_entry_liquidacion\" ON public.commission_entry USING btree (liquidation_id)"
+     ],
+     [
+      "UQ_commission_entry_faltante",
+      "CREATE UNIQUE INDEX \"UQ_commission_entry_faltante\" ON public.commission_entry USING btree (reference_id) WHERE (type = 'settlement_shortage'::commission_entry_type_enum)"
+     ],
+     [
+      "UQ_commission_entry_pedido",
+      "CREATE UNIQUE INDEX \"UQ_commission_entry_pedido\" ON public.commission_entry USING btree (order_id) WHERE (type = 'delivery_commission'::commission_entry_type_enum)"
+     ]
+    ]
+   },
+   "commission_rule": {
+    "columnas": [
+     {
+      "nombre": "rule_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "gas_cylinder_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "gas_cylinder",
+       "destcol": "gas_cylinder_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "basis",
+      "tipo": "commission_rule_basis_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "value",
+      "tipo": "numeric(10,4)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "valid_from",
+      "tipo": "date",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "valid_to",
+      "tipo": "date",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "is_active",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "rule_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_commission_rule_distribuidora",
+      "CREATE INDEX \"IDX_commission_rule_distribuidora\" ON public.commission_rule USING btree (distributor_id, is_active)"
      ]
     ]
    },
@@ -1365,6 +2257,390 @@
      [
       "REL_5d1f609371a285123294fddcf3",
       "CREATE UNIQUE INDEX \"REL_5d1f609371a285123294fddcf3\" ON public.customer USING btree (user_id)"
+     ]
+    ]
+   },
+   "customer_account": {
+    "columnas": [
+     {
+      "nombre": "account_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "customer_user_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "business_name",
+      "tipo": "varchar(120)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "tax_id",
+      "tipo": "varchar(11)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "tax_condition",
+      "tipo": "customer_account_tax_condition_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "credit_limit",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "payment_terms_days",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "customer_account_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "balance",
+      "tipo": "numeric(14,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "deletedAt",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "account_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_customer_account_distributor",
+      "CREATE INDEX \"IDX_customer_account_distributor\" ON public.customer_account USING btree (distributor_id)"
+     ],
+     [
+      "UQ_customer_account_cliente_vigente",
+      "CREATE UNIQUE INDEX \"UQ_customer_account_cliente_vigente\" ON public.customer_account USING btree (distributor_id, customer_user_id) WHERE (\"deletedAt\" IS NULL)"
+     ]
+    ]
+   },
+   "customer_account_allocation": {
+    "columnas": [
+     {
+      "nombre": "allocation_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "account_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "customer_account",
+       "destcol": "account_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "debit_entry_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "customer_account_entry",
+       "destcol": "entry_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "credit_entry_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "customer_account_entry",
+       "destcol": "entry_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "allocation_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_customer_account_allocation_credito",
+      "CREATE INDEX \"IDX_customer_account_allocation_credito\" ON public.customer_account_allocation USING btree (credit_entry_id)"
+     ],
+     [
+      "IDX_customer_account_allocation_cuenta",
+      "CREATE INDEX \"IDX_customer_account_allocation_cuenta\" ON public.customer_account_allocation USING btree (account_id)"
+     ],
+     [
+      "IDX_customer_account_allocation_debito",
+      "CREATE INDEX \"IDX_customer_account_allocation_debito\" ON public.customer_account_allocation USING btree (debit_entry_id)"
+     ]
+    ]
+   },
+   "customer_account_entry": {
+    "columnas": [
+     {
+      "nombre": "entry_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "account_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "customer_account",
+       "destcol": "account_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "type",
+      "tipo": "customer_account_entry_type_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "order_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "order",
+       "destcol": "order_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "due_date",
+      "tipo": "date",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "payment_method",
+      "tipo": "varchar(20)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "cash_movement_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_movement",
+       "destcol": "movement_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "collected_by_delivery_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "delivery",
+       "destcol": "delivery_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "description",
+      "tipo": "varchar(255)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "occurred_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "created_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "entry_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_customer_account_entry_cuenta_fecha",
+      "CREATE INDEX \"IDX_customer_account_entry_cuenta_fecha\" ON public.customer_account_entry USING btree (account_id, occurred_at)"
+     ],
+     [
+      "IDX_customer_account_entry_distributor",
+      "CREATE INDEX \"IDX_customer_account_entry_distributor\" ON public.customer_account_entry USING btree (distributor_id)"
+     ],
+     [
+      "UQ_customer_account_entry_cargo_pedido",
+      "CREATE UNIQUE INDEX \"UQ_customer_account_entry_cargo_pedido\" ON public.customer_account_entry USING btree (order_id) WHERE (type = 'sale_charge'::customer_account_entry_type_enum)"
      ]
     ]
    },
@@ -2285,6 +3561,696 @@
     "unicos": [],
     "indices": []
    },
+   "driver_liquidation": {
+    "columnas": [
+     {
+      "nombre": "liquidation_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "number",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "period_from",
+      "tipo": "date",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "period_to",
+      "tipo": "date",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "gross",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "deductions",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "net",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "driver_liquidation_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "approved_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "approved_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "paid_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "paid_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "voided_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "cash_movement_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_movement",
+       "destcol": "movement_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "created_by_user_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "liquidation_id"
+    ],
+    "unicos": [
+     [
+      "distributor_id",
+      "number"
+     ]
+    ],
+    "indices": [
+     [
+      "IDX_driver_liquidation_distributor",
+      "CREATE INDEX \"IDX_driver_liquidation_distributor\" ON public.driver_liquidation USING btree (distributor_id)"
+     ],
+     [
+      "IDX_driver_liquidation_empleado",
+      "CREATE INDEX \"IDX_driver_liquidation_empleado\" ON public.driver_liquidation USING btree (employee_id, status)"
+     ],
+     [
+      "UQ_driver_liquidation_numero",
+      "CREATE UNIQUE INDEX \"UQ_driver_liquidation_numero\" ON public.driver_liquidation USING btree (distributor_id, number)"
+     ]
+    ]
+   },
+   "driver_settlement": {
+    "columnas": [
+     {
+      "nombre": "settlement_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "delivery_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "delivery",
+       "destcol": "delivery_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "number",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "truck_load_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "truck_load",
+       "destcol": "load_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "business_date",
+      "tipo": "date",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "driver_settlement_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "expected_cash",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "declared_cash",
+      "tipo": "numeric(12,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "driver_expenses",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "difference",
+      "tipo": "numeric(12,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "difference_resolution",
+      "tipo": "driver_settlement_difference_resolution_enum",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "destination_cash_box_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_box",
+       "destcol": "cash_box_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "cash_movement_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_movement",
+       "destcol": "movement_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "submitted_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "submitted_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "approved_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "approved_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "notes",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "overdue_alerted_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "settlement_id"
+    ],
+    "unicos": [
+     [
+      "delivery_id",
+      "business_date"
+     ],
+     [
+      "distributor_id",
+      "number"
+     ]
+    ],
+    "indices": [
+     [
+      "IDX_driver_settlement_chofer",
+      "CREATE INDEX \"IDX_driver_settlement_chofer\" ON public.driver_settlement USING btree (delivery_id)"
+     ],
+     [
+      "IDX_driver_settlement_estado",
+      "CREATE INDEX \"IDX_driver_settlement_estado\" ON public.driver_settlement USING btree (distributor_id, status)"
+     ],
+     [
+      "IDX_driver_settlement_fecha",
+      "CREATE INDEX \"IDX_driver_settlement_fecha\" ON public.driver_settlement USING btree (distributor_id, business_date)"
+     ],
+     [
+      "UQ_driver_settlement_carga",
+      "CREATE UNIQUE INDEX \"UQ_driver_settlement_carga\" ON public.driver_settlement USING btree (truck_load_id) WHERE (truck_load_id IS NOT NULL)"
+     ],
+     [
+      "UQ_driver_settlement_chofer_dia",
+      "CREATE UNIQUE INDEX \"UQ_driver_settlement_chofer_dia\" ON public.driver_settlement USING btree (delivery_id, business_date)"
+     ],
+     [
+      "UQ_driver_settlement_numero",
+      "CREATE UNIQUE INDEX \"UQ_driver_settlement_numero\" ON public.driver_settlement USING btree (distributor_id, number)"
+     ]
+    ]
+   },
+   "driver_settlement_collection": {
+    "columnas": [
+     {
+      "nombre": "collection_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "settlement_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "driver_settlement",
+       "destcol": "settlement_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "entry_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": true,
+      "fk": {
+       "destino": "customer_account_entry",
+       "destcol": "entry_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "cero_uno"
+      }
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "collection_id"
+    ],
+    "unicos": [
+     [
+      "entry_id"
+     ]
+    ],
+    "indices": [
+     [
+      "IDX_driver_settlement_collection_rendicion",
+      "CREATE INDEX \"IDX_driver_settlement_collection_rendicion\" ON public.driver_settlement_collection USING btree (settlement_id)"
+     ],
+     [
+      "UQ_driver_settlement_collection_asiento",
+      "CREATE UNIQUE INDEX \"UQ_driver_settlement_collection_asiento\" ON public.driver_settlement_collection USING btree (entry_id)"
+     ]
+    ]
+   },
+   "driver_settlement_expense": {
+    "columnas": [
+     {
+      "nombre": "expense_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "settlement_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "driver_settlement",
+       "destcol": "settlement_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "category_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "cash_category",
+       "destcol": "category_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "description",
+      "tipo": "varchar(255)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "expense_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_driver_settlement_expense_rendicion",
+      "CREATE INDEX \"IDX_driver_settlement_expense_rendicion\" ON public.driver_settlement_expense USING btree (settlement_id)"
+     ]
+    ]
+   },
+   "driver_settlement_order": {
+    "columnas": [
+     {
+      "nombre": "settlement_order_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "settlement_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "driver_settlement",
+       "destcol": "settlement_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "order_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": true,
+      "fk": {
+       "destino": "order",
+       "destcol": "order_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "cero_uno"
+      }
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "payment_method",
+      "tipo": "varchar(20)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "settlement_order_id"
+    ],
+    "unicos": [
+     [
+      "order_id"
+     ]
+    ],
+    "indices": [
+     [
+      "IDX_driver_settlement_order_rendicion",
+      "CREATE INDEX \"IDX_driver_settlement_order_rendicion\" ON public.driver_settlement_order USING btree (settlement_id)"
+     ],
+     [
+      "UQ_driver_settlement_order_pedido",
+      "CREATE UNIQUE INDEX \"UQ_driver_settlement_order_pedido\" ON public.driver_settlement_order USING btree (order_id)"
+     ]
+    ]
+   },
    "employee": {
     "columnas": [
      {
@@ -2586,6 +4552,506 @@
      [
       "UQ_employee_user_vigente",
       "CREATE UNIQUE INDEX \"UQ_employee_user_vigente\" ON public.employee USING btree (user_id) WHERE ((user_id IS NOT NULL) AND (\"deletedAt\" IS NULL))"
+     ]
+    ]
+   },
+   "employee_attendance": {
+    "columnas": [
+     {
+      "nombre": "attendance_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "work_date",
+      "tipo": "date",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "check_in_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "check_out_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "source",
+      "tipo": "employee_attendance_source_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "recorded_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "notes",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "attendance_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_employee_attendance_day",
+      "CREATE INDEX \"IDX_employee_attendance_day\" ON public.employee_attendance USING btree (distributor_id, work_date)"
+     ],
+     [
+      "IDX_employee_attendance_employee",
+      "CREATE INDEX \"IDX_employee_attendance_employee\" ON public.employee_attendance USING btree (employee_id, work_date)"
+     ],
+     [
+      "UQ_employee_attendance_abierta",
+      "CREATE UNIQUE INDEX \"UQ_employee_attendance_abierta\" ON public.employee_attendance USING btree (employee_id) WHERE (check_out_at IS NULL)"
+     ]
+    ]
+   },
+   "employee_leave": {
+    "columnas": [
+     {
+      "nombre": "leave_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "type",
+      "tipo": "employee_leave_type_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "start_date",
+      "tipo": "date",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "end_date",
+      "tipo": "date",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "days",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "employee_leave_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "reason",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "rejection_reason",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "requested_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "decided_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "decided_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "leave_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_employee_leave_distributor",
+      "CREATE INDEX \"IDX_employee_leave_distributor\" ON public.employee_leave USING btree (distributor_id, status)"
+     ],
+     [
+      "IDX_employee_leave_employee",
+      "CREATE INDEX \"IDX_employee_leave_employee\" ON public.employee_leave USING btree (employee_id, status, start_date, end_date)"
+     ]
+    ]
+   },
+   "fuel_load": {
+    "columnas": [
+     {
+      "nombre": "fuel_load_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "car_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "car",
+       "destcol": "car_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "loaded_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "fuel_type",
+      "tipo": "fuel_type_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "liters",
+      "tipo": "numeric(10,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "unit_price",
+      "tipo": "numeric(12,3)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "total_amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "odometer_km",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "is_full_tank",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "station",
+      "tipo": "varchar(120)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "payment_method",
+      "tipo": "fuel_payment_method_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "receipt_number",
+      "tipo": "varchar(40)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "anomaly",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "notes",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "odometer_correction_note",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "created_by_user_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "deletedAt",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "fuel_load_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_fuel_load_car_loaded_at",
+      "CREATE INDEX \"IDX_fuel_load_car_loaded_at\" ON public.fuel_load USING btree (car_id, loaded_at)"
+     ],
+     [
+      "IDX_fuel_load_distributor_loaded_at",
+      "CREATE INDEX \"IDX_fuel_load_distributor_loaded_at\" ON public.fuel_load USING btree (distributor_id, loaded_at)"
      ]
     ]
    },
@@ -3109,6 +5575,22 @@
       "pk": false,
       "unico": false,
       "fk": null
+     },
+     {
+      "nombre": "document_kind",
+      "tipo": "plan_document_kind_enum",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "applies_to_categories",
+      "tipo": "_varchar",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
      }
     ],
     "pk": [
@@ -3291,6 +5773,36 @@
       "pk": false,
       "unico": false,
       "fk": null
+     },
+     {
+      "nombre": "valid_from",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "CASCADE",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "details",
+      "tipo": "jsonb",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
      }
     ],
     "pk": [
@@ -3301,6 +5813,10 @@
      [
       "IDX_ec96001f6fe2869ae6b40f2dc8",
       "CREATE INDEX \"IDX_ec96001f6fe2869ae6b40f2dc8\" ON public.maintenance_task USING btree (distributor_id)"
+     ],
+     [
+      "IDX_maintenance_task_employee",
+      "CREATE INDEX \"IDX_maintenance_task_employee\" ON public.maintenance_task USING btree (employee_id)"
      ]
     ]
    },
@@ -3981,6 +6497,22 @@
       "pk": false,
       "unico": false,
       "fk": null
+     },
+     {
+      "nombre": "express_surcharge_amount",
+      "tipo": "numeric(10,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "express_degraded_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
      }
     ],
     "pk": [
@@ -4529,6 +7061,179 @@
      [
       "IDX_f5221735ace059250daac9d980",
       "CREATE INDEX \"IDX_f5221735ace059250daac9d980\" ON public.payment USING btree (order_id)"
+     ]
+    ]
+   },
+   "payment_refund": {
+    "columnas": [
+     {
+      "nombre": "refund_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "payment_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "payment",
+       "destcol": "payment_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "order_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "order",
+       "destcol": "order_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "kind",
+      "tipo": "payment_refund_kind_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(10,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "payment_refund_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "gateway_refund_id",
+      "tipo": "varchar(100)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "error_message",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "attempts",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "refunded_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "requested_by_user_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "refunded_baseline",
+      "tipo": "numeric(10,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "refund_id"
+    ],
+    "unicos": [
+     [
+      "payment_id",
+      "kind"
+     ]
+    ],
+    "indices": [
+     [
+      "IDX_9649d0833082fad8f431ff1381",
+      "CREATE INDEX \"IDX_9649d0833082fad8f431ff1381\" ON public.payment_refund USING btree (distributor_id)"
+     ],
+     [
+      "IDX_9b1ba9fb797de22fc87b598f50",
+      "CREATE INDEX \"IDX_9b1ba9fb797de22fc87b598f50\" ON public.payment_refund USING btree (payment_id)"
+     ],
+     [
+      "IDX_a2ae8bef86602c9f97be8e0b41",
+      "CREATE INDEX \"IDX_a2ae8bef86602c9f97be8e0b41\" ON public.payment_refund USING btree (status)"
+     ],
+     [
+      "IDX_ddf9b0a3d9abeee97fa77f0f20",
+      "CREATE INDEX \"IDX_ddf9b0a3d9abeee97fa77f0f20\" ON public.payment_refund USING btree (order_id)"
+     ],
+     [
+      "UQ_payment_refund_payment_kind",
+      "CREATE UNIQUE INDEX \"UQ_payment_refund_payment_kind\" ON public.payment_refund USING btree (payment_id, kind)"
      ]
     ]
    },
@@ -6773,6 +9478,469 @@
      ]
     ]
    },
+   "tire": {
+    "columnas": [
+     {
+      "nombre": "tire_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "serial_number",
+      "tipo": "varchar(60)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "brand",
+      "tipo": "varchar(60)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "size",
+      "tipo": "varchar(40)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "cost",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "tire_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "car_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "car",
+       "destcol": "car_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "position",
+      "tipo": "varchar(6)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "mounted_odometer_km",
+      "tipo": "integer",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "km_traveled",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "retread_count",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "tire_id"
+    ],
+    "unicos": [
+     [
+      "distributor_id",
+      "serial_number"
+     ]
+    ],
+    "indices": [
+     [
+      "UQ_tire_posicion_ocupada",
+      "CREATE UNIQUE INDEX \"UQ_tire_posicion_ocupada\" ON public.tire USING btree (car_id, \"position\") WHERE (status = 'mounted'::tire_status_enum)"
+     ],
+     [
+      "UQ_tire_serial",
+      "CREATE UNIQUE INDEX \"UQ_tire_serial\" ON public.tire USING btree (distributor_id, serial_number)"
+     ]
+    ]
+   },
+   "tire_event": {
+    "columnas": [
+     {
+      "nombre": "event_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "tire_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "tire",
+       "destcol": "tire_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "type",
+      "tipo": "tire_event_type_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "car_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "car",
+       "destcol": "car_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "position",
+      "tipo": "varchar(6)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "odometer_km",
+      "tipo": "integer",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "created_by_user_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "event_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_tire_event_tire",
+      "CREATE INDEX \"IDX_tire_event_tire\" ON public.tire_event USING btree (tire_id, \"createdAt\")"
+     ]
+    ]
+   },
+   "traffic_fine": {
+    "columnas": [
+     {
+      "nombre": "fine_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "car_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "car",
+       "destcol": "car_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "occurred_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "jurisdiction",
+      "tipo": "varchar(80)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "act_number",
+      "tipo": "varchar(40)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "infraction",
+      "tipo": "text",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "amount",
+      "tipo": "numeric(12,2)",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "voluntary_payment_amount",
+      "tipo": "numeric(12,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "due_date",
+      "tipo": "date",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "traffic_fine_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "paid_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "paid_amount",
+      "tipo": "numeric(12,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "charged_to_employee",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "void_reason",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "voided_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "alerted_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "fine_id"
+    ],
+    "unicos": [
+     [
+      "distributor_id",
+      "jurisdiction",
+      "act_number"
+     ]
+    ],
+    "indices": [
+     [
+      "IDX_traffic_fine_car",
+      "CREATE INDEX \"IDX_traffic_fine_car\" ON public.traffic_fine USING btree (car_id, occurred_at)"
+     ],
+     [
+      "IDX_traffic_fine_status_due",
+      "CREATE INDEX \"IDX_traffic_fine_status_due\" ON public.traffic_fine USING btree (distributor_id, status, due_date)"
+     ],
+     [
+      "UQ_traffic_fine_act",
+      "CREATE UNIQUE INDEX \"UQ_traffic_fine_act\" ON public.traffic_fine USING btree (distributor_id, jurisdiction, act_number)"
+     ]
+    ]
+   },
    "truck_load": {
     "columnas": [
      {
@@ -7459,6 +10627,224 @@
      ]
     ]
    },
+   "vehicle_accident": {
+    "columnas": [
+     {
+      "nombre": "accident_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": true,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "distributor_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "distributor",
+       "destcol": "distributor_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "car_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "car",
+       "destcol": "car_id",
+       "borrado": "CASCADE",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "employee_id",
+      "tipo": "uuid",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "employee",
+       "destcol": "employee_id",
+       "borrado": "SET NULL",
+       "card_padre": "cero_uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "occurred_at",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "location",
+      "tipo": "geometry",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "address",
+      "tipo": "text",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "description",
+      "tipo": "text",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "injuries",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "third_parties_involved",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "hazmat_release",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "police_report_number",
+      "tipo": "varchar(40)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "insurer_claim_number",
+      "tipo": "varchar(40)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "status",
+      "tipo": "vehicle_accident_status_enum",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "vehicle_unusable",
+      "tipo": "boolean",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "repair_cost",
+      "tipo": "numeric(12,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "insurer_reimbursement",
+      "tipo": "numeric(12,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "deductible_amount",
+      "tipo": "numeric(12,2)",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "closed_at",
+      "tipo": "timestamptz",
+      "nulo": true,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "created_by_user_id",
+      "tipo": "uuid",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": {
+       "destino": "user",
+       "destcol": "user_id",
+       "borrado": "RESTRICT",
+       "card_padre": "uno",
+       "card_hijo": "muchos"
+      }
+     },
+     {
+      "nombre": "createdAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     },
+     {
+      "nombre": "updatedAt",
+      "tipo": "timestamptz",
+      "nulo": false,
+      "pk": false,
+      "unico": false,
+      "fk": null
+     }
+    ],
+    "pk": [
+     "accident_id"
+    ],
+    "unicos": [],
+    "indices": [
+     [
+      "IDX_vehicle_accident_car",
+      "CREATE INDEX \"IDX_vehicle_accident_car\" ON public.vehicle_accident USING btree (car_id, occurred_at)"
+     ],
+     [
+      "IDX_vehicle_accident_status",
+      "CREATE INDEX \"IDX_vehicle_accident_status\" ON public.vehicle_accident USING btree (distributor_id, status)"
+     ]
+    ]
+   },
    "vehicle_assignment": {
     "columnas": [
      {
@@ -8065,6 +11451,20 @@
     "planificado": false,
     "contexto": "Pagos"
    },
+   "ReintegroDePago": {
+    "atributos": [
+     "tipo",
+     "importe",
+     "estado",
+     "intentos",
+     "reintegrado el",
+     "referencia en la pasarela",
+     "mensaje de error",
+     "devuelto antes del intento"
+    ],
+    "planificado": false,
+    "contexto": "Pagos"
+   },
    "OfertaDespacho": {
     "atributos": [
      "estado",
@@ -8220,7 +11620,7 @@
      "origen",
      "observación"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "Personal"
    },
    "LicenciaLaboral": {
@@ -8234,7 +11634,7 @@
      "motivo de rechazo",
      "resuelta el"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "Personal"
    },
    "Adjunto": {
@@ -8263,7 +11663,7 @@
      "observación",
      "anulada el"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "GastosDeFlota"
    },
    "MultaTransito": {
@@ -8282,7 +11682,7 @@
      "avisada el",
      "motivo de anulación"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "GastosDeFlota"
    },
    "Siniestro": {
@@ -8303,7 +11703,7 @@
      "franquicia",
      "cerrado el"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "GastosDeFlota"
    },
    "Neumatico": {
@@ -8316,7 +11716,7 @@
      "posición",
      "kilometraje de montaje"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "GastosDeFlota"
    },
    "MovimientoNeumatico": {
@@ -8325,7 +11725,7 @@
      "kilometraje",
      "fecha"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "GastosDeFlota"
    },
    "Reclamo": {
@@ -8533,7 +11933,7 @@
      "requiere sesión",
      "activa"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "SesionDeCaja": {
@@ -8547,7 +11947,7 @@
      "/diferencia",
      "observaciones"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "CategoriaDeCaja": {
@@ -8557,7 +11957,7 @@
      "código de sistema",
      "activa"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "MovimientoDeCaja": {
@@ -8569,7 +11969,7 @@
      "descripción",
      "origen"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "RendicionChofer": {
@@ -8585,9 +11985,9 @@
      "presentada el",
      "aprobada el",
      "observaciones",
-     "aviso enviado el"
+     "vencida avisada el"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "PedidoRendido": {
@@ -8595,7 +11995,14 @@
      "importe",
      "medio de pago"
     ],
-    "planificado": true,
+    "planificado": false,
+    "contexto": "CajaYFinanzas"
+   },
+   "CobroDeRendicion": {
+    "atributos": [
+     "importe"
+    ],
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "GastoDeRendicion": {
@@ -8603,7 +12010,7 @@
      "importe",
      "descripción"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "CuentaCorriente": {
@@ -8616,7 +12023,7 @@
      "estado",
      "saldo"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "AsientoCuentaCorriente": {
@@ -8628,14 +12035,14 @@
      "fecha",
      "descripción"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "ImputacionCuentaCorriente": {
     "atributos": [
      "importe"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "ReglaComision": {
@@ -8646,7 +12053,7 @@
      "vigente hasta",
      "activa"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "AsientoComision": {
@@ -8656,7 +12063,7 @@
      "fecha",
      "descripción"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    },
    "LiquidacionComisiones": {
@@ -8671,7 +12078,7 @@
      "aprobada el",
      "pagada el"
     ],
-    "planificado": true,
+    "planificado": false,
     "contexto": "CajaYFinanzas"
    }
   },
@@ -8857,21 +12264,21 @@
     "extremo_der": "Usuario"
    },
    {
-    "izq": "Distribuidora",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "CuentaCorriente",
-    "nombre": "lleva",
-    "extremo_izq": "Distribuidora",
-    "extremo_der": "CuentaCorriente"
-   },
-   {
     "izq": "Cliente",
     "card_izq": "1",
     "card_der": "0..*",
     "der": "CuentaCorriente",
     "nombre": "tiene habilitada",
     "extremo_izq": "Cliente",
+    "extremo_der": "CuentaCorriente"
+   },
+   {
+    "izq": "Distribuidora",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "CuentaCorriente",
+    "nombre": "lleva",
+    "extremo_izq": "Distribuidora",
     "extremo_der": "CuentaCorriente"
    },
    {
@@ -9028,15 +12435,6 @@
     "extremo_der": "MovimientoDeCaja"
    },
    {
-    "izq": "SesionDeCaja",
-    "card_izq": "0..1",
-    "card_der": "0..*",
-    "der": "MovimientoDeCaja",
-    "nombre": "agrupa",
-    "extremo_izq": "SesionDeCaja",
-    "extremo_der": "MovimientoDeCaja"
-   },
-   {
     "izq": "CategoriaDeCaja",
     "card_izq": "1",
     "card_der": "0..*",
@@ -9046,12 +12444,30 @@
     "extremo_der": "MovimientoDeCaja"
    },
    {
+    "izq": "Usuario",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "MovimientoDeCaja",
+    "nombre": "registró",
+    "extremo_izq": "Usuario",
+    "extremo_der": "MovimientoDeCaja"
+   },
+   {
     "izq": "MovimientoDeCaja",
     "card_izq": "0..1",
     "card_der": "0..1",
     "der": "MovimientoDeCaja",
     "nombre": "anula a",
     "extremo_izq": "MovimientoDeCaja",
+    "extremo_der": "MovimientoDeCaja"
+   },
+   {
+    "izq": "SesionDeCaja",
+    "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "MovimientoDeCaja",
+    "nombre": "agrupa",
+    "extremo_izq": "SesionDeCaja",
     "extremo_der": "MovimientoDeCaja"
    },
    {
@@ -9091,21 +12507,21 @@
     "extremo_der": "JornadaDeTrabajo"
    },
    {
-    "izq": "Empleado",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "LicenciaLaboral",
-    "nombre": "solicita",
-    "extremo_izq": "Empleado",
-    "extremo_der": "LicenciaLaboral"
-   },
-   {
     "izq": "Usuario",
     "card_izq": "0..1",
     "card_der": "0..*",
     "der": "LicenciaLaboral",
     "nombre": "resuelve",
     "extremo_izq": "Usuario",
+    "extremo_der": "LicenciaLaboral"
+   },
+   {
+    "izq": "Empleado",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "LicenciaLaboral",
+    "nombre": "solicita",
+    "extremo_izq": "Empleado",
     "extremo_der": "LicenciaLaboral"
    },
    {
@@ -9145,15 +12561,6 @@
     "extremo_der": "Chofer"
    },
    {
-    "izq": "PlanMantenimiento",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "TareaMantenimiento",
-    "nombre": "genera",
-    "extremo_izq": "PlanMantenimiento",
-    "extremo_der": "TareaMantenimiento"
-   },
-   {
     "izq": "TareaMantenimiento",
     "card_izq": "0..*",
     "card_der": "0..1",
@@ -9161,6 +12568,15 @@
     "nombre": "habilita",
     "extremo_izq": "TareaMantenimiento",
     "extremo_der": "Empleado"
+   },
+   {
+    "izq": "PlanMantenimiento",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "TareaMantenimiento",
+    "nombre": "genera",
+    "extremo_izq": "PlanMantenimiento",
+    "extremo_der": "TareaMantenimiento"
    },
    {
     "izq": "Pedido",
@@ -9298,21 +12714,21 @@
     "extremo_der": "UbicacionDeStock"
    },
    {
-    "izq": "Distribuidora",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "Neumatico",
-    "nombre": "posee",
-    "extremo_izq": "Distribuidora",
-    "extremo_der": "Neumatico"
-   },
-   {
     "izq": "Vehiculo",
     "card_izq": "0..1",
     "card_der": "0..*",
     "der": "Neumatico",
     "nombre": "monta",
     "extremo_izq": "Vehiculo",
+    "extremo_der": "Neumatico"
+   },
+   {
+    "izq": "Distribuidora",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "Neumatico",
+    "nombre": "posee",
+    "extremo_izq": "Distribuidora",
     "extremo_der": "Neumatico"
    },
    {
@@ -9397,6 +12813,42 @@
     "extremo_der": "Reclamo"
    },
    {
+    "izq": "CuentaCorriente",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "AsientoCuentaCorriente",
+    "nombre": "registra",
+    "extremo_izq": "CuentaCorriente",
+    "extremo_der": "AsientoCuentaCorriente"
+   },
+   {
+    "izq": "AsientoCuentaCorriente",
+    "card_izq": "0..1",
+    "card_der": "0..1",
+    "der": "MovimientoDeCaja",
+    "nombre": "se asienta en",
+    "extremo_izq": "AsientoCuentaCorriente",
+    "extremo_der": "MovimientoDeCaja"
+   },
+   {
+    "izq": "Chofer",
+    "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "AsientoCuentaCorriente",
+    "nombre": "cobra",
+    "extremo_izq": "Chofer",
+    "extremo_der": "AsientoCuentaCorriente"
+   },
+   {
+    "izq": "Pedido",
+    "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "AsientoCuentaCorriente",
+    "nombre": "origina",
+    "extremo_izq": "Pedido",
+    "extremo_der": "AsientoCuentaCorriente"
+   },
+   {
     "izq": "Cliente",
     "card_izq": "0..1",
     "card_der": "0..*",
@@ -9433,15 +12885,6 @@
     "extremo_der": "Envase"
    },
    {
-    "izq": "Empleado",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "LiquidacionComisiones",
-    "nombre": "percibe",
-    "extremo_izq": "Empleado",
-    "extremo_der": "LiquidacionComisiones"
-   },
-   {
     "izq": "LiquidacionComisiones",
     "card_izq": "0..1",
     "card_der": "0..1",
@@ -9451,31 +12894,13 @@
     "extremo_der": "MovimientoDeCaja"
    },
    {
-    "izq": "Chofer",
+    "izq": "Empleado",
     "card_izq": "1",
     "card_der": "0..*",
-    "der": "RendicionChofer",
-    "nombre": "presenta",
-    "extremo_izq": "Chofer",
-    "extremo_der": "RendicionChofer"
-   },
-   {
-    "izq": "RendicionChofer",
-    "card_izq": "0..*",
-    "card_der": "0..1",
-    "der": "Caja",
-    "nombre": "ingresa en",
-    "extremo_izq": "RendicionChofer",
-    "extremo_der": "Caja"
-   },
-   {
-    "izq": "RendicionChofer",
-    "card_izq": "0..1",
-    "card_der": "0..1",
-    "der": "MovimientoDeCaja",
-    "nombre": "genera",
-    "extremo_izq": "RendicionChofer",
-    "extremo_der": "MovimientoDeCaja"
+    "der": "LiquidacionComisiones",
+    "nombre": "percibe",
+    "extremo_izq": "Empleado",
+    "extremo_der": "LiquidacionComisiones"
    },
    {
     "izq": "Pedido",
@@ -9811,15 +13236,6 @@
     "extremo_der": "UbicacionDeStock"
    },
    {
-    "izq": "Neumatico",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "MovimientoNeumatico",
-    "nombre": "registra",
-    "extremo_izq": "Neumatico",
-    "extremo_der": "MovimientoNeumatico"
-   },
-   {
     "izq": "MovimientoNeumatico",
     "card_izq": "0..*",
     "card_der": "0..1",
@@ -9827,6 +13243,15 @@
     "nombre": "ocurre en",
     "extremo_izq": "MovimientoNeumatico",
     "extremo_der": "Vehiculo"
+   },
+   {
+    "izq": "Neumatico",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "MovimientoNeumatico",
+    "nombre": "registra",
+    "extremo_izq": "Neumatico",
+    "extremo_der": "MovimientoNeumatico"
    },
    {
     "izq": "Vehiculo",
@@ -9883,12 +13308,30 @@
     "extremo_der": "UbicacionDeStock"
    },
    {
+    "izq": "Chofer",
+    "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "AsientoComision",
+    "nombre": "genera",
+    "extremo_izq": "Chofer",
+    "extremo_der": "AsientoComision"
+   },
+   {
     "izq": "Empleado",
     "card_izq": "1",
     "card_der": "0..*",
     "der": "AsientoComision",
     "nombre": "devenga",
     "extremo_izq": "Empleado",
+    "extremo_der": "AsientoComision"
+   },
+   {
+    "izq": "LiquidacionComisiones",
+    "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "AsientoComision",
+    "nombre": "incluye",
+    "extremo_izq": "LiquidacionComisiones",
     "extremo_der": "AsientoComision"
    },
    {
@@ -9910,75 +13353,30 @@
     "extremo_der": "AsientoComision"
    },
    {
-    "izq": "RendicionChofer",
-    "card_izq": "0..1",
-    "card_der": "0..*",
-    "der": "AsientoComision",
-    "nombre": "origina",
-    "extremo_izq": "RendicionChofer",
-    "extremo_der": "AsientoComision"
-   },
-   {
-    "izq": "LiquidacionComisiones",
-    "card_izq": "0..1",
-    "card_der": "0..*",
-    "der": "AsientoComision",
-    "nombre": "incluye",
-    "extremo_izq": "LiquidacionComisiones",
-    "extremo_der": "AsientoComision"
-   },
-   {
     "izq": "CuentaCorriente",
     "card_izq": "1",
     "card_der": "0..*",
-    "der": "AsientoCuentaCorriente",
-    "nombre": "registra",
+    "der": "ImputacionCuentaCorriente",
+    "nombre": "contiene",
     "extremo_izq": "CuentaCorriente",
+    "extremo_der": "ImputacionCuentaCorriente"
+   },
+   {
+    "izq": "ImputacionCuentaCorriente",
+    "card_izq": "0..*",
+    "card_der": "1",
+    "der": "AsientoCuentaCorriente",
+    "nombre": "se aplica con",
+    "extremo_izq": "ImputacionCuentaCorriente",
     "extremo_der": "AsientoCuentaCorriente"
    },
    {
-    "izq": "Pedido",
-    "card_izq": "0..1",
-    "card_der": "0..*",
+    "izq": "ImputacionCuentaCorriente",
+    "card_izq": "0..*",
+    "card_der": "1",
     "der": "AsientoCuentaCorriente",
-    "nombre": "origina",
-    "extremo_izq": "Pedido",
-    "extremo_der": "AsientoCuentaCorriente"
-   },
-   {
-    "izq": "AsientoCuentaCorriente",
-    "card_izq": "0..1",
-    "card_der": "0..1",
-    "der": "MovimientoDeCaja",
-    "nombre": "se asienta en",
-    "extremo_izq": "AsientoCuentaCorriente",
-    "extremo_der": "MovimientoDeCaja"
-   },
-   {
-    "izq": "Chofer",
-    "card_izq": "0..1",
-    "card_der": "0..*",
-    "der": "AsientoCuentaCorriente",
-    "nombre": "cobra",
-    "extremo_izq": "Chofer",
-    "extremo_der": "AsientoCuentaCorriente"
-   },
-   {
-    "izq": "RendicionChofer",
-    "card_izq": "0..1",
-    "card_der": "0..*",
-    "der": "AsientoCuentaCorriente",
-    "nombre": "incluye",
-    "extremo_izq": "RendicionChofer",
-    "extremo_der": "AsientoCuentaCorriente"
-   },
-   {
-    "izq": "AsientoCuentaCorriente",
-    "card_izq": "0..1",
-    "card_der": "0..1",
-    "der": "AsientoCuentaCorriente",
-    "nombre": "anula a",
-    "extremo_izq": "AsientoCuentaCorriente",
+    "nombre": "salda",
+    "extremo_izq": "ImputacionCuentaCorriente",
     "extremo_der": "AsientoCuentaCorriente"
    },
    {
@@ -10046,39 +13444,57 @@
    },
    {
     "izq": "RendicionChofer",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "GastoDeRendicion",
-    "nombre": "declara",
+    "card_izq": "0..1",
+    "card_der": "0..1",
+    "der": "MovimientoDeCaja",
+    "nombre": "genera",
     "extremo_izq": "RendicionChofer",
-    "extremo_der": "GastoDeRendicion"
+    "extremo_der": "MovimientoDeCaja"
    },
    {
-    "izq": "GastoDeRendicion",
-    "card_izq": "0..*",
-    "card_der": "1",
-    "der": "CategoriaDeCaja",
-    "nombre": "se clasifica en",
-    "extremo_izq": "GastoDeRendicion",
-    "extremo_der": "CategoriaDeCaja"
+    "izq": "Chofer",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "RendicionChofer",
+    "nombre": "presenta",
+    "extremo_izq": "Chofer",
+    "extremo_der": "RendicionChofer"
    },
    {
     "izq": "RendicionChofer",
-    "card_izq": "1",
-    "card_der": "0..*",
-    "der": "PedidoRendido",
-    "nombre": "rinde",
+    "card_izq": "0..*",
+    "card_der": "0..1",
+    "der": "Caja",
+    "nombre": "ingresa en",
     "extremo_izq": "RendicionChofer",
-    "extremo_der": "PedidoRendido"
+    "extremo_der": "Caja"
    },
    {
-    "izq": "PedidoRendido",
+    "izq": "CargaDeCamion",
     "card_izq": "0..1",
+    "card_der": "0..*",
+    "der": "RendicionChofer",
+    "nombre": "respalda",
+    "extremo_izq": "CargaDeCamion",
+    "extremo_der": "RendicionChofer"
+   },
+   {
+    "izq": "ReintegroDePago",
+    "card_izq": "0..*",
     "card_der": "1",
     "der": "Pedido",
-    "nombre": "corresponde a",
-    "extremo_izq": "PedidoRendido",
+    "nombre": "devuelve el cobro de",
+    "extremo_izq": "ReintegroDePago",
     "extremo_der": "Pedido"
+   },
+   {
+    "izq": "Pago",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "ReintegroDePago",
+    "nombre": "se devuelve con",
+    "extremo_izq": "Pago",
+    "extremo_der": "ReintegroDePago"
    },
    {
     "izq": "AjusteDeStock",
@@ -10117,24 +13533,6 @@
     "extremo_der": "ItemCarga"
    },
    {
-    "izq": "ImputacionCuentaCorriente",
-    "card_izq": "0..*",
-    "card_der": "1",
-    "der": "AsientoCuentaCorriente",
-    "nombre": "salda",
-    "extremo_izq": "ImputacionCuentaCorriente",
-    "extremo_der": "AsientoCuentaCorriente"
-   },
-   {
-    "izq": "ImputacionCuentaCorriente",
-    "card_izq": "0..*",
-    "card_der": "1",
-    "der": "AsientoCuentaCorriente",
-    "nombre": "se aplica con",
-    "extremo_izq": "ImputacionCuentaCorriente",
-    "extremo_der": "AsientoCuentaCorriente"
-   },
-   {
     "izq": "CasoRecupero",
     "card_izq": "1",
     "card_der": "0..*",
@@ -10142,6 +13540,60 @@
     "nombre": "emite",
     "extremo_izq": "CasoRecupero",
     "extremo_der": "AvisoRecupero"
+   },
+   {
+    "izq": "CobroDeRendicion",
+    "card_izq": "0..1",
+    "card_der": "1",
+    "der": "AsientoCuentaCorriente",
+    "nombre": "rinde",
+    "extremo_izq": "CobroDeRendicion",
+    "extremo_der": "AsientoCuentaCorriente"
+   },
+   {
+    "izq": "RendicionChofer",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "CobroDeRendicion",
+    "nombre": "incluye",
+    "extremo_izq": "RendicionChofer",
+    "extremo_der": "CobroDeRendicion"
+   },
+   {
+    "izq": "GastoDeRendicion",
+    "card_izq": "0..*",
+    "card_der": "1",
+    "der": "CategoriaDeCaja",
+    "nombre": "se clasifica en",
+    "extremo_izq": "GastoDeRendicion",
+    "extremo_der": "CategoriaDeCaja"
+   },
+   {
+    "izq": "RendicionChofer",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "GastoDeRendicion",
+    "nombre": "declara",
+    "extremo_izq": "RendicionChofer",
+    "extremo_der": "GastoDeRendicion"
+   },
+   {
+    "izq": "PedidoRendido",
+    "card_izq": "0..1",
+    "card_der": "1",
+    "der": "Pedido",
+    "nombre": "corresponde a",
+    "extremo_izq": "PedidoRendido",
+    "extremo_der": "Pedido"
+   },
+   {
+    "izq": "RendicionChofer",
+    "card_izq": "1",
+    "card_der": "0..*",
+    "der": "PedidoRendido",
+    "nombre": "rinde",
+    "extremo_izq": "RendicionChofer",
+    "extremo_der": "PedidoRendido"
    },
    {
     "izq": "Usuario",
@@ -10210,7 +13662,8 @@
      "CambioDireccion",
      "ZonaCobertura",
      "FranjaHoraria",
-     "Pago"
+     "Pago",
+     "ReintegroDePago"
     ]
    ],
    [
@@ -10320,7 +13773,8 @@
     [
      "RendicionChofer",
      "PedidoRendido",
-     "GastoDeRendicion"
+     "GastoDeRendicion",
+     "CobroDeRendicion"
     ]
    ],
    [

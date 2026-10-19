@@ -38,11 +38,10 @@ class RendicionChofer #F1F1F1;line:8A97A3;text:55616C
 Distribuidora "1" *-- "0..*" CuentaCorriente : lleva >
 Cliente "1" -- "0..*" CuentaCorriente : tiene habilitada >
 CuentaCorriente "1" *-- "0..*" AsientoCuentaCorriente : registra >
+CuentaCorriente "1" -- "0..*" ImputacionCuentaCorriente : contiene >
 Pedido "0..1" -- "0..*" AsientoCuentaCorriente : origina >
 AsientoCuentaCorriente "0..1" -- "0..1" MovimientoDeCaja : se asienta en >
 Chofer "0..1" -- "0..*" AsientoCuentaCorriente : cobra >
-RendicionChofer "0..1" -- "0..*" AsientoCuentaCorriente : incluye >
-AsientoCuentaCorriente "0..1" -- "0..1" AsientoCuentaCorriente : anula a >
 ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : salda >
 ImputacionCuentaCorriente "0..*" -- "1" AsientoCuentaCorriente : se aplica con >
 

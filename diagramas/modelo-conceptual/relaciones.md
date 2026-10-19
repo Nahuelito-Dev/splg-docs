@@ -50,6 +50,8 @@
 | Realiza | Usuario | CambioDireccion | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Entrega | Chofer | Pedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Se salda con | Pedido | Pago | Asociación | 1 a 0..* | Está relacionado con una transacción |
+| Se devuelve con | Pago | ReintegroDePago | Asociación | 1 a 0..* | Está relacionado con una transacción |
+| Devuelve el cobro de | ReintegroDePago | Pedido | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Genera | Pedido | OfertaDespacho | Composición | 1 a 0..* | Está relacionado con una transacción |
 | Se dirige a | OfertaDespacho | Chofer | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Se compone de | LoteRecorrido | ParadaLote | Composición | 1 a 1..* | Parte física de |
@@ -158,11 +160,13 @@
 | Se clasifica en | GastoDeRendicion | CategoriaDeCaja | Asociación | 0..* a 1 | Descripción para |
 | Tiene habilitada | Cliente | CuentaCorriente | Asociación | 1 a 0..* | Usa o gestiona |
 | Registra | CuentaCorriente | AsientoCuentaCorriente | Composición | 1 a 0..* | Es un registro de |
+| Contiene | CuentaCorriente | ImputacionCuentaCorriente | Asociación | 1 a 0..* | Está relacionado con una transacción |
 | Origina | Pedido | AsientoCuentaCorriente | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Se asienta en | AsientoCuentaCorriente | MovimientoDeCaja | Asociación | 0..1 a 0..1 | Está relacionado con una transacción |
 | Cobra | Chofer | AsientoCuentaCorriente | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
-| Incluye | RendicionChofer | AsientoCuentaCorriente | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
-| Anula a | AsientoCuentaCorriente | AsientoCuentaCorriente | Asociación | 0..1 a 0..1 | Está relacionado con una transacción |
+| Incluye | RendicionChofer | CobroDeRendicion | Composición | 1 a 0..* | Es una línea de transacción de |
+| Rinde | CobroDeRendicion | AsientoCuentaCorriente | Asociación | 0..1 a 1 | Descripción para |
+| Respalda | CargaDeCamion | RendicionChofer | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Salda | ImputacionCuentaCorriente | AsientoCuentaCorriente | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Se aplica con | ImputacionCuentaCorriente | AsientoCuentaCorriente | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Se aplica a | ReglaComision | Empleado | Asociación | 0..* a 0..1 | Descripción para |
@@ -173,5 +177,5 @@
 | Corresponde a | AsientoComision | Pedido | Asociación | 0..* a 0..1 | Descripción para |
 | Determina | ReglaComision | AsientoComision | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Incluye | LiquidacionComisiones | AsientoComision | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
-| Origina | RendicionChofer | AsientoComision | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
+| Genera | Chofer | AsientoComision | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Se paga con | LiquidacionComisiones | MovimientoDeCaja | Asociación | 0..1 a 0..1 | Está relacionado con una transacción |

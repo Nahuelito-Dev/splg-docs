@@ -130,6 +130,8 @@ entity Empleado #F1F1F1 {
 }
 entity OrdenDeCompra #F1F1F1 {
 }
+entity MovimientoDeCaja #F1F1F1 {
+}
 entity ReglaComision #F1F1F1 {
 }
 entity LicenciaLaboral #F1F1F1 {
@@ -179,8 +181,8 @@ Usuario |o--o{ AsientoAuditoria : origina >
 Cliente ||--o{ Carrito : arma >
 Cliente }o--o| Producto : usa habitualmente >
 Cliente |o--|| Usuario : es un >
-Distribuidora ||--o{ CuentaCorriente : lleva >
 Cliente ||--o{ CuentaCorriente : tiene habilitada >
+Distribuidora ||--o{ CuentaCorriente : lleva >
 Distribuidora ||--o{ Chofer : emplea >
 Chofer |o--|| Usuario : es un >
 Distribuidora ||--o{ Empleado : emplea >
@@ -189,6 +191,7 @@ Distribuidora ||--o{ ConfiguracionModulo : parametriza >
 Usuario ||--o{ OrdenDeCompra : emite >
 Cliente ||--o{ DireccionEntrega : registra >
 Auditoria ||--o{ DetalleAuditoria : detalla con >
+Usuario ||--o{ MovimientoDeCaja : registró >
 Distribuidora ||--o{ ReglaComision : define >
 Usuario |o--o{ LicenciaLaboral : resuelve >
 Pedido }o--|| DireccionEntrega : se entrega en >

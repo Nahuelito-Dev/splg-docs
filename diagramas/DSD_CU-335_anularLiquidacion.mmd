@@ -2,7 +2,7 @@ sequenceDiagram
     title DSD — CU-335 Anular una Liquidación de Comisiones · anularLiquidacion
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :CommissionService
+    participant SRV as :DriverLiquidationService
     participant LIQS as :Map#lt;String, LiquidacionComisiones#gt;
     participant LIQ as liquidacion:LiquidacionComisiones
     participant ASI as asientoDeComision:AsientoComision

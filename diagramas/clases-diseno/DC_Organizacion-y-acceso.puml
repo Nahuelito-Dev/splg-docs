@@ -97,7 +97,7 @@ class Usuario {
   + calificar(pedido: Pedido, calificado: Usuario,\n      estrellas: Entero, comentario: Cadena): Calificacion
   + cambiarBloqueo(falso: Booleano)
   + cambiarCorreo(correoNuevo: Cadena)
-  + darDeBaja()
+  + darDeBaja(): Cadena
   + estaHabilitado(): Booleano
   + getCalificacionesRecibidas(): Calificacion[*]
   + getChofer(): Chofer
@@ -105,6 +105,9 @@ class Usuario {
   + getPerfilDeChofer(): Chofer
   + getResumenDeCalificaciones(): Registro
   + getRol(): Rol
+  + modificarDatos(nombreCompleto: Cadena,\n      telefono: Cadena): Usuario
+  + validarQueQuedaOtroAdministradorActivo()
+  + validarTelefonoDisponible()
 }
 class Rol {
   - tipo: Cadena

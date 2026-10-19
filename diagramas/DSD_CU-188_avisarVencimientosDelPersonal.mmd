@@ -15,12 +15,12 @@ sequenceDiagram
     loop Por cada tarea sin avisar
         CRN->>TAR: getEstadoDeVencimiento()
     end
-    opt Planificado (C-08): hay empleados activos de categoría chofer
+    opt hay empleados activos de categoría chofer
         loop Por cada empleado activo de categoría chofer
             CRN->>EMP: getPlanesFaltantes()
         end
     end
-    loop Por cada distribuidora con vencimientos, o con documentos faltantes (planificado, C-08)
+    loop Por cada distribuidora con vencimientos, o con documentos faltantes
         CRN->>+DIS: getAdministradores()
         DIS-->>-CRN: administradores
         CRN->>MAI: send(administrador, vencimientos)
