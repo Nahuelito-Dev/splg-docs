@@ -13,3 +13,6 @@ __pycache__/
 
 # Se arma con publicar.sh
 publicar/
+
+# Word de la cátedra (se regenera con generar-docx-catedra.py)
+entregables/catedra-docx/

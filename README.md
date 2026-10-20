@@ -44,6 +44,7 @@ la cátedra exige su artefacto ahí**. Este archivo los reúne para no saltar en
 python3 verificar-conformidad.py   # ¿cumple las plantillas? (31 chequeos)
 python3 generar-tabla-implementacion.py  # copia la tabla de implementación (Casos §8) al Documento 3 §4.25
 python3 generar-html-drive.py      # regenera drive/*.html
+python3 generar-docx-catedra.py    # Documentos de la cátedra en Word (.docx) -> entregables/catedra-docx/ y ~/Desktop/SPLG-Documentacion-Catedra/
 python3 generar-sitio.py           # regenera splg-documentacion.html
 python3 generar-drawio.py          # regenera drawio/*.drawio (MC, DER, base de datos y clases)
 ```
