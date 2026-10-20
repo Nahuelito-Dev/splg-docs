@@ -40,7 +40,8 @@ DOCS = [
 
 MAX_ANCHO_CM, MAX_ALTO_CM, DPI, DPI_MAX = 15.2, 21.0, 150, 200
 MAX_PX = 1600
-LIMITE = 9.5e6
+# un archivo por documento; SPLG_DOCX_LIMITE_MB fuerza a partirlo si hace falta un tope de peso
+LIMITE = float(os.environ.get("SPLG_DOCX_LIMITE_MB", "inf")) * 1e6
 
 
 def sh(cmd, **kw):
@@ -833,8 +834,8 @@ def generar(clave, nombre_md, plantilla, titulo, parte=1, total=1):
 
 
 def main_doc(d):
-    """Cada .docx tiene que pesar menos que el límite de Drive: primero se parte el documento en
-    2 o 3 (mismo encabezado, numeración continua) a 150 dpi; la resolución no se toca."""
+    """Un .docx por documento. Con SPLG_DOCX_LIMITE_MB, si pasa el tope se parte en 2, 3…
+    (mismo encabezado, numeración continua); la resolución no se toca."""
     global DPI_MAX
     DPI_MAX = 150
     for total in (1, 2, 3, 4, 5, 6, 8, 10, 12):
