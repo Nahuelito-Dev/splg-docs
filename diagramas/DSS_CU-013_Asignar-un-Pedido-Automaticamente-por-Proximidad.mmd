@@ -5,7 +5,7 @@ sequenceDiagram
     participant SIS as :Sistema
     actor CHO as Chofer (ACT-02)
 
-    Note over SAU: Se dispara al crearse el<br/>pedido
+    Note over SAU: La primera oferta sale al confirmarse el alta<br/>del pedido (CU-005) y el reloj reintenta (CU-014)
     SAU->>SIS: ofrecerAlSiguienteChofer(pedidoId)
     activate SIS
     alt Hay un candidato disponible

@@ -98,7 +98,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 3 | 2026-09-25 | Requisito no funcional NFR-09 (aislamiento entre distribuidoras) agregado. CU-152 y CU-153 implementados: sus casos de uso expandidos describen lo construido. Los casos de los módulos inteligentes indican que su modelo de datos ya está en la base. | Nahuel Wagner |
 | 4 | 2026-10-01 | Casos de uso CU-161 a CU-167 agregados: vehículo en uso por chofer (poner en uso, liberar, consultar el vehículo en uso y los dos historiales) y reclamos (tomar un reclamo pendiente y reabrir uno cerrado). IRQ-03 e IRQ-06 ampliados. | Nahuel Wagner |
 | 5 | 2026-10-01 | Casos de uso expandidos CU-168 a CU-175. Estado uniforme «Planificado (I-n)» en los casos no construidos. Decisiones de diseño aplicadas a las secuencias, excepciones y comentarios de los casos planificados. Relaciones de CU-168, CU-170, CU-174 y CU-175 en la tabla maestra. IRQ-02, IRQ-06, IRQ-08, IRQ-09 e IRQ-15 ampliados. | Nahuel Wagner |
-| 6 | 2026-10-01 | Cierre de la documentación: casos de uso expandidos coherentes con el código y con los contratos de operación (CU-022, CU-032, CU-033, CU-048, CU-084, CU-085, CU-089, CU-094, CU-096, CU-100, CU-102 y CU-111), limitaciones conocidas redactadas como tales y encabezado alineada con los demás documentos. | Nahuel Wagner |
+| 6 | 2026-10-01 | Cierre de la documentación: casos de uso expandidos coherentes con el código y con los contratos de operación (CU-022, CU-032, CU-033, CU-048, CU-084, CU-085, CU-089, CU-094, CU-096, CU-100, CU-102 y CU-111), limitaciones conocidas redactadas como tales y encabezado alineado con los demás documentos. | Nahuel Wagner |
 | 7 | 2026-10-01 | Revisión final: diagrama de contexto en las fronteras del sistema, leyenda de prioridad con Menor, objetivos de la iteración reformulados, recargo del pago en línea, autenticación con el token de Firebase, actor ACT-09 y ajustes de CU-005, CU-012, CU-013, CU-048, CU-050, CU-104, CU-122, CU-126, CU-159 y CU-160. | Nahuel Wagner |
 | 8 | 2026-10-03 | Versión 1.1 del sistema (versión del software, back y panel, distinta de la versión de este documento): CU-006 informa el precio unitario y el subtotal de cada renglón (los del momento de pedir) y la distribuidora del pedido; CU-011 aclara el filtro por fechas (hora argentina, `to` inclusivo, fecha de creación) y rechaza un rango invertido; CU-026 cuenta día, semana ISO y mes en hora argentina; CU-030 incorpora la evolución de ventas por rango y granularidad (con semana ISO) y el corte de los días en hora argentina; CU-027 a CU-029 definen el rango de fechas, rechazan un rango invertido y aclaran qué suma cada reporte. | Nahuel Wagner |
 | 9 | 2026-10-03 | Casos de uso expandidos CU-176 a CU-194 y CU-246 (módulo de Personal, subsistema SS-19, iteración I-11), requisito de información IRQ-17, relaciones de la ficha del empleado en la tabla maestra y diagrama de casos de uso de SS-19. | Nahuel Wagner |
@@ -118,6 +118,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 23 | 2026-10-15 | Casos de uso expandidos de CU-171 y CU-173 con el estado «Implementado» (rutas `GET` y `PUT`, campos, validaciones y mensajes del código); CU-012, CU-013, CU-014 y CU-016 leen la configuración de la distribuidora, y CU-013 y CU-014 reflejan el aviso `order:no-drivers`. | Nahuel Wagner |
 | 24 | 2026-10-16 | Pasada de coherencia: 334 casos de uso expandidos (CU-103 retirado, duplicaba CU-343), estados «Planificado (C-nn)» con la numeración única de iteraciones. | Nahuel Wagner |
 | 25 | 2026-10-18 | Casos de uso expandidos construidos el 17/10/2026 con el estado «Implementado»: excepciones, códigos y reglas ajustados a lo construido (CU-127, CU-128, CU-172, CU-190, CU-201, CU-229, CU-242, CU-243, CU-334, CU-335, entre otros); CU-008, CU-010, CU-012, CU-015 y CU-311 sin su tramo planificado. CU-294 y CU-299 eligen la caja de efectivo donde entra el cobro; CU-168 suma la consulta del cliente. CU-345 a CU-348: 338 casos de uso. | Nahuel Wagner |
+| 26 | 2026-10-22 | Auditoría de contenido: cantidades por calificación al día (63 críticos, 218 importantes, 55 secundarios, 2 menores; 338 casos), definición de ACT-04 como el Tiempo, CU-008, CU-009 y CU-010 (la liberación del chofer no es una cancelación), CU-233 con una sola regla para la caja de destino, y contrato del back del 22/10 en CU-068 (pedido despachable y propio del chofer), CU-070 (pedido obligatorio para «con el cliente», reglas del chofer, texto con caracteres no válidos) y CU-217 (depósito de la orden). Re-auditoría: casos de uso esenciales sin mecanismos técnicos (cabecera de distribuidora, bloqueos, mensajes de bajo nivel) y costo de la recepción sin orden sólo en los renglones con llenas. | Nahuel Wagner |
 
 ---
 
@@ -744,10 +745,10 @@ La lista completa de los casos de uso, con su subsistema, su actor principal, su
 | Calificación | Casos de uso |
 |:---:|:---:|
 | Crítico | 63 |
-| Importante | 216 |
-| Secundario | 54 |
+| Importante | 218 |
+| Secundario | 55 |
 | Menor | 2 |
-| **Total** | **334** |
+| **Total** | **338** |
 
 Diez casos fueron retirados del catálogo por no ser procesos de negocio elementales; la tabla de retirados, con el motivo y el reemplazo de cada uno, está en el Documento 0 · §8.
 
@@ -758,7 +759,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | ACT-01 | **Cliente** | Humano | Usuario final que compra garrafas de gas. Usa la aplicación del cliente en su teléfono: hace pedidos, elige la franja de entrega y el medio de pago, sigue el pedido en el mapa, administra sus direcciones y puede reclamar si algo sale mal. Inicia 48 casos de uso. |
 | ACT-02 | **Chofer** | Humano | Repartidor de la distribuidora. Usa la aplicación del chofer en su teléfono: se pone en línea, recibe las ofertas de pedidos cercanos, las acepta o las rechaza, informa su posición, entrega y rinde lo cobrado. Inicia 45 casos de uso. |
 | ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora. Inicia 249 casos de uso. |
-| ACT-04 | **Sistema Automático** | Automático | Procesos que el sistema ejecuta por iniciativa propia, sin que ningún usuario los solicite y sin pantalla: el despacho por proximidad y el vencimiento de las ofertas, la activación y el vencimiento de las reservas, los avisos y las conciliaciones. Es el actor de los cinco procesos automatizados del sistema —asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— y de las tareas de mantenimiento que corren solas. Es un actor interno de disparo temporal, el equivalente al actor «Tiempo» de Larman: representa el reloj y los eventos internos que inician casos de uso sin que los inicie una persona ni un sistema externo. Es el actor principal de 22 casos de uso. |
+| ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 67 casos de uso. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
 | ACT-07 | **Firebase** | Secundario (sistema externo) | Servicio externo de identidad y mensajería. Verifica quién es el usuario que ingresa, crea y deshabilita cuentas, genera el enlace de recuperación de contraseña y entrega las notificaciones a los dispositivos. No inicia ningún caso de uso; participa como actor secundario en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-047, CU-072, CU-079, CU-082, CU-085, CU-100, CU-101 y CU-147. |
@@ -1172,7 +1173,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | Paso | Acción |
 |------|--------|
 | 1 | Si no hay sesión, el sistema rechaza la solicitud; si el solicitante es un chofer o un cliente, la deniega e informa que se requiere el rol de administrador o de administrador general. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)», tanto al consultar como al modificar. |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora, tanto al consultar como al modificar. |
 | 3 | Si la solicitud trae un dato desconocido, el sistema lo rechaza e informa «property <campo> should not exist». |
 | 3 | Si la lista de pasos no tiene entre uno y ocho valores, o algún paso sale de 1 a 100 km, el sistema rechaza el cambio e informa el detalle del campo. |
 | 3 | Si los pasos repiten o desordenan valores, el sistema rechaza el cambio e informa que los pasos tienen que formar una lista estrictamente creciente: cada valor mayor que el anterior, sin repetidos. |
@@ -1232,7 +1233,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 4 | Si el chofer está deshabilitado, el sistema informa «El repartidor está deshabilitado»; si no está validado, «El repartidor no está validado». |
 | 4 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la aceptación e informa «No se puede asignar: …» con el motivo. Un chofer sin vehículo en uso tampoco recibe la oferta (CU-013). |
 | 5 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la aceptación e informa el motivo —por ejemplo «Tu distribuidora exige una carga de camión abierta para trabajar: pedile al administrador que abra tu carga del día»—. |
-| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -1381,7 +1382,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 3 | Reconfirmar un pedido ya entregado no falla: vuelve a registrar el momento de la entrega y deja el motivo en la auditoría; el historial de estados no repite la fila porque el estado no cambió. |
 | 6 | Si la distribuidora no trabaja con envases retornables, el paso de envases no hace nada y la entrega se completa igual. |
 | 7 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
-| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -1809,7 +1810,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Muy alta: es la primera pantalla de la aplicación del cliente. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Al ser una consulta abierta, el catálogo, los precios y el stock de cualquier distribuidora son legibles sin credenciales por quien conozca su nombre corto; es una decisión deliberada para que la aplicación muestre productos antes del registro, pero conviene dejarla asentada. El detalle de un producto no exige rol ni se acota por distribuidora: cualquier usuario identificado que conozca el identificador puede leer un producto de otra distribuidora, y es el único acceso a un producto dado de baja. El catálogo del administrador, con su propio detalle, es CU-344. |
+| **Comentarios** | Al ser una consulta abierta, el catálogo, los precios y el stock de cualquier distribuidora son legibles sin credenciales por quien conozca su nombre corto; es una decisión deliberada para que la aplicación muestre productos antes del registro, pero conviene dejarla asentada. El detalle de un producto no exige rol ni se acota por distribuidora: cualquier usuario identificado que conozca el identificador puede leer un producto de otra distribuidora, y es el único acceso a un producto dado de baja. El catálogo del administrador, con su propio detalle, es CU-344. La aplicación del cliente carga hoy el catálogo completo de productos activos de la distribuidora, por páginas, sin filtrar por stock ni traer los medios de pago; la consulta pública que sí devuelve solo los productos con stock, junto con los medios de pago, la ofrece el sistema aparte. |
 
 ---
 
@@ -2017,7 +2018,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 | 2 | Si el pedido no existe, es de otro cliente, es de otra distribuidora o es un pedido que el chofer nunca tuvo, el sistema informa que no lo encontró, sin distinguir los casos. |
 | 2 | Si el solicitante es un chofer que tuvo el pedido y ya no lo tiene a cargo, el sistema informa «Este pedido ya no está asignado a tu usuario». |
 | 3 | Si el pedido es anterior al registro del historial (CU-169) y no tiene filas, el sistema muestra una lista vacía. |
@@ -2349,7 +2350,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Baja: solo cuando el cliente necesita cancelar un pedido de manera excepcional. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La cancelación del cliente es una de las tres vías de cancelación (CU-008, CU-009 y CU-010) que comparten el mismo comportamiento del sistema; lo que cambia es el actor. El aviso a la aplicación del chofer viaja solo por la conexión en tiempo real: un chofer con la aplicación cerrada puede no enterarse. Los vencimientos automáticos (CU-076 y CU-077) no emiten el aviso en vivo: el cliente se entera al ver el pedido (CU-006). Un chofer que «cancela» no cancela: libera el pedido a pendiente (CU-009). |
+| **Comentarios** | La cancelación del cliente (CU-008) y la del administrador (CU-010) comparten el mismo comportamiento del sistema —cancelan el pedido y restituyen el stock—; lo que cambia es el actor. La liberación del chofer (CU-009) es otra cosa: el pedido vuelve a pendiente y no se restituye stock. El aviso a la aplicación del chofer viaja solo por la conexión en tiempo real: un chofer con la aplicación cerrada puede no enterarse. Los vencimientos automáticos (CU-076 y CU-077) no emiten el aviso en vivo: el cliente se entera al ver el pedido (CU-006). Un chofer que «cancela» no cancela: libera el pedido a pendiente (CU-009). |
 
 ---
 
@@ -2709,7 +2710,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 4 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación e informa «No se puede asignar: …» con el motivo —por ejemplo, que no tiene un vehículo asignado—. |
 | 5 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la asignación e informa el motivo —por ejemplo «El chofer no tiene la carga del día abierta» o «La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos»—. |
 | 6 | Si el pedido ya no admite pasar a aceptado —está cancelado, en camino o entregado—, el sistema rechaza la asignación por transición no permitida. Un pedido aceptado por otro chofer no es un error: se reasigna. |
-| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -4166,7 +4167,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Frecuencia** | Baja: se modifica cuando el cliente detecta un error o cambia una indicación. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El caso necesita saber de qué dirección se habla y de quién es antes de escribir, y por eso se apoya en CU-117. La consulta al servicio de mapas está planificada: hasta entonces la ubicación es la que manda la aplicación y la precisión la que ella indique. |
+| **Comentarios** | El caso necesita saber de qué dirección se habla y de quién es antes de modificarla, y por eso se apoya en CU-117. La consulta al servicio de mapas está planificada: hasta entonces la ubicación es la que manda la aplicación y la precisión la que ella indique. |
 
 ---
 
@@ -4723,7 +4724,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 6 | El sistema consulta el pago real a MercadoPago, con un tiempo máximo de espera de cinco segundos para no retener conexiones. |
 | 7 | El sistema actualiza su registro de pagos: busca el intento por el identificador de pago de la pasarela y, si es el primer aviso, toma el intento pendiente más reciente de ese pedido. Le asigna el identificador y traduce el estado de la pasarela a aprobado, rechazado, cancelado, reintegrado o pendiente. |
 | 8 | El sistema recupera el pedido a partir de la referencia del pago. |
-| 9 | Si el pago está aprobado, el sistema vuelve a leer el pedido bloqueándolo, para que dos avisos simultáneos del mismo pago no pasen ambos el control de repetición. |
+| 9 | Si el pago está aprobado, el sistema vuelve a leer el pedido, de modo que dos avisos simultáneos del mismo pago no pasen ambos el control de repetición. |
 | 10 | Si el pedido está en un estado terminal, o ya tiene un identificador de pago, o ya está pagado, el sistema termina sin modificar nada. |
 | 11 | Si el pedido es una reserva, el pago corresponde a la seña: el sistema marca la seña como pagada, guarda el identificador del pago y no despacha, porque la reserva la activa el proceso automático el día agendado. |
 | 12 | En el caso general, el sistema marca el pedido como pagado y guarda el identificador del pago de la pasarela. |
@@ -4948,7 +4949,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 4 | Si el pago no está informado como impago, el sistema rechaza la operación. |
 | 4 | Repetir la misma resolución, el mismo administrador u otro, no es un error: el sistema informa que ya estaba resuelto y no toca la nota ni la incidencia. |
 | 2 | Si se reintenta el mismo envío con datos distintos, el sistema lo rechaza y no lo ejecuta. |
-| 3 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 3 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -4993,7 +4994,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró. |
-| 3 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 3 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación. |
 | 2 | Si se reintenta el mismo envío con datos distintos, el sistema lo rechaza. |
 | 4 | Si el pedido no está entregado o no se pagó en efectivo, el sistema rechaza la operación. |
@@ -5034,7 +5035,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 1 | El administrador abre un pedido entregado en efectivo cuyo cobro sigue pendiente y elige informar el impago. |
 | 2 | Escribe el motivo, de 10 a 500 caracteres. Si repite el envío por un corte de conexión, el sistema no lo procesa dos veces. |
-| 3 | El sistema comprueba que el pedido sea de la distribuidora, que esté entregado y que se haya pagado en efectivo, y lo relee bloqueándolo. |
+| 3 | El sistema comprueba que el pedido sea de la distribuidora, que esté entregado y que se haya pagado en efectivo, y lo vuelve a leer. |
 | 4 | Si el pago está pendiente, el sistema lo pasa a impago, guarda en el pedido el motivo, el administrador y el momento, y deja en el historial de estados una nota con el mismo estado de origen y de destino y el texto «Impago de efectivo informado por un administrador: motivo». |
 | 5 | Si el pedido no tiene una incidencia de cobro impago vigente, el sistema abre una, reportada por el administrador y posterior a la entrega, en la misma operación. |
 | 6 | Confirmado lo anterior, el sistema avisa a los administradores de la distribuidora, una sola vez por incidencia. |
@@ -5047,7 +5048,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 3 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró. |
-| 3 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 3 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación. |
 | 2 | Si se reintenta el mismo envío con datos distintos, el sistema lo rechaza. |
 | 4 | Si el pedido no está entregado o no se pagó en efectivo, el sistema rechaza la operación. |
@@ -5098,7 +5099,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | Paso | Acción |
 |------|--------|
 | 4 | Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró. |
-| 4 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 4 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si no se indica si llegó o no, o el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación. |
 | 2 | Si se reintenta el mismo envío con datos distintos, el sistema lo rechaza. |
 | 4 | Si el pedido no es una transferencia, o está cancelado, el sistema rechaza la operación. |
@@ -5618,7 +5619,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | El usuario pide validar una dirección, informando su ubicación. |
 | 2 | El sistema toma la distribuidora del contexto. |
 | 3 | El sistema comprueba si el punto está dentro de alguna zona de la distribuidora, considerando solo las zonas activas, vigentes y no dadas de baja (CU-059): una zona dada de baja no cubre ningún punto. |
-| 4 | Si la empresa no tiene ninguna zona activa y vigente, el sistema asume cobertura total, con recargo cero. |
+| 4 | Si la empresa no tiene ninguna zona cargada (no dada de baja), el sistema asume cobertura total, con recargo cero. Si tiene zonas, aunque todas estén inactivas o vencidas, cubren solo las activas y vigentes, de modo que puede no cubrir ningún punto. |
 | 5 | El sistema informa si la dirección está cubierta, el nombre de la zona y el recargo. |
 
 **Postcondición:** El usuario tiene un veredicto seguro para poder iniciar o frenar el pedido según el alcance geográfico.
@@ -5639,7 +5640,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Alta. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Cuando la distribuidora no configuró ninguna zona, el sistema asume cobertura total sin recargo: es un valor por omisión permisivo que conviene tener presente al dar de alta una distribuidora nueva, porque hasta que no defina sus zonas admite pedidos en cualquier punto. |
+| **Comentarios** | Cuando la distribuidora no configuró ninguna zona, el sistema asume cobertura total sin recargo: es un valor por omisión permisivo que conviene tener presente al dar de alta una distribuidora nueva, porque hasta que no defina sus zonas admite pedidos en cualquier punto. Con zonas cargadas pero ninguna activa y vigente, no cubre ningún punto. |
 
 ---
 
@@ -5758,7 +5759,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 2 | Si la zona no existe, está dada de baja o es de otra distribuidora, el sistema informa «Zona … no encontrada», sin distinguir los casos. |
 | 2 | Si el identificador no es válido, el sistema rechaza la consulta. |
-| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -6103,7 +6104,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 1 | Si falta la nota de resolución o no es texto, el sistema rechaza la operación e indica el detalle. |
-| 2 | Si no hay distribuidora elegida —caso típico del Administrador General que no la indica—, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si no hay distribuidora elegida —caso típico del Administrador General que no la indica—, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si la incidencia no existe o es de otra distribuidora, el sistema informa «Incidencia no encontrada». |
 | 3 | Si la incidencia es de cobro impago y el pedido sigue impago, el sistema rechaza el cierre e informa «La incidencia de cobro impago se cierra resolviendo el cobro del pedido»: se cierra con CU-294, que la resuelve en la misma operación. Tampoco se descarta mientras el pedido siga impago. |
 | 3 | Si la incidencia ya está resuelta, o otro la cerró en paralelo, el sistema rechaza el cierre y no pisa la resolución de quien la cerró primero. |
@@ -6282,7 +6283,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si no hay distribuidora elegida —Administrador General que no la indica—, el sistema rechaza el alta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si no hay distribuidora elegida —Administrador General que no la indica—, el sistema rechaza el alta e informa que falta indicar la distribuidora. |
 | 3 | Si el número de serie no es un texto, o el producto o el depósito informados no cumplen su formato, el sistema rechaza el alta e indica el detalle. |
 | 5 | Si el número de serie ya está en uso dentro de la misma distribuidora, el sistema rechaza el alta e informa «El serial ya existe en tu distribuidora». Un número repetido en otra distribuidora es válido. |
 
@@ -6306,8 +6307,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-13 |
-| **Descripción** | El administrador o el chofer ata al pedido los envases llenos que salen a repartir y los despacha uno por uno, dejando cada movimiento asentado con la firma de quien lo ejecutó. El vínculo queda registrado en el envase para que, al confirmar la entrega, el sistema los pase solo hacia el cliente. |
-| **Precondición** | El usuario está identificado como administrador o chofer, hay una distribuidora elegida y el pedido destino existe. |
+| **Descripción** | El administrador o el chofer ata al pedido los envases llenos que salen a repartir y los despacha todos juntos, dejando cada movimiento asentado con la firma de quien lo ejecutó. El vínculo queda registrado en el envase para que, al confirmar la entrega, el sistema los pase solo hacia el cliente. |
+| **Precondición** | El usuario está identificado como administrador o chofer, hay una distribuidora elegida y el pedido destino existe y todavía admite carga (pendiente, aceptado o en camino). Un chofer sólo carga envases a pedidos que tiene asignados. |
 | **Puntos de extensión** | PE-08: El envase que se va a asignar está vencido, lo extiende CU-135 Bloquear el Despacho de un Envase Vencido. |
 | **Estado** | Implementado |
 
@@ -6317,20 +6318,21 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El operario, el administrador o el chofer informa el pedido destino y la lista de números de serie de los envases que carga en el camión para ese pedido; la lista no puede estar vacía. |
 | 2 | El sistema exige una distribuidora elegida y toma la identidad de quien ejecuta la operación, para firmar los movimientos. |
-| 3 | El sistema recupera el pedido dentro de la distribuidora del solicitante. |
-| 4 | El sistema recorre los números de serie de a uno: por cada uno busca el envase dentro de la distribuidora, le anota el pedido destino, comprueba que el paso a despachado sea admisible desde su estado actual —solo lo es desde lleno—, guarda el envase con su nuevo estado y asienta el movimiento en el historial con el estado previo, el pedido, la firma y una nota que deja constancia de la asignación. Después pasa al siguiente. |
+| 3 | El sistema recupera el pedido dentro de la distribuidora del solicitante y comprueba que, si quien opera es un chofer, sea uno de sus pedidos, y que esté pendiente, aceptado o en camino. |
+| 4 | El sistema rechaza los números de serie repetidos y, en una única operación indivisible, busca todos los envases dentro de la distribuidora; antes de modificar ninguno comprueba que cada paso a despachado sea admisible desde su estado actual —solo lo es desde lleno— y que ninguna revisión haya vencido (CU-135). Recién entonces, por cada envase, le anota el pedido destino, lo guarda con su nuevo estado y asienta el movimiento en el historial con el estado previo, el pedido, la firma y una nota que deja constancia de la asignación. |
 | 5 | El sistema muestra la lista de envases asignados y despachados. |
 
-**Postcondición:** Los envases recorridos quedan atados al pedido, despachados y con su movimiento asentado. Si el recorrido se interrumpe a mitad de camino, los envases ya procesados conservan esa marca: nada se revierte y el inventario queda parcialmente modificado.
+**Postcondición:** Los envases quedan atados al pedido, despachados y con su movimiento asentado, o no se modifica ninguno: la asignación es atómica.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
 | 1 | Si el pedido no es válido o la lista de números de serie viene vacía, el sistema rechaza la operación e indica el detalle. |
-| 2 | Si no hay distribuidora elegida, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
-| 3 | Si el pedido no existe o es de otra distribuidora, el sistema informa «Pedido no encontrado». |
-| 4 | Si un número de serie no corresponde a ningún envase de la distribuidora, el sistema informa «Envase no encontrado». Si un envase no está lleno, rechaza el paso e indica el paso inválido. En ambos casos la interrupción es parcial: los envases anteriores de la lista ya quedaron despachados, atados al pedido y con su movimiento registrado, porque el recorrido no se confirma como un todo. |
+| 2 | Si no hay distribuidora elegida, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
+| 3 | Si el pedido no existe o es de otra distribuidora, o si quien opera es un chofer y el pedido está asignado a otro chofer o a ninguno, el sistema informa «Pedido no encontrado». |
+| 3 | Si el pedido ya está entregado, cancelado o reservado para otra fecha, el sistema rechaza la operación e informa «El pedido está <estado>: no se le pueden asignar envases»; no queda asignado ningún envase. |
+| 4 | Si un número de serie no corresponde a ningún envase de la distribuidora, el sistema informa «Envase no encontrado». Si un envase no está lleno, rechaza el paso e indica el paso inválido. Si hay números de serie repetidos, informa «Hay seriales repetidos». Si alguna revisión venció, rechaza la asignación completa (CU-135). En todos los casos no queda asignado ningún envase de la lista. |
 
 **Rendimiento**
 
@@ -6342,7 +6344,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Alta. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Un pedido de otra distribuidora no se encuentra, de modo que no se puede asignar un envase propio a un pedido ajeno. La operación es atómica: valida todos los envases antes de escribir y, si alguno falla, no queda ninguno asignado. Su control previo de vencimiento, que bloquea despachar un envase vencido, es CU-135. |
+| **Comentarios** | Un pedido de otra distribuidora no se encuentra, de modo que no se puede asignar un envase propio a un pedido ajeno; tampoco un chofer puede cargar envases a un pedido de otro chofer, que para él no existe. Sólo se cargan envases a pedidos pendientes, aceptados o en camino. La operación es atómica: valida todos los envases antes de asignar ninguno y, si alguno falla, no queda ninguno asignado. Su control previo de vencimiento, que bloquea despachar un envase vencido, es CU-135. |
 
 ---
 
@@ -6401,12 +6403,12 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El solicitante indica el envase y el estado al que quiere llevarlo y, si corresponde, el pedido en cuyo contexto ocurre el movimiento y una nota. |
+| 1 | El solicitante indica el envase y el estado al que quiere llevarlo y, si corresponde, el pedido en cuyo contexto ocurre el movimiento —obligatorio para entregarlo «con el cliente»— y una nota. |
 | 2 | El sistema exige una distribuidora elegida y toma la identidad de quien ejecuta el movimiento. |
 | 3 | El sistema recupera el envase dentro de esa distribuidora. |
-| 4 | Si el estado destino es «con el cliente» y se informó un pedido, el sistema recupera ese pedido para saber a nombre de qué cliente queda el envase. |
+| 4 | Si se informó un pedido, el sistema lo recupera dentro de la distribuidora del solicitante y, si quien opera es un chofer, comprueba que el pedido y el envase sean suyos; para despachar comprueba además que esté pendiente, aceptado o en camino. Con destino «con el cliente», de ese pedido toma el cliente a cuyo nombre queda el envase. |
 | 5 | El sistema comprueba si el paso desde el estado actual al destino está entre los admisibles. |
-| 6 | Si lo está, el sistema ajusta la titularidad del envase —le asigna el cliente al pasar a «con el cliente» y la limpia al volver a vacío devuelto o a depósito— y lo guarda con su nuevo estado. |
+| 6 | Si lo está, el sistema ajusta la titularidad del envase —le asigna el cliente al pasar a «con el cliente» y la limpia al volver a vacío devuelto o a depósito— y el pedido al que está atado —lo fija al despacharlo o entregarlo y lo limpia al volver a depósito— y lo guarda con su nuevo estado. |
 | 7 | El sistema asienta el movimiento en el historial, que solo admite altas, con el estado de origen, el destino, el pedido asociado, la firma de quien lo ejecutó y la nota. |
 | 8 | El sistema muestra el envase actualizado. |
 
@@ -6417,9 +6419,14 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 1 | Si el estado destino no es uno de los conocidos, o el pedido informado no es válido, el sistema rechaza el movimiento e indica el detalle. |
-| 2 | Si no hay distribuidora elegida, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el estado destino es «con el cliente» y no se informó el pedido, el sistema rechaza el movimiento e indica que hace falta el pedido: de él sale el cliente titular. |
+| 1 | Si alguno de los textos enviados, como la nota, trae caracteres no válidos, el sistema rechaza el movimiento e informa que alguno de los textos enviados tiene caracteres no válidos; el envase queda como estaba. |
+| 2 | Si no hay distribuidora elegida, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si el envase no existe o es de otra distribuidora, el sistema informa «Envase no encontrado». |
-| 4 | Si el pedido informado no existe, el sistema no interrumpe la operación: deja la titularidad del envase sin cliente y continúa con el paso. Es un comportamiento silencioso que queda por definir con el negocio. |
+| 4 | Si el pedido informado no existe o es de otra distribuidora, o si quien opera es un chofer y el pedido está asignado a otro chofer o a ninguno, el sistema informa «Pedido no encontrado». |
+| 4 | Si se va a despachar y el pedido está entregado, cancelado o reservado para otra fecha, el sistema rechaza el movimiento e informa «El pedido está <estado>: no se le pueden asignar envases». |
+| 4 | Si quien opera es un chofer y el envase está atado a un pedido de otro chofer o sin chofer, el sistema informa «Envase no encontrado»; si está atado a otro pedido que el informado, rechaza el movimiento e informa «El envase está asignado a otro pedido: no coincide con el pedido indicado»; y si no está atado a ningún pedido y no se informa uno, lo rechaza e indica que un chofer mueve envases sólo en el contexto de uno de sus pedidos: esas tareas de depósito son del administrador. |
+| 1 | Si el estado destino es «retirado», el sistema lo rechaza: la baja del envase se registra con su propia operación, con motivo. |
 | 5 | Si el paso no figura entre los admisibles desde el estado actual, el sistema lo rechaza e indica el paso rechazado. |
 
 **Rendimiento**
@@ -6432,7 +6439,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Alta. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El ajuste de la titularidad es un efecto real del paso: permite saber en cualquier momento qué cliente tiene en su poder cada envase de la flota, dato del que depende el control de los depósitos en garantía. Limitaciones: el pedido informado no se valida contra la distribuidora ni contra el envase que se mueve, de modo que es posible atar un movimiento a un pedido ajeno; el guardado del envase y el asiento del movimiento no se confirman juntos, y si falla el segundo el historial queda incompleto. |
+| **Comentarios** | El ajuste de la titularidad es un efecto real del paso: permite saber en cualquier momento qué cliente tiene en su poder cada envase de la flota, dato del que depende el control de los depósitos en garantía. El pedido informado se busca dentro de la distribuidora del solicitante y, para un chofer, entre sus propios pedidos, de modo que no se puede atar un movimiento a un pedido ajeno; el envase despachado queda atado a ese pedido hasta que vuelve a depósito; el estado, la titularidad y el asiento del movimiento se confirman juntos: si algo falla, no se guarda ninguno. |
 
 ---
 
@@ -6665,7 +6672,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-06 |
 | **Requisitos asociados** | IRQ-02, IRQ-08, IRQ-10, IRQ-14 |
-| **Descripción** | El cliente aparta garrafas para una fecha futura dejando una seña. El pedido nace reservado y no se ofrece a ningún chofer: el stock queda descontado en el acto y la entrega espera al día agendado, cuando el proceso automático lo devuelve al circuito normal. El alta es segura ante repeticiones y descuenta el stock bloqueándolo, de modo que dos altas simultáneas no lo pisan. |
+| **Descripción** | El cliente aparta garrafas para una fecha futura dejando una seña. El pedido nace reservado y no se ofrece a ningún chofer: el stock queda descontado en el acto y la entrega espera al día agendado, cuando el proceso automático lo devuelve al circuito normal. El alta es segura ante repeticiones y descuenta el stock de forma segura, de modo que dos altas simultáneas no lo pisan. |
 | **Precondición** | El solicitante está identificado. El alta de pedidos la puede hacer un cliente, un administrador o un chofer identificado; un cliente solo puede crear pedidos a su propio nombre. El pedido trae el indicador de reserva, la fecha agendada y el monto de la seña. |
 | **Estado** | Implementado |
 
@@ -6860,7 +6867,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 1 | El proceso automático se ejecuta cada hora. |
 | 2 | El sistema busca hasta cincuenta reservas con la seña sin pagar creadas antes del plazo configurado —48 horas por omisión—. |
 | 3 | Por cada reserva, el sistema pasa el pedido a cancelado. |
-| 4 | En la misma operación, el sistema devuelve al inventario la cantidad de cada ítem, bloqueando cada producto; un producto que ya no existe se ignora. |
+| 4 | En la misma operación, el sistema devuelve al inventario la cantidad de cada ítem; un producto que ya no existe se ignora. |
 | 5 | El sistema confirma la operación, de modo que la cancelación y la devolución del stock quedan hechas juntas o no quedan. |
 
 **Postcondición:** La reserva queda cancelada y el cliente no acapara mercadería que no va a pagar.
@@ -6903,7 +6910,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 2 | El sistema busca hasta cincuenta pedidos pendientes, pagados con MercadoPago y sin pago acreditado, creados antes del plazo configurado —60 minutos por omisión—. |
 | 3 | El sistema evita que un aviso de la pasarela que llegue en el mismo instante pise lo que está resolviendo. |
 | 4 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema vuelve a comprobar la condición, pasa el pedido a cancelado de manera irrecuperable, con su motivo, y asienta el cambio en el historial. |
-| 5 | En la misma operación, el sistema devuelve al inventario la cantidad de cada ítem, bloqueando cada producto, y confirma la operación. |
+| 5 | En la misma operación, el sistema devuelve al inventario la cantidad de cada ítem, y confirma la operación. |
 
 **Postcondición:** El inventario recupera lo apartado, evitando pérdidas por caídas de la pasarela.
 
@@ -6911,7 +6918,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el pedido ya cambió mientras se lo bloqueaba —acaba de entrar el pago—, el sistema aborta de inmediato y lo deja como está, sin reintentar. |
+| 4 | Si el pedido ya cambió mientras se lo procesaba —acaba de entrar el pago—, el sistema aborta de inmediato y lo deja como está, sin reintentar. |
 | 4 | Si falla la expiración de un pedido, el sistema la deshace, registra el error y sigue con el siguiente. |
 
 **Rendimiento**
@@ -7022,7 +7029,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 6 | Si el código no coincide, o el pedido no tiene código, o los largos difieren, el sistema rechaza la operación e informa «Código de entrega inválido». |
 | 7 | Si confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación; esta comprobación es posterior a la del código. |
 | 11 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
-| 4 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 4 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -7207,7 +7214,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 2 | Si la cuenta no tiene perfil de chofer, el sistema no muestra nada. |
-| 1 | Si no se indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si no se indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 | 4 | Si el chofer no tiene ningún pedido en curso ni un cobro pendiente de hoy, el sistema no muestra nada. |
 
 **Rendimiento**
@@ -7256,7 +7263,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 3 | Si el pedido no existe o es de otra distribuidora, el sistema informa «Order with ID: … not found». |
 | 3 | Si el pedido no está pendiente, tiene chofer o se paga en línea, el sistema rechaza la modificación. |
-| 3 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 3 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si se intenta pasar el pedido a MercadoPago, el sistema lo rechaza: el cobro ya creado quedaría con otro monto. |
 | 4 | Si la dirección no existe o no es del cliente, el sistema informa que no la encontró; si cae fuera de la cobertura, rechaza el cambio. |
 | 4 | Si la franja no tiene cupo para esa fecha, o la fecha agendada ya pasó, el sistema rechaza el cambio. |
@@ -7726,7 +7733,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 2 | Si se intenta cambiar otro dato, como el correo, el sistema rechaza la operación. |
 | 3 | Si el administrador no existe, está dado de baja o es de otra distribuidora, el sistema informa que no lo encontró. |
 | 3 | Si el solicitante pertenece a una distribuidora y el administrador es un Administrador General, el sistema informa que no lo encontró, sin revelar que existe. |
-| 3 | Si el solicitante es el Administrador General y no elige la distribuidora al modificar a un administrador de empresa, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 3 | Si el solicitante es el Administrador General y no elige la distribuidora al modificar a un administrador de empresa, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 4 | Si un administrador de empresa intenta modificar su propio perfil de administrador, el sistema deniega la operación e informa «No podés modificar ni dar de baja tu propio perfil de administrador». |
 | 5 | Si el teléfono ya lo usa otra cuenta, el sistema rechaza la operación. |
 
@@ -7775,7 +7782,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 1 | Si el solicitante no es administrador, el sistema deniega la operación. |
 | 2 | Si el administrador no existe, ya está dado de baja o es de otra distribuidora, el sistema informa que no lo encontró. |
 | 2 | Si el solicitante pertenece a una distribuidora y el administrador es un Administrador General, el sistema informa que no lo encontró, sin revelar que existe. |
-| 2 | Si el solicitante es el Administrador General y no elige la distribuidora al dar de baja a un administrador de empresa, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si el solicitante es el Administrador General y no elige la distribuidora al dar de baja a un administrador de empresa, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si un administrador de empresa intenta darse de baja, el sistema deniega la operación e informa «No podés modificar ni dar de baja tu propio perfil de administrador». |
 | 3 | Si el Administrador General intenta darse de baja a sí mismo, el sistema deniega la operación e informa «No podés darte de baja a vos mismo». |
 | 4 | Si es el último administrador activo de la distribuidora, el sistema rechaza la baja e informa «Es el último administrador activo de la distribuidora: dá de alta o desbloqueá a otro antes». |
@@ -10679,7 +10686,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 4 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 4 | Si el proceso indicado no es uno de los cinco configurables, el sistema informa que no lo encontró. |
 | 4 | Si algún parámetro falta, sobra o está fuera de rango para ese proceso, el sistema rechaza el cambio e indica el campo. |
 
@@ -10725,7 +10732,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | Paso | Acción |
 |------|--------|
 | 1 | Si no hay sesión, el sistema rechaza la solicitud; si el solicitante es un chofer o un cliente, la deniega e informa que se requiere el rol de administrador o de administrador general. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)», tanto al consultar como al modificar. |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora, tanto al consultar como al modificar. |
 | 3 | Si la solicitud trae un dato desconocido, el sistema lo rechaza e informa «property <campo> should not exist». |
 | 3 | Si un intervalo no es múltiplo del ciclo de base de su tarea, el sistema rechaza el cambio e indica el campo e informa que el intervalo tiene que ser un múltiplo entero del ciclo de base de la tarea, por ejemplo 15 segundos. |
 | 3 | Si el reintento del despacho supera los 300 segundos, o otro intervalo supera las 24 horas, el sistema rechaza el cambio e indica el campo. |
@@ -10992,7 +10999,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | Paso | Acción |
 |------|--------|
 | 4 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema informa «Depósito … no encontrado». |
-| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11037,7 +11044,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 2 | Si falta el nombre o el código, o el código tiene caracteres no permitidos o más de 12, el sistema rechaza el alta e indica cada campo. |
 | 3 | Si otro depósito vigente de la distribuidora ya tiene ese código, el sistema informa «Ya existe un depósito vigente con ese código». |
 | 4 | Si otro alta o cambio del predeterminado se hace al mismo tiempo, el sistema pide probar de nuevo, sin dejar dos predeterminados. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11082,7 +11089,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si otro depósito vigente ya tiene el código, el sistema informa «Ya existe un depósito vigente con ese código». |
 | 3 | Si se intenta desactivar el depósito predeterminado, el sistema informa «No se puede desactivar el depósito predeterminado: elegí otro primero». |
 | 3 | Si el código tiene caracteres no permitidos o más de 12, el sistema rechaza el cambio. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si se intenta desactivar un depósito que es el origen de una carga de camión abierta, el sistema rechaza el cambio e informa el número de la carga. |
 
 **Rendimiento**
@@ -11128,7 +11135,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si el depósito tiene alguna garrafa, el sistema rechaza la baja e informa «El depósito todavía tiene N garrafa(s): transferilas o ajustalas antes de darlo de baja». |
 | 3 | Si el depósito es el predeterminado, el sistema rechaza la baja e informa «No se puede dar de baja el depósito predeterminado: elegí otro primero». |
 | 3 | Si el depósito no existe, ya está dado de baja o es de otra distribuidora, el sistema informa que no lo encontró. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si el depósito es el origen de una carga de camión abierta, el sistema rechaza la baja e informa el número de la carga: la rendición le devuelve las garrafas y, sin depósito, la carga quedaría trabada. |
 
 **Rendimiento**
@@ -11174,7 +11181,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si otro cambio del predeterminado se hace al mismo tiempo, el sistema informa «Otro cambio del depósito predeterminado se hizo al mismo tiempo: probá de nuevo»; queda uno solo. |
 | 3 | Si el depósito está inactivo, o se lo marca como predeterminado junto con inactivo, el sistema rechaza el cambio e informa «El depósito predeterminado no puede estar inactivo: activalo o elegí otro como predeterminado». |
 | 3 | Si se intenta quitar la marca al predeterminado, el sistema informa «Es el depósito predeterminado: elegí otro como predeterminado en lugar de sacarle la marca a este». |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11224,7 +11231,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si el depósito no existe, está dado de baja o es de otra distribuidora, el sistema informa que no lo encontró. |
 | 5 | Si el depósito está inactivo y el conteo le agrega unidades, el sistema rechaza el conteo e informa que está inactivo y no recibe stock. |
 | 2 | Si se repite un conteo ya procesado, el sistema devuelve el resultado de la primera ejecución sin repetirlo. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si la solicitud no trae su clave de repetición, el sistema la rechaza: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 **Rendimiento**
@@ -11266,7 +11273,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | Paso | Acción |
 |------|--------|
 | 2 | Si un filtro no es válido, el sistema rechaza la consulta. |
-| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11306,7 +11313,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11349,7 +11356,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |------|--------|
 | 3 | Si una fecha no tiene el formato esperado, o la de inicio es posterior a la de fin, el sistema rechaza la consulta e informa «"from" no puede ser posterior a "to"». |
 | 3 | Si un filtro no es válido o el motivo no existe, el sistema rechaza la consulta. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11395,7 +11402,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si un mínimo es negativo o no es entero, el sistema rechaza el cambio e indica el campo. |
 | 3 | Si la lista está vacía o tiene más de 100 renglones, o un mínimo supera 100.000, el sistema rechaza el cambio. |
 | 3 | Si la lista repite un mismo depósito y tipo de garrafa, vale el último renglón. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11435,7 +11442,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 2 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11529,7 +11536,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si una ubicación o una garrafa no existe o es de otra distribuidora, el sistema informa que no la encontró. |
 | 3 | Si dos renglones nombran la misma garrafa y condición, el sistema rechaza la transferencia. |
 | 2 | Si se repite una transferencia ya procesada, el sistema devuelve el resultado de la primera, con el mismo lote, sin repetir los movimientos. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si la solicitud no trae su clave de repetición, el sistema la rechaza: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 **Rendimiento**
@@ -11542,7 +11549,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Frecuencia** | Baja: al reordenar el stock entre sucursales o al regularizar lo que un camión tiene suelto. |
 | **Estabilidad** | Media |
-| **Comentarios** | La transferencia no tiene registro propio: es un grupo de movimientos con el mismo lote, el motivo «traslado» y un origen y un destino. Los bloqueos siguen un orden fijo, el mismo de todas las operaciones de stock, de modo que dos transferencias cruzadas (A hacia B y B hacia A) no se traban. Si el administrador se equivoca, la corrige con CU-276. La carga del camión con su hoja es otro caso (CU-218 y CU-219). |
+| **Comentarios** | La transferencia no tiene registro propio: es un grupo de movimientos con el mismo lote, el motivo «traslado» y un origen y un destino. Dos transferencias cruzadas (A hacia B y B hacia A) no se traban entre sí. Si el administrador se equivoca, la corrige con CU-276. La carga del camión con su hoja es otro caso (CU-218 y CU-219). |
 
 ---
 
@@ -11579,7 +11586,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si las garrafas ya no están donde estaban —el saldo del destino original quedaría negativo—, el sistema rechaza la operación e informa «No se puede contraasentar: las garrafas ya no están donde estaban» y no registra nada. |
 | 4 | Si el contraasiento devolvería garrafas a un camión, o sacaría las de un camión con una carga abierta, el sistema lo rechaza, con las mismas reglas que la transferencia: se contraasientan las transferencias entre depósitos y, por datos históricos, una de depósito a camión, que vuelve del camión al depósito solo si el camión no tiene carga abierta; nunca hacia un camión. |
 | 2 | Si se repite una anulación ya procesada, el sistema devuelve el resultado de la primera sin repetirla. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si la solicitud no trae su clave de repetición, el sistema la rechaza: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 **Rendimiento**
@@ -11628,7 +11635,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si el stock vendible quedaría negativo, el ajuste se asienta igual: el físico manda y una pérdida física se registra siempre. El vendible queda en cero y lo que faltó queda como déficit de reservas, que la conciliación informa (CU-224); el sistema deja un aviso. |
 | 4 | Si la ubicación o una garrafa no existe o es de otra distribuidora, el sistema informa que no la encontró. |
 | 2 | Si se repite un ajuste ya procesado, el sistema devuelve el resultado de la primera ejecución, con el mismo ajuste. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si la solicitud no trae su clave de repetición, el sistema la rechaza: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 **Rendimiento**
@@ -11673,7 +11680,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |------|--------|
 | 3 | Si una fecha no tiene el formato esperado, o la de inicio es posterior a la de fin, el sistema rechaza la consulta. |
 | 5 | Si el ajuste no existe o es de otra distribuidora, el sistema informa «Ajuste … no encontrado». |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -11716,7 +11723,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si un renglón repite la garrafa o trae una cantidad negativa o no entera, el sistema rechaza la carga. |
 | 3 | Si el vehículo, el chofer, el ayudante, el depósito o una garrafa no existen o son de otra distribuidora, el sistema informa que no los encontró. |
 | 3 | Si el vehículo no está en uso por ese chofer, el sistema rechaza la carga e informa «El vehículo … no está en uso por ese chofer: asignáselo antes de abrir la carga». |
@@ -11763,7 +11770,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si la carga no existe o es de otra distribuidora, el sistema informa que no la encontró. |
 | 3 | Si la carga ya salió, o está cerrada o cancelada, el sistema rechaza la corrección: solo se corrige mientras está en carga. |
 | 4 | Si un renglón repite la garrafa o trae una cantidad negativa o no entera, el sistema rechaza la corrección; si una garrafa no existe o es de otra distribuidora, informa que no la encontró. |
@@ -11808,7 +11815,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si falta la clave de repetición, el sistema rechaza la operación, porque repetirla sumaría otra vez. |
 | 3 | Si la carga no existe o es de otra distribuidora, el sistema informa que no la encontró. |
 | 3 | Si la carga no está en ruta, el sistema rechaza la reposición. |
@@ -11855,7 +11862,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si falta el motivo o supera los 300 caracteres, el sistema rechaza la cancelación e indica el campo. |
 | 3 | Si la carga no existe o es de otra distribuidora, el sistema informa que no la encontró. |
 | 3 | Si la carga ya salió o está cerrada o cancelada, el sistema rechaza la cancelación: solo se cancela una carga que todavía no salió. |
@@ -11900,7 +11907,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si la carga no está «en carga», el sistema rechaza la salida e informa «La carga N° n está <estado>: no se puede registrar la salida»; repetir la salida no mueve el stock otra vez. |
 | 2 | Si la carga es de otro chofer o de otra distribuidora, el sistema informa que no la encontró, sin distinguir los casos. |
 | 3 | Si la carga no lleva ninguna garrafa, el sistema rechaza la salida. |
@@ -11960,7 +11967,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Frecuencia** | Alta: una vez por pedido entregado. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Si el descuento falla, no aborta la entrega. Repetirlo no cambia el resultado: un pedido y una garrafa se descuentan una sola vez. La vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno, y se corrige al rendir el camión. Un depósito inactivo o un camión dado de baja pueden entregar el stock que les queda, no recibirlo. Cualquier cambio de estado de un pedido a entregado dispara el caso, también el que hace un administrador. El diseño inicial lo hacía escuchando un evento después de la entrega; se resolvió dentro de ella para que no se pierda si el proceso cae. Las lecturas de saldo no bloquean a propósito; la validación firme la hace el libro. Mientras haya una carga de camión abierta, el chofer no cambia de vehículo (CU-161). |
+| **Comentarios** | Si el descuento falla, no aborta la entrega. Repetirlo no cambia el resultado: un pedido y una garrafa se descuentan una sola vez. La vacía entra en el mismo lugar de donde salió la llena, en relación uno a uno, y se corrige al rendir el camión. Un depósito inactivo o un camión dado de baja pueden entregar el stock que les queda, no recibirlo. Cualquier cambio de estado de un pedido a entregado dispara el caso, también el que hace un administrador. El diseño inicial lo hacía escuchando un evento después de la entrega; se resolvió dentro de ella para que no se pierda si el proceso cae. Mientras haya una carga de camión abierta, el chofer no cambia de vehículo (CU-161). |
 
 ---
 
@@ -11992,7 +11999,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si la carga no está en ruta ni devuelta, el sistema rechaza la declaración e informa su estado actual. |
 | 3 | Si la carga es de otro chofer o de otra distribuidora, el sistema informa que no la encontró, sin distinguir los casos. |
 | 4 | Si el chofer tiene pedidos en curso, el sistema rechaza la declaración e informa «Tenés N pedidos en curso: entregalos o liberalos antes de volver». |
@@ -12041,7 +12048,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 3 | Si la carga no está «devuelta», el sistema rechaza el cierre e informa su estado actual: el chofer tiene que declarar la vuelta primero. |
 | 4 | Si el camión entregó garrafas después de que el chofer declaró la vuelta, el sistema rechaza el cierre: el chofer tiene que volver a declarar lo que trae antes de cerrar. |
 | 6 | Si hay diferencia y la nota está vacía, el sistema rechaza el cierre antes de tocar el libro: toda diferencia tiene que poder explicarse. |
@@ -12126,7 +12133,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 | 3 | Si una fecha no tiene el formato esperado, o la de inicio es posterior a la de fin, el sistema rechaza la consulta. |
 
 **Rendimiento**
@@ -12215,7 +12222,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |------|--------|
 | 5 | Si falla el envío, el sistema registra el error y no guarda la firma: reintenta la noche siguiente. |
 | 2 | Si la conciliación de una distribuidora falla, el sistema registra el error y sigue con las demás. |
-| 6 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 6 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 | 3 | Si las reservas de pedidos abiertos superan las llenas físicas, el sistema lo informa por garrafa como sobrerreserva y marca la conciliación como no consistente, aunque la diferencia del vendible sea cero. |
 
 **Rendimiento**
@@ -12264,7 +12271,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si la garrafa tiene entregas que todavía no descontaron el físico, el sistema rechaza el ajuste e informa «primero reaplicá las entregas»: con el físico de más el esperado sale mal y, al reaplicarlas, quedaría sobreventa. Se reaplican con CU-278 y se vuelve a conciliar. |
 | 2 | Si la nota está vacía, el sistema rechaza el ajuste. |
 | 2 | Si se repite un ajuste ya procesado, el sistema devuelve el resultado de la primera ejecución, con el mismo ajuste. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si la solicitud no trae su clave de repetición, el sistema la rechaza: es obligatoria en las escrituras de stock y compras que crean movimientos. |
 
 **Rendimiento**
@@ -12310,7 +12317,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 4 | Si una entrega sigue sin llenas suficientes, el sistema no registra nada de ese pedido y lo cuenta como pendiente; las demás se reaplican igual. |
 | 3 | Si no hay ningún movimiento en el libro, el sistema informa 0 revisados, 0 reaplicados y 0 pendientes. |
 | 2 | Si se repite una reaplicación ya procesada, el sistema devuelve el resultado de la primera ejecución. |
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -12397,7 +12404,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 2 | Si el valor no es sí o no, el sistema rechaza el cambio e indica el campo. |
 
 **Rendimiento**
@@ -12438,7 +12445,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 
 | Paso | Acción |
 |------|--------|
-| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 1 | Si el Administrador General no indica la distribuidora, el sistema rechaza la consulta e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
 
@@ -12497,7 +12504,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Frecuencia** | Alta: lo ejecuta todo cambio de stock físico. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es el único punto de escritura del stock físico: nadie más toca los saldos ni el libro. El libro bloquea siempre en el mismo orden —las garrafas del catálogo, los depósitos, los saldos ordenados y, al final, el contador de numeración—, y eso es lo que evita los bloqueos cruzados entre ajustes, transferencias y entregas; el conteo inicial toma los depósitos de forma exclusiva para que nadie los mueva mientras se cuenta. La base sostiene además cuatro garantías: el saldo no es negativo, el libro no se modifica, un movimiento se contraasienta una sola vez y el descuento de una entrega no se repite. La recepción de una compra (CU-217) y su anulación (CU-280) lo usan; la carga, la salida y la rendición del camión (CU-218, CU-219 y CU-222) también. |
+| **Comentarios** | Es el único punto de escritura del stock físico: nadie más toca los saldos ni el libro. Dos operaciones simultáneas —ajustes, transferencias y entregas— no se traban entre sí, y mientras se hace el conteo inicial nadie mueve los depósitos. La base sostiene además cuatro garantías: el saldo no es negativo, el libro no se modifica, un movimiento se contraasienta una sola vez y el descuento de una entrega no se repite. La recepción de una compra (CU-217) y su anulación (CU-280) lo usan; la carga, la salida y la rendición del camión (CU-218, CU-219 y CU-222) también. |
 
 ---
 
@@ -13031,9 +13038,10 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 | 3 | Si el pedido es un reintento de uno ya procesado, el sistema muestra el resultado de la primera vez sin repetir la operación. |
 | 3 | Si el pedido no trae su clave de reintento, el sistema lo rechaza: es obligatoria en las operaciones de stock y compras que crean movimientos. |
 | 3 | Si la orden no existe o es de otra distribuidora, el sistema informa «Orden de compra no encontrada». |
+| 3 | Si la recepción cumple una orden y se indica un depósito distinto del depósito de destino de la orden, el sistema rechaza la recepción e informa que la orden se recibe en su depósito de destino; no registra nada. |
 | 3 | Si la orden no está enviada ni parcialmente recibida, el sistema rechaza la recepción: solo se recibe una orden enviada o parcialmente recibida. |
 | 3 | Si una garrafa no está en la orden, el sistema rechaza la recepción y sugiere recibirla como compra directa o agregarla a otra orden; si un renglón pasa de lo pendiente, la rechaza e indica cuánto llega y cuánto queda por recibir. |
-| 3 | Si el proveedor indicado no es el de la orden, el sistema rechaza la recepción; sin orden, si falta el proveedor o el costo de un renglón, la rechaza indicando qué falta. |
+| 3 | Si el proveedor indicado no es el de la orden, el sistema rechaza la recepción; sin orden, si falta el proveedor o el costo de un renglón que recibe llenas, la rechaza indicando qué falta. |
 | 4 | Si el proveedor, el depósito o una garrafa no existen o son de otra distribuidora, el sistema informa que no los encontró; si el proveedor está inactivo, rechaza la recepción. |
 | 4 | Si ya hay una recepción de ese proveedor con el mismo tipo de comprobante y número, anulada o no, el sistema rechaza la recepción por conflicto. |
 | 5 | Si los vacíos que se lleva la planta dejarían negativo el saldo de vacíos del depósito, el sistema rechaza la recepción con el mensaje «No alcanzan las vacías que se lleva la planta: el depósito no puede quedar en negativo», indica cuántas hay y cuántas se necesitan, y no registra nada. |
@@ -13049,7 +13057,7 @@ de datos desde el 25/09/2026; lo que falta construir son los servicios que las u
 |-------|---------|
 | **Frecuencia** | Media: en cada llegada de gas. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Es el camino por el que entran al sistema las garrafas llenas compradas. Sin orden, el depósito es el indicado o el predeterminado y el costo de cada renglón es obligatorio; con orden, el proveedor y el depósito son los de la orden y el costo es el de la orden si no se indica otro. El costo promedio es (existencia previa × costo previo + llenas × costo nuevo) / (existencia previa + llenas), redondeado a 2 decimales; la existencia son las llenas de depósitos y camiones antes de la recepción y, sin existencia o sin costo previo, el promedio es el costo nuevo. Cada renglón guarda el promedio y la existencia previa que usó, para poder recalcular exacto si la recepción se anula (CU-280). El pago se marca aparte (CU-281). |
+| **Comentarios** | Es el camino por el que entran al sistema las garrafas llenas compradas. Sin orden, el depósito es el indicado o el predeterminado y el costo es obligatorio en cada renglón que recibe llenas; con orden, el proveedor y el depósito son los de la orden —si se indica un depósito, tiene que ser el de la orden— y el costo es el de la orden si no se indica otro. El costo promedio es (existencia previa × costo previo + llenas × costo nuevo) / (existencia previa + llenas), redondeado a 2 decimales; la existencia son las llenas de depósitos y camiones antes de la recepción y, sin existencia o sin costo previo, el promedio es el costo nuevo. Cada renglón guarda el promedio y la existencia previa que usó, para poder recalcular exacto si la recepción se anula (CU-280). El pago se marca aparte (CU-281). |
 
 ---
 
@@ -13258,14 +13266,14 @@ Las dependencias entre casos de uso se formalizan con notación UML. La represen
 | CU-015 Aceptar un Pedido | → | CU-248 Verificar la Carga de Camión Abierta del Chofer | Ídem, al aceptar el pedido. |
 | CU-018 Marcar un Pedido "En Camino" | → | CU-169 Registrar el Cambio de Estado de un Pedido | El paso a en camino asienta el cambio de estado. |
 | CU-020 Confirmar una Entrega Manualmente | → | CU-169 Registrar el Cambio de Estado de un Pedido | La entrega asienta el cambio de estado y su motivo. |
-| CU-020 Confirmar una Entrega Manualmente | → | CU-220 Descontar del Stock Físico lo Entregado | Toda entrega confirmada descuenta el físico en la misma transacción. |
+| CU-020 Confirmar una Entrega Manualmente | → | CU-220 Descontar del Stock Físico lo Entregado | Toda entrega confirmada descuenta el físico en la misma operación. |
 | CU-031 Registrar un Chofer (Gestión de la Flota) | → | CU-082 Crear un Usuario Base | Ídem, desde la gestión de la flota (SS-07). |
 | CU-038 Modificar el Stock de un Producto | → | CU-213 Registrar un Ajuste o una Merma de Stock | El ajuste manual del catálogo se registra como un ajuste de recuento en el depósito predeterminado. |
 | CU-072 Crear una Reserva Programada con Seña | → | CU-169 Registrar el Cambio de Estado de un Pedido | La reserva nace en estado reservado y lo asienta. |
 | CU-075 Activar las Reservas Vencidas Automáticamente | → | CU-169 Registrar el Cambio de Estado de un Pedido | La activación pasa la reserva a pendiente y lo asienta. |
 | CU-077 Expirar los Pedidos de MercadoPago sin Pagar | → | CU-169 Registrar el Cambio de Estado de un Pedido | El vencimiento cancela el pedido y lo asienta. |
 | CU-079 Confirmar una Entrega Escaneando el QR (cliente) | → | CU-169 Registrar el Cambio de Estado de un Pedido | Ídem: la entrega por código asienta el cambio de estado. |
-| CU-079 Confirmar una Entrega Escaneando el QR (cliente) | → | CU-220 Descontar del Stock Físico lo Entregado | Ídem: la entrega confirmada por el cliente descuenta el físico en la misma transacción. |
+| CU-079 Confirmar una Entrega Escaneando el QR (cliente) | → | CU-220 Descontar del Stock Físico lo Entregado | Ídem: la entrega confirmada por el cliente descuenta el físico en la misma operación. |
 | CU-080 Consultar el Pool de Pedidos Disponibles | → | CU-248 Verificar la Carga de Camión Abierta del Chofer | Ídem: sin poder recibir pedidos por su carga, el chofer ve el pool vacío. |
 | CU-086 Registrar un Administrador | → | CU-082 Crear un Usuario Base | Ídem: el perfil que se crea es el de administrador. |
 | CU-087 Crear el Primer Administrador General | → | CU-082 Crear un Usuario Base | Ídem, invocado desde el comando de arranque en el servidor. |
@@ -15287,7 +15295,7 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | **Objetivos asociados** | OBJ-05, OBJ-07 |
 | **Requisitos asociados** | IRQ-19, IRQ-03 |
 | **Descripción** | El administrador controla lo que el chofer rindió. Si cierra, aprueba la rendición, el efectivo declarado entra a una caja y la diferencia, si la hay, se resuelve: la absorbe la distribuidora o se descuenta al chofer. La reapertura de una rendición presentada es CU-330. |
-| **Precondición** | El administrador está identificado. La rendición pertenece a su distribuidora y está presentada. La caja de destino está activa y, si exige sesión, la tiene abierta. |
+| **Precondición** | El administrador está identificado. La rendición pertenece a su distribuidora y está presentada. La caja de destino existe y, si el efectivo declarado es mayor que cero, está activa y, si exige sesión, la tiene abierta; con el declarado en cero no se controla ni una ni otra cosa. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
@@ -15311,7 +15319,8 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | 4 | Si la rendición no está presentada, el sistema rechaza la aprobación por conflicto. |
 | 4 | Si la rendición o la caja no existen o son de otra distribuidora, el sistema informa que no las encontró. |
 | 4 | Si hay diferencia y no se indica cómo se resuelve, el sistema rechaza la aprobación. |
-| 5 | Si la caja exige sesión y no la tiene abierta, el sistema rechaza la aprobación por conflicto. |
+| 5 | Si entra efectivo y la caja está desactivada, el sistema rechaza la aprobación por conflicto. |
+| 5 | Si entra efectivo y la caja exige sesión y no la tiene abierta, el sistema rechaza la aprobación por conflicto. |
 | 5 | Si la rendición está atada a un turno cuya carga no está cerrada, el sistema rechaza la aprobación por conflicto. |
 
 **Rendimiento**
@@ -16092,7 +16101,7 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | 2 | Si el motivo falta, el sistema rechaza la operación. |
 | 2 | Si se reintenta el mismo envío con datos distintos, el sistema lo rechaza y no lo ejecuta. |
 | 3 | Si la liquidación no existe o es de otra distribuidora, el sistema informa que no la encontró. |
-| 3 | Si el solicitante es el Administrador General y no elige la distribuidora, el sistema rechaza la operación e informa «Falta la distribuidora: enviá el header X-Distributor (slug o id)». |
+| 3 | Si el solicitante es el Administrador General y no elige la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 4 | Si la liquidación no está pagada, el sistema rechaza la operación e informa en qué estado está. |
 | 4 | Si la liquidación no conserva el movimiento de caja de su pago, el sistema rechaza la operación e informa «La liquidación no tiene el movimiento de caja de su pago». |
 

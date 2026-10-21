@@ -9,9 +9,9 @@ sequenceDiagram
     CLI->>+SRV: validarCobertura(latitud, longitud)
     SRV->>+DIS: tieneZonasActivas()
     DIS-->>-SRV: tieneZonas
-    alt La distribuidora no tiene zonas activas
+    alt La distribuidora no tiene ninguna zona cargada (no borrada)
         SRV-->>CLI: cubierta, sin recargo
-    else La distribuidora tiene zonas activas
+    else La distribuidora tiene zonas cargadas
         SRV->>+DIS: getZonaQueCubre(latitud, longitud)
         loop Por cada zona activa y vigente, de mayor prioridad
             DIS->>ZON: cubre(latitud, longitud)

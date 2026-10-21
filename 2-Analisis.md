@@ -397,6 +397,7 @@
 | 24 | 2026-10-15 | Contratos de CU-171 y CU-173 al día con el código, valores por omisión del módulo M1 (§3.6) como configuración por distribuidora y contratos de CU-013 y CU-014 con la configuración y el aviso al panel. | Nahuel Wagner |
 | 25 | 2026-10-16 | Pasada de coherencia: 334 diagramas de secuencia, 362 operaciones y 227 contratos (CU-103 retirado, duplicaba CU-343). | Nahuel Wagner |
 | 26 | 2026-10-18 | Contratos de las operaciones construidas el 17/10/2026 sin la marca de planificados; diagramas de secuencia de CU-268, CU-269 y CU-010 al día. El cobro del administrador sobre un pedido en efectivo (CU-294 y CU-299) asienta una entrada en una caja de efectivo: contratos con la caja y el MovimientoDeCaja. DSS y contratos de CU-345 a CU-348. | Nahuel Wagner |
+| 27 | 2026-10-22 | Auditoría de contenido: glosario con Actor, Sistema Automático (ACT-04) como el Tiempo, Pedido cancelado (cliente o administrador) y Pedido liberado (chofer), y MVVM sólo en las apps Flutter. Re-auditoría: contratos de CU-068, CU-070, CU-217 y CU-233 al día con el código; DSS de CU-013 con su disparo real. | Nahuel Wagner |
 
 ---
 
@@ -2649,7 +2650,7 @@ sequenceDiagram
     participant SIS as :Sistema
     actor CHO as Chofer (ACT-02)
 
-    Note over SAU: Se dispara al crearse el<br/>pedido
+    Note over SAU: La primera oferta sale al confirmarse el alta<br/>del pedido (CU-005) y el reloj reintenta (CU-014)
     SAU->>SIS: ofrecerAlSiguienteChofer(pedidoId)
     activate SIS
     alt Hay un candidato disponible
@@ -6512,7 +6513,7 @@ sequenceDiagram
     activate SIS
     alt el punto cae dentro de una zona activa y no dada de baja
         SIS-->>CLI: cubierta (zonaId, nombre de la zona, recargo aplicable)
-    else la distribuidora no tiene zonas activas y vigentes
+    else la distribuidora no tiene ninguna zona cargada (no borrada)
         SIS-->>CLI: cubierta sin recargo (cobertura irrestricta por omisión)
     else el punto está fuera de toda zona
         SIS-->>CLI: fuera de cobertura
@@ -11826,11 +11827,11 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Vincular los envases físicos que salen a repartir con el pedido y despacharlos, dejando el rastro para que la confirmación de entrega los avance. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-068. Funciones: IRQ-02, IRQ-13, OBJ-04. |
-| **Notas** | Se rechaza la asignación completa si algún envase tiene la revisión vencida; una asignación rechazada no deja envases asignados a medias (CU-135). Solo se asignan envases de la distribuidora del pedido. |
-| **Excepciones** | Si el pedido no existe → recurso no encontrado. Si algún número de serie no existe en la distribuidora → recurso no encontrado. Si algún envase no está lleno → error de solicitud (hay que llenarlo antes de despacharlo). Si algún envase tiene la revisión vencida → asignación rechazada con la lista de series vencidas. |
+| **Notas** | Se rechaza la asignación completa si algún envase tiene la revisión vencida; una asignación rechazada no deja envases asignados a medias (CU-135). Solo se asignan envases de la distribuidora del pedido, y solo a un pedido que todavía admite carga (pendiente, aceptado o en camino); un chofer solo carga a pedidos que tiene asignados. La asignación es atómica: se asignan todos o ninguno. |
+| **Excepciones** | Si el pedido no existe, o quien opera es un chofer y el pedido es de otro chofer o no tiene chofer → recurso no encontrado. Si el pedido está entregado, cancelado o reservado a futuro → conflicto («El pedido está <estado>: no se le pueden asignar envases»). Si algún número de serie no existe en la distribuidora → recurso no encontrado. Si algún envase no está lleno → error de solicitud (hay que llenarlo antes de despacharlo). Si algún envase tiene la revisión vencida → asignación rechazada con la lista de series vencidas. |
 | **Salida** | Los envases despachados. |
-| **Precondiciones** | El solicitante es Chofer, Administrador o Administrador General. El Pedido existe y es de su Distribuidora. Cada Envase indicado pertenece a esa Distribuidora, está «lleno» y tiene la revisión vigente. |
-| **Postcondiciones** | Por cada Envase: su estado pasó de «lleno» a «despachado», se formó la asociación con el Pedido que lo lleva y se creó una instancia de MovimientoEnvase con el Pedido, el Usuario que asignó y una nota. |
+| **Precondiciones** | El solicitante es Chofer, Administrador o Administrador General. El Pedido existe, es de su Distribuidora, está pendiente, aceptado o en camino y, si el solicitante es Chofer, es uno de los suyos. Cada Envase indicado pertenece a esa Distribuidora, está «lleno» y tiene la revisión vigente. |
+| **Postcondiciones** | Por cada Envase: su estado pasó de «lleno» a «despachado», se formó la asociación con el Pedido que lo lleva (el envase queda atado a él) y se creó una instancia de MovimientoEnvase con el Pedido, el Usuario que asignó y una nota. |
 
 ---
 
@@ -11842,11 +11843,11 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Ejecutar una transición legal del ciclo de vida físico del envase, actualizar quién lo tiene y registrar el movimiento en su bitácora. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-070. Funciones: IRQ-02, IRQ-13, OBJ-04. |
-| **Notas** | Las transiciones válidas están definidas por la máquina de estados del envase: en depósito, lleno, despachado, en poder del cliente, devuelto vacío. Cualquier otra combinación se rechaza, sin excepciones por rol ni por distribuidora. |
-| **Excepciones** | Si el envase no existe o es de otra distribuidora → recurso no encontrado. Si la transición no está permitida → error de solicitud. |
+| **Notas** | Las transiciones válidas están definidas por la máquina de estados del envase: en depósito, lleno, despachado, en poder del cliente, devuelto vacío. Cualquier otra combinación se rechaza, sin excepciones por distribuidora. Para entregar el envase al cliente el pedido es obligatorio: de él sale el titular. Un chofer solo mueve envases atados a pedidos suyos, o sin pedido pero con un pedido suyo indicado; las tareas de depósito son del administrador. |
+| **Excepciones** | Si el envase no existe o es de otra distribuidora, o quien opera es un chofer y el envase está atado a un pedido de otro chofer o sin chofer → recurso no encontrado. Si el pedido indicado no existe, es de otra distribuidora o (para un chofer) no es suyo → recurso no encontrado. Si la transición no está permitida, o el destino es «en poder del cliente» sin pedido, o un texto trae caracteres no válidos → error de solicitud. Si se despacha con un pedido entregado, cancelado o reservado a futuro, o un chofer indica un pedido distinto del que ya lleva el envase → conflicto. Si un chofer mueve un envase sin pedido y no indica uno → acceso denegado. |
 | **Salida** | El envase con su nuevo estado. |
-| **Precondiciones** | El solicitante es Chofer, Administrador o Administrador General y el Envase pertenece a su Distribuidora. |
-| **Postcondiciones** | El atributo estado del Envase pasó al estado destino. Si el destino es «en poder del cliente» y se indicó un Pedido, se formó la asociación entre el Envase y el Cliente de ese Pedido. Si el destino es «devuelto vacío» o «en depósito», se rompió la asociación con el Cliente. Se creó una instancia de MovimientoEnvase con el estado de origen, el de destino, el Pedido, el Usuario y la nota. |
+| **Precondiciones** | El solicitante es Chofer, Administrador o Administrador General y el Envase pertenece a su Distribuidora. Si el destino es «en poder del cliente», se indicó un Pedido. Si se despacha, el Pedido está pendiente, aceptado o en camino. Si el solicitante es Chofer, el Pedido (y el que lleva el Envase, si lo lleva) es de uno de sus pedidos. |
+| **Postcondiciones** | El atributo estado del Envase pasó al estado destino. Si el destino es «en poder del cliente», se formó la asociación entre el Envase y el Cliente de ese Pedido. Si el destino es «devuelto vacío» o «en depósito», se rompió la asociación con el Cliente. Si el destino es «despachado» o «en poder del cliente», el Envase quedó atado al Pedido indicado; si es «en depósito», se rompió la asociación con el Pedido; si es «devuelto vacío», conserva el Pedido con el que salió. Se creó una instancia de MovimientoEnvase con el estado de origen, el de destino, el Pedido, el Usuario y la nota. |
 
 ---
 
@@ -13881,7 +13882,7 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Registrar la recepción de una compra: lo llegado de la planta y los vacíos que ésta se llevó. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-217. Funciones: IRQ-18, OBJ-05, OBJ-06. |
-| **Notas** | Es el remito de ingreso, con o sin orden de compra. El comprobante del proveedor no se repite para un mismo proveedor y tipo de comprobante, aunque la recepción se anule. Suma las llenas al stock vendible, recalcula el costo promedio ponderado y, si hay orden, acumula lo recibido y actualiza su estado. Sin orden, el proveedor y el costo de cada renglón son obligatorios. Con la misma clave de idempotencia no se repite. |
+| **Notas** | Es el remito de ingreso, con o sin orden de compra. El comprobante del proveedor no se repite para un mismo proveedor y tipo de comprobante, aunque la recepción se anule. Suma las llenas al stock vendible, recalcula el costo promedio ponderado y, si hay orden, acumula lo recibido y actualiza su estado. Sin orden, el proveedor es obligatorio, y también el costo de cada renglón que recibe llenas. Con orden, el depósito es el de la orden: si se indica otro, la recepción se rechaza. Con la misma clave de idempotencia no se repite. |
 | **Excepciones** | Si la orden, el proveedor, el depósito o una garrafa no existen → recurso no encontrado. Si el comprobante ya se registró para el proveedor → conflicto. Si la orden no está enviada ni parcialmente recibida, un renglón no es de la orden o se pasa de lo pendiente, los vacíos entregados dejarían negativo el saldo del depósito, o falta un dato → error de solicitud. |
 | **Salida** | La recepción registrada. |
 | **Precondiciones** | El Administrador está autenticado, con una distribuidora asociada. El proveedor está activo y el depósito existe y es de la distribuidora. Si hay orden, está enviada o parcialmente recibida. |
@@ -14239,11 +14240,11 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Aprobar una rendición presentada: ingresar el efectivo a la caja y resolver la diferencia, si la hay. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-233. Funciones: IRQ-19, OBJ-05. |
-| **Notas** | Al aprobar, el efectivo declarado entra a la caja destino con la categoría de sistema «rendición de chofer», por el libro de movimientos (CU-228). El efectivo declarado incluye lo que el chofer cobró de cuentas corrientes en la calle: los asientos de esos cobros pasan a estar rendidos. Si hay diferencia, el administrador la resuelve: la absorbe la distribuidora o se descuenta al chofer. El faltante a cargo del chofer genera un asiento negativo en el libro de comisiones de su empleado, que se descuenta en la próxima liquidación. Con el módulo de stock, la rendición está atada al turno del camión y no se puede aprobar si la carga no está cerrada. |
-| **Excepciones** | Si la rendición o la caja no existen o son de otra distribuidora → recurso no encontrado. Si la rendición no está presentada → conflicto. Si hay diferencia y no se indica su resolución → error de solicitud. Si la caja exige sesión y no la tiene abierta → conflicto. Si la rendición está atada a un turno cuya carga no está cerrada → conflicto. |
-| **Salida** | La rendición aprobada, con su movimiento de caja. |
-| **Precondiciones** | El solicitante es Administrador o Administrador General. La RendicionChofer pertenece a su Distribuidora y está presentada. La Caja pertenece a la Distribuidora y está activa. |
-| **Postcondiciones** | El atributo estado de la instancia de RendicionChofer pasó a «aprobada», y los atributos resolución de la diferencia y aprobada el tomaron sus valores. Se creó una instancia de MovimientoDeCaja de ingreso en la Caja destino, por el efectivo declarado. Si la diferencia es un faltante a cargo del chofer, se creó una instancia de AsientoComision negativa en el libro del Empleado. |
+| **Notas** | Al aprobar, el efectivo declarado entra a la caja destino con la categoría de sistema «rendición de chofer», por el libro de movimientos (CU-228). El efectivo declarado incluye lo que el chofer cobró de cuentas corrientes en la calle: los asientos de esos cobros pasan a estar rendidos. Con el efectivo declarado en cero no entra dinero: no hay movimiento y no se controla que la caja esté activa ni que tenga sesión. Si hay diferencia, el administrador la resuelve: la absorbe la distribuidora o se descuenta al chofer. El faltante a cargo del chofer genera un asiento negativo en el libro de comisiones de su empleado, que se descuenta en la próxima liquidación. Con el módulo de stock, la rendición está atada al turno del camión y no se puede aprobar si la carga no está cerrada. |
+| **Excepciones** | Si la rendición o la caja no existen o son de otra distribuidora → recurso no encontrado. Si la rendición no está presentada → conflicto. Si hay diferencia y no se indica su resolución → error de solicitud. Si entra efectivo (declarado mayor que cero) y la caja está desactivada → conflicto. Si entra efectivo y la caja exige sesión y no la tiene abierta → conflicto. Si la rendición está atada a un turno cuya carga no está cerrada → conflicto. |
+| **Salida** | La rendición aprobada, con su movimiento de caja si entró efectivo. |
+| **Precondiciones** | El solicitante es Administrador o Administrador General. La RendicionChofer pertenece a su Distribuidora y está presentada. La Caja pertenece a la Distribuidora; si el efectivo declarado es mayor que cero, además está activa y, si exige sesión, la tiene abierta (con el declarado en cero sólo se exige que exista). |
+| **Postcondiciones** | El atributo estado de la instancia de RendicionChofer pasó a «aprobada», y los atributos resolución de la diferencia y aprobada el tomaron sus valores. Si el efectivo declarado es mayor que cero, se creó una instancia de MovimientoDeCaja de ingreso en la Caja destino, por ese efectivo; con el declarado en cero no se creó ningún movimiento. Si la diferencia es un faltante a cargo del chofer, se creó una instancia de AsientoComision negativa en el libro del Empleado. |
 
 ---
 
@@ -14618,7 +14619,8 @@ los contratos de operación los referencian.
 | **SPLG** | Acrónimo | Sistema de Pedidos y Logística de Garrafas de Gas. Nombre formal del proyecto. |
 | **PU** | Metodología | Proceso Unificado. Proceso de desarrollo iterativo e incremental adoptado por la cátedra. |
 | **CU** | Artefacto UML | Caso de Uso. Descripción de una secuencia de interacciones entre un actor y el sistema para alcanzar un objetivo. |
-| **Actor** | Concepto UML | Entidad externa al sistema (humano o automático) que interactúa con él para cumplir un objetivo. |
+| **Actor** | Concepto UML | Entidad externa al sistema (humano, otro sistema o el tiempo) que interactúa con él para cumplir un objetivo. |
+| **Sistema Automático (ACT-04)** | Concepto UML | Actor externo que representa el Tiempo (reloj o temporizador), según la convención de Larman: dispara los casos de uso programados (vencimientos, activaciones, avisos, conciliaciones y los procesos automatizados) sin que los inicie una persona ni un sistema externo. La primera oferta de CU-013 es una excepción documentada: sale por dentro de CU-005 y sus reintentos los dispara el reloj (CU-014). |
 | **DSS** | Artefacto UML | Diagrama de Secuencia a nivel de Sistema. Modelo del sistema como caja negra que muestra solo los mensajes entre actor y sistema. |
 | **Contrato de Operación** | Artefacto PU | Especificación formal de una operación del sistema con responsabilidades, precondiciones, postcondiciones y excepciones. |
 | **Modelo Conceptual** | Artefacto UML | Diagrama de clases del dominio del problema, sin métodos, que muestra los conceptos relevantes y sus relaciones. |
@@ -14641,9 +14643,10 @@ los contratos de operación los referencian.
 | **Pedido ACCEPTED** | Estado | Pedido tomado por un chofer pero aún no en camino. |
 | **Pedido ON_THE_WAY** | Estado | Pedido en tránsito. El chofer marca el inicio del envío. |
 | **Pedido DELIVERED** | Estado | Pedido entregado. Cierra el ciclo de la transacción. |
-| **Pedido CANCELLED** | Estado | Pedido cancelado por cliente, chofer o administrador. Restituye stock si correspondía. |
+| **Pedido CANCELLED** | Estado | Pedido cancelado por el cliente o el administrador (o por un vencimiento automático). Restituye stock si correspondía. Un chofer no cancela: libera el pedido. |
+| **Pedido liberado** | Concepto | Pedido que un chofer deja de tomar (CU-009): vuelve a PENDING sin chofer para que otro lo tome. No es una cancelación y no restituye stock, porque el pedido sigue vivo. |
 | **MVP** | Concepto | Minimum Viable Product. Versión mínima del sistema con las funcionalidades críticas del negocio. |
-| **MVVM** | Patrón | Model-View-ViewModel. Arquitectura usada en las apps Flutter (Stacked) y Panel React. |
+| **MVVM** | Patrón | Model-View-ViewModel. Arquitectura usada en las apps Flutter (Stacked). El Panel React no usa MVVM: se arma con componentes reutilizables (NFR-07). |
 | **Stacked** | Tecnología | Framework MVVM para Flutter usado en las dos apps móviles del proyecto. |
 | **NestJS** | Tecnología | Framework Node.js para construir APIs REST y WebSocket con TypeScript. Backend del sistema. |
 | **TypeORM** | Tecnología | ORM de TypeScript usado para mapear las entidades del dominio a tablas PostgreSQL. |

@@ -64,7 +64,15 @@ def limpiar(texto):
     return t
 
 
+# Términos que no se admiten ni siquiera dentro de un mensaje citado entre «»: describen el mecanismo, no lo que ve el actor.
+EN_CITADOS = re.compile(
+    r"\b(?:header|X-Distributor|slug|UUID|HTTP|endpoint|bloqueándol\w*|antes de escribir|transacci[oó]n|"
+    r"carácter nulo|byte nulo|Idempotency-Key)\b", re.I)
+
+
 def revisar(nombre, texto, hallazgos):
+    for m in EN_CITADOS.finditer(texto):
+        hallazgos.append((nombre, "mecanismo técnico (también dentro de «»)", m.group(0)))
     for cita in re.findall(r"«([^»]*)»", texto):
         for etiqueta, rx in IDENT_CITADO:
             for m in rx.finditer(cita):
