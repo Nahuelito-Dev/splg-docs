@@ -1,0 +1,35 @@
+erDiagram
+    ROUTE_BATCH_OFFER }o--|| ROUTE_BATCH : "batch_id"
+    ROUTE_BATCH_STOP }o--|| ROUTE_BATCH : "batch_id"
+
+    ROUTE_BATCH {
+        uuid batch_id PK
+        uuid distributor_id FK
+        enum status
+        decimal total_weight_kg
+        uuid delivery_id FK "nullable"
+        timestamptz created_at
+    }
+    ORDER_DISPATCH_OFFER {
+        uuid offer_id PK
+        uuid distributor_id FK
+        uuid order_id FK
+        uuid driver_id FK
+        enum status
+        timestamptz expiresAt
+        timestamptz offeredAt
+    }
+    ROUTE_BATCH_OFFER {
+        uuid offer_id PK
+        uuid batch_id FK
+        uuid delivery_id FK
+        enum status
+        timestamptz expires_at
+        timestamptz responded_at "nullable"
+    }
+    ROUTE_BATCH_STOP {
+        uuid stop_id PK
+        uuid batch_id FK
+        uuid order_id FK
+        int sequence
+    }

@@ -1,0 +1,99 @@
+erDiagram
+    TIRE_EVENT }o--|| TIRE : "tire_id"
+
+    FUEL_LOAD {
+        uuid fuel_load_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz loaded_at
+        enum fuel_type
+        decimal liters
+        decimal unit_price
+        decimal total_amount
+        int odometer_km
+        boolean is_full_tank
+        varchar station "nullable"
+        enum payment_method
+        varchar receipt_number "nullable"
+        boolean anomaly
+        text notes "nullable"
+        text odometer_correction_note "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    TIRE {
+        uuid tire_id PK
+        uuid distributor_id FK
+        varchar serial_number
+        varchar brand
+        varchar size
+        decimal cost
+        enum status
+        uuid car_id FK "nullable"
+        varchar position "nullable"
+        int mounted_odometer_km "nullable"
+        int km_traveled
+        int retread_count
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    TRAFFIC_FINE {
+        uuid fine_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz occurred_at
+        varchar jurisdiction
+        varchar act_number
+        text infraction
+        decimal amount
+        decimal voluntary_payment_amount "nullable"
+        date due_date "nullable"
+        enum status
+        timestamptz paid_at "nullable"
+        decimal paid_amount "nullable"
+        boolean charged_to_employee
+        text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        timestamptz alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    VEHICLE_ACCIDENT {
+        uuid accident_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz occurred_at
+        geometry location "nullable"
+        text address "nullable"
+        text description
+        boolean injuries
+        boolean third_parties_involved
+        boolean hazmat_release
+        varchar police_report_number "nullable"
+        varchar insurer_claim_number "nullable"
+        enum status
+        boolean vehicle_unusable
+        decimal repair_cost "nullable"
+        decimal insurer_reimbursement "nullable"
+        decimal deductible_amount "nullable"
+        timestamptz closed_at "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    TIRE_EVENT {
+        uuid event_id PK
+        uuid tire_id FK
+        uuid distributor_id FK
+        enum type
+        uuid car_id FK "nullable"
+        varchar position "nullable"
+        int odometer_km
+        uuid created_by_user_id FK
+        timestamptz createdAt
+    }

@@ -1,0 +1,23 @@
+erDiagram
+
+    STORAGE_ORPHAN {
+        uuid orphan_id PK
+        varchar storage_key UK
+        int attempts
+        text last_error "nullable"
+        timestamptz created_at
+        timestamptz updated_at
+        varchar kind
+        varchar status
+        timestamptz next_attempt_at
+    }
+    DOCUMENT_SEQUENCE {
+        uuid distributor_id PK
+        varchar doc_type PK
+        int last_number
+    }
+    STOCK_RECONCILIATION_ALERT {
+        uuid distributor_id PK
+        varchar signature
+        timestamptz alerted_at
+    }

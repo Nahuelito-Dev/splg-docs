@@ -1,0 +1,132 @@
+erDiagram
+    MAINTENANCE_TASK }o--o| CAR : "car_id"
+    MAINTENANCE_TASK }o--o| DELIVERY : "delivery_id"
+    MAINTENANCE_TASK }o--|| MAINTENANCE_PLAN : "plan_id"
+    VEHICLE_ASSIGNMENT }o--|| CAR : "car_id"
+    VEHICLE_ASSIGNMENT }o--|| DELIVERY : "delivery_id"
+    VEHICLE_USAGE_LOG }o--|| CAR : "car_id"
+    MAINTENANCE_TASK_ATTACHMENT }o--|| MAINTENANCE_TASK : "task_id"
+    MAINTENANCE_WINDOW_PROPOSAL }o--|| DELIVERY : "delivery_id"
+    MAINTENANCE_WINDOW_PROPOSAL }o--|| MAINTENANCE_TASK : "task_id"
+
+    MAINTENANCE_PLAN {
+        uuid plan_id PK
+        uuid distributor_id FK
+        varchar name
+        enum subject
+        enum trigger
+        int interval_km "nullable"
+        int interval_months "nullable"
+        int lead_time_days
+        enum criticality
+        varchar car_type "nullable"
+        boolean is_active
+        enum document_kind "nullable"
+        _varchar applies_to_categories "nullable"
+    }
+    CAR {
+        uuid car_id PK
+        uuid distributor_id FK
+        uuid user_id FK
+        varchar type_car "nullable"
+        int car_capacity "nullable"
+        varchar car_patent "nullable"
+        varchar car_brand "nullable"
+        varchar car_model "nullable"
+        int car_year "nullable"
+        varchar car_color "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+        decimal tare_weight_kg "nullable"
+        decimal max_load_kg "nullable"
+        int odometer_km "nullable"
+        enum fleet_status
+        timestamptz in_service_since "nullable"
+        varchar photo_key "nullable"
+        enum fuel_type "nullable"
+        decimal tank_capacity_liters "nullable"
+    }
+    DELIVERY {
+        uuid delivery_id PK
+        uuid distributor_id FK
+        uuid user_id FK, UK
+        float calification "nullable"
+        text actual_location "nullable"
+        real cancelledCharge "nullable"
+        boolean validated
+        boolean isActive
+        text notification_token "nullable"
+        float balance
+        timestamptz createdAt "nullable"
+        timestamptz deletedAt "nullable"
+        geometry location "nullable"
+        boolean isEnabled
+        boolean isAvailable
+    }
+    MAINTENANCE_TASK {
+        uuid task_id PK
+        uuid plan_id FK
+        uuid distributor_id FK
+        uuid car_id FK "nullable"
+        uuid delivery_id FK "nullable"
+        enum status
+        timestamptz due_at "nullable"
+        int due_km "nullable"
+        timestamptz predicted_due_at "nullable"
+        timestamptz scheduled_at "nullable"
+        timestamptz performed_at "nullable"
+        int odometer_km "nullable"
+        decimal cost "nullable"
+        varchar provider "nullable"
+        varchar reference_number "nullable"
+        varchar category "nullable"
+        timestamptz alerted_at "nullable"
+        text notes "nullable"
+        timestamptz valid_from "nullable"
+        uuid employee_id FK "nullable"
+        jsonb details "nullable"
+    }
+    VEHICLE_ASSIGNMENT {
+        uuid assignment_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid delivery_id FK
+        timestamptz assigned_at
+        timestamptz released_at "nullable"
+        uuid assigned_by_user_id FK "nullable"
+        uuid released_by_user_id FK "nullable"
+        text note "nullable"
+    }
+    VEHICLE_USAGE_LOG {
+        uuid log_id PK
+        uuid car_id FK
+        uuid distributor_id FK
+        date day
+        decimal km
+        int orders
+        decimal route_hours
+    }
+    MAINTENANCE_TASK_ATTACHMENT {
+        uuid attachment_id PK
+        uuid task_id FK
+        uuid distributor_id FK
+        varchar storage_key
+        varchar original_name
+        varchar mime_type
+        int size_bytes
+        uuid uploaded_by_user_id FK
+        timestamptz uploaded_at
+        timestamptz deleted_at "nullable"
+    }
+    MAINTENANCE_WINDOW_PROPOSAL {
+        uuid proposal_id PK
+        uuid task_id FK
+        uuid delivery_id FK
+        timestamptz window_start
+        timestamptz window_end
+        int rank
+        enum status
+        timestamptz expires_at
+        timestamptz responded_at "nullable"
+    }

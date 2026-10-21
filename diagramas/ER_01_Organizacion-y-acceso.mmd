@@ -1,0 +1,103 @@
+erDiagram
+    USER }o--o| ROLE : "role_id"
+    ADMIN }o--o| DISTRIBUTOR : "distributor_id"
+    ADMIN |o--|| USER : "user_id"
+    AUDIT }o--|| AUDIT_ACTION_TYPE : "action_type_id"
+    AUDIT }o--o| DISTRIBUTOR : "distributor_id"
+    AUDIT }o--o| USER : "user_id"
+    AUDIT_LOG }o--o| USER : "actor_user_id"
+    AUDIT_LOG }o--o| DISTRIBUTOR : "distributor_id"
+    MODULE_CONFIG }o--|| DISTRIBUTOR : "distributor_id"
+    MODULE_CONFIG }o--o| USER : "updated_by_user_id"
+    AUDIT_DETAIL }o--|| AUDIT : "audit_id"
+
+    AUDIT_ACTION_TYPE {
+        smallint action_type_id PK
+        varchar name UK
+    }
+    DISTRIBUTOR {
+        uuid distributor_id PK
+        varchar name
+        varchar slug UK
+        varchar legal_name "nullable"
+        varchar tax_id "nullable"
+        varchar email "nullable"
+        varchar phone "nullable"
+        varchar logo_url "nullable"
+        enum status
+        varchar plan "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+        varchar logo_key "nullable"
+    }
+    ROLE {
+        uuid role_id PK
+        text type
+        timestamptz createdAt "nullable"
+        timestamptz updatedAt "nullable"
+        timestamptz deletedAt "nullable"
+    }
+    USER {
+        uuid user_id PK
+        uuid role_id FK "nullable"
+        varchar firebase_uid UK "nullable"
+        varchar full_name "nullable"
+        varchar selfie "nullable"
+        varchar email UK "nullable"
+        varchar phone_number UK "nullable"
+        boolean phone_verified
+        boolean email_verified
+        boolean blocked
+        timestamptz createdAt
+        timestamptz deletedAt "nullable"
+        varchar photo_key "nullable"
+    }
+    ADMIN {
+        uuid admin_id PK
+        uuid distributor_id FK "nullable"
+        uuid user_id FK, UK
+        timestamptz createdAt
+    }
+    AUDIT {
+        uuid audit_id PK
+        smallint action_type_id FK
+        uuid user_id FK "nullable"
+        uuid distributor_id FK "nullable"
+        varchar entity
+        varchar record_id
+        varchar ip "nullable"
+        timestamptz created_at
+    }
+    AUDIT_LOG {
+        uuid audit_id PK
+        uuid distributor_id FK "nullable"
+        uuid actor_user_id FK "nullable"
+        varchar actor_role "nullable"
+        varchar http_method
+        varchar resource
+        varchar resource_id "nullable"
+        varchar path
+        varchar client_source "nullable"
+        varchar ip "nullable"
+        enum result
+        int status_code
+        jsonb changes "nullable"
+        text error_message "nullable"
+        timestamptz created_at
+    }
+    MODULE_CONFIG {
+        uuid config_id PK
+        uuid distributor_id FK
+        enum module
+        jsonb params
+        timestamptz updated_at
+        uuid updated_by_user_id FK "nullable"
+    }
+    AUDIT_DETAIL {
+        uuid audit_detail_id PK
+        uuid audit_id FK
+        varchar field
+        text old_value "nullable"
+        text new_value "nullable"
+    }

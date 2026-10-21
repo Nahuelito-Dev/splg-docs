@@ -4,7 +4,8 @@
     python3 material-de-trabajo/renderizar-dsd.py diagramas/DSD_CU-025_resolverReclamo.mmd [...]
     python3 material-de-trabajo/renderizar-dsd.py --sitio diagramas/DSD_CU-025_resolverReclamo.mmd
 
-Salida: `diagramas/svg/<nombre>.svg` y `diagramas/png/<nombre>.png` (mermaid-cli, tema
+Salida: `diagramas/svg/<nombre>.svg` y `diagramas/png/<nombre>.png` (más la huella del .mmd en
+`diagramas/fuentes-png.json`, con la que el gate sabe si un PNG quedó viejo) (mermaid-cli, tema
 neutral, fondo blanco, escala 2). El PNG se dibuja al tamaño natural del diagrama:
 mermaid-cli lo comprime a 800 px de ancho si no se le dice otra cosa, y un diagrama de
 interacción con muchas líneas de vida queda ilegible.
@@ -23,6 +24,7 @@ import glob, json, os, re, shutil, subprocess, sys, tempfile
 D = os.path.dirname(os.path.abspath(__file__)) + "/../"
 sys.path.insert(0, D)
 from estilo_vp import MERMAID   # estilo Visual Paradigm, el mismo que el del sitio
+import imagenes_cu              # anota de qué .mmd sale cada PNG (el gate lo controla)
 TEMA_MERMAID = os.path.join(tempfile.gettempdir(), "splg-mermaid-vp.json")
 json.dump(MERMAID, open(TEMA_MERMAID, "w"))
 
@@ -115,6 +117,7 @@ def main():
     try:
         for f in archivos:
             renderizar(f, mmdc, t.name)
+            imagenes_cu.registrar([os.path.splitext(os.path.basename(f))[0]])
     finally:
         os.unlink(t.name)
     if sitio:

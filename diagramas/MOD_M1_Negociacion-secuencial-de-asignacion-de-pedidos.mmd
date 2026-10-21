@@ -1,0 +1,35 @@
+sequenceDiagram
+    autonumber
+    participant CLI as Cliente
+    participant API as OrderService
+    participant ORQ as DispatchOrchestrator
+    participant OFERTAS as dispatch_offer
+    participant GEO as Índice geoespacial
+    participant CHO as Chofer
+    participant CRON as Proceso temporal (ciclo de 15 s)
+
+    CLI->>API: crear pedido
+    API->>ORQ: offerToNextDriver(pedido)
+    ORQ->>OFERTAS: choferes ya contactados
+    OFERTAS-->>ORQ: conjunto (vacío)
+    loop paso de radio de la distribuidora
+        ORQ->>GEO: choferes cercanos dentro del radio
+        GEO-->>ORQ: lista ordenada por cercanía
+        ORQ->>ORQ: filtrar por distribuidora y descartar contactados
+    end
+    ORQ->>OFERTAS: crear oferta (vence en offerTtlSeconds)
+    ORQ-->>CHO: NEW_ORDER + push FCM
+
+    alt El chofer acepta dentro de la ventana
+        CHO->>ORQ: aceptar
+        ORQ->>OFERTAS: cerrar oferta ACCEPTED
+        ORQ-->>CLI: pedido asignado
+    else El chofer rechaza
+        CHO->>ORQ: rechazar
+        ORQ->>OFERTAS: cerrar oferta REJECTED
+        ORQ->>ORQ: offerToNextDriver(pedido)
+    else Vence la ventana
+        CRON->>ORQ: handleExpiredOffers()
+        ORQ->>OFERTAS: marcar EXPIRED
+        ORQ->>ORQ: offerToNextDriver(pedido)
+    end

@@ -1337,6 +1337,12 @@ El sistema se dibuja como la lifeline `:Sistema`, y cada actor lleva el código 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `iniciarSesion(correo, contrasena)`
 
+![DSS CU-001: Iniciar Sesión](diagramas/png/DSS_CU-001_Iniciar-Sesion.png)
+
+**Figura 17 — DSS CU-001: Iniciar Sesión**
+
+<details><summary>Ver código del diagrama</summary>
+
 ```mermaid
 sequenceDiagram
     title DSS — CU-001 Iniciar Sesión
@@ -1355,12 +1361,18 @@ sequenceDiagram
     Note over USR,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)
 ```
 
-**Figura 17 — DSS CU-001: Iniciar Sesión**
+</details>
 
 #### DSS — CU-002: Registrarse como Cliente
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)`
+
+![DSS CU-002: Registrarse como Cliente](diagramas/png/DSS_CU-002_Registrarse-Como-Cliente.png)
+
+**Figura 18 — DSS CU-002: Registrarse como Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1383,12 +1395,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 18 — DSS CU-002: Registrarse como Cliente**
+</details>
 
 #### DSS — CU-004: Consultar el Perfil de Usuario
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02)
 **Operaciones del sistema:** `consultarPerfil(usuarioId)`, `consultarPerfilCliente(usuarioId)`
+
+![DSS CU-004: Consultar el Perfil de Usuario](diagramas/png/DSS_CU-004_Consultar-el-Perfil-de-Usuario.png)
+
+**Figura 19 — DSS CU-004: Consultar el Perfil de Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1411,12 +1429,18 @@ sequenceDiagram
     Note over CLI,SIS: También lo inicia el Chofer (ACT-02)
 ```
 
-**Figura 19 — DSS CU-004: Consultar el Perfil de Usuario**
+</details>
 
 #### DSS — CU-047: Recuperar la Contraseña
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `solicitarRecuperacionDeClave(correo)`
+
+![DSS CU-047: Recuperar la Contraseña](diagramas/png/DSS_CU-047_Recuperar-la-Contrasena.png)
+
+**Figura 20 — DSS CU-047: Recuperar la Contraseña**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1435,12 +1459,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 20 — DSS CU-047: Recuperar la Contraseña**
+</details>
 
 #### DSS — CU-050: Bloquear un Usuario
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `bloquearUsuario(usuarioId)`
+
+![DSS CU-050: Bloquear un Usuario](diagramas/png/DSS_CU-050_Bloquear-un-Usuario.png)
+
+**Figura 21 — DSS CU-050: Bloquear un Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1462,12 +1492,18 @@ sequenceDiagram
     Note over ADM,SIS: bloquear = verdadero. La misma operación, con bloquear = falso, es CU-270
 ```
 
-**Figura 21 — DSS CU-050: Bloquear un Usuario**
+</details>
 
 #### DSS — CU-082: Crear un Usuario Base
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `crearUsuarioBase(rol, datosPersonales, distribuidoraId)`
+
+![DSS CU-082: Crear un Usuario Base](diagramas/png/DSS_CU-082_Crear-un-Usuario-Base.png)
+
+**Figura 22 — DSS CU-082: Crear un Usuario Base**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1493,12 +1529,18 @@ sequenceDiagram
     Note over CLI,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-002 y también lo incluyen CU-031,<br/>CU-086 y CU-087
 ```
 
-**Figura 22 — DSS CU-082: Crear un Usuario Base**
+</details>
 
 #### DSS — CU-083: Consultar los Usuarios
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `listarUsuarios(pagina, limite, textoDeBusqueda)`
+
+![DSS CU-083: Consultar los Usuarios](diagramas/png/DSS_CU-083_Consultar-los-Usuarios.png)
+
+**Figura 23 — DSS CU-083: Consultar los Usuarios**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1513,12 +1555,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 23 — DSS CU-083: Consultar los Usuarios**
+</details>
 
 #### DSS — CU-085: Dar de Baja un Usuario
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `eliminarUsuario(usuarioId)`
+
+![DSS CU-085: Dar de Baja un Usuario](diagramas/png/DSS_CU-085_Dar-de-Baja-un-Usuario.png)
+
+**Figura 24 — DSS CU-085: Dar de Baja un Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1541,12 +1589,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 24 — DSS CU-085: Dar de Baja un Usuario**
+</details>
 
 #### DSS — CU-251: Modificar el Perfil de Usuario
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02)
 **Operaciones del sistema:** `actualizarPerfil(usuarioId, datos)`
+
+![DSS CU-251: Modificar el Perfil de Usuario](diagramas/png/DSS_CU-251_Modificar-el-Perfil-de-Usuario.png)
+
+**Figura 25 — DSS CU-251: Modificar el Perfil de Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1566,12 +1620,18 @@ sequenceDiagram
     Note over CLI,SIS: También lo inicia el Chofer (ACT-02)
 ```
 
-**Figura 25 — DSS CU-251: Modificar el Perfil de Usuario**
+</details>
 
 #### DSS — CU-270: Desbloquear un Usuario
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `desbloquearUsuario(usuarioId)`
+
+![DSS CU-270: Desbloquear un Usuario](diagramas/png/DSS_CU-270_Desbloquear-un-Usuario.png)
+
+**Figura 26 — DSS CU-270: Desbloquear un Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1593,12 +1653,18 @@ sequenceDiagram
     Note over ADM,SIS: bloquear = falso. La misma operación, con bloquear = verdadero, es CU-050
 ```
 
-**Figura 26 — DSS CU-270: Desbloquear un Usuario**
+</details>
 
 #### DSS — CU-272: Buscar un Usuario
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `buscarUsuarioPorCorreo(correo)`, `buscarUsuarioPorTelefono(telefono)`
+
+![DSS CU-272: Buscar un Usuario](diagramas/png/DSS_CU-272_Buscar-un-Usuario.png)
+
+**Figura 27 — DSS CU-272: Buscar un Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1624,12 +1690,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 27 — DSS CU-272: Buscar un Usuario**
+</details>
 
 #### DSS — CU-336: Cambiar el Correo del Usuario
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `cambiarCorreo(correoActual, correoNuevo)`
+
+![DSS CU-336: Cambiar el Correo del Usuario](diagramas/png/DSS_CU-336_Cambiar-el-Correo-del-Usuario.png)
+
+**Figura 28 — DSS CU-336: Cambiar el Correo del Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1647,7 +1719,7 @@ sequenceDiagram
     Note over CLI,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)
 ```
 
-**Figura 28 — DSS CU-336: Cambiar el Correo del Usuario**
+</details>
 
 ---
 
@@ -1657,6 +1729,12 @@ sequenceDiagram
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)`
+
+![DSS CU-005: Crear un Pedido](diagramas/png/DSS_CU-005_Crear-un-Pedido.png)
+
+**Figura 29 — DSS CU-005: Crear un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1683,12 +1761,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 29 — DSS CU-005: Crear un Pedido**
+</details>
 
 #### DSS — CU-006: Consultar el Detalle de un Pedido
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `consultarPedido(pedidoId)`
+
+![DSS CU-006: Consultar el Detalle de un Pedido](diagramas/png/DSS_CU-006_Consultar-el-Detalle-de-un-Pedido.png)
+
+**Figura 30 — DSS CU-006: Consultar el Detalle de un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1709,12 +1793,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 30 — DSS CU-006: Consultar el Detalle de un Pedido**
+</details>
 
 #### DSS — CU-007: Consultar el Historial de Pedidos
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarHistorialDePedidos(clienteId, pagina, limite)`
+
+![DSS CU-007: Consultar el Historial de Pedidos](diagramas/png/DSS_CU-007_Consultar-el-Historial-de-Pedidos.png)
+
+**Figura 31 — DSS CU-007: Consultar el Historial de Pedidos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1733,7 +1823,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 31 — DSS CU-007: Consultar el Historial de Pedidos**
+</details>
 
 > El cliente ve **todo** su historial aunque haya comprado a varias distribuidoras; el personal solo ve los pedidos de la suya.
 
@@ -1741,6 +1831,12 @@ sequenceDiagram
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `cancelarMiPedido(pedidoId, motivo)`
+
+![DSS CU-008: Cancelar un Pedido (Cliente)](diagramas/png/DSS_CU-008_Cancelar-un-Pedido.png)
+
+**Figura 32 — DSS CU-008: Cancelar un Pedido (Cliente)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1769,7 +1865,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 32 — DSS CU-008: Cancelar un Pedido (Cliente)**
+</details>
 
 > La identidad y el rol del cancelador salen **siempre** de la sesión, nunca del cuerpo del mensaje.
 
@@ -1777,6 +1873,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `liberarPedido(pedidoId, motivo)`
+
+![DSS CU-009: Liberar un Pedido (Chofer)](diagramas/png/DSS_CU-009_Liberar-un-Pedido.png)
+
+**Figura 33 — DSS CU-009: Liberar un Pedido (Chofer)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1801,12 +1903,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 33 — DSS CU-009: Liberar un Pedido (Chofer)**
+</details>
 
 #### DSS — CU-010: Cancelar un Pedido (Administrador)
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cancelarPedido(pedidoId, motivo)`
+
+![DSS CU-010: Cancelar un Pedido (Administrador)](diagramas/png/DSS_CU-010_Cancelar-un-Pedido.png)
+
+**Figura 34 — DSS CU-010: Cancelar un Pedido (Administrador)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1828,7 +1936,7 @@ sequenceDiagram
     Note over ADM,SIS: Si el pedido tenía un pago aprobado por una<br/>pasarela, se reintegra con<br/>CU-168
 ```
 
-**Figura 34 — DSS CU-010: Cancelar un Pedido (Administrador)**
+</details>
 
 > La ruta técnica `DELETE /orders/:id`, en desuso, cancela el pedido sin motivo y con el mismo resultado: no es una operación distinta.
 
@@ -1836,6 +1944,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `listarPedidos(pagina, limite)`
+
+![DSS CU-011: Consultar Todos los Pedidos](diagramas/png/DSS_CU-011_Consultar-Todos-Los-Pedidos.png)
+
+**Figura 35 — DSS CU-011: Consultar Todos los Pedidos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1854,12 +1968,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 35 — DSS CU-011: Consultar Todos los Pedidos**
+</details>
 
 #### DSS — CU-046: Consultar las Direcciones de Entrega del Cliente
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarDireccionesDeEntrega(usuarioId)`
+
+![DSS CU-046: Consultar las Direcciones de Entrega del Cliente](diagramas/png/DSS_CU-046_Consultar-las-Direcciones-de-Entrega-del-Cliente.png)
+
+**Figura 36 — DSS CU-046: Consultar las Direcciones de Entrega del Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1874,12 +1994,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 36 — DSS CU-046: Consultar las Direcciones de Entrega del Cliente**
+</details>
 
 #### DSS — CU-080: Consultar el Pool de Pedidos Disponibles
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarPedidosDisponibles(pagina, limite)`
+
+![DSS CU-080: Consultar el Pool de Pedidos Disponibles](diagramas/png/DSS_CU-080_Consultar-El-Pool-De-Pedidos-Disponibles.png)
+
+**Figura 37 — DSS CU-080: Consultar el Pool de Pedidos Disponibles**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1898,7 +2024,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 37 — DSS CU-080: Consultar el Pool de Pedidos Disponibles**
+</details>
 
 > Es la vista de respaldo del despacho automático (CU-013): si la oferta por proximidad no llega, el chofer puede consultar el pool.
 
@@ -1906,6 +2032,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarPedidosAsignados(choferId, pagina, limite)`
+
+![DSS CU-081: Consultar los Pedidos Asignados al Chofer](diagramas/png/DSS_CU-081_Consultar-Los-Pedidos-Asignados-Al-Chofer.png)
+
+**Figura 38 — DSS CU-081: Consultar los Pedidos Asignados al Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1920,12 +2052,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 38 — DSS CU-081: Consultar los Pedidos Asignados al Chofer**
+</details>
 
 #### DSS — CU-106: Anticipar la Recompra por Consumo Estimado
 
 **Actor:** Cliente (ACT-01), Sistema Automático (ACT-04)
 **Operaciones del sistema:** `anticiparRecompras()`, `aceptarInvitacionDeRecompra(invitacionId)`
+
+![DSS CU-106: Anticipar la Recompra por Consumo Estimado](diagramas/png/DSS_CU-106_Anticipar-La-Recompra-Por-Consumo-Estimado.png)
+
+**Figura 39 — DSS CU-106: Anticipar la Recompra por Consumo Estimado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1952,12 +2090,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 39 — DSS CU-106: Anticipar la Recompra por Consumo Estimado**
+</details>
 
 #### DSS — CU-116: Registrar una Dirección de Entrega
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `registrarDireccionDeEntrega(datos)`
+
+![DSS CU-116: Registrar una Dirección de Entrega](diagramas/png/DSS_CU-116_Registrar-una-Direccion-de-Entrega.png)
+
+**Figura 40 — DSS CU-116: Registrar una Dirección de Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -1976,12 +2120,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 40 — DSS CU-116: Registrar una Dirección de Entrega**
+</details>
 
 #### DSS — CU-117: Consultar Detalle de una Dirección de Entrega
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarDireccionDeEntrega(direccionId)`
+
+![DSS CU-117: Consultar Detalle de una Dirección de Entrega](diagramas/png/DSS_CU-117_Consultar-Detalle-de-una-Direccion-de-Entrega.png)
+
+**Figura 41 — DSS CU-117: Consultar Detalle de una Dirección de Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2002,12 +2152,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 41 — DSS CU-117: Consultar Detalle de una Dirección de Entrega**
+</details>
 
 #### DSS — CU-118: Modificar una Dirección de Entrega
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `editarDireccionDeEntrega(direccionId, cambios)`
+
+![DSS CU-118: Modificar una Dirección de Entrega](diagramas/png/DSS_CU-118_Modificar-una-Direccion-de-Entrega.png)
+
+**Figura 42 — DSS CU-118: Modificar una Dirección de Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2026,12 +2182,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 42 — DSS CU-118: Modificar una Dirección de Entrega**
+</details>
 
 #### DSS — CU-119: Dar de Baja una Dirección de Entrega
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `eliminarDireccionDeEntrega(direccionId)`
+
+![DSS CU-119: Dar de Baja una Dirección de Entrega](diagramas/png/DSS_CU-119_Dar-de-Baja-una-Direccion-de-Entrega.png)
+
+**Figura 43 — DSS CU-119: Dar de Baja una Dirección de Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2050,12 +2212,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 43 — DSS CU-119: Dar de Baja una Dirección de Entrega**
+</details>
 
 #### DSS — CU-120: Marcar una Dirección como Predeterminada
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `marcarDireccionPredeterminada(direccionId)`
+
+![DSS CU-120: Marcar una Dirección como Predeterminada](diagramas/png/DSS_CU-120_Marcar-una-Direccion-como-Predeterminada.png)
+
+**Figura 44 — DSS CU-120: Marcar una Dirección como Predeterminada**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2074,12 +2242,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 44 — DSS CU-120: Marcar una Dirección como Predeterminada**
+</details>
 
 #### DSS — CU-121: Consultar la Dirección Predeterminada
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarDireccionPredeterminada(usuarioId)`
+
+![DSS CU-121: Consultar la Dirección Predeterminada](diagramas/png/DSS_CU-121_Consultar-la-Direccion-Predeterminada.png)
+
+**Figura 45 — DSS CU-121: Consultar la Dirección Predeterminada**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2098,12 +2272,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 45 — DSS CU-121: Consultar la Dirección Predeterminada**
+</details>
 
 #### DSS — CU-122: Agregar un Ítem al Carrito
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `agregarItemAlCarrito(productoId, cantidad)`
+
+![DSS CU-122: Agregar un Ítem al Carrito](diagramas/png/DSS_CU-122_Agregar-un-Item-al-Carrito.png)
+
+**Figura 46 — DSS CU-122: Agregar un Ítem al Carrito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2122,12 +2302,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 46 — DSS CU-122: Agregar un Ítem al Carrito**
+</details>
 
 #### DSS — CU-123: Modificar la Cantidad de un Ítem del Carrito
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `modificarCantidadDelItem(itemId, cantidad)`
+
+![DSS CU-123: Modificar la Cantidad de un Ítem del Carrito](diagramas/png/DSS_CU-123_Modificar-la-Cantidad-de-un-Item-del-Carrito.png)
+
+**Figura 47 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2146,12 +2332,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 47 — DSS CU-123: Modificar la Cantidad de un Ítem del Carrito**
+</details>
 
 #### DSS — CU-124: Quitar un Ítem del Carrito
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `quitarItemDelCarrito(itemId)`
+
+![DSS CU-124: Quitar un Ítem del Carrito](diagramas/png/DSS_CU-124_Quitar-un-Item-del-Carrito.png)
+
+**Figura 48 — DSS CU-124: Quitar un Ítem del Carrito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2170,12 +2362,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 48 — DSS CU-124: Quitar un Ítem del Carrito**
+</details>
 
 #### DSS — CU-125: Consultar el Carrito
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarCarrito()`
+
+![DSS CU-125: Consultar el Carrito](diagramas/png/DSS_CU-125_Consultar-el-Carrito.png)
+
+**Figura 49 — DSS CU-125: Consultar el Carrito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2194,12 +2392,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 49 — DSS CU-125: Consultar el Carrito**
+</details>
 
 #### DSS — CU-126: Vaciar el Carrito
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `vaciarCarrito()`
+
+![DSS CU-126: Vaciar el Carrito](diagramas/png/DSS_CU-126_Vaciar-el-Carrito.png)
+
+**Figura 50 — DSS CU-126: Vaciar el Carrito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2218,12 +2422,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 50 — DSS CU-126: Vaciar el Carrito**
+</details>
 
 #### DSS — CU-127: Cambiar la Dirección de Entrega del Pedido
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `cambiarDireccionDeEntrega(pedidoId, direccionId, motivo)`
+
+![DSS CU-127: Cambiar la Dirección de Entrega del Pedido](diagramas/png/DSS_CU-127_Cambiar-la-Direccion-de-Entrega-del-Pedido.png)
+
+**Figura 51 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2246,12 +2456,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 51 — DSS CU-127: Cambiar la Dirección de Entrega del Pedido**
+</details>
 
 #### DSS — CU-128: Indicar Quién Recibe el Pedido
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `indicarQuienRecibe(pedidoId, nombre, documento, relacion)`
+
+![DSS CU-128: Indicar Quién Recibe el Pedido](diagramas/png/DSS_CU-128_Indicar-Quien-Recibe-el-Pedido.png)
+
+**Figura 52 — DSS CU-128: Indicar Quién Recibe el Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2270,12 +2486,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 52 — DSS CU-128: Indicar Quién Recibe el Pedido**
+</details>
 
 #### DSS — CU-143: Declarar el Consumo Promedio al Registrarse
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `declararConsumoPromedio(tipoGarrafa, cantidadPorMes)`
+
+![DSS CU-143: Declarar el Consumo Promedio al Registrarse](diagramas/png/DSS_CU-143_Declarar-el-Consumo-Promedio-al-Registrarse.png)
+
+**Figura 53 — DSS CU-143: Declarar el Consumo Promedio al Registrarse**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2296,12 +2518,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 53 — DSS CU-143: Declarar el Consumo Promedio al Registrarse**
+</details>
 
 #### DSS — CU-144: Modificar el Consumo Promedio Declarado
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `actualizarConsumoPromedio(cantidadPorMes)`
+
+![DSS CU-144: Modificar el Consumo Promedio Declarado](diagramas/png/DSS_CU-144_Modificar-el-Consumo-Promedio-Declarado.png)
+
+**Figura 54 — DSS CU-144: Modificar el Consumo Promedio Declarado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2320,12 +2548,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 54 — DSS CU-144: Modificar el Consumo Promedio Declarado**
+</details>
 
 #### DSS — CU-145: Configurar los Días de Aviso Previo a la Recompra
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `configurarDiasDeAviso(dias)`
+
+![DSS CU-145: Configurar los Días de Aviso Previo a la Recompra](diagramas/png/DSS_CU-145_Configurar-los-Dias-de-Aviso-Previo-a-la-Recompra.png)
+
+**Figura 55 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2344,12 +2578,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 55 — DSS CU-145: Configurar los Días de Aviso Previo a la Recompra**
+</details>
 
 #### DSS — CU-146: Consultar la Fecha Estimada de Recompra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarRecomprasEstimadas(dias)`
+
+![DSS CU-146: Consultar la Fecha Estimada de Recompra](diagramas/png/DSS_CU-146_Consultar-la-Fecha-Estimada-de-Recompra.png)
+
+**Figura 56 — DSS CU-146: Consultar la Fecha Estimada de Recompra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2368,12 +2608,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 56 — DSS CU-146: Consultar la Fecha Estimada de Recompra**
+</details>
 
 #### DSS — CU-147: Realizar una Compra Express
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `realizarCompraExpress(tipoGarrafa, medioDePago)`
+
+![DSS CU-147: Realizar una Compra Express](diagramas/png/DSS_CU-147_Realizar-una-Compra-Express.png)
+
+**Figura 57 — DSS CU-147: Realizar una Compra Express**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2394,12 +2640,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 57 — DSS CU-147: Realizar una Compra Express**
+</details>
 
 #### DSS — CU-148: Elegir la Modalidad de Entrega del Pedido
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarModalidadesDeEntrega(direccionId)`
+
+![DSS CU-148: Elegir la Modalidad de Entrega del Pedido](diagramas/png/DSS_CU-148_Elegir-la-Modalidad-de-Entrega-del-Pedido.png)
+
+**Figura 58 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2418,12 +2670,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 58 — DSS CU-148: Elegir la Modalidad de Entrega del Pedido**
+</details>
 
 #### DSS — CU-348: Consultar el Reintegro de un Pedido
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarReintegroDelPedido(pedidoId)`
+
+![DSS CU-348: Consultar el Reintegro de un Pedido](diagramas/png/DSS_CU-348_Consultar-el-Reintegro-de-un-Pedido.png)
+
+**Figura 59 — DSS CU-348: Consultar el Reintegro de un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2442,12 +2700,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 59 — DSS CU-348: Consultar el Reintegro de un Pedido**
+</details>
 
 #### DSS — CU-169: Registrar el Cambio de Estado de un Pedido
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)`
+
+![DSS CU-169: Registrar el Cambio de Estado de un Pedido](diagramas/png/DSS_CU-169_Registrar-el-Cambio-de-Estado-de-un-Pedido.png)
+
+**Figura 60 — DSS CU-169: Registrar el Cambio de Estado de un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2467,12 +2731,18 @@ sequenceDiagram
     Note over CLI,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-005 y también lo incluyen CU-008, CU-009,<br/>CU-010, CU-012, CU-015, CU-018, CU-020,<br/>CU-072, CU-075, CU-077, CU-079 y CU-147
 ```
 
-**Figura 60 — DSS CU-169: Registrar el Cambio de Estado de un Pedido**
+</details>
 
 #### DSS — CU-170: Consultar el Historial de Estados de un Pedido
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarHistorialDeEstados(pedidoId)`
+
+![DSS CU-170: Consultar el Historial de Estados de un Pedido](diagramas/png/DSS_CU-170_Consultar-el-Historial-de-Estados-de-un-Pedido.png)
+
+**Figura 61 — DSS CU-170: Consultar el Historial de Estados de un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2496,12 +2766,18 @@ sequenceDiagram
     Note over USR,SIS: También lo inician el Chofer (ACT-02), el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)
 ```
 
-**Figura 61 — DSS CU-170: Consultar el Historial de Estados de un Pedido**
+</details>
 
 #### DSS — CU-302: Cotizar un Pedido
 
 **Actor:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)`
+
+![DSS CU-302: Cotizar un Pedido](diagramas/png/DSS_CU-302_Cotizar-un-Pedido.png)
+
+**Figura 62 — DSS CU-302: Cotizar un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2527,12 +2803,18 @@ sequenceDiagram
     Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05), por un cliente
 ```
 
-**Figura 62 — DSS CU-302: Cotizar un Pedido**
+</details>
 
 #### DSS — CU-338: Retomar el Pedido en Curso
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `consultarPedidoEnCurso()`
+
+![DSS CU-338: Retomar el Pedido en Curso](diagramas/png/DSS_CU-338_Retomar-el-Pedido-en-Curso.png)
+
+**Figura 63 — DSS CU-338: Retomar el Pedido en Curso**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2551,12 +2833,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 63 — DSS CU-338: Retomar el Pedido en Curso**
+</details>
 
 #### DSS — CU-339: Modificar un Pedido Pendiente (Administrador)
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `modificarPedido(pedidoId, datos)`
+
+![DSS CU-339: Modificar un Pedido Pendiente (Administrador)](diagramas/png/DSS_CU-339_Modificar-un-Pedido-Pendiente.png)
+
+**Figura 64 — DSS CU-339: Modificar un Pedido Pendiente (Administrador)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2578,12 +2866,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 64 — DSS CU-339: Modificar un Pedido Pendiente (Administrador)**
+</details>
 
 #### DSS — CU-341: Modificar un Pedido Pendiente (Cliente)
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `modificarMiPedido(pedidoId, datos)`
+
+![DSS CU-341: Modificar un Pedido Pendiente (Cliente)](diagramas/png/DSS_CU-341_Modificar-un-Pedido-Pendiente.png)
+
+**Figura 65 — DSS CU-341: Modificar un Pedido Pendiente (Cliente)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2606,7 +2900,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 65 — DSS CU-341: Modificar un Pedido Pendiente (Cliente)**
+</details>
 
 ---
 
@@ -2616,6 +2910,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `asignarChoferAPedido(pedidoId, choferId)`
+
+![DSS CU-012: Asignar un Chofer Manualmente](diagramas/png/DSS_CU-012_Asignar-un-Chofer-Manualmente.png)
+
+**Figura 66 — DSS CU-012: Asignar un Chofer Manualmente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2640,12 +2940,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 66 — DSS CU-012: Asignar un Chofer Manualmente**
+</details>
 
 #### Crítico · automático DSS — CU-013: Asignar un Pedido Automáticamente por Proximidad
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `ofrecerAlSiguienteChofer(pedidoId)`
+
+![DSS CU-013: Asignar un Pedido Automáticamente por Proximidad](diagramas/png/DSS_CU-013_Asignar-un-Pedido-Automaticamente-por-Proximidad.png)
+
+**Figura 67 — DSS CU-013: Asignar un Pedido Automáticamente por Proximidad**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2667,12 +2973,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 67 — DSS CU-013: Asignar un Pedido Automáticamente por Proximidad**
+</details>
 
 #### Crítico · automático DSS — CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `vencerOfertasExpiradas()`
+
+![DSS CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer](diagramas/png/DSS_CU-014_Vencer-la-Oferta-y-Ofrecer-al-Siguiente-Chofer.png)
+
+**Figura 68 — DSS CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2694,12 +3006,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 68 — DSS CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer**
+</details>
 
 #### Crítico DSS — CU-015: Aceptar un Pedido
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `aceptarPedido(pedidoId)`
+
+![DSS CU-015: Aceptar un Pedido](diagramas/png/DSS_CU-015_Aceptar-un-Pedido.png)
+
+**Figura 69 — DSS CU-015: Aceptar un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2728,12 +3046,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 69 — DSS CU-015: Aceptar un Pedido**
+</details>
 
 #### DSS — CU-016: Rechazar un Pedido Ofrecido
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `rechazarOferta(pedidoId)`
+
+![DSS CU-016: Rechazar un Pedido Ofrecido](diagramas/png/DSS_CU-016_Rechazar-un-Pedido-Ofrecido.png)
+
+**Figura 70 — DSS CU-016: Rechazar un Pedido Ofrecido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2758,7 +3082,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 70 — DSS CU-016: Rechazar un Pedido Ofrecido**
+</details>
 
 > El rechazo **no** espera el vencimiento de la ventana de aceptación (30 segundos por omisión): re-ofrece de inmediato al siguiente chofer más cercano.
 
@@ -2766,6 +3090,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02), Sistema Automático (ACT-04)
 **Operaciones del sistema:** `agruparPedidosPorRecorrido()`, `aceptarRecorrido(recorridoId)`
+
+![DSS CU-107: Agrupar Pedidos por Recorrido](diagramas/png/DSS_CU-107_Agrupar-Pedidos-Por-Recorrido.png)
+
+**Figura 71 — DSS CU-107: Agrupar Pedidos por Recorrido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2798,12 +3128,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 71 — DSS CU-107: Agrupar Pedidos por Recorrido**
+</details>
 
 #### DSS — CU-149: Despachar un Pedido Express a un Chofer en Moto
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `despacharPedidoExpress(pedidoId)`
+
+![DSS CU-149: Despachar un Pedido Express a un Chofer en Moto](diagramas/png/DSS_CU-149_Despachar-un-Pedido-Express-a-un-Chofer-en-Moto.png)
+
+**Figura 72 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2824,12 +3160,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 72 — DSS CU-149: Despachar un Pedido Express a un Chofer en Moto**
+</details>
 
 #### DSS — CU-171: Configurar los Parámetros de Despacho de la Distribuidora
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)`
+
+![DSS CU-171: Configurar los Parámetros de Despacho de la Distribuidora](diagramas/png/DSS_CU-171_Configurar-los-Parametros-de-Despacho-de-la-Distribuidora.png)
+
+**Figura 73 — DSS CU-171: Configurar los Parámetros de Despacho de la Distribuidora**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2848,7 +3190,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 73 — DSS CU-171: Configurar los Parámetros de Despacho de la Distribuidora**
+</details>
 
 ---
 
@@ -2858,6 +3200,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `actualizarUbicacion(usuarioId, latitud, longitud)`
+
+![DSS CU-017: Modificar la Ubicación GPS del Chofer](diagramas/png/DSS_CU-017_Modificar-la-Ubicacion-GPS-del-Chofer.png)
+
+**Figura 74 — DSS CU-017: Modificar la Ubicación GPS del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2881,12 +3229,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 74 — DSS CU-017: Modificar la Ubicación GPS del Chofer**
+</details>
 
 #### DSS — CU-018: Marcar un Pedido "En Camino"
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `marcarPedidoEnCamino(pedidoId)`
+
+![DSS CU-018: Marcar un Pedido "En Camino"](diagramas/png/DSS_CU-018_Marcar-un-Pedido-En-Camino.png)
+
+**Figura 75 — DSS CU-018: Marcar un Pedido "En Camino"**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2911,12 +3265,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 75 — DSS CU-018: Marcar un Pedido "En Camino"**
+</details>
 
 #### DSS — CU-019: Avisar la Llegada al Cliente
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `avisarLlegada(pedidoId)`
+
+![DSS CU-019: Avisar la Llegada al Cliente](diagramas/png/DSS_CU-019_Avisar-la-Llegada-al-Cliente.png)
+
+**Figura 76 — DSS CU-019: Avisar la Llegada al Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2941,7 +3301,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 76 — DSS CU-019: Avisar la Llegada al Cliente**
+</details>
 
 > Este caso de uso **no** cambia el estado del pedido: solo notifica.
 
@@ -2949,6 +3309,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `confirmarEntrega(pedidoId, motivo)`
+
+![DSS CU-020: Confirmar una Entrega Manualmente](diagramas/png/DSS_CU-020_Confirmar-una-Entrega-Manualmente.png)
+
+**Figura 77 — DSS CU-020: Confirmar una Entrega Manualmente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2974,12 +3340,18 @@ sequenceDiagram
     Note over ADM,CLI: El chofer no confirma entregas: lo hace el cliente con<br/>el código (CU-078 y CU-079). El cobro del efectivo<br/>es otro circuito (CU-292, CU-293 y CU-294)
 ```
 
-**Figura 77 — DSS CU-020: Confirmar una Entrega Manualmente**
+</details>
 
 #### DSS — CU-022: Activar la Disponibilidad
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `activarDisponibilidad(usuarioId)`
+
+![DSS CU-022: Activar la Disponibilidad](diagramas/png/DSS_CU-022_Activar-la-Disponibilidad.png)
+
+**Figura 78 — DSS CU-022: Activar la Disponibilidad**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -2999,7 +3371,7 @@ sequenceDiagram
     Note over CHO,SIS: disponible = verdadero. La misma operación, con disponible = falso, es CU-266
 ```
 
-**Figura 78 — DSS CU-022: Activar la Disponibilidad**
+</details>
 
 > **Observación de análisis:** el sistema almacena esta disponibilidad en el mismo atributo que el alta/baja administrativa (CU-033), por lo que "fuera de turno" y "dado de baja" son indistinguibles.
 
@@ -3007,6 +3379,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `obtenerCodigoDeEntrega(pedidoId)`
+
+![DSS CU-078: Consultar el Código de Entrega (QR del chofer)](diagramas/png/DSS_CU-078_Consultar-El-Codigo-De-Entrega.png)
+
+**Figura 79 — DSS CU-078: Consultar el Código de Entrega (QR del chofer)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3029,12 +3407,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 79 — DSS CU-078: Consultar el Código de Entrega (QR del chofer)**
+</details>
 
 #### DSS — CU-079: Confirmar una Entrega Escaneando el QR (cliente)
 
 **Actor:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `confirmarEntregaConCodigo(pedidoId, codigo, motivo)`
+
+![DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)](diagramas/png/DSS_CU-079_Confirmar-una-Entrega-Escaneando-el-QR.png)
+
+**Figura 80 — DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3058,7 +3442,7 @@ sequenceDiagram
     Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda)
 ```
 
-**Figura 80 — DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)**
+</details>
 
 > Es el camino **anti-fraude** de la entrega: confirma quien recibe, no quien entrega. Es idempotente frente a reintentos de red.
 
@@ -3066,6 +3450,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `desactivarDisponibilidad(usuarioId)`
+
+![DSS CU-266: Desactivar la Disponibilidad](diagramas/png/DSS_CU-266_Desactivar-la-Disponibilidad.png)
+
+**Figura 81 — DSS CU-266: Desactivar la Disponibilidad**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3081,12 +3471,18 @@ sequenceDiagram
     Note over CHO,SIS: disponible = falso. Desconectarse se permite siempre.<br/>La misma operación, con disponible = verdadero, es CU-022
 ```
 
-**Figura 81 — DSS CU-266: Desactivar la Disponibilidad**
+</details>
 
 #### DSS — CU-303: Consultar la Ruta de un Pedido
 
 **Actor:** Chofer (ACT-02), Cliente (ACT-01)
 **Operaciones del sistema:** `consultarRutaDelPedido(pedidoId, desde)`
+
+![DSS CU-303: Consultar la Ruta de un Pedido](diagramas/png/DSS_CU-303_Consultar-la-Ruta-de-un-Pedido.png)
+
+**Figura 82 — DSS CU-303: Consultar la Ruta de un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3116,7 +3512,7 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Cliente (ACT-01), con el pedido en camino
 ```
 
-**Figura 82 — DSS CU-303: Consultar la Ruta de un Pedido**
+</details>
 
 ---
 
@@ -3126,6 +3522,12 @@ sequenceDiagram
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `registrarReclamo(pedidoId, motivo, evidencia)`
+
+![DSS CU-023: Registrar un Reclamo](diagramas/png/DSS_CU-023_Registrar-un-Reclamo.png)
+
+**Figura 83 — DSS CU-023: Registrar un Reclamo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3146,7 +3548,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 83 — DSS CU-023: Registrar un Reclamo**
+</details>
 
 ---
 
@@ -3161,6 +3563,12 @@ el actor y el sistema, sin detalle interno.
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `listarReclamos()`
 
+![DSS CU-024: Consultar los Reclamos](diagramas/png/DSS_CU-024_Consultar-los-Reclamos.png)
+
+**Figura 84 — DSS CU-024: Consultar los Reclamos**
+
+<details><summary>Ver código del diagrama</summary>
+
 ```mermaid
 sequenceDiagram
     title DSS — CU-024 Consultar los Reclamos
@@ -3174,12 +3582,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 84 — DSS CU-024: Consultar los Reclamos**
+</details>
 
 #### DSS — CU-025: Resolver un Reclamo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `resolverReclamo(reclamoId, resolucion, estadoFinal)`
+
+![DSS CU-025: Resolver un Reclamo](diagramas/png/DSS_CU-025_Resolver-un-Reclamo.png)
+
+**Figura 85 — DSS CU-025: Resolver un Reclamo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3200,12 +3614,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 85 — DSS CU-025: Resolver un Reclamo**
+</details>
 
 #### DSS — CU-166: Tomar un Reclamo Pendiente
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `tomarReclamo(reclamoId)`
+
+![DSS CU-166: Tomar un Reclamo Pendiente](diagramas/png/DSS_CU-166_Tomar-un-Reclamo-Pendiente.png)
+
+**Figura 86 — DSS CU-166: Tomar un Reclamo Pendiente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3226,12 +3646,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 86 — DSS CU-166: Tomar un Reclamo Pendiente**
+</details>
 
 #### DSS — CU-167: Reabrir un Reclamo
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `reabrirReclamo(reclamoId, motivo)`
+
+![DSS CU-167: Reabrir un Reclamo](diagramas/png/DSS_CU-167_Reabrir-un-Reclamo.png)
+
+**Figura 87 — DSS CU-167: Reabrir un Reclamo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3252,12 +3678,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 87 — DSS CU-167: Reabrir un Reclamo**
+</details>
 
 #### DSS — CU-174: Adjuntar la Fotografía de un Reclamo
 
 **Actor:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `adjuntarFotoAlReclamo(reclamoId, imagen)`
+
+![DSS CU-174: Adjuntar la Fotografía de un Reclamo](diagramas/png/DSS_CU-174_Adjuntar-la-Fotografia-de-un-Reclamo.png)
+
+**Figura 88 — DSS CU-174: Adjuntar la Fotografía de un Reclamo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3282,12 +3714,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 88 — DSS CU-174: Adjuntar la Fotografía de un Reclamo**
+</details>
 
 #### DSS — CU-175: Consultar la Fotografía de un Reclamo
 
 **Actor:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarFotoDelReclamo(reclamoId)`
+
+![DSS CU-175: Consultar la Fotografía de un Reclamo](diagramas/png/DSS_CU-175_Consultar-la-Fotografia-de-un-Reclamo.png)
+
+**Figura 89 — DSS CU-175: Consultar la Fotografía de un Reclamo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3309,7 +3747,7 @@ sequenceDiagram
     Note over USR,SIS: También lo inician el Administrador (ACT-03) y<br/>el Administrador General (ACT-05)
 ```
 
-**Figura 89 — DSS CU-175: Consultar la Fotografía de un Reclamo**
+</details>
 
 ---
 
@@ -3319,6 +3757,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarResumenDePedidos()`, `consultarGraficoDeVentas()`
+
+![DSS CU-026: Consultar el Tablero General](diagramas/png/DSS_CU-026_Consultar-el-Tablero-General.png)
+
+**Figura 90 — DSS CU-026: Consultar el Tablero General**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3338,12 +3782,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 90 — DSS CU-026: Consultar el Tablero General**
+</details>
 
 #### DSS — CU-027: Consultar el Reporte de Ventas por Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarVentasPorChofer(fechaDesde, fechaHasta)`
+
+![DSS CU-027: Consultar el Reporte de Ventas por Chofer](diagramas/png/DSS_CU-027_Consultar-el-Reporte-de-Ventas-por-Chofer.png)
+
+**Figura 91 — DSS CU-027: Consultar el Reporte de Ventas por Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3358,12 +3808,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 91 — DSS CU-027: Consultar el Reporte de Ventas por Chofer**
+</details>
 
 #### DSS — CU-028: Consultar el Reporte de Ventas por Producto
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarVentasPorProducto(fechaDesde, fechaHasta)`
+
+![DSS CU-028: Consultar el Reporte de Ventas por Producto](diagramas/png/DSS_CU-028_Consultar-el-Reporte-de-Ventas-por-Producto.png)
+
+**Figura 92 — DSS CU-028: Consultar el Reporte de Ventas por Producto**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3378,12 +3834,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 92 — DSS CU-028: Consultar el Reporte de Ventas por Producto**
+</details>
 
 #### DSS — CU-029: Consultar el Reporte por Método de Pago
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarVentasPorMetodoDePago(fechaDesde, fechaHasta)`
+
+![DSS CU-029: Consultar el Reporte por Método de Pago](diagramas/png/DSS_CU-029_Consultar-el-Reporte-por-Metodo-de-Pago.png)
+
+**Figura 93 — DSS CU-029: Consultar el Reporte por Método de Pago**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3398,12 +3860,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 93 — DSS CU-029: Consultar el Reporte por Método de Pago**
+</details>
 
 #### DSS — CU-030: Consultar el Gráfico de Ventas (últimos 7 días)
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarEvolucionDeVentas(fechaDesde, fechaHasta, granularidad)`
+
+![DSS CU-030: Consultar el Gráfico de Ventas (últimos 7 días)](diagramas/png/DSS_CU-030_Consultar-el-Grafico-de-Ventas.png)
+
+**Figura 94 — DSS CU-030: Consultar el Gráfico de Ventas (últimos 7 días)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3422,12 +3890,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 94 — DSS CU-030: Consultar el Gráfico de Ventas (últimos 7 días)**
+</details>
 
 #### DSS — CU-304: Consultar los Cobros Pendientes
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarCobrosPendientes(desde, hasta)`
+
+![DSS CU-304: Consultar los Cobros Pendientes](diagramas/png/DSS_CU-304_Consultar-los-Cobros-Pendientes.png)
+
+**Figura 95 — DSS CU-304: Consultar los Cobros Pendientes**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3447,7 +3921,7 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 95 — DSS CU-304: Consultar los Cobros Pendientes**
+</details>
 
 ---
 
@@ -3457,6 +3931,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)`
+
+![DSS CU-031: Registrar un Chofer (Gestión de la Flota)](diagramas/png/DSS_CU-031_Registrar-un-Chofer.png)
+
+**Figura 96 — DSS CU-031: Registrar un Chofer (Gestión de la Flota)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3479,7 +3959,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 96 — DSS CU-031: Registrar un Chofer (Gestión de la Flota)**
+</details>
 
 > Es el único alta de un chofer: la identidad la crea el caso incluido CU-082 y, si el pedido lo indica, el legajo se registra con la extensión CU-177.
 
@@ -3487,6 +3967,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `validarChofer(choferId)`
+
+![DSS CU-032: Validar un Chofer](diagramas/png/DSS_CU-032_Validar-un-Chofer.png)
+
+**Figura 97 — DSS CU-032: Validar un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3501,12 +3987,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 97 — DSS CU-032: Validar un Chofer**
+</details>
 
 #### DSS — CU-033: Activar un Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `activarChofer(choferId)`
+
+![DSS CU-033: Activar un Chofer](diagramas/png/DSS_CU-033_Activar-un-Chofer.png)
+
+**Figura 98 — DSS CU-033: Activar un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3526,12 +4018,18 @@ sequenceDiagram
     Note over ADM,SIS: activo = verdadero. La misma operación, con activo = falso, es CU-267
 ```
 
-**Figura 98 — DSS CU-033: Activar un Chofer**
+</details>
 
 #### DSS — CU-034: Registrar un Vehículo del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarVehiculo(usuarioId, tipo, capacidad, patente, marca, modelo, anio, color)`
+
+![DSS CU-034: Registrar un Vehículo del Chofer](diagramas/png/DSS_CU-034_Registrar-un-Vehiculo-del-Chofer.png)
+
+**Figura 99 — DSS CU-034: Registrar un Vehículo del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3550,12 +4048,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 99 — DSS CU-034: Registrar un Vehículo del Chofer**
+</details>
 
 #### DSS — CU-035: Consultar el Listado de Choferes
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `listarChoferes(pagina, limite)`, `listarChoferesActivos(pagina, limite)`
+
+![DSS CU-035: Consultar el Listado de Choferes](diagramas/png/DSS_CU-035_Consultar-el-Listado-de-Choferes.png)
+
+**Figura 100 — DSS CU-035: Consultar el Listado de Choferes**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3577,12 +4081,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 100 — DSS CU-035: Consultar el Listado de Choferes**
+</details>
 
 #### DSS — CU-049: Consultar las Ganancias del Chofer
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `consultarPerfilDelChofer(usuarioId)`
+
+![DSS CU-049: Consultar las Ganancias del Chofer](diagramas/png/DSS_CU-049_Consultar-las-Ganancias-del-Chofer.png)
+
+**Figura 101 — DSS CU-049: Consultar las Ganancias del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3602,12 +4112,18 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 101 — DSS CU-049: Consultar las Ganancias del Chofer**
+</details>
 
 #### DSS — CU-051: Consultar el Listado de Vehículos
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `listarVehiculos()`
+
+![DSS CU-051: Consultar el Listado de Vehículos](diagramas/png/DSS_CU-051_Consultar-el-Listado-de-Vehiculos.png)
+
+**Figura 102 — DSS CU-051: Consultar el Listado de Vehículos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3622,12 +4138,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 102 — DSS CU-051: Consultar el Listado de Vehículos**
+</details>
 
 #### DSS — CU-096: Modificar el Perfil del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `actualizarPerfilDelChofer(choferId, datos)`
+
+![DSS CU-096: Modificar el Perfil del Chofer](diagramas/png/DSS_CU-096_Modificar-el-Perfil-del-Chofer.png)
+
+**Figura 103 — DSS CU-096: Modificar el Perfil del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3648,12 +4170,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 103 — DSS CU-096: Modificar el Perfil del Chofer**
+</details>
 
 #### DSS — CU-097: Dar de Baja un Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `eliminarChofer(choferId)`
+
+![DSS CU-097: Dar de Baja un Chofer](diagramas/png/DSS_CU-097_Dar-de-Baja-un-Chofer.png)
+
+**Figura 104 — DSS CU-097: Dar de Baja un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3674,12 +4202,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 104 — DSS CU-097: Dar de Baja un Chofer**
+</details>
 
 #### DSS — CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Sistema Automático (ACT-04)
 **Operaciones del sistema:** `planificarMantenimientoDeFlota()`, `aceptarVentanaDeMantenimiento(propuestaId)`, `confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)`
+
+![DSS CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota](diagramas/png/DSS_CU-105_Planificar-El-Mantenimiento-Y-Las-Habilitaciones-De-La-Flota.png)
+
+**Figura 105 — DSS CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3717,12 +4251,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 105 — DSS CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota**
+</details>
 
 #### DSS — CU-109: Consultar el Detalle del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarDetalleDelChofer(choferId)`
+
+![DSS CU-109: Consultar el Detalle del Chofer](diagramas/png/DSS_CU-109_Consultar-el-Detalle-del-Chofer.png)
+
+**Figura 106 — DSS CU-109: Consultar el Detalle del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3741,12 +4281,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 106 — DSS CU-109: Consultar el Detalle del Chofer**
+</details>
 
 #### DSS — CU-110: Buscar un Chofer por Usuario
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `buscarChoferPorUsuario(usuarioId)`
+
+![DSS CU-110: Buscar un Chofer por Usuario](diagramas/png/DSS_CU-110_Buscar-un-Chofer-por-Usuario.png)
+
+**Figura 107 — DSS CU-110: Buscar un Chofer por Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3765,12 +4311,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 107 — DSS CU-110: Buscar un Chofer por Usuario**
+</details>
 
 #### DSS — CU-111: Modificar un Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `editarVehiculo(vehiculoId, datos)`
+
+![DSS CU-111: Modificar un Vehículo](diagramas/png/DSS_CU-111_Modificar-un-Vehiculo.png)
+
+**Figura 108 — DSS CU-111: Modificar un Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3793,12 +4345,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 108 — DSS CU-111: Modificar un Vehículo**
+</details>
 
 #### DSS — CU-112: Dar de Baja un Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `eliminarVehiculo(vehiculoId)`
+
+![DSS CU-112: Dar de Baja un Vehículo](diagramas/png/DSS_CU-112_Dar-de-Baja-un-Vehiculo.png)
+
+**Figura 109 — DSS CU-112: Dar de Baja un Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3819,12 +4377,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 109 — DSS CU-112: Dar de Baja un Vehículo**
+</details>
 
 #### DSS — CU-113: Consultar el Detalle del Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarDetalleDelVehiculo(vehiculoId)`
+
+![DSS CU-113: Consultar el Detalle del Vehículo](diagramas/png/DSS_CU-113_Consultar-el-Detalle-del-Vehiculo.png)
+
+**Figura 110 — DSS CU-113: Consultar el Detalle del Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3843,12 +4407,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 110 — DSS CU-113: Consultar el Detalle del Vehículo**
+</details>
 
 #### DSS — CU-114: Buscar un Vehículo por Patente
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `buscarVehiculoPorPatente(patente)`
+
+![DSS CU-114: Buscar un Vehículo por Patente](diagramas/png/DSS_CU-114_Buscar-un-Vehiculo-por-Patente.png)
+
+**Figura 111 — DSS CU-114: Buscar un Vehículo por Patente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3867,12 +4437,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 111 — DSS CU-114: Buscar un Vehículo por Patente**
+</details>
 
 #### DSS — CU-115: Consultar los Vehículos de un Chofer
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `consultarVehiculosDelChofer(usuarioId)`
+
+![DSS CU-115: Consultar los Vehículos de un Chofer](diagramas/png/DSS_CU-115_Consultar-los-Vehiculos-de-un-Chofer.png)
+
+**Figura 112 — DSS CU-115: Consultar los Vehículos de un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3891,12 +4467,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 112 — DSS CU-115: Consultar los Vehículos de un Chofer**
+</details>
 
 #### DSS — CU-136: Registrar el Seguro del Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)`
+
+![DSS CU-136: Registrar el Seguro del Vehículo](diagramas/png/DSS_CU-136_Registrar-el-Seguro-del-Vehiculo.png)
+
+**Figura 113 — DSS CU-136: Registrar el Seguro del Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3917,12 +4499,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 113 — DSS CU-136: Registrar el Seguro del Vehículo**
+</details>
 
 #### DSS — CU-137: Registrar la Verificación Técnica Vehicular
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)`
+
+![DSS CU-137: Registrar la Verificación Técnica Vehicular](diagramas/png/DSS_CU-137_Registrar-la-Verificacion-Tecnica-Vehicular.png)
+
+**Figura 114 — DSS CU-137: Registrar la Verificación Técnica Vehicular**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3943,12 +4531,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 114 — DSS CU-137: Registrar la Verificación Técnica Vehicular**
+</details>
 
 #### DSS — CU-138: Registrar la Licencia de Conducir del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)`
+
+![DSS CU-138: Registrar la Licencia de Conducir del Chofer](diagramas/png/DSS_CU-138_Registrar-la-Licencia-de-Conducir-del-Chofer.png)
+
+**Figura 115 — DSS CU-138: Registrar la Licencia de Conducir del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3967,12 +4561,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 115 — DSS CU-138: Registrar la Licencia de Conducir del Chofer**
+</details>
 
 #### DSS — CU-139: Consultar los Vencimientos de la Flota
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarVencimientosDeLaFlota(dias)`
+
+![DSS CU-139: Consultar los Vencimientos de la Flota](diagramas/png/DSS_CU-139_Consultar-los-Vencimientos-de-la-Flota.png)
+
+**Figura 116 — DSS CU-139: Consultar los Vencimientos de la Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -3991,12 +4591,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 116 — DSS CU-139: Consultar los Vencimientos de la Flota**
+</details>
 
 #### DSS — CU-140: Programar un Mantenimiento de Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)`
+
+![DSS CU-140: Programar un Mantenimiento de Vehículo](diagramas/png/DSS_CU-140_Programar-un-Mantenimiento-de-Vehiculo.png)
+
+**Figura 117 — DSS CU-140: Programar un Mantenimiento de Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4015,12 +4621,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 117 — DSS CU-140: Programar un Mantenimiento de Vehículo**
+</details>
 
 #### DSS — CU-141: Registrar un Mantenimiento Realizado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cerrarTareaDeFlota(tareaId, fecha, kilometraje, costo, observacion)`
+
+![DSS CU-141: Registrar un Mantenimiento Realizado](diagramas/png/DSS_CU-141_Registrar-un-Mantenimiento-Realizado.png)
+
+**Figura 118 — DSS CU-141: Registrar un Mantenimiento Realizado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4039,12 +4651,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 118 — DSS CU-141: Registrar un Mantenimiento Realizado**
+</details>
 
 #### DSS — CU-142: Avisar los Vencimientos Próximos de la Flota
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `avisarVencimientosDeLaFlota()`
+
+![DSS CU-142: Avisar los Vencimientos Próximos de la Flota](diagramas/png/DSS_CU-142_Avisar-los-Vencimientos-Proximos-de-la-Flota.png)
+
+**Figura 119 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4066,12 +4684,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 119 — DSS CU-142: Avisar los Vencimientos Próximos de la Flota**
+</details>
 
 #### DSS — CU-155: Adjuntar un Archivo a una Tarea de Flota
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `adjuntarArchivoALaTarea(tareaId, archivo)`
+
+![DSS CU-155: Adjuntar un Archivo a una Tarea de Flota](diagramas/png/DSS_CU-155_Adjuntar-un-Archivo-a-una-Tarea-de-Flota.png)
+
+**Figura 120 — DSS CU-155: Adjuntar un Archivo a una Tarea de Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4094,12 +4718,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 120 — DSS CU-155: Adjuntar un Archivo a una Tarea de Flota**
+</details>
 
 #### DSS — CU-156: Consultar los Adjuntos de una Tarea de Flota
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarAdjuntosDeLaTarea(tareaId)`
+
+![DSS CU-156: Consultar los Adjuntos de una Tarea de Flota](diagramas/png/DSS_CU-156_Consultar-los-Adjuntos-de-una-Tarea-de-Flota.png)
+
+**Figura 121 — DSS CU-156: Consultar los Adjuntos de una Tarea de Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4118,12 +4748,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 121 — DSS CU-156: Consultar los Adjuntos de una Tarea de Flota**
+</details>
 
 #### DSS — CU-157: Descargar un Adjunto de Flota
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `descargarAdjunto(tareaId, adjuntoId)`
+
+![DSS CU-157: Descargar un Adjunto de Flota](diagramas/png/DSS_CU-157_Descargar-un-Adjunto-de-Flota.png)
+
+**Figura 122 — DSS CU-157: Descargar un Adjunto de Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4142,12 +4778,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 122 — DSS CU-157: Descargar un Adjunto de Flota**
+</details>
 
 #### DSS — CU-158: Eliminar un Adjunto de Flota
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `eliminarAdjunto(tareaId, adjuntoId)`
+
+![DSS CU-158: Eliminar un Adjunto de Flota](diagramas/png/DSS_CU-158_Eliminar-un-Adjunto-de-Flota.png)
+
+**Figura 123 — DSS CU-158: Eliminar un Adjunto de Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4166,12 +4808,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 123 — DSS CU-158: Eliminar un Adjunto de Flota**
+</details>
 
 #### DSS — CU-159: Almacenar un Archivo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `almacenarArchivo(clave, contenido, tipo)`
+
+![DSS CU-159: Almacenar un Archivo](diagramas/png/DSS_CU-159_Almacenar-un-Archivo.png)
+
+**Figura 124 — DSS CU-159: Almacenar un Archivo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4191,12 +4839,18 @@ sequenceDiagram
     Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-155 y también lo incluyen CU-174
 ```
 
-**Figura 124 — DSS CU-159: Almacenar un Archivo**
+</details>
 
 #### DSS — CU-160: Recuperar un Archivo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `recuperarArchivo(clave, nombreDeDescarga)`
+
+![DSS CU-160: Recuperar un Archivo](diagramas/png/DSS_CU-160_Recuperar-un-Archivo.png)
+
+**Figura 125 — DSS CU-160: Recuperar un Archivo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4214,12 +4868,18 @@ sequenceDiagram
     Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-157 y también lo incluyen CU-175
 ```
 
-**Figura 125 — DSS CU-160: Recuperar un Archivo**
+</details>
 
 #### DSS — CU-161: Poner un Vehículo en Uso para un Chofer
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `ponerVehiculoEnUso(choferId, vehiculoId, nota)`
+
+![DSS CU-161: Poner un Vehículo en Uso para un Chofer](diagramas/png/DSS_CU-161_Poner-un-Vehiculo-en-Uso-para-un-Chofer.png)
+
+**Figura 126 — DSS CU-161: Poner un Vehículo en Uso para un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4244,12 +4904,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 126 — DSS CU-161: Poner un Vehículo en Uso para un Chofer**
+</details>
 
 #### DSS — CU-162: Liberar el Vehículo en Uso de un Chofer
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `liberarVehiculoEnUso(choferId)`
+
+![DSS CU-162: Liberar el Vehículo en Uso de un Chofer](diagramas/png/DSS_CU-162_Liberar-el-Vehiculo-en-Uso-de-un-Chofer.png)
+
+**Figura 127 — DSS CU-162: Liberar el Vehículo en Uso de un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4272,12 +4938,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 127 — DSS CU-162: Liberar el Vehículo en Uso de un Chofer**
+</details>
 
 #### DSS — CU-163: Consultar el Vehículo en Uso de un Chofer
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarVehiculoEnUso(choferId)`, `consultarMiVehiculoEnUso()`
+
+![DSS CU-163: Consultar el Vehículo en Uso de un Chofer](diagramas/png/DSS_CU-163_Consultar-el-Vehiculo-en-Uso-de-un-Chofer.png)
+
+**Figura 128 — DSS CU-163: Consultar el Vehículo en Uso de un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4307,12 +4979,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 128 — DSS CU-163: Consultar el Vehículo en Uso de un Chofer**
+</details>
 
 #### DSS — CU-164: Consultar el Historial de Vehículos de un Chofer
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarHistorialDeVehiculosDelChofer(choferId, pagina)`
+
+![DSS CU-164: Consultar el Historial de Vehículos de un Chofer](diagramas/png/DSS_CU-164_Consultar-el-Historial-de-Vehiculos-de-un-Chofer.png)
+
+**Figura 129 — DSS CU-164: Consultar el Historial de Vehículos de un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4331,12 +5009,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 129 — DSS CU-164: Consultar el Historial de Vehículos de un Chofer**
+</details>
 
 #### DSS — CU-165: Consultar el Historial de Choferes de un Vehículo
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarHistorialDeChoferesDelVehiculo(vehiculoId, pagina)`
+
+![DSS CU-165: Consultar el Historial de Choferes de un Vehículo](diagramas/png/DSS_CU-165_Consultar-el-Historial-de-Choferes-de-un-Vehiculo.png)
+
+**Figura 130 — DSS CU-165: Consultar el Historial de Choferes de un Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4355,12 +5039,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 130 — DSS CU-165: Consultar el Historial de Choferes de un Vehículo**
+</details>
 
 #### DSS — CU-195: Registrar una Carga de Combustible
 
 **Actor:** Administrador (ACT-03), Chofer (ACT-02)
 **Operaciones del sistema:** `registrarCargaDeCombustible(vehiculoId, datos)`
+
+![DSS CU-195: Registrar una Carga de Combustible](diagramas/png/DSS_CU-195_Registrar-una-Carga-de-Combustible.png)
+
+**Figura 131 — DSS CU-195: Registrar una Carga de Combustible**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4395,12 +5085,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 131 — DSS CU-195: Registrar una Carga de Combustible**
+</details>
 
 #### DSS — CU-196: Consultar el Consumo de Combustible de un Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)`
+
+![DSS CU-196: Consultar el Consumo de Combustible de un Vehículo](diagramas/png/DSS_CU-196_Consultar-el-Consumo-de-Combustible-de-un-Vehiculo.png)
+
+**Figura 132 — DSS CU-196: Consultar el Consumo de Combustible de un Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4421,12 +5117,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 132 — DSS CU-196: Consultar el Consumo de Combustible de un Vehículo**
+</details>
 
 #### DSS — CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)`
+
+![DSS CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas](diagramas/png/DSS_CU-197_Registrar-la-Habilitacion-para-Transportar-Mercancias-Peligrosas.png)
+
+**Figura 133 — DSS CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4447,12 +5149,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 133 — DSS CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas**
+</details>
 
 #### DSS — CU-198: Registrar una Multa de Tránsito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarMultaDeTransito(vehiculoId, datos)`
+
+![DSS CU-198: Registrar una Multa de Tránsito](diagramas/png/DSS_CU-198_Registrar-una-Multa-de-Transito.png)
+
+**Figura 134 — DSS CU-198: Registrar una Multa de Tránsito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4475,12 +5183,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 134 — DSS CU-198: Registrar una Multa de Tránsito**
+</details>
 
 #### DSS — CU-199: Registrar el Pago de una Multa
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarPagoDeMulta(multaId, fechaDePago, importePagado)`
+
+![DSS CU-199: Registrar el Pago de una Multa](diagramas/png/DSS_CU-199_Registrar-el-Pago-de-una-Multa.png)
+
+**Figura 135 — DSS CU-199: Registrar el Pago de una Multa**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4501,12 +5215,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 135 — DSS CU-199: Registrar el Pago de una Multa**
+</details>
 
 #### DSS — CU-200: Imputar una Multa al Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `imputarMultaAlChofer(multaId, empleadoId)`
+
+![DSS CU-200: Imputar una Multa al Chofer](diagramas/png/DSS_CU-200_Imputar-una-Multa-al-Chofer.png)
+
+**Figura 136 — DSS CU-200: Imputar una Multa al Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4527,12 +5247,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 136 — DSS CU-200: Imputar una Multa al Chofer**
+</details>
 
 #### DSS — CU-201: Registrar un Siniestro
 
 **Actor:** Administrador (ACT-03), Chofer (ACT-02)
 **Operaciones del sistema:** `registrarSiniestro(vehiculoId, datos)`
+
+![DSS CU-201: Registrar un Siniestro](diagramas/png/DSS_CU-201_Registrar-un-Siniestro.png)
+
+**Figura 137 — DSS CU-201: Registrar un Siniestro**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4567,12 +5293,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 137 — DSS CU-201: Registrar un Siniestro**
+</details>
 
 #### DSS — CU-202: Cerrar un Siniestro
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)`
+
+![DSS CU-202: Cerrar un Siniestro](diagramas/png/DSS_CU-202_Cerrar-un-Siniestro.png)
+
+**Figura 138 — DSS CU-202: Cerrar un Siniestro**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4593,12 +5325,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 138 — DSS CU-202: Cerrar un Siniestro**
+</details>
 
 #### DSS — CU-203: Consultar el Costo Total de un Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)`
+
+![DSS CU-203: Consultar el Costo Total de un Vehículo](diagramas/png/DSS_CU-203_Consultar-el-Costo-Total-de-un-Vehiculo.png)
+
+**Figura 139 — DSS CU-203: Consultar el Costo Total de un Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4619,12 +5357,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 139 — DSS CU-203: Consultar el Costo Total de un Vehículo**
+</details>
 
 #### DSS — CU-204: Consultar el Tablero de Costos de la Flota
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)`
+
+![DSS CU-204: Consultar el Tablero de Costos de la Flota](diagramas/png/DSS_CU-204_Consultar-el-Tablero-de-Costos-de-la-Flota.png)
+
+**Figura 140 — DSS CU-204: Consultar el Tablero de Costos de la Flota**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4643,12 +5387,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 140 — DSS CU-204: Consultar el Tablero de Costos de la Flota**
+</details>
 
 #### DSS — CU-205: Registrar un Neumático
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarNeumatico(datos)`
+
+![DSS CU-205: Registrar un Neumático](diagramas/png/DSS_CU-205_Registrar-un-Neumatico.png)
+
+**Figura 141 — DSS CU-205: Registrar un Neumático**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4669,12 +5419,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 141 — DSS CU-205: Registrar un Neumático**
+</details>
 
 #### DSS — CU-206: Registrar un Movimiento de Neumático
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarMovimientoDeNeumatico(neumaticoId, datos)`
+
+![DSS CU-206: Registrar un Movimiento de Neumático](diagramas/png/DSS_CU-206_Registrar-un-Movimiento-de-Neumatico.png)
+
+**Figura 142 — DSS CU-206: Registrar un Movimiento de Neumático**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4695,12 +5451,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 142 — DSS CU-206: Registrar un Movimiento de Neumático**
+</details>
 
 #### DSS — CU-247: Reactivar un Vehículo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `reactivarVehiculo(vehiculoId)`
+
+![DSS CU-247: Reactivar un Vehículo](diagramas/png/DSS_CU-247_Reactivar-un-Vehiculo.png)
+
+**Figura 143 — DSS CU-247: Reactivar un Vehículo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4723,12 +5485,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 143 — DSS CU-247: Reactivar un Vehículo**
+</details>
 
 #### DSS — CU-267: Desactivar un Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `desactivarChofer(choferId)`
+
+![DSS CU-267: Desactivar un Chofer](diagramas/png/DSS_CU-267_Desactivar-un-Chofer.png)
+
+**Figura 144 — DSS CU-267: Desactivar un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4748,12 +5516,18 @@ sequenceDiagram
     Note over ADM,SIS: activo = falso. La misma operación, con activo = verdadero, es CU-033
 ```
 
-**Figura 144 — DSS CU-267: Desactivar un Chofer**
+</details>
 
 #### DSS — CU-271: Invalidar un Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `invalidarChofer(choferId)`
+
+![DSS CU-271: Invalidar un Chofer](diagramas/png/DSS_CU-271_Invalidar-un-Chofer.png)
+
+**Figura 145 — DSS CU-271: Invalidar un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4768,12 +5542,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 145 — DSS CU-271: Invalidar un Chofer**
+</details>
 
 #### DSS — CU-320: Modificar una Carga de Combustible
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarCargaDeCombustible(cargaId, datos)`
+
+![DSS CU-320: Modificar una Carga de Combustible](diagramas/png/DSS_CU-320_Modificar-una-Carga-de-Combustible.png)
+
+**Figura 146 — DSS CU-320: Modificar una Carga de Combustible**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4794,12 +5574,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 146 — DSS CU-320: Modificar una Carga de Combustible**
+</details>
 
 #### DSS — CU-321: Anular una Carga de Combustible
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `anularCargaDeCombustible(cargaId)`
+
+![DSS CU-321: Anular una Carga de Combustible](diagramas/png/DSS_CU-321_Anular-una-Carga-de-Combustible.png)
+
+**Figura 147 — DSS CU-321: Anular una Carga de Combustible**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4818,12 +5604,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 147 — DSS CU-321: Anular una Carga de Combustible**
+</details>
 
 #### DSS — CU-322: Consultar las Cargas de Combustible
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarCargasDeCombustible(filtros)`
+
+![DSS CU-322: Consultar las Cargas de Combustible](diagramas/png/DSS_CU-322_Consultar-las-Cargas-de-Combustible.png)
+
+**Figura 148 — DSS CU-322: Consultar las Cargas de Combustible**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4838,12 +5630,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 148 — DSS CU-322: Consultar las Cargas de Combustible**
+</details>
 
 #### DSS — CU-323: Modificar una Multa de Tránsito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarMultaDeTransito(multaId, datos)`
+
+![DSS CU-323: Modificar una Multa de Tránsito](diagramas/png/DSS_CU-323_Modificar-una-Multa-de-Transito.png)
+
+**Figura 149 — DSS CU-323: Modificar una Multa de Tránsito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4864,12 +5662,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 149 — DSS CU-323: Modificar una Multa de Tránsito**
+</details>
 
 #### DSS — CU-324: Anular una Multa de Tránsito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `anularMultaDeTransito(multaId, motivo)`
+
+![DSS CU-324: Anular una Multa de Tránsito](diagramas/png/DSS_CU-324_Anular-una-Multa-de-Transito.png)
+
+**Figura 150 — DSS CU-324: Anular una Multa de Tránsito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4892,12 +5696,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 150 — DSS CU-324: Anular una Multa de Tránsito**
+</details>
 
 #### DSS — CU-325: Consultar las Multas de Tránsito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarMultasDeTransito(filtros)`
+
+![DSS CU-325: Consultar las Multas de Tránsito](diagramas/png/DSS_CU-325_Consultar-las-Multas-de-Transito.png)
+
+**Figura 151 — DSS CU-325: Consultar las Multas de Tránsito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4912,12 +5722,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 151 — DSS CU-325: Consultar las Multas de Tránsito**
+</details>
 
 #### DSS — CU-326: Avisar las Multas por Vencer
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `avisarMultasPorVencer()`
+
+![DSS CU-326: Avisar las Multas por Vencer](diagramas/png/DSS_CU-326_Avisar-las-Multas-por-Vencer.png)
+
+**Figura 152 — DSS CU-326: Avisar las Multas por Vencer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4938,12 +5754,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 152 — DSS CU-326: Avisar las Multas por Vencer**
+</details>
 
 #### DSS — CU-327: Modificar un Siniestro
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarSiniestro(siniestroId, datos)`
+
+![DSS CU-327: Modificar un Siniestro](diagramas/png/DSS_CU-327_Modificar-un-Siniestro.png)
+
+**Figura 153 — DSS CU-327: Modificar un Siniestro**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4964,12 +5786,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 153 — DSS CU-327: Modificar un Siniestro**
+</details>
 
 #### DSS — CU-328: Consultar los Siniestros
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarSiniestros(filtros)`
+
+![DSS CU-328: Consultar los Siniestros](diagramas/png/DSS_CU-328_Consultar-los-Siniestros.png)
+
+**Figura 154 — DSS CU-328: Consultar los Siniestros**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -4984,12 +5812,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 154 — DSS CU-328: Consultar los Siniestros**
+</details>
 
 #### DSS — CU-337: Ajustar el Saldo del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `ajustarSaldoDelChofer(choferId, monto)`
+
+![DSS CU-337: Ajustar el Saldo del Chofer](diagramas/png/DSS_CU-337_Ajustar-el-Saldo-del-Chofer.png)
+
+**Figura 155 — DSS CU-337: Ajustar el Saldo del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5010,7 +5844,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 155 — DSS CU-337: Ajustar el Saldo del Chofer**
+</details>
 
 ---
 
@@ -5020,6 +5854,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `crearProducto(tipo, peso, precio, stockInicial, descripcion, promociones)`
+
+![DSS CU-036: Crear un Producto (Garrafa)](diagramas/png/DSS_CU-036_Crear-un-Producto.png)
+
+**Figura 156 — DSS CU-036: Crear un Producto (Garrafa)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5038,12 +5878,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 156 — DSS CU-036: Crear un Producto (Garrafa)**
+</details>
 
 #### DSS — CU-037: Modificar el Precio de un Producto
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `actualizarPrecioDelProducto(productoId, precio)`
+
+![DSS CU-037: Modificar el Precio de un Producto](diagramas/png/DSS_CU-037_Modificar-el-Precio-de-un-Producto.png)
+
+**Figura 157 — DSS CU-037: Modificar el Precio de un Producto**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5062,7 +5908,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 157 — DSS CU-037: Modificar el Precio de un Producto**
+</details>
 
 > **Observación de análisis:** no existe una operación exclusiva de precio; el precio se modifica con la actualización general del producto.
 
@@ -5070,6 +5916,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `actualizarStock(productoId, variacion)`
+
+![DSS CU-038: Modificar el Stock de un Producto](diagramas/png/DSS_CU-038_Modificar-el-Stock-de-un-Producto.png)
+
+**Figura 158 — DSS CU-038: Modificar el Stock de un Producto**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5090,7 +5942,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 158 — DSS CU-038: Modificar el Stock de un Producto**
+</details>
 
 > El parámetro es una **variación** (positiva o negativa), no un valor absoluto: ingresa mercadería con signo más y la ajusta con signo menos.
 
@@ -5098,6 +5950,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `configurarPromocionesDelProducto(productoId, promociones)`
+
+![DSS CU-039: Configurar las Promociones por Cantidad](diagramas/png/DSS_CU-039_Configurar-las-Promociones-por-Cantidad.png)
+
+**Figura 159 — DSS CU-039: Configurar las Promociones por Cantidad**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5116,7 +5974,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 159 — DSS CU-039: Configurar las Promociones por Cantidad**
+</details>
 
 > Al armar un pedido, cuando varias promociones aplican a la misma cantidad, el sistema toma **la más conveniente para el cliente**.
 
@@ -5124,6 +5982,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `desactivarProducto(productoId)`
+
+![DSS CU-040: Desactivar un Producto](diagramas/png/DSS_CU-040_Desactivar-un-Producto.png)
+
+**Figura 160 — DSS CU-040: Desactivar un Producto**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5142,12 +6006,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 160 — DSS CU-040: Desactivar un Producto**
+</details>
 
 #### DSS — CU-041: Consultar el Catálogo de Productos (Cliente)
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarProductosDisponibles(distribuidora)`, `consultarProducto(productoId)`
+
+![DSS CU-041: Consultar el Catálogo de Productos (Cliente)](diagramas/png/DSS_CU-041_Consultar-el-Catalogo-de-Productos-Cliente.png)
+
+**Figura 161 — DSS CU-041: Consultar el Catálogo de Productos (Cliente)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5173,12 +6043,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 161 — DSS CU-041: Consultar el Catálogo de Productos (Cliente)**
+</details>
 
 #### DSS — CU-207: Consultar los Depósitos
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarDepositos(incluirInactivos)`, `consultarDeposito(depositoId)`
+
+![DSS CU-207: Consultar los Depósitos](diagramas/png/DSS_CU-207_Consultar-los-Depositos.png)
+
+**Figura 162 — DSS CU-207: Consultar los Depósitos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5202,12 +6078,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 162 — DSS CU-207: Consultar los Depósitos**
+</details>
 
 #### DSS — CU-208: Consultar el Stock por Ubicación
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarStockPorUbicacion(ubicacionId, productoId)`, `consultarUbicacionesDeStock()`
+
+![DSS CU-208: Consultar el Stock por Ubicación](diagramas/png/DSS_CU-208_Consultar-el-Stock-por-Ubicacion.png)
+
+**Figura 163 — DSS CU-208: Consultar el Stock por Ubicación**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5227,12 +6109,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 163 — DSS CU-208: Consultar el Stock por Ubicación**
+</details>
 
 #### DSS — CU-209: Consultar los Movimientos de Stock
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)`
+
+![DSS CU-209: Consultar los Movimientos de Stock](diagramas/png/DSS_CU-209_Consultar-los-Movimientos-de-Stock.png)
+
+**Figura 164 — DSS CU-209: Consultar los Movimientos de Stock**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5251,12 +6139,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 164 — DSS CU-209: Consultar los Movimientos de Stock**
+</details>
 
 #### DSS — CU-210: Configurar el Stock Mínimo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `configurarStockMinimo(minimos)`
+
+![DSS CU-210: Configurar el Stock Mínimo](diagramas/png/DSS_CU-210_Configurar-el-Stock-Minimo.png)
+
+**Figura 165 — DSS CU-210: Configurar el Stock Mínimo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5277,12 +6171,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 165 — DSS CU-210: Configurar el Stock Mínimo**
+</details>
 
 #### DSS — CU-211: Avisar el Stock Bajo
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `avisarStockBajo()`
+
+![DSS CU-211: Avisar el Stock Bajo](diagramas/png/DSS_CU-211_Avisar-el-Stock-Bajo.png)
+
+**Figura 166 — DSS CU-211: Avisar el Stock Bajo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5303,12 +6203,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 166 — DSS CU-211: Avisar el Stock Bajo**
+</details>
 
 #### DSS — CU-212: Transferir Stock entre Depósitos
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `transferirStock(origenId, destinoId, items, nota)`
+
+![DSS CU-212: Transferir Stock entre Depósitos](diagramas/png/DSS_CU-212_Transferir-Stock-entre-Depositos.png)
+
+**Figura 167 — DSS CU-212: Transferir Stock entre Depósitos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5331,12 +6237,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 167 — DSS CU-212: Transferir Stock entre Depósitos**
+</details>
 
 #### DSS — CU-213: Registrar un Ajuste o una Merma de Stock
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarAjusteDeStock(ubicacionId, motivo, nota, items)`
+
+![DSS CU-213: Registrar un Ajuste o una Merma de Stock](diagramas/png/DSS_CU-213_Registrar-un-Ajuste-o-una-Merma-de-Stock.png)
+
+**Figura 168 — DSS CU-213: Registrar un Ajuste o una Merma de Stock**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5357,12 +6269,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 168 — DSS CU-213: Registrar un Ajuste o una Merma de Stock**
+</details>
 
 #### DSS — CU-218: Registrar la Carga del Camión
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)`
+
+![DSS CU-218: Registrar la Carga del Camión](diagramas/png/DSS_CU-218_Registrar-la-Carga-del-Camion.png)
+
+**Figura 169 — DSS CU-218: Registrar la Carga del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5385,12 +6303,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 169 — DSS CU-218: Registrar la Carga del Camión**
+</details>
 
 #### DSS — CU-219: Registrar la Salida del Camión
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `registrarSalidaDelCamion(cargaId)`
+
+![DSS CU-219: Registrar la Salida del Camión](diagramas/png/DSS_CU-219_Registrar-la-Salida-del-Camion.png)
+
+**Figura 170 — DSS CU-219: Registrar la Salida del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5415,12 +6339,18 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 170 — DSS CU-219: Registrar la Salida del Camión**
+</details>
 
 #### DSS — CU-220: Descontar del Stock Físico lo Entregado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `descontarStockDeLaEntrega(pedidoId)`
+
+![DSS CU-220: Descontar del Stock Físico lo Entregado](diagramas/png/DSS_CU-220_Descontar-del-Stock-Fisico-lo-Entregado.png)
+
+**Figura 171 — DSS CU-220: Descontar del Stock Físico lo Entregado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5440,12 +6370,18 @@ sequenceDiagram
     Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-020 y también lo incluyen CU-079 y CU-278
 ```
 
-**Figura 171 — DSS CU-220: Descontar del Stock Físico lo Entregado**
+</details>
 
 #### DSS — CU-221: Registrar el Regreso del Camión
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `registrarRegresoDelCamion(cargaId, devueltos)`
+
+![DSS CU-221: Registrar el Regreso del Camión](diagramas/png/DSS_CU-221_Registrar-el-Regreso-del-Camion.png)
+
+**Figura 172 — DSS CU-221: Registrar el Regreso del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5470,12 +6406,18 @@ sequenceDiagram
     Note over CHO,SIS: También lo inicia el Administrador (ACT-03)
 ```
 
-**Figura 172 — DSS CU-221: Registrar el Regreso del Camión**
+</details>
 
 #### DSS — CU-222: Cerrar la Rendición de Stock del Camión
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cerrarRendicionDeStock(cargaId, nota)`
+
+![DSS CU-222: Cerrar la Rendición de Stock del Camión](diagramas/png/DSS_CU-222_Cerrar-la-Rendicion-de-Stock-del-Camion.png)
+
+**Figura 173 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5500,12 +6442,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 173 — DSS CU-222: Cerrar la Rendición de Stock del Camión**
+</details>
 
 #### DSS — CU-223: Consultar la Carga Actual del Camión
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `consultarCargaActual()`
+
+![DSS CU-223: Consultar la Carga Actual del Camión](diagramas/png/DSS_CU-223_Consultar-la-Carga-Actual-del-Camion.png)
+
+**Figura 174 — DSS CU-223: Consultar la Carga Actual del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5524,12 +6472,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 174 — DSS CU-223: Consultar la Carga Actual del Camión**
+</details>
 
 #### DSS — CU-224: Conciliar el Stock Vendible con el Físico
 
 **Actor:** Sistema Automático (ACT-04) y Administrador (ACT-03)
 **Operaciones del sistema:** `conciliarStock()`, `consultarConciliacionDeStock()`
+
+![DSS CU-224: Conciliar el Stock Vendible con el Físico](diagramas/png/DSS_CU-224_Conciliar-el-Stock-Vendible-con-el-Fisico.png)
+
+**Figura 175 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5560,12 +6514,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 175 — DSS CU-224: Conciliar el Stock Vendible con el Físico**
+</details>
 
 #### DSS — CU-248: Verificar la Carga de Camión Abierta del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `verificarCargaDeCamionAbierta(choferId)`
+
+![DSS CU-248: Verificar la Carga de Camión Abierta del Chofer](diagramas/png/DSS_CU-248_Verificar-la-Carga-de-Camion-Abierta-del-Chofer.png)
+
+**Figura 176 — DSS CU-248: Verificar la Carga de Camión Abierta del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5585,12 +6545,18 @@ sequenceDiagram
     Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-012 y también lo incluyen CU-013, CU-015 y<br/>CU-080
 ```
 
-**Figura 176 — DSS CU-248: Verificar la Carga de Camión Abierta del Chofer**
+</details>
 
 #### DSS — CU-249: Configurar el Control de Carga de Camión Abierta
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)`
+
+![DSS CU-249: Configurar el Control de Carga de Camión Abierta](diagramas/png/DSS_CU-249_Configurar-el-Control-de-Carga-de-Camion-Abierta.png)
+
+**Figura 177 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5609,12 +6575,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 177 — DSS CU-249: Configurar el Control de Carga de Camión Abierta**
+</details>
 
 #### DSS — CU-250: Aplicar un Movimiento de Stock
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `aplicarMovimientoDeStock(operacion)`
+
+![DSS CU-250: Aplicar un Movimiento de Stock](diagramas/png/DSS_CU-250_Aplicar-un-Movimiento-de-Stock.png)
+
+**Figura 178 — DSS CU-250: Aplicar un Movimiento de Stock**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5640,12 +6612,18 @@ sequenceDiagram
     Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-212 y también lo incluyen CU-213, CU-217,<br/>CU-219, CU-220, CU-222, CU-274, CU-276, CU-280<br/>y CU-296
 ```
 
-**Figura 178 — DSS CU-250: Aplicar un Movimiento de Stock**
+</details>
 
 #### DSS — CU-258: Registrar un Depósito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarDeposito(nombre, codigo, tipo, direccion)`
+
+![DSS CU-258: Registrar un Depósito](diagramas/png/DSS_CU-258_Registrar-un-Deposito.png)
+
+**Figura 179 — DSS CU-258: Registrar un Depósito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5666,12 +6644,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 179 — DSS CU-258: Registrar un Depósito**
+</details>
 
 #### DSS — CU-259: Modificar un Depósito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `actualizarDeposito(depositoId, datos)`
+
+![DSS CU-259: Modificar un Depósito](diagramas/png/DSS_CU-259_Modificar-un-Deposito.png)
+
+**Figura 180 — DSS CU-259: Modificar un Depósito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5694,12 +6678,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 180 — DSS CU-259: Modificar un Depósito**
+</details>
 
 #### DSS — CU-260: Dar de Baja un Depósito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `darDeBajaDeposito(depositoId)`
+
+![DSS CU-260: Dar de Baja un Depósito](diagramas/png/DSS_CU-260_Dar-de-Baja-un-Deposito.png)
+
+**Figura 181 — DSS CU-260: Dar de Baja un Depósito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5720,12 +6710,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 181 — DSS CU-260: Dar de Baja un Depósito**
+</details>
 
 #### DSS — CU-268: Reactivar un Producto
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `reactivarProducto(productoId)`
+
+![DSS CU-268: Reactivar un Producto](diagramas/png/DSS_CU-268_Reactivar-un-Producto.png)
+
+**Figura 182 — DSS CU-268: Reactivar un Producto**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5744,13 +6740,19 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 182 — DSS CU-268: Reactivar un Producto**
+</details>
 
 
 #### DSS — CU-269: Consultar los Productos Inactivos
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarProductosInactivos()`
+
+![DSS CU-269: Consultar los Productos Inactivos](diagramas/png/DSS_CU-269_Consultar-los-Productos-Inactivos.png)
+
+**Figura 183 — DSS CU-269: Consultar los Productos Inactivos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5765,13 +6767,19 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 183 — DSS CU-269: Consultar los Productos Inactivos**
+</details>
 
 
 #### DSS — CU-273: Marcar el Depósito Predeterminado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `marcarDepositoPredeterminado(depositoId)`
+
+![DSS CU-273: Marcar el Depósito Predeterminado](diagramas/png/DSS_CU-273_Marcar-el-Deposito-Predeterminado.png)
+
+**Figura 184 — DSS CU-273: Marcar el Depósito Predeterminado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5792,12 +6800,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 184 — DSS CU-273: Marcar el Depósito Predeterminado**
+</details>
 
 #### DSS — CU-274: Registrar el Conteo Inicial de un Depósito
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarConteoInicial(depositoId, items, nota)`
+
+![DSS CU-274: Registrar el Conteo Inicial de un Depósito](diagramas/png/DSS_CU-274_Registrar-el-Conteo-Inicial-de-un-Deposito.png)
+
+**Figura 185 — DSS CU-274: Registrar el Conteo Inicial de un Depósito**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5820,12 +6834,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 185 — DSS CU-274: Registrar el Conteo Inicial de un Depósito**
+</details>
 
 #### DSS — CU-275: Consultar los Ajustes de Stock
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarAjustesDeStock(desde, hasta, motivo)`, `consultarAjusteDeStock(ajusteId)`
+
+![DSS CU-275: Consultar los Ajustes de Stock](diagramas/png/DSS_CU-275_Consultar-los-Ajustes-de-Stock.png)
+
+**Figura 186 — DSS CU-275: Consultar los Ajustes de Stock**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5853,12 +6873,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 186 — DSS CU-275: Consultar los Ajustes de Stock**
+</details>
 
 #### DSS — CU-276: Anular una Transferencia de Stock
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `anularTransferenciaDeStock(loteId, nota)`
+
+![DSS CU-276: Anular una Transferencia de Stock](diagramas/png/DSS_CU-276_Anular-una-Transferencia-de-Stock.png)
+
+**Figura 187 — DSS CU-276: Anular una Transferencia de Stock**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5881,12 +6907,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 187 — DSS CU-276: Anular una Transferencia de Stock**
+</details>
 
 #### DSS — CU-277: Registrar un Ajuste de Conciliación del Vendible
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)`
+
+![DSS CU-277: Registrar un Ajuste de Conciliación del Vendible](diagramas/png/DSS_CU-277_Registrar-un-Ajuste-de-Conciliacion-del-Vendible.png)
+
+**Figura 188 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5907,12 +6939,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 188 — DSS CU-277: Registrar un Ajuste de Conciliación del Vendible**
+</details>
 
 #### DSS — CU-278: Reaplicar las Entregas sin Movimiento de Stock
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `reaplicarEntregasDeStock()`
+
+![DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock](diagramas/png/DSS_CU-278_Reaplicar-las-Entregas-sin-Movimiento-de-Stock.png)
+
+**Figura 189 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5931,12 +6969,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 189 — DSS CU-278: Reaplicar las Entregas sin Movimiento de Stock**
+</details>
 
 #### DSS — CU-279: Consultar el Resumen de Stock
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarResumenDeStock()`
+
+![DSS CU-279: Consultar el Resumen de Stock](diagramas/png/DSS_CU-279_Consultar-el-Resumen-de-Stock.png)
+
+**Figura 190 — DSS CU-279: Consultar el Resumen de Stock**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5951,12 +6995,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 190 — DSS CU-279: Consultar el Resumen de Stock**
+</details>
 
 #### DSS — CU-289: Cancelar una Carga del Camión
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cancelarCargaDelCamion(cargaId, motivo)`
+
+![DSS CU-289: Cancelar una Carga del Camión](diagramas/png/DSS_CU-289_Cancelar-una-Carga-del-Camion.png)
+
+**Figura 191 — DSS CU-289: Cancelar una Carga del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -5979,12 +7029,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 191 — DSS CU-289: Cancelar una Carga del Camión**
+</details>
 
 #### DSS — CU-290: Consultar las Cargas del Camión
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)`
+
+![DSS CU-290: Consultar las Cargas del Camión](diagramas/png/DSS_CU-290_Consultar-las-Cargas-del-Camion.png)
+
+**Figura 192 — DSS CU-290: Consultar las Cargas del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6003,12 +7059,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 192 — DSS CU-290: Consultar las Cargas del Camión**
+</details>
 
 #### DSS — CU-291: Consultar una Carga del Camión
 
 **Actor:** Administrador (ACT-03), Chofer (ACT-02)
 **Operaciones del sistema:** `consultarCargaDelCamion(cargaId)`
+
+![DSS CU-291: Consultar una Carga del Camión](diagramas/png/DSS_CU-291_Consultar-una-Carga-del-Camion.png)
+
+**Figura 193 — DSS CU-291: Consultar una Carga del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6029,12 +7091,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Chofer (ACT-02), solo de su carga
 ```
 
-**Figura 193 — DSS CU-291: Consultar una Carga del Camión**
+</details>
 
 #### DSS — CU-295: Corregir los Renglones de una Carga del Camión
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `corregirRenglonesDeLaCarga(cargaId, items)`
+
+![DSS CU-295: Corregir los Renglones de una Carga del Camión](diagramas/png/DSS_CU-295_Corregir-los-Renglones-de-una-Carga-del-Camion.png)
+
+**Figura 194 — DSS CU-295: Corregir los Renglones de una Carga del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6057,12 +7125,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 194 — DSS CU-295: Corregir los Renglones de una Carga del Camión**
+</details>
 
 #### DSS — CU-296: Reponer una Carga del Camión
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `reponerCargaDelCamion(cargaId, items)`
+
+![DSS CU-296: Reponer una Carga del Camión](diagramas/png/DSS_CU-296_Reponer-una-Carga-del-Camion.png)
+
+**Figura 195 — DSS CU-296: Reponer una Carga del Camión**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6085,12 +7159,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 195 — DSS CU-296: Reponer una Carga del Camión**
+</details>
 
 #### DSS — CU-297: Consultar el Stock Mínimo
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarStockMinimo()`
+
+![DSS CU-297: Consultar el Stock Mínimo](diagramas/png/DSS_CU-297_Consultar-el-Stock-Minimo.png)
+
+**Figura 196 — DSS CU-297: Consultar el Stock Mínimo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6105,12 +7185,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 196 — DSS CU-297: Consultar el Stock Mínimo**
+</details>
 
 #### DSS — CU-298: Consultar el Control de Carga de Camión Abierta
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarControlDeCargaAbierta()`
+
+![DSS CU-298: Consultar el Control de Carga de Camión Abierta](diagramas/png/DSS_CU-298_Consultar-el-Control-de-Carga-de-Camion-Abierta.png)
+
+**Figura 197 — DSS CU-298: Consultar el Control de Carga de Camión Abierta**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6125,12 +7211,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 197 — DSS CU-298: Consultar el Control de Carga de Camión Abierta**
+</details>
 
 #### DSS — CU-344: Consultar el Catálogo de Productos (Administrador)
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarCatalogo(pagina, limite, distribuidora)`, `consultarDetalleDelProducto(productoId)`
+
+![DSS CU-344: Consultar el Catálogo de Productos (Administrador)](diagramas/png/DSS_CU-344_Consultar-el-Catalogo-de-Productos-Administrador.png)
+
+**Figura 198 — DSS CU-344: Consultar el Catálogo de Productos (Administrador)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6156,7 +7248,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 198 — DSS CU-344: Consultar el Catálogo de Productos (Administrador)**
+</details>
 
 ---
 
@@ -6166,6 +7258,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `crearFranjaHoraria(nombre, horaInicio, horaFin, capacidad)`
+
+![DSS CU-042: Crear una Franja Horaria](diagramas/png/DSS_CU-042_Crear-una-Franja-Horaria.png)
+
+**Figura 199 — DSS CU-042: Crear una Franja Horaria**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6184,12 +7282,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 199 — DSS CU-042: Crear una Franja Horaria**
+</details>
 
 #### DSS — CU-043: Modificar una Franja Horaria
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarFranjaHoraria(franjaId, nombre, horaInicio, horaFin, capacidad)`
+
+![DSS CU-043: Modificar una Franja Horaria](diagramas/png/DSS_CU-043_Modificar-una-Franja-Horaria.png)
+
+**Figura 200 — DSS CU-043: Modificar una Franja Horaria**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6212,12 +7316,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 200 — DSS CU-043: Modificar una Franja Horaria**
+</details>
 
 #### DSS — CU-044: Seleccionar una Franja Horaria al Crear un Pedido
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `validarFranjaDelPedido(franjaId, fecha)`
+
+![DSS CU-044: Seleccionar una Franja Horaria al Crear un Pedido](diagramas/png/DSS_CU-044_Seleccionar-una-Franja-Horaria-al-Crear-un-Pedido.png)
+
+**Figura 201 — DSS CU-044: Seleccionar una Franja Horaria al Crear un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6240,7 +7350,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 201 — DSS CU-044: Seleccionar una Franja Horaria al Crear un Pedido**
+</details>
 
 > El cupo se toma dentro de la misma transacción que crea el pedido (CU-005), de modo que dos clientes que eligen la última plaza de la misma franja no la obtienen los dos.
 
@@ -6248,6 +7358,12 @@ sequenceDiagram
 
 **Actor:** Cliente (ACT-01)
 **Operaciones del sistema:** `consultarDisponibilidadDeFranjas(fecha, distribuidora)`, `listarFranjas(distribuidora)`
+
+![DSS CU-045: Consultar las Franjas Horarias Disponibles](diagramas/png/DSS_CU-045_Consultar-las-Franjas-Horarias-Disponibles.png)
+
+**Figura 202 — DSS CU-045: Consultar las Franjas Horarias Disponibles**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6273,12 +7389,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 202 — DSS CU-045: Consultar las Franjas Horarias Disponibles**
+</details>
 
 #### DSS — CU-154: Consultar el Listado de Franjas Horarias
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarFranjasHorarias()`
+
+![DSS CU-154: Consultar el Listado de Franjas Horarias](diagramas/png/DSS_CU-154_Consultar-el-Listado-de-Franjas-Horarias.png)
+
+**Figura 203 — DSS CU-154: Consultar el Listado de Franjas Horarias**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6293,12 +7415,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 203 — DSS CU-154: Consultar el Listado de Franjas Horarias**
+</details>
 
 #### DSS — CU-342: Activar una Franja Horaria
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `activarFranjaHoraria(franjaId)`
+
+![DSS CU-342: Activar una Franja Horaria](diagramas/png/DSS_CU-342_Activar-una-Franja-Horaria.png)
+
+**Figura 204 — DSS CU-342: Activar una Franja Horaria**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6317,12 +7445,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 204 — DSS CU-342: Activar una Franja Horaria**
+</details>
 
 #### DSS — CU-343: Desactivar una Franja Horaria
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `desactivarFranjaHoraria(franjaId)`
+
+![DSS CU-343: Desactivar una Franja Horaria](diagramas/png/DSS_CU-343_Desactivar-una-Franja-Horaria.png)
+
+**Figura 205 — DSS CU-343: Desactivar una Franja Horaria**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6341,7 +7475,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 205 — DSS CU-343: Desactivar una Franja Horaria**
+</details>
 
 ---
 
@@ -6351,6 +7485,12 @@ sequenceDiagram
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `registrarDistribuidora(nombre, identificadorCorto, razonSocial, cuit, correo, telefono, logo, plan)`
+
+![DSS CU-052: Registrar una Distribuidora](diagramas/png/DSS_CU-052_Registrar-una-Distribuidora.png)
+
+**Figura 206 — DSS CU-052: Registrar una Distribuidora**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6371,7 +7511,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 206 — DSS CU-052: Registrar una Distribuidora**
+</details>
 
 > Solo el Super Administrador opera este caso de uso: es una acción de **plataforma**, no de una empresa.
 
@@ -6379,6 +7519,12 @@ sequenceDiagram
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `listarDistribuidoras()`, `consultarDistribuidora(distribuidoraId)`
+
+![DSS CU-053: Consultar las Distribuidoras](diagramas/png/DSS_CU-053_Consultar-las-Distribuidoras.png)
+
+**Figura 207 — DSS CU-053: Consultar las Distribuidoras**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6404,12 +7550,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 207 — DSS CU-053: Consultar las Distribuidoras**
+</details>
 
 #### DSS — CU-054: Modificar los Datos de una Distribuidora
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `modificarDistribuidora(distribuidoraId, datos)`
+
+![DSS CU-054: Modificar los Datos de una Distribuidora](diagramas/png/DSS_CU-054_Modificar-los-Datos-de-una-Distribuidora.png)
+
+**Figura 208 — DSS CU-054: Modificar los Datos de una Distribuidora**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6428,12 +7580,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 208 — DSS CU-054: Modificar los Datos de una Distribuidora**
+</details>
 
 #### DSS — CU-055: Dar de Baja una Distribuidora
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `darDeBajaDistribuidora(distribuidoraId)`
+
+![DSS CU-055: Dar de Baja una Distribuidora](diagramas/png/DSS_CU-055_Dar-De-Baja-Una-Distribuidora.png)
+
+**Figura 209 — DSS CU-055: Dar de Baja una Distribuidora**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6452,7 +7610,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 209 — DSS CU-055: Dar de Baja una Distribuidora**
+</details>
 
 ---
 
@@ -6462,6 +7620,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `definirZonaDeCobertura(nombre, poligono, recargo, activa)`
+
+![DSS CU-056: Crear un Polígono de Cobertura](diagramas/png/DSS_CU-056_Crear-un-Poligono-de-Cobertura.png)
+
+**Figura 210 — DSS CU-056: Crear un Polígono de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6480,12 +7644,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 210 — DSS CU-056: Crear un Polígono de Cobertura**
+</details>
 
 #### DSS — CU-057: Consultar los Polígonos de Cobertura
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `listarZonasDeCobertura()`
+
+![DSS CU-057: Consultar los Polígonos de Cobertura](diagramas/png/DSS_CU-057_Consultar-los-Poligonos-de-Cobertura.png)
+
+**Figura 211 — DSS CU-057: Consultar los Polígonos de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6500,12 +7670,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 211 — DSS CU-057: Consultar los Polígonos de Cobertura**
+</details>
 
 #### DSS — CU-058: Validar la Cobertura de una Dirección
 
 **Actor:** Cliente (ACT-01), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `validarCobertura(latitud, longitud)`
+
+![DSS CU-058: Validar la Cobertura de una Dirección](diagramas/png/DSS_CU-058_Validar-la-Cobertura-de-una-Direccion.png)
+
+**Figura 212 — DSS CU-058: Validar la Cobertura de una Dirección**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6526,7 +7702,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 212 — DSS CU-058: Validar la Cobertura de una Dirección**
+</details>
 
 > Es la **precondición** de CU-005: la aplicación la invoca antes de dejar confirmar el pedido, y de acá sale el recargo por zona que se suma al total.
 
@@ -6534,6 +7710,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `eliminarZonaDeCobertura(zonaId)`
+
+![DSS CU-059: Dar de Baja un Polígono de Cobertura](diagramas/png/DSS_CU-059_Dar-de-Baja-un-Poligono-de-Cobertura.png)
+
+**Figura 213 — DSS CU-059: Dar de Baja un Polígono de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6552,12 +7734,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 213 — DSS CU-059: Dar de Baja un Polígono de Cobertura**
+</details>
 
 #### DSS — CU-150: Programar la Vigencia de un Polígono de Cobertura
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `programarVigenciaDeZona(zonaId, vigenteHasta)`
+
+![DSS CU-150: Programar la Vigencia de un Polígono de Cobertura](diagramas/png/DSS_CU-150_Programar-la-Vigencia-de-un-Poligono-de-Cobertura.png)
+
+**Figura 214 — DSS CU-150: Programar la Vigencia de un Polígono de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6580,12 +7768,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 214 — DSS CU-150: Programar la Vigencia de un Polígono de Cobertura**
+</details>
 
 #### DSS — CU-151: Desactivar los Polígonos de Cobertura Vencidos
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `desactivarZonasVencidas()`
+
+![DSS CU-151: Desactivar los Polígonos de Cobertura Vencidos](diagramas/png/DSS_CU-151_Desactivar-los-Poligonos-de-Cobertura-Vencidos.png)
+
+**Figura 215 — DSS CU-151: Desactivar los Polígonos de Cobertura Vencidos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6607,12 +7801,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 215 — DSS CU-151: Desactivar los Polígonos de Cobertura Vencidos**
+</details>
 
 #### DSS — CU-305: Modificar un Polígono de Cobertura
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)`
+
+![DSS CU-305: Modificar un Polígono de Cobertura](diagramas/png/DSS_CU-305_Modificar-un-Poligono-de-Cobertura.png)
+
+**Figura 216 — DSS CU-305: Modificar un Polígono de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6634,12 +7834,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 216 — DSS CU-305: Modificar un Polígono de Cobertura**
+</details>
 
 #### DSS — CU-306: Consultar un Polígono de Cobertura
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarZonaDeCobertura(zonaId)`
+
+![DSS CU-306: Consultar un Polígono de Cobertura](diagramas/png/DSS_CU-306_Consultar-un-Poligono-de-Cobertura.png)
+
+**Figura 217 — DSS CU-306: Consultar un Polígono de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6659,12 +7865,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 217 — DSS CU-306: Consultar un Polígono de Cobertura**
+</details>
 
 #### DSS — CU-307: Activar un Polígono de Cobertura
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `activarZonaDeCobertura(zonaId)`
+
+![DSS CU-307: Activar un Polígono de Cobertura](diagramas/png/DSS_CU-307_Activar-un-Poligono-de-Cobertura.png)
+
+**Figura 218 — DSS CU-307: Activar un Polígono de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6684,12 +7896,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 218 — DSS CU-307: Activar un Polígono de Cobertura**
+</details>
 
 #### DSS — CU-308: Desactivar un Polígono de Cobertura
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `desactivarZonaDeCobertura(zonaId)`
+
+![DSS CU-308: Desactivar un Polígono de Cobertura](diagramas/png/DSS_CU-308_Desactivar-un-Poligono-de-Cobertura.png)
+
+**Figura 219 — DSS CU-308: Desactivar un Polígono de Cobertura**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6709,7 +7927,7 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 219 — DSS CU-308: Desactivar un Polígono de Cobertura**
+</details>
 
 ---
 
@@ -6719,6 +7937,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `registrarIncidencia(pedidoId, tipo, descripcion, foto)`
+
+![DSS CU-060: Registrar una Incidencia de Entrega](diagramas/png/DSS_CU-060_Registrar-una-Incidencia-de-Entrega.png)
+
+**Figura 220 — DSS CU-060: Registrar una Incidencia de Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6739,7 +7963,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 220 — DSS CU-060: Registrar una Incidencia de Entrega**
+</details>
 
 > Circuito **distinto** al de reclamos (SS-05): el reclamo lo abre el cliente después de la entrega, la incidencia la abre el chofer durante el reparto.
 
@@ -6747,6 +7971,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `listarIncidencias()`
+
+![DSS CU-061: Consultar las Incidencias](diagramas/png/DSS_CU-061_Consultar-las-Incidencias.png)
+
+**Figura 221 — DSS CU-061: Consultar las Incidencias**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6761,12 +7991,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 221 — DSS CU-061: Consultar las Incidencias**
+</details>
 
 #### DSS — CU-062: Consultar las Incidencias de un Pedido
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarIncidenciasDelPedido(pedidoId)`
+
+![DSS CU-062: Consultar las Incidencias de un Pedido](diagramas/png/DSS_CU-062_Consultar-las-Incidencias-de-un-Pedido.png)
+
+**Figura 222 — DSS CU-062: Consultar las Incidencias de un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6785,12 +8021,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 222 — DSS CU-062: Consultar las Incidencias de un Pedido**
+</details>
 
 #### DSS — CU-063: Resolver una Incidencia
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `resolverIncidencia(incidenciaId, notaDeResolucion)`
+
+![DSS CU-063: Resolver una Incidencia](diagramas/png/DSS_CU-063_Resolver-una-Incidencia.png)
+
+**Figura 223 — DSS CU-063: Resolver una Incidencia**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6809,12 +8051,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 223 — DSS CU-063: Resolver una Incidencia**
+</details>
 
 #### DSS — CU-064: Calificar un Pedido (cliente↔chofer)
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02)
 **Operaciones del sistema:** `calificarPedido(pedidoId, estrellas, comentario)`
+
+![DSS CU-064: Calificar un Pedido (cliente↔chofer)](diagramas/png/DSS_CU-064_Calificar-un-Pedido.png)
+
+**Figura 224 — DSS CU-064: Calificar un Pedido (cliente↔chofer)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6837,7 +8085,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 224 — DSS CU-064: Calificar un Pedido (cliente↔chofer)**
+</details>
 
 > La calificación es **bidireccional**: el mismo mensaje lo emite el cliente hacia el chofer o el chofer hacia el cliente. El emisor sale de la sesión y el calificado se deriva del pedido, de modo que hay a lo sumo una calificación por pedido y por lado.
 
@@ -6845,6 +8093,12 @@ sequenceDiagram
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarResumenDeCalificaciones(usuarioId)`
+
+![DSS CU-065: Consultar el Promedio de Calificaciones de un Usuario](diagramas/png/DSS_CU-065_Consultar-el-Promedio-de-Calificaciones-de-un-Usuario.png)
+
+**Figura 225 — DSS CU-065: Consultar el Promedio de Calificaciones de un Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6859,12 +8113,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 225 — DSS CU-065: Consultar el Promedio de Calificaciones de un Usuario**
+</details>
 
 #### DSS — CU-066: Consultar el Historial de Calificaciones Recibidas
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarHistorialDeCalificaciones(usuarioId)`
+
+![DSS CU-066: Consultar el Historial de Calificaciones Recibidas](diagramas/png/DSS_CU-066_Consultar-el-Historial-de-Calificaciones-Recibidas.png)
+
+**Figura 226 — DSS CU-066: Consultar el Historial de Calificaciones Recibidas**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6879,7 +8139,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 226 — DSS CU-066: Consultar el Historial de Calificaciones Recibidas**
+</details>
 
 ---
 
@@ -6889,6 +8149,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)`
+
+![DSS CU-067: Dar de Alta un Envase Físico](diagramas/png/DSS_CU-067_Dar-De-Alta-Un-Envase-Fisico.png)
+
+**Figura 227 — DSS CU-067: Dar de Alta un Envase Físico**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6907,7 +8173,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 227 — DSS CU-067: Dar de Alta un Envase Físico**
+</details>
 
 > El número de serie es único **por distribuidora**, no globalmente: dos empresas pueden tener garrafas con la misma numeración de fábrica.
 
@@ -6915,6 +8181,12 @@ sequenceDiagram
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `asignarEnvasesAPedido(pedidoId, numerosDeSerie)`
+
+![DSS CU-068: Asignar los Envases a un Pedido](diagramas/png/DSS_CU-068_Asignar-los-Envases-a-un-Pedido.png)
+
+**Figura 228 — DSS CU-068: Asignar los Envases a un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6938,12 +8210,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 228 — DSS CU-068: Asignar los Envases a un Pedido**
+</details>
 
 #### DSS — CU-069: Consultar el Parque de Envases
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `listarEnvases(estado)`, `consultarEnvase(envaseId)`
+
+![DSS CU-069: Consultar el Parque de Envases](diagramas/png/DSS_CU-069_Consultar-El-Parque-De-Envases.png)
+
+**Figura 229 — DSS CU-069: Consultar el Parque de Envases**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6969,12 +8247,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 229 — DSS CU-069: Consultar el Parque de Envases**
+</details>
 
 #### DSS — CU-070: Registrar un Movimiento de Envase (cambio de estado)
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)`
+
+![DSS CU-070: Registrar un Movimiento de Envase (cambio de estado)](diagramas/png/DSS_CU-070_Registrar-un-Movimiento-de-Envase.png)
+
+**Figura 230 — DSS CU-070: Registrar un Movimiento de Envase (cambio de estado)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -6995,7 +8279,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 230 — DSS CU-070: Registrar un Movimiento de Envase (cambio de estado)**
+</details>
 
 > Ciclo de vida del envase: EN_DEPOSITO → LLENO → DESPACHADO → CON_EL_CLIENTE → VACIO_DEVUELTO. Al confirmarse la entrega del pedido (CU-020 / CU-079) el sistema avanza solo los envases despachados a CON_EL_CLIENTE.
 
@@ -7003,6 +8287,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarHistorialDelEnvase(envaseId)`
+
+![DSS CU-071: Consultar el Historial de Movimientos de un Envase](diagramas/png/DSS_CU-071_Consultar-el-Historial-de-Movimientos-de-un-Envase.png)
+
+**Figura 231 — DSS CU-071: Consultar el Historial de Movimientos de un Envase**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7017,7 +8307,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 231 — DSS CU-071: Consultar el Historial de Movimientos de un Envase**
+</details>
 
 > El historial es de **solo agregado**: los movimientos no se corrigen ni se borran, y por eso sirve como evidencia de trazabilidad.
 
@@ -7025,6 +8315,12 @@ sequenceDiagram
 
 **Actor:** Cliente (ACT-01), Administrador (ACT-03), Sistema Automático (ACT-04)
 **Operaciones del sistema:** `gestionarEnvasesNoDevueltos()`, `aceptarRetiroEnLaEntrega(ofertaId)`, `resolverCasoDeRecupero(casoId, decision)`
+
+![DSS CU-108: Recuperar Envases No Devueltos](diagramas/png/DSS_CU-108_Recuperar-Envases-No-Devueltos.png)
+
+**Figura 232 — DSS CU-108: Recuperar Envases No Devueltos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7064,12 +8360,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 232 — DSS CU-108: Recuperar Envases No Devueltos**
+</details>
 
 #### DSS — CU-132: Registrar la Revisión Periódica de un Envase
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)`
+
+![DSS CU-132: Registrar la Revisión Periódica de un Envase](diagramas/png/DSS_CU-132_Registrar-la-Revision-Periodica-de-un-Envase.png)
+
+**Figura 233 — DSS CU-132: Registrar la Revisión Periódica de un Envase**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7090,12 +8392,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 233 — DSS CU-132: Registrar la Revisión Periódica de un Envase**
+</details>
 
 #### DSS — CU-133: Consultar la Vigencia de un Envase
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarVigenciaDelEnvase(envaseId)`
+
+![DSS CU-133: Consultar la Vigencia de un Envase](diagramas/png/DSS_CU-133_Consultar-la-Vigencia-de-un-Envase.png)
+
+**Figura 234 — DSS CU-133: Consultar la Vigencia de un Envase**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7116,12 +8424,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 234 — DSS CU-133: Consultar la Vigencia de un Envase**
+</details>
 
 #### DSS — CU-134: Consultar los Envases Próximos a Vencer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarEnvasesProximosAVencer(dias)`
+
+![DSS CU-134: Consultar los Envases Próximos a Vencer](diagramas/png/DSS_CU-134_Consultar-los-Envases-Proximos-a-Vencer.png)
+
+**Figura 235 — DSS CU-134: Consultar los Envases Próximos a Vencer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7140,12 +8454,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 235 — DSS CU-134: Consultar los Envases Próximos a Vencer**
+</details>
 
 #### DSS — CU-135: Bloquear el Despacho de un Envase Vencido
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `verificarVigenciaAlAsignar(pedidoId, series)`
+
+![DSS CU-135: Bloquear el Despacho de un Envase Vencido](diagramas/png/DSS_CU-135_Bloquear-el-Despacho-de-un-Envase-Vencido.png)
+
+**Figura 236 — DSS CU-135: Bloquear el Despacho de un Envase Vencido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7168,7 +8488,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 236 — DSS CU-135: Bloquear el Despacho de un Envase Vencido**
+</details>
 
 ---
 
@@ -7178,6 +8498,12 @@ sequenceDiagram
 
 **Actor:** MercadoPago (ACT-06)
 **Operaciones del sistema:** `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)`
+
+![DSS CU-048: Procesar el Pago con MercadoPago](diagramas/png/DSS_CU-048_Procesar-el-Pago-con-MercadoPago.png)
+
+**Figura 237 — DSS CU-048: Procesar el Pago con MercadoPago**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7209,7 +8535,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 237 — DSS CU-048: Procesar el Pago con MercadoPago**
+</details>
 
 > El sistema responde **siempre** con acuse de recibo, incluso ante una firma inválida, para no revelar si el pedido existe y para que la pasarela no reintente en bucle. El resultado del pago se asienta en un registro contable propio, independiente del estado del pedido. El aviso al Cliente (evento `order:payment-approved` y notificación push) sale solo en la primera confirmación del pago aprobado, no en los reintentos de la pasarela. El enlace de pago no lo pide el Cliente en un mensaje aparte: lo genera la propia creación del pedido (`crearPedido`, CU-005) o de la reserva (`crearReserva`, CU-072) y viaja en su respuesta. Esa colaboración interna se diagrama en el Documento 3, con el nombre `crearCheckoutDePago`.
 
@@ -7217,6 +8543,12 @@ sequenceDiagram
 
 **Actor:** Sistema Automático (ACT-04), Administrador (ACT-03)
 **Operaciones del sistema:** `reintegrarPagoDelPedido(pedidoId, importe)`
+
+![DSS CU-168: Reintegrar el Pago de un Pedido](diagramas/png/DSS_CU-168_Reintegrar-el-Pago-de-un-Pedido.png)
+
+**Figura 238 — DSS CU-168: Reintegrar el Pago de un Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7240,12 +8572,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 238 — DSS CU-168: Reintegrar el Pago de un Pedido**
+</details>
 
 #### DSS — CU-292: Confirmar el Cobro en Efectivo
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `confirmarCobroEnEfectivo(pedidoId)`
+
+![DSS CU-292: Confirmar el Cobro en Efectivo](diagramas/png/DSS_CU-292_Confirmar-el-Cobro-en-Efectivo.png)
+
+**Figura 239 — DSS CU-292: Confirmar el Cobro en Efectivo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7270,12 +8608,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 239 — DSS CU-292: Confirmar el Cobro en Efectivo**
+</details>
 
 #### DSS — CU-293: Informar el Cobro Impago
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `informarCobroImpago(pedidoId, nota)`
+
+![DSS CU-293: Informar el Cobro Impago](diagramas/png/DSS_CU-293_Informar-el-Cobro-Impago.png)
+
+**Figura 240 — DSS CU-293: Informar el Cobro Impago**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7301,12 +8645,18 @@ sequenceDiagram
     Note over CHO,SIS: El administrador resuelve el impago con CU-294
 ```
 
-**Figura 240 — DSS CU-293: Informar el Cobro Impago**
+</details>
 
 #### DSS — CU-294: Resolver un Cobro Impago
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `resolverCobroImpago(pedidoId, resolucion, nota, cajaId)`
+
+![DSS CU-294: Resolver un Cobro Impago](diagramas/png/DSS_CU-294_Resolver-un-Cobro-Impago.png)
+
+**Figura 241 — DSS CU-294: Resolver un Cobro Impago**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7330,12 +8680,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 241 — DSS CU-294: Resolver un Cobro Impago**
+</details>
 
 #### DSS — CU-299: Registrar el Cobro en Efectivo como Administrador
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)`
+
+![DSS CU-299: Registrar el Cobro en Efectivo como Administrador](diagramas/png/DSS_CU-299_Registrar-el-Cobro-en-Efectivo-como-Administrador.png)
+
+**Figura 242 — DSS CU-299: Registrar el Cobro en Efectivo como Administrador**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7359,12 +8715,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 242 — DSS CU-299: Registrar el Cobro en Efectivo como Administrador**
+</details>
 
 #### DSS — CU-300: Registrar el Cobro Impago como Administrador
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `registrarCobroImpagoPorAdmin(pedidoId, motivo)`
+
+![DSS CU-300: Registrar el Cobro Impago como Administrador](diagramas/png/DSS_CU-300_Registrar-el-Cobro-Impago-como-Administrador.png)
+
+**Figura 243 — DSS CU-300: Registrar el Cobro Impago como Administrador**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7388,12 +8750,18 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 243 — DSS CU-300: Registrar el Cobro Impago como Administrador**
+</details>
 
 #### DSS — CU-301: Confirmar una Transferencia
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `confirmarTransferencia(pedidoId, recibida, motivo)`
+
+![DSS CU-301: Confirmar una Transferencia](diagramas/png/DSS_CU-301_Confirmar-una-Transferencia.png)
+
+**Figura 244 — DSS CU-301: Confirmar una Transferencia**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7417,7 +8785,7 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 244 — DSS CU-301: Confirmar una Transferencia**
+</details>
 
 ---
 
@@ -7427,6 +8795,12 @@ sequenceDiagram
 
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)`
+
+![DSS CU-072: Crear una Reserva Programada con Seña](diagramas/png/DSS_CU-072_Crear-una-Reserva-Programada-con-Sena.png)
+
+**Figura 245 — DSS CU-072: Crear una Reserva Programada con Seña**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7450,7 +8824,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 245 — DSS CU-072: Crear una Reserva Programada con Seña**
+</details>
 
 > La reserva nace en estado **RESERVADO**: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075).
 
@@ -7458,6 +8832,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `listarReservas()`
+
+![DSS CU-073: Consultar las Reservas y el Estado de la Seña](diagramas/png/DSS_CU-073_Consultar-las-Reservas-y-el-Estado-de-la-Sena.png)
+
+**Figura 246 — DSS CU-073: Consultar las Reservas y el Estado de la Seña**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7472,12 +8852,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 246 — DSS CU-073: Consultar las Reservas y el Estado de la Seña**
+</details>
 
 #### DSS — CU-074: Confirmar la Seña Cobrada en Efectivo
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `confirmarSenia(pedidoId)`
+
+![DSS CU-074: Confirmar la Seña Cobrada en Efectivo](diagramas/png/DSS_CU-074_Confirmar-la-Sena-Cobrada-en-Efectivo.png)
+
+**Figura 247 — DSS CU-074: Confirmar la Seña Cobrada en Efectivo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7498,7 +8884,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 247 — DSS CU-074: Confirmar la Seña Cobrada en Efectivo**
+</details>
 
 > Es la **única acción humana** del ciclo de reservas: la seña pagada por la pasarela se confirma sola (CU-048).
 
@@ -7506,6 +8892,12 @@ sequenceDiagram
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `activarReservasDelDia()`
+
+![DSS CU-075: Activar las Reservas Vencidas Automáticamente](diagramas/png/DSS_CU-075_Activar-las-Reservas-Vencidas-Automaticamente.png)
+
+**Figura 248 — DSS CU-075: Activar las Reservas Vencidas Automáticamente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7529,7 +8921,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 248 — DSS CU-075: Activar las Reservas Vencidas Automáticamente**
+</details>
 
 > Solo se activan las reservas con la seña **efectivamente paga**. Una reserva cuya activación falla se registra y se reintenta en la corrida siguiente.
 
@@ -7537,6 +8929,12 @@ sequenceDiagram
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `expirarReservasSinSenia()`
+
+![DSS CU-076: Expirar las Reservas sin Seña Pagada](diagramas/png/DSS_CU-076_Expirar-las-Reservas-sin-Sena-Pagada.png)
+
+**Figura 249 — DSS CU-076: Expirar las Reservas sin Seña Pagada**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7558,7 +8956,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 249 — DSS CU-076: Expirar las Reservas sin Seña Pagada**
+</details>
 
 > El plazo de espera de la seña es un parámetro de configuración (valor por omisión, 48 horas). Cada expiración es atómica: si falla, la reserva queda intacta para la corrida siguiente.
 
@@ -7566,6 +8964,12 @@ sequenceDiagram
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `expirarPedidosSinPagar()`
+
+![DSS CU-077: Expirar los Pedidos de MercadoPago sin Pagar](diagramas/png/DSS_CU-077_Expirar-los-Pedidos-de-MercadoPago-sin-Pagar.png)
+
+**Figura 250 — DSS CU-077: Expirar los Pedidos de MercadoPago sin Pagar**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7591,7 +8995,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 250 — DSS CU-077: Expirar los Pedidos de MercadoPago sin Pagar**
+</details>
 
 > Sin este proceso, el stock que se reserva al crear el pedido —antes de que el cliente pague— quedaría bloqueado para siempre si abandona el pago. El plazo por omisión es de 60 minutos.
 
@@ -7603,6 +9007,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `registrarAdministrador(nombreCompleto, correo, telefono, contrasena, rol, distribuidoraId)`
+
+![DSS CU-086: Registrar un Administrador](diagramas/png/DSS_CU-086_Registrar-un-Administrador.png)
+
+**Figura 251 — DSS CU-086: Registrar un Administrador**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7625,7 +9035,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 251 — DSS CU-086: Registrar un Administrador**
+</details>
 
 > Regla de negocio multi-empresa: un administrador de empresa **nunca** puede crear administradores de otra distribuidora ni escalar a super administrador.
 
@@ -7633,6 +9043,12 @@ sequenceDiagram
 
 **Actor:** Operador Técnico (ACT-10)
 **Operaciones del sistema:** `crearPrimerSuperAdministrador(nombreCompleto, correo, telefono, contrasena)`
+
+![DSS CU-087: Crear el Primer Administrador General](diagramas/png/DSS_CU-087_Crear-el-Primer-Administrador-General.png)
+
+**Figura 252 — DSS CU-087: Crear el Primer Administrador General**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7652,7 +9068,7 @@ sequenceDiagram
     Note over OPE,SIS: Se ejecuta desde el servidor, no desde el<br/>panel ni las apps
 ```
 
-**Figura 252 — DSS CU-087: Crear el Primer Administrador General**
+</details>
 
 > Es una operación de **una sola vez**: se autodeshabilita apenas existe el primer administrador.
 
@@ -7660,6 +9076,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `listarAdministradores()`, `buscarAdministrador(termino)`
+
+![DSS CU-088: Consultar los Administradores](diagramas/png/DSS_CU-088_Consultar-los-Administradores.png)
+
+**Figura 253 — DSS CU-088: Consultar los Administradores**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7685,12 +9107,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 253 — DSS CU-088: Consultar los Administradores**
+</details>
 
 #### DSS — CU-345: Modificar un Administrador
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarAdministrador(administradorId, nombreCompleto, telefono)`
+
+![DSS CU-345: Modificar un Administrador](diagramas/png/DSS_CU-345_Modificar-un-Administrador.png)
+
+**Figura 254 — DSS CU-345: Modificar un Administrador**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7717,12 +9145,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 254 — DSS CU-345: Modificar un Administrador**
+</details>
 
 #### DSS — CU-346: Dar de Baja un Administrador
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `darDeBajaAdministrador(administradorId)`
+
+![DSS CU-346: Dar de Baja un Administrador](diagramas/png/DSS_CU-346_Dar-de-Baja-un-Administrador.png)
+
+**Figura 255 — DSS CU-346: Dar de Baja un Administrador**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7747,12 +9181,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 255 — DSS CU-346: Dar de Baja un Administrador**
+</details>
 
 #### DSS — CU-089: Consultar los Roles
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `listarRoles()`
+
+![DSS CU-089: Consultar los Roles](diagramas/png/DSS_CU-089_Consultar-los-Roles.png)
+
+**Figura 256 — DSS CU-089: Consultar los Roles**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7767,12 +9207,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 256 — DSS CU-089: Consultar los Roles**
+</details>
 
 #### DSS — CU-092: Consultar el Listado de Clientes
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `listarClientes(pagina, limite)`
+
+![DSS CU-092: Consultar el Listado de Clientes](diagramas/png/DSS_CU-092_Consultar-el-Listado-de-Clientes.png)
+
+**Figura 257 — DSS CU-092: Consultar el Listado de Clientes**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7787,12 +9233,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 257 — DSS CU-092: Consultar el Listado de Clientes**
+</details>
 
 #### DSS — CU-094: Modificar la Ubicación del Cliente
 
 **Actor:** Cliente (ACT-01), Administrador (ACT-03)
 **Operaciones del sistema:** `actualizarUbicacionDelCliente(clienteId, coordenadas)`
+
+![DSS CU-094: Modificar la Ubicación del Cliente](diagramas/png/DSS_CU-094_Modificar-la-Ubicacion-del-Cliente.png)
+
+**Figura 258 — DSS CU-094: Modificar la Ubicación del Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7813,12 +9265,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 258 — DSS CU-094: Modificar la Ubicación del Cliente**
+</details>
 
 #### DSS — CU-095: Dar de Baja un Cliente
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `eliminarCliente(clienteId)`
+
+![DSS CU-095: Dar de Baja un Cliente](diagramas/png/DSS_CU-095_Dar-de-Baja-un-Cliente.png)
+
+**Figura 259 — DSS CU-095: Dar de Baja un Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7839,12 +9297,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 259 — DSS CU-095: Dar de Baja un Cliente**
+</details>
 
 #### DSS — CU-129: Consultar el Detalle del Cliente
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarDetalleDelCliente(clienteId)`
+
+![DSS CU-129: Consultar el Detalle del Cliente](diagramas/png/DSS_CU-129_Consultar-el-Detalle-del-Cliente.png)
+
+**Figura 260 — DSS CU-129: Consultar el Detalle del Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7863,12 +9327,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 260 — DSS CU-129: Consultar el Detalle del Cliente**
+</details>
 
 #### DSS — CU-130: Buscar un Cliente por Usuario
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `buscarClientePorUsuario(usuarioId)`
+
+![DSS CU-130: Buscar un Cliente por Usuario](diagramas/png/DSS_CU-130_Buscar-un-Cliente-por-Usuario.png)
+
+**Figura 261 — DSS CU-130: Buscar un Cliente por Usuario**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7887,12 +9357,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 261 — DSS CU-130: Buscar un Cliente por Usuario**
+</details>
 
 #### DSS — CU-131: Modificar los Datos del Cliente
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `editarDatosDelCliente(clienteId, cambios)`
+
+![DSS CU-131: Modificar los Datos del Cliente](diagramas/png/DSS_CU-131_Modificar-los-Datos-del-Cliente.png)
+
+**Figura 262 — DSS CU-131: Modificar los Datos del Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7913,12 +9389,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 262 — DSS CU-131: Modificar los Datos del Cliente**
+</details>
 
 #### DSS — CU-252: Crear un Rol
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `crearRol(tipo)`
+
+![DSS CU-252: Crear un Rol](diagramas/png/DSS_CU-252_Crear-un-Rol.png)
+
+**Figura 263 — DSS CU-252: Crear un Rol**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7933,12 +9415,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 263 — DSS CU-252: Crear un Rol**
+</details>
 
 #### DSS — CU-253: Modificar un Rol
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `actualizarRol(rolId, datos)`
+
+![DSS CU-253: Modificar un Rol](diagramas/png/DSS_CU-253_Modificar-un-Rol.png)
+
+**Figura 264 — DSS CU-253: Modificar un Rol**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7959,12 +9447,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 264 — DSS CU-253: Modificar un Rol**
+</details>
 
 #### DSS — CU-254: Dar de Baja un Rol
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `eliminarRol(rolId)`
+
+![DSS CU-254: Dar de Baja un Rol](diagramas/png/DSS_CU-254_Dar-de-Baja-un-Rol.png)
+
+**Figura 265 — DSS CU-254: Dar de Baja un Rol**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -7985,7 +9479,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 265 — DSS CU-254: Dar de Baja un Rol**
+</details>
 
 ---
 
@@ -7995,6 +9489,12 @@ sequenceDiagram
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `enviarNotificacionDePrueba(token, titulo, mensaje)`
+
+![DSS CU-100: Enviar una Notificación de Prueba](diagramas/png/DSS_CU-100_Enviar-una-Notificacion-de-Prueba.png)
+
+**Figura 266 — DSS CU-100: Enviar una Notificación de Prueba**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8018,12 +9518,18 @@ sequenceDiagram
     Note over ADM,CLI: El dispositivo identificado por el token puede ser<br/>el de un Cliente (ACT-01) o el de un Chofer (ACT-02)
 ```
 
-**Figura 266 — DSS CU-100: Enviar una Notificación de Prueba**
+</details>
 
 #### DSS — CU-101: Reenviar la Notificación de Confirmación de Pedido
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `reenviarConfirmacionDePedido(usuarioId, pedidoId)`
+
+![DSS CU-101: Reenviar la Notificación de Confirmación de Pedido](diagramas/png/DSS_CU-101_Reenviar-la-Notificacion-de-Confirmacion-de-Pedido.png)
+
+**Figura 267 — DSS CU-101: Reenviar la Notificación de Confirmación de Pedido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8046,7 +9552,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 267 — DSS CU-101: Reenviar la Notificación de Confirmación de Pedido**
+</details>
 
 > Se usa como acción de soporte cuando el cliente dice no haber recibido el aviso original.
 
@@ -8054,6 +9560,12 @@ sequenceDiagram
 
 **Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `probarServicioDeCorreo(destinatario)`
+
+![DSS CU-102: Probar el Servicio de Correo](diagramas/png/DSS_CU-102_Probar-El-Servicio-De-Correo.png)
+
+**Figura 268 — DSS CU-102: Probar el Servicio de Correo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8074,7 +9586,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 268 — DSS CU-102: Probar el Servicio de Correo**
+</details>
 
 > Es una herramienta de diagnóstico: exige sesión y es exclusiva del Administrador General, porque manda un correo real a la dirección que se le indica.
 
@@ -8086,6 +9598,12 @@ sequenceDiagram
 
 **Actor:** Plataforma de despliegue (ACT-09)
 **Operaciones del sistema:** `verificarVida()`, `verificarDisponibilidad()`, `verificarSalud()`
+
+![DSS CU-104: Verificar la Salud del Sistema (vida y disponibilidad)](diagramas/png/DSS_CU-104_Verificar-La-Salud-Del-Sistema.png)
+
+**Figura 269 — DSS CU-104: Verificar la Salud del Sistema (vida y disponibilidad)**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8118,7 +9636,7 @@ sequenceDiagram
     end
 ```
 
-**Figura 269 — DSS CU-104: Verificar la Salud del Sistema (vida y disponibilidad)**
+</details>
 
 > Es el caso de uso que da soporte a los requisitos no funcionales de **disponibilidad** y **escalabilidad**, sin ningún caso de uso asociado en la matriz de rastreabilidad.
 
@@ -8126,6 +9644,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarAuditoria(autor, tipoDeRecurso, recurso, desde, hasta, resultado, limite, desplazamiento)`, `consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)`
+
+![DSS CU-152: Consultar el Registro de Auditoría](diagramas/png/DSS_CU-152_Consultar-El-Registro-De-Auditoria.png)
+
+**Figura 270 — DSS CU-152: Consultar el Registro de Auditoría**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8159,12 +9683,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 270 — DSS CU-152: Consultar el Registro de Auditoría**
+</details>
 
 #### DSS — CU-172: Configurar los Parámetros de un Proceso Automático
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `configurarParametrosDeProceso(proceso, parametros)`
+
+![DSS CU-172: Configurar los Parámetros de un Proceso Automático](diagramas/png/DSS_CU-172_Configurar-los-Parametros-de-un-Proceso-Automatico.png)
+
+**Figura 271 — DSS CU-172: Configurar los Parámetros de un Proceso Automático**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8185,12 +9715,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 271 — DSS CU-172: Configurar los Parámetros de un Proceso Automático**
+</details>
 
 #### DSS — CU-173: Configurar la Frecuencia de las Tareas Programadas
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `configurarFrecuenciaDeTareas(intervalos)`
+
+![DSS CU-173: Configurar la Frecuencia de las Tareas Programadas](diagramas/png/DSS_CU-173_Configurar-la-Frecuencia-de-las-Tareas-Programadas.png)
+
+**Figura 272 — DSS CU-173: Configurar la Frecuencia de las Tareas Programadas**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8209,7 +9745,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 272 — DSS CU-173: Configurar la Frecuencia de las Tareas Programadas**
+</details>
 
 ---
 
@@ -8219,6 +9755,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarPuestosDeTrabajo()`
+
+![DSS CU-176: Consultar los Puestos de Trabajo](diagramas/png/DSS_CU-176_Consultar-los-Puestos-de-Trabajo.png)
+
+**Figura 273 — DSS CU-176: Consultar los Puestos de Trabajo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8233,7 +9775,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 273 — DSS CU-176: Consultar los Puestos de Trabajo**
+</details>
 
 > La categoría del puesto, y no su nombre, gobierna las reglas que se le aplican al personal.
 
@@ -8241,6 +9783,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarEmpleado(datos)`
+
+![DSS CU-177: Registrar el Legajo de un Empleado](diagramas/png/DSS_CU-177_Registrar-el-Legajo-de-un-Empleado.png)
+
+**Figura 274 — DSS CU-177: Registrar el Legajo de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8263,12 +9811,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 274 — DSS CU-177: Registrar el Legajo de un Empleado**
+</details>
 
 #### DSS — CU-178: Modificar el Legajo de un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarEmpleado(empleadoId, datos)`
+
+![DSS CU-178: Modificar el Legajo de un Empleado](diagramas/png/DSS_CU-178_Modificar-el-Legajo-de-un-Empleado.png)
+
+**Figura 275 — DSS CU-178: Modificar el Legajo de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8291,12 +9845,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 275 — DSS CU-178: Modificar el Legajo de un Empleado**
+</details>
 
 #### DSS — CU-179: Consultar el Legajo de un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarEmpleado(empleadoId)`
+
+![DSS CU-179: Consultar el Legajo de un Empleado](diagramas/png/DSS_CU-179_Consultar-el-Legajo-de-un-Empleado.png)
+
+**Figura 276 — DSS CU-179: Consultar el Legajo de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8315,12 +9875,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 276 — DSS CU-179: Consultar el Legajo de un Empleado**
+</details>
 
 #### DSS — CU-180: Consultar el Listado de Empleados
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarEmpleados(filtros)`
+
+![DSS CU-180: Consultar el Listado de Empleados](diagramas/png/DSS_CU-180_Consultar-el-Listado-de-Empleados.png)
+
+**Figura 277 — DSS CU-180: Consultar el Listado de Empleados**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8341,12 +9907,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 277 — DSS CU-180: Consultar el Listado de Empleados**
+</details>
 
 #### DSS — CU-181: Registrar el Egreso de un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)`
+
+![DSS CU-181: Registrar el Egreso de un Empleado](diagramas/png/DSS_CU-181_Registrar-el-Egreso-de-un-Empleado.png)
+
+**Figura 278 — DSS CU-181: Registrar el Egreso de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8369,12 +9941,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 278 — DSS CU-181: Registrar el Egreso de un Empleado**
+</details>
 
 #### DSS — CU-182: Otorgar una Cuenta de Acceso a un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)`
+
+![DSS CU-182: Otorgar una Cuenta de Acceso a un Empleado](diagramas/png/DSS_CU-182_Otorgar-una-Cuenta-de-Acceso-a-un-Empleado.png)
+
+**Figura 279 — DSS CU-182: Otorgar una Cuenta de Acceso a un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8397,12 +9975,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 279 — DSS CU-182: Otorgar una Cuenta de Acceso a un Empleado**
+</details>
 
 #### DSS — CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)`
+
+![DSS CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado](diagramas/png/DSS_CU-183_Registrar-el-Curso-de-Transporte-de-Mercancias-Peligrosas-del-Empleado.png)
+
+**Figura 280 — DSS CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8427,7 +10011,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 280 — DSS CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado**
+</details>
 
 > Las tres tareas de documentación del personal (CU-183, CU-184 y CU-185) son la misma operación del sistema apuntada a un plan distinto.
 
@@ -8435,6 +10019,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)`
+
+![DSS CU-184: Registrar el Examen Psicofísico del Empleado](diagramas/png/DSS_CU-184_Registrar-el-Examen-Psicofisico-del-Empleado.png)
+
+**Figura 281 — DSS CU-184: Registrar el Examen Psicofísico del Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8459,7 +10049,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 281 — DSS CU-184: Registrar el Examen Psicofísico del Empleado**
+</details>
 
 > Misma operación que CU-183 y CU-185, con el plan «Examen psicofísico».
 
@@ -8467,6 +10057,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)`
+
+![DSS CU-185: Registrar el Alta en la ART del Empleado](diagramas/png/DSS_CU-185_Registrar-el-Alta-en-la-ART-del-Empleado.png)
+
+**Figura 282 — DSS CU-185: Registrar el Alta en la ART del Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8491,7 +10087,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 282 — DSS CU-185: Registrar el Alta en la ART del Empleado**
+</details>
 
 > Misma operación que CU-183 y CU-184, con el plan «Alta en ART», que no bloquea el despacho.
 
@@ -8499,6 +10095,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)`
+
+![DSS CU-186: Adjuntar un Archivo al Legajo](diagramas/png/DSS_CU-186_Adjuntar-un-Archivo-al-Legajo.png)
+
+**Figura 283 — DSS CU-186: Adjuntar un Archivo al Legajo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8519,12 +10121,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 283 — DSS CU-186: Adjuntar un Archivo al Legajo**
+</details>
 
 #### DSS — CU-187: Consultar los Vencimientos del Personal
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarVencimientosDelPersonal(dias, categoria)`, `consultarDocumentacionDelEmpleado(empleadoId)`
+
+![DSS CU-187: Consultar los Vencimientos del Personal](diagramas/png/DSS_CU-187_Consultar-los-Vencimientos-del-Personal.png)
+
+**Figura 284 — DSS CU-187: Consultar los Vencimientos del Personal**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8552,12 +10160,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 284 — DSS CU-187: Consultar los Vencimientos del Personal**
+</details>
 
 #### DSS — CU-188: Avisar los Vencimientos Próximos del Personal
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `avisarVencimientosDelPersonal()`
+
+![DSS CU-188: Avisar los Vencimientos Próximos del Personal](diagramas/png/DSS_CU-188_Avisar-los-Vencimientos-Proximos-del-Personal.png)
+
+**Figura 285 — DSS CU-188: Avisar los Vencimientos Próximos del Personal**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8579,12 +10193,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 285 — DSS CU-188: Avisar los Vencimientos Próximos del Personal**
+</details>
 
 #### DSS — CU-189: Registrar la Asistencia de un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarAsistencia(empleadoId, ingreso, egreso)`
+
+![DSS CU-189: Registrar la Asistencia de un Empleado](diagramas/png/DSS_CU-189_Registrar-la-Asistencia-de-un-Empleado.png)
+
+**Figura 286 — DSS CU-189: Registrar la Asistencia de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8607,12 +10227,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 286 — DSS CU-189: Registrar la Asistencia de un Empleado**
+</details>
 
 #### DSS — CU-190: Registrar el Inicio de la Jornada
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `registrarInicioDeJornada()`
+
+![DSS CU-190: Registrar el Inicio de la Jornada](diagramas/png/DSS_CU-190_Registrar-el-Inicio-de-la-Jornada.png)
+
+**Figura 287 — DSS CU-190: Registrar el Inicio de la Jornada**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8631,12 +10257,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 287 — DSS CU-190: Registrar el Inicio de la Jornada**
+</details>
 
 #### DSS — CU-191: Registrar una Licencia o Ausencia
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarLicencia(empleadoId, tipo, desde, hasta, motivo)`
+
+![DSS CU-191: Registrar una Licencia o Ausencia](diagramas/png/DSS_CU-191_Registrar-una-Licencia-o-Ausencia.png)
+
+**Figura 288 — DSS CU-191: Registrar una Licencia o Ausencia**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8659,12 +10291,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 288 — DSS CU-191: Registrar una Licencia o Ausencia**
+</details>
 
 #### DSS — CU-192: Aprobar una Solicitud de Licencia
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `aprobarLicencia(licenciaId)`
+
+![DSS CU-192: Aprobar una Solicitud de Licencia](diagramas/png/DSS_CU-192_Aprobar-una-Solicitud-de-Licencia.png)
+
+**Figura 289 — DSS CU-192: Aprobar una Solicitud de Licencia**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8685,12 +10323,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 289 — DSS CU-192: Aprobar una Solicitud de Licencia**
+</details>
 
 #### DSS — CU-193: Consultar el Saldo de Vacaciones de un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarSaldoDeVacaciones(empleadoId, anio)`
+
+![DSS CU-193: Consultar el Saldo de Vacaciones de un Empleado](diagramas/png/DSS_CU-193_Consultar-el-Saldo-de-Vacaciones-de-un-Empleado.png)
+
+**Figura 290 — DSS CU-193: Consultar el Saldo de Vacaciones de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8709,12 +10353,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 290 — DSS CU-193: Consultar el Saldo de Vacaciones de un Empleado**
+</details>
 
 #### DSS — CU-194: Consultar el Tablero de Personal
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarTableroDePersonal()`
+
+![DSS CU-194: Consultar el Tablero de Personal](diagramas/png/DSS_CU-194_Consultar-el-Tablero-de-Personal.png)
+
+**Figura 291 — DSS CU-194: Consultar el Tablero de Personal**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8729,12 +10379,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 291 — DSS CU-194: Consultar el Tablero de Personal**
+</details>
 
 #### DSS — CU-246: Verificar la Habilitación Laboral del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `verificarHabilitacionLaboral(choferId)`
+
+![DSS CU-246: Verificar la Habilitación Laboral del Chofer](diagramas/png/DSS_CU-246_Verificar-la-Habilitacion-Laboral-del-Chofer.png)
+
+**Figura 292 — DSS CU-246: Verificar la Habilitación Laboral del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8754,12 +10410,18 @@ sequenceDiagram
     Note over ADM,SIS: Caso incluido: lo ejecuta el sistema dentro de<br/>CU-012 y también lo incluyen CU-013 y CU-015
 ```
 
-**Figura 292 — DSS CU-246: Verificar la Habilitación Laboral del Chofer**
+</details>
 
 #### DSS — CU-255: Crear un Puesto de Trabajo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `crearPuestoDeTrabajo(nombre, categoria)`
+
+![DSS CU-255: Crear un Puesto de Trabajo](diagramas/png/DSS_CU-255_Crear-un-Puesto-de-Trabajo.png)
+
+**Figura 293 — DSS CU-255: Crear un Puesto de Trabajo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8780,12 +10442,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 293 — DSS CU-255: Crear un Puesto de Trabajo**
+</details>
 
 #### DSS — CU-256: Modificar un Puesto de Trabajo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarPuestoDeTrabajo(puestoId, datos)`
+
+![DSS CU-256: Modificar un Puesto de Trabajo](diagramas/png/DSS_CU-256_Modificar-un-Puesto-de-Trabajo.png)
+
+**Figura 294 — DSS CU-256: Modificar un Puesto de Trabajo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8806,12 +10474,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 294 — DSS CU-256: Modificar un Puesto de Trabajo**
+</details>
 
 #### DSS — CU-257: Dar de Baja un Puesto de Trabajo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `eliminarPuestoDeTrabajo(puestoId)`
+
+![DSS CU-257: Dar de Baja un Puesto de Trabajo](diagramas/png/DSS_CU-257_Dar-de-Baja-un-Puesto-de-Trabajo.png)
+
+**Figura 295 — DSS CU-257: Dar de Baja un Puesto de Trabajo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8832,12 +10506,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 295 — DSS CU-257: Dar de Baja un Puesto de Trabajo**
+</details>
 
 #### DSS — CU-311: Dar de Baja el Legajo de un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `eliminarEmpleado(empleadoId)`
+
+![DSS CU-311: Dar de Baja el Legajo de un Empleado](diagramas/png/DSS_CU-311_Dar-de-Baja-el-Legajo-de-un-Empleado.png)
+
+**Figura 296 — DSS CU-311: Dar de Baja el Legajo de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8858,12 +10538,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 296 — DSS CU-311: Dar de Baja el Legajo de un Empleado**
+</details>
 
 #### DSS — CU-312: Reingresar a un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `reingresarEmpleado(empleadoId, fechaDeIngreso)`
+
+![DSS CU-312: Reingresar a un Empleado](diagramas/png/DSS_CU-312_Reingresar-a-un-Empleado.png)
+
+**Figura 297 — DSS CU-312: Reingresar a un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8886,12 +10572,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 297 — DSS CU-312: Reingresar a un Empleado**
+</details>
 
 #### DSS — CU-313: Corregir la Asistencia de un Empleado
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `corregirAsistencia(asistenciaId, datos, nota)`
+
+![DSS CU-313: Corregir la Asistencia de un Empleado](diagramas/png/DSS_CU-313_Corregir-la-Asistencia-de-un-Empleado.png)
+
+**Figura 298 — DSS CU-313: Corregir la Asistencia de un Empleado**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8912,12 +10604,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 298 — DSS CU-313: Corregir la Asistencia de un Empleado**
+</details>
 
 #### DSS — CU-314: Consultar la Asistencia de los Empleados
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarAsistencias(desde, hasta)`
+
+![DSS CU-314: Consultar la Asistencia de los Empleados](diagramas/png/DSS_CU-314_Consultar-la-Asistencia-de-los-Empleados.png)
+
+**Figura 299 — DSS CU-314: Consultar la Asistencia de los Empleados**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8936,12 +10634,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 299 — DSS CU-314: Consultar la Asistencia de los Empleados**
+</details>
 
 #### DSS — CU-315: Registrar el Fin de la Jornada
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `registrarFinDeJornada()`
+
+![DSS CU-315: Registrar el Fin de la Jornada](diagramas/png/DSS_CU-315_Registrar-el-Fin-de-la-Jornada.png)
+
+**Figura 300 — DSS CU-315: Registrar el Fin de la Jornada**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8960,12 +10664,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 300 — DSS CU-315: Registrar el Fin de la Jornada**
+</details>
 
 #### DSS — CU-316: Modificar una Licencia o Ausencia
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarLicencia(licenciaId, datos)`
+
+![DSS CU-316: Modificar una Licencia o Ausencia](diagramas/png/DSS_CU-316_Modificar-una-Licencia-o-Ausencia.png)
+
+**Figura 301 — DSS CU-316: Modificar una Licencia o Ausencia**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -8986,12 +10696,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 301 — DSS CU-316: Modificar una Licencia o Ausencia**
+</details>
 
 #### DSS — CU-317: Cancelar una Licencia o Ausencia
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cancelarLicencia(licenciaId)`
+
+![DSS CU-317: Cancelar una Licencia o Ausencia](diagramas/png/DSS_CU-317_Cancelar-una-Licencia-o-Ausencia.png)
+
+**Figura 302 — DSS CU-317: Cancelar una Licencia o Ausencia**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9012,12 +10728,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 302 — DSS CU-317: Cancelar una Licencia o Ausencia**
+</details>
 
 #### DSS — CU-318: Rechazar una Solicitud de Licencia
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `rechazarLicencia(licenciaId, motivo)`
+
+![DSS CU-318: Rechazar una Solicitud de Licencia](diagramas/png/DSS_CU-318_Rechazar-una-Solicitud-de-Licencia.png)
+
+**Figura 303 — DSS CU-318: Rechazar una Solicitud de Licencia**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9040,12 +10762,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 303 — DSS CU-318: Rechazar una Solicitud de Licencia**
+</details>
 
 #### DSS — CU-319: Consultar las Licencias
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarLicencias(estado, desde, hasta)`
+
+![DSS CU-319: Consultar las Licencias](diagramas/png/DSS_CU-319_Consultar-las-Licencias.png)
+
+**Figura 304 — DSS CU-319: Consultar las Licencias**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9064,7 +10792,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 304 — DSS CU-319: Consultar las Licencias**
+</details>
 
 ---
 
@@ -9074,6 +10802,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarProveedores(termino, tipo, incluirInactivos)`, `consultarProveedor(proveedorId)`
+
+![DSS CU-214: Consultar los Proveedores](diagramas/png/DSS_CU-214_Consultar-los-Proveedores.png)
+
+**Figura 305 — DSS CU-214: Consultar los Proveedores**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9105,12 +10839,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 305 — DSS CU-214: Consultar los Proveedores**
+</details>
 
 #### DSS — CU-215: Emitir una Orden de Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)`
+
+![DSS CU-215: Emitir una Orden de Compra](diagramas/png/DSS_CU-215_Emitir-una-Orden-de-Compra.png)
+
+**Figura 306 — DSS CU-215: Emitir una Orden de Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9131,12 +10871,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 306 — DSS CU-215: Emitir una Orden de Compra**
+</details>
 
 #### DSS — CU-216: Cancelar una Orden de Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cancelarOrdenDeCompra(ordenId, motivo)`
+
+![DSS CU-216: Cancelar una Orden de Compra](diagramas/png/DSS_CU-216_Cancelar-una-Orden-de-Compra.png)
+
+**Figura 307 — DSS CU-216: Cancelar una Orden de Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9159,12 +10905,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 307 — DSS CU-216: Cancelar una Orden de Compra**
+</details>
 
 #### DSS — CU-217: Registrar la Recepción de una Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)`
+
+![DSS CU-217: Registrar la Recepción de una Compra](diagramas/png/DSS_CU-217_Registrar-la-Recepcion-de-una-Compra.png)
+
+**Figura 308 — DSS CU-217: Registrar la Recepción de una Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9187,12 +10939,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 308 — DSS CU-217: Registrar la Recepción de una Compra**
+</details>
 
 #### DSS — CU-261: Registrar un Proveedor
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)`
+
+![DSS CU-261: Registrar un Proveedor](diagramas/png/DSS_CU-261_Registrar-un-Proveedor.png)
+
+**Figura 309 — DSS CU-261: Registrar un Proveedor**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9213,12 +10971,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 309 — DSS CU-261: Registrar un Proveedor**
+</details>
 
 #### DSS — CU-262: Modificar un Proveedor
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `actualizarProveedor(proveedorId, datos)`
+
+![DSS CU-262: Modificar un Proveedor](diagramas/png/DSS_CU-262_Modificar-un-Proveedor.png)
+
+**Figura 310 — DSS CU-262: Modificar un Proveedor**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9241,12 +11005,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 310 — DSS CU-262: Modificar un Proveedor**
+</details>
 
 #### DSS — CU-263: Dar de Baja un Proveedor
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `darDeBajaProveedor(proveedorId)`
+
+![DSS CU-263: Dar de Baja un Proveedor](diagramas/png/DSS_CU-263_Dar-de-Baja-un-Proveedor.png)
+
+**Figura 311 — DSS CU-263: Dar de Baja un Proveedor**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9267,12 +11037,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 311 — DSS CU-263: Dar de Baja un Proveedor**
+</details>
 
 #### DSS — CU-280: Anular una Recepción de Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `anularRecepcionDeCompra(recepcionId, motivo)`
+
+![DSS CU-280: Anular una Recepción de Compra](diagramas/png/DSS_CU-280_Anular-una-Recepcion-de-Compra.png)
+
+**Figura 312 — DSS CU-280: Anular una Recepción de Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9295,12 +11071,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 312 — DSS CU-280: Anular una Recepción de Compra**
+</details>
 
 #### DSS — CU-281: Marcar el Pago de una Recepción
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `marcarPagoDeRecepcion(recepcionId, estadoDePago)`
+
+![DSS CU-281: Marcar el Pago de una Recepción](diagramas/png/DSS_CU-281_Marcar-el-Pago-de-una-Recepcion.png)
+
+**Figura 313 — DSS CU-281: Marcar el Pago de una Recepción**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9321,12 +11103,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 313 — DSS CU-281: Marcar el Pago de una Recepción**
+</details>
 
 #### DSS — CU-282: Cerrar una Orden de Compra con Faltante
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cerrarOrdenDeCompraConFaltante(ordenId, motivo)`
+
+![DSS CU-282: Cerrar una Orden de Compra con Faltante](diagramas/png/DSS_CU-282_Cerrar-una-Orden-de-Compra-con-Faltante.png)
+
+**Figura 314 — DSS CU-282: Cerrar una Orden de Compra con Faltante**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9347,12 +11135,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 314 — DSS CU-282: Cerrar una Orden de Compra con Faltante**
+</details>
 
 #### DSS — CU-283: Consultar las Órdenes de Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)`, `consultarOrdenDeCompra(ordenId)`, `consultarPendienteDeRecibir(ordenId)`
+
+![DSS CU-283: Consultar las Órdenes de Compra](diagramas/png/DSS_CU-283_Consultar-las-Ordenes-de-Compra.png)
+
+**Figura 315 — DSS CU-283: Consultar las Órdenes de Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9395,12 +11189,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 315 — DSS CU-283: Consultar las Órdenes de Compra**
+</details>
 
 #### DSS — CU-284: Consultar las Recepciones de Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)`, `consultarRecepcionDeCompra(recepcionId)`
+
+![DSS CU-284: Consultar las Recepciones de Compra](diagramas/png/DSS_CU-284_Consultar-las-Recepciones-de-Compra.png)
+
+**Figura 316 — DSS CU-284: Consultar las Recepciones de Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9432,12 +11232,18 @@ sequenceDiagram
     end
 ```
 
-**Figura 316 — DSS CU-284: Consultar las Recepciones de Compra**
+</details>
 
 #### DSS — CU-285: Consultar el Costo Promedio de las Garrafas
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarCostoPromedio()`
+
+![DSS CU-285: Consultar el Costo Promedio de las Garrafas](diagramas/png/DSS_CU-285_Consultar-el-Costo-Promedio-de-las-Garrafas.png)
+
+**Figura 317 — DSS CU-285: Consultar el Costo Promedio de las Garrafas**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9452,12 +11258,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 317 — DSS CU-285: Consultar el Costo Promedio de las Garrafas**
+</details>
 
 #### DSS — CU-286: Consultar el Historial de Compras de un Proveedor
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarHistorialDeCompras(proveedorId, desde, hasta)`
+
+![DSS CU-286: Consultar el Historial de Compras de un Proveedor](diagramas/png/DSS_CU-286_Consultar-el-Historial-de-Compras-de-un-Proveedor.png)
+
+**Figura 318 — DSS CU-286: Consultar el Historial de Compras de un Proveedor**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9478,12 +11290,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 318 — DSS CU-286: Consultar el Historial de Compras de un Proveedor**
+</details>
 
 #### DSS — CU-287: Modificar una Orden de Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarOrdenDeCompra(ordenId, datos)`
+
+![DSS CU-287: Modificar una Orden de Compra](diagramas/png/DSS_CU-287_Modificar-una-Orden-de-Compra.png)
+
+**Figura 319 — DSS CU-287: Modificar una Orden de Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9504,12 +11322,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 319 — DSS CU-287: Modificar una Orden de Compra**
+</details>
 
 #### DSS — CU-288: Enviar una Orden de Compra
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `enviarOrdenDeCompra(ordenId)`
+
+![DSS CU-288: Enviar una Orden de Compra](diagramas/png/DSS_CU-288_Enviar-una-Orden-de-Compra.png)
+
+**Figura 320 — DSS CU-288: Enviar una Orden de Compra**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9530,7 +11354,7 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 320 — DSS CU-288: Enviar una Orden de Compra**
+</details>
 
 ---
 
@@ -9540,6 +11364,12 @@ sequenceDiagram
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `crearCaja(nombre, tipo, requiereSesion)`
+
+![DSS CU-225: Crear una Caja](diagramas/png/DSS_CU-225_Crear-una-Caja.png)
+
+**Figura 321 — DSS CU-225: Crear una Caja**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9558,12 +11388,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 321 — DSS CU-225: Crear una Caja**
+</details>
 
 #### DSS — CU-226: Abrir la Caja
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `abrirCaja(cajaId, montoInicial)`
+
+![DSS CU-226: Abrir la Caja](diagramas/png/DSS_CU-226_Abrir-la-Caja.png)
+
+**Figura 322 — DSS CU-226: Abrir la Caja**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9584,12 +11420,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 322 — DSS CU-226: Abrir la Caja**
+</details>
 
 #### DSS — CU-227: Cerrar la Caja con Arqueo
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `cerrarCajaConArqueo(sesionId, montoContado)`
+
+![DSS CU-227: Cerrar la Caja con Arqueo](diagramas/png/DSS_CU-227_Cerrar-la-Caja-con-Arqueo.png)
+
+**Figura 323 — DSS CU-227: Cerrar la Caja con Arqueo**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9610,12 +11452,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 323 — DSS CU-227: Cerrar la Caja con Arqueo**
+</details>
 
 #### DSS — CU-228: Registrar una Entrada de Dinero en la Caja
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)`
+
+![DSS CU-228: Registrar una Entrada de Dinero en la Caja](diagramas/png/DSS_CU-228_Registrar-una-Entrada-de-Dinero-en-la-Caja.png)
+
+**Figura 324 — DSS CU-228: Registrar una Entrada de Dinero en la Caja**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9634,12 +11482,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 324 — DSS CU-228: Registrar una Entrada de Dinero en la Caja**
+</details>
 
 #### DSS — CU-229: Anular un Movimiento de Caja
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `anularMovimientoDeCaja(movimientoId, motivo)`
+
+![DSS CU-229: Anular un Movimiento de Caja](diagramas/png/DSS_CU-229_Anular-un-Movimiento-de-Caja.png)
+
+**Figura 325 — DSS CU-229: Anular un Movimiento de Caja**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9658,12 +11512,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 325 — DSS CU-229: Anular un Movimiento de Caja**
+</details>
 
 #### DSS — CU-230: Crear una Categoría de Ingresos y Gastos
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `crearCategoriaDeCaja(nombre, sentido)`
+
+![DSS CU-230: Crear una Categoría de Ingresos y Gastos](diagramas/png/DSS_CU-230_Crear-una-Categoria-de-Ingresos-y-Gastos.png)
+
+**Figura 326 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9682,12 +11542,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 326 — DSS CU-230: Crear una Categoría de Ingresos y Gastos**
+</details>
 
 #### DSS — CU-231: Generar la Rendición Diaria del Chofer
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `generarRendicionesDelDia()`
+
+![DSS CU-231: Generar la Rendición Diaria del Chofer](diagramas/png/DSS_CU-231_Generar-la-Rendicion-Diaria-del-Chofer.png)
+
+**Figura 327 — DSS CU-231: Generar la Rendición Diaria del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9711,12 +11577,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 327 — DSS CU-231: Generar la Rendición Diaria del Chofer**
+</details>
 
 #### DSS — CU-232: Declarar el Efectivo Rendido
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)`
+
+![DSS CU-232: Declarar el Efectivo Rendido](diagramas/png/DSS_CU-232_Declarar-el-Efectivo-Rendido.png)
+
+**Figura 328 — DSS CU-232: Declarar el Efectivo Rendido**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9738,12 +11610,18 @@ sequenceDiagram
     Note over CHF,SIS: También lo inicia el Administrador (ACT-03), que presenta una rendición en nombre del chofer
 ```
 
-**Figura 328 — DSS CU-232: Declarar el Efectivo Rendido**
+</details>
 
 #### DSS — CU-233: Aprobar la Rendición del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)`
+
+![DSS CU-233: Aprobar la Rendición del Chofer](diagramas/png/DSS_CU-233_Aprobar-la-Rendicion-del-Chofer.png)
+
+**Figura 329 — DSS CU-233: Aprobar la Rendición del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9766,12 +11644,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 329 — DSS CU-233: Aprobar la Rendición del Chofer**
+</details>
 
 #### DSS — CU-234: Avisar las Rendiciones sin Cerrar
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `avisarRendicionesSinCerrar()`
+
+![DSS CU-234: Avisar las Rendiciones sin Cerrar](diagramas/png/DSS_CU-234_Avisar-las-Rendiciones-sin-Cerrar.png)
+
+**Figura 330 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9795,12 +11679,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 330 — DSS CU-234: Avisar las Rendiciones sin Cerrar**
+</details>
 
 #### DSS — CU-235: Habilitar la Cuenta Corriente de un Cliente
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)`
+
+![DSS CU-235: Habilitar la Cuenta Corriente de un Cliente](diagramas/png/DSS_CU-235_Habilitar-la-Cuenta-Corriente-de-un-Cliente.png)
+
+**Figura 331 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9819,12 +11709,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 331 — DSS CU-235: Habilitar la Cuenta Corriente de un Cliente**
+</details>
 
 #### DSS — CU-236: Vender a Cuenta Corriente
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `venderACuentaCorriente(clienteId, direccionId, items)`
+
+![DSS CU-236: Vender a Cuenta Corriente](diagramas/png/DSS_CU-236_Vender-a-Cuenta-Corriente.png)
+
+**Figura 332 — DSS CU-236: Vender a Cuenta Corriente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9843,12 +11739,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 332 — DSS CU-236: Vender a Cuenta Corriente**
+</details>
 
 #### DSS — CU-237: Registrar un Pago de Cuenta Corriente
 
 **Actor:** Chofer (ACT-02), Administrador (ACT-03)
 **Operaciones del sistema:** `registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)`
+
+![DSS CU-237: Registrar un Pago de Cuenta Corriente](diagramas/png/DSS_CU-237_Registrar-un-Pago-de-Cuenta-Corriente.png)
+
+**Figura 333 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9868,12 +11770,18 @@ sequenceDiagram
     Note over CHF,SIS: También lo inicia el Administrador (ACT-03), que registra el cobro en una caja
 ```
 
-**Figura 333 — DSS CU-237: Registrar un Pago de Cuenta Corriente**
+</details>
 
 #### DSS — CU-238: Consultar el Estado de Cuenta de un Cliente
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)`
+
+![DSS CU-238: Consultar el Estado de Cuenta de un Cliente](diagramas/png/DSS_CU-238_Consultar-el-Estado-de-Cuenta-de-un-Cliente.png)
+
+**Figura 334 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9892,12 +11800,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 334 — DSS CU-238: Consultar el Estado de Cuenta de un Cliente**
+</details>
 
 #### DSS — CU-239: Consultar la Antigüedad de la Deuda
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarAntiguedadDeDeuda()`
+
+![DSS CU-239: Consultar la Antigüedad de la Deuda](diagramas/png/DSS_CU-239_Consultar-la-Antiguedad-de-la-Deuda.png)
+
+**Figura 335 — DSS CU-239: Consultar la Antigüedad de la Deuda**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9912,12 +11826,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 335 — DSS CU-239: Consultar la Antigüedad de la Deuda**
+</details>
 
 #### DSS — CU-240: Crear una Regla de Comisión por Entrega
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)`
+
+![DSS CU-240: Crear una Regla de Comisión por Entrega](diagramas/png/DSS_CU-240_Crear-una-Regla-de-Comision-por-Entrega.png)
+
+**Figura 336 — DSS CU-240: Crear una Regla de Comisión por Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9936,12 +11856,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 336 — DSS CU-240: Crear una Regla de Comisión por Entrega**
+</details>
 
 #### DSS — CU-241: Registrar la Comisión de una Entrega
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `registrarComisionDeEntrega(pedidoId)`
+
+![DSS CU-241: Registrar la Comisión de una Entrega](diagramas/png/DSS_CU-241_Registrar-la-Comision-de-una-Entrega.png)
+
+**Figura 337 — DSS CU-241: Registrar la Comisión de una Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9961,12 +11887,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 337 — DSS CU-241: Registrar la Comisión de una Entrega**
+</details>
 
 #### DSS — CU-242: Liquidar las Comisiones de un Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)`
+
+![DSS CU-242: Liquidar las Comisiones de un Chofer](diagramas/png/DSS_CU-242_Liquidar-las-Comisiones-de-un-Chofer.png)
+
+**Figura 338 — DSS CU-242: Liquidar las Comisiones de un Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -9985,12 +11917,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 338 — DSS CU-242: Liquidar las Comisiones de un Chofer**
+</details>
 
 #### DSS — CU-243: Registrar el Pago de una Liquidación
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `pagarLiquidacion(liquidacionId, cajaId)`
+
+![DSS CU-243: Registrar el Pago de una Liquidación](diagramas/png/DSS_CU-243_Registrar-el-Pago-de-una-Liquidacion.png)
+
+**Figura 339 — DSS CU-243: Registrar el Pago de una Liquidación**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10011,12 +11949,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 339 — DSS CU-243: Registrar el Pago de una Liquidación**
+</details>
 
 #### DSS — CU-347: Anular el Pago de una Liquidación
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `anularPagoDeLiquidacion(liquidacionId, motivo)`
+
+![DSS CU-347: Anular el Pago de una Liquidación](diagramas/png/DSS_CU-347_Anular-el-Pago-de-una-Liquidación.png)
+
+**Figura 340 — DSS CU-347: Anular el Pago de una Liquidación**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10041,12 +11985,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 340 — DSS CU-347: Anular el Pago de una Liquidación**
+</details>
 
 #### DSS — CU-244: Consultar Mis Comisiones
 
 **Actor:** Chofer (ACT-02)
 **Operaciones del sistema:** `consultarMisComisiones(fechaDesde, fechaHasta)`
+
+![DSS CU-244: Consultar Mis Comisiones](diagramas/png/DSS_CU-244_Consultar-Mis-Comisiones.png)
+
+**Figura 341 — DSS CU-244: Consultar Mis Comisiones**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10061,12 +12011,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 341 — DSS CU-244: Consultar Mis Comisiones**
+</details>
 
 #### DSS — CU-245: Consultar el Tablero Financiero
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `consultarTableroFinanciero(fecha)`
+
+![DSS CU-245: Consultar el Tablero Financiero](diagramas/png/DSS_CU-245_Consultar-el-Tablero-Financiero.png)
+
+**Figura 342 — DSS CU-245: Consultar el Tablero Financiero**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10081,12 +12037,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 342 — DSS CU-245: Consultar el Tablero Financiero**
+</details>
 
 #### DSS — CU-264: Modificar una Caja
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarCaja(cajaId, datos)`
+
+![DSS CU-264: Modificar una Caja](diagramas/png/DSS_CU-264_Modificar-una-Caja.png)
+
+**Figura 343 — DSS CU-264: Modificar una Caja**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10105,12 +12067,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 343 — DSS CU-264: Modificar una Caja**
+</details>
 
 #### DSS — CU-265: Modificar una Categoría de Ingresos y Gastos
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarCategoriaDeCaja(categoriaId, datos)`
+
+![DSS CU-265: Modificar una Categoría de Ingresos y Gastos](diagramas/png/DSS_CU-265_Modificar-una-Categoria-de-Ingresos-y-Gastos.png)
+
+**Figura 344 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10129,12 +12097,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 344 — DSS CU-265: Modificar una Categoría de Ingresos y Gastos**
+</details>
 
 #### DSS — CU-309: Registrar una Salida de Dinero de la Caja
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)`
+
+![DSS CU-309: Registrar una Salida de Dinero de la Caja](diagramas/png/DSS_CU-309_Registrar-una-Salida-de-Dinero-de-la-Caja.png)
+
+**Figura 345 — DSS CU-309: Registrar una Salida de Dinero de la Caja**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10153,12 +12127,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 345 — DSS CU-309: Registrar una Salida de Dinero de la Caja**
+</details>
 
 #### DSS — CU-310: Transferir Fondos entre Cajas
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)`
+
+![DSS CU-310: Transferir Fondos entre Cajas](diagramas/png/DSS_CU-310_Transferir-Fondos-entre-Cajas.png)
+
+**Figura 346 — DSS CU-310: Transferir Fondos entre Cajas**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10177,12 +12157,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 346 — DSS CU-310: Transferir Fondos entre Cajas**
+</details>
 
 #### DSS — CU-329: Registrar un Ajuste de Cuenta Corriente
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)`
+
+![DSS CU-329: Registrar un Ajuste de Cuenta Corriente](diagramas/png/DSS_CU-329_Registrar-un-Ajuste-de-Cuenta-Corriente.png)
+
+**Figura 347 — DSS CU-329: Registrar un Ajuste de Cuenta Corriente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10201,12 +12187,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 347 — DSS CU-329: Registrar un Ajuste de Cuenta Corriente**
+</details>
 
 #### DSS — CU-330: Reabrir la Rendición del Chofer
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `reabrirRendicion(rendicionId)`
+
+![DSS CU-330: Reabrir la Rendición del Chofer](diagramas/png/DSS_CU-330_Reabrir-la-Rendicion-del-Chofer.png)
+
+**Figura 348 — DSS CU-330: Reabrir la Rendición del Chofer**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10225,12 +12217,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 348 — DSS CU-330: Reabrir la Rendición del Chofer**
+</details>
 
 #### DSS — CU-331: Modificar la Cuenta Corriente de un Cliente
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarCuentaCorriente(cuentaId, datos)`
+
+![DSS CU-331: Modificar la Cuenta Corriente de un Cliente](diagramas/png/DSS_CU-331_Modificar-la-Cuenta-Corriente-de-un-Cliente.png)
+
+**Figura 349 — DSS CU-331: Modificar la Cuenta Corriente de un Cliente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10249,12 +12247,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 349 — DSS CU-331: Modificar la Cuenta Corriente de un Cliente**
+</details>
 
 #### DSS — CU-332: Asentar el Cargo de una Venta a Cuenta Corriente
 
 **Actor:** Sistema Automático (ACT-04)
 **Operaciones del sistema:** `registrarCargoDeCuentaCorriente(pedidoId)`
+
+![DSS CU-332: Asentar el Cargo de una Venta a Cuenta Corriente](diagramas/png/DSS_CU-332_Asentar-el-Cargo-de-una-Venta-a-Cuenta-Corriente.png)
+
+**Figura 350 — DSS CU-332: Asentar el Cargo de una Venta a Cuenta Corriente**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10274,12 +12278,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 350 — DSS CU-332: Asentar el Cargo de una Venta a Cuenta Corriente**
+</details>
 
 #### DSS — CU-333: Modificar una Regla de Comisión por Entrega
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `modificarReglaDeComision(reglaId, datos)`
+
+![DSS CU-333: Modificar una Regla de Comisión por Entrega](diagramas/png/DSS_CU-333_Modificar-una-Regla-de-Comision-por-Entrega.png)
+
+**Figura 351 — DSS CU-333: Modificar una Regla de Comisión por Entrega**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10298,12 +12308,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 351 — DSS CU-333: Modificar una Regla de Comisión por Entrega**
+</details>
 
 #### DSS — CU-334: Aprobar una Liquidación de Comisiones
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `aprobarLiquidacion(liquidacionId)`
+
+![DSS CU-334: Aprobar una Liquidación de Comisiones](diagramas/png/DSS_CU-334_Aprobar-una-Liquidacion-de-Comisiones.png)
+
+**Figura 352 — DSS CU-334: Aprobar una Liquidación de Comisiones**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10322,12 +12338,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 352 — DSS CU-334: Aprobar una Liquidación de Comisiones**
+</details>
 
 #### DSS — CU-335: Anular una Liquidación de Comisiones
 
 **Actor:** Administrador (ACT-03)
 **Operaciones del sistema:** `anularLiquidacion(liquidacionId)`
+
+![DSS CU-335: Anular una Liquidación de Comisiones](diagramas/png/DSS_CU-335_Anular-una-Liquidacion-de-Comisiones.png)
+
+**Figura 353 — DSS CU-335: Anular una Liquidación de Comisiones**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10346,12 +12368,18 @@ sequenceDiagram
     deactivate SIS
 ```
 
-**Figura 353 — DSS CU-335: Anular una Liquidación de Comisiones**
+</details>
 
 #### DSS — CU-340: Consultar los Movimientos de Caja
 
 **Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `consultarMovimientosDeCaja(cajaId, desde, hasta)`
+
+![DSS CU-340: Consultar los Movimientos de Caja](diagramas/png/DSS_CU-340_Consultar-los-Movimientos-de-Caja.png)
+
+**Figura 354 — DSS CU-340: Consultar los Movimientos de Caja**
+
+<details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
@@ -10371,7 +12399,7 @@ sequenceDiagram
     Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
 ```
 
-**Figura 354 — DSS CU-340: Consultar los Movimientos de Caja**
+</details>
 
 ---
 

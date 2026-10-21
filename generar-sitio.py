@@ -7,6 +7,7 @@ Uso:  python3 generar-sitio.py     ->  splg-documentacion.html
 """
 import re, json, os, glob, base64, hashlib, sys, datetime, subprocess
 from paleta import css_subsistemas
+from imagenes_cu import desplegar
 
 # Los casos de uso que intervienen en cada modulo sin pertenecerle. Salen de las
 # entradas y salidas de la especificacion del documento 3, seccion 6. La catedra
@@ -216,6 +217,7 @@ def marcar(s):
 def md2html(md):
     """Convierte un bloque de markdown a HTML y separa los diagramas mermaid."""
     diagramas = []
+    md = desplegar(md)      # el sitio dibuja el Mermaid en vivo: la imagen del .md sería el mismo diagrama dos veces
     def inline(s):
         s = _html.escape(s)
         s = re.sub(r'`([^`]+)`', r'<code>\1</code>', s)

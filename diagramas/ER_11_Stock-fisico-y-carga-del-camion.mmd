@@ -1,0 +1,127 @@
+erDiagram
+    STOCK_THRESHOLD }o--|| WAREHOUSE : "warehouse_id"
+    STOCK_LOCATION |o--o| WAREHOUSE : "warehouse_id"
+    STOCK_ADJUSTMENT }o--|| STOCK_LOCATION : "location_id"
+    STOCK_BALANCE }o--|| STOCK_LOCATION : "location_id"
+    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "from_location_id"
+    STOCK_MOVEMENT }o--o| STOCK_MOVEMENT : "reversed_movement_id"
+    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "to_location_id"
+    TRUCK_LOAD }o--|| STOCK_LOCATION : "origin_location_id"
+    STOCK_ADJUSTMENT_ITEM }o--|| STOCK_ADJUSTMENT : "adjustment_id"
+    TRUCK_LOAD_ITEM }o--|| TRUCK_LOAD : "load_id"
+
+    WAREHOUSE {
+        uuid warehouse_id PK
+        uuid distributor_id FK
+        varchar name
+        varchar code
+        enum kind
+        text address "nullable"
+        boolean is_default
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    STOCK_THRESHOLD {
+        uuid threshold_id PK
+        uuid distributor_id FK
+        uuid warehouse_id FK
+        uuid gas_cylinder_id FK
+        int min_full
+        timestamptz alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    STOCK_LOCATION {
+        uuid location_id PK
+        uuid distributor_id FK
+        enum kind
+        uuid warehouse_id FK, UK "nullable"
+        uuid car_id FK, UK "nullable"
+        timestamptz createdAt
+    }
+    STOCK_ADJUSTMENT {
+        uuid adjustment_id PK
+        uuid distributor_id FK
+        int number
+        uuid location_id FK
+        enum reason
+        text notes
+        uuid batch_id
+        uuid created_by_user_id FK
+        timestamptz createdAt
+    }
+    STOCK_BALANCE {
+        uuid balance_id PK
+        uuid distributor_id FK
+        uuid location_id FK
+        uuid gas_cylinder_id FK
+        enum condition
+        int quantity
+        timestamptz updatedAt
+    }
+    STOCK_MOVEMENT {
+        uuid movement_id PK
+        uuid distributor_id FK
+        uuid gas_cylinder_id FK
+        uuid batch_id
+        int quantity
+        uuid from_location_id FK "nullable"
+        enum from_condition "nullable"
+        uuid to_location_id FK "nullable"
+        enum to_condition "nullable"
+        enum reason
+        enum reference_type
+        uuid reference_id "nullable"
+        uuid reversed_movement_id FK "nullable"
+        varchar notes "nullable"
+        uuid actor_user_id FK "nullable"
+        timestamptz occurred_at
+        timestamptz createdAt
+    }
+    TRUCK_LOAD {
+        uuid load_id PK
+        uuid distributor_id FK
+        int number
+        uuid car_id FK
+        uuid delivery_id FK
+        uuid helper_employee_id FK "nullable"
+        uuid origin_location_id FK
+        date business_date
+        enum status
+        timestamptz opened_at
+        timestamptz departed_at "nullable"
+        timestamptz returned_at "nullable"
+        timestamptz closed_at "nullable"
+        uuid opened_by_user_id FK
+        uuid closed_by_user_id FK "nullable"
+        text difference_note "nullable"
+        text cancel_reason "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    STOCK_ADJUSTMENT_ITEM {
+        uuid item_id PK
+        uuid adjustment_id FK
+        uuid gas_cylinder_id FK
+        enum condition
+        int quantity_delta
+    }
+    TRUCK_LOAD_ITEM {
+        uuid item_id PK
+        uuid load_id FK
+        uuid gas_cylinder_id FK
+        int loaded_full
+        int reloaded_full
+        int loaded_empty
+        int declared_return_full "nullable"
+        int declared_return_empty "nullable"
+        int delivered_full "nullable"
+        int collected_empty "nullable"
+        int expected_full "nullable"
+        int expected_empty "nullable"
+        int difference_full "nullable"
+        int difference_empty "nullable"
+    }

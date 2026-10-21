@@ -1,0 +1,38 @@
+erDiagram
+    PAYMENT_REFUND }o--|| PAYMENT : "payment_id"
+
+    PAYMENT {
+        uuid payment_id PK
+        uuid order_id FK
+        uuid distributor_id FK "nullable"
+        enum gateway
+        enum integration
+        varchar method "nullable"
+        varchar gateway_payment_id "nullable"
+        varchar external_reference "nullable"
+        decimal amount
+        varchar currency
+        enum status
+        text payment_url "nullable"
+        boolean is_deposit
+        jsonb metadata "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    PAYMENT_REFUND {
+        uuid refund_id PK
+        uuid payment_id FK
+        uuid order_id FK
+        uuid distributor_id FK "nullable"
+        enum kind
+        decimal amount
+        enum status
+        varchar gateway_refund_id "nullable"
+        text error_message "nullable"
+        int attempts
+        timestamptz refunded_at "nullable"
+        uuid requested_by_user_id "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        decimal refunded_baseline "nullable"
+    }

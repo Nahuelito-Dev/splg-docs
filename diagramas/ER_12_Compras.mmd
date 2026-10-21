@@ -1,0 +1,84 @@
+erDiagram
+    PURCHASE_ORDER }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_ORDER_ITEM }o--|| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
+    PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_RECEIPT_ITEM }o--|| PURCHASE_RECEIPT : "receipt_id"
+
+    SUPPLIER {
+        uuid supplier_id PK
+        uuid distributor_id FK
+        varchar business_name
+        varchar cuit
+        enum kind
+        varchar contact_name "nullable"
+        varchar phone "nullable"
+        varchar email "nullable"
+        text address "nullable"
+        int payment_terms_days "nullable"
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    PURCHASE_ORDER {
+        uuid purchase_order_id PK
+        uuid distributor_id FK
+        int number
+        uuid supplier_id FK
+        uuid destination_warehouse_id FK
+        enum status
+        timestamptz issued_at "nullable"
+        date expected_date "nullable"
+        decimal total_amount
+        text cancel_reason "nullable"
+        text notes "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+        text close_reason "nullable"
+    }
+    PURCHASE_ORDER_ITEM {
+        uuid item_id PK
+        uuid purchase_order_id FK
+        uuid gas_cylinder_id FK
+        int quantity
+        decimal unit_cost
+        int empties_to_exchange
+        int received_quantity
+    }
+    PURCHASE_RECEIPT {
+        uuid receipt_id PK
+        uuid distributor_id FK
+        int number
+        uuid supplier_id FK
+        uuid purchase_order_id FK "nullable"
+        uuid warehouse_id FK
+        enum supplier_document_type
+        varchar supplier_document_number
+        timestamptz received_at
+        uuid received_by_user_id FK
+        decimal total_amount
+        enum payment_status
+        uuid cash_movement_id "nullable"
+        enum status
+        text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        uuid voided_by_user_id "nullable"
+        uuid batch_id
+        uuid void_batch_id "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    PURCHASE_RECEIPT_ITEM {
+        uuid item_id PK
+        uuid receipt_id FK
+        uuid gas_cylinder_id FK
+        int quantity_full
+        int quantity_empty_out
+        decimal unit_cost
+        decimal previous_average_cost "nullable"
+        int previous_on_hand "nullable"
+        timestamptz previous_on_hand_at "nullable"
+    }

@@ -838,6 +838,13 @@ if _err_4: FALLAS.append("Cuatro artefactos por caso de uso")
 print(f"[{'OK' if not _err_4 else 'FALLA':5}] Cada CU del catálogo tiene CUA, CUE, DSS y DSD con su diagrama dibujado ({len(_nombres4)} casos)"
       + (f" | {len(_err_4)} errores: {_err_4[:6]}" if _err_4 else ""))
 
+# ---------- los diagramas de los casos de uso se ven como imagen, con su PNG al día ----------
+import imagenes_cu
+_err_i = imagenes_cu.verificar()
+if _err_i: FALLAS.append("Imágenes de los diagramas de los casos de uso")
+print(f"[{'OK' if not _err_i else 'FALLA':5}] Cada CU tiene su DSS y su DSD como imagen en Casos-de-Uso.md y en su documento, con el Mermaid plegado, y cada PNG es el de su .mmd vigente"
+      + (f" | {len(_err_i)} errores: {_err_i[:6]}" if _err_i else ""))
+
 # ---------- secciones duplicadas, pies de figura con el nombre del catálogo y casos retirados ----------
 _err_s = []
 for _f in ("2-Analisis.md", "Casos-de-Uso.md"):

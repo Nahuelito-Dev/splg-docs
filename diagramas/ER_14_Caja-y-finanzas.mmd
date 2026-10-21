@@ -1,0 +1,210 @@
+erDiagram
+    CASH_SESSION }o--|| CASH_BOX : "cash_box_id"
+    CASH_MOVEMENT }o--|| CASH_BOX : "cash_box_id"
+    CASH_MOVEMENT }o--|| CASH_CATEGORY : "category_id"
+    CASH_MOVEMENT }o--o| CASH_MOVEMENT : "reverses_movement_id"
+    CASH_MOVEMENT }o--o| CASH_SESSION : "session_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--|| CUSTOMER_ACCOUNT : "account_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| CASH_MOVEMENT : "cash_movement_id"
+    DRIVER_LIQUIDATION }o--o| CASH_MOVEMENT : "cash_movement_id"
+    COMMISSION_ENTRY }o--o| DRIVER_LIQUIDATION : "liquidation_id"
+    COMMISSION_ENTRY }o--o| COMMISSION_RULE : "rule_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT : "account_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "credit_entry_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "debit_entry_id"
+    DRIVER_SETTLEMENT }o--o| CASH_MOVEMENT : "cash_movement_id"
+    DRIVER_SETTLEMENT }o--o| CASH_BOX : "destination_cash_box_id"
+    DRIVER_SETTLEMENT_COLLECTION |o--|| CUSTOMER_ACCOUNT_ENTRY : "entry_id"
+    DRIVER_SETTLEMENT_COLLECTION }o--|| DRIVER_SETTLEMENT : "settlement_id"
+    DRIVER_SETTLEMENT_EXPENSE }o--|| CASH_CATEGORY : "category_id"
+    DRIVER_SETTLEMENT_EXPENSE }o--|| DRIVER_SETTLEMENT : "settlement_id"
+    DRIVER_SETTLEMENT_ORDER }o--|| DRIVER_SETTLEMENT : "settlement_id"
+
+    CASH_BOX {
+        uuid cash_box_id PK
+        uuid distributor_id FK
+        varchar name
+        enum kind
+        decimal balance
+        boolean requires_session
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    CASH_CATEGORY {
+        uuid category_id PK
+        uuid distributor_id FK
+        varchar name
+        enum direction
+        enum system_code "nullable"
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    CASH_SESSION {
+        uuid session_id PK
+        uuid distributor_id FK
+        uuid cash_box_id FK
+        enum status
+        timestamptz opened_at
+        uuid opened_by_user_id FK
+        decimal opening_amount
+        timestamptz closed_at "nullable"
+        uuid closed_by_user_id FK "nullable"
+        decimal expected_amount "nullable"
+        decimal counted_amount "nullable"
+        decimal difference "nullable"
+        text notes "nullable"
+    }
+    CUSTOMER_ACCOUNT {
+        uuid account_id PK
+        uuid distributor_id FK
+        uuid customer_user_id FK
+        varchar business_name
+        varchar tax_id "nullable"
+        enum tax_condition
+        decimal credit_limit
+        int payment_terms_days
+        enum status
+        decimal balance
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    CASH_MOVEMENT {
+        uuid movement_id PK
+        uuid distributor_id FK
+        uuid cash_box_id FK
+        uuid session_id FK "nullable"
+        enum direction
+        decimal amount
+        uuid category_id FK
+        enum method
+        timestamptz occurred_at
+        varchar description
+        enum reference_type
+        uuid reference_id "nullable"
+        uuid reverses_movement_id FK "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+    }
+    COMMISSION_RULE {
+        uuid rule_id PK
+        uuid distributor_id FK
+        uuid employee_id FK "nullable"
+        uuid gas_cylinder_id FK "nullable"
+        enum basis
+        decimal value
+        date valid_from
+        date valid_to "nullable"
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    CUSTOMER_ACCOUNT_ENTRY {
+        uuid entry_id PK
+        uuid distributor_id FK
+        uuid account_id FK
+        enum type
+        decimal amount
+        uuid order_id FK "nullable"
+        date due_date "nullable"
+        varchar payment_method "nullable"
+        uuid cash_movement_id FK "nullable"
+        uuid collected_by_delivery_id FK "nullable"
+        varchar description "nullable"
+        timestamptz occurred_at
+        uuid created_by_user_id FK "nullable"
+        timestamptz createdAt
+    }
+    DRIVER_LIQUIDATION {
+        uuid liquidation_id PK
+        uuid distributor_id FK
+        int number
+        uuid employee_id FK
+        date period_from
+        date period_to
+        decimal gross
+        decimal deductions
+        decimal net
+        enum status
+        timestamptz approved_at "nullable"
+        uuid approved_by_user_id FK "nullable"
+        timestamptz paid_at "nullable"
+        uuid paid_by_user_id FK "nullable"
+        timestamptz voided_at "nullable"
+        uuid cash_movement_id FK "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    COMMISSION_ENTRY {
+        uuid entry_id PK
+        uuid distributor_id FK
+        uuid employee_id FK
+        uuid delivery_id FK "nullable"
+        enum type
+        decimal amount
+        uuid order_id FK "nullable"
+        uuid rule_id FK "nullable"
+        jsonb rule_snapshot "nullable"
+        uuid liquidation_id FK "nullable"
+        uuid reference_id "nullable"
+        varchar description
+        timestamptz occurred_at
+        uuid created_by_user_id FK "nullable"
+        timestamptz createdAt
+    }
+    CUSTOMER_ACCOUNT_ALLOCATION {
+        uuid allocation_id PK
+        uuid account_id FK
+        uuid debit_entry_id FK
+        uuid credit_entry_id FK
+        decimal amount
+    }
+    DRIVER_SETTLEMENT {
+        uuid settlement_id PK
+        uuid distributor_id FK
+        uuid delivery_id FK
+        int number
+        uuid truck_load_id FK "nullable"
+        date business_date
+        enum status
+        decimal expected_cash
+        decimal declared_cash "nullable"
+        decimal driver_expenses
+        decimal difference "nullable"
+        enum difference_resolution "nullable"
+        uuid destination_cash_box_id FK "nullable"
+        uuid cash_movement_id FK "nullable"
+        timestamptz submitted_at "nullable"
+        uuid submitted_by_user_id FK "nullable"
+        timestamptz approved_at "nullable"
+        uuid approved_by_user_id FK "nullable"
+        text notes "nullable"
+        timestamptz overdue_alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    DRIVER_SETTLEMENT_COLLECTION {
+        uuid collection_id PK
+        uuid settlement_id FK
+        uuid entry_id FK, UK
+        decimal amount
+        timestamptz createdAt
+    }
+    DRIVER_SETTLEMENT_EXPENSE {
+        uuid expense_id PK
+        uuid settlement_id FK
+        uuid category_id FK
+        decimal amount
+        varchar description "nullable"
+    }
+    DRIVER_SETTLEMENT_ORDER {
+        uuid settlement_order_id PK
+        uuid settlement_id FK
+        uuid order_id FK, UK
+        decimal amount
+        varchar payment_method
+    }

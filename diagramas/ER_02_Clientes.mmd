@@ -1,0 +1,46 @@
+erDiagram
+    REPURCHASE_INVITATION }o--o| USER_ADDRESS : "address_id"
+
+    CUSTOMER {
+        uuid customer_id PK
+        uuid user_id FK, UK
+        text notification_token "nullable"
+        timestamptz createdAt "nullable"
+        timestamptz deletedAt "nullable"
+        geometry location "nullable"
+        decimal avg_monthly_consumption_kg "nullable"
+        uuid declared_cylinder_type_id FK "nullable"
+        int repurchase_notice_days "nullable"
+        timestamptz next_repurchase_estimate_at "nullable"
+    }
+    USER_ADDRESS {
+        uuid address_id PK
+        uuid user_id FK
+        varchar street
+        varchar city
+        varchar postalCode "nullable"
+        text formattedAddress "nullable"
+        boolean isDefault
+        text additionalInstructions "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+        varchar floor "nullable"
+        varchar apartment "nullable"
+        geometry location "nullable"
+        varchar place_id "nullable"
+        enum geocode_precision
+    }
+    REPURCHASE_INVITATION {
+        uuid invitation_id PK
+        uuid distributor_id FK
+        uuid user_id FK
+        uuid address_id FK "nullable"
+        timestamptz projected_depletion_at
+        jsonb suggested_items
+        enum status
+        timestamptz expires_at
+        timestamptz responded_at "nullable"
+        uuid order_id FK "nullable"
+        timestamptz created_at
+    }

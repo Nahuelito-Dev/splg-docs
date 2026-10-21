@@ -9,6 +9,7 @@ Figuras. Los documentos tenían 303 diagramas y 5 epígrafes. El rótulo sale de
 encabezado que ya nombra a cada diagrama, así que no hay que escribir 303 títulos.
 """
 import re, sys, os
+from imagenes_cu import desplegar, plegar
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/"
 DOCS = ["0-Plan_Del_Proyecto.md", "0.1-Planificacion_Iteraciones.md",
@@ -56,7 +57,8 @@ def rotulo(lineas, i):
     return cercano or "Diagrama"
 
 def procesar(archivo):
-    lineas = open(D + archivo, encoding="utf-8").read().split("\n")
+    # se numera sobre el bloque Mermaid suelto; `main` vuelve a poner la imagen de cada DSS y DSD
+    lineas = desplegar(open(D + archivo, encoding="utf-8").read()).split("\n")
     salida, indice, n, i = [], [], 0, 0
     sub = 0
     heredado = None
@@ -156,7 +158,7 @@ def main():
         texto, indice = procesar(f)
         texto = con_indice(texto, indice)
         print(f"  {f}: {len(indice)} figuras")
-        if aplicar: open(D + f, "w", encoding="utf-8").write(texto)
+        if aplicar: open(D + f, "w", encoding="utf-8").write(plegar(texto))
     print("aplicado" if aplicar else "\nnada se escribió todavía")
 
 if __name__ == "__main__":

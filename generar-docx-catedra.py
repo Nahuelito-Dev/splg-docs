@@ -13,6 +13,7 @@ reference-doc con la página y la tipografía de la plantilla (`.catedra-ref/*.d
 convierte con `textutil`). Requiere pandoc, textutil (macOS) y mermaid-cli (npx cache).
 """
 import glob, hashlib, json, os, re, shutil, struct, subprocess, sys, tempfile, zipfile
+from imagenes_cu import desplegar
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/"
 sys.path.insert(0, D)
@@ -526,7 +527,7 @@ CON_LISTA_COMO_TITULO = ("1", "0.1")   # las plantillas 1 y 0.1 traen «Lista de
 
 
 def preparar_md(clave, nombre_md, parte=1, total=1):
-    md = open(D + nombre_md, encoding="utf-8").read()
+    md = desplegar(open(D + nombre_md, encoding="utf-8").read())   # el Word pone la imagen una sola vez
     titulo, campos, resto = partir(md)
     titulo = TITULOS_PORTADA.get(clave, titulo)
     # la plantilla lleva la Lista de Cambios antes del índice

@@ -111,6 +111,9 @@ python3 verificar-drawio.py          # 0 relaciones faltantes y 0 aristas suelta
 | `diagramas/uml/` | Casos de uso en notación UML (diagrama por subsistemas, completo, láminas por actor y uno por subsistema, en SVG y PNG) y los diagramas de estados, actividad, componentes, despliegue y cronograma (fuente PlantUML) |
 
 Cada imagen lleva el código y el nombre del caso de uso en el nombre del archivo.
+`Casos-de-Uso.md`, `2-Analisis.md` y `3-Diseño.md` muestran cada DSS y DSD como esa imagen y dejan el Mermaid
+plegado debajo (`incrustar-imagenes-cu.py`); `diagramas/fuentes-png.json` anota de qué `.mmd` sale cada PNG y el
+gate avisa si alguno quedó viejo.
 `INDICE-IMAGENES.md` dice dónde va cada una dentro de los documentos.
 
 ## Pantallas

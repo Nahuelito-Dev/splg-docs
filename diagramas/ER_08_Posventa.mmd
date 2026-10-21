@@ -1,0 +1,45 @@
+erDiagram
+
+    CLAIMS {
+        uuid claim_id PK
+        uuid distributor_id FK
+        uuid order_id FK
+        uuid customer_id FK
+        varchar reason
+        text description
+        varchar photoUrl "nullable"
+        enum status
+        text resolutionNote "nullable"
+        timestamptz createdAt
+        varchar photo_key "nullable"
+    }
+    INCIDENT {
+        uuid incident_id PK
+        uuid order_id FK
+        uuid distributor_id FK
+        uuid reported_by FK
+        enum type
+        text description
+        varchar photo_url "nullable"
+        enum status
+        text resolution_note "nullable"
+        timestamptz createdAt
+        timestamptz resolvedAt "nullable"
+        enum moment "nullable"
+        varchar photo_key "nullable"
+    }
+    RATING {
+        uuid rating_id PK
+        uuid order_id FK
+        uuid distributor_id FK
+        uuid from_user_id FK
+        uuid to_user_id FK
+        enum from_role
+        int stars
+        text comment "nullable"
+        timestamptz createdAt
+        boolean hidden
+        text hidden_reason "nullable"
+        timestamptz hidden_at "nullable"
+        uuid hidden_by_user_id FK "nullable"
+    }

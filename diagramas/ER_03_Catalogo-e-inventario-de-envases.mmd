@@ -1,0 +1,88 @@
+erDiagram
+    GAS_CYLINDER_PROMOTION }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    CYLINDER }o--o| GAS_CYLINDER : "gas_cylinder_id"
+    CYLINDER_INSPECTION }o--|| CYLINDER : "cylinder_id"
+    CYLINDER_MOVEMENT }o--|| CYLINDER : "cylinder_id"
+    CYLINDER_RECOVERY_CASE }o--|| CYLINDER : "cylinder_id"
+    CYLINDER_RECOVERY_NOTICE }o--|| CYLINDER_RECOVERY_CASE : "case_id"
+
+    GAS_CYLINDER {
+        uuid gas_cylinder_id PK
+        uuid distributor_id FK
+        varchar type
+        decimal weight
+        decimal price
+        int stock
+        text description "nullable"
+        boolean isActive
+        timestamptz createdAt
+        timestamptz updatedAt
+        varchar photo_key "nullable"
+        decimal average_unit_cost "nullable"
+        int reservation_deficit
+    }
+    GAS_CYLINDER_PROMOTION {
+        uuid promotion_id PK
+        uuid gas_cylinder_id FK
+        int quantity
+        decimal discount_percentage
+        timestamptz deletedAt "nullable"
+    }
+    CYLINDER {
+        uuid cylinder_id PK
+        uuid distributor_id FK
+        varchar serial
+        uuid gas_cylinder_id FK "nullable"
+        enum state
+        uuid current_customer_id FK "nullable"
+        uuid current_order_id FK "nullable"
+        decimal deposit
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz manufactured_at "nullable"
+        timestamptz last_inspection_at "nullable"
+        timestamptz expires_at "nullable"
+    }
+    CYLINDER_INSPECTION {
+        uuid inspection_id PK
+        uuid cylinder_id FK
+        uuid distributor_id FK
+        timestamptz inspected_at
+        enum result
+        timestamptz next_due_at "nullable"
+        text notes "nullable"
+    }
+    CYLINDER_MOVEMENT {
+        uuid movement_id PK
+        uuid cylinder_id FK
+        uuid distributor_id FK
+        enum from_state "nullable"
+        enum to_state
+        uuid order_id FK "nullable"
+        uuid actor_user_id FK "nullable"
+        text note "nullable"
+        timestamptz createdAt
+    }
+    CYLINDER_RECOVERY_CASE {
+        uuid case_id PK
+        uuid distributor_id FK
+        uuid cylinder_id FK
+        uuid user_id FK
+        timestamptz delivered_at
+        decimal deposit_amount
+        int step
+        enum status
+        timestamptz opened_at
+        timestamptz closed_at "nullable"
+        uuid resolved_by_user_id FK "nullable"
+        text resolution_note "nullable"
+    }
+    CYLINDER_RECOVERY_NOTICE {
+        uuid notice_id PK
+        uuid case_id FK
+        int step
+        enum kind
+        enum status "nullable"
+        timestamptz sent_at
+        timestamptz expires_at
+    }

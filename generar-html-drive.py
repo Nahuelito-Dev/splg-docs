@@ -3,6 +3,7 @@
 Uso:  python3 docs/generar-html-drive.py
 Salida: docs/drive/*.html  (uno por documento de la cátedra)"""
 import re, os, html
+from imagenes_cu import desplegar
 
 D = os.path.dirname(os.path.abspath(__file__)) + "/"
 OUT = D + "drive/"
@@ -61,7 +62,7 @@ def inline(t):
     return t
 
 def convertir(md):
-    out, i, lineas = [], 0, md.split("\n")
+    out, i, lineas = [], 0, desplegar(md).split("\n")   # la imagen del .md y su Mermaid son el mismo diagrama
     ctx = {"cods": [], "tipo": _DEFECTO}
     while i < len(lineas):
         l = lineas[i]

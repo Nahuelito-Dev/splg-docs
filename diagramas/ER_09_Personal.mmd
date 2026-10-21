@@ -1,0 +1,92 @@
+erDiagram
+    EMPLOYEE }o--|| JOB_POSITION : "position_id"
+    EMPLOYEE_ATTENDANCE }o--|| EMPLOYEE : "employee_id"
+    EMPLOYEE_LEAVE }o--|| EMPLOYEE : "employee_id"
+
+    JOB_POSITION {
+        uuid position_id PK
+        uuid distributor_id FK
+        varchar name
+        enum category
+        boolean is_active
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+    }
+    ATTACHMENT {
+        uuid attachment_id PK
+        uuid distributor_id FK
+        enum owner_type
+        uuid owner_id
+        varchar label "nullable"
+        varchar storage_key
+        varchar original_name
+        varchar mime_type
+        int size_bytes
+        uuid uploaded_by_user_id FK
+        timestamptz uploaded_at
+        timestamptz deleted_at "nullable"
+    }
+    EMPLOYEE {
+        uuid employee_id PK
+        uuid distributor_id FK
+        uuid user_id FK "nullable"
+        uuid position_id FK
+        varchar file_number
+        varchar first_name
+        varchar last_name
+        enum document_type
+        varchar document_number
+        varchar cuil "nullable"
+        date birth_date "nullable"
+        varchar address_line "nullable"
+        varchar city "nullable"
+        varchar province "nullable"
+        varchar postal_code "nullable"
+        varchar phone "nullable"
+        varchar personal_email "nullable"
+        varchar emergency_contact_name "nullable"
+        varchar emergency_contact_phone "nullable"
+        varchar emergency_contact_relationship "nullable"
+        date hire_date
+        date termination_date "nullable"
+        enum termination_reason "nullable"
+        enum employment_type
+        enum status
+        varchar bank_cbu "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+        varchar photo_key "nullable"
+    }
+    EMPLOYEE_ATTENDANCE {
+        uuid attendance_id PK
+        uuid distributor_id FK
+        uuid employee_id FK
+        date work_date
+        timestamptz check_in_at
+        timestamptz check_out_at "nullable"
+        enum source
+        uuid recorded_by_user_id FK "nullable"
+        text notes "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
+    EMPLOYEE_LEAVE {
+        uuid leave_id PK
+        uuid distributor_id FK
+        uuid employee_id FK
+        enum type
+        date start_date
+        date end_date
+        int days
+        enum status
+        text reason "nullable"
+        text rejection_reason "nullable"
+        uuid requested_by_user_id FK "nullable"
+        uuid decided_by_user_id FK "nullable"
+        timestamptz decided_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+    }
