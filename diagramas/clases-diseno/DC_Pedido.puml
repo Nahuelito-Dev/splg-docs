@@ -114,8 +114,10 @@ class Pedido {
   + validarEsDelCliente(cliente: Cliente)
   + validarImpago()
   + validarQueEsReservaPendiente()
+  + validarQueLaSeniaSeConfirmaAMano()
   + validarQueNoFueEntregado()
   + validarQueNoSalio()
+  + validarSenia(total: Moneda)
   + validarTransferencia(recibida: Booleano)
   + validarTransicion(estadoDestino: EstadoPedido)
 }

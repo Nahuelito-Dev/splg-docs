@@ -399,6 +399,7 @@
 | 26 | 2026-10-18 | Contratos de las operaciones construidas el 17/10/2026 sin la marca de planificados; diagramas de secuencia de CU-268, CU-269 y CU-010 al día. El cobro del administrador sobre un pedido en efectivo (CU-294 y CU-299) asienta una entrada en una caja de efectivo: contratos con la caja y el MovimientoDeCaja. DSS y contratos de CU-345 a CU-348. | Nahuel Wagner |
 | 27 | 2026-10-22 | Auditoría de contenido: glosario con Actor, Sistema Automático (ACT-04) como el Tiempo, Pedido cancelado (cliente o administrador) y Pedido liberado (chofer), y MVVM sólo en las apps Flutter. Re-auditoría: contratos de CU-068, CU-070, CU-217 y CU-233 al día con el código; DSS de CU-013 con su disparo real. | Nahuel Wagner |
 | 28 | 2026-10-22 | Cuentas de clientes: DSS de CU-050 y CU-270 con el rechazo al administrador de empresa; DSS, contrato y operación de CU-131 a nombre del Administrador General (ACT-05). | Nahuel Wagner |
+| 29 | 2026-10-22 | Reservas: DSS y contrato de crearReserva con el tope de la seña y las reglas de la reserva (sin cuenta corriente ni express, no se edita); DSS y contrato de confirmarSenia con el rechazo de la seña de MercadoPago. | Nahuel Wagner |
 
 ---
 
@@ -8811,7 +8812,7 @@ sequenceDiagram
 
     CLI->>SIS: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
     activate SIS
-    alt hay stock y la franja tiene cupo para esa fecha
+    alt hay stock, la franja (si se eligió) tiene cupo para esa fecha y la seña no supera el total
         SIS-->>CLI: reserva creada (numero, total, seña, estado RESERVADO)
         opt la seña se paga con la pasarela
             SIS-->>CLI: enlace de pago de la seña
@@ -8820,13 +8821,15 @@ sequenceDiagram
         SIS-->>CLI: error de solicitud (stock insuficiente)
     else la franja está completa o la fecha es pasada
         SIS-->>CLI: error de solicitud (no se puede agendar en esa franja)
+    else la seña supera el total del pedido
+        SIS-->>CLI: error de solicitud (la seña no puede superar el total)
     end
     deactivate SIS
 ```
 
 </details>
 
-> La reserva nace en estado **RESERVADO**: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075).
+> La reserva nace en estado **RESERVADO**: reserva stock y cupo desde el momento del alta, pero no se despacha hasta el día agendado (CU-075). La seña no puede superar el total del pedido.
 
 #### DSS — CU-073: Consultar las Reservas y el Estado de la Seña
 
@@ -8874,10 +8877,12 @@ sequenceDiagram
 
     ADM->>SIS: confirmarSenia(pedidoId)
     activate SIS
-    alt el pedido es una reserva pendiente
+    alt el pedido es una reserva pendiente y su seña es en efectivo o por transferencia
         SIS-->>ADM: seña confirmada (la reserva queda lista para activarse sola)
     else el pedido no es una reserva pendiente
         SIS-->>ADM: error de solicitud (el pedido no es una reserva pendiente)
+    else la reserva pendiente tiene la seña de MercadoPago
+        SIS-->>ADM: error de solicitud (esa seña la confirma la pasarela)
     else la reserva no existe
         SIS-->>ADM: recurso no encontrado
     end
@@ -13891,14 +13896,14 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `crearReserva(items lista, direccionId identificador, fechaAgendada fecha, franjaId identificador, metodoDePago cadena, montoDeLaSenia moneda)` |
-| **Responsabilidades** | Crear un pedido agendado para una fecha futura, reservando el stock de forma atómica y registrando el monto de la seña. |
+| **Responsabilidades** | Crear un pedido agendado para una fecha futura, reservando el stock de forma atómica y registrando el monto de la seña, que no puede superar el total del pedido. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-072. Funciones: IRQ-02, IRQ-08, OBJ-01, OBJ-06. |
-| **Notas** | Comparte con crearPedido el cálculo de precios con promociones y recargos. Si la seña se paga con la pasarela, se genera el checkout de la seña (crearCheckoutDePago); si la pasarela falla, la reserva queda creada igual, sin enlace de pago. El pedido no se ofrece a ningún chofer hasta el día agendado (activarReservasDelDia). Se notifica a los administradores de la Distribuidora. |
-| **Excepciones** | Si falta la fecha agendada o es pasada → error de solicitud. Si la dirección está fuera de la zona de cobertura → error de solicitud. Si la franja no tiene cupo para esa fecha → error de solicitud. Si el stock es insuficiente → error de solicitud y la operación se revierte por completo. Si algún producto no es de la distribuidora → error de solicitud. |
+| **Notas** | Comparte con crearPedido el cálculo de precios con promociones y recargos. Si la seña se paga con la pasarela, se genera el checkout de la seña (crearCheckoutDePago); si la pasarela falla, la reserva queda creada igual, sin enlace de pago. El pedido no se ofrece a ningún chofer hasta el día agendado (activarReservasDelDia). Se notifica a los administradores de la Distribuidora. La opera el Cliente o un Administrador en nombre del cliente. La seña no puede superar el total que calcula el sistema (ítems con promociones, recargo de zona y recargo por medio de pago, a dos decimales); una seña igual al total se acepta. La reserva no se paga con cuenta corriente ni se combina con la entrega express. Una reserva no se edita: para cambiarla se cancela y se crea otra, de modo que el tope de la seña corre solo al crearla. |
+| **Excepciones** | Si falta la fecha agendada → error de solicitud. Si la reserva trae franja y la fecha es pasada, o la franja ya terminó → error de solicitud (sin franja, la fecha pasada hoy no se rechaza; eso cambia cuando se integre la tanda que la valida siempre). Si se pide cuenta corriente o entrega express → error de solicitud. Si la seña supera el total del pedido → error de solicitud, que informa la seña y el total. Si la dirección está fuera de la zona de cobertura → error de solicitud. Si se eligió franja y no tiene cupo para esa fecha → error de solicitud. Si el stock es insuficiente → error de solicitud y la operación se revierte por completo. Si algún producto no es de la distribuidora → error de solicitud. |
 | **Salida** | La reserva creada (número, total, seña, estado reservado) y, si corresponde, el enlace de pago de la seña. |
-| **Precondiciones** | El Cliente está autenticado. La DireccionEntrega pertenece al Cliente. La FranjaHoraria existe. Cada Producto existe y es de la Distribuidora. |
-| **Postcondiciones** | Se creó una instancia de Pedido, en estado «reservado», con la fecha agendada y la seña pendiente de pago, asociada al Cliente, a la DireccionEntrega y a la FranjaHoraria. Se crearon sus instancias de ItemPedido, con el precio y el subtotal calculados con las promociones vigentes. El atributo stock de cada Producto pedido se decrementó. Si el pago es con pasarela y la seña es mayor que cero, se creó un Pago por ese importe, marcado como seña, en estado «pendiente». |
+| **Precondiciones** | El solicitante —el Cliente o un Administrador— está autenticado. La DireccionEntrega pertenece al Cliente. Si se eligió franja, la FranjaHoraria existe. Cada Producto existe y es de la Distribuidora. |
+| **Postcondiciones** | Se creó una instancia de Pedido, en estado «reservado», con la fecha agendada y la seña pendiente de pago, asociada al Cliente, a la DireccionEntrega y, si se eligió franja, a la FranjaHoraria. El monto de la seña es menor o igual al total del Pedido. Se crearon sus instancias de ItemPedido, con el precio y el subtotal calculados con las promociones vigentes. El atributo stock de cada Producto pedido se decrementó. Si el pago es con pasarela y la seña es mayor que cero, se creó un Pago por ese importe, marcado como seña, en estado «pendiente». |
 
 ---
 
@@ -13907,14 +13912,14 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `confirmarSenia(pedidoId identificador)` |
-| **Responsabilidades** | Registrar que el administrador cobró en efectivo la seña de una reserva, habilitando su activación automática el día agendado. |
+| **Responsabilidades** | Registrar que el administrador recibió, en efectivo o por transferencia, la seña de una reserva, habilitando su activación automática el día agendado. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-074. Funciones: IRQ-08, OBJ-07. |
-| **Notas** | Es la única acción humana del ciclo de reservas. Es declarativa: el sistema confía en el registro del administrador y no verifica un comprobante. |
-| **Excepciones** | Si la reserva no existe o es de otra distribuidora → recurso no encontrado. Si el pedido no es una reserva con la seña pendiente → error de solicitud. |
+| **Notas** | Es declarativa: el sistema confía en el registro del administrador y no verifica un comprobante. La seña de MercadoPago no se confirma a mano: la marca el aviso de la pasarela (notificarResultadoDePago). Confirmar de nuevo una seña ya confirmada no cambia nada. |
+| **Excepciones** | Si la reserva no existe o es de otra distribuidora → recurso no encontrado. Si el pedido no está en estado reservado → error de solicitud. Si la seña es de MercadoPago → error de solicitud. |
 | **Salida** | El pedido con la seña registrada. |
-| **Precondiciones** | El Administrador está autenticado y la reserva pertenece a su distribuidora. El Pedido tiene estado «reservado» y su seña no está paga. |
-| **Postcondiciones** | El atributo seña paga de la instancia de Pedido pasó a verdadero. |
+| **Precondiciones** | El Administrador está autenticado y la reserva pertenece a su distribuidora. El Pedido tiene estado «reservado» y su medio de pago es efectivo o transferencia; si su seña ya estaba confirmada, repetir la operación es válido. |
+| **Postcondiciones** | La seña del Pedido queda confirmada: el atributo seña paga es verdadero, también cuando la operación se repite. |
 
 ---
 

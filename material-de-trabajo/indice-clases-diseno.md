@@ -2,7 +2,7 @@
 
 Las genera `generar-clases-diseno.py`; no se editan a mano.
 
-- Clases de diseño: **301**; operaciones: **1265**.
+- Clases de diseño: **301**; operaciones: **1267**.
 - Por papel: coleccion: 79, controlador: 27, dominio: 85, fabricación pura: 11, fachada: 89, puerto: 10.
 - Asociaciones: 499 (171 del modelo conceptual, 328 de colaboración); dependencias: 287; realizaciones: 0.
 - Dependencias entre módulos: 134.
@@ -11,7 +11,7 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 |---|---|---:|---:|
 | Organización y acceso (dominio) | `diagramas/clases-diseno/DC_Organizacion-y-acceso.png` | 9 | 72 |
 | Clientes (dominio) | `diagramas/clases-diseno/DC_Clientes.png` | 4 | 32 |
-| Pedido, líneas y pago (dominio) | `diagramas/clases-diseno/DC_Pedido.png` | 6 | 88 |
+| Pedido, líneas y pago (dominio) | `diagramas/clases-diseno/DC_Pedido.png` | 6 | 90 |
 | Carrito, franjas y cobertura (dominio) | `diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png` | 4 | 32 |
 | Despacho y propuestas con vigencia (dominio) | `diagramas/clases-diseno/DC_Despacho.png` | 5 | 15 |
 | Choferes y vehículos (dominio) | `diagramas/clases-diseno/DC_Choferes-y-vehiculos.png` | 5 | 77 |

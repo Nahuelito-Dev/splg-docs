@@ -11,5 +11,6 @@ sequenceDiagram
     COL-->>-SRV: reserva
     SRV->>+PED: confirmarSenia()
     PED->>PED: validarQueEsReservaPendiente()
+    PED->>PED: validarQueLaSeniaSeConfirmaAMano()
     deactivate PED
     SRV-->>-ADM: reserva

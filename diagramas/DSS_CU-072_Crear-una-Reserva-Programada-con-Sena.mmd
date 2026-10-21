@@ -6,7 +6,7 @@ sequenceDiagram
 
     CLI->>SIS: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
     activate SIS
-    alt hay stock y la franja tiene cupo para esa fecha
+    alt hay stock, la franja (si se eligió) tiene cupo para esa fecha y la seña no supera el total
         SIS-->>CLI: reserva creada (numero, total, seña, estado RESERVADO)
         opt la seña se paga con la pasarela
             SIS-->>CLI: enlace de pago de la seña
@@ -15,5 +15,7 @@ sequenceDiagram
         SIS-->>CLI: error de solicitud (stock insuficiente)
     else la franja está completa o la fecha es pasada
         SIS-->>CLI: error de solicitud (no se puede agendar en esa franja)
+    else la seña supera el total del pedido
+        SIS-->>CLI: error de solicitud (la seña no puede superar el total)
     end
     deactivate SIS

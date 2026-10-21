@@ -80,6 +80,7 @@
 | 25 | 2026-10-18 | Casos de uso construidos el 17/10/2026 pasan a «Implementado» en el catálogo (CU-122 a CU-128, CU-132 a CU-135, CU-143, CU-144, CU-147 a CU-149, CU-151, CU-168, CU-172, CU-183 a CU-206, CU-225 a CU-247, CU-264, CU-265, CU-268, CU-269, CU-309, CU-310, CU-313 a CU-335 y CU-340); plan de construcción y cronograma con las fechas reales; quedan planificados seis casos (CU-105 a CU-108, CU-145 y CU-146). Calendario: la construcción termina el 20/11/2026 con C-19 y la transición va del 23/11/2026 al 22/01/2027; 338 casos de uso con CU-345 a CU-348. | Nahuel Wagner |
 | 26 | 2026-10-22 | Auditoría de contenido: el actor ACT-04 se define como el Tiempo (actor externo, convención de Larman); el alcance pendiente se distingue entre ampliaciones planificadas con iteración (CU-017, CU-116, CU-118) y mejoras diferidas a Trabajo futuro (CU-013, CU-180, CU-181). Re-auditoría: ACT-04 como el Tiempo, con CU-013 como excepción documentada. | Nahuel Wagner |
 | 27 | 2026-10-22 | Cuentas de clientes: CU-050, CU-270 y CU-085 suman al Administrador General (ACT-05) junto al Administrador (ACT-03), que no administra la cuenta de un cliente, y CU-131 pasa a ACT-05; conteos por actor y láminas al día. | Nahuel Wagner |
+| 28 | 2026-10-22 | Reservas contra el panel: el CUA de CU-072 suma que el administrador también crea la reserva, con la seña acotada al total; el de CU-073, la franja y el enlace de pago; el de CU-074, que la seña se confirma en efectivo o por transferencia y la de MercadoPago sólo por la pasarela; el de CU-006, el enlace de pago. | Nahuel Wagner |
 
 ---
 
@@ -534,7 +535,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 **Actor/es:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Crítico  
-**Descripción:** El usuario ve el detalle completo de un pedido: ítems y cantidades, precios, descuentos, estado, chofer asignado, dirección, franja, medio y estado del pago y el momento de cada cambio de estado. Cada rol ve lo mismo con acciones distintas. El acceso está acotado por distribuidora, por propiedad para el cliente y por lo que le corresponde para el chofer.
+**Descripción:** El usuario ve el detalle completo de un pedido: ítems y cantidades, precios, descuentos, estado, chofer asignado, dirección, franja, medio y estado del pago —con el enlace para completarlo si el pago es por MercadoPago y sigue pendiente, salvo para el chofer— y el momento de cada cambio de estado. Cada rol ve lo mismo con acciones distintas. El acceso está acotado por distribuidora, por propiedad para el cliente y por lo que le corresponde para el chofer.
 
 ---
 
@@ -1641,7 +1642,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 **Actor/es:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03); actores secundarios: MercadoPago (ACT-06), Firebase (ACT-07)  
 **Subsistema:** SS-15 Reservas Programadas  
 **Calificación:** Crítico  
-**Descripción:** El cliente aparta garrafas para una fecha futura dejando una seña, indicando explícitamente que se trata de una reserva. El pedido nace reservado y no se ofrece a ningún chofer: el stock se descuenta en el acto y la entrega espera al día agendado, cuando un proceso automático la devuelve al circuito normal. Lo que determina que el pedido sea una reserva es ese indicador explícito y no el solo hecho de traer una fecha futura.
+**Descripción:** El cliente aparta garrafas para una fecha futura dejando una seña, indicando explícitamente que se trata de una reserva. El pedido nace reservado y no se ofrece a ningún chofer: el stock se descuenta en el acto y la entrega espera al día agendado, cuando un proceso automático la devuelve al circuito normal. Lo que determina que el pedido sea una reserva es ese indicador explícito y no el solo hecho de traer una fecha futura. La operación admite al cliente, pero hoy la reserva se crea solo desde el panel, por el administrador, en nombre del cliente al cargar un pedido a mano cuando llama: elige la fecha, la franja horaria con cupo y el monto de la seña. La seña no puede superar el total del pedido, y una reserva no se modifica: para cambiarla se cancela y se crea otra.
 
 ---
 
@@ -1650,7 +1651,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 **Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-15 Reservas Programadas  
 **Calificación:** Importante  
-**Descripción:** El administrador ve las reservas programadas de su distribuidora e indica si la seña fue abonada.
+**Descripción:** El administrador ve las reservas programadas de su distribuidora, con el día y la franja de entrega, si la seña fue abonada y, cuando la seña es por MercadoPago y sigue pendiente, el enlace para pagarla.
 
 ---
 
@@ -1659,7 +1660,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 **Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-15 Reservas Programadas  
 **Calificación:** Crítico  
-**Descripción:** El administrador confirma que la seña de una reserva fue abonada en efectivo.
+**Descripción:** El administrador confirma que la seña de una reserva fue recibida fuera del sistema, en efectivo o por transferencia. La seña de MercadoPago no se confirma a mano: la marca cobrada el aviso de la pasarela.
 
 ---
 

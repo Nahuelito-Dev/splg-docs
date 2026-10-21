@@ -14,7 +14,9 @@ sequenceDiagram
     CLE-->>-CRT: direccion
     CRT->>+ZON: cubre(direccion)
     ZON-->>-CRT: cubierta
-    CRT->>FRA: tieneCupo(fechaAgendada)
+    opt Se eligió una franja
+        CRT->>FRA: tieneCupo(fechaAgendada)
+    end
     create participant PED as :Pedido
     CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago, montoDeLaSenia)
     loop Por cada item de items
@@ -33,6 +35,7 @@ sequenceDiagram
     PED->>ZON: calcularRecargo(subtotalItems)
     PED->>PED: aplicarRecargoDePago()
     PED-->>-CRT: total
+    CRT->>PED: validarSenia(total)
     opt metodoDePago es MERCADOPAGO y montoDeLaSenia es mayor que cero
         CRT->>+PAG: crearCheckoutDePago(pedido, metodoDePago)
         PAG-->>-CRT: enlaceDePago

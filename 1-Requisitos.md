@@ -120,6 +120,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 25 | 2026-10-18 | Casos de uso expandidos construidos el 17/10/2026 con el estado «Implementado»: excepciones, códigos y reglas ajustados a lo construido (CU-127, CU-128, CU-172, CU-190, CU-201, CU-229, CU-242, CU-243, CU-334, CU-335, entre otros); CU-008, CU-010, CU-012, CU-015 y CU-311 sin su tramo planificado. CU-294 y CU-299 eligen la caja de efectivo donde entra el cobro; CU-168 suma la consulta del cliente. CU-345 a CU-348: 338 casos de uso. | Nahuel Wagner |
 | 26 | 2026-10-22 | Auditoría de contenido: cantidades por calificación al día (63 críticos, 218 importantes, 55 secundarios, 2 menores; 338 casos), definición de ACT-04 como el Tiempo, CU-008, CU-009 y CU-010 (la liberación del chofer no es una cancelación), CU-233 con una sola regla para la caja de destino, y contrato del back del 22/10 en CU-068 (pedido despachable y propio del chofer), CU-070 (pedido obligatorio para «con el cliente», reglas del chofer, texto con caracteres no válidos) y CU-217 (depósito de la orden). Re-auditoría: casos de uso esenciales sin mecanismos técnicos (cabecera de distribuidora, bloqueos, mensajes de bajo nivel) y costo de la recepción sin orden sólo en los renglones con llenas. | Nahuel Wagner |
 | 27 | 2026-10-22 | Cuentas de clientes: los CUE de CU-050, CU-270, CU-085 y CU-131 dicen que la cuenta de un cliente la administra el Administrador General y que el administrador de empresa recibe acceso denegado (verificado contra la API); conteos por actor al día. | Nahuel Wagner |
+| 28 | 2026-10-22 | Reservas, seña y enlace de pago, verificados contra la API: CUE de CU-072 (tope de la seña, sin cuenta corriente ni express, fecha y franja, reserva que no se edita, falta de stock con su mensaje real), CU-073 (franja, enlace de pago y distribuidora obligatoria para el Administrador General), CU-074 (efectivo o transferencia; MercadoPago sólo por la pasarela) y CU-006 (enlace de pago; el Administrador General debe indicar distribuidora). | Nahuel Wagner |
 
 ---
 
@@ -969,7 +970,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario elige un pedido desde su listado —el historial del cliente o el listado del panel—. |
-| 2 | El sistema recupera el pedido con todos sus datos: ítems con el precio y el subtotal con que se cobraron, total, estado, distribuidora, chofer asignado si lo hay, quién lo canceló si está cancelado, dirección, franja, medio y estado del pago y el momento de cada cambio de estado. |
+| 2 | El sistema recupera el pedido con todos sus datos: ítems con el precio y el subtotal con que se cobraron, total, estado, distribuidora, chofer asignado si lo hay, quién lo canceló si está cancelado, dirección, franja, medio y estado del pago y el momento de cada cambio de estado y, si el pedido se paga por MercadoPago y el pago sigue pendiente, el enlace para completarlo (no se le muestra al chofer). |
 | 3 | Si hay una distribuidora en contexto, el sistema comprueba que el pedido pertenezca a ella. Si quien consulta es un cliente, comprueba que el pedido sea suyo; si es un chofer, que el pedido sea suyo, que tenga una oferta vigente para él o que esté entre los pedidos disponibles que ve. |
 | 4 | El sistema muestra el detalle del pedido. |
 | 5 | Se muestran las acciones disponibles según el rol: el cliente puede cancelar mientras el pedido esté pendiente o aceptado; el administrador puede cancelar o asignar chofer. |
@@ -980,7 +981,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 
 | Paso | Acción |
 |------|--------|
-| 3 | Si quien consulta es el Administrador General y no indica distribuidora, el sistema le muestra el pedido de cualquier distribuidora, a propósito, porque es el responsable de la plataforma; si la indica, solo ve los de esa distribuidora. |
+| 3 | Si quien consulta es el Administrador General y no indica distribuidora, el sistema le pide que la indique y no muestra el pedido; si la indica, solo ve los de esa distribuidora. |
 | 3 | Si el pedido no existe, es de otra distribuidora o es de otro cliente, el sistema responde lo mismo en los tres casos —que el pedido no existe— para no revelar si existe. |
 | 3 | Si quien consulta es un chofer y el pedido no es suyo, ni tiene una oferta vigente para él, ni está entre los que ve, el sistema responde que el pedido no existe. |
 | 3 | Si el chofer tuvo el pedido y ya no es suyo —lo liberó un administrador, lo reasignaron o el control de carga lo sacó—, el sistema informa «Este pedido ya no está asignado a tu usuario», sin datos del pedido, para que la aplicación salga de la pantalla en vez de quedarse con un estado viejo. |
@@ -995,7 +996,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Alta: cada vez que el usuario abre un pedido de su listado, varias veces por pedido activo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El detalle no incluye las incidencias ni las calificaciones del pedido: se consultan por separado (CU-062, CU-065 y CU-066). El precio y el subtotal de cada ítem son los del momento de pedir, con las promociones ya aplicadas, y no el precio vigente del catálogo: si el administrador cambia el precio después, el detalle sigue mostrando lo que se cobró. El Administrador General ve a qué distribuidora pertenece el pedido, para operar sobre él sin elegir una distribuidora (por ejemplo, CU-012). Los datos del chofer (nombre, teléfono, calificación, patente) los ven solo el cliente dueño y el administrador, con el pedido aceptado o en camino; con el pedido cerrado, sin chofer o visto por el propio chofer no se muestran, para no exponer el teléfono. La última posición conocida del chofer es más sensible: solo se muestra con el pedido en camino, siendo ése el pedido que el chofer lleva y si tiene menos de diez minutos; en cualquier otro caso se toma como «sin posición reciente», no como un error. Quién canceló puede ser el cliente, el administrador (el Administrador General cuenta como administrador), el chofer o el sistema, que es el vencimiento por falta de pago o de seña; no se muestra si el pedido no está cancelado o es anterior al historial de estados (CU-169). |
+| **Comentarios** | El detalle no incluye las incidencias ni las calificaciones del pedido: se consultan por separado (CU-062, CU-065 y CU-066). El precio y el subtotal de cada ítem son los del momento de pedir, con las promociones ya aplicadas, y no el precio vigente del catálogo: si el administrador cambia el precio después, el detalle sigue mostrando lo que se cobró. El Administrador General ve a qué distribuidora pertenece el pedido, pero para leer el detalle tiene que elegir una distribuidora. Los datos del chofer (nombre, teléfono, calificación, patente) los ven solo el cliente dueño y el administrador, con el pedido aceptado o en camino; con el pedido cerrado, sin chofer o visto por el propio chofer no se muestran, para no exponer el teléfono. La última posición conocida del chofer es más sensible: solo se muestra con el pedido en camino, siendo ése el pedido que el chofer lleva y si tiene menos de diez minutos; en cualquier otro caso se toma como «sin posición reciente», no como un error. Quién canceló puede ser el cliente, el administrador (el Administrador General cuenta como administrador), el chofer o el sistema, que es el vencimiento por falta de pago o de seña; no se muestra si el pedido no está cancelado o es anterior al historial de estados (CU-169). |
 
 ---
 
@@ -6673,26 +6674,26 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-06 |
 | **Requisitos asociados** | IRQ-02, IRQ-08, IRQ-10, IRQ-14 |
-| **Descripción** | El cliente aparta garrafas para una fecha futura dejando una seña. El pedido nace reservado y no se ofrece a ningún chofer: el stock queda descontado en el acto y la entrega espera al día agendado, cuando el proceso automático lo devuelve al circuito normal. El alta es segura ante repeticiones y descuenta el stock de forma segura, de modo que dos altas simultáneas no lo pisan. |
-| **Precondición** | El solicitante está identificado. El alta de pedidos la puede hacer un cliente, un administrador o un chofer identificado; un cliente solo puede crear pedidos a su propio nombre. El pedido trae el indicador de reserva, la fecha agendada y el monto de la seña. |
+| **Descripción** | El cliente aparta garrafas para una fecha futura dejando una seña. El pedido nace reservado y no se ofrece a ningún chofer: el stock queda descontado en el acto y la entrega espera al día agendado, cuando el proceso automático lo devuelve al circuito normal. El alta es segura ante repeticiones y descuenta el stock de forma segura, de modo que dos altas simultáneas no lo pisan. El administrador también la crea, en nombre del cliente, al cargar un pedido a mano. La seña no puede superar el total del pedido. |
+| **Precondición** | El solicitante está identificado. El alta de pedidos la puede hacer un cliente, un administrador o un chofer identificado; un cliente solo puede crear pedidos a su propio nombre. El pedido trae el indicador de reserva, la fecha agendada y el monto de la seña. La reserva no se paga con cuenta corriente ni se combina con la entrega express. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El solicitante informa el pedido con el indicador de reserva, la fecha agendada, el monto de la seña, los ítems, la dirección, el medio de pago y, si corresponde, la franja horaria. |
+| 1 | El solicitante —el cliente o un administrador que carga el pedido en su nombre— informa el pedido con el indicador de reserva, la fecha agendada, el monto de la seña, los ítems, la dirección, el medio de pago y, si corresponde, la franja horaria. |
 | 2 | El sistema toma el rol y la identidad del solicitante de su sesión y, si es un cliente, verifica que el pedido sea a su propio nombre. |
-| 3 | El sistema resuelve la repetición por la clave que acompaña el envío: si esa clave ya se resolvió, muestra la respuesta guardada sin volver a crear nada. |
-| 4 | El sistema comprueba que la reserva traiga fecha agendada. |
+| 3 | El sistema reconoce si la solicitud ya se resolvió: repetir la misma solicitud no duplica la reserva y muestra el resultado ya obtenido. |
+| 4 | El sistema comprueba que la reserva traiga fecha agendada y que no se pida pagarla con cuenta corriente ni como entrega express. |
 | 5 | El sistema resuelve la distribuidora a la que se ata el pedido: la elegida o, si no hay ninguna, la distribuidora por defecto. |
 | 6 | El sistema recupera al cliente y la dirección de entrega, que debe pertenecerle. |
 | 7 | El sistema verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por lejanía de esa zona. Si la distribuidora no definió zonas, el control no se aplica. |
-| 8 | Si el pedido trae fecha y franja horaria, el sistema valida que quede cupo para ese día. |
+| 8 | Si el pedido trae fecha y franja horaria, el sistema valida que la fecha no sea anterior a hoy, que la franja no haya terminado ya si es de hoy y que quede cupo para ese día. |
 | 9 | Por cada ítem, el sistema descuenta el stock, comprueba que la garrafa pertenezca exactamente a la distribuidora del pedido y calcula el precio con la lista y las promociones por volumen, nunca con lo que envió el cliente. |
-| 10 | El sistema suma el recargo de zona y luego el recargo por medio de pago. |
+| 10 | El sistema suma el recargo de zona y luego el recargo por medio de pago, y comprueba que la seña no supere el total así calculado. |
 | 11 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema registra el pedido como reservado —porque trae el indicador de reserva—, con el monto de la seña y la seña marcada como no cobrada y la fecha agendada, y asienta su creación en el historial. Sin ese indicador, el pedido nace pendiente aunque traiga fecha agendada. |
-| 12 | Sin ofrecer el pedido a ningún chofer, si la seña es por MercadoPago y tiene monto, el sistema genera un enlace de pago solo por el importe de la seña, que el aviso de la pasarela usará para marcarla cobrada. Si la seña es en efectivo, queda pendiente de confirmación manual por un administrador (CU-074). |
+| 12 | Sin ofrecer el pedido a ningún chofer, si la seña es por MercadoPago y tiene monto, el sistema genera un enlace de pago solo por el importe de la seña, que el aviso de la pasarela usará para marcarla cobrada. Si la seña es en efectivo o por transferencia, queda pendiente de confirmación manual por un administrador (CU-074). |
 | 13 | El sistema envía la confirmación al cliente, avisa al panel en vivo del nuevo pedido y muestra el pedido y, cuando corresponde, el enlace de pago de la seña. |
 
 **Postcondición:** El stock queda descontado y el pedido reservado, con su seña registrada como no cobrada y su fecha de entrega agendada. El pedido no se ofrece a ningún chofer hasta que el proceso automático de activación lo devuelva al circuito, el día agendado y con la seña cobrada.
@@ -6702,13 +6703,16 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 2 | Si un cliente intenta crear el pedido a nombre de otro, el sistema lo deniega e informa «No autorizado a crear pedidos para otro cliente». |
-| 3 | Si la clave de repetición no tiene el formato exigido, el sistema rechaza el alta. Si otra solicitud con la misma clave todavía está en curso, el sistema pide reintentar más tarde. |
+| 3 | Si otra solicitud igual todavía está en curso, el sistema pide reintentar más tarde. |
 | 4 | Si el pedido se declara reserva pero no trae fecha agendada, el sistema rechaza el alta e informa que una reserva requiere fecha de entrega agendada. |
+| 4 | Si se pide pagar la reserva con cuenta corriente, o entregarla como express, el sistema rechaza el alta e informa que no se combina. |
 | 6 | Si el cliente no existe o no tiene perfil de cliente, o la dirección no existe o no le pertenece, el sistema informa que no lo encontró. |
 | 7 | Si la dirección queda fuera de toda zona de cobertura, el sistema cancela la operación y rechaza el alta. |
-| 9 | Si la garrafa pedida es de otra distribuidora, el sistema cancela la operación y rechaza el alta. Si no queda stock suficiente, el sistema informa un error genérico «Error al crear el pedido» y el cliente no se entera del motivo real. |
-| 9 | Si dos altas simultáneas se cruzan al tomar el stock, el sistema deshace y reintenta la operación completa; agotados los reintentos, informa el mismo error genérico. |
-| 3 | Si se reintenta la misma solicitud con datos distintos, el sistema la rechaza y no la ejecuta. |
+| 8 | Si la reserva trae franja y la fecha es anterior a hoy, o la franja ya terminó, o no tiene cupo para ese día, el sistema cancela la operación y rechaza el alta e informa el motivo. |
+| 9 | Si la garrafa pedida es de otra distribuidora, el sistema cancela la operación y rechaza el alta. Si no queda stock suficiente para algún ítem, el sistema cancela la operación e informa «Stock insuficiente para <producto>». Si la garrafa no existe, informa que no la encontró. |
+| 9 | Si dos altas simultáneas se cruzan al tomar el stock, el sistema deshace y reintenta la operación completa; agotados los reintentos, informa un error genérico. |
+| 10 | Si la seña supera el total del pedido, el sistema cancela la operación y rechaza el alta e informa cuánto es la seña y cuánto el total. |
+| 3 | Si se repite una solicitud ya resuelta pero con datos distintos, el sistema la rechaza y no la ejecuta. |
 
 **Rendimiento**
 
@@ -6720,7 +6724,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Media. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Lo que decide que el pedido nazca reservado es el indicador de reserva, no la presencia de una fecha agendada: un pedido con fecha futura y sin ese indicador nace pendiente y se despacha en el acto, con lo cual la fecha queda registrada pero sin efecto sobre el circuito. La relación es la inversa: la reserva exige fecha, pero la fecha no implica reserva. La seña arranca siempre marcada como no cobrada, nunca sin valor. Si el stock no alcanza, el cliente no ve el motivo real: es una limitación registrada de este alta. |
+| **Comentarios** | Lo que decide que el pedido nazca reservado es el indicador de reserva, no la presencia de una fecha agendada: un pedido con fecha futura y sin ese indicador nace pendiente y se despacha en el acto, con lo cual la fecha queda registrada pero sin efecto sobre el circuito. La relación es la inversa: la reserva exige fecha, pero la fecha no implica reserva. La seña arranca siempre marcada como no cobrada, nunca sin valor. Una reserva no se edita —solo se modifica un pedido pendiente—: si hay que cambiarla, se cancela y se crea otra, de modo que el tope de la seña corre solo al crearla. Una seña igual al total se acepta. La fecha anterior a hoy solo se rechaza cuando la reserva trae franja: sin franja el sistema acepta la fecha tal como llega y es la pantalla de alta la que no deja elegir un día pasado. |
 
 ---
 
@@ -6730,7 +6734,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05, OBJ-14 |
 | **Requisitos asociados** | IRQ-02, IRQ-14 |
-| **Descripción** | El administrador ve las reservas con su fecha de entrega y el estado de la seña —abonada o pendiente—, con el saldo que le queda por pagar al cliente y los ítems. |
+| **Descripción** | El administrador ve las reservas con su fecha y franja de entrega y el estado de la seña —abonada o pendiente—, con el saldo que le queda por pagar al cliente, los ítems y, si la seña es por MercadoPago y sigue pendiente, el enlace para pagarla. |
 | **Precondición** | El usuario está identificado como administrador. |
 | **Estado** | Implementado |
 
@@ -6740,8 +6744,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El administrador pide el listado de reservas. |
 | 2 | El sistema busca los pedidos reservados y los ordena por la próxima fecha de entrega. |
-| 3 | El sistema calcula el saldo restante a pagar por el cliente a partir de los ítems. |
-| 4 | El sistema muestra el listado con el estado de la seña de cada reserva. |
+| 3 | El sistema calcula el saldo restante a pagar por el cliente: el total del pedido, menos la seña si ya está cobrada. |
+| 4 | El sistema muestra el listado con el día y la franja de entrega y el estado de la seña de cada reserva y, para la seña de MercadoPago todavía pendiente, el enlace de pago. |
 
 **Postcondición:** El administrador ve en qué fecha se reanudan los repartos prepagos.
 
@@ -6749,6 +6753,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
+| 1 | Si quien consulta es el Administrador General y no indicó una distribuidora, el sistema le pide que la indique y no muestra reservas. |
 | 2 | Si no hay reservas, el sistema muestra una lista vacía: no es un error. |
 
 **Rendimiento**
@@ -6761,7 +6766,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Media. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El saldo pendiente de cada reserva se recalcula en cada consulta a partir de los ítems del pedido, en lugar de leerse de un dato guardado: cualquier cambio futuro en la lógica de precios debe revisarse también acá para no desalinear lo que se muestra. |
+| **Comentarios** | El saldo pendiente de cada reserva se calcula en cada consulta a partir del total del pedido y de la seña, en lugar de leerse de un dato guardado. Mientras la seña está pendiente ese saldo es el total entero; el panel muestra, además, lo que queda por cobrar al entregar una vez paga la seña (total menos seña). El enlace de pago es el del último intento de cobro de la seña, y solo se muestra si ese intento sigue pendiente. |
 
 ---
 
@@ -6771,17 +6776,17 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Objetivos asociados** | OBJ-07 |
 | **Requisitos asociados** | IRQ-08, IRQ-14 |
-| **Descripción** | El administrador registra que la seña de una reserva fue abonada fuera del sistema, en efectivo. |
-| **Precondición** | El usuario está identificado como administrador. Existe una reserva con la seña pendiente. |
+| **Descripción** | El administrador registra que la seña de una reserva fue recibida fuera del sistema, en efectivo o por transferencia. La seña de MercadoPago no se registra a mano: la marca cobrada el aviso de la pasarela. |
+| **Precondición** | El usuario está identificado como administrador. Existe una reserva con la seña pendiente, que se recibe en efectivo o por transferencia. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador elige la reserva y confirma que cobró la seña. |
+| 1 | El administrador elige la reserva y confirma que recibió la seña, en efectivo o por transferencia. |
 | 2 | El sistema valida que la reserva sea de la distribuidora del administrador. |
-| 3 | El sistema comprueba que la reserva siga reservada. |
+| 3 | El sistema comprueba que la reserva siga reservada y que su seña no sea de MercadoPago. |
 | 4 | El sistema marca la seña como abonada y guarda el cambio. |
 | 5 | El sistema muestra la reserva actualizada. |
 
@@ -6793,6 +6798,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 2 | Si el pedido no existe o no es de la distribuidora, el sistema informa que no lo encontró. |
 | 3 | Si el pedido no es una reserva pendiente, el sistema rechaza la operación. |
+| 3 | Si la seña es de MercadoPago, el sistema rechaza la confirmación a mano e informa que esa seña se confirma sola cuando la pasarela avisa el pago. |
 
 **Rendimiento**
 
@@ -6804,7 +6810,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La operación no deja registro de qué administrador confirmó el cobro de la seña ni del momento de esa confirmación, de modo que ese tramo del circuito de reservas con seña en efectivo no queda auditable. |
+| **Comentarios** | La operación no deja registro de qué administrador confirmó el cobro de la seña ni del momento de esa confirmación, de modo que ese tramo del circuito de reservas con seña en efectivo o por transferencia no queda auditable. Confirmar de nuevo una seña ya confirmada no cambia nada y no es un error. |
 
 ---
 

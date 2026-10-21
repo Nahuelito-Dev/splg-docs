@@ -84,499 +84,501 @@
 - Figura 70 — CU-025 Resolver un Reclamo — Diagrama de Interacción
 - Figura 71 — CU-026 Consultar el Tablero General — Interfaz Gráfica
 - Figura 72 — CU-026 Consultar el Tablero General — Diagrama de Interacción
-- Figura 73 — DSD CU-001: Iniciar Sesión
-- Figura 74 — DSD CU-002: Registrarse como Cliente
-- Figura 75 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfil(usuarioId)
-- Figura 76 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)
-- Figura 77 — DSD CU-251: Modificar el Perfil de Usuario — Operación: actualizarPerfil(usuarioId, datos)
-- Figura 78 — DSD CU-047: Recuperar la Contraseña — Operación: solicitarRecuperacionDeClave(correo)
-- Figura 79 — DSD CU-336: Cambiar el Correo del Usuario — Operación: cambiarCorreo(correoActual, correoNuevo)
-- Figura 80 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId)
-- Figura 81 — DSD CU-270: Desbloquear un Usuario — Operación: desbloquearUsuario(usuarioId)
-- Figura 82 — DSD CU-082: Crear un Usuario Base
-- Figura 83 — DSD CU-083: Consultar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
-- Figura 84 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)
-- Figura 85 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)
-- Figura 86 — DSD CU-085: Dar de Baja un Usuario
-- Figura 87 — DSD CU-005: Crear un Pedido
-- Figura 88 — DSD CU-006: Consultar el Detalle de un Pedido
-- Figura 89 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)
-- Figura 90 — DSD CU-007: Consultar el Historial de Pedidos
-- Figura 91 — DSD CU-348: Consultar el Reintegro de un Pedido
-- Figura 92 — DSD CU-169: Registrar el Cambio de Estado de un Pedido — Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
-- Figura 93 — DSD CU-170: Consultar el Historial de Estados de un Pedido
-- Figura 94 — DSD CU-143: Declarar el Consumo Promedio al Registrarse
-- Figura 95 — DSD CU-144: Modificar el Consumo Promedio Declarado
-- Figura 96 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra
-- Figura 97 — DSD CU-146: Consultar la Fecha Estimada de Recompra
-- Figura 98 — DSD CU-147: Realizar una Compra Express
-- Figura 99 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido
-- Figura 100 — DSD CU-008: Cancelar un Pedido (Cliente) — Operación: cancelarMiPedido(pedidoId, motivo)
-- Figura 101 — DSD CU-009: Liberar un Pedido (Chofer)
-- Figura 102 — DSD CU-010: Cancelar un Pedido (Administrador) — Operación: cancelarPedido(pedidoId, motivo)
-- Figura 103 — DSD CU-168: Reintegrar el Pago de un Pedido
-- Figura 104 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)
-- Figura 105 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)
-- Figura 106 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota, cajaId)
-- Figura 107 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)
-- Figura 108 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)
-- Figura 109 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)
-- Figura 110 — DSD CU-011: Consultar Todos los Pedidos
-- Figura 111 — DSD CU-046: Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
-- Figura 112 — DSD CU-116: Registrar una Dirección de Entrega — Operación: registrarDireccionDeEntrega(datos)
-- Figura 113 — DSD CU-117: Consultar Detalle de una Dirección de Entrega
-- Figura 114 — DSD CU-118: Modificar una Dirección de Entrega — Operación: editarDireccionDeEntrega(direccionId, cambios)
-- Figura 115 — DSD CU-119: Dar de Baja una Dirección de Entrega — Operación: eliminarDireccionDeEntrega(direccionId)
-- Figura 116 — DSD CU-120: Marcar una Dirección como Predeterminada — Operación: marcarDireccionPredeterminada(direccionId)
-- Figura 117 — DSD CU-121: Consultar la Dirección Predeterminada
-- Figura 118 — DSD CU-122: Agregar un Ítem al Carrito
-- Figura 119 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito
-- Figura 120 — DSD CU-124: Quitar un Ítem del Carrito
-- Figura 121 — DSD CU-125: Consultar el Carrito
-- Figura 122 — DSD CU-126: Vaciar el Carrito
-- Figura 123 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido
-- Figura 124 — DSD CU-128: Indicar Quién Recibe el Pedido
-- Figura 125 — DSD CU-080: Consultar el Pool de Pedidos Disponibles
-- Figura 126 — DSD CU-081: Consultar los Pedidos Asignados al Chofer
-- Figura 127 — DSD CU-338: Retomar el Pedido en Curso — Operación: consultarPedidoEnCurso()
-- Figura 128 — DSD CU-339: Modificar un Pedido Pendiente (Administrador) — Operación: modificarPedido(pedidoId, datos)
-- Figura 129 — DSD CU-341: Modificar un Pedido Pendiente (Cliente) — Operación: modificarMiPedido(pedidoId, datos)
-- Figura 130 — DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)
-- Figura 131 — DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()
-- Figura 132 — DSD CU-015: Aceptar un Pedido — Operación: aceptarPedido(pedidoId)
-- Figura 133 — DSD CU-016: Rechazar un Pedido Ofrecido — Operación: rechazarOferta(pedidoId)
-- Figura 134 — DSD CU-012: Asignar un Chofer Manualmente
-- Figura 135 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
-- Figura 136 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)
-- Figura 137 — DSD CU-017: Modificar la Ubicación GPS del Chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)
-- Figura 138 — DSD CU-020: Confirmar una Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)
-- Figura 139 — DSD CU-078: Consultar el Código de Entrega (QR del chofer) — Operación: obtenerCodigoDeEntrega(pedidoId)
-- Figura 140 — DSD CU-079: Confirmar una Entrega Escaneando el QR (cliente) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)
-- Figura 141 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)
-- Figura 142 — DSD CU-018: Marcar un Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)
-- Figura 143 — DSD CU-019: Avisar la Llegada al Cliente — Operación: avisarLlegada(pedidoId)
-- Figura 144 — DSD CU-022: Activar la Disponibilidad — Operación: activarDisponibilidad(usuarioId)
-- Figura 145 — DSD CU-266: Desactivar la Disponibilidad — Operación: desactivarDisponibilidad(usuarioId)
-- Figura 146 — DSD CU-023: Registrar un Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)
-- Figura 147 — DSD CU-024: Consultar los Reclamos — Operación: listarReclamos()
-- Figura 148 — DSD CU-025: Resolver un Reclamo
-- Figura 149 — DSD CU-166: Tomar un Reclamo Pendiente
-- Figura 150 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)
-- Figura 151 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)
-- Figura 152 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)
-- Figura 153 — DSD CU-026: Consultar el Tablero General · consultarResumenDePedidos
-- Figura 154 — DSD CU-026: Consultar el Tablero General · consultarGraficoDeVentas
-- Figura 155 — DSD CU-027: Consultar el Reporte de Ventas por Chofer
-- Figura 156 — DSD CU-028: Consultar el Reporte de Ventas por Producto
-- Figura 157 — DSD CU-029: Consultar el Reporte por Método de Pago
-- Figura 158 — DSD CU-030: Consultar el Gráfico de Ventas (últimos 7 días)
-- Figura 159 — DSD CU-304: Consultar los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)
-- Figura 160 — DSD CU-031: Registrar un Chofer (Gestión de la Flota) — Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)
-- Figura 161 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)
-- Figura 162 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)
-- Figura 163 — DSD CU-033: Activar un Chofer — Operación: activarChofer(choferId)
-- Figura 164 — DSD CU-267: Desactivar un Chofer — Operación: desactivarChofer(choferId)
-- Figura 165 — DSD CU-034: Registrar un Vehículo del Chofer
-- Figura 166 — DSD CU-035: Consultar el Listado de Choferes
-- Figura 167 — DSD CU-035: Consultar el Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)
-- Figura 168 — DSD CU-049: Consultar las Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)
-- Figura 169 — DSD CU-337: Ajustar el Saldo del Chofer — Operación: ajustarSaldoDelChofer(choferId, monto)
-- Figura 170 — DSD CU-051: Consultar el Listado de Vehículos
-- Figura 171 — DSD CU-096: Modificar el Perfil del Chofer
-- Figura 172 — DSD CU-097: Dar de Baja un Chofer
-- Figura 173 — DSD CU-109: Consultar el Detalle del Chofer — Operación: consultarDetalleDelChofer(choferId)
-- Figura 174 — DSD CU-110: Buscar un Chofer por Usuario
-- Figura 175 — DSD CU-111: Modificar un Vehículo — Operación: editarVehiculo(vehiculoId, datos)
-- Figura 176 — DSD CU-112: Dar de Baja un Vehículo — Operación: eliminarVehiculo(vehiculoId)
-- Figura 177 — DSD CU-113: Consultar el Detalle del Vehículo
-- Figura 178 — DSD CU-114: Buscar un Vehículo por Patente — Operación: buscarVehiculoPorPatente(patente)
-- Figura 179 — DSD CU-115: Consultar los Vehículos de un Chofer
-- Figura 180 — DSD CU-136: Registrar el Seguro del Vehículo — Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)
-- Figura 181 — DSD CU-137: Registrar la Verificación Técnica Vehicular — Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)
-- Figura 182 — DSD CU-138: Registrar la Licencia de Conducir del Chofer — Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)
-- Figura 183 — DSD CU-139: Consultar los Vencimientos de la Flota
-- Figura 184 — DSD CU-140: Programar un Mantenimiento de Vehículo — Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)
-- Figura 185 — DSD CU-141: Registrar un Mantenimiento Realizado
-- Figura 186 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota — Operación: avisarVencimientosDeLaFlota()
-- Figura 187 — DSD CU-155: Adjuntar un Archivo a una Tarea de Flota
-- Figura 188 — DSD CU-156: Consultar los Adjuntos de una Tarea de Flota
-- Figura 189 — DSD CU-157: Descargar un Adjunto de Flota
-- Figura 190 — DSD CU-158: Eliminar un Adjunto de Flota
-- Figura 191 — DSD CU-159: Almacenar un Archivo
-- Figura 192 — DSD CU-160: Recuperar un Archivo
-- Figura 193 — DSD CU-161: Poner un Vehículo en Uso para un Chofer
-- Figura 194 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer
-- Figura 195 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer
-- Figura 196 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()
-- Figura 197 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer
-- Figura 198 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo
-- Figura 199 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)
-- Figura 200 — DSD CU-320: Modificar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)
-- Figura 201 — DSD CU-321: Anular una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)
-- Figura 202 — DSD CU-322: Consultar las Cargas de Combustible — Operación: consultarCargasDeCombustible(filtros)
-- Figura 203 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)
-- Figura 204 — DSD CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas — Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)
-- Figura 205 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)
-- Figura 206 — DSD CU-323: Modificar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)
-- Figura 207 — DSD CU-324: Anular una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)
-- Figura 208 — DSD CU-325: Consultar las Multas de Tránsito — Operación: consultarMultasDeTransito(filtros)
-- Figura 209 — DSD CU-326: Avisar las Multas por Vencer — Operación: avisarMultasPorVencer()
-- Figura 210 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)
-- Figura 211 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)
-- Figura 212 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)
-- Figura 213 — DSD CU-327: Modificar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)
-- Figura 214 — DSD CU-328: Consultar los Siniestros — Operación: consultarSiniestros(filtros)
-- Figura 215 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)
-- Figura 216 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)
-- Figura 217 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)
-- Figura 218 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)
-- Figura 219 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)
-- Figura 220 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)
-- Figura 221 — DSD CU-036: Crear un Producto (Garrafa)
-- Figura 222 — DSD CU-037: Modificar el Precio de un Producto — Operación: actualizarPrecioDelProducto(productoId, precio)
-- Figura 223 — DSD CU-038: Modificar el Stock de un Producto — Operación: actualizarStock(productoId, variacion)
-- Figura 224 — DSD CU-039: Configurar las Promociones por Cantidad — Operación: configurarPromocionesDelProducto(productoId, promociones)
-- Figura 225 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)
-- Figura 226 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)
-- Figura 227 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()
-- Figura 228 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProducto(productoId)
-- Figura 229 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProductosDisponibles(distribuidora)
-- Figura 230 — DSD CU-344: Consultar el Catálogo de Productos (Administrador)
-- Figura 231 — DSD CU-344: Consultar el Catálogo de Productos (Administrador) — Operación: consultarDetalleDelProducto(productoId)
-- Figura 232 — DSD CU-042: Crear una Franja Horaria
-- Figura 233 — DSD CU-044: Seleccionar una Franja Horaria al Crear un Pedido — Operación: validarFranjaDelPedido(franjaId, fecha)
-- Figura 234 — DSD CU-045: Consultar las Franjas Horarias Disponibles
-- Figura 235 — DSD CU-045: Consultar las Franjas Horarias Disponibles
-- Figura 236 — DSD CU-154: Consultar el Listado de Franjas Horarias
-- Figura 237 — DSD CU-043: Modificar una Franja Horaria
-- Figura 238 — DSD CU-342: Activar una Franja Horaria — Operación: activarFranjaHoraria(franjaId)
-- Figura 239 — DSD CU-343: Desactivar una Franja Horaria — Operación: desactivarFranjaHoraria(franjaId)
-- Figura 240 — DSD — CU-052: Registrar Distribuidora
-- Figura 241 — DSD — CU-053: Consultar Distribuidoras
-- Figura 242 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)
-- Figura 243 — DSD — CU-054: Modificar Datos de la Distribuidora
-- Figura 244 — DSD — CU-055: Dar de Baja una Distribuidora
-- Figura 245 — DSD CU-058: Validar la Cobertura de una Dirección
-- Figura 246 — DSD — CU-056: Crear un Polígono de Cobertura
-- Figura 247 — DSD — CU-057: Consultar los Polígonos de Cobertura
-- Figura 248 — DSD — CU-059: Dar de Baja un Polígono de Cobertura
-- Figura 249 — DSD CU-305: Modificar un Polígono de Cobertura — Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)
-- Figura 250 — DSD CU-306: Consultar un Polígono de Cobertura — Operación: consultarZonaDeCobertura(zonaId)
-- Figura 251 — DSD CU-307: Activar un Polígono de Cobertura — Operación: activarZonaDeCobertura(zonaId)
-- Figura 252 — DSD CU-308: Desactivar un Polígono de Cobertura — Operación: desactivarZonaDeCobertura(zonaId)
-- Figura 253 — DSD CU-064: Calificar un Pedido (cliente↔chofer) — Operación: calificarPedido(pedidoId, estrellas, comentario)
-- Figura 254 — DSD CU-065: Consultar el Promedio de Calificaciones de un Usuario — Operación: consultarResumenDeCalificaciones(usuarioId)
-- Figura 255 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
-- Figura 256 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()
-- Figura 257 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)
-- Figura 258 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
-- Figura 259 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)
-- Figura 260 — DSD CU-068: Asignar los Envases a un Pedido — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
-- Figura 261 — DSD CU-070: Registrar un Movimiento de Envase (cambio de estado) — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
-- Figura 262 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
-- Figura 263 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)
-- Figura 264 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)
-- Figura 265 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)
-- Figura 266 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
-- Figura 267 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)
-- Figura 268 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)
-- Figura 269 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)
-- Figura 270 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago
-- Figura 271 — DSD CU-048: Procesar el Pago con MercadoPago · notificarResultadoDePago
-- Figura 272 — DSD CU-072: Crear una Reserva Programada con Seña
-- Figura 273 — DSD CU-075: Activar las Reservas Vencidas Automáticamente · activarReservasDelDia
-- Figura 274 — DSD CU-076: Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia
-- Figura 275 — DSD CU-077: Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar
-- Figura 276 — DSD — CU-073: Listar Reservas y Estado de la Seña
-- Figura 277 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo
-- Figura 278 — DSD — CU-086: Registrar Administrador
-- Figura 279 — DSD — CU-087: Crear el Primer Administrador General
-- Figura 280 — DSD — CU-088: Consultar Administradores
-- Figura 281 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)
-- Figura 282 — DSD CU-345: Modificar un Administrador
-- Figura 283 — DSD CU-346: Dar de Baja un Administrador
-- Figura 284 — DSD CU-089: Consultar los Roles — Operación: listarRoles()
-- Figura 285 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)
-- Figura 286 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)
-- Figura 287 — DSD CU-254: Dar de Baja un Rol — Operación: eliminarRol(rolId)
-- Figura 288 — DSD — CU-092: Consultar Listado de Clientes
-- Figura 289 — DSD — CU-094: Actualizar Ubicación del Cliente
-- Figura 290 — DSD — CU-095: Eliminar Cliente (baja lógica)
-- Figura 291 — DSD CU-129: Consultar el Detalle del Cliente
-- Figura 292 — DSD CU-130: Buscar un Cliente por Usuario
-- Figura 293 — DSD CU-131: Modificar los Datos del Cliente
-- Figura 294 — DSD — CU-100: Enviar Notificación de Prueba
-- Figura 295 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
-- Figura 296 — DSD — CU-102: Probar el Servicio de Correo
-- Figura 297 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
-- Figura 298 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()
-- Figura 299 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()
-- Figura 300 — DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura
-- Figura 301 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
-- Figura 302 — DSD — CU-152: Consultar el Registro de Auditoría
-- Figura 303 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
-- Figura 304 — DSD CU-172: Configurar los Parámetros de un Proceso Automático
-- Figura 305 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas
-- Figura 306 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()
-- Figura 307 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)
-- Figura 308 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)
-- Figura 309 — DSD CU-257: Dar de Baja un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)
-- Figura 310 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)
-- Figura 311 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)
-- Figura 312 — DSD CU-311: Dar de Baja el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)
-- Figura 313 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)
-- Figura 314 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)
-- Figura 315 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
-- Figura 316 — DSD CU-312: Reingresar a un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)
-- Figura 317 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
-- Figura 318 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)
-- Figura 319 — DSD CU-184: Registrar el Examen Psicofísico del Empleado — Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)
-- Figura 320 — DSD CU-185: Registrar el Alta en la ART del Empleado — Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)
-- Figura 321 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)
-- Figura 322 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)
-- Figura 323 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)
-- Figura 324 — DSD CU-188: Avisar los Vencimientos Próximos del Personal — Operación: avisarVencimientosDelPersonal()
-- Figura 325 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)
-- Figura 326 — DSD CU-313: Corregir la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)
-- Figura 327 — DSD CU-314: Consultar la Asistencia de los Empleados — Operación: consultarAsistencias(desde, hasta)
-- Figura 328 — DSD CU-190: Registrar el Inicio de la Jornada — Operación: registrarInicioDeJornada()
-- Figura 329 — DSD CU-315: Registrar el Fin de la Jornada — Operación: registrarFinDeJornada()
-- Figura 330 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)
-- Figura 331 — DSD CU-316: Modificar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)
-- Figura 332 — DSD CU-317: Cancelar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)
-- Figura 333 — DSD CU-192: Aprobar una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)
-- Figura 334 — DSD CU-318: Rechazar una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)
-- Figura 335 — DSD CU-319: Consultar las Licencias — Operación: consultarLicencias(estado, desde, hasta)
-- Figura 336 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)
-- Figura 337 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()
-- Figura 338 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)
-- Figura 339 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)
-- Figura 340 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)
-- Figura 341 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)
-- Figura 342 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)
-- Figura 343 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)
-- Figura 344 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)
-- Figura 345 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)
-- Figura 346 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)
-- Figura 347 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()
-- Figura 348 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()
-- Figura 349 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
-- Figura 350 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)
-- Figura 351 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()
-- Figura 352 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()
-- Figura 353 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)
-- Figura 354 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)
-- Figura 355 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
-- Figura 356 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)
-- Figura 357 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)
-- Figura 358 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
-- Figura 359 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)
-- Figura 360 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)
-- Figura 361 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)
-- Figura 362 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)
-- Figura 363 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)
-- Figura 364 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)
-- Figura 365 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)
-- Figura 366 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()
-- Figura 367 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
-- Figura 368 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)
-- Figura 369 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()
-- Figura 370 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()
-- Figura 371 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
-- Figura 372 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()
-- Figura 373 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)
-- Figura 374 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)
-- Figura 375 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()
-- Figura 376 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)
-- Figura 377 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)
-- Figura 378 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)
-- Figura 379 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
-- Figura 380 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)
-- Figura 381 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)
-- Figura 382 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)
-- Figura 383 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
-- Figura 384 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)
-- Figura 385 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)
-- Figura 386 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)
-- Figura 387 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
-- Figura 388 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
-- Figura 389 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)
-- Figura 390 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)
-- Figura 391 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
-- Figura 392 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)
-- Figura 393 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)
-- Figura 394 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
-- Figura 395 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)
-- Figura 396 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()
-- Figura 397 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)
-- Figura 398 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)
-- Figura 399 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)
-- Figura 400 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)
-- Figura 401 — DSD CU-228: Registrar una Entrada de Dinero en la Caja — Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)
-- Figura 402 — DSD CU-309: Registrar una Salida de Dinero de la Caja — Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)
-- Figura 403 — DSD CU-310: Transferir Fondos entre Cajas — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
-- Figura 404 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)
-- Figura 405 — DSD CU-340: Consultar los Movimientos de Caja — Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)
-- Figura 406 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)
-- Figura 407 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)
-- Figura 408 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()
-- Figura 409 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
-- Figura 410 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
-- Figura 411 — DSD CU-330: Reabrir la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)
-- Figura 412 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()
-- Figura 413 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
-- Figura 414 — DSD CU-331: Modificar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)
-- Figura 415 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)
-- Figura 416 — DSD CU-332: Asentar el Cargo de una Venta a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)
-- Figura 417 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
-- Figura 418 — DSD CU-329: Registrar un Ajuste de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
-- Figura 419 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
-- Figura 420 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()
-- Figura 421 — DSD CU-240: Crear una Regla de Comisión por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
-- Figura 422 — DSD CU-333: Modificar una Regla de Comisión por Entrega — Operación: modificarReglaDeComision(reglaId, datos)
-- Figura 423 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)
-- Figura 424 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
-- Figura 425 — DSD CU-334: Aprobar una Liquidación de Comisiones — Operación: aprobarLiquidacion(liquidacionId)
-- Figura 426 — DSD CU-335: Anular una Liquidación de Comisiones — Operación: anularLiquidacion(liquidacionId)
-- Figura 427 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)
-- Figura 428 — DSD CU-347: Anular el Pago de una Liquidación
-- Figura 429 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)
-- Figura 430 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)
-- Figura 431 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota
-- Figura 432 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
-- Figura 433 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
-- Figura 434 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra
-- Figura 435 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · anticiparRecompras
-- Figura 436 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()
-- Figura 437 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: aceptarRecorrido(recorridoId)
-- Figura 438 — DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()
-- Figura 439 — DSD CU-108: Recuperar Envases No Devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
-- Figura 440 — DSD CU-108: Recuperar Envases No Devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
-- Figura 441 — Diagrama de Clases de Dominio
-- Figura 442 — Clases de dominio: organización y acceso
-- Figura 443 — Clases de dominio: clientes
-- Figura 444 — Clases de dominio: pedido, líneas y pago
-- Figura 445 — Clases de dominio: carrito, franjas y cobertura
-- Figura 446 — Clases de dominio: despacho y propuestas con vigencia
-- Figura 447 — Clases de dominio: choferes y vehículos
-- Figura 448 — Clases de dominio: mantenimiento de la flota
-- Figura 449 — Clases de dominio: productos y envases
-- Figura 450 — Clases de dominio: personal
-- Figura 451 — Clases de dominio: recupero de envases
-- Figura 452 — Clases de dominio: posventa
-- Figura 453 — Clases de dominio: gastos de la flota
-- Figura 454 — Clases de dominio: stock físico
-- Figura 455 — Clases de dominio: carga del camión
-- Figura 456 — Clases de dominio: compras
-- Figura 457 — Clases de dominio: caja y movimientos
-- Figura 458 — Clases de dominio: rendición del chofer
-- Figura 459 — Clases de dominio: cuentas corrientes
-- Figura 460 — Clases de dominio: comisiones y liquidaciones
-- Figura 461 — Clases de diseño: sesión, registro e identidad
-- Figura 462 — Clases de diseño: usuarios, roles, administradores y auditoría
-- Figura 463 — Clases de diseño: clientes y direcciones de entrega
-- Figura 464 — Clases de diseño: carrito y recompra
-- Figura 465 — Clases de diseño: productos y franjas horarias
-- Figura 466 — Clases de diseño: cobertura y distribuidoras
-- Figura 467 — Clases de diseño: pedidos: alta y cancelación
-- Figura 468 — Clases de diseño: pedidos: consulta y estado
-- Figura 469 — Clases de diseño: pagos y reservas
-- Figura 470 — Clases de diseño: despacho de pedidos
-- Figura 471 — Clases de diseño: seguimiento en tiempo real
-- Figura 472 — Clases de diseño: choferes y vehículos
-- Figura 473 — Clases de diseño: flota: tareas, adjuntos y vencimientos
-- Figura 474 — Clases de diseño: flota: planificador de mantenimiento
-- Figura 475 — Clases de diseño: personal: puestos, legajos, jornadas y licencias
-- Figura 476 — Clases de diseño: adjuntos
-- Figura 477 — Clases de diseño: envases
-- Figura 478 — Clases de diseño: recupero de envases
-- Figura 479 — Clases de diseño: flota: gastos, multas y siniestros
-- Figura 480 — Clases de diseño: reclamos, incidencias y calificaciones
-- Figura 481 — Clases de diseño: notificaciones y correo
-- Figura 482 — Clases de diseño: reportes, salud y almacenamiento
-- Figura 483 — Clases de diseño: stock
-- Figura 484 — Clases de diseño: compras
-- Figura 485 — Clases de diseño: carga del camión
-- Figura 486 — Clases de diseño: caja: cajas, sesiones y libro
-- Figura 487 — Clases de diseño: rendición del chofer
-- Figura 488 — Clases de diseño: cuentas corrientes
-- Figura 489 — Clases de diseño: comisiones y liquidaciones
-- Figura 490 — Dependencias entre módulos
-- Figura 491 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
-- Figura 492 — D-16 — Catálogo de Productos (App Cliente)
-- Figura 493 — D-17 — Checkout (App Cliente)
-- Figura 494 — D-18 — Seguimiento en Tiempo Real (App Cliente)
-- Figura 495 — D-19 — Login y Registro (App Cliente + Chofer)
-- Figura 496 — D-20 — Home del Chofer (App Chofer)
-- Figura 497 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)
-- Figura 498 — D-22 — En Ruta (App Chofer)
-- Figura 499 — D-23 — tablero Administrador (Panel Web)
-- Figura 500 — D-24 — Listado de Pedidos Admin (Panel Web)
-- Figura 501 — Modelo físico de la base de datos: vista general
-- Figura 502 — Organización y acceso
-- Figura 503 — Clientes
-- Figura 504 — Catálogo e inventario de envases
-- Figura 505 — Venta y pedidos
-- Figura 506 — Pagos
-- Figura 507 — Despacho y logística
-- Figura 508 — Flota y choferes
-- Figura 509 — Posventa
-- Figura 510 — Personal
-- Figura 511 — Gastos de la flota
-- Figura 512 — Stock físico y carga del camión
-- Figura 513 — Compras
-- Figura 514 — Tablas técnicas
-- Figura 515 — Caja y finanzas
-- Figura 516 — Relaciones entre contextos
-- Figura 517 — Modelo entidad-relación conceptual: vista general
-- Figura 518 — Modelo entidad-relación conceptual: usuarios y cuentas
-- Figura 519 — Modelo entidad-relación conceptual: pedidos y pagos
-- Figura 520 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
-- Figura 521 — Modelo entidad-relación conceptual: flota y choferes
-- Figura 522 — Modelo entidad-relación conceptual: envases y catálogo
-- Figura 523 — Modelo entidad-relación conceptual: personal
-- Figura 524 — Modelo entidad-relación conceptual: posventa
-- Figura 525 — Modelo entidad-relación conceptual: gastos de la flota
-- Figura 526 — Modelo entidad-relación conceptual: stock físico
-- Figura 527 — Modelo entidad-relación conceptual: carga del camión
-- Figura 528 — Modelo entidad-relación conceptual: compras
-- Figura 529 — Modelo entidad-relación conceptual: caja y movimientos
-- Figura 530 — Modelo entidad-relación conceptual: rendiciones de choferes
-- Figura 531 — Modelo entidad-relación conceptual: cuentas corrientes
-- Figura 532 — Modelo entidad-relación conceptual: comisiones y liquidaciones
-- Figura 533 — Modelo físico: personal
-- Figura 534 — Modelo entidad-relación conceptual: personal
-- Figura 535 — Modelo físico: gastos de la flota
-- Figura 536 — Modelo entidad-relación conceptual: gastos de la flota
-- Figura 537 — Modelo físico: caja y finanzas
-- Figura 538 — Modelo entidad-relación conceptual: caja y movimientos
-- Figura 539 — Modelo entidad-relación conceptual: rendiciones de choferes
-- Figura 540 — Modelo entidad-relación conceptual: cuentas corrientes
-- Figura 541 — Modelo entidad-relación conceptual: comisiones y liquidaciones
-- Figura 542 — Diagrama de estados del pedido
-- Figura 543 — Diagrama de estados del reclamo
-- Figura 544 — Diagrama de estados del envase
-- Figura 545 — Diagrama de estados de la reserva programada
-- Figura 546 — Diagrama de estados de la tarea de flota
-- Figura 547 — Diagrama de estados de la oferta de despacho
-- Figura 548 — Diagrama de estados de la orden de compra
-- Figura 549 — Diagrama de estados de la recepción de compra
-- Figura 550 — Diagrama de estados de la carga de camión
-- Figura 551 — Diagrama de estados del empleado
-- Figura 552 — Diagrama de estados de la licencia laboral
-- Figura 553 — Diagrama de estados de la jornada de trabajo
-- Figura 554 — Diagrama de estados de la carga de combustible
-- Figura 555 — Diagrama de estados de la multa de tránsito
-- Figura 556 — Diagrama de estados del siniestro
-- Figura 557 — Diagrama de estados del neumático
-- Figura 558 — Diagrama de estados de la vigencia de la póliza y de la habilitación
-- Figura 559 — Diagrama de estados de la oferta de despacho
-- Figura 560 — Diagrama de estados: sesión de caja
-- Figura 561 — Diagrama de estados: rendición del chofer
-- Figura 562 — Diagrama de estados: liquidación de comisiones
-- Figura 563 — Diagrama de estados: cuenta corriente
-- Figura 564 — Diagrama de actividad del despacho por proximidad
-- Figura 565 — Diagrama de actividad del ciclo de vida del pedido
+- Figura 73 — CU-072 Crear una Reserva Programada con Seña — Interfaz Gráfica
+- Figura 74 — CU-072 Crear una Reserva Programada con Seña — Diagrama de Interacción
+- Figura 75 — DSD CU-001: Iniciar Sesión
+- Figura 76 — DSD CU-002: Registrarse como Cliente
+- Figura 77 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfil(usuarioId)
+- Figura 78 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)
+- Figura 79 — DSD CU-251: Modificar el Perfil de Usuario — Operación: actualizarPerfil(usuarioId, datos)
+- Figura 80 — DSD CU-047: Recuperar la Contraseña — Operación: solicitarRecuperacionDeClave(correo)
+- Figura 81 — DSD CU-336: Cambiar el Correo del Usuario — Operación: cambiarCorreo(correoActual, correoNuevo)
+- Figura 82 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId)
+- Figura 83 — DSD CU-270: Desbloquear un Usuario — Operación: desbloquearUsuario(usuarioId)
+- Figura 84 — DSD CU-082: Crear un Usuario Base
+- Figura 85 — DSD CU-083: Consultar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)
+- Figura 86 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)
+- Figura 87 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)
+- Figura 88 — DSD CU-085: Dar de Baja un Usuario
+- Figura 89 — DSD CU-005: Crear un Pedido
+- Figura 90 — DSD CU-006: Consultar el Detalle de un Pedido
+- Figura 91 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)
+- Figura 92 — DSD CU-007: Consultar el Historial de Pedidos
+- Figura 93 — DSD CU-348: Consultar el Reintegro de un Pedido
+- Figura 94 — DSD CU-169: Registrar el Cambio de Estado de un Pedido — Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)
+- Figura 95 — DSD CU-170: Consultar el Historial de Estados de un Pedido
+- Figura 96 — DSD CU-143: Declarar el Consumo Promedio al Registrarse
+- Figura 97 — DSD CU-144: Modificar el Consumo Promedio Declarado
+- Figura 98 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra
+- Figura 99 — DSD CU-146: Consultar la Fecha Estimada de Recompra
+- Figura 100 — DSD CU-147: Realizar una Compra Express
+- Figura 101 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido
+- Figura 102 — DSD CU-008: Cancelar un Pedido (Cliente) — Operación: cancelarMiPedido(pedidoId, motivo)
+- Figura 103 — DSD CU-009: Liberar un Pedido (Chofer)
+- Figura 104 — DSD CU-010: Cancelar un Pedido (Administrador) — Operación: cancelarPedido(pedidoId, motivo)
+- Figura 105 — DSD CU-168: Reintegrar el Pago de un Pedido
+- Figura 106 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)
+- Figura 107 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)
+- Figura 108 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota, cajaId)
+- Figura 109 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)
+- Figura 110 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)
+- Figura 111 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)
+- Figura 112 — DSD CU-011: Consultar Todos los Pedidos
+- Figura 113 — DSD CU-046: Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega
+- Figura 114 — DSD CU-116: Registrar una Dirección de Entrega — Operación: registrarDireccionDeEntrega(datos)
+- Figura 115 — DSD CU-117: Consultar Detalle de una Dirección de Entrega
+- Figura 116 — DSD CU-118: Modificar una Dirección de Entrega — Operación: editarDireccionDeEntrega(direccionId, cambios)
+- Figura 117 — DSD CU-119: Dar de Baja una Dirección de Entrega — Operación: eliminarDireccionDeEntrega(direccionId)
+- Figura 118 — DSD CU-120: Marcar una Dirección como Predeterminada — Operación: marcarDireccionPredeterminada(direccionId)
+- Figura 119 — DSD CU-121: Consultar la Dirección Predeterminada
+- Figura 120 — DSD CU-122: Agregar un Ítem al Carrito
+- Figura 121 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito
+- Figura 122 — DSD CU-124: Quitar un Ítem del Carrito
+- Figura 123 — DSD CU-125: Consultar el Carrito
+- Figura 124 — DSD CU-126: Vaciar el Carrito
+- Figura 125 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido
+- Figura 126 — DSD CU-128: Indicar Quién Recibe el Pedido
+- Figura 127 — DSD CU-080: Consultar el Pool de Pedidos Disponibles
+- Figura 128 — DSD CU-081: Consultar los Pedidos Asignados al Chofer
+- Figura 129 — DSD CU-338: Retomar el Pedido en Curso — Operación: consultarPedidoEnCurso()
+- Figura 130 — DSD CU-339: Modificar un Pedido Pendiente (Administrador) — Operación: modificarPedido(pedidoId, datos)
+- Figura 131 — DSD CU-341: Modificar un Pedido Pendiente (Cliente) — Operación: modificarMiPedido(pedidoId, datos)
+- Figura 132 — DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)
+- Figura 133 — DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()
+- Figura 134 — DSD CU-015: Aceptar un Pedido — Operación: aceptarPedido(pedidoId)
+- Figura 135 — DSD CU-016: Rechazar un Pedido Ofrecido — Operación: rechazarOferta(pedidoId)
+- Figura 136 — DSD CU-012: Asignar un Chofer Manualmente
+- Figura 137 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
+- Figura 138 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)
+- Figura 139 — DSD CU-017: Modificar la Ubicación GPS del Chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)
+- Figura 140 — DSD CU-020: Confirmar una Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)
+- Figura 141 — DSD CU-078: Consultar el Código de Entrega (QR del chofer) — Operación: obtenerCodigoDeEntrega(pedidoId)
+- Figura 142 — DSD CU-079: Confirmar una Entrega Escaneando el QR (cliente) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)
+- Figura 143 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)
+- Figura 144 — DSD CU-018: Marcar un Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)
+- Figura 145 — DSD CU-019: Avisar la Llegada al Cliente — Operación: avisarLlegada(pedidoId)
+- Figura 146 — DSD CU-022: Activar la Disponibilidad — Operación: activarDisponibilidad(usuarioId)
+- Figura 147 — DSD CU-266: Desactivar la Disponibilidad — Operación: desactivarDisponibilidad(usuarioId)
+- Figura 148 — DSD CU-023: Registrar un Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)
+- Figura 149 — DSD CU-024: Consultar los Reclamos — Operación: listarReclamos()
+- Figura 150 — DSD CU-025: Resolver un Reclamo
+- Figura 151 — DSD CU-166: Tomar un Reclamo Pendiente
+- Figura 152 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)
+- Figura 153 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)
+- Figura 154 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)
+- Figura 155 — DSD CU-026: Consultar el Tablero General · consultarResumenDePedidos
+- Figura 156 — DSD CU-026: Consultar el Tablero General · consultarGraficoDeVentas
+- Figura 157 — DSD CU-027: Consultar el Reporte de Ventas por Chofer
+- Figura 158 — DSD CU-028: Consultar el Reporte de Ventas por Producto
+- Figura 159 — DSD CU-029: Consultar el Reporte por Método de Pago
+- Figura 160 — DSD CU-030: Consultar el Gráfico de Ventas (últimos 7 días)
+- Figura 161 — DSD CU-304: Consultar los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)
+- Figura 162 — DSD CU-031: Registrar un Chofer (Gestión de la Flota) — Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)
+- Figura 163 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)
+- Figura 164 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)
+- Figura 165 — DSD CU-033: Activar un Chofer — Operación: activarChofer(choferId)
+- Figura 166 — DSD CU-267: Desactivar un Chofer — Operación: desactivarChofer(choferId)
+- Figura 167 — DSD CU-034: Registrar un Vehículo del Chofer
+- Figura 168 — DSD CU-035: Consultar el Listado de Choferes
+- Figura 169 — DSD CU-035: Consultar el Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)
+- Figura 170 — DSD CU-049: Consultar las Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)
+- Figura 171 — DSD CU-337: Ajustar el Saldo del Chofer — Operación: ajustarSaldoDelChofer(choferId, monto)
+- Figura 172 — DSD CU-051: Consultar el Listado de Vehículos
+- Figura 173 — DSD CU-096: Modificar el Perfil del Chofer
+- Figura 174 — DSD CU-097: Dar de Baja un Chofer
+- Figura 175 — DSD CU-109: Consultar el Detalle del Chofer — Operación: consultarDetalleDelChofer(choferId)
+- Figura 176 — DSD CU-110: Buscar un Chofer por Usuario
+- Figura 177 — DSD CU-111: Modificar un Vehículo — Operación: editarVehiculo(vehiculoId, datos)
+- Figura 178 — DSD CU-112: Dar de Baja un Vehículo — Operación: eliminarVehiculo(vehiculoId)
+- Figura 179 — DSD CU-113: Consultar el Detalle del Vehículo
+- Figura 180 — DSD CU-114: Buscar un Vehículo por Patente — Operación: buscarVehiculoPorPatente(patente)
+- Figura 181 — DSD CU-115: Consultar los Vehículos de un Chofer
+- Figura 182 — DSD CU-136: Registrar el Seguro del Vehículo — Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)
+- Figura 183 — DSD CU-137: Registrar la Verificación Técnica Vehicular — Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)
+- Figura 184 — DSD CU-138: Registrar la Licencia de Conducir del Chofer — Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)
+- Figura 185 — DSD CU-139: Consultar los Vencimientos de la Flota
+- Figura 186 — DSD CU-140: Programar un Mantenimiento de Vehículo — Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)
+- Figura 187 — DSD CU-141: Registrar un Mantenimiento Realizado
+- Figura 188 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota — Operación: avisarVencimientosDeLaFlota()
+- Figura 189 — DSD CU-155: Adjuntar un Archivo a una Tarea de Flota
+- Figura 190 — DSD CU-156: Consultar los Adjuntos de una Tarea de Flota
+- Figura 191 — DSD CU-157: Descargar un Adjunto de Flota
+- Figura 192 — DSD CU-158: Eliminar un Adjunto de Flota
+- Figura 193 — DSD CU-159: Almacenar un Archivo
+- Figura 194 — DSD CU-160: Recuperar un Archivo
+- Figura 195 — DSD CU-161: Poner un Vehículo en Uso para un Chofer
+- Figura 196 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer
+- Figura 197 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer
+- Figura 198 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()
+- Figura 199 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer
+- Figura 200 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo
+- Figura 201 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)
+- Figura 202 — DSD CU-320: Modificar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)
+- Figura 203 — DSD CU-321: Anular una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)
+- Figura 204 — DSD CU-322: Consultar las Cargas de Combustible — Operación: consultarCargasDeCombustible(filtros)
+- Figura 205 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)
+- Figura 206 — DSD CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas — Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)
+- Figura 207 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)
+- Figura 208 — DSD CU-323: Modificar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)
+- Figura 209 — DSD CU-324: Anular una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)
+- Figura 210 — DSD CU-325: Consultar las Multas de Tránsito — Operación: consultarMultasDeTransito(filtros)
+- Figura 211 — DSD CU-326: Avisar las Multas por Vencer — Operación: avisarMultasPorVencer()
+- Figura 212 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)
+- Figura 213 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)
+- Figura 214 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)
+- Figura 215 — DSD CU-327: Modificar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)
+- Figura 216 — DSD CU-328: Consultar los Siniestros — Operación: consultarSiniestros(filtros)
+- Figura 217 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)
+- Figura 218 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)
+- Figura 219 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)
+- Figura 220 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)
+- Figura 221 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)
+- Figura 222 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)
+- Figura 223 — DSD CU-036: Crear un Producto (Garrafa)
+- Figura 224 — DSD CU-037: Modificar el Precio de un Producto — Operación: actualizarPrecioDelProducto(productoId, precio)
+- Figura 225 — DSD CU-038: Modificar el Stock de un Producto — Operación: actualizarStock(productoId, variacion)
+- Figura 226 — DSD CU-039: Configurar las Promociones por Cantidad — Operación: configurarPromocionesDelProducto(productoId, promociones)
+- Figura 227 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)
+- Figura 228 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)
+- Figura 229 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()
+- Figura 230 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProducto(productoId)
+- Figura 231 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProductosDisponibles(distribuidora)
+- Figura 232 — DSD CU-344: Consultar el Catálogo de Productos (Administrador)
+- Figura 233 — DSD CU-344: Consultar el Catálogo de Productos (Administrador) — Operación: consultarDetalleDelProducto(productoId)
+- Figura 234 — DSD CU-042: Crear una Franja Horaria
+- Figura 235 — DSD CU-044: Seleccionar una Franja Horaria al Crear un Pedido — Operación: validarFranjaDelPedido(franjaId, fecha)
+- Figura 236 — DSD CU-045: Consultar las Franjas Horarias Disponibles
+- Figura 237 — DSD CU-045: Consultar las Franjas Horarias Disponibles
+- Figura 238 — DSD CU-154: Consultar el Listado de Franjas Horarias
+- Figura 239 — DSD CU-043: Modificar una Franja Horaria
+- Figura 240 — DSD CU-342: Activar una Franja Horaria — Operación: activarFranjaHoraria(franjaId)
+- Figura 241 — DSD CU-343: Desactivar una Franja Horaria — Operación: desactivarFranjaHoraria(franjaId)
+- Figura 242 — DSD — CU-052: Registrar Distribuidora
+- Figura 243 — DSD — CU-053: Consultar Distribuidoras
+- Figura 244 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)
+- Figura 245 — DSD — CU-054: Modificar Datos de la Distribuidora
+- Figura 246 — DSD — CU-055: Dar de Baja una Distribuidora
+- Figura 247 — DSD CU-058: Validar la Cobertura de una Dirección
+- Figura 248 — DSD — CU-056: Crear un Polígono de Cobertura
+- Figura 249 — DSD — CU-057: Consultar los Polígonos de Cobertura
+- Figura 250 — DSD — CU-059: Dar de Baja un Polígono de Cobertura
+- Figura 251 — DSD CU-305: Modificar un Polígono de Cobertura — Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)
+- Figura 252 — DSD CU-306: Consultar un Polígono de Cobertura — Operación: consultarZonaDeCobertura(zonaId)
+- Figura 253 — DSD CU-307: Activar un Polígono de Cobertura — Operación: activarZonaDeCobertura(zonaId)
+- Figura 254 — DSD CU-308: Desactivar un Polígono de Cobertura — Operación: desactivarZonaDeCobertura(zonaId)
+- Figura 255 — DSD CU-064: Calificar un Pedido (cliente↔chofer) — Operación: calificarPedido(pedidoId, estrellas, comentario)
+- Figura 256 — DSD CU-065: Consultar el Promedio de Calificaciones de un Usuario — Operación: consultarResumenDeCalificaciones(usuarioId)
+- Figura 257 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)
+- Figura 258 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()
+- Figura 259 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)
+- Figura 260 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)
+- Figura 261 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)
+- Figura 262 — DSD CU-068: Asignar los Envases a un Pedido — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)
+- Figura 263 — DSD CU-070: Registrar un Movimiento de Envase (cambio de estado) — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)
+- Figura 264 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)
+- Figura 265 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)
+- Figura 266 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)
+- Figura 267 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)
+- Figura 268 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)
+- Figura 269 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)
+- Figura 270 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)
+- Figura 271 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)
+- Figura 272 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago
+- Figura 273 — DSD CU-048: Procesar el Pago con MercadoPago · notificarResultadoDePago
+- Figura 274 — DSD CU-072: Crear una Reserva Programada con Seña
+- Figura 275 — DSD CU-075: Activar las Reservas Vencidas Automáticamente · activarReservasDelDia
+- Figura 276 — DSD CU-076: Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia
+- Figura 277 — DSD CU-077: Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar
+- Figura 278 — DSD — CU-073: Listar Reservas y Estado de la Seña
+- Figura 279 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo
+- Figura 280 — DSD — CU-086: Registrar Administrador
+- Figura 281 — DSD — CU-087: Crear el Primer Administrador General
+- Figura 282 — DSD — CU-088: Consultar Administradores
+- Figura 283 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)
+- Figura 284 — DSD CU-345: Modificar un Administrador
+- Figura 285 — DSD CU-346: Dar de Baja un Administrador
+- Figura 286 — DSD CU-089: Consultar los Roles — Operación: listarRoles()
+- Figura 287 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)
+- Figura 288 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)
+- Figura 289 — DSD CU-254: Dar de Baja un Rol — Operación: eliminarRol(rolId)
+- Figura 290 — DSD — CU-092: Consultar Listado de Clientes
+- Figura 291 — DSD — CU-094: Actualizar Ubicación del Cliente
+- Figura 292 — DSD — CU-095: Eliminar Cliente (baja lógica)
+- Figura 293 — DSD CU-129: Consultar el Detalle del Cliente
+- Figura 294 — DSD CU-130: Buscar un Cliente por Usuario
+- Figura 295 — DSD CU-131: Modificar los Datos del Cliente
+- Figura 296 — DSD — CU-100: Enviar Notificación de Prueba
+- Figura 297 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido
+- Figura 298 — DSD — CU-102: Probar el Servicio de Correo
+- Figura 299 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)
+- Figura 300 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()
+- Figura 301 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()
+- Figura 302 — DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura
+- Figura 303 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas
+- Figura 304 — DSD — CU-152: Consultar el Registro de Auditoría
+- Figura 305 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)
+- Figura 306 — DSD CU-172: Configurar los Parámetros de un Proceso Automático
+- Figura 307 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas
+- Figura 308 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()
+- Figura 309 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)
+- Figura 310 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)
+- Figura 311 — DSD CU-257: Dar de Baja un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)
+- Figura 312 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)
+- Figura 313 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)
+- Figura 314 — DSD CU-311: Dar de Baja el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)
+- Figura 315 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)
+- Figura 316 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)
+- Figura 317 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)
+- Figura 318 — DSD CU-312: Reingresar a un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)
+- Figura 319 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)
+- Figura 320 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)
+- Figura 321 — DSD CU-184: Registrar el Examen Psicofísico del Empleado — Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)
+- Figura 322 — DSD CU-185: Registrar el Alta en la ART del Empleado — Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)
+- Figura 323 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)
+- Figura 324 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)
+- Figura 325 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)
+- Figura 326 — DSD CU-188: Avisar los Vencimientos Próximos del Personal — Operación: avisarVencimientosDelPersonal()
+- Figura 327 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)
+- Figura 328 — DSD CU-313: Corregir la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)
+- Figura 329 — DSD CU-314: Consultar la Asistencia de los Empleados — Operación: consultarAsistencias(desde, hasta)
+- Figura 330 — DSD CU-190: Registrar el Inicio de la Jornada — Operación: registrarInicioDeJornada()
+- Figura 331 — DSD CU-315: Registrar el Fin de la Jornada — Operación: registrarFinDeJornada()
+- Figura 332 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)
+- Figura 333 — DSD CU-316: Modificar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)
+- Figura 334 — DSD CU-317: Cancelar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)
+- Figura 335 — DSD CU-192: Aprobar una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)
+- Figura 336 — DSD CU-318: Rechazar una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)
+- Figura 337 — DSD CU-319: Consultar las Licencias — Operación: consultarLicencias(estado, desde, hasta)
+- Figura 338 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)
+- Figura 339 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()
+- Figura 340 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)
+- Figura 341 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)
+- Figura 342 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)
+- Figura 343 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)
+- Figura 344 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)
+- Figura 345 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)
+- Figura 346 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)
+- Figura 347 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)
+- Figura 348 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)
+- Figura 349 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()
+- Figura 350 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()
+- Figura 351 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)
+- Figura 352 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)
+- Figura 353 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()
+- Figura 354 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()
+- Figura 355 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)
+- Figura 356 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)
+- Figura 357 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)
+- Figura 358 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)
+- Figura 359 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)
+- Figura 360 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)
+- Figura 361 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)
+- Figura 362 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)
+- Figura 363 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)
+- Figura 364 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)
+- Figura 365 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)
+- Figura 366 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)
+- Figura 367 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)
+- Figura 368 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()
+- Figura 369 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)
+- Figura 370 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)
+- Figura 371 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()
+- Figura 372 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()
+- Figura 373 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)
+- Figura 374 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()
+- Figura 375 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)
+- Figura 376 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)
+- Figura 377 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()
+- Figura 378 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)
+- Figura 379 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)
+- Figura 380 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)
+- Figura 381 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)
+- Figura 382 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)
+- Figura 383 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)
+- Figura 384 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)
+- Figura 385 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)
+- Figura 386 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)
+- Figura 387 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)
+- Figura 388 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)
+- Figura 389 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)
+- Figura 390 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)
+- Figura 391 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)
+- Figura 392 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)
+- Figura 393 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)
+- Figura 394 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)
+- Figura 395 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)
+- Figura 396 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)
+- Figura 397 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)
+- Figura 398 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()
+- Figura 399 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)
+- Figura 400 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)
+- Figura 401 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)
+- Figura 402 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)
+- Figura 403 — DSD CU-228: Registrar una Entrada de Dinero en la Caja — Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+- Figura 404 — DSD CU-309: Registrar una Salida de Dinero de la Caja — Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)
+- Figura 405 — DSD CU-310: Transferir Fondos entre Cajas — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)
+- Figura 406 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)
+- Figura 407 — DSD CU-340: Consultar los Movimientos de Caja — Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)
+- Figura 408 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)
+- Figura 409 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)
+- Figura 410 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()
+- Figura 411 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)
+- Figura 412 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)
+- Figura 413 — DSD CU-330: Reabrir la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)
+- Figura 414 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()
+- Figura 415 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)
+- Figura 416 — DSD CU-331: Modificar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)
+- Figura 417 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)
+- Figura 418 — DSD CU-332: Asentar el Cargo de una Venta a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)
+- Figura 419 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)
+- Figura 420 — DSD CU-329: Registrar un Ajuste de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)
+- Figura 421 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)
+- Figura 422 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()
+- Figura 423 — DSD CU-240: Crear una Regla de Comisión por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)
+- Figura 424 — DSD CU-333: Modificar una Regla de Comisión por Entrega — Operación: modificarReglaDeComision(reglaId, datos)
+- Figura 425 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)
+- Figura 426 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)
+- Figura 427 — DSD CU-334: Aprobar una Liquidación de Comisiones — Operación: aprobarLiquidacion(liquidacionId)
+- Figura 428 — DSD CU-335: Anular una Liquidación de Comisiones — Operación: anularLiquidacion(liquidacionId)
+- Figura 429 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)
+- Figura 430 — DSD CU-347: Anular el Pago de una Liquidación
+- Figura 431 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)
+- Figura 432 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)
+- Figura 433 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota
+- Figura 434 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)
+- Figura 435 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
+- Figura 436 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra
+- Figura 437 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · anticiparRecompras
+- Figura 438 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()
+- Figura 439 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: aceptarRecorrido(recorridoId)
+- Figura 440 — DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()
+- Figura 441 — DSD CU-108: Recuperar Envases No Devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)
+- Figura 442 — DSD CU-108: Recuperar Envases No Devueltos — Operación: resolverCasoDeRecupero(casoId, decision)
+- Figura 443 — Diagrama de Clases de Dominio
+- Figura 444 — Clases de dominio: organización y acceso
+- Figura 445 — Clases de dominio: clientes
+- Figura 446 — Clases de dominio: pedido, líneas y pago
+- Figura 447 — Clases de dominio: carrito, franjas y cobertura
+- Figura 448 — Clases de dominio: despacho y propuestas con vigencia
+- Figura 449 — Clases de dominio: choferes y vehículos
+- Figura 450 — Clases de dominio: mantenimiento de la flota
+- Figura 451 — Clases de dominio: productos y envases
+- Figura 452 — Clases de dominio: personal
+- Figura 453 — Clases de dominio: recupero de envases
+- Figura 454 — Clases de dominio: posventa
+- Figura 455 — Clases de dominio: gastos de la flota
+- Figura 456 — Clases de dominio: stock físico
+- Figura 457 — Clases de dominio: carga del camión
+- Figura 458 — Clases de dominio: compras
+- Figura 459 — Clases de dominio: caja y movimientos
+- Figura 460 — Clases de dominio: rendición del chofer
+- Figura 461 — Clases de dominio: cuentas corrientes
+- Figura 462 — Clases de dominio: comisiones y liquidaciones
+- Figura 463 — Clases de diseño: sesión, registro e identidad
+- Figura 464 — Clases de diseño: usuarios, roles, administradores y auditoría
+- Figura 465 — Clases de diseño: clientes y direcciones de entrega
+- Figura 466 — Clases de diseño: carrito y recompra
+- Figura 467 — Clases de diseño: productos y franjas horarias
+- Figura 468 — Clases de diseño: cobertura y distribuidoras
+- Figura 469 — Clases de diseño: pedidos: alta y cancelación
+- Figura 470 — Clases de diseño: pedidos: consulta y estado
+- Figura 471 — Clases de diseño: pagos y reservas
+- Figura 472 — Clases de diseño: despacho de pedidos
+- Figura 473 — Clases de diseño: seguimiento en tiempo real
+- Figura 474 — Clases de diseño: choferes y vehículos
+- Figura 475 — Clases de diseño: flota: tareas, adjuntos y vencimientos
+- Figura 476 — Clases de diseño: flota: planificador de mantenimiento
+- Figura 477 — Clases de diseño: personal: puestos, legajos, jornadas y licencias
+- Figura 478 — Clases de diseño: adjuntos
+- Figura 479 — Clases de diseño: envases
+- Figura 480 — Clases de diseño: recupero de envases
+- Figura 481 — Clases de diseño: flota: gastos, multas y siniestros
+- Figura 482 — Clases de diseño: reclamos, incidencias y calificaciones
+- Figura 483 — Clases de diseño: notificaciones y correo
+- Figura 484 — Clases de diseño: reportes, salud y almacenamiento
+- Figura 485 — Clases de diseño: stock
+- Figura 486 — Clases de diseño: compras
+- Figura 487 — Clases de diseño: carga del camión
+- Figura 488 — Clases de diseño: caja: cajas, sesiones y libro
+- Figura 489 — Clases de diseño: rendición del chofer
+- Figura 490 — Clases de diseño: cuentas corrientes
+- Figura 491 — Clases de diseño: comisiones y liquidaciones
+- Figura 492 — Dependencias entre módulos
+- Figura 493 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia
+- Figura 494 — D-16 — Catálogo de Productos (App Cliente)
+- Figura 495 — D-17 — Checkout (App Cliente)
+- Figura 496 — D-18 — Seguimiento en Tiempo Real (App Cliente)
+- Figura 497 — D-19 — Login y Registro (App Cliente + Chofer)
+- Figura 498 — D-20 — Home del Chofer (App Chofer)
+- Figura 499 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)
+- Figura 500 — D-22 — En Ruta (App Chofer)
+- Figura 501 — D-23 — tablero Administrador (Panel Web)
+- Figura 502 — D-24 — Listado de Pedidos Admin (Panel Web)
+- Figura 503 — Modelo físico de la base de datos: vista general
+- Figura 504 — Organización y acceso
+- Figura 505 — Clientes
+- Figura 506 — Catálogo e inventario de envases
+- Figura 507 — Venta y pedidos
+- Figura 508 — Pagos
+- Figura 509 — Despacho y logística
+- Figura 510 — Flota y choferes
+- Figura 511 — Posventa
+- Figura 512 — Personal
+- Figura 513 — Gastos de la flota
+- Figura 514 — Stock físico y carga del camión
+- Figura 515 — Compras
+- Figura 516 — Tablas técnicas
+- Figura 517 — Caja y finanzas
+- Figura 518 — Relaciones entre contextos
+- Figura 519 — Modelo entidad-relación conceptual: vista general
+- Figura 520 — Modelo entidad-relación conceptual: usuarios y cuentas
+- Figura 521 — Modelo entidad-relación conceptual: pedidos y pagos
+- Figura 522 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia
+- Figura 523 — Modelo entidad-relación conceptual: flota y choferes
+- Figura 524 — Modelo entidad-relación conceptual: envases y catálogo
+- Figura 525 — Modelo entidad-relación conceptual: personal
+- Figura 526 — Modelo entidad-relación conceptual: posventa
+- Figura 527 — Modelo entidad-relación conceptual: gastos de la flota
+- Figura 528 — Modelo entidad-relación conceptual: stock físico
+- Figura 529 — Modelo entidad-relación conceptual: carga del camión
+- Figura 530 — Modelo entidad-relación conceptual: compras
+- Figura 531 — Modelo entidad-relación conceptual: caja y movimientos
+- Figura 532 — Modelo entidad-relación conceptual: rendiciones de choferes
+- Figura 533 — Modelo entidad-relación conceptual: cuentas corrientes
+- Figura 534 — Modelo entidad-relación conceptual: comisiones y liquidaciones
+- Figura 535 — Modelo físico: personal
+- Figura 536 — Modelo entidad-relación conceptual: personal
+- Figura 537 — Modelo físico: gastos de la flota
+- Figura 538 — Modelo entidad-relación conceptual: gastos de la flota
+- Figura 539 — Modelo físico: caja y finanzas
+- Figura 540 — Modelo entidad-relación conceptual: caja y movimientos
+- Figura 541 — Modelo entidad-relación conceptual: rendiciones de choferes
+- Figura 542 — Modelo entidad-relación conceptual: cuentas corrientes
+- Figura 543 — Modelo entidad-relación conceptual: comisiones y liquidaciones
+- Figura 544 — Diagrama de estados del pedido
+- Figura 545 — Diagrama de estados del reclamo
+- Figura 546 — Diagrama de estados del envase
+- Figura 547 — Diagrama de estados de la reserva programada
+- Figura 548 — Diagrama de estados de la tarea de flota
+- Figura 549 — Diagrama de estados de la oferta de despacho
+- Figura 550 — Diagrama de estados de la orden de compra
+- Figura 551 — Diagrama de estados de la recepción de compra
+- Figura 552 — Diagrama de estados de la carga de camión
+- Figura 553 — Diagrama de estados del empleado
+- Figura 554 — Diagrama de estados de la licencia laboral
+- Figura 555 — Diagrama de estados de la jornada de trabajo
+- Figura 556 — Diagrama de estados de la carga de combustible
+- Figura 557 — Diagrama de estados de la multa de tránsito
+- Figura 558 — Diagrama de estados del siniestro
+- Figura 559 — Diagrama de estados del neumático
+- Figura 560 — Diagrama de estados de la vigencia de la póliza y de la habilitación
+- Figura 561 — Diagrama de estados de la oferta de despacho
+- Figura 562 — Diagrama de estados: sesión de caja
+- Figura 563 — Diagrama de estados: rendición del chofer
+- Figura 564 — Diagrama de estados: liquidación de comisiones
+- Figura 565 — Diagrama de estados: cuenta corriente
+- Figura 566 — Diagrama de actividad del despacho por proximidad
+- Figura 567 — Diagrama de actividad del ciclo de vida del pedido
 
 ---
 
@@ -610,6 +612,7 @@
 | 23 | 2026-10-21 | Casos de Uso Reales: de 10 a 35, una selección de casos críticos que cubre cada subsistema más algunos importantes que la completan, cada uno con su interfaz (pantalla real o wireframe), especificación con el detalle técnico verificado contra el código y contra la API corriendo, con lecturas y escrituras, diagrama de interacción y clases participantes. | Nahuel Wagner |
 | 24 | 2026-10-22 | Contrato del back del 22/10 en CU-068, CU-070 y CU-217; CU-233 con la regla de la caja de destino verificada contra la API; remisiones de cada DSD a su secuencia, contrato y tabla de implementación; CU-242 y CU-335 con la anulación del pago en CU-347; un solo bloque de casos retirados; postcondiciones de M5 al final de §6.5; alcance pendiente unificado en §10; 21 subsistemas y 26 láminas en §7.3. Re-auditoría: CU-217 (depósito de la orden y costo), CU-013 en Trabajo futuro (§10.1). | Nahuel Wagner |
 | 25 | 2026-10-22 | Panel contra la API: CU-001 con el ingreso real (SDK de Firebase, AuthGuard y GET /users/email/:email) en §3, §4.1 y §4.25, con su DSD rehecho sobre ese flujo y una sola versión de cómo actúa AuthGuard en las rutas públicas; rutas del panel en CU-096, CU-131 y CU-086; DSD de CU-131 sobre UsersService a nombre del Administrador General. | Nahuel Wagner |
+| 26 | 2026-10-22 | Documentación al día con el panel: nuevo CU Real CU-072 (alta de la reserva con seña; ya son 36 CU Reales); CU-006 con el enlace de pago y el rechazo al personal sin distribuidora; CU-227 sobre la ficha de la caja con su historial de sesiones y arqueo; DSD de CU-072 y CU-074 con las validaciones nuevas; §4.25 con las rutas de la ficha de caja, las lecturas de reservas, el enlace de pago y el aviso de reintegro fallido; capturas de los CU Reales del panel rehechas con el kit nuevo. | Nahuel Wagner |
 
 ---
 
@@ -881,9 +884,9 @@ complementaria.
 > 3. **Diagrama de Interacción** — colaboración entre los objetos de diseño que realizan la operación, en la notación de Larman
 > 4. **Clases de Diseño Participantes**
 >
-> **Criterio de cobertura.** Los Casos de Uso Reales son **35 casos de uso**, una selección de casos críticos del sistema —entre treinta y cuarenta, los que el sistema no puede dejar de ejecutar—: llevan interfaz gráfica, especificación con detalle técnico y diagrama de interacción con las clases participantes. El resto de los casos de uso no tiene CU Real: su especificación esencial está en el Documento 1 y su diseño, en el diagrama de interacción de la sección 4 y en la tabla de implementación (§4.25). Con los casos de uso esenciales sin detalle técnico, el CU Real es donde ese detalle se conserva: su frecuencia, su rendimiento y sus precondiciones son los del caso de uso esencial y no pueden contradecirlo.
+> **Criterio de cobertura.** Los Casos de Uso Reales son **36 casos de uso**, una selección de casos críticos del sistema —entre treinta y cuarenta, los que el sistema no puede dejar de ejecutar—: llevan interfaz gráfica, especificación con detalle técnico y diagrama de interacción con las clases participantes. El resto de los casos de uso no tiene CU Real: su especificación esencial está en el Documento 1 y su diseño, en el diagrama de interacción de la sección 4 y en la tabla de implementación (§4.25). Con los casos de uso esenciales sin detalle técnico, el CU Real es donde ese detalle se conserva: su frecuencia, su rendimiento y sus precondiciones son los del caso de uso esencial y no pueden contradecirlo.
 >
-> **Criterio de selección.** Se toman los diez casos que recorren el circuito completo del sistema, de punta a punta —alta del usuario, creación del pedido, despacho automático, aceptación por parte del chofer, seguimiento, entrega verificada, cobro y cancelación—, y se suman veinticinco casos de uso que cubren cada subsistema: casos críticos según la calificación de los casos de uso del Documento 0 (§8) —hay 63 críticos implementados, de modo que no se eligieron todos— y algunos importantes que completan un subsistema. Todos están en estado «Implementado» y tienen interfaz construida (pantalla real o, en los diez primeros, wireframe) o, si son procesos automáticos, la aclaración correspondiente, de modo que la especificación describe una interfaz real y no una propuesta. La selección cubre los subsistemas principales:
+> **Criterio de selección.** Se toman los diez casos que recorren el circuito completo del sistema, de punta a punta —alta del usuario, creación del pedido, despacho automático, aceptación por parte del chofer, seguimiento, entrega verificada, cobro y cancelación—, y se suman veintiséis casos de uso que cubren cada subsistema: casos críticos según la calificación de los casos de uso del Documento 0 (§8) —hay 63 críticos implementados, de modo que no se eligieron todos— y algunos importantes que completan un subsistema. Todos están en estado «Implementado» y tienen interfaz construida (pantalla real o, en los diez primeros, wireframe) o, si son procesos automáticos, la aclaración correspondiente, de modo que la especificación describe una interfaz real y no una propuesta. La selección cubre los subsistemas principales:
 >
 > | Subsistema | Casos de uso reales |
 > |---|---|
@@ -900,8 +903,9 @@ complementaria.
 > | Reclamos e incidencias (SS-05 y SS-12) | CU-023, CU-025, CU-060 |
 > | Reportes (SS-06) | CU-026 |
 > | Zonas y franjas (SS-09 y SS-11) | CU-042, CU-058 |
+> | Reservas (SS-15) | CU-072 |
 >
-> Son **CU-001, CU-002, CU-005, CU-006, CU-008, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-022, CU-023, CU-025, CU-026, CU-031, CU-032, CU-036, CU-038, CU-041, CU-042, CU-048, CU-058, CU-060, CU-068, CU-070, CU-078, CU-079, CU-080, CU-217, CU-218, CU-227, CU-232, CU-233 y CU-292**.
+> Son **CU-001, CU-002, CU-005, CU-006, CU-008, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-022, CU-023, CU-025, CU-026, CU-031, CU-032, CU-036, CU-038, CU-041, CU-042, CU-048, CU-058, CU-060, CU-068, CU-070, CU-072, CU-078, CU-079, CU-080, CU-217, CU-218, CU-227, CU-232, CU-233 y CU-292**.
 > Dos de ellos —CU-013 y CU-014— son procesos que el sistema ejecuta por iniciativa propia, sin actor humano, y por eso no tienen pantalla propia.
 
 ---
@@ -2594,7 +2598,7 @@ La operación del sistema es `crearFranjaHoraria`. Su diagrama de interacción e
 
 **Figura 31 — CU-006 Consultar el Detalle de un Pedido — Interfaz Gráfica**
 
-Detalle del pedido en el Panel Admin, con la distribuidora de demostración: los renglones con el precio con que se cobraron, el historial de estados con quién hizo cada cambio, el cliente, la dirección con su franja y zona, y el chofer. La App Cliente muestra la misma información con las acciones que le corresponden.
+Detalle del pedido en el Panel Admin, con la distribuidora de demostración: los renglones con el precio con que se cobraron, el historial de estados con quién hizo cada cambio, el cliente, la dirección con su franja y zona, y el chofer; las acciones secundarias —editar y reimprimir el remito— están en el menú ⋮ de la cabecera. Si el pago es por MercadoPago y sigue pendiente, la tarjeta del cobro suma el enlace de pago con «Copiar enlace» y «Abrir». La App Cliente muestra la misma información con las acciones que le corresponden.
 
 #### Especificación del CU Real
 
@@ -2605,7 +2609,7 @@ Detalle del pedido en el Panel Admin, con la distribuidora de demostración: los
 | **Actor Principal** | ACT-01 (Cliente), ACT-02 (Chofer), ACT-03 (Administrador) |
 | **Objetivos asociados** | OBJ-01, OBJ-03, OBJ-04 |
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
-| **Descripción** | El usuario abre un pedido desde su listado. El sistema aplica las reglas de visibilidad de cada rol —tenant, dueño o chofer asignado, ofertado o del pool— y devuelve el pedido con sus renglones tal como se cobraron, el estado, la distribuidora, la dirección, la franja y el pago. Al cliente dueño y al administrador les suma los datos del chofer mientras el pedido está aceptado o en camino y, si está cancelado, quién lo canceló. Es una lectura: no modifica nada. |
+| **Descripción** | El usuario abre un pedido desde su listado. El sistema aplica las reglas de visibilidad de cada rol —tenant, dueño o chofer asignado, ofertado o del pool— y devuelve el pedido con sus renglones tal como se cobraron, el estado, la distribuidora, la dirección, la franja y el pago. Al cliente dueño y al administrador les suma los datos del chofer mientras el pedido está aceptado o en camino y, si está cancelado, quién lo canceló. Si el pedido se paga por MercadoPago y el cobro sigue pendiente, suma el enlace de pago vigente (no se le devuelve al chofer). Es una lectura: no modifica nada. |
 | **Precondición** | El usuario está identificado y el pedido existe. Si es cliente, el pedido es suyo. |
 
 **Secuencia normal**
@@ -2613,12 +2617,13 @@ Detalle del pedido en el Panel Admin, con la distribuidora de demostración: los
 | Paso | Acción |
 |---|---|
 | 1 | El usuario elige un pedido de su listado: el historial del cliente (`OrdersViewModel`) o la grilla del panel (`Orders`). La pantalla de detalle (`OrderDetailView` en la app, `OrderDetails` en el panel) pide `GET /orders/:id`; el `id` pasa por `ParseUUIDPipe`. |
-| 2 | `AuthGuard` identifica al usuario y su rol. `OrderController.findOne` arma el alcance: para un cliente, su `user_id` como dueño; para un chofer, su `user_id` como chofer; `@CurrentDistributor` aporta el tenant (la encabezado `X-Distributor` o el del usuario). |
+| 2 | `AuthGuard` identifica al usuario y su rol. `OrderController.findOne` arma el alcance: para un cliente, su `user_id` como dueño; para un chofer, su `user_id` como chofer; `@CurrentDistributor({ required: 'staff' })` aporta el tenant (el encabezado `X-Distributor` o el del usuario) y devuelve 400 al personal que no tiene ninguno. |
 | 3 | `OrderService.getOne` delega en `pedidoLegible`, que lee el pedido con `findOne(id)` y aplica el control de acceso en este orden: si hay distribuidora en contexto, el pedido debe ser de ella; si quien pide es un cliente, debe ser el dueño; si es un chofer, `puedeLeerElChofer` exige que lo tenga asignado, que tenga una oferta de despacho vigente (`DispatchOfferRepositoryPort.hasActiveOffer`) o que esté en el pool (pendiente, sin chofer, de su distribuidora y con la carga del día en regla según `TruckLoadGatePort`). |
 | 4 | `OrderMapper.toDto` arma `OrderResponseDto`: renglones con el precio unitario y el subtotal guardados al crear el pedido, total, estado, `distributor_id`, dirección, franja, medio y estado del pago y las marcas de tiempo de cada transición. Si quien lee es un chofer y el pedido no es suyo, `receiver` se anula. |
 | 5 | Si el pedido está CANCELLED, `quienCancelo` consulta `order_status_history` por la última transición a `cancelled` y devuelve `cancelledBy`: `customer`, `admin`, `driver` o `system`; es nulo si el pedido es anterior al historial. |
 | 6 | Para todo rol salvo el chofer, `datosDelChofer` agrega `driver` sólo si el pedido está ACCEPTED u ON_THE_WAY y tiene chofer: `userId`, nombre, teléfono y calificación (`DriverRatingPort.resumen`, sin las calificaciones ocultas). Con el pedido ON_THE_WAY suma `driver.location` con la última posición del radar (`lastDriverLocation`) sólo si es vigente (`ubicacionVigente`, menos de `DRIVER_LOCATION_MAX_AGE_MIN` minutos, 10 por omisión); sin radar o sin posición reciente queda en nulo. |
-| 7 | El controlador responde 200 con el pedido y la pantalla lo muestra con las acciones del rol: el cliente puede cancelar mientras esté pendiente o aceptado; el administrador puede cancelar, reasignar o editar. |
+| 7 | Si el pedido es de MercadoPago, no está cancelado, su cobro está pendiente y la seña no está cobrada, y quien lee no es un chofer, `OrderService` agrega `payment_url`: el enlace del último intento de cobro, sólo si ese intento sigue pendiente y tiene URL (`CreateOrderUseCase.enlaceDeCobroPendiente` → `PaymentsService.findPendingCheckoutUrls`). Sirve para recuperar el enlace si se perdió la respuesta del alta; el panel lo muestra con `PaymentLink`. |
+| 8 | El controlador responde 200 con el pedido y la pantalla lo muestra con las acciones del rol: el cliente puede cancelar mientras esté pendiente o aceptado; el administrador puede cancelar, reasignar o editar. |
 
 **Postcondición:** El usuario vio el detalle completo del pedido. No se modificó ningún dato.
 
@@ -2629,7 +2634,7 @@ Detalle del pedido en el Panel Admin, con la distribuidora de demostración: los
 | 3 | Si el pedido no existe, es de otra distribuidora o de otro cliente → 404 «Order with ID: … not found», el mismo mensaje en los tres casos para no revelar que existe. |
 | 3 | Si quien pide es un chofer y el pedido no es suyo, ni tiene una oferta vigente para él, ni está en su pool → 404 con el mismo mensaje. |
 | 3 | Si el chofer tuvo el pedido (`DispatchOfferRepositoryPort.hasHeldOrder`) y ya no lo tiene —lo liberó el administrador, lo reasignaron o el control de carga lo sacó del pool— → 410 «Este pedido ya no está asignado a tu usuario», sin datos del pedido, para que la app salga de la pantalla. |
-| 3 | Si quien pide es el Administrador General y no indica `X-Distributor`, ve el pedido de cualquier distribuidora, a propósito; con la encabezado sólo ve los de esa distribuidora. |
+| 2 | Si quien pide es personal sin distribuidora en el contexto —el Administrador General sin `X-Distributor`— → 400 «Falta la distribuidora: enviá el header X-Distributor (slug o id)»; con el encabezado sólo ve los pedidos de esa distribuidora. El panel muestra «Elegí una distribuidora» en lugar del detalle. |
 | 2 | Sin token o con un token inválido → 401. |
 | 6 | Si el radar de posiciones (Redis) no responde, el pedido se lee igual y `driver.location` queda nulo: la app lo toma como «sin posición reciente», no como un error. |
 
@@ -3231,7 +3236,7 @@ La operación del sistema es `confirmarCobroEnEfectivo`. Su diagrama de interacc
 
 #### Interfaz Gráfica
 
-![Rendición N° 2 del Panel Admin, con el efectivo esperado, el botón «Declarar efectivo» y los pedidos en efectivo del día](diagramas/pantallas/CU-232-rendicion.png)
+![Rendición N° 2 del Panel Admin, con el efectivo esperado, el botón «Declarar efectivo» y los pedidos en efectivo incluidos en la rendición](diagramas/pantallas/CU-232-rendicion.png)
 
 **Figura 43 — CU-232 Declarar el Efectivo Rendido — Interfaz Gráfica**
 
@@ -3342,11 +3347,11 @@ La operación del sistema es `declararEfectivoRendido`. Su diagrama de interacci
 
 #### Interfaz Gráfica
 
-![Rendiciones del Panel Admin, con el tablero del día por chofer y sus estados](diagramas/pantallas/CU-233-rendiciones.png)
+![Rendiciones del Panel Admin, con el listado por chofer de todos los días y sus estados](diagramas/pantallas/CU-233-rendiciones.png)
 
 **Figura 45 — CU-233 Aprobar la Rendición del Chofer — Interfaz Gráfica**
 
-Rendiciones de la distribuidora de demostración: el efectivo por rendir, las rendiciones abiertas y las presentadas sin aprobar, y el tablero del día por chofer con lo esperado, lo declarado, la diferencia y el estado. Desde el detalle de una rendición presentada, «Aprobar» abre `ApproveSettlementModal`, donde se elige la caja destino y cómo se resuelve la diferencia. Captura del panel contra la API de desarrollo, que no tiene rendiciones presentadas: arriba, «Efectivo presentado sin aprobar» y «Rendiciones abiertas» —con el aviso «11 de días anteriores sin cerrar»— y «Presentadas sin aprobar»; la tabla del día está vacía.
+Rendiciones de la distribuidora de demostración, en la vista de todos los días: las pestañas por estado con su contador y la tabla por chofer con lo esperado, lo declarado, la diferencia y el estado; con un día elegido, arriba se suman el efectivo por rendir, las rendiciones abiertas y las presentadas sin aprobar. Desde el detalle de una rendición presentada, «Aprobar» abre `ApproveSettlementModal`, donde se elige la caja destino y cómo se resuelve la diferencia. Captura del panel contra la API de desarrollo, que tiene 11 rendiciones abiertas y ninguna presentada ni aprobada.
 
 #### Especificación del CU Real
 
@@ -3466,15 +3471,15 @@ La operación del sistema es `aprobarRendicion`. Su diagrama de interacción es 
 ### 3.23 CU-227 Crítico — Cerrar la Caja con Arqueo
 
 **Actor:** Administrador (ACT-03)
-**Pantalla:** CashBoxes — «Cajas» → «Cerrar caja» (Panel Admin), con `CloseSessionModal`
+**Pantalla:** CashBoxDetails — «Cajas» → ficha de la caja → «Cerrar con arqueo» (Panel Admin), con `CloseSessionModal`
 
 #### Interfaz Gráfica
 
-![Cajas del Panel Admin, con el listado de cajas, su saldo y su estado de sesión](diagramas/pantallas/CU-227-cajas.png)
+![Ficha de una caja del Panel Admin, con el saldo según el libro, la sesión en curso, el historial de sesiones con su arqueo y el botón «Cerrar con arqueo»](diagramas/pantallas/CU-227-cajas.png)
 
 **Figura 47 — CU-227 Cerrar la Caja con Arqueo — Interfaz Gráfica**
 
-Cajas de la distribuidora de demostración, con los totales «Saldo en cajas» y «Cajas»: el efectivo, los bancos y las billeteras con su saldo según el libro y su estado. Cuando la caja tiene una sesión abierta, su menú ofrece «Cerrar caja», que abre `CloseSessionModal` con el monto inicial, los movimientos y el saldo para contar el efectivo. Captura del panel contra la API de desarrollo, con una sola caja, la «Caja central», cerrada y con saldo cero.
+Ficha de una caja de la distribuidora de demostración (`/finance/boxes/:id`, que se abre desde «Cajas»): el saldo según el libro, los datos de la caja, la sesión en curso con su monto inicial y su saldo esperado y el historial de sesiones, de la más nueva a la más vieja, con la apertura, el cierre, el arqueo (contado y esperado) y la diferencia —«Cuadra», «Faltante» o «Sobrante»—. Con la sesión abierta, «Cerrar con arqueo» abre `CloseSessionModal` con el monto inicial, los movimientos y el saldo para contar el efectivo. Captura del panel contra la API de desarrollo, con una caja de mostrador de prueba que tiene una sesión abierta y otra anterior, cerrada y sin diferencia.
 
 #### Especificación del CU Real
 
@@ -3492,14 +3497,14 @@ Cajas de la distribuidora de demostración, con los totales «Saldo en cajas» y
 
 | Paso | Acción |
 |---|---|
-| 1 | El administrador abre la caja en `CashBoxes` y elige «Cerrar caja»: `CloseSessionModal` muestra, con `GET /cash-sessions/:id`, el monto inicial de la sesión, sus movimientos y el saldo. |
+| 1 | El administrador abre la ficha de la caja (`CashBoxDetails`, desde `CashBoxes`): `GET /cash-boxes/:id` trae el saldo según el libro y los datos, y `GET /cash-boxes/:id/sessions` el historial de sesiones, paginado con `page` (desde 1) y `limit`. Con la sesión abierta elige «Cerrar con arqueo»: `CloseSessionModal` muestra, con `GET /cash-sessions/:id`, el monto inicial de la sesión, sus movimientos y el saldo. |
 | 2 | Cuenta el efectivo e ingresa el monto contado y, si quiere, una nota. `useCloseCashSession` envía `PATCH /cash-sessions/:id/close` con `{ countedAmount, notes? }` y una `Idempotency-Key`. `@Auth(ADMIN, SUPER_ADMIN)` admite administrador y administrador general; `@CurrentDistributor({ required: true })` toma la distribuidora. |
 | 3 | `ValidationPipe` valida `CloseCashSessionDto`: `countedAmount` con el decorador `@Importe(0)` —no negativo— y `notes` opcional de hasta 500 caracteres. `CashSessionController.close` llama a `CashSessionService.cerrar` con el usuario del token. |
 | 4 | `cerrar` abre una transacción con reintento (`withTransactionRetry`), lee la sesión de la distribuidora y bloquea su caja con `CashLedgerService.bloquearCajas`. Releída ya con el bloqueo, comprueba que siga abierta. |
 | 5 | `totales` suma las entradas y las salidas de la sesión, y la función de dominio `arqueo(apertura, entradas, salidas, contado)` calcula, con `decimal.js`, `esperado = apertura + entradas − salidas` y `diferencia = contado − esperado`. |
 | 6 | Si la diferencia no es cero, `asentarAjuste` asienta primero un movimiento de ajuste en la caja con la categoría de sistema «sobrante de caja» o «faltante de caja» (CU-228 o CU-309) y la descripción «Diferencia de arqueo: se esperaban … y se contaron …», con referencia `SESSION_CLOSING`: así el saldo queda igual a lo contado. |
 | 7 | Pasa la sesión a cerrada con `closedAt`, `closedByUserId`, el esperado, el contado y la diferencia en centavos, y la nota; la guarda y confirma la transacción. |
-| 8 | El controlador responde 200 con `CashMapper.sesion`: la sesión cerrada con el nombre de la caja. El panel invalida las cajas y sus movimientos y muestra la caja cerrada. |
+| 8 | El controlador responde 200 con `CashMapper.sesion`: la sesión cerrada con el nombre de la caja. El panel invalida las cajas, sus sesiones y sus movimientos: la ficha pasa a «Cerrada» y suma la sesión al historial con su arqueo y su diferencia, que `sessionDifference` rotula «Faltante» si es negativa, «Sobrante» si es positiva y «Cuadra» si es cero. |
 
 **Postcondición:** La sesión queda cerrada con su arqueo. El saldo de la caja es igual al monto contado y la diferencia, si la hubo, quedó registrada como un movimiento más del libro, anterior al cierre y en la misma transacción.
 
@@ -3508,6 +3513,7 @@ Cajas de la distribuidora de demostración, con los totales «Saldo en cajas» y
 | Paso | Acción |
 |---|---|
 | 2 | Si el monto contado falta o es negativo → 400 con el detalle de validación; si no hay distribuidora en el contexto → 400. |
+| 1 | Si la caja no existe o es de otra distribuidora → 404 «Caja no encontrada: …» y la ficha muestra el error. |
 | 4 | Si la sesión no existe o es de otra distribuidora → 404 (`SesionNoEncontradaError`). |
 | 4 | Si la sesión ya está cerrada → 409 «La sesión ya está cerrada», también si dos cierres compiten: el segundo ve la sesión ya cerrada tras el bloqueo. |
 | 2 | Si la clave de idempotencia ya se usó, se devuelve el resultado de la primera ejecución; si se reutiliza con otros datos → 422. |
@@ -3560,9 +3566,9 @@ La operación del sistema es `cerrarCajaConArqueo`. Su diagrama de interacción 
 
 | Clase | Capa | Responsabilidad |
 |---|---|---|
-| `CashBoxes` / `CloseSessionModal` | Presentation (React) | Cajas y diálogo de cierre con el monto contado |
+| `CashBoxes` / `CashBoxDetails` / `CashSessionsCard` / `CloseSessionModal` | Presentation (React) | Listado de cajas, ficha de la caja con su historial de sesiones y arqueo, y diálogo de cierre con el monto contado |
 | `useCloseCashSession` | Presentation (React Query) | Mutación que envía `PATCH /cash-sessions/:id/close` y refresca las cajas |
-| `CashSessionController` | Backend Controller (NestJS) | Rutas `GET /cash-sessions/:id` y `PATCH /cash-sessions/:id/close` |
+| `CashSessionController` / `CashBoxController` | Backend Controller (NestJS) | Rutas `GET /cash-sessions/:id` y `PATCH /cash-sessions/:id/close`; la ficha lee `GET /cash-boxes/:id` y `GET /cash-boxes/:id/sessions` |
 | `CloseCashSessionDto` | Backend DTO | Monto contado no negativo y nota opcional |
 | `CashSessionService` | Backend Service | `cerrar` y `asentarAjuste`: bloqueo, arqueo, ajuste y cierre en una transacción (en el DSD, la caja `CashBoxService`) |
 | `CashLedgerService` | Backend Service | `bloquearCajas` y asiento de los movimientos de caja |
@@ -4070,11 +4076,11 @@ La operación del sistema es `registrarCargaDelCamion`. Su diagrama de interacci
 
 #### Interfaz Gráfica
 
-![Envases físicos del Panel Admin, con el botón «Asignar a pedido»](diagramas/pantallas/CU-068-envases-fisicos.png)
+![Envases físicos del Panel Admin, con el menú ⋮ de la cabecera abierto y la acción «Asignar a pedido»](diagramas/pantallas/CU-068-envases-fisicos.png)
 
 **Figura 57 — CU-068 Asignar los Envases a un Pedido — Interfaz Gráfica**
 
-Envases físicos de la distribuidora de demostración: contadores por estado del ciclo (en depósito, lleno, despachado, con el cliente, vacío devuelto y retirado), listado serializado con su estado, tenedor, garantía y último movimiento, y arriba los accesos «Vencimientos», «Asignar a pedido» y «Nuevo envase». Captura del panel contra la API de desarrollo.
+Envases físicos de la distribuidora de demostración: contadores por estado del ciclo (en depósito, lleno, despachado, con el cliente, vacío devuelto y retirado), listado serializado con su estado, tenedor, garantía y último movimiento, y arriba el botón «Nuevo envase» y, en el menú ⋮ de la cabecera, los accesos «Vencimientos» y «Asignar a pedido». Captura del panel contra la API de desarrollo, con ese menú abierto.
 
 #### Especificación del CU Real
 
@@ -4192,7 +4198,7 @@ La operación del sistema es `asignarEnvasesAPedido`. Su diagrama de interacció
 
 **Figura 59 — CU-070 Registrar un Movimiento de Envase (cambio de estado) — Interfaz Gráfica**
 
-Envases físicos con el estado de cada envase en el ciclo de vida (en depósito, lleno, despachado, con el cliente y vacío devuelto). El menú «…» de cada fila ofrece los pasos admisibles desde el estado actual (`TransitionModal`); la selección múltiple permite mover varios a la vez. Captura del panel contra la API de desarrollo.
+Envases físicos con el estado de cada envase en el ciclo de vida (en depósito, lleno, despachado, con el cliente y vacío devuelto). El menú «…» de cada fila ofrece «Mover de estado», que abre `TransitionModal` con los pasos admisibles desde el estado actual; la selección múltiple permite mover varios a la vez. Captura del panel contra la API de desarrollo, con el menú de una fila abierto.
 
 #### Especificación del CU Real
 
@@ -4842,7 +4848,7 @@ La operación del sistema es `resolverReclamo`. Su diagrama de interacción es e
 
 **Figura 71 — CU-026 Consultar el Tablero General — Interfaz Gráfica**
 
-Tablero de la distribuidora de demostración: las tarjetas de indicadores (ventas cobradas de hoy, pedidos en curso, entregados hoy y ventas de 30 días), el gráfico de ventas, los pedidos por estado y, debajo, los pedidos activos y la actividad reciente. Captura del panel contra la API de desarrollo.
+Tablero de la distribuidora de demostración: las tarjetas de indicadores (ventas cobradas de hoy, pedidos en curso, entregados hoy y ventas de 30 días), el gráfico de ventas de los últimos 30 días (vista «Mes»), los pedidos por estado y, debajo, los pedidos activos y la actividad reciente. Captura del panel contra la API de desarrollo.
 
 #### Especificación del CU Real
 
@@ -4940,6 +4946,144 @@ La operación del sistema es `consultarResumenDePedidos`. Su diagrama de interac
 
 **Comentarios.** Las ventas son lo entregado y cobrado: un pedido entregado en efectivo que el chofer todavía no confirmó como cobrado no suma. El conteo de choferes en línea es más estricto que el del despacho: exige que el chofer esté disponible, habilitado por el administrador y validado. El sistema no calcula un ranking de productos más vendidos para el panel: ese dato sale del reporte por producto (CU-028).
 
+### 3.36 CU-072 Crítico — Crear una Reserva Programada con Seña
+
+**Actor:** Administrador (ACT-03)
+**Pantalla:** NewOrder — «Pedidos» → «Pedido telefónico» → «Es una reserva con seña» (Panel Admin), con `ReservationFields`
+
+#### Interfaz Gráfica
+
+![Alta de un pedido telefónico en el Panel Admin con «Es una reserva con seña» marcado: fecha de entrega, franja con cupo, monto de la seña, ítems, medio de pago y la cotización con el saldo a cobrar](diagramas/pantallas/CU-072-reserva-con-sena.png)
+
+**Figura 73 — CU-072 Crear una Reserva Programada con Seña — Interfaz Gráfica**
+
+«Nuevo pedido telefónico» del Panel Admin, con la distribuidora de demostración y «Es una reserva con seña» marcado: la fecha de entrega (no anterior a hoy), la franja con su cupo —«Tarde (16:00–20:00) · 60 de 60 libres»; las agotadas y las ya terminadas no se ofrecen—, el monto de la seña, el ítem, el medio de pago y, al pie, la cotización con el total, la seña y el saldo a cobrar. Captura del panel contra la API de desarrollo; el formulario no se envió. Hoy la reserva sólo se crea desde el panel, por el administrador: la App Cliente no la ofrece, aunque la API la admite de un cliente (a su nombre) y de cualquier rol que cree pedidos.
+
+#### Especificación del CU Real
+
+| Campo | Detalle |
+|-------|---------|
+| **Código** | CU-072 |
+| **Caso de Uso** | Crear una Reserva Programada con Seña |
+| **Actor Principal** | ACT-03 (Administrador) |
+| **Objetivos asociados** | OBJ-01, OBJ-06 |
+| **Requisitos asociados** | IRQ-02, IRQ-08, IRQ-10, IRQ-14 |
+| **Descripción** | El administrador carga, en nombre de un cliente que llamó, un pedido para una fecha futura con una seña. `POST /orders` con `isReservation: true` descuenta el stock en el acto dentro de una transacción con bloqueo pesimista, calcula el total en el servidor, rechaza una seña mayor al total y crea el `Order` en estado RESERVED, que no se ofrece a ningún chofer hasta el día agendado (CU-075). Si la seña es por MercadoPago, devuelve el enlace de pago de la seña. |
+| **Precondición** | El solicitante está identificado; el alta de pedidos no restringe roles y un cliente sólo puede pedir a su nombre. El cliente tiene una dirección dentro de la cobertura de la distribuidora y hay stock de cada producto. |
+
+**Secuencia normal**
+
+| Paso | Acción |
+|---|---|
+| 1 | El administrador abre «Nuevo pedido telefónico» (`NewOrder`, `/orders/new`), elige al cliente con `CustomerPicker` y su dirección, y marca «Es una reserva con seña». `ReservationFields` pide la fecha de entrega —el campo tiene `min` en el día argentino de hoy (`argentinaDay`)—, la franja y el monto de la seña. Para la franja, `useTimeSlotAvailability` consulta `GET /time-slot/availability?date=` y el panel no ofrece las que tienen `remaining` en cero: las completas y, si el día es hoy, las que ya terminaron. Con la reserva marcada, el panel vuelve a la modalidad programada y a efectivo si estaban en express o en cuenta corriente. |
+| 2 | Agregados los ítems, `OrderQuoteCard` cotiza con `POST /orders/quote` (`QuoteOrderUseCase`) y `depositCapError` compara la seña con el `total` cotizado: si lo supera, el campo muestra «La seña ($X) no puede superar el total del pedido ($Y)» y el formulario no envía el alta. La cotización da ese mismo 400 si se la pide con una seña mayor al total. |
+| 3 | «Crear reserva» arma el cuerpo con `reservationBody` —`isReservation: true`, `scheduledDate`, `timeSlotId` si hay franja y `depositAmount`— y `useCreateOrder` envía `POST /orders` con una `Idempotency-Key`. `OrderController.create` invoca `OrderService.create`, que delega en `CreateOrderUseCase.execute(dto, distributorId)`; la distribuidora sale de `X-Distributor` o del usuario. |
+| 4 | Antes de abrir la transacción, `execute` rechaza la reserva sin `scheduledDate` (400 «Una reserva requiere scheduledDate (fecha de entrega agendada)»), con cuenta corriente (400 «Una reserva no se puede pagar con cuenta corriente») o con modalidad express (400, `assertExpressCompatible`). |
+| 5 | Abre la transacción, bloquea la cuenta del cliente, recupera al cliente y su dirección (`CustomersService.buscarComprador`, `UserAddressService.buscarDelUsuario`) y resuelve la zona (`CoverageZoneService.checkCoverage`). Si hay franja, `TimeSlotService.assertSlotAvailableTx` la bloquea y valida que la fecha no sea anterior a hoy, que la franja no haya terminado y que tenga cupo. |
+| 6 | Por cada ítem, `GasCylinderService.reservarStock` bloquea la garrafa y descuenta el stock, y `OrderPricingService.priceItem` calcula el precio con las promociones por volumen. Después suma el recargo de zona y el 10 % del medio de pago en línea, con `decimal.js`, y obtiene `totalAmount`. |
+| 7 | `assertSenaNoSuperaTotal(depositAmount, totalAmount)` (`order/domain/deposit-cap.ts`) compara la seña con el total redondeado a dos decimales, mitades hacia arriba. Si la supera, lanza 400 «La seña ($X) no puede superar el total del pedido ($Y)» y la transacción se revierte. Una seña igual al total se acepta. |
+| 8 | Crea el `Order` en estado RESERVED con `scheduledDate`, `depositAmount` y `depositPaid` en falso, y asienta su creación en el historial (CU-169). Guarda el pedido con sus `OrderItem` y confirma la transacción. No se ofrece a ningún chofer. |
+| 9 | Fuera de la transacción, si el medio es MercadoPago y la seña es mayor que cero, `createDepositCheckout` pide a `PaymentsService.createCheckout` un enlace de Checkout Pro por el importe de la seña (`isDeposit`), que queda en el registro de cobros y que el webhook (CU-048) usará para marcarla cobrada. Con efectivo o transferencia la seña queda pendiente hasta que un administrador la confirma (CU-074). |
+| 10 | El controlador responde 201 con el pedido y, si hay, `payment_url`. El panel avisa «Reserva creada» y lleva a «Reservas» (`/reservations`); si hay enlace de pago, antes muestra «Falta el pago» con `PaymentLink` («Copiar enlace», «Abrir»). |
+
+**Postcondición:** El stock quedó descontado y existe un `Order` RESERVED con su fecha agendada y su seña pendiente (`depositPaid` en falso), de monto menor o igual al total. No se ofrece a ningún chofer hasta que `activarReservasDelDia` lo pase a PENDING, el día agendado y con la seña cobrada (CU-075). Una reserva no se edita: `PATCH /orders/:id` responde 409 «Sólo se edita un pedido pendiente sin chofer asignado (estado actual: reserved)»; para cambiarla se cancela y se crea otra.
+
+**Excepciones**
+
+| Paso | Acción |
+|---|---|
+| 4 | Sin `scheduledDate` → 400; con cuenta corriente → 400 «Una reserva no se puede pagar con cuenta corriente»; con modalidad express → 400 «Un pedido express no se agenda: no se combina con reserva, franja horaria ni fecha agendada». |
+| 5 | Cliente o dirección inexistentes, o de otro cliente → 404; dirección fuera de toda zona de cobertura → 400 y reversión. |
+| 5 | Con franja: fecha anterior a hoy → 400 «No se puede agendar en una fecha pasada»; franja de hoy ya terminada → 400 «La franja ya terminó, elegí otra»; franja completa → 400 «La franja "…" del … está completa». Sin franja, la API no rechaza una fecha pasada: sólo el panel no deja elegirla. |
+| 6 | Stock insuficiente → 400 «Stock insuficiente para <producto>»; garrafa inexistente → 404 «Garrafa no encontrada: …»; garrafa de otra distribuidora → 400. Se revierte todo. |
+| 7 | Seña mayor al total → 400 «La seña ($X) no puede superar el total del pedido ($Y)» y reversión; `POST /orders/quote` responde el mismo 400. |
+| 3 | Si la clave de idempotencia ya se usó, se devuelve el resultado de la primera ejecución; si se reutiliza con otros datos → 422. |
+
+| Campo | Detalle |
+|-------|---------|
+| **Rendimiento** | Según los pasos del caso de uso esencial (Documento 1): paso 12: 5 segundos. |
+| **Frecuencia** | Media. |
+| **Estabilidad** | Alta |
+
+#### Diagrama de Interacción
+
+![CU-072 Crear una Reserva Programada con Seña — Diagrama de Interacción](diagramas/png/DSD_CU-072_crearReserva.png)
+
+**Figura 74 — CU-072 Crear una Reserva Programada con Seña — Diagrama de Interacción**
+
+<details><summary>Ver código del diagrama</summary>
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-072 Crear una Reserva Programada con Seña · crearReserva
+    autonumber
+    actor CLI as Cliente (ACT-01)
+    participant CRT as :CreateOrderUseCase
+    participant CLE as cliente:Cliente
+    participant ZON as zona:ZonaCobertura
+    participant FRA as franja:FranjaHoraria
+    participant PRO as producto:Producto
+    participant PAG as :PaymentsService
+
+    CLI->>+CRT: crearReserva(items, direccionId, fechaAgendada, franjaId, metodoDePago, montoDeLaSenia)
+    CRT->>+CLE: getDireccion(direccionId)
+    CLE-->>-CRT: direccion
+    CRT->>+ZON: cubre(direccion)
+    ZON-->>-CRT: cubierta
+    opt Se eligió una franja
+        CRT->>FRA: tieneCupo(fechaAgendada)
+    end
+    create participant PED as :Pedido
+    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago, montoDeLaSenia)
+    loop Por cada item de items
+        CRT->>PRO: reservar(cantidad)
+        CRT->>+PED: agregarItem(producto, cantidad)
+        PED->>+PRO: precioPara(cantidad)
+        PRO-->>-PED: precioUnitario, subtotal
+        create participant ITM as :ItemPedido
+        PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
+        deactivate PED
+    end
+    CRT->>+PED: calcularTotal()
+    loop Por cada item del Pedido
+        PED->>ITM: getSubtotal()
+    end
+    PED->>ZON: calcularRecargo(subtotalItems)
+    PED->>PED: aplicarRecargoDePago()
+    PED-->>-CRT: total
+    CRT->>PED: validarSenia(total)
+    opt metodoDePago es MERCADOPAGO y montoDeLaSenia es mayor que cero
+        CRT->>+PAG: crearCheckoutDePago(pedido, metodoDePago)
+        PAG-->>-CRT: enlaceDePago
+        Note over CRT,PAG: Pago de la seña: ver DSD de crearCheckoutDePago (CU-048).<br/>Crea el Pago
+    end
+    Note over CRT,PED: Avisos: ver DSD de crearPedido (CU-005). No se ofrece a ningún chofer
+    CRT-->>-CLI: reserva, enlaceDePago
+```
+
+</details>
+
+La operación del sistema es `crearReserva`. Su diagrama de interacción es el de esta sección; su diagrama de secuencia del sistema está en el Documento 2, sección 2.1; su contrato, en el Documento 2, sección 2.2 («Contrato: `crearReserva()`»), y su tabla de implementación, en el Documento 3, sección 4.25.
+
+#### Clases de Diseño Participantes
+
+| Clase | Capa | Responsabilidad |
+|---|---|---|
+| `NewOrder` / `ReservationFields` / `OrderQuoteCard` / `PaymentLink` | Presentation (React) | Alta telefónica con la reserva: fecha, franja con cupo, seña, cotización con el tope y enlace de pago |
+| `useCreateOrder` / `useTimeSlotAvailability` / `useOrderQuote` | Presentation (React Query) | Envían `POST /orders`, consultan `GET /time-slot/availability` y cotizan con `POST /orders/quote` |
+| `OrderController` | Backend Controller (NestJS) | Rutas `POST /orders` y `POST /orders/quote` |
+| `CreateOrderUseCase` | Backend Use Case | `execute`: validaciones previas, transacción, stock, total, tope de la seña, estado reservado y enlace de pago de la seña |
+| `QuoteOrderUseCase` | Backend Use Case | Cotiza con las mismas reglas del alta, incluido el tope de la seña |
+| `deposit-cap` (`assertSenaNoSuperaTotal`) | Domain | Compara la seña con el total redondeado a dos decimales |
+| `TimeSlotService` | Backend Service | `assertSlotAvailableTx`: fecha no pasada, franja no terminada y cupo, con bloqueo de la franja |
+| `GasCylinderService` / `OrderPricingService` | Backend Service | Stock con bloqueo y precio con promociones por volumen |
+| `PaymentsService` | Backend Service | `createCheckout` para la seña y `findPendingCheckoutUrls` para volver a leer el enlace vigente |
+| `Order` / `OrderItem` | Backend Entity | Pedido RESERVED con `scheduledDate`, `depositAmount` y `depositPaid` |
+
+**Comentarios.** La seña se valida contra el total que calcula el servidor, nunca contra lo que ve el panel: la cotización sólo adelanta el aviso. Como una reserva no se edita, el tope corre únicamente en el alta y en su cotización. El enlace de pago de la seña viaja en la respuesta del alta y se puede volver a leer con `GET /orders/:id` (`payment_url`) y con `GET /orders/reservations` (`paymentUrl`) mientras el cobro siga pendiente.
+
+---
+
 ## 4. Diagramas de Interacción (Nivel de Diseño)
 
 Este capítulo reúne los diagramas de interacción de diseño de las operaciones del sistema, en la notación de Larman. Cada uno muestra cómo colaboran los objetos de diseño para resolver una operación que el actor le manda al sistema, con sus clases participantes, los patrones GRASP que justifican la asignación de responsabilidades y una tabla que relaciona cada operación de diseño con su implementación. Se agrupan por subsistema, del 4.1 al 4.18; el 4.19 recoge los módulos inteligentes en diseño, el 4.20 las observaciones comunes a los diagramas y el 4.21 el catálogo de operaciones del sistema.
@@ -4957,7 +5101,7 @@ Hay un solo camino de ingreso para el panel y las dos apps, y no pasa por `POST 
 
 ![DSD CU-001: Iniciar Sesión](diagramas/png/DSD_CU-001_iniciarSesion.png)
 
-**Figura 73 — DSD CU-001: Iniciar Sesión**
+**Figura 75 — DSD CU-001: Iniciar Sesión**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5016,7 +5160,7 @@ Puerta pública del alta: `POST /auth/registro`, con un cupo propio de diez alta
 
 ![DSD CU-002: Registrarse como Cliente](diagramas/png/DSD_CU-002_registrarse.png)
 
-**Figura 74 — DSD CU-002: Registrarse como Cliente**
+**Figura 76 — DSD CU-002: Registrarse como Cliente**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5078,7 +5222,7 @@ El perfil está partido en dos agregados: los datos de identidad viven en `User`
 
 ![DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfil(usuarioId)](diagramas/png/DSD_CU-004_consultarPerfil.png)
 
-**Figura 75 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfil(usuarioId)**
+**Figura 77 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfil(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5113,7 +5257,7 @@ sequenceDiagram
 
 ![DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)](diagramas/png/DSD_CU-004_consultarPerfilCliente.png)
 
-**Figura 76 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)**
+**Figura 78 — DSD CU-004: Consultar el Perfil de Usuario — Operación: consultarPerfilCliente(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5159,7 +5303,7 @@ El perfil está partido en dos agregados: los datos de identidad viven en `User`
 
 ![DSD CU-251: Modificar el Perfil de Usuario — Operación: actualizarPerfil(usuarioId, datos)](diagramas/png/DSD_CU-251_actualizarPerfil.png)
 
-**Figura 77 — DSD CU-251: Modificar el Perfil de Usuario — Operación: actualizarPerfil(usuarioId, datos)**
+**Figura 79 — DSD CU-251: Modificar el Perfil de Usuario — Operación: actualizarPerfil(usuarioId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5210,7 +5354,7 @@ que el límite sea real con varias instancias corriendo.
 
 ![DSD CU-047: Recuperar la Contraseña — Operación: solicitarRecuperacionDeClave(correo)](diagramas/png/DSD_CU-047_solicitarRecuperacionDeClave.png)
 
-**Figura 78 — DSD CU-047: Recuperar la Contraseña — Operación: solicitarRecuperacionDeClave(correo)**
+**Figura 80 — DSD CU-047: Recuperar la Contraseña — Operación: solicitarRecuperacionDeClave(correo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5267,7 +5411,7 @@ sequenceDiagram
 
 ![DSD CU-336: Cambiar el Correo del Usuario — Operación: cambiarCorreo(correoActual, correoNuevo)](diagramas/png/DSD_CU-336_cambiarCorreo.png)
 
-**Figura 79 — DSD CU-336: Cambiar el Correo del Usuario — Operación: cambiarCorreo(correoActual, correoNuevo)**
+**Figura 81 — DSD CU-336: Cambiar el Correo del Usuario — Operación: cambiarCorreo(correoActual, correoNuevo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5319,7 +5463,7 @@ Bloquear y desbloquear (CU-270) son dos operaciones del administrador que el sis
 
 ![DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId)](diagramas/png/DSD_CU-050_bloquearUsuario.png)
 
-**Figura 80 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId)**
+**Figura 82 — DSD CU-050: Bloquear un Usuario — Operación: bloquearUsuario(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5370,7 +5514,7 @@ Es la operación inversa de CU-050: el usuario recupera el acceso. El sistema la
 
 ![DSD CU-270: Desbloquear un Usuario — Operación: desbloquearUsuario(usuarioId)](diagramas/png/DSD_CU-270_desbloquearUsuario.png)
 
-**Figura 81 — DSD CU-270: Desbloquear un Usuario — Operación: desbloquearUsuario(usuarioId)**
+**Figura 83 — DSD CU-270: Desbloquear un Usuario — Operación: desbloquearUsuario(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5421,7 +5565,7 @@ El alta común de todos los usuarios, incluida por CU-002, CU-031, CU-086 y CU-0
 
 ![DSD CU-082: Crear un Usuario Base](diagramas/png/DSD_CU-082_crearUsuarioBase.png)
 
-**Figura 82 — DSD CU-082: Crear un Usuario Base**
+**Figura 84 — DSD CU-082: Crear un Usuario Base**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5494,7 +5638,7 @@ Listado paginado con búsqueda libre (solo admin).
 
 ![DSD CU-083: Consultar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)](diagramas/png/DSD_CU-083_listarUsuarios.png)
 
-**Figura 83 — DSD CU-083: Consultar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)**
+**Figura 85 — DSD CU-083: Consultar los Usuarios — Operación: listarUsuarios(pagina, limite, textoDeBusqueda)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5540,7 +5684,7 @@ Dos búsquedas puntuales: por email y por teléfono.
 
 ![DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)](diagramas/png/DSD_CU-272_buscarUsuarioPorCorreo.png)
 
-**Figura 84 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)**
+**Figura 86 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorCorreo(correo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5575,7 +5719,7 @@ sequenceDiagram
 
 ![DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)](diagramas/png/DSD_CU-272_buscarUsuarioPorTelefono.png)
 
-**Figura 85 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)**
+**Figura 87 — DSD CU-272: Buscar un Usuario — Operación: buscarUsuarioPorTelefono(telefono)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5632,7 +5776,7 @@ sistema al no encontrar la cuenta.
 
 ![DSD CU-085: Dar de Baja un Usuario](diagramas/png/DSD_CU-085_eliminarUsuario.png)
 
-**Figura 86 — DSD CU-085: Dar de Baja un Usuario**
+**Figura 88 — DSD CU-085: Dar de Baja un Usuario**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5704,7 +5848,7 @@ sequenceDiagram
 
 ![DSD CU-005: Crear un Pedido](diagramas/png/DSD_CU-005_crearPedido.png)
 
-**Figura 87 — DSD CU-005: Crear un Pedido**
+**Figura 89 — DSD CU-005: Crear un Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5798,7 +5942,7 @@ sequenceDiagram
 
 ![DSD CU-006: Consultar el Detalle de un Pedido](diagramas/png/DSD_CU-006_consultarPedido.png)
 
-**Figura 88 — DSD CU-006: Consultar el Detalle de un Pedido**
+**Figura 90 — DSD CU-006: Consultar el Detalle de un Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5849,7 +5993,7 @@ sequenceDiagram
 
 ![DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)](diagramas/png/DSD_CU-302_cotizarPedido.png)
 
-**Figura 89 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)**
+**Figura 91 — DSD CU-302: Cotizar un Pedido — Operación: cotizarPedido(items, medioDePago, direccionId, clienteId, pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5914,7 +6058,7 @@ sequenceDiagram
 
 ![DSD CU-007: Consultar el Historial de Pedidos](diagramas/png/DSD_CU-007_consultarHistorialDePedidos.png)
 
-**Figura 90 — DSD CU-007: Consultar el Historial de Pedidos**
+**Figura 92 — DSD CU-007: Consultar el Historial de Pedidos**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -5959,7 +6103,7 @@ sequenceDiagram
 
 ![DSD CU-348: Consultar el Reintegro de un Pedido](diagramas/png/DSD_CU-348_consultarReintegroDelPedido.png)
 
-**Figura 91 — DSD CU-348: Consultar el Reintegro de un Pedido**
+**Figura 93 — DSD CU-348: Consultar el Reintegro de un Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6011,7 +6155,7 @@ El registro del historial, incluido por CU-005, CU-008, CU-009, CU-010, CU-012, 
 
 ![DSD CU-169: Registrar el Cambio de Estado de un Pedido — Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)](diagramas/png/DSD_CU-169_registrarCambioDeEstado.png)
 
-**Figura 92 — DSD CU-169: Registrar el Cambio de Estado de un Pedido — Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)**
+**Figura 94 — DSD CU-169: Registrar el Cambio de Estado de un Pedido — Operación: registrarCambioDeEstado(pedidoId, estadoAnterior, estadoNuevo, autor, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6061,7 +6205,7 @@ sequenceDiagram
 
 ![DSD CU-170: Consultar el Historial de Estados de un Pedido](diagramas/png/DSD_CU-170_consultarHistorialDeEstados.png)
 
-**Figura 93 — DSD CU-170: Consultar el Historial de Estados de un Pedido**
+**Figura 95 — DSD CU-170: Consultar el Historial de Estados de un Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6115,7 +6259,7 @@ sequenceDiagram
 
 ![DSD CU-143: Declarar el Consumo Promedio al Registrarse](diagramas/png/DSD_CU-143_declararConsumoPromedio.png)
 
-**Figura 94 — DSD CU-143: Declarar el Consumo Promedio al Registrarse**
+**Figura 96 — DSD CU-143: Declarar el Consumo Promedio al Registrarse**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6172,7 +6316,7 @@ sequenceDiagram
 
 ![DSD CU-144: Modificar el Consumo Promedio Declarado](diagramas/png/DSD_CU-144_actualizarConsumoPromedio.png)
 
-**Figura 95 — DSD CU-144: Modificar el Consumo Promedio Declarado**
+**Figura 97 — DSD CU-144: Modificar el Consumo Promedio Declarado**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6232,7 +6376,7 @@ sequenceDiagram
 
 ![DSD CU-145: Configurar los Días de Aviso Previo a la Recompra](diagramas/png/DSD_CU-145_configurarDiasDeAviso.png)
 
-**Figura 96 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra**
+**Figura 98 — DSD CU-145: Configurar los Días de Aviso Previo a la Recompra**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6276,7 +6420,7 @@ sequenceDiagram
 
 ![DSD CU-146: Consultar la Fecha Estimada de Recompra](diagramas/png/DSD_CU-146_consultarRecomprasEstimadas.png)
 
-**Figura 97 — DSD CU-146: Consultar la Fecha Estimada de Recompra**
+**Figura 99 — DSD CU-146: Consultar la Fecha Estimada de Recompra**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6323,7 +6467,7 @@ sequenceDiagram
 
 ![DSD CU-147: Realizar una Compra Express](diagramas/png/DSD_CU-147_realizarCompraExpress.png)
 
-**Figura 98 — DSD CU-147: Realizar una Compra Express**
+**Figura 100 — DSD CU-147: Realizar una Compra Express**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6401,7 +6545,7 @@ sequenceDiagram
 
 ![DSD CU-148: Elegir la Modalidad de Entrega del Pedido](diagramas/png/DSD_CU-148_consultarModalidadesDeEntrega.png)
 
-**Figura 99 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido**
+**Figura 101 — DSD CU-148: Elegir la Modalidad de Entrega del Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6453,7 +6597,7 @@ sequenceDiagram
 
 ![DSD CU-008: Cancelar un Pedido (Cliente) — Operación: cancelarMiPedido(pedidoId, motivo)](diagramas/png/DSD_CU-008_cancelarMiPedido.png)
 
-**Figura 100 — DSD CU-008: Cancelar un Pedido (Cliente) — Operación: cancelarMiPedido(pedidoId, motivo)**
+**Figura 102 — DSD CU-008: Cancelar un Pedido (Cliente) — Operación: cancelarMiPedido(pedidoId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6528,7 +6672,7 @@ sequenceDiagram
 
 ![DSD CU-009: Liberar un Pedido (Chofer)](diagramas/png/DSD_CU-009_liberarPedido.png)
 
-**Figura 101 — DSD CU-009: Liberar un Pedido (Chofer)**
+**Figura 103 — DSD CU-009: Liberar un Pedido (Chofer)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6594,7 +6738,7 @@ sequenceDiagram
 
 ![DSD CU-010: Cancelar un Pedido (Administrador) — Operación: cancelarPedido(pedidoId, motivo)](diagramas/png/DSD_CU-010_cancelarPedido.png)
 
-**Figura 102 — DSD CU-010: Cancelar un Pedido (Administrador) — Operación: cancelarPedido(pedidoId, motivo)**
+**Figura 104 — DSD CU-010: Cancelar un Pedido (Administrador) — Operación: cancelarPedido(pedidoId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6668,7 +6812,7 @@ sequenceDiagram
 
 ![DSD CU-168: Reintegrar el Pago de un Pedido](diagramas/png/DSD_CU-168_reintegrarPagoDelPedido.png)
 
-**Figura 103 — DSD CU-168: Reintegrar el Pago de un Pedido**
+**Figura 105 — DSD CU-168: Reintegrar el Pago de un Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6732,7 +6876,7 @@ sequenceDiagram
 
 ![DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)](diagramas/png/DSD_CU-292_confirmarCobroEnEfectivo.png)
 
-**Figura 104 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)**
+**Figura 106 — DSD CU-292: Confirmar el Cobro en Efectivo — Operación: confirmarCobroEnEfectivo(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6783,7 +6927,7 @@ sequenceDiagram
 
 ![DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)](diagramas/png/DSD_CU-293_informarCobroImpago.png)
 
-**Figura 105 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)**
+**Figura 107 — DSD CU-293: Informar el Cobro Impago — Operación: informarCobroImpago(pedidoId, nota)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6841,7 +6985,7 @@ sequenceDiagram
 
 ![DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota, cajaId)](diagramas/png/DSD_CU-294_resolverCobroImpago.png)
 
-**Figura 106 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota, cajaId)**
+**Figura 108 — DSD CU-294: Resolver un Cobro Impago — Operación: resolverCobroImpago(pedidoId, resolucion, nota, cajaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6911,7 +7055,7 @@ sequenceDiagram
 
 ![DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)](diagramas/png/DSD_CU-299_registrarCobroEnEfectivoPorAdmin.png)
 
-**Figura 107 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)**
+**Figura 109 — DSD CU-299: Registrar el Cobro en Efectivo como Administrador — Operación: registrarCobroEnEfectivoPorAdmin(pedidoId, motivo, cajaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -6976,7 +7120,7 @@ sequenceDiagram
 
 ![DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)](diagramas/png/DSD_CU-300_registrarCobroImpagoPorAdmin.png)
 
-**Figura 108 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)**
+**Figura 110 — DSD CU-300: Registrar el Cobro Impago como Administrador — Operación: registrarCobroImpagoPorAdmin(pedidoId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7033,7 +7177,7 @@ sequenceDiagram
 
 ![DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)](diagramas/png/DSD_CU-301_confirmarTransferencia.png)
 
-**Figura 109 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)**
+**Figura 111 — DSD CU-301: Confirmar una Transferencia — Operación: confirmarTransferencia(pedidoId, recibida, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7083,7 +7227,7 @@ sequenceDiagram
 
 ![DSD CU-011: Consultar Todos los Pedidos](diagramas/png/DSD_CU-011_listarPedidos.png)
 
-**Figura 110 — DSD CU-011: Consultar Todos los Pedidos**
+**Figura 112 — DSD CU-011: Consultar Todos los Pedidos**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7127,7 +7271,7 @@ sequenceDiagram
 
 ![DSD CU-046: Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega](diagramas/png/DSD_CU-046_consultarDireccionesDeEntrega.png)
 
-**Figura 111 — DSD CU-046: Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega**
+**Figura 113 — DSD CU-046: Consultar las Direcciones de Entrega del Cliente · consultarDireccionesDeEntrega**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7170,7 +7314,7 @@ sequenceDiagram
 
 ![DSD CU-116: Registrar una Dirección de Entrega — Operación: registrarDireccionDeEntrega(datos)](diagramas/png/DSD_CU-116_registrarDireccionDeEntrega.png)
 
-**Figura 112 — DSD CU-116: Registrar una Dirección de Entrega — Operación: registrarDireccionDeEntrega(datos)**
+**Figura 114 — DSD CU-116: Registrar una Dirección de Entrega — Operación: registrarDireccionDeEntrega(datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7221,7 +7365,7 @@ sequenceDiagram
 
 ![DSD CU-117: Consultar Detalle de una Dirección de Entrega](diagramas/png/DSD_CU-117_consultarDireccionDeEntrega.png)
 
-**Figura 113 — DSD CU-117: Consultar Detalle de una Dirección de Entrega**
+**Figura 115 — DSD CU-117: Consultar Detalle de una Dirección de Entrega**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7268,7 +7412,7 @@ sequenceDiagram
 
 ![DSD CU-118: Modificar una Dirección de Entrega — Operación: editarDireccionDeEntrega(direccionId, cambios)](diagramas/png/DSD_CU-118_editarDireccionDeEntrega.png)
 
-**Figura 114 — DSD CU-118: Modificar una Dirección de Entrega — Operación: editarDireccionDeEntrega(direccionId, cambios)**
+**Figura 116 — DSD CU-118: Modificar una Dirección de Entrega — Operación: editarDireccionDeEntrega(direccionId, cambios)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7314,7 +7458,7 @@ sequenceDiagram
 
 ![DSD CU-119: Dar de Baja una Dirección de Entrega — Operación: eliminarDireccionDeEntrega(direccionId)](diagramas/png/DSD_CU-119_eliminarDireccionDeEntrega.png)
 
-**Figura 115 — DSD CU-119: Dar de Baja una Dirección de Entrega — Operación: eliminarDireccionDeEntrega(direccionId)**
+**Figura 117 — DSD CU-119: Dar de Baja una Dirección de Entrega — Operación: eliminarDireccionDeEntrega(direccionId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7363,7 +7507,7 @@ sequenceDiagram
 
 ![DSD CU-120: Marcar una Dirección como Predeterminada — Operación: marcarDireccionPredeterminada(direccionId)](diagramas/png/DSD_CU-120_marcarDireccionPredeterminada.png)
 
-**Figura 116 — DSD CU-120: Marcar una Dirección como Predeterminada — Operación: marcarDireccionPredeterminada(direccionId)**
+**Figura 118 — DSD CU-120: Marcar una Dirección como Predeterminada — Operación: marcarDireccionPredeterminada(direccionId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7416,7 +7560,7 @@ sequenceDiagram
 
 ![DSD CU-121: Consultar la Dirección Predeterminada](diagramas/png/DSD_CU-121_consultarDireccionPredeterminada.png)
 
-**Figura 117 — DSD CU-121: Consultar la Dirección Predeterminada**
+**Figura 119 — DSD CU-121: Consultar la Dirección Predeterminada**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7464,7 +7608,7 @@ sequenceDiagram
 
 ![DSD CU-122: Agregar un Ítem al Carrito](diagramas/png/DSD_CU-122_agregarItemAlCarrito.png)
 
-**Figura 118 — DSD CU-122: Agregar un Ítem al Carrito**
+**Figura 120 — DSD CU-122: Agregar un Ítem al Carrito**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7544,7 +7688,7 @@ sequenceDiagram
 
 ![DSD CU-123: Modificar la Cantidad de un Ítem del Carrito](diagramas/png/DSD_CU-123_modificarCantidadDelItem.png)
 
-**Figura 119 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito**
+**Figura 121 — DSD CU-123: Modificar la Cantidad de un Ítem del Carrito**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7603,7 +7747,7 @@ sequenceDiagram
 
 ![DSD CU-124: Quitar un Ítem del Carrito](diagramas/png/DSD_CU-124_quitarItemDelCarrito.png)
 
-**Figura 120 — DSD CU-124: Quitar un Ítem del Carrito**
+**Figura 122 — DSD CU-124: Quitar un Ítem del Carrito**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7658,7 +7802,7 @@ sequenceDiagram
 
 ![DSD CU-125: Consultar el Carrito](diagramas/png/DSD_CU-125_consultarCarrito.png)
 
-**Figura 121 — DSD CU-125: Consultar el Carrito**
+**Figura 123 — DSD CU-125: Consultar el Carrito**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7717,7 +7861,7 @@ sequenceDiagram
 
 ![DSD CU-126: Vaciar el Carrito](diagramas/png/DSD_CU-126_vaciarCarrito.png)
 
-**Figura 122 — DSD CU-126: Vaciar el Carrito**
+**Figura 124 — DSD CU-126: Vaciar el Carrito**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7771,7 +7915,7 @@ sequenceDiagram
 
 ![DSD CU-127: Cambiar la Dirección de Entrega del Pedido](diagramas/png/DSD_CU-127_cambiarDireccionDeEntrega.png)
 
-**Figura 123 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido**
+**Figura 125 — DSD CU-127: Cambiar la Dirección de Entrega del Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7843,7 +7987,7 @@ sequenceDiagram
 
 ![DSD CU-128: Indicar Quién Recibe el Pedido](diagramas/png/DSD_CU-128_indicarQuienRecibe.png)
 
-**Figura 124 — DSD CU-128: Indicar Quién Recibe el Pedido**
+**Figura 126 — DSD CU-128: Indicar Quién Recibe el Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7896,7 +8040,7 @@ sequenceDiagram
 
 ![DSD CU-080: Consultar el Pool de Pedidos Disponibles](diagramas/png/DSD_CU-080_consultarPedidosDisponibles.png)
 
-**Figura 125 — DSD CU-080: Consultar el Pool de Pedidos Disponibles**
+**Figura 127 — DSD CU-080: Consultar el Pool de Pedidos Disponibles**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -7955,7 +8099,7 @@ sequenceDiagram
 
 ![DSD CU-081: Consultar los Pedidos Asignados al Chofer](diagramas/png/DSD_CU-081_consultarPedidosAsignados.png)
 
-**Figura 126 — DSD CU-081: Consultar los Pedidos Asignados al Chofer**
+**Figura 128 — DSD CU-081: Consultar los Pedidos Asignados al Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8006,7 +8150,7 @@ sequenceDiagram
 
 ![DSD CU-338: Retomar el Pedido en Curso — Operación: consultarPedidoEnCurso()](diagramas/png/DSD_CU-338_consultarPedidoEnCurso.png)
 
-**Figura 127 — DSD CU-338: Retomar el Pedido en Curso — Operación: consultarPedidoEnCurso()**
+**Figura 129 — DSD CU-338: Retomar el Pedido en Curso — Operación: consultarPedidoEnCurso()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8053,7 +8197,7 @@ sequenceDiagram
 
 ![DSD CU-339: Modificar un Pedido Pendiente (Administrador) — Operación: modificarPedido(pedidoId, datos)](diagramas/png/DSD_CU-339_modificarPedido.png)
 
-**Figura 128 — DSD CU-339: Modificar un Pedido Pendiente (Administrador) — Operación: modificarPedido(pedidoId, datos)**
+**Figura 130 — DSD CU-339: Modificar un Pedido Pendiente (Administrador) — Operación: modificarPedido(pedidoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8119,7 +8263,7 @@ sequenceDiagram
 
 ![DSD CU-341: Modificar un Pedido Pendiente (Cliente) — Operación: modificarMiPedido(pedidoId, datos)](diagramas/png/DSD_CU-341_modificarMiPedido.png)
 
-**Figura 129 — DSD CU-341: Modificar un Pedido Pendiente (Cliente) — Operación: modificarMiPedido(pedidoId, datos)**
+**Figura 131 — DSD CU-341: Modificar un Pedido Pendiente (Cliente) — Operación: modificarMiPedido(pedidoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8196,7 +8340,7 @@ Es el corazón del **Módulo Inteligente M1 — Negociación secuencial de asign
 
 ![DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)](diagramas/png/DSD_CU-013_ofrecerAlSiguienteChofer.png)
 
-**Figura 130 — DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)**
+**Figura 132 — DSD CU-013: Asignar un Pedido Automáticamente por Proximidad — Operación: ofrecerAlSiguienteChofer(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8290,7 +8434,7 @@ sequenceDiagram
 
 ![DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()](diagramas/png/DSD_CU-014_vencerOfertasExpiradas.png)
 
-**Figura 131 — DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()**
+**Figura 133 — DSD CU-014: Vencer la Oferta y Ofrecer al Siguiente Chofer — Operación: vencerOfertasExpiradas()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8379,7 +8523,7 @@ sequenceDiagram
 
 ![DSD CU-015: Aceptar un Pedido — Operación: aceptarPedido(pedidoId)](diagramas/png/DSD_CU-015_aceptarPedido.png)
 
-**Figura 132 — DSD CU-015: Aceptar un Pedido — Operación: aceptarPedido(pedidoId)**
+**Figura 134 — DSD CU-015: Aceptar un Pedido — Operación: aceptarPedido(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8440,7 +8584,7 @@ sequenceDiagram
 
 ![DSD CU-016: Rechazar un Pedido Ofrecido — Operación: rechazarOferta(pedidoId)](diagramas/png/DSD_CU-016_rechazarOferta.png)
 
-**Figura 133 — DSD CU-016: Rechazar un Pedido Ofrecido — Operación: rechazarOferta(pedidoId)**
+**Figura 135 — DSD CU-016: Rechazar un Pedido Ofrecido — Operación: rechazarOferta(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8509,7 +8653,7 @@ directo a `ACCEPTED`, todo en una transacción con bloqueo del pedido.
 
 ![DSD CU-012: Asignar un Chofer Manualmente](diagramas/png/DSD_CU-012_asignarChoferAPedido.png)
 
-**Figura 134 — DSD CU-012: Asignar un Chofer Manualmente**
+**Figura 136 — DSD CU-012: Asignar un Chofer Manualmente**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8591,7 +8735,7 @@ sequenceDiagram
 
 ![DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)](diagramas/png/DSD_CU-171_configurarParametrosDeDespacho.png)
 
-**Figura 135 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)**
+**Figura 137 — DSD CU-171: Configurar los Parámetros de Despacho de la Distribuidora — Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8649,7 +8793,7 @@ sequenceDiagram
 
 ![DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)](diagramas/png/DSD_CU-149_despacharPedidoExpress.png)
 
-**Figura 136 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)**
+**Figura 138 — DSD CU-149: Despachar un Pedido Express a un Chofer en Moto — Operación: despacharPedidoExpress(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8728,7 +8872,7 @@ sequenceDiagram
 
 ![DSD CU-017: Modificar la Ubicación GPS del Chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)](diagramas/png/DSD_CU-017_actualizarUbicacion.png)
 
-**Figura 137 — DSD CU-017: Modificar la Ubicación GPS del Chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)**
+**Figura 139 — DSD CU-017: Modificar la Ubicación GPS del Chofer — Operación: actualizarUbicacion(usuarioId, latitud, longitud)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8787,7 +8931,7 @@ El administrador da por entregado el pedido y deja el motivo. La variante con c�
 
 ![DSD CU-020: Confirmar una Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)](diagramas/png/DSD_CU-020_confirmarEntrega.png)
 
-**Figura 138 — DSD CU-020: Confirmar una Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)**
+**Figura 140 — DSD CU-020: Confirmar una Entrega Manualmente — Operación: confirmarEntrega(pedidoId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8863,7 +9007,7 @@ sequenceDiagram
 
 ![DSD CU-078: Consultar el Código de Entrega (QR del chofer) — Operación: obtenerCodigoDeEntrega(pedidoId)](diagramas/png/DSD_CU-078_obtenerCodigoDeEntrega.png)
 
-**Figura 139 — DSD CU-078: Consultar el Código de Entrega (QR del chofer) — Operación: obtenerCodigoDeEntrega(pedidoId)**
+**Figura 141 — DSD CU-078: Consultar el Código de Entrega (QR del chofer) — Operación: obtenerCodigoDeEntrega(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8905,7 +9049,7 @@ sequenceDiagram
 
 ![DSD CU-079: Confirmar una Entrega Escaneando el QR (cliente) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)](diagramas/png/DSD_CU-079_confirmarEntregaConCodigo.png)
 
-**Figura 140 — DSD CU-079: Confirmar una Entrega Escaneando el QR (cliente) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)**
+**Figura 142 — DSD CU-079: Confirmar una Entrega Escaneando el QR (cliente) — Operación: confirmarEntregaConCodigo(pedidoId, codigo, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -8972,7 +9116,7 @@ sequenceDiagram
 
 ![DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)](diagramas/png/DSD_CU-303_consultarRutaDelPedido.png)
 
-**Figura 141 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)**
+**Figura 143 — DSD CU-303: Consultar la Ruta de un Pedido — Operación: consultarRutaDelPedido(pedidoId, desde)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9029,7 +9173,7 @@ posición GPS al cliente correcto (CU-017).
 
 ![DSD CU-018: Marcar un Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)](diagramas/png/DSD_CU-018_marcarPedidoEnCamino.png)
 
-**Figura 142 — DSD CU-018: Marcar un Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)**
+**Figura 144 — DSD CU-018: Marcar un Pedido "En Camino" — Operación: marcarPedidoEnCamino(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9102,7 +9246,7 @@ no pasa por la máquina de estados ni por el use-case de transición.
 
 ![DSD CU-019: Avisar la Llegada al Cliente — Operación: avisarLlegada(pedidoId)](diagramas/png/DSD_CU-019_avisarLlegada.png)
 
-**Figura 143 — DSD CU-019: Avisar la Llegada al Cliente — Operación: avisarLlegada(pedidoId)**
+**Figura 145 — DSD CU-019: Avisar la Llegada al Cliente — Operación: avisarLlegada(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9169,7 +9313,7 @@ seguiría recibiendo ofertas del despacho. Activar y desactivar la disponibilida
 
 ![DSD CU-022: Activar la Disponibilidad — Operación: activarDisponibilidad(usuarioId)](diagramas/png/DSD_CU-022_activarDisponibilidad.png)
 
-**Figura 144 — DSD CU-022: Activar la Disponibilidad — Operación: activarDisponibilidad(usuarioId)**
+**Figura 146 — DSD CU-022: Activar la Disponibilidad — Operación: activarDisponibilidad(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9237,7 +9381,7 @@ Es la operación inversa de CU-022: el chofer queda fuera de línea y sale del r
 
 ![DSD CU-266: Desactivar la Disponibilidad — Operación: desactivarDisponibilidad(usuarioId)](diagramas/png/DSD_CU-266_desactivarDisponibilidad.png)
 
-**Figura 145 — DSD CU-266: Desactivar la Disponibilidad — Operación: desactivarDisponibilidad(usuarioId)**
+**Figura 147 — DSD CU-266: Desactivar la Disponibilidad — Operación: desactivarDisponibilidad(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9308,7 +9452,7 @@ El controller **fuerza la identidad del reclamante** cuando quien llama es un cl
 
 ![DSD CU-023: Registrar un Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)](diagramas/png/DSD_CU-023_registrarReclamo.png)
 
-**Figura 146 — DSD CU-023: Registrar un Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)**
+**Figura 148 — DSD CU-023: Registrar un Reclamo — Operación: registrarReclamo(pedidoId, motivo, evidencia)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9364,7 +9508,7 @@ sequenceDiagram
 
 ![DSD CU-024: Consultar los Reclamos — Operación: listarReclamos()](diagramas/png/DSD_CU-024_listarReclamos.png)
 
-**Figura 147 — DSD CU-024: Consultar los Reclamos — Operación: listarReclamos()**
+**Figura 149 — DSD CU-024: Consultar los Reclamos — Operación: listarReclamos()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9413,7 +9557,7 @@ sequenceDiagram
 
 ![DSD CU-025: Resolver un Reclamo](diagramas/png/DSD_CU-025_resolverReclamo.png)
 
-**Figura 148 — DSD CU-025: Resolver un Reclamo**
+**Figura 150 — DSD CU-025: Resolver un Reclamo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9468,7 +9612,7 @@ sequenceDiagram
 
 ![DSD CU-166: Tomar un Reclamo Pendiente](diagramas/png/DSD_CU-166_tomarReclamo.png)
 
-**Figura 149 — DSD CU-166: Tomar un Reclamo Pendiente**
+**Figura 151 — DSD CU-166: Tomar un Reclamo Pendiente**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9520,7 +9664,7 @@ sequenceDiagram
 
 ![DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)](diagramas/png/DSD_CU-167_reabrirReclamo.png)
 
-**Figura 150 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)**
+**Figura 152 — DSD CU-167: Reabrir un Reclamo — Operación: reabrirReclamo(reclamoId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9572,7 +9716,7 @@ sequenceDiagram
 
 ![DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)](diagramas/png/DSD_CU-174_adjuntarFotoAlReclamo.png)
 
-**Figura 151 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)**
+**Figura 153 — DSD CU-174: Adjuntar la Fotografía de un Reclamo — Operación: adjuntarFotoAlReclamo(reclamoId, imagen)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9631,7 +9775,7 @@ sequenceDiagram
 
 ![DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)](diagramas/png/DSD_CU-175_consultarFotoDelReclamo.png)
 
-**Figura 152 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)**
+**Figura 154 — DSD CU-175: Consultar la Fotografía de un Reclamo — Operación: consultarFotoDelReclamo(reclamoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9695,7 +9839,7 @@ sequenceDiagram
 
 ![DSD CU-026: Consultar el Tablero General · consultarResumenDePedidos](diagramas/png/DSD_CU-026_consultarResumenDePedidos.png)
 
-**Figura 153 — DSD CU-026: Consultar el Tablero General · consultarResumenDePedidos**
+**Figura 155 — DSD CU-026: Consultar el Tablero General · consultarResumenDePedidos**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9750,7 +9894,7 @@ sequenceDiagram
 
 ![DSD CU-026: Consultar el Tablero General · consultarGraficoDeVentas](diagramas/png/DSD_CU-026_consultarGraficoDeVentas.png)
 
-**Figura 154 — DSD CU-026: Consultar el Tablero General · consultarGraficoDeVentas**
+**Figura 156 — DSD CU-026: Consultar el Tablero General · consultarGraficoDeVentas**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9799,7 +9943,7 @@ sequenceDiagram
 
 ![DSD CU-027: Consultar el Reporte de Ventas por Chofer](diagramas/png/DSD_CU-027_consultarVentasPorChofer.png)
 
-**Figura 155 — DSD CU-027: Consultar el Reporte de Ventas por Chofer**
+**Figura 157 — DSD CU-027: Consultar el Reporte de Ventas por Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9853,7 +9997,7 @@ sequenceDiagram
 
 ![DSD CU-028: Consultar el Reporte de Ventas por Producto](diagramas/png/DSD_CU-028_consultarVentasPorProducto.png)
 
-**Figura 156 — DSD CU-028: Consultar el Reporte de Ventas por Producto**
+**Figura 158 — DSD CU-028: Consultar el Reporte de Ventas por Producto**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9910,7 +10054,7 @@ sequenceDiagram
 
 ![DSD CU-029: Consultar el Reporte por Método de Pago](diagramas/png/DSD_CU-029_consultarVentasPorMetodoDePago.png)
 
-**Figura 157 — DSD CU-029: Consultar el Reporte por Método de Pago**
+**Figura 159 — DSD CU-029: Consultar el Reporte por Método de Pago**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -9963,7 +10107,7 @@ sequenceDiagram
 
 ![DSD CU-030: Consultar el Gráfico de Ventas (últimos 7 días)](diagramas/png/DSD_CU-030_consultarEvolucionDeVentas.png)
 
-**Figura 158 — DSD CU-030: Consultar el Gráfico de Ventas (últimos 7 días)**
+**Figura 160 — DSD CU-030: Consultar el Gráfico de Ventas (últimos 7 días)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10017,7 +10161,7 @@ sequenceDiagram
 
 ![DSD CU-304: Consultar los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)](diagramas/png/DSD_CU-304_consultarCobrosPendientes.png)
 
-**Figura 159 — DSD CU-304: Consultar los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)**
+**Figura 161 — DSD CU-304: Consultar los Cobros Pendientes — Operación: consultarCobrosPendientes(desde, hasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10072,7 +10216,7 @@ Alta de un chofer desde el panel: `POST /users` con rol `delivery`. Es el alta �
 
 ![DSD CU-031: Registrar un Chofer (Gestión de la Flota) — Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)](diagramas/png/DSD_CU-031_registrarChoferEnLaFlota.png)
 
-**Figura 160 — DSD CU-031: Registrar un Chofer (Gestión de la Flota) — Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)**
+**Figura 162 — DSD CU-031: Registrar un Chofer (Gestión de la Flota) — Operación: registrarChoferEnLaFlota(datosPersonales, datosDelChofer, distribuidoraId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10131,7 +10275,7 @@ sequenceDiagram
 
 ![DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)](diagramas/png/DSD_CU-032_validarChofer.png)
 
-**Figura 161 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)**
+**Figura 163 — DSD CU-032: Validar un Chofer — Operación: validarChofer(choferId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10179,7 +10323,7 @@ sequenceDiagram
 
 ![DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)](diagramas/png/DSD_CU-271_invalidarChofer.png)
 
-**Figura 162 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)**
+**Figura 164 — DSD CU-271: Invalidar un Chofer — Operación: invalidarChofer(choferId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10228,7 +10372,7 @@ Activar y desactivar a un chofer (CU-267) son dos operaciones del administrador 
 
 ![DSD CU-033: Activar un Chofer — Operación: activarChofer(choferId)](diagramas/png/DSD_CU-033_activarChofer.png)
 
-**Figura 163 — DSD CU-033: Activar un Chofer — Operación: activarChofer(choferId)**
+**Figura 165 — DSD CU-033: Activar un Chofer — Operación: activarChofer(choferId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10288,7 +10432,7 @@ Es la operación inversa de CU-033: el chofer queda deshabilitado, fuera de lín
 
 ![DSD CU-267: Desactivar un Chofer — Operación: desactivarChofer(choferId)](diagramas/png/DSD_CU-267_desactivarChofer.png)
 
-**Figura 164 — DSD CU-267: Desactivar un Chofer — Operación: desactivarChofer(choferId)**
+**Figura 166 — DSD CU-267: Desactivar un Chofer — Operación: desactivarChofer(choferId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10346,7 +10490,7 @@ sequenceDiagram
 
 ![DSD CU-034: Registrar un Vehículo del Chofer](diagramas/png/DSD_CU-034_registrarVehiculo.png)
 
-**Figura 165 — DSD CU-034: Registrar un Vehículo del Chofer**
+**Figura 167 — DSD CU-034: Registrar un Vehículo del Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10399,7 +10543,7 @@ Cuatro vistas distintas del mismo agregado, resueltas por el mismo servicio.
 
 ![DSD CU-035: Consultar el Listado de Choferes](diagramas/png/DSD_CU-035_listarChoferes.png)
 
-**Figura 166 — DSD CU-035: Consultar el Listado de Choferes**
+**Figura 168 — DSD CU-035: Consultar el Listado de Choferes**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10434,7 +10578,7 @@ sequenceDiagram
 
 ![DSD CU-035: Consultar el Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)](diagramas/png/DSD_CU-035_listarChoferesActivos.png)
 
-**Figura 167 — DSD CU-035: Consultar el Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)**
+**Figura 169 — DSD CU-035: Consultar el Listado de Choferes — Operación: listarChoferesActivos(pagina, limite)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10480,7 +10624,7 @@ No existe una ruta dedicada de **consulta** de balance: el chofer lo lee dentro 
 
 ![DSD CU-049: Consultar las Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)](diagramas/png/DSD_CU-049_consultarPerfilDelChofer.png)
 
-**Figura 168 — DSD CU-049: Consultar las Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)**
+**Figura 170 — DSD CU-049: Consultar las Ganancias del Chofer — Operación: consultarPerfilDelChofer(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10533,7 +10677,7 @@ sequenceDiagram
 
 ![DSD CU-337: Ajustar el Saldo del Chofer — Operación: ajustarSaldoDelChofer(choferId, monto)](diagramas/png/DSD_CU-337_ajustarSaldoDelChofer.png)
 
-**Figura 169 — DSD CU-337: Ajustar el Saldo del Chofer — Operación: ajustarSaldoDelChofer(choferId, monto)**
+**Figura 171 — DSD CU-337: Ajustar el Saldo del Chofer — Operación: ajustarSaldoDelChofer(choferId, monto)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10576,7 +10720,7 @@ sequenceDiagram
 
 ![DSD CU-051: Consultar el Listado de Vehículos](diagramas/png/DSD_CU-051_listarVehiculos.png)
 
-**Figura 170 — DSD CU-051: Consultar el Listado de Vehículos**
+**Figura 172 — DSD CU-051: Consultar el Listado de Vehículos**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10615,7 +10759,7 @@ sequenceDiagram
 
 ![DSD CU-096: Modificar el Perfil del Chofer](diagramas/png/DSD_CU-096_actualizarPerfilDelChofer.png)
 
-**Figura 171 — DSD CU-096: Modificar el Perfil del Chofer**
+**Figura 173 — DSD CU-096: Modificar el Perfil del Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10663,7 +10807,7 @@ sequenceDiagram
 
 ![DSD CU-097: Dar de Baja un Chofer](diagramas/png/DSD_CU-097_eliminarChofer.png)
 
-**Figura 172 — DSD CU-097: Dar de Baja un Chofer**
+**Figura 174 — DSD CU-097: Dar de Baja un Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10724,7 +10868,7 @@ sequenceDiagram
 
 ![DSD CU-109: Consultar el Detalle del Chofer — Operación: consultarDetalleDelChofer(choferId)](diagramas/png/DSD_CU-109_consultarDetalleDelChofer.png)
 
-**Figura 173 — DSD CU-109: Consultar el Detalle del Chofer — Operación: consultarDetalleDelChofer(choferId)**
+**Figura 175 — DSD CU-109: Consultar el Detalle del Chofer — Operación: consultarDetalleDelChofer(choferId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10778,7 +10922,7 @@ sequenceDiagram
 
 ![DSD CU-110: Buscar un Chofer por Usuario](diagramas/png/DSD_CU-110_buscarChoferPorUsuario.png)
 
-**Figura 174 — DSD CU-110: Buscar un Chofer por Usuario**
+**Figura 176 — DSD CU-110: Buscar un Chofer por Usuario**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10826,7 +10970,7 @@ sequenceDiagram
 
 ![DSD CU-111: Modificar un Vehículo — Operación: editarVehiculo(vehiculoId, datos)](diagramas/png/DSD_CU-111_editarVehiculo.png)
 
-**Figura 175 — DSD CU-111: Modificar un Vehículo — Operación: editarVehiculo(vehiculoId, datos)**
+**Figura 177 — DSD CU-111: Modificar un Vehículo — Operación: editarVehiculo(vehiculoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10878,7 +11022,7 @@ sequenceDiagram
 
 ![DSD CU-112: Dar de Baja un Vehículo — Operación: eliminarVehiculo(vehiculoId)](diagramas/png/DSD_CU-112_eliminarVehiculo.png)
 
-**Figura 176 — DSD CU-112: Dar de Baja un Vehículo — Operación: eliminarVehiculo(vehiculoId)**
+**Figura 178 — DSD CU-112: Dar de Baja un Vehículo — Operación: eliminarVehiculo(vehiculoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10930,7 +11074,7 @@ sequenceDiagram
 
 ![DSD CU-113: Consultar el Detalle del Vehículo](diagramas/png/DSD_CU-113_consultarDetalleDelVehiculo.png)
 
-**Figura 177 — DSD CU-113: Consultar el Detalle del Vehículo**
+**Figura 179 — DSD CU-113: Consultar el Detalle del Vehículo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -10978,7 +11122,7 @@ sequenceDiagram
 
 ![DSD CU-114: Buscar un Vehículo por Patente — Operación: buscarVehiculoPorPatente(patente)](diagramas/png/DSD_CU-114_buscarVehiculoPorPatente.png)
 
-**Figura 178 — DSD CU-114: Buscar un Vehículo por Patente — Operación: buscarVehiculoPorPatente(patente)**
+**Figura 180 — DSD CU-114: Buscar un Vehículo por Patente — Operación: buscarVehiculoPorPatente(patente)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11018,7 +11162,7 @@ sequenceDiagram
 
 ![DSD CU-115: Consultar los Vehículos de un Chofer](diagramas/png/DSD_CU-115_consultarVehiculosDelChofer.png)
 
-**Figura 179 — DSD CU-115: Consultar los Vehículos de un Chofer**
+**Figura 181 — DSD CU-115: Consultar los Vehículos de un Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11066,7 +11210,7 @@ sequenceDiagram
 
 ![DSD CU-136: Registrar el Seguro del Vehículo — Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)](diagramas/png/DSD_CU-136_registrarSeguroDelVehiculo.png)
 
-**Figura 180 — DSD CU-136: Registrar el Seguro del Vehículo — Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)**
+**Figura 182 — DSD CU-136: Registrar el Seguro del Vehículo — Operación: registrarSeguroDelVehiculo(planId, recursoId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11132,7 +11276,7 @@ sequenceDiagram
 
 ![DSD CU-137: Registrar la Verificación Técnica Vehicular — Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)](diagramas/png/DSD_CU-137_registrarVerificacionTecnica.png)
 
-**Figura 181 — DSD CU-137: Registrar la Verificación Técnica Vehicular — Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)**
+**Figura 183 — DSD CU-137: Registrar la Verificación Técnica Vehicular — Operación: registrarVerificacionTecnica(planId, recursoId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11198,7 +11342,7 @@ sequenceDiagram
 
 ![DSD CU-138: Registrar la Licencia de Conducir del Chofer — Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)](diagramas/png/DSD_CU-138_registrarLicenciaDeConducir.png)
 
-**Figura 182 — DSD CU-138: Registrar la Licencia de Conducir del Chofer — Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)**
+**Figura 184 — DSD CU-138: Registrar la Licencia de Conducir del Chofer — Operación: registrarLicenciaDeConducir(planId, recursoId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11264,7 +11408,7 @@ sequenceDiagram
 
 ![DSD CU-139: Consultar los Vencimientos de la Flota](diagramas/png/DSD_CU-139_consultarVencimientosDeLaFlota.png)
 
-**Figura 183 — DSD CU-139: Consultar los Vencimientos de la Flota**
+**Figura 185 — DSD CU-139: Consultar los Vencimientos de la Flota**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11323,7 +11467,7 @@ sequenceDiagram
 
 ![DSD CU-140: Programar un Mantenimiento de Vehículo — Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)](diagramas/png/DSD_CU-140_programarMantenimientoDeVehiculo.png)
 
-**Figura 184 — DSD CU-140: Programar un Mantenimiento de Vehículo — Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)**
+**Figura 186 — DSD CU-140: Programar un Mantenimiento de Vehículo — Operación: programarMantenimientoDeVehiculo(planId, recursoId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11389,7 +11533,7 @@ sequenceDiagram
 
 ![DSD CU-141: Registrar un Mantenimiento Realizado](diagramas/png/DSD_CU-141_cerrarTareaDeFlota.png)
 
-**Figura 185 — DSD CU-141: Registrar un Mantenimiento Realizado**
+**Figura 187 — DSD CU-141: Registrar un Mantenimiento Realizado**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11439,7 +11583,7 @@ sequenceDiagram
 
 ![DSD CU-142: Avisar los Vencimientos Próximos de la Flota — Operación: avisarVencimientosDeLaFlota()](diagramas/png/DSD_CU-142_avisarVencimientosDeLaFlota.png)
 
-**Figura 186 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota — Operación: avisarVencimientosDeLaFlota()**
+**Figura 188 — DSD CU-142: Avisar los Vencimientos Próximos de la Flota — Operación: avisarVencimientosDeLaFlota()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11506,7 +11650,7 @@ sequenceDiagram
 
 ![DSD CU-155: Adjuntar un Archivo a una Tarea de Flota](diagramas/png/DSD_CU-155_adjuntarArchivoALaTarea.png)
 
-**Figura 187 — DSD CU-155: Adjuntar un Archivo a una Tarea de Flota**
+**Figura 189 — DSD CU-155: Adjuntar un Archivo a una Tarea de Flota**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11562,7 +11706,7 @@ sequenceDiagram
 
 ![DSD CU-156: Consultar los Adjuntos de una Tarea de Flota](diagramas/png/DSD_CU-156_consultarAdjuntosDeLaTarea.png)
 
-**Figura 188 — DSD CU-156: Consultar los Adjuntos de una Tarea de Flota**
+**Figura 190 — DSD CU-156: Consultar los Adjuntos de una Tarea de Flota**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11609,7 +11753,7 @@ sequenceDiagram
 
 ![DSD CU-157: Descargar un Adjunto de Flota](diagramas/png/DSD_CU-157_descargarAdjunto.png)
 
-**Figura 189 — DSD CU-157: Descargar un Adjunto de Flota**
+**Figura 191 — DSD CU-157: Descargar un Adjunto de Flota**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11661,7 +11805,7 @@ sequenceDiagram
 
 ![DSD CU-158: Eliminar un Adjunto de Flota](diagramas/png/DSD_CU-158_eliminarAdjunto.png)
 
-**Figura 190 — DSD CU-158: Eliminar un Adjunto de Flota**
+**Figura 192 — DSD CU-158: Eliminar un Adjunto de Flota**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11711,7 +11855,7 @@ Caso incluido desde CU-155 y CU-174: no tiene operación del sistema propia, el 
 
 ![DSD CU-159: Almacenar un Archivo](diagramas/png/DSD_CU-159_almacenarArchivo.png)
 
-**Figura 191 — DSD CU-159: Almacenar un Archivo**
+**Figura 193 — DSD CU-159: Almacenar un Archivo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11757,7 +11901,7 @@ Caso incluido desde CU-157 y CU-175: no tiene operación del sistema propia, el 
 
 ![DSD CU-160: Recuperar un Archivo](diagramas/png/DSD_CU-160_recuperarArchivo.png)
 
-**Figura 192 — DSD CU-160: Recuperar un Archivo**
+**Figura 194 — DSD CU-160: Recuperar un Archivo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11800,7 +11944,7 @@ sequenceDiagram
 
 ![DSD CU-161: Poner un Vehículo en Uso para un Chofer](diagramas/png/DSD_CU-161_ponerVehiculoEnUso.png)
 
-**Figura 193 — DSD CU-161: Poner un Vehículo en Uso para un Chofer**
+**Figura 195 — DSD CU-161: Poner un Vehículo en Uso para un Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11875,7 +12019,7 @@ sequenceDiagram
 
 ![DSD CU-162: Liberar el Vehículo en Uso de un Chofer](diagramas/png/DSD_CU-162_liberarVehiculoEnUso.png)
 
-**Figura 194 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer**
+**Figura 196 — DSD CU-162: Liberar el Vehículo en Uso de un Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11931,7 +12075,7 @@ sequenceDiagram
 
 ![DSD CU-163: Consultar el Vehículo en Uso de un Chofer](diagramas/png/DSD_CU-163_consultarVehiculoEnUso.png)
 
-**Figura 195 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer**
+**Figura 197 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -11975,7 +12119,7 @@ sequenceDiagram
 
 ![DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()](diagramas/png/DSD_CU-163_consultarMiVehiculoEnUso.png)
 
-**Figura 196 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()**
+**Figura 198 — DSD CU-163: Consultar el Vehículo en Uso de un Chofer — Operación: consultarMiVehiculoEnUso()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12030,7 +12174,7 @@ sequenceDiagram
 
 ![DSD CU-164: Consultar el Historial de Vehículos de un Chofer](diagramas/png/DSD_CU-164_consultarHistorialDeVehiculosDelChofer.png)
 
-**Figura 197 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer**
+**Figura 199 — DSD CU-164: Consultar el Historial de Vehículos de un Chofer**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12078,7 +12222,7 @@ sequenceDiagram
 
 ![DSD CU-165: Consultar el Historial de Choferes de un Vehículo](diagramas/png/DSD_CU-165_consultarHistorialDeChoferesDelVehiculo.png)
 
-**Figura 198 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo**
+**Figura 200 — DSD CU-165: Consultar el Historial de Choferes de un Vehículo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12128,7 +12272,7 @@ Cuatro operaciones sobre el mismo registro: alta, modificación, anulación y co
 
 ![DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)](diagramas/png/DSD_CU-195_registrarCargaDeCombustible.png)
 
-**Figura 199 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)**
+**Figura 201 — DSD CU-195: Registrar una Carga de Combustible — Operación: registrarCargaDeCombustible(vehiculoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12193,7 +12337,7 @@ sequenceDiagram
 
 ![DSD CU-320: Modificar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)](diagramas/png/DSD_CU-320_modificarCargaDeCombustible.png)
 
-**Figura 200 — DSD CU-320: Modificar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)**
+**Figura 202 — DSD CU-320: Modificar una Carga de Combustible — Operación: modificarCargaDeCombustible(cargaId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12249,7 +12393,7 @@ sequenceDiagram
 
 ![DSD CU-321: Anular una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)](diagramas/png/DSD_CU-321_anularCargaDeCombustible.png)
 
-**Figura 201 — DSD CU-321: Anular una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)**
+**Figura 203 — DSD CU-321: Anular una Carga de Combustible — Operación: anularCargaDeCombustible(cargaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12302,7 +12446,7 @@ sequenceDiagram
 
 ![DSD CU-322: Consultar las Cargas de Combustible — Operación: consultarCargasDeCombustible(filtros)](diagramas/png/DSD_CU-322_consultarCargasDeCombustible.png)
 
-**Figura 202 — DSD CU-322: Consultar las Cargas de Combustible — Operación: consultarCargasDeCombustible(filtros)**
+**Figura 204 — DSD CU-322: Consultar las Cargas de Combustible — Operación: consultarCargasDeCombustible(filtros)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12346,7 +12490,7 @@ sequenceDiagram
 
 ![DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)](diagramas/png/DSD_CU-196_consultarConsumoDeCombustible.png)
 
-**Figura 203 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)**
+**Figura 205 — DSD CU-196: Consultar el Consumo de Combustible de un Vehículo — Operación: consultarConsumoDeCombustible(vehiculoId, fechaDesde, fechaHasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12395,7 +12539,7 @@ sequenceDiagram
 
 ![DSD CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas — Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)](diagramas/png/DSD_CU-197_registrarHabilitacionDeMercanciasPeligrosas.png)
 
-**Figura 204 — DSD CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas — Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)**
+**Figura 206 — DSD CU-197: Registrar la Habilitación para Transportar Mercancías Peligrosas — Operación: registrarHabilitacionDeMercanciasPeligrosas(planId, recursoId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12463,7 +12607,7 @@ Cinco operaciones sobre la multa: alta, modificación, anulación, consulta y el
 
 ![DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)](diagramas/png/DSD_CU-198_registrarMultaDeTransito.png)
 
-**Figura 205 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)**
+**Figura 207 — DSD CU-198: Registrar una Multa de Tránsito — Operación: registrarMultaDeTransito(vehiculoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12522,7 +12666,7 @@ sequenceDiagram
 
 ![DSD CU-323: Modificar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)](diagramas/png/DSD_CU-323_modificarMultaDeTransito.png)
 
-**Figura 206 — DSD CU-323: Modificar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)**
+**Figura 208 — DSD CU-323: Modificar una Multa de Tránsito — Operación: modificarMultaDeTransito(multaId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12574,7 +12718,7 @@ sequenceDiagram
 
 ![DSD CU-324: Anular una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)](diagramas/png/DSD_CU-324_anularMultaDeTransito.png)
 
-**Figura 207 — DSD CU-324: Anular una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)**
+**Figura 209 — DSD CU-324: Anular una Multa de Tránsito — Operación: anularMultaDeTransito(multaId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12624,7 +12768,7 @@ sequenceDiagram
 
 ![DSD CU-325: Consultar las Multas de Tránsito — Operación: consultarMultasDeTransito(filtros)](diagramas/png/DSD_CU-325_consultarMultasDeTransito.png)
 
-**Figura 208 — DSD CU-325: Consultar las Multas de Tránsito — Operación: consultarMultasDeTransito(filtros)**
+**Figura 210 — DSD CU-325: Consultar las Multas de Tránsito — Operación: consultarMultasDeTransito(filtros)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12668,7 +12812,7 @@ sequenceDiagram
 
 ![DSD CU-326: Avisar las Multas por Vencer — Operación: avisarMultasPorVencer()](diagramas/png/DSD_CU-326_avisarMultasPorVencer.png)
 
-**Figura 209 — DSD CU-326: Avisar las Multas por Vencer — Operación: avisarMultasPorVencer()**
+**Figura 211 — DSD CU-326: Avisar las Multas por Vencer — Operación: avisarMultasPorVencer()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12728,7 +12872,7 @@ sequenceDiagram
 
 ![DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)](diagramas/png/DSD_CU-199_registrarPagoDeMulta.png)
 
-**Figura 210 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)**
+**Figura 212 — DSD CU-199: Registrar el Pago de una Multa — Operación: registrarPagoDeMulta(multaId, fechaDePago, importePagado)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12777,7 +12921,7 @@ sequenceDiagram
 
 ![DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)](diagramas/png/DSD_CU-200_imputarMultaAlChofer.png)
 
-**Figura 211 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)**
+**Figura 213 — DSD CU-200: Imputar una Multa al Chofer — Operación: imputarMultaAlChofer(multaId, empleadoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12832,7 +12976,7 @@ Tres operaciones sobre el siniestro: alta, modificación y consulta. El cierre e
 
 ![DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)](diagramas/png/DSD_CU-201_registrarSiniestro.png)
 
-**Figura 212 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)**
+**Figura 214 — DSD CU-201: Registrar un Siniestro — Operación: registrarSiniestro(vehiculoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12898,7 +13042,7 @@ sequenceDiagram
 
 ![DSD CU-327: Modificar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)](diagramas/png/DSD_CU-327_modificarSiniestro.png)
 
-**Figura 213 — DSD CU-327: Modificar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)**
+**Figura 215 — DSD CU-327: Modificar un Siniestro — Operación: modificarSiniestro(siniestroId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12951,7 +13095,7 @@ sequenceDiagram
 
 ![DSD CU-328: Consultar los Siniestros — Operación: consultarSiniestros(filtros)](diagramas/png/DSD_CU-328_consultarSiniestros.png)
 
-**Figura 214 — DSD CU-328: Consultar los Siniestros — Operación: consultarSiniestros(filtros)**
+**Figura 216 — DSD CU-328: Consultar los Siniestros — Operación: consultarSiniestros(filtros)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -12995,7 +13139,7 @@ sequenceDiagram
 
 ![DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)](diagramas/png/DSD_CU-202_cerrarSiniestro.png)
 
-**Figura 215 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)**
+**Figura 217 — DSD CU-202: Cerrar un Siniestro — Operación: cerrarSiniestro(siniestroId, costoDeReparacion, reintegroDelSeguro, franquicia)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13044,7 +13188,7 @@ sequenceDiagram
 
 ![DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)](diagramas/png/DSD_CU-203_consultarCostoDeUnVehiculo.png)
 
-**Figura 216 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)**
+**Figura 218 — DSD CU-203: Consultar el Costo Total de un Vehículo — Operación: consultarCostoDeUnVehiculo(vehiculoId, fechaDesde, fechaHasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13124,7 +13268,7 @@ sequenceDiagram
 
 ![DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)](diagramas/png/DSD_CU-204_consultarTableroDeCostosDeLaFlota.png)
 
-**Figura 217 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)**
+**Figura 219 — DSD CU-204: Consultar el Tablero de Costos de la Flota — Operación: consultarTableroDeCostosDeLaFlota(fechaDesde, fechaHasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13179,7 +13323,7 @@ sequenceDiagram
 
 ![DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)](diagramas/png/DSD_CU-205_registrarNeumatico.png)
 
-**Figura 218 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)**
+**Figura 220 — DSD CU-205: Registrar un Neumático — Operación: registrarNeumatico(datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13229,7 +13373,7 @@ sequenceDiagram
 
 ![DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)](diagramas/png/DSD_CU-206_registrarMovimientoDeNeumatico.png)
 
-**Figura 219 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)**
+**Figura 221 — DSD CU-206: Registrar un Movimiento de Neumático — Operación: registrarMovimientoDeNeumatico(neumaticoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13288,7 +13432,7 @@ sequenceDiagram
 
 ![DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)](diagramas/png/DSD_CU-247_reactivarVehiculo.png)
 
-**Figura 220 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)**
+**Figura 222 — DSD CU-247: Reactivar un Vehículo — Operación: reactivarVehiculo(vehiculoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13343,7 +13487,7 @@ sequenceDiagram
 
 ![DSD CU-036: Crear un Producto (Garrafa)](diagramas/png/DSD_CU-036_crearProducto.png)
 
-**Figura 221 — DSD CU-036: Crear un Producto (Garrafa)**
+**Figura 223 — DSD CU-036: Crear un Producto (Garrafa)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13402,7 +13546,7 @@ No existe una ruta dedicada al precio: se usa el `PATCH` general del producto.
 
 ![DSD CU-037: Modificar el Precio de un Producto — Operación: actualizarPrecioDelProducto(productoId, precio)](diagramas/png/DSD_CU-037_actualizarPrecioDelProducto.png)
 
-**Figura 222 — DSD CU-037: Modificar el Precio de un Producto — Operación: actualizarPrecioDelProducto(productoId, precio)**
+**Figura 224 — DSD CU-037: Modificar el Precio de un Producto — Operación: actualizarPrecioDelProducto(productoId, precio)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13464,7 +13608,7 @@ sequenceDiagram
 
 ![DSD CU-038: Modificar el Stock de un Producto — Operación: actualizarStock(productoId, variacion)](diagramas/png/DSD_CU-038_actualizarStock.png)
 
-**Figura 223 — DSD CU-038: Modificar el Stock de un Producto — Operación: actualizarStock(productoId, variacion)**
+**Figura 225 — DSD CU-038: Modificar el Stock de un Producto — Operación: actualizarStock(productoId, variacion)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13519,7 +13663,7 @@ No existe una ruta dedicada a las promociones: se usa el `PATCH` general del pro
 
 ![DSD CU-039: Configurar las Promociones por Cantidad — Operación: configurarPromocionesDelProducto(productoId, promociones)](diagramas/png/DSD_CU-039_configurarPromocionesDelProducto.png)
 
-**Figura 224 — DSD CU-039: Configurar las Promociones por Cantidad — Operación: configurarPromocionesDelProducto(productoId, promociones)**
+**Figura 226 — DSD CU-039: Configurar las Promociones por Cantidad — Operación: configurarPromocionesDelProducto(productoId, promociones)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13584,7 +13728,7 @@ La desactivación, vía `DELETE /gascylinder/:id`, la reactivación (CU-268) y e
 
 ![DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)](diagramas/png/DSD_CU-040_desactivarProducto.png)
 
-**Figura 225 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)**
+**Figura 227 — DSD CU-040: Desactivar un Producto — Operación: desactivarProducto(productoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13634,7 +13778,7 @@ sequenceDiagram
 
 ![DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)](diagramas/png/DSD_CU-268_reactivarProducto.png)
 
-**Figura 226 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)**
+**Figura 228 — DSD CU-268: Reactivar un Producto — Operación: reactivarProducto(productoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13682,7 +13826,7 @@ sequenceDiagram
 
 ![DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()](diagramas/png/DSD_CU-269_consultarProductosInactivos.png)
 
-**Figura 227 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()**
+**Figura 229 — DSD CU-269: Consultar los Productos Inactivos — Operación: consultarProductosInactivos()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13728,7 +13872,7 @@ Tres vistas del catálogo. Las públicas resuelven la distribuidora desde la cad
 
 ![DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProducto(productoId)](diagramas/png/DSD_CU-041_consultarProducto.png)
 
-**Figura 228 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProducto(productoId)**
+**Figura 230 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProducto(productoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13763,7 +13907,7 @@ sequenceDiagram
 
 ![DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProductosDisponibles(distribuidora)](diagramas/png/DSD_CU-041_consultarProductosDisponibles.png)
 
-**Figura 229 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProductosDisponibles(distribuidora)**
+**Figura 231 — DSD CU-041: Consultar el Catálogo de Productos (Cliente) — Operación: consultarProductosDisponibles(distribuidora)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13815,7 +13959,7 @@ Tres vistas del catálogo. Las públicas resuelven la distribuidora desde la cad
 
 ![DSD CU-344: Consultar el Catálogo de Productos (Administrador)](diagramas/png/DSD_CU-344_consultarCatalogo.png)
 
-**Figura 230 — DSD CU-344: Consultar el Catálogo de Productos (Administrador)**
+**Figura 232 — DSD CU-344: Consultar el Catálogo de Productos (Administrador)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13854,7 +13998,7 @@ sequenceDiagram
 
 ![DSD CU-344: Consultar el Catálogo de Productos (Administrador) — Operación: consultarDetalleDelProducto(productoId)](diagramas/png/DSD_CU-344_consultarDetalleDelProducto.png)
 
-**Figura 231 — DSD CU-344: Consultar el Catálogo de Productos (Administrador) — Operación: consultarDetalleDelProducto(productoId)**
+**Figura 233 — DSD CU-344: Consultar el Catálogo de Productos (Administrador) — Operación: consultarDetalleDelProducto(productoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13894,7 +14038,7 @@ sequenceDiagram
 
 ![DSD CU-042: Crear una Franja Horaria](diagramas/png/DSD_CU-042_crearFranjaHoraria.png)
 
-**Figura 232 — DSD CU-042: Crear una Franja Horaria**
+**Figura 234 — DSD CU-042: Crear una Franja Horaria**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13944,7 +14088,7 @@ La validación de cupo corre **dentro de la transacción del pedido y con lock p
 
 ![DSD CU-044: Seleccionar una Franja Horaria al Crear un Pedido — Operación: validarFranjaDelPedido(franjaId, fecha)](diagramas/png/DSD_CU-044_validarFranjaDelPedido.png)
 
-**Figura 233 — DSD CU-044: Seleccionar una Franja Horaria al Crear un Pedido — Operación: validarFranjaDelPedido(franjaId, fecha)**
+**Figura 235 — DSD CU-044: Seleccionar una Franja Horaria al Crear un Pedido — Operación: validarFranjaDelPedido(franjaId, fecha)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -13992,7 +14136,7 @@ sequenceDiagram
 
 ![DSD CU-045: Consultar las Franjas Horarias Disponibles](diagramas/png/DSD_CU-045_listarFranjas.png)
 
-**Figura 234 — DSD CU-045: Consultar las Franjas Horarias Disponibles**
+**Figura 236 — DSD CU-045: Consultar las Franjas Horarias Disponibles**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14031,7 +14175,7 @@ sequenceDiagram
 
 ![DSD CU-045: Consultar las Franjas Horarias Disponibles](diagramas/png/DSD_CU-045_consultarDisponibilidadDeFranjas.png)
 
-**Figura 235 — DSD CU-045: Consultar las Franjas Horarias Disponibles**
+**Figura 237 — DSD CU-045: Consultar las Franjas Horarias Disponibles**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14088,7 +14232,7 @@ sequenceDiagram
 
 ![DSD CU-154: Consultar el Listado de Franjas Horarias](diagramas/png/DSD_CU-154_consultarFranjasHorarias.png)
 
-**Figura 236 — DSD CU-154: Consultar el Listado de Franjas Horarias**
+**Figura 238 — DSD CU-154: Consultar el Listado de Franjas Horarias**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14133,7 +14277,7 @@ sequenceDiagram
 
 ![DSD CU-043: Modificar una Franja Horaria](diagramas/png/DSD_CU-043_modificarFranjaHoraria.png)
 
-**Figura 237 — DSD CU-043: Modificar una Franja Horaria**
+**Figura 239 — DSD CU-043: Modificar una Franja Horaria**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14186,7 +14330,7 @@ sequenceDiagram
 
 ![DSD CU-342: Activar una Franja Horaria — Operación: activarFranjaHoraria(franjaId)](diagramas/png/DSD_CU-342_activarFranjaHoraria.png)
 
-**Figura 238 — DSD CU-342: Activar una Franja Horaria — Operación: activarFranjaHoraria(franjaId)**
+**Figura 240 — DSD CU-342: Activar una Franja Horaria — Operación: activarFranjaHoraria(franjaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14228,7 +14372,7 @@ sequenceDiagram
 
 ![DSD CU-343: Desactivar una Franja Horaria — Operación: desactivarFranjaHoraria(franjaId)](diagramas/png/DSD_CU-343_desactivarFranjaHoraria.png)
 
-**Figura 239 — DSD CU-343: Desactivar una Franja Horaria — Operación: desactivarFranjaHoraria(franjaId)**
+**Figura 241 — DSD CU-343: Desactivar una Franja Horaria — Operación: desactivarFranjaHoraria(franjaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14286,7 +14430,7 @@ Para no repetir esta cadena en cada diagrama, se modela en el primer diagrama de
 
 ![DSD — CU-052: Registrar Distribuidora](diagramas/png/DSD_CU-052_registrarDistribuidora.png)
 
-**Figura 240 — DSD — CU-052: Registrar Distribuidora**
+**Figura 242 — DSD — CU-052: Registrar Distribuidora**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14333,7 +14477,7 @@ sequenceDiagram
 
 ![DSD — CU-053: Consultar Distribuidoras](diagramas/png/DSD_CU-053_listarDistribuidoras.png)
 
-**Figura 241 — DSD — CU-053: Consultar Distribuidoras**
+**Figura 243 — DSD — CU-053: Consultar Distribuidoras**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14368,7 +14512,7 @@ sequenceDiagram
 
 ![DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)](diagramas/png/DSD_CU-053_consultarDistribuidora.png)
 
-**Figura 242 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)**
+**Figura 244 — DSD — CU-053: Consultar Distribuidoras — Operación: consultarDistribuidora(distribuidoraId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14412,7 +14556,7 @@ sequenceDiagram
 
 ![DSD — CU-054: Modificar Datos de la Distribuidora](diagramas/png/DSD_CU-054_modificarDistribuidora.png)
 
-**Figura 243 — DSD — CU-054: Modificar Datos de la Distribuidora**
+**Figura 245 — DSD — CU-054: Modificar Datos de la Distribuidora**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14459,7 +14603,7 @@ sequenceDiagram
 
 ![DSD — CU-055: Dar de Baja una Distribuidora](diagramas/png/DSD_CU-055_darDeBajaDistribuidora.png)
 
-**Figura 244 — DSD — CU-055: Dar de Baja una Distribuidora**
+**Figura 246 — DSD — CU-055: Dar de Baja una Distribuidora**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14509,7 +14653,7 @@ sequenceDiagram
 
 ![DSD CU-058: Validar la Cobertura de una Dirección](diagramas/png/DSD_CU-058_validarCobertura.png)
 
-**Figura 245 — DSD CU-058: Validar la Cobertura de una Dirección**
+**Figura 247 — DSD CU-058: Validar la Cobertura de una Dirección**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14574,7 +14718,7 @@ sequenceDiagram
 
 ![DSD — CU-056: Crear un Polígono de Cobertura](diagramas/png/DSD_CU-056_definirZonaDeCobertura.png)
 
-**Figura 246 — DSD — CU-056: Crear un Polígono de Cobertura**
+**Figura 248 — DSD — CU-056: Crear un Polígono de Cobertura**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14626,7 +14770,7 @@ sequenceDiagram
 
 ![DSD — CU-057: Consultar los Polígonos de Cobertura](diagramas/png/DSD_CU-057_listarZonasDeCobertura.png)
 
-**Figura 247 — DSD — CU-057: Consultar los Polígonos de Cobertura**
+**Figura 249 — DSD — CU-057: Consultar los Polígonos de Cobertura**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14671,7 +14815,7 @@ sequenceDiagram
 
 ![DSD — CU-059: Dar de Baja un Polígono de Cobertura](diagramas/png/DSD_CU-059_eliminarZonaDeCobertura.png)
 
-**Figura 248 — DSD — CU-059: Dar de Baja un Polígono de Cobertura**
+**Figura 250 — DSD — CU-059: Dar de Baja un Polígono de Cobertura**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14718,7 +14862,7 @@ sequenceDiagram
 
 ![DSD CU-305: Modificar un Polígono de Cobertura — Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)](diagramas/png/DSD_CU-305_modificarZonaDeCobertura.png)
 
-**Figura 249 — DSD CU-305: Modificar un Polígono de Cobertura — Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)**
+**Figura 251 — DSD CU-305: Modificar un Polígono de Cobertura — Operación: modificarZonaDeCobertura(zonaId, nombre, poligono, recargo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14772,7 +14916,7 @@ sequenceDiagram
 
 ![DSD CU-306: Consultar un Polígono de Cobertura — Operación: consultarZonaDeCobertura(zonaId)](diagramas/png/DSD_CU-306_consultarZonaDeCobertura.png)
 
-**Figura 250 — DSD CU-306: Consultar un Polígono de Cobertura — Operación: consultarZonaDeCobertura(zonaId)**
+**Figura 252 — DSD CU-306: Consultar un Polígono de Cobertura — Operación: consultarZonaDeCobertura(zonaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14816,7 +14960,7 @@ sequenceDiagram
 
 ![DSD CU-307: Activar un Polígono de Cobertura — Operación: activarZonaDeCobertura(zonaId)](diagramas/png/DSD_CU-307_activarZonaDeCobertura.png)
 
-**Figura 251 — DSD CU-307: Activar un Polígono de Cobertura — Operación: activarZonaDeCobertura(zonaId)**
+**Figura 253 — DSD CU-307: Activar un Polígono de Cobertura — Operación: activarZonaDeCobertura(zonaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14864,7 +15008,7 @@ sequenceDiagram
 
 ![DSD CU-308: Desactivar un Polígono de Cobertura — Operación: desactivarZonaDeCobertura(zonaId)](diagramas/png/DSD_CU-308_desactivarZonaDeCobertura.png)
 
-**Figura 252 — DSD CU-308: Desactivar un Polígono de Cobertura — Operación: desactivarZonaDeCobertura(zonaId)**
+**Figura 254 — DSD CU-308: Desactivar un Polígono de Cobertura — Operación: desactivarZonaDeCobertura(zonaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14914,7 +15058,7 @@ sequenceDiagram
 
 ![DSD CU-064: Calificar un Pedido (cliente↔chofer) — Operación: calificarPedido(pedidoId, estrellas, comentario)](diagramas/png/DSD_CU-064_calificarPedido.png)
 
-**Figura 253 — DSD CU-064: Calificar un Pedido (cliente↔chofer) — Operación: calificarPedido(pedidoId, estrellas, comentario)**
+**Figura 255 — DSD CU-064: Calificar un Pedido (cliente↔chofer) — Operación: calificarPedido(pedidoId, estrellas, comentario)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -14968,7 +15112,7 @@ sequenceDiagram
 
 ![DSD CU-065: Consultar el Promedio de Calificaciones de un Usuario — Operación: consultarResumenDeCalificaciones(usuarioId)](diagramas/png/DSD_CU-065_consultarResumenDeCalificaciones.png)
 
-**Figura 254 — DSD CU-065: Consultar el Promedio de Calificaciones de un Usuario — Operación: consultarResumenDeCalificaciones(usuarioId)**
+**Figura 256 — DSD CU-065: Consultar el Promedio de Calificaciones de un Usuario — Operación: consultarResumenDeCalificaciones(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15021,7 +15165,7 @@ sequenceDiagram
 
 ![DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)](diagramas/png/DSD_CU-060_registrarIncidencia.png)
 
-**Figura 255 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)**
+**Figura 257 — DSD — CU-060: Registrar Incidencia de Entrega — Operación: registrarIncidencia(pedidoId, tipo, descripcion, foto)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15076,7 +15220,7 @@ sequenceDiagram
 
 ![DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()](diagramas/png/DSD_CU-061_listarIncidencias.png)
 
-**Figura 256 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()**
+**Figura 258 — DSD — CU-061: Listar Incidencias — Operación: listarIncidencias()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15125,7 +15269,7 @@ sequenceDiagram
 
 ![DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)](diagramas/png/DSD_CU-062_consultarIncidenciasDelPedido.png)
 
-**Figura 257 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)**
+**Figura 259 — DSD — CU-062: Consultar Incidencias de un Pedido — Operación: consultarIncidenciasDelPedido(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15173,7 +15317,7 @@ sequenceDiagram
 
 ![DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)](diagramas/png/DSD_CU-063_resolverIncidencia.png)
 
-**Figura 258 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)**
+**Figura 260 — DSD — CU-063: Resolver Incidencia — Operación: resolverIncidencia(incidenciaId, notaDeResolucion)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15220,7 +15364,7 @@ sequenceDiagram
 
 ![DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)](diagramas/png/DSD_CU-066_consultarHistorialDeCalificaciones.png)
 
-**Figura 259 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)**
+**Figura 261 — DSD — CU-066: Consultar Historial de Calificaciones Recibidas — Operación: consultarHistorialDeCalificaciones(usuarioId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15267,7 +15411,7 @@ sequenceDiagram
 
 ![DSD CU-068: Asignar los Envases a un Pedido — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)](diagramas/png/DSD_CU-068_asignarEnvasesAPedido.png)
 
-**Figura 260 — DSD CU-068: Asignar los Envases a un Pedido — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)**
+**Figura 262 — DSD CU-068: Asignar los Envases a un Pedido — Operación: asignarEnvasesAPedido(pedidoId, numerosDeSerie)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15320,7 +15464,7 @@ sequenceDiagram
 
 ![DSD CU-070: Registrar un Movimiento de Envase (cambio de estado) — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)](diagramas/png/DSD_CU-070_registrarMovimientoDeEnvase.png)
 
-**Figura 261 — DSD CU-070: Registrar un Movimiento de Envase (cambio de estado) — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)**
+**Figura 263 — DSD CU-070: Registrar un Movimiento de Envase (cambio de estado) — Operación: registrarMovimientoDeEnvase(envaseId, estadoDestino, pedidoId, observacion)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15385,7 +15529,7 @@ sequenceDiagram
 
 ![DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)](diagramas/png/DSD_CU-067_darDeAltaEnvase.png)
 
-**Figura 262 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)**
+**Figura 264 — DSD — CU-067: Dar de Alta un Envase Físico — Operación: darDeAltaEnvase(numeroDeSerie, tipoDeProducto, deposito)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15436,7 +15580,7 @@ sequenceDiagram
 
 ![DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)](diagramas/png/DSD_CU-069_consultarEnvase.png)
 
-**Figura 263 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)**
+**Figura 265 — DSD — CU-069: Consultar el Parque de Envases — Operación: consultarEnvase(envaseId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15474,7 +15618,7 @@ sequenceDiagram
 
 ![DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)](diagramas/png/DSD_CU-069_listarEnvases.png)
 
-**Figura 264 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)**
+**Figura 266 — DSD — CU-069: Consultar el Parque de Envases — Operación: listarEnvases(estado)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15524,7 +15668,7 @@ sequenceDiagram
 
 ![DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)](diagramas/png/DSD_CU-071_consultarHistorialDelEnvase.png)
 
-**Figura 265 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)**
+**Figura 267 — DSD — CU-071: Consultar Historial de Movimientos de un Envase — Operación: consultarHistorialDelEnvase(envaseId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15573,7 +15717,7 @@ sequenceDiagram
 
 ![DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)](diagramas/png/DSD_CU-132_registrarRevisionDeEnvase.png)
 
-**Figura 266 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)**
+**Figura 268 — DSD CU-132: Registrar la Revisión Periódica de un Envase — Operación: registrarRevisionDeEnvase(envaseId, fecha, resultado, vencimiento)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15634,7 +15778,7 @@ sequenceDiagram
 
 ![DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)](diagramas/png/DSD_CU-133_consultarVigenciaDelEnvase.png)
 
-**Figura 267 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)**
+**Figura 269 — DSD CU-133: Consultar la Vigencia de un Envase — Operación: consultarVigenciaDelEnvase(envaseId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15684,7 +15828,7 @@ sequenceDiagram
 
 ![DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)](diagramas/png/DSD_CU-134_consultarEnvasesProximosAVencer.png)
 
-**Figura 268 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)**
+**Figura 270 — DSD CU-134: Consultar los Envases Próximos a Vencer — Operación: consultarEnvasesProximosAVencer(dias)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15733,7 +15877,7 @@ sequenceDiagram
 
 ![DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)](diagramas/png/DSD_CU-135_verificarVigenciaAlAsignar.png)
 
-**Figura 269 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)**
+**Figura 271 — DSD CU-135: Bloquear el Despacho de un Envase Vencido — Operación: verificarVigenciaAlAsignar(pedidoId, series)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15787,7 +15931,7 @@ sequenceDiagram
 
 ![DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago](diagramas/png/DSD_CU-048_crearCheckoutDePago.png)
 
-**Figura 270 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago**
+**Figura 272 — DSD CU-048: Procesar el Pago con MercadoPago · crearCheckoutDePago**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15837,7 +15981,7 @@ sequenceDiagram
 
 ![DSD CU-048: Procesar el Pago con MercadoPago · notificarResultadoDePago](diagramas/png/DSD_CU-048_notificarResultadoDePago.png)
 
-**Figura 271 — DSD CU-048: Procesar el Pago con MercadoPago · notificarResultadoDePago**
+**Figura 273 — DSD CU-048: Procesar el Pago con MercadoPago · notificarResultadoDePago**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15920,7 +16064,7 @@ sequenceDiagram
 
 ![DSD CU-072: Crear una Reserva Programada con Seña](diagramas/png/DSD_CU-072_crearReserva.png)
 
-**Figura 272 — DSD CU-072: Crear una Reserva Programada con Seña**
+**Figura 274 — DSD CU-072: Crear una Reserva Programada con Seña**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -15941,7 +16085,9 @@ sequenceDiagram
     CLE-->>-CRT: direccion
     CRT->>+ZON: cubre(direccion)
     ZON-->>-CRT: cubierta
-    CRT->>FRA: tieneCupo(fechaAgendada)
+    opt Se eligió una franja
+        CRT->>FRA: tieneCupo(fechaAgendada)
+    end
     create participant PED as :Pedido
     CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago, montoDeLaSenia)
     loop Por cada item de items
@@ -15960,6 +16106,7 @@ sequenceDiagram
     PED->>ZON: calcularRecargo(subtotalItems)
     PED->>PED: aplicarRecargoDePago()
     PED-->>-CRT: total
+    CRT->>PED: validarSenia(total)
     opt metodoDePago es MERCADOPAGO y montoDeLaSenia es mayor que cero
         CRT->>+PAG: crearCheckoutDePago(pedido, metodoDePago)
         PAG-->>-CRT: enlaceDePago
@@ -15973,7 +16120,7 @@ sequenceDiagram
 
 **Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`. Es la misma colaboración que `crearPedido` (CU-005), con la fecha agendada obligatoria y el monto de la seña; la diferencia está en el estado con que nace el `Pedido` y en que no se despacha.
 
-**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa, y el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Cliente` entrega su dirección, `ZonaCobertura` dice si la cubre y calcula su recargo, `FranjaHoraria` si tiene cupo para la fecha, `Producto` reserva su stock y conoce su precio, y `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido`.
+**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa, y el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Cliente` entrega su dirección, `ZonaCobertura` dice si la cubre y calcula su recargo, `FranjaHoraria` si tiene cupo para la fecha, `Producto` reserva su stock y conoce su precio, y `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido` y comprueba que la seña no lo supere (`validarSenia`).
 
 **Referencias.** El enlace de pago de la seña es la operación `crearCheckoutDePago` (CU-048), que crea el `Pago`. Los avisos a los administradores son los mismos de `crearPedido`. La activación de la reserva el día agendado es `activarReservasDelDia` (CU-075).
 
@@ -15994,6 +16141,7 @@ sequenceDiagram
 | `Pedido.calcularTotal()` | `CreateOrderUseCase.execute`: suma los subtotales con `Decimal` y aplica los dos recargos; el resultado queda en `Order.totalAmount` |
 | `ZonaCobertura.calcularRecargo(...)` | `CoverageZonePricingService.zoneSurcharge` |
 | `Pedido.aplicarRecargoDePago()` | `OrderPricingService.applyPaymentSurcharge` |
+| `Pedido.validarSenia(...)` | `assertSenaNoSuperaTotal` (`order/domain/deposit-cap.ts`): la llama `CreateOrderUseCase.execute` después de calcular el total, sólo si el pedido es una reserva; si `Order.depositAmount` supera `Order.totalAmount` redondeado a dos decimales responde 400 «La seña ($X) no puede superar el total del pedido ($Y)» |
 | `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`: la llama `CreateOrderUseCase.createDepositCheckout` con la seña como importe |
 
 **Observaciones de diseño**
@@ -16001,6 +16149,10 @@ sequenceDiagram
 - Una reserva **nace en `RESERVED`**, no en `PENDING`: el stock queda comprometido pero el pedido **no se despacha** hasta el día agendado.
 - El checkout de la reserva se crea **solo por el monto de la seña**, no por el total del pedido (`isDeposit: true` en el ledger `Payment`).
 - La validación del cupo de franja horaria ocurre **dentro de la transacción y con lock pesimista**, para que dos reservas concurrentes no superen la capacidad.
+- La **seña no puede superar el total** del pedido (ítems con promociones, recargo de zona y de medio de pago, a dos decimales): se valida dentro de la transacción, después de calcular el total, y la misma regla corre en la cotización (`POST /orders/quote`) para que el panel avise antes de enviar. Una seña igual al total se acepta. No corre en la edición porque una reserva no se edita (sólo se edita un pedido pendiente: 409 «Sólo se edita un pedido pendiente sin chofer asignado»).
+- La franja es opcional: sin ella la reserva queda agendada sólo para el día y no se consulta el cupo (el DSD lo dibuja como `opt`).
+- La reserva no se paga con cuenta corriente (400 «Una reserva no se puede pagar con cuenta corriente») ni se combina con la entrega express (400 «Un pedido express no se agenda: no se combina con reserva, franja horaria ni fecha agendada»): ambos rechazos salen antes de abrir la transacción.
+- La operación la invocan el cliente desde la app y el administrador desde el alta de pedido del panel (`NewOrder`); el panel sólo ofrece las franjas con cupo y bloquea los días pasados.
 
 ---
 
@@ -16010,7 +16162,7 @@ sequenceDiagram
 
 ![DSD CU-075: Activar las Reservas Vencidas Automáticamente · activarReservasDelDia](diagramas/png/DSD_CU-075_activarReservasDelDia.png)
 
-**Figura 273 — DSD CU-075: Activar las Reservas Vencidas Automáticamente · activarReservasDelDia**
+**Figura 275 — DSD CU-075: Activar las Reservas Vencidas Automáticamente · activarReservasDelDia**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16056,7 +16208,7 @@ sequenceDiagram
 
 ![DSD CU-076: Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia](diagramas/png/DSD_CU-076_expirarReservasSinSenia.png)
 
-**Figura 274 — DSD CU-076: Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia**
+**Figura 276 — DSD CU-076: Expirar las Reservas sin Seña Pagada · expirarReservasSinSenia**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16108,7 +16260,7 @@ sequenceDiagram
 
 ![DSD CU-077: Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar](diagramas/png/DSD_CU-077_expirarPedidosSinPagar.png)
 
-**Figura 275 — DSD CU-077: Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar**
+**Figura 277 — DSD CU-077: Expirar los Pedidos de MercadoPago sin Pagar · expirarPedidosSinPagar**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16176,7 +16328,7 @@ sequenceDiagram
 
 ![DSD — CU-073: Listar Reservas y Estado de la Seña](diagramas/png/DSD_CU-073_listarReservas.png)
 
-**Figura 276 — DSD — CU-073: Listar Reservas y Estado de la Seña**
+**Figura 278 — DSD — CU-073: Listar Reservas y Estado de la Seña**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16205,12 +16357,12 @@ sequenceDiagram
 
 **GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` conoce su total, su seña y si la seña está paga, así que es quien calcula el saldo pendiente: el total menos la seña, solo si la seña está paga. La colección devuelve las reservas de la distribuidora, las más próximas a su fecha agendada primero.
 
-**No se dibuja:** la proyección que arma el servicio para el panel (cliente, teléfono, fecha agendada, método de pago y los ítems) y el alcance por la distribuidora del contexto, que decide el controlador HTTP.
+**No se dibuja:** la proyección que arma el servicio para el panel (cliente, teléfono, fecha agendada, franja horaria, método de pago, los ítems y el enlace de pago vigente de la seña de MercadoPago pendiente, que se lee del registro de cobros con `PaymentsService.findPendingCheckoutUrls`) y el alcance por la distribuidora del contexto, que el controlador HTTP exige a todo el personal: el administrador general sin distribuidora elegida recibe 400 «Falta la distribuidora».
 
 | Operación de diseño | Implementación |
 |---|---|
 | `ReservationService.listarReservas(...)` | `OrderController.findReservations` → `ReservationService.findReservations` |
-| `List<Pedido>.buscarReservas(...)` | `ReservationService.findReservations`: lee los `Order` con `Order.status` reservado, junto con su cliente y sus ítems, ordenados por `Order.scheduledDate` ascendente |
+| `List<Pedido>.buscarReservas(...)` | `ReservationService.findReservations`: lee los `Order` con `Order.status` reservado, junto con su cliente, su franja horaria y sus ítems, ordenados por `Order.scheduledDate` ascendente |
 | `Pedido.calcularSaldo()` | `ReservationService.findReservations`: resta `Order.depositAmount` de `Order.totalAmount` solo si `Order.depositPaid` es verdadero |
 
 **Observaciones de diseño**
@@ -16227,7 +16379,7 @@ sequenceDiagram
 
 ![DSD — CU-074: Confirmar Seña Cobrada en Efectivo](diagramas/png/DSD_CU-074_confirmarSenia.png)
 
-**Figura 277 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo**
+**Figura 279 — DSD — CU-074: Confirmar Seña Cobrada en Efectivo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16245,6 +16397,7 @@ sequenceDiagram
     COL-->>-SRV: reserva
     SRV->>+PED: confirmarSenia()
     PED->>PED: validarQueEsReservaPendiente()
+    PED->>PED: validarQueLaSeniaSeConfirmaAMano()
     deactivate PED
     SRV-->>-ADM: reserva
 ```
@@ -16253,7 +16406,7 @@ sequenceDiagram
 
 **Clases participantes:** `ReservationService` (controlador de fachada del módulo de reservas), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
-**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` sabe si es una reserva todavía pendiente y es quien registra que la seña está paga. Su estado no cambia: sigue «reservado» hasta que el proceso automático lo active (`activarReservasDelDia`, CU-075).
+**GRASP.** *Controlador*: `ReservationService`. *Experto*: `Pedido` sabe si es una reserva todavía pendiente y si su seña se confirma a mano, y es quien registra que la seña está paga. Su estado no cambia: sigue «reservado» hasta que el proceso automático lo active (`activarReservasDelDia`, CU-075).
 
 **No se dibuja:** el alcance por la distribuidora del contexto, que hace que una reserva de otra distribuidora no se encuentre, y el guardado.
 
@@ -16263,12 +16416,14 @@ sequenceDiagram
 | `Map<String, Pedido>.get(...)` | `ReservationService.confirmDeposit`: lee el `Order` filtrado por la distribuidora del contexto; si no lo encuentra responde «Reserva no encontrada» |
 | `Pedido.confirmarSenia()` | `ReservationService.confirmDeposit`: asigna `Order.depositPaid` |
 | `Pedido.validarQueEsReservaPendiente()` | `ReservationService.confirmDeposit`: rechaza con 400 si `Order.status` no es reservado |
+| `Pedido.validarQueLaSeniaSeConfirmaAMano()` | `ReservationService.confirmDeposit`: rechaza con 400 «La seña por MercadoPago se confirma sola cuando la pasarela avisa el pago: no se confirma a mano» si `Order.paymentMethod` es MercadoPago |
 
 **Observaciones de diseño**
 
-- Es **la única acción humana** de todo el subsistema de reservas: la seña pagada por MercadoPago la marca sola `ConfirmPaymentUseCase` desde el webhook. Este ruta existe solo para el camino en efectivo.
+- Es **la única acción humana** de todo el subsistema de reservas: la seña pagada por MercadoPago la marca sola `ConfirmPaymentUseCase` desde el webhook. Esta ruta existe solo para la seña que se recibe en efectivo o por transferencia: con MercadoPago responde 400.
 - El efecto es **habilitante, no ejecutivo**: `deposit_paid = true` no despacha nada; solo hace que la reserva entre en el conjunto que la tarea programada `activateDueReservations` levantará el día agendado (ver `3-Diseño.md` §4.8). El diseño separa deliberadamente la decisión humana del momento de ejecución.
 - La guarda `status !== RESERVED` impide confirmar la seña de un pedido ya activado o cancelado, que sería un cobro sin efecto.
+- La confirmación es idempotente: confirmar otra vez una seña ya confirmada devuelve 200 y no cambia nada. El panel ofrece «Confirmar seña cobrada» (efectivo) o «Confirmar transferencia recibida» (transferencia) en el detalle de la reserva, y no ofrece nada para MercadoPago.
 
 ---
 
@@ -16281,7 +16436,7 @@ sequenceDiagram
 
 ![DSD — CU-086: Registrar Administrador](diagramas/png/DSD_CU-086_registrarAdministrador.png)
 
-**Figura 278 — DSD — CU-086: Registrar Administrador**
+**Figura 280 — DSD — CU-086: Registrar Administrador**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16340,7 +16495,7 @@ sequenceDiagram
 
 ![DSD — CU-087: Crear el Primer Administrador General](diagramas/png/DSD_CU-087_crearPrimerSuperAdministrador.png)
 
-**Figura 279 — DSD — CU-087: Crear el Primer Administrador General**
+**Figura 281 — DSD — CU-087: Crear el Primer Administrador General**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16401,7 +16556,7 @@ sequenceDiagram
 
 ![DSD — CU-088: Consultar Administradores](diagramas/png/DSD_CU-088_listarAdministradores.png)
 
-**Figura 280 — DSD — CU-088: Consultar Administradores**
+**Figura 282 — DSD — CU-088: Consultar Administradores**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16436,7 +16591,7 @@ sequenceDiagram
 
 ![DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)](diagramas/png/DSD_CU-088_buscarAdministrador.png)
 
-**Figura 281 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)**
+**Figura 283 — DSD — CU-088: Consultar Administradores — Operación: buscarAdministrador(termino)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16482,7 +16637,7 @@ sequenceDiagram
 
 ![DSD CU-345: Modificar un Administrador](diagramas/png/DSD_CU-345_modificarAdministrador.png)
 
-**Figura 282 — DSD CU-345: Modificar un Administrador**
+**Figura 284 — DSD CU-345: Modificar un Administrador**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16533,7 +16688,7 @@ sequenceDiagram
 
 ![DSD CU-346: Dar de Baja un Administrador](diagramas/png/DSD_CU-346_darDeBajaAdministrador.png)
 
-**Figura 283 — DSD CU-346: Dar de Baja un Administrador**
+**Figura 285 — DSD CU-346: Dar de Baja un Administrador**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16585,7 +16740,7 @@ sequenceDiagram
 
 ![DSD CU-089: Consultar los Roles — Operación: listarRoles()](diagramas/png/DSD_CU-089_listarRoles.png)
 
-**Figura 284 — DSD CU-089: Consultar los Roles — Operación: listarRoles()**
+**Figura 286 — DSD CU-089: Consultar los Roles — Operación: listarRoles()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16629,7 +16784,7 @@ sequenceDiagram
 
 ![DSD CU-252: Crear un Rol — Operación: crearRol(tipo)](diagramas/png/DSD_CU-252_crearRol.png)
 
-**Figura 285 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)**
+**Figura 287 — DSD CU-252: Crear un Rol — Operación: crearRol(tipo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16668,7 +16823,7 @@ sequenceDiagram
 
 ![DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)](diagramas/png/DSD_CU-253_actualizarRol.png)
 
-**Figura 286 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)**
+**Figura 288 — DSD CU-253: Modificar un Rol — Operación: actualizarRol(rolId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16719,7 +16874,7 @@ sequenceDiagram
 
 ![DSD CU-254: Dar de Baja un Rol — Operación: eliminarRol(rolId)](diagramas/png/DSD_CU-254_eliminarRol.png)
 
-**Figura 287 — DSD CU-254: Dar de Baja un Rol — Operación: eliminarRol(rolId)**
+**Figura 289 — DSD CU-254: Dar de Baja un Rol — Operación: eliminarRol(rolId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16783,7 +16938,7 @@ sequenceDiagram
 
 ![DSD — CU-092: Consultar Listado de Clientes](diagramas/png/DSD_CU-092_listarClientes.png)
 
-**Figura 288 — DSD — CU-092: Consultar Listado de Clientes**
+**Figura 290 — DSD — CU-092: Consultar Listado de Clientes**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16830,7 +16985,7 @@ sequenceDiagram
 
 ![DSD — CU-094: Actualizar Ubicación del Cliente](diagramas/png/DSD_CU-094_actualizarUbicacionDelCliente.png)
 
-**Figura 289 — DSD — CU-094: Actualizar Ubicación del Cliente**
+**Figura 291 — DSD — CU-094: Actualizar Ubicación del Cliente**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16879,7 +17034,7 @@ sequenceDiagram
 
 ![DSD — CU-095: Eliminar Cliente (baja lógica)](diagramas/png/DSD_CU-095_eliminarCliente.png)
 
-**Figura 290 — DSD — CU-095: Eliminar Cliente (baja lógica)**
+**Figura 292 — DSD — CU-095: Eliminar Cliente (baja lógica)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16928,7 +17083,7 @@ sequenceDiagram
 
 ![DSD CU-129: Consultar el Detalle del Cliente](diagramas/png/DSD_CU-129_consultarDetalleDelCliente.png)
 
-**Figura 291 — DSD CU-129: Consultar el Detalle del Cliente**
+**Figura 293 — DSD CU-129: Consultar el Detalle del Cliente**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -16973,7 +17128,7 @@ sequenceDiagram
 
 ![DSD CU-130: Buscar un Cliente por Usuario](diagramas/png/DSD_CU-130_buscarClientePorUsuario.png)
 
-**Figura 292 — DSD CU-130: Buscar un Cliente por Usuario**
+**Figura 294 — DSD CU-130: Buscar un Cliente por Usuario**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17018,7 +17173,7 @@ sequenceDiagram
 
 ![DSD CU-131: Modificar los Datos del Cliente](diagramas/png/DSD_CU-131_editarDatosDelCliente.png)
 
-**Figura 293 — DSD CU-131: Modificar los Datos del Cliente**
+**Figura 295 — DSD CU-131: Modificar los Datos del Cliente**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17070,7 +17225,7 @@ sequenceDiagram
 
 ![DSD — CU-100: Enviar Notificación de Prueba](diagramas/png/DSD_CU-100_enviarNotificacionDePrueba.png)
 
-**Figura 294 — DSD — CU-100: Enviar Notificación de Prueba**
+**Figura 296 — DSD — CU-100: Enviar Notificación de Prueba**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17114,7 +17269,7 @@ sequenceDiagram
 
 ![DSD — CU-101: Reenviar Notificación de Confirmación de Pedido](diagramas/png/DSD_CU-101_reenviarConfirmacionDePedido.png)
 
-**Figura 295 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
+**Figura 297 — DSD — CU-101: Reenviar Notificación de Confirmación de Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17169,7 +17324,7 @@ Ruta de la API de diagnóstico: manda un correo real y genera un enlace de resta
 
 ![DSD — CU-102: Probar el Servicio de Correo](diagramas/png/DSD_CU-102_probarServicioDeCorreo.png)
 
-**Figura 296 — DSD — CU-102: Probar el Servicio de Correo**
+**Figura 298 — DSD — CU-102: Probar el Servicio de Correo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17218,7 +17373,7 @@ sequenceDiagram
 
 ![DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)](diagramas/png/DSD_CU-104_verificarVida.png)
 
-**Figura 297 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
+**Figura 299 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17249,7 +17404,7 @@ sequenceDiagram
 
 ![DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()](diagramas/png/DSD_CU-104_verificarDisponibilidad.png)
 
-**Figura 298 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()**
+**Figura 300 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarDisponibilidad()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17287,7 +17442,7 @@ sequenceDiagram
 
 ![DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()](diagramas/png/DSD_CU-104_verificarSalud.png)
 
-**Figura 299 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()**
+**Figura 301 — DSD — CU-104: Verificar la Salud del Sistema (liveness / readiness) — Operación: verificarSalud()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17341,7 +17496,7 @@ sequenceDiagram
 
 ![DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura](diagramas/png/DSD_CU-150_programarVigenciaDeZona.png)
 
-**Figura 300 — DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura**
+**Figura 302 — DSD — CU-150: Programar la Vigencia de un Polígono de Cobertura**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17397,7 +17552,7 @@ sequenceDiagram
 
 ![DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas](diagramas/png/DSD_CU-151_desactivarZonasVencidas.png)
 
-**Figura 301 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
+**Figura 303 — DSD — CU-151: Desactivar las Zonas de Cobertura Vencidas**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17451,7 +17606,7 @@ sequenceDiagram
 
 ![DSD — CU-152: Consultar el Registro de Auditoría](diagramas/png/DSD_CU-152_consultarAuditoria.png)
 
-**Figura 302 — DSD — CU-152: Consultar el Registro de Auditoría**
+**Figura 304 — DSD — CU-152: Consultar el Registro de Auditoría**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17494,7 +17649,7 @@ sequenceDiagram
 
 ![DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)](diagramas/png/DSD_CU-152_consultarAuditoriaDeDatos.png)
 
-**Figura 303 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)**
+**Figura 305 — DSD CU-152: Consultar el Registro de Auditoría — Operación: consultarAuditoriaDeDatos(entidad, registro, autor, tipoDeAccion, desde, hasta, pagina, limite)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17549,7 +17704,7 @@ sequenceDiagram
 
 ![DSD CU-172: Configurar los Parámetros de un Proceso Automático](diagramas/png/DSD_CU-172_configurarParametrosDeProceso.png)
 
-**Figura 304 — DSD CU-172: Configurar los Parámetros de un Proceso Automático**
+**Figura 306 — DSD CU-172: Configurar los Parámetros de un Proceso Automático**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17608,7 +17763,7 @@ sequenceDiagram
 
 ![DSD CU-173: Configurar la Frecuencia de las Tareas Programadas](diagramas/png/DSD_CU-173_configurarFrecuenciaDeTareas.png)
 
-**Figura 305 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas**
+**Figura 307 — DSD CU-173: Configurar la Frecuencia de las Tareas Programadas**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17672,7 +17827,7 @@ sequenceDiagram
 
 ![DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()](diagramas/png/DSD_CU-176_consultarPuestosDeTrabajo.png)
 
-**Figura 306 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()**
+**Figura 308 — DSD CU-176: Consultar los Puestos de Trabajo — Operación: consultarPuestosDeTrabajo()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17723,7 +17878,7 @@ sequenceDiagram
 
 ![DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)](diagramas/png/DSD_CU-255_crearPuestoDeTrabajo.png)
 
-**Figura 307 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)**
+**Figura 309 — DSD CU-255: Crear un Puesto de Trabajo — Operación: crearPuestoDeTrabajo(nombre, categoria)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17773,7 +17928,7 @@ sequenceDiagram
 
 ![DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)](diagramas/png/DSD_CU-256_modificarPuestoDeTrabajo.png)
 
-**Figura 308 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)**
+**Figura 310 — DSD CU-256: Modificar un Puesto de Trabajo — Operación: modificarPuestoDeTrabajo(puestoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17826,7 +17981,7 @@ sequenceDiagram
 
 ![DSD CU-257: Dar de Baja un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)](diagramas/png/DSD_CU-257_eliminarPuestoDeTrabajo.png)
 
-**Figura 309 — DSD CU-257: Dar de Baja un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)**
+**Figura 311 — DSD CU-257: Dar de Baja un Puesto de Trabajo — Operación: eliminarPuestoDeTrabajo(puestoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17880,7 +18035,7 @@ sequenceDiagram
 
 ![DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)](diagramas/png/DSD_CU-177_registrarEmpleado.png)
 
-**Figura 310 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)**
+**Figura 312 — DSD CU-177: Registrar el Legajo de un Empleado — Operación: registrarEmpleado(datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17936,7 +18091,7 @@ sequenceDiagram
 
 ![DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)](diagramas/png/DSD_CU-178_modificarEmpleado.png)
 
-**Figura 311 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)**
+**Figura 313 — DSD CU-178: Modificar el Legajo de un Empleado — Operación: modificarEmpleado(empleadoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -17991,7 +18146,7 @@ sequenceDiagram
 
 ![DSD CU-311: Dar de Baja el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)](diagramas/png/DSD_CU-311_eliminarEmpleado.png)
 
-**Figura 312 — DSD CU-311: Dar de Baja el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)**
+**Figura 314 — DSD CU-311: Dar de Baja el Legajo de un Empleado — Operación: eliminarEmpleado(empleadoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18043,7 +18198,7 @@ sequenceDiagram
 
 ![DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)](diagramas/png/DSD_CU-179_consultarEmpleado.png)
 
-**Figura 313 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)**
+**Figura 315 — DSD CU-179: Consultar el Legajo de un Empleado — Operación: consultarEmpleado(empleadoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18102,7 +18257,7 @@ sequenceDiagram
 
 ![DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)](diagramas/png/DSD_CU-180_consultarEmpleados.png)
 
-**Figura 314 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)**
+**Figura 316 — DSD CU-180: Consultar el Listado de Empleados — Operación: consultarEmpleados(filtros)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18148,7 +18303,7 @@ sequenceDiagram
 
 ![DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)](diagramas/png/DSD_CU-181_registrarEgresoDelEmpleado.png)
 
-**Figura 315 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)**
+**Figura 317 — DSD CU-181: Registrar el Egreso de un Empleado — Operación: registrarEgresoDelEmpleado(empleadoId, fechaDeEgreso, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18220,7 +18375,7 @@ sequenceDiagram
 
 ![DSD CU-312: Reingresar a un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)](diagramas/png/DSD_CU-312_reingresarEmpleado.png)
 
-**Figura 316 — DSD CU-312: Reingresar a un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)**
+**Figura 318 — DSD CU-312: Reingresar a un Empleado — Operación: reingresarEmpleado(empleadoId, fechaDeIngreso)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18271,7 +18426,7 @@ sequenceDiagram
 
 ![DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)](diagramas/png/DSD_CU-182_otorgarCuentaDeAcceso.png)
 
-**Figura 317 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)**
+**Figura 319 — DSD CU-182: Otorgar una Cuenta de Acceso a un Empleado — Operación: otorgarCuentaDeAcceso(empleadoId, datosDeAcceso)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18330,7 +18485,7 @@ sequenceDiagram
 
 ![DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)](diagramas/png/DSD_CU-183_registrarCursoDeMercanciasPeligrosas.png)
 
-**Figura 318 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)**
+**Figura 320 — DSD CU-183: Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado — Operación: registrarCursoDeMercanciasPeligrosas(empleadoId, planId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18394,7 +18549,7 @@ sequenceDiagram
 
 ![DSD CU-184: Registrar el Examen Psicofísico del Empleado — Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)](diagramas/png/DSD_CU-184_registrarExamenPsicofisico.png)
 
-**Figura 319 — DSD CU-184: Registrar el Examen Psicofísico del Empleado — Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)**
+**Figura 321 — DSD CU-184: Registrar el Examen Psicofísico del Empleado — Operación: registrarExamenPsicofisico(empleadoId, planId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18458,7 +18613,7 @@ sequenceDiagram
 
 ![DSD CU-185: Registrar el Alta en la ART del Empleado — Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)](diagramas/png/DSD_CU-185_registrarAltaEnLaART.png)
 
-**Figura 320 — DSD CU-185: Registrar el Alta en la ART del Empleado — Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)**
+**Figura 322 — DSD CU-185: Registrar el Alta en la ART del Empleado — Operación: registrarAltaEnLaART(empleadoId, planId, vencimiento, detalle)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18522,7 +18677,7 @@ sequenceDiagram
 
 ![DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)](diagramas/png/DSD_CU-186_adjuntarArchivoAlLegajo.png)
 
-**Figura 321 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)**
+**Figura 323 — DSD CU-186: Adjuntar un Archivo al Legajo — Operación: adjuntarArchivoAlLegajo(empleadoId, archivo, etiqueta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18576,7 +18731,7 @@ sequenceDiagram
 
 ![DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)](diagramas/png/DSD_CU-187_consultarVencimientosDelPersonal.png)
 
-**Figura 322 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)**
+**Figura 324 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarVencimientosDelPersonal(dias, categoria)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18631,7 +18786,7 @@ sequenceDiagram
 
 ![DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)](diagramas/png/DSD_CU-187_consultarDocumentacionDelEmpleado.png)
 
-**Figura 323 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)**
+**Figura 325 — DSD CU-187: Consultar los Vencimientos del Personal — Operación: consultarDocumentacionDelEmpleado(empleadoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18689,7 +18844,7 @@ sequenceDiagram
 
 ![DSD CU-188: Avisar los Vencimientos Próximos del Personal — Operación: avisarVencimientosDelPersonal()](diagramas/png/DSD_CU-188_avisarVencimientosDelPersonal.png)
 
-**Figura 324 — DSD CU-188: Avisar los Vencimientos Próximos del Personal — Operación: avisarVencimientosDelPersonal()**
+**Figura 326 — DSD CU-188: Avisar los Vencimientos Próximos del Personal — Operación: avisarVencimientosDelPersonal()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18756,7 +18911,7 @@ sequenceDiagram
 
 ![DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)](diagramas/png/DSD_CU-189_registrarAsistencia.png)
 
-**Figura 325 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)**
+**Figura 327 — DSD CU-189: Registrar la Asistencia de un Empleado — Operación: registrarAsistencia(empleadoId, ingreso, egreso)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18811,7 +18966,7 @@ sequenceDiagram
 
 ![DSD CU-313: Corregir la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)](diagramas/png/DSD_CU-313_corregirAsistencia.png)
 
-**Figura 326 — DSD CU-313: Corregir la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)**
+**Figura 328 — DSD CU-313: Corregir la Asistencia de un Empleado — Operación: corregirAsistencia(asistenciaId, datos, nota)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18861,7 +19016,7 @@ sequenceDiagram
 
 ![DSD CU-314: Consultar la Asistencia de los Empleados — Operación: consultarAsistencias(desde, hasta)](diagramas/png/DSD_CU-314_consultarAsistencias.png)
 
-**Figura 327 — DSD CU-314: Consultar la Asistencia de los Empleados — Operación: consultarAsistencias(desde, hasta)**
+**Figura 329 — DSD CU-314: Consultar la Asistencia de los Empleados — Operación: consultarAsistencias(desde, hasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18910,7 +19065,7 @@ sequenceDiagram
 
 ![DSD CU-190: Registrar el Inicio de la Jornada — Operación: registrarInicioDeJornada()](diagramas/png/DSD_CU-190_registrarInicioDeJornada.png)
 
-**Figura 328 — DSD CU-190: Registrar el Inicio de la Jornada — Operación: registrarInicioDeJornada()**
+**Figura 330 — DSD CU-190: Registrar el Inicio de la Jornada — Operación: registrarInicioDeJornada()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -18963,7 +19118,7 @@ sequenceDiagram
 
 ![DSD CU-315: Registrar el Fin de la Jornada — Operación: registrarFinDeJornada()](diagramas/png/DSD_CU-315_registrarFinDeJornada.png)
 
-**Figura 329 — DSD CU-315: Registrar el Fin de la Jornada — Operación: registrarFinDeJornada()**
+**Figura 331 — DSD CU-315: Registrar el Fin de la Jornada — Operación: registrarFinDeJornada()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19015,7 +19170,7 @@ sequenceDiagram
 
 ![DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)](diagramas/png/DSD_CU-191_registrarLicencia.png)
 
-**Figura 330 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)**
+**Figura 332 — DSD CU-191: Registrar una Licencia o Ausencia — Operación: registrarLicencia(empleadoId, tipo, desde, hasta, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19070,7 +19225,7 @@ sequenceDiagram
 
 ![DSD CU-316: Modificar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)](diagramas/png/DSD_CU-316_modificarLicencia.png)
 
-**Figura 331 — DSD CU-316: Modificar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)**
+**Figura 333 — DSD CU-316: Modificar una Licencia o Ausencia — Operación: modificarLicencia(licenciaId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19126,7 +19281,7 @@ sequenceDiagram
 
 ![DSD CU-317: Cancelar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)](diagramas/png/DSD_CU-317_cancelarLicencia.png)
 
-**Figura 332 — DSD CU-317: Cancelar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)**
+**Figura 334 — DSD CU-317: Cancelar una Licencia o Ausencia — Operación: cancelarLicencia(licenciaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19178,7 +19333,7 @@ sequenceDiagram
 
 ![DSD CU-192: Aprobar una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)](diagramas/png/DSD_CU-192_aprobarLicencia.png)
 
-**Figura 333 — DSD CU-192: Aprobar una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)**
+**Figura 335 — DSD CU-192: Aprobar una Solicitud de Licencia — Operación: aprobarLicencia(licenciaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19227,7 +19382,7 @@ sequenceDiagram
 
 ![DSD CU-318: Rechazar una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)](diagramas/png/DSD_CU-318_rechazarLicencia.png)
 
-**Figura 334 — DSD CU-318: Rechazar una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)**
+**Figura 336 — DSD CU-318: Rechazar una Solicitud de Licencia — Operación: rechazarLicencia(licenciaId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19279,7 +19434,7 @@ sequenceDiagram
 
 ![DSD CU-319: Consultar las Licencias — Operación: consultarLicencias(estado, desde, hasta)](diagramas/png/DSD_CU-319_consultarLicencias.png)
 
-**Figura 335 — DSD CU-319: Consultar las Licencias — Operación: consultarLicencias(estado, desde, hasta)**
+**Figura 337 — DSD CU-319: Consultar las Licencias — Operación: consultarLicencias(estado, desde, hasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19328,7 +19483,7 @@ sequenceDiagram
 
 ![DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)](diagramas/png/DSD_CU-193_consultarSaldoDeVacaciones.png)
 
-**Figura 336 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)**
+**Figura 338 — DSD CU-193: Consultar el Saldo de Vacaciones de un Empleado — Operación: consultarSaldoDeVacaciones(empleadoId, anio)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19386,7 +19541,7 @@ sequenceDiagram
 
 ![DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()](diagramas/png/DSD_CU-194_consultarTableroDePersonal.png)
 
-**Figura 337 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()**
+**Figura 339 — DSD CU-194: Consultar el Tablero de Personal — Operación: consultarTableroDePersonal()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19437,7 +19592,7 @@ sequenceDiagram
 
 ![DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)](diagramas/png/DSD_CU-246_verificarHabilitacionLaboral.png)
 
-**Figura 338 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)**
+**Figura 340 — DSD CU-246: Verificar la Habilitación Laboral del Chofer — Caso incluido: verificarHabilitacionLaboral(chofer)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19511,7 +19666,7 @@ El **stock físico** está construido: los diagramas muestran la colaboración r
 
 ![DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)](diagramas/png/DSD_CU-207_consultarDepositos.png)
 
-**Figura 339 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)**
+**Figura 341 — DSD CU-207: Consultar los Depósitos — Operación: consultarDepositos(incluirInactivos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19558,7 +19713,7 @@ sequenceDiagram
 
 ![DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)](diagramas/png/DSD_CU-207_consultarDeposito.png)
 
-**Figura 340 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)**
+**Figura 342 — DSD CU-207: Consultar los Depósitos — Operación: consultarDeposito(depositoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19608,7 +19763,7 @@ sequenceDiagram
 
 ![DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)](diagramas/png/DSD_CU-258_registrarDeposito.png)
 
-**Figura 341 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)**
+**Figura 343 — DSD CU-258: Registrar un Depósito — Operación: registrarDeposito(nombre, codigo, tipo, direccion)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19664,7 +19819,7 @@ sequenceDiagram
 
 ![DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)](diagramas/png/DSD_CU-259_actualizarDeposito.png)
 
-**Figura 342 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)**
+**Figura 344 — DSD CU-259: Modificar un Depósito — Operación: actualizarDeposito(depositoId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19716,7 +19871,7 @@ sequenceDiagram
 
 ![DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)](diagramas/png/DSD_CU-260_darDeBajaDeposito.png)
 
-**Figura 343 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)**
+**Figura 345 — DSD CU-260: Dar de Baja un Depósito — Operación: darDeBajaDeposito(depositoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19774,7 +19929,7 @@ sequenceDiagram
 
 ![DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)](diagramas/png/DSD_CU-273_marcarDepositoPredeterminado.png)
 
-**Figura 344 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)**
+**Figura 346 — DSD CU-273: Marcar el Depósito Predeterminado — Operación: marcarDepositoPredeterminado(depositoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19832,7 +19987,7 @@ sequenceDiagram
 
 ![DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)](diagramas/png/DSD_CU-274_registrarConteoInicial.png)
 
-**Figura 345 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)**
+**Figura 347 — DSD CU-274: Registrar el Conteo Inicial de un Depósito — Operación: registrarConteoInicial(depositoId, items, nota)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19902,7 +20057,7 @@ sequenceDiagram
 
 ![DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)](diagramas/png/DSD_CU-208_consultarStockPorUbicacion.png)
 
-**Figura 346 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)**
+**Figura 348 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarStockPorUbicacion(ubicacionId, productoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19952,7 +20107,7 @@ sequenceDiagram
 
 ![DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()](diagramas/png/DSD_CU-208_consultarUbicacionesDeStock.png)
 
-**Figura 347 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()**
+**Figura 349 — DSD CU-208: Consultar el Stock por Ubicación — Operación: consultarUbicacionesDeStock()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -19995,7 +20150,7 @@ sequenceDiagram
 
 ![DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()](diagramas/png/DSD_CU-279_consultarResumenDeStock.png)
 
-**Figura 348 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()**
+**Figura 350 — DSD CU-279: Consultar el Resumen de Stock — Operación: consultarResumenDeStock()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20052,7 +20207,7 @@ sequenceDiagram
 
 ![DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)](diagramas/png/DSD_CU-209_consultarMovimientosDeStock.png)
 
-**Figura 349 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)**
+**Figura 351 — DSD CU-209: Consultar los Movimientos de Stock — Operación: consultarMovimientosDeStock(productoId, ubicacionId, motivo, desde, hasta, pagina)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20100,7 +20255,7 @@ sequenceDiagram
 
 ![DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)](diagramas/png/DSD_CU-210_configurarStockMinimo.png)
 
-**Figura 350 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)**
+**Figura 352 — DSD CU-210: Configurar el Stock Mínimo — Operación: configurarStockMinimo(minimos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20169,7 +20324,7 @@ sequenceDiagram
 
 ![DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()](diagramas/png/DSD_CU-297_consultarStockMinimo.png)
 
-**Figura 351 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()**
+**Figura 353 — DSD CU-297: Consultar el Stock Mínimo — Operación: consultarStockMinimo()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20217,7 +20372,7 @@ sequenceDiagram
 
 ![DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()](diagramas/png/DSD_CU-211_avisarStockBajo.png)
 
-**Figura 352 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()**
+**Figura 354 — DSD CU-211: Avisar el Stock Bajo — Operación: avisarStockBajo()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20280,7 +20435,7 @@ sequenceDiagram
 
 ![DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)](diagramas/png/DSD_CU-212_transferirStock.png)
 
-**Figura 353 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)**
+**Figura 355 — DSD CU-212: Transferir Stock entre Depósitos — Operación: transferirStock(origenId, destinoId, items, nota)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20341,7 +20496,7 @@ sequenceDiagram
 
 ![DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)](diagramas/png/DSD_CU-276_anularTransferenciaDeStock.png)
 
-**Figura 354 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)**
+**Figura 356 — DSD CU-276: Anular una Transferencia de Stock — Operación: anularTransferenciaDeStock(loteId, nota)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20400,7 +20555,7 @@ sequenceDiagram
 
 ![DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)](diagramas/png/DSD_CU-213_registrarAjusteDeStock.png)
 
-**Figura 355 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)**
+**Figura 357 — DSD CU-213: Registrar un Ajuste o una Merma de Stock — Operación: registrarAjusteDeStock(ubicacionId, motivo, nota, items)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20466,7 +20621,7 @@ sequenceDiagram
 
 ![DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)](diagramas/png/DSD_CU-275_consultarAjustesDeStock.png)
 
-**Figura 356 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)**
+**Figura 358 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjustesDeStock(desde, hasta, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20512,7 +20667,7 @@ sequenceDiagram
 
 ![DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)](diagramas/png/DSD_CU-275_consultarAjusteDeStock.png)
 
-**Figura 357 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)**
+**Figura 359 — DSD CU-275: Consultar los Ajustes de Stock — Operación: consultarAjusteDeStock(ajusteId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20555,7 +20710,7 @@ sequenceDiagram
 
 ![DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)](diagramas/png/DSD_CU-218_registrarCargaDelCamion.png)
 
-**Figura 358 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)**
+**Figura 360 — DSD CU-218: Registrar la Carga del Camión — Operación: registrarCargaDelCamion(vehiculoId, choferId, depositoId, ayudanteId, items)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20626,7 +20781,7 @@ sequenceDiagram
 
 ![DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)](diagramas/png/DSD_CU-295_corregirRenglonesDeLaCarga.png)
 
-**Figura 359 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)**
+**Figura 361 — DSD CU-295: Corregir los Renglones de una Carga del Camión — Operación: corregirRenglonesDeLaCarga(cargaId, items)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20680,7 +20835,7 @@ sequenceDiagram
 
 ![DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)](diagramas/png/DSD_CU-296_reponerCargaDelCamion.png)
 
-**Figura 360 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)**
+**Figura 362 — DSD CU-296: Reponer una Carga del Camión — Operación: reponerCargaDelCamion(cargaId, items)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20749,7 +20904,7 @@ sequenceDiagram
 
 ![DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)](diagramas/png/DSD_CU-289_cancelarCargaDelCamion.png)
 
-**Figura 361 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)**
+**Figura 363 — DSD CU-289: Cancelar una Carga del Camión — Operación: cancelarCargaDelCamion(cargaId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20798,7 +20953,7 @@ sequenceDiagram
 
 ![DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)](diagramas/png/DSD_CU-219_registrarSalidaDelCamion.png)
 
-**Figura 362 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)**
+**Figura 364 — DSD CU-219: Registrar la Salida del Camión — Operación: registrarSalidaDelCamion(cargaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20869,7 +21024,7 @@ sequenceDiagram
 
 ![DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)](diagramas/png/DSD_CU-220_descontarStockDeLaEntrega.png)
 
-**Figura 363 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)**
+**Figura 365 — DSD CU-220: Descontar del Stock Físico lo Entregado — Caso incluido: descontarStockDeLaEntrega(entrega)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -20947,7 +21102,7 @@ sequenceDiagram
 
 ![DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)](diagramas/png/DSD_CU-221_registrarRegresoDelCamion.png)
 
-**Figura 364 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)**
+**Figura 366 — DSD CU-221: Registrar el Regreso del Camión — Operación: registrarRegresoDelCamion(cargaId, devueltos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21014,7 +21169,7 @@ sequenceDiagram
 
 ![DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)](diagramas/png/DSD_CU-222_cerrarRendicionDeStock.png)
 
-**Figura 365 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)**
+**Figura 367 — DSD CU-222: Cerrar la Rendición de Stock del Camión — Operación: cerrarRendicionDeStock(cargaId, nota)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21095,7 +21250,7 @@ sequenceDiagram
 
 ![DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()](diagramas/png/DSD_CU-223_consultarCargaActual.png)
 
-**Figura 366 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()**
+**Figura 368 — DSD CU-223: Consultar la Carga Actual del Camión — Operación: consultarCargaActual()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21157,7 +21312,7 @@ sequenceDiagram
 
 ![DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)](diagramas/png/DSD_CU-290_consultarCargasDelCamion.png)
 
-**Figura 367 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)**
+**Figura 369 — DSD CU-290: Consultar las Cargas del Camión — Operación: consultarCargasDelCamion(estado, desde, hasta, vehiculoId, choferId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21205,7 +21360,7 @@ sequenceDiagram
 
 ![DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)](diagramas/png/DSD_CU-291_consultarCargaDelCamion.png)
 
-**Figura 368 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)**
+**Figura 370 — DSD CU-291: Consultar una Carga del Camión — Operación: consultarCargaDelCamion(cargaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21267,7 +21422,7 @@ sequenceDiagram
 
 ![DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()](diagramas/png/DSD_CU-224_conciliarStock.png)
 
-**Figura 369 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()**
+**Figura 371 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: conciliarStock()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21334,7 +21489,7 @@ sequenceDiagram
 
 ![DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()](diagramas/png/DSD_CU-224_consultarConciliacionDeStock.png)
 
-**Figura 370 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()**
+**Figura 372 — DSD CU-224: Conciliar el Stock Vendible con el Físico — Operación: consultarConciliacionDeStock()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21387,7 +21542,7 @@ sequenceDiagram
 
 ![DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)](diagramas/png/DSD_CU-277_registrarAjusteDeConciliacion.png)
 
-**Figura 371 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)**
+**Figura 373 — DSD CU-277: Registrar un Ajuste de Conciliación del Vendible — Operación: registrarAjusteDeConciliacion(productoId, nota, diferenciaEsperada)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21451,7 +21606,7 @@ sequenceDiagram
 
 ![DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()](diagramas/png/DSD_CU-278_reaplicarEntregasDeStock.png)
 
-**Figura 372 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()**
+**Figura 374 — DSD CU-278: Reaplicar las Entregas sin Movimiento de Stock — Operación: reaplicarEntregasDeStock()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21504,7 +21659,7 @@ sequenceDiagram
 
 ![DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)](diagramas/png/DSD_CU-248_verificarCargaDeCamionAbierta.png)
 
-**Figura 373 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)**
+**Figura 375 — DSD CU-248: Verificar la Carga de Camión Abierta del Chofer — Operación: verificarCargaDeCamionAbierta(chofer)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21569,7 +21724,7 @@ sequenceDiagram
 
 ![DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)](diagramas/png/DSD_CU-249_configurarControlDeCargaAbierta.png)
 
-**Figura 374 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)**
+**Figura 376 — DSD CU-249: Configurar el Control de Carga de Camión Abierta — Operación: configurarControlDeCargaAbierta(exigirCargaDeCamionAbierta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21624,7 +21779,7 @@ sequenceDiagram
 
 ![DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()](diagramas/png/DSD_CU-298_consultarControlDeCargaAbierta.png)
 
-**Figura 375 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()**
+**Figura 377 — DSD CU-298: Consultar el Control de Carga de Camión Abierta — Operación: consultarControlDeCargaAbierta()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21665,7 +21820,7 @@ sequenceDiagram
 
 ![DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)](diagramas/png/DSD_CU-250_aplicarMovimientoDeStock.png)
 
-**Figura 376 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)**
+**Figura 378 — DSD CU-250: Aplicar un Movimiento de Stock — Caso incluido: aplicarMovimientoDeStock(operacion)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21757,7 +21912,7 @@ sequenceDiagram
 
 ![DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)](diagramas/png/DSD_CU-214_consultarProveedores.png)
 
-**Figura 377 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)**
+**Figura 379 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedores(termino, tipo, incluirInactivos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21801,7 +21956,7 @@ sequenceDiagram
 
 ![DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)](diagramas/png/DSD_CU-214_consultarProveedor.png)
 
-**Figura 378 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)**
+**Figura 380 — DSD CU-214: Consultar los Proveedores — Operación: consultarProveedor(proveedorId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21840,7 +21995,7 @@ sequenceDiagram
 
 ![DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)](diagramas/png/DSD_CU-261_registrarProveedor.png)
 
-**Figura 379 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)**
+**Figura 381 — DSD CU-261: Registrar un Proveedor — Operación: registrarProveedor(razonSocial, cuit, tipo, datosDeContacto, plazoDePago)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21889,7 +22044,7 @@ sequenceDiagram
 
 ![DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)](diagramas/png/DSD_CU-262_actualizarProveedor.png)
 
-**Figura 380 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)**
+**Figura 382 — DSD CU-262: Modificar un Proveedor — Operación: actualizarProveedor(proveedorId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21937,7 +22092,7 @@ sequenceDiagram
 
 ![DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)](diagramas/png/DSD_CU-263_darDeBajaProveedor.png)
 
-**Figura 381 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)**
+**Figura 383 — DSD CU-263: Dar de Baja un Proveedor — Operación: darDeBajaProveedor(proveedorId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -21987,7 +22142,7 @@ sequenceDiagram
 
 ![DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)](diagramas/png/DSD_CU-286_consultarHistorialDeCompras.png)
 
-**Figura 382 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)**
+**Figura 384 — DSD CU-286: Consultar el Historial de Compras de un Proveedor — Operación: consultarHistorialDeCompras(proveedorId, desde, hasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22039,7 +22194,7 @@ sequenceDiagram
 
 ![DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)](diagramas/png/DSD_CU-215_emitirOrdenDeCompra.png)
 
-**Figura 383 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)**
+**Figura 385 — DSD CU-215: Emitir una Orden de Compra — Operación: emitirOrdenDeCompra(proveedorId, depositoId, items, fechaEsperada)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22100,7 +22255,7 @@ sequenceDiagram
 
 ![DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)](diagramas/png/DSD_CU-287_modificarOrdenDeCompra.png)
 
-**Figura 384 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)**
+**Figura 386 — DSD CU-287: Modificar una Orden de Compra — Operación: modificarOrdenDeCompra(ordenId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22158,7 +22313,7 @@ sequenceDiagram
 
 ![DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)](diagramas/png/DSD_CU-288_enviarOrdenDeCompra.png)
 
-**Figura 385 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)**
+**Figura 387 — DSD CU-288: Enviar una Orden de Compra — Operación: enviarOrdenDeCompra(ordenId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22207,7 +22362,7 @@ sequenceDiagram
 
 ![DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)](diagramas/png/DSD_CU-216_cancelarOrdenDeCompra.png)
 
-**Figura 386 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)**
+**Figura 388 — DSD CU-216: Cancelar una Orden de Compra — Operación: cancelarOrdenDeCompra(ordenId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22259,7 +22414,7 @@ sequenceDiagram
 
 ![DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)](diagramas/png/DSD_CU-282_cerrarOrdenDeCompraConFaltante.png)
 
-**Figura 387 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)**
+**Figura 389 — DSD CU-282: Cerrar una Orden de Compra con Faltante — Operación: cerrarOrdenDeCompraConFaltante(ordenId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22309,7 +22464,7 @@ sequenceDiagram
 
 ![DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)](diagramas/png/DSD_CU-283_consultarOrdenesDeCompra.png)
 
-**Figura 388 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)**
+**Figura 390 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenesDeCompra(estado, proveedorId, desde, hasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22353,7 +22508,7 @@ sequenceDiagram
 
 ![DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)](diagramas/png/DSD_CU-283_consultarOrdenDeCompra.png)
 
-**Figura 389 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)**
+**Figura 391 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarOrdenDeCompra(ordenId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22400,7 +22555,7 @@ sequenceDiagram
 
 ![DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)](diagramas/png/DSD_CU-283_consultarPendienteDeRecibir.png)
 
-**Figura 390 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)**
+**Figura 392 — DSD CU-283: Consultar las Órdenes de Compra — Operación: consultarPendienteDeRecibir(ordenId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22452,7 +22607,7 @@ sequenceDiagram
 
 ![DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)](diagramas/png/DSD_CU-217_registrarRecepcionDeCompra.png)
 
-**Figura 391 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)**
+**Figura 393 — DSD CU-217: Registrar la Recepción de una Compra — Operación: registrarRecepcionDeCompra(ordenId, proveedorId, depositoId, tipoDeComprobante, numeroDeComprobante, items)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22542,7 +22697,7 @@ sequenceDiagram
 
 ![DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)](diagramas/png/DSD_CU-280_anularRecepcionDeCompra.png)
 
-**Figura 392 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)**
+**Figura 394 — DSD CU-280: Anular una Recepción de Compra — Operación: anularRecepcionDeCompra(recepcionId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22623,7 +22778,7 @@ sequenceDiagram
 
 ![DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)](diagramas/png/DSD_CU-281_marcarPagoDeRecepcion.png)
 
-**Figura 393 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)**
+**Figura 395 — DSD CU-281: Marcar el Pago de una Recepción — Operación: marcarPagoDeRecepcion(recepcionId, estadoDePago)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22672,7 +22827,7 @@ sequenceDiagram
 
 ![DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)](diagramas/png/DSD_CU-284_consultarRecepcionesDeCompra.png)
 
-**Figura 394 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)**
+**Figura 396 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionesDeCompra(proveedorId, ordenId, estadoDePago, estado, desde, hasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22717,7 +22872,7 @@ sequenceDiagram
 
 ![DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)](diagramas/png/DSD_CU-284_consultarRecepcionDeCompra.png)
 
-**Figura 395 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)**
+**Figura 397 — DSD CU-284: Consultar las Recepciones de Compra — Operación: consultarRecepcionDeCompra(recepcionId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22765,7 +22920,7 @@ sequenceDiagram
 
 ![DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()](diagramas/png/DSD_CU-285_consultarCostoPromedio.png)
 
-**Figura 396 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()**
+**Figura 398 — DSD CU-285: Consultar el Costo Promedio de las Garrafas — Operación: consultarCostoPromedio()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22818,7 +22973,7 @@ Diagramas de interacción de los veintiún casos del módulo de caja y rendició
 
 ![DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)](diagramas/png/DSD_CU-225_crearCaja.png)
 
-**Figura 397 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)**
+**Figura 399 — DSD CU-225: Crear una Caja — Operación: crearCaja(nombre, tipo, requiereSesion)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22869,7 +23024,7 @@ sequenceDiagram
 
 ![DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)](diagramas/png/DSD_CU-264_modificarCaja.png)
 
-**Figura 398 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)**
+**Figura 400 — DSD CU-264: Modificar una Caja — Operación: modificarCaja(cajaId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22919,7 +23074,7 @@ sequenceDiagram
 
 ![DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)](diagramas/png/DSD_CU-226_abrirCaja.png)
 
-**Figura 399 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)**
+**Figura 401 — DSD CU-226: Abrir la Caja — Operación: abrirCaja(cajaId, montoInicial)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -22979,7 +23134,7 @@ sequenceDiagram
 
 ![DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)](diagramas/png/DSD_CU-227_cerrarCajaConArqueo.png)
 
-**Figura 400 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)**
+**Figura 402 — DSD CU-227: Cerrar la Caja con Arqueo — Operación: cerrarCajaConArqueo(sesionId, montoContado)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23041,7 +23196,7 @@ sequenceDiagram
 
 ![DSD CU-228: Registrar una Entrada de Dinero en la Caja — Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)](diagramas/png/DSD_CU-228_registrarEntradaDeDinero.png)
 
-**Figura 401 — DSD CU-228: Registrar una Entrada de Dinero en la Caja — Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)**
+**Figura 403 — DSD CU-228: Registrar una Entrada de Dinero en la Caja — Operación: registrarEntradaDeDinero(cajaId, importe, categoriaId, medio, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23102,7 +23257,7 @@ sequenceDiagram
 
 ![DSD CU-309: Registrar una Salida de Dinero de la Caja — Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)](diagramas/png/DSD_CU-309_registrarSalidaDeDinero.png)
 
-**Figura 402 — DSD CU-309: Registrar una Salida de Dinero de la Caja — Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)**
+**Figura 404 — DSD CU-309: Registrar una Salida de Dinero de la Caja — Operación: registrarSalidaDeDinero(cajaId, importe, categoriaId, medio, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23166,7 +23321,7 @@ sequenceDiagram
 
 ![DSD CU-310: Transferir Fondos entre Cajas — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)](diagramas/png/DSD_CU-310_transferirEntreCajas.png)
 
-**Figura 403 — DSD CU-310: Transferir Fondos entre Cajas — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)**
+**Figura 405 — DSD CU-310: Transferir Fondos entre Cajas — Operación: transferirEntreCajas(cajaOrigenId, cajaDestinoId, importe)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23233,7 +23388,7 @@ sequenceDiagram
 
 ![DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)](diagramas/png/DSD_CU-229_anularMovimientoDeCaja.png)
 
-**Figura 404 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)**
+**Figura 406 — DSD CU-229: Anular un Movimiento de Caja — Operación: anularMovimientoDeCaja(movimientoId, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23293,7 +23448,7 @@ sequenceDiagram
 
 ![DSD CU-340: Consultar los Movimientos de Caja — Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)](diagramas/png/DSD_CU-340_consultarMovimientosDeCaja.png)
 
-**Figura 405 — DSD CU-340: Consultar los Movimientos de Caja — Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)**
+**Figura 407 — DSD CU-340: Consultar los Movimientos de Caja — Operación: consultarMovimientosDeCaja(cajaId, desde, hasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23337,7 +23492,7 @@ sequenceDiagram
 
 ![DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)](diagramas/png/DSD_CU-230_crearCategoriaDeCaja.png)
 
-**Figura 406 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)**
+**Figura 408 — DSD CU-230: Crear una Categoría de Ingresos y Gastos — Operación: crearCategoriaDeCaja(nombre, sentido)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23387,7 +23542,7 @@ sequenceDiagram
 
 ![DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)](diagramas/png/DSD_CU-265_modificarCategoriaDeCaja.png)
 
-**Figura 407 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)**
+**Figura 409 — DSD CU-265: Modificar una Categoría de Ingresos y Gastos — Operación: modificarCategoriaDeCaja(categoriaId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23437,7 +23592,7 @@ sequenceDiagram
 
 ![DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()](diagramas/png/DSD_CU-231_generarRendicionesDelDia.png)
 
-**Figura 408 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()**
+**Figura 410 — DSD CU-231: Generar la Rendición Diaria del Chofer — Operación: generarRendicionesDelDia()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23500,7 +23655,7 @@ sequenceDiagram
 
 ![DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)](diagramas/png/DSD_CU-232_declararEfectivoRendido.png)
 
-**Figura 409 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)**
+**Figura 411 — DSD CU-232: Declarar el Efectivo Rendido — Operación: declararEfectivoRendido(rendicionId, efectivoDeclarado, gastos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23560,7 +23715,7 @@ sequenceDiagram
 
 ![DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)](diagramas/png/DSD_CU-233_aprobarRendicion.png)
 
-**Figura 410 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)**
+**Figura 412 — DSD CU-233: Aprobar la Rendición del Chofer — Operación: aprobarRendicion(rendicionId, cajaDestinoId, resolucionDeDiferencia)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23636,7 +23791,7 @@ sequenceDiagram
 
 ![DSD CU-330: Reabrir la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)](diagramas/png/DSD_CU-330_reabrirRendicion.png)
 
-**Figura 411 — DSD CU-330: Reabrir la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)**
+**Figura 413 — DSD CU-330: Reabrir la Rendición del Chofer — Operación: reabrirRendicion(rendicionId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23687,7 +23842,7 @@ sequenceDiagram
 
 ![DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()](diagramas/png/DSD_CU-234_avisarRendicionesSinCerrar.png)
 
-**Figura 412 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()**
+**Figura 414 — DSD CU-234: Avisar las Rendiciones sin Cerrar — Operación: avisarRendicionesSinCerrar()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23746,7 +23901,7 @@ sequenceDiagram
 
 ![DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)](diagramas/png/DSD_CU-235_habilitarCuentaCorriente.png)
 
-**Figura 413 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)**
+**Figura 415 — DSD CU-235: Habilitar la Cuenta Corriente de un Cliente — Operación: habilitarCuentaCorriente(clienteId, razonSocial, cuit, condicionFiscal, limiteDeCredito, plazoEnDias)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23802,7 +23957,7 @@ sequenceDiagram
 
 ![DSD CU-331: Modificar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)](diagramas/png/DSD_CU-331_modificarCuentaCorriente.png)
 
-**Figura 414 — DSD CU-331: Modificar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)**
+**Figura 416 — DSD CU-331: Modificar la Cuenta Corriente de un Cliente — Operación: modificarCuentaCorriente(cuentaId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23853,7 +24008,7 @@ sequenceDiagram
 
 ![DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)](diagramas/png/DSD_CU-236_venderACuentaCorriente.png)
 
-**Figura 415 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)**
+**Figura 417 — DSD CU-236: Vender a Cuenta Corriente — Operación: venderACuentaCorriente(clienteId, direccionId, items)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23912,7 +24067,7 @@ sequenceDiagram
 
 ![DSD CU-332: Asentar el Cargo de una Venta a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)](diagramas/png/DSD_CU-332_registrarCargoDeCuentaCorriente.png)
 
-**Figura 416 — DSD CU-332: Asentar el Cargo de una Venta a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)**
+**Figura 418 — DSD CU-332: Asentar el Cargo de una Venta a Cuenta Corriente — Operación: registrarCargoDeCuentaCorriente(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -23977,7 +24132,7 @@ sequenceDiagram
 
 ![DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)](diagramas/png/DSD_CU-237_registrarPagoDeCuentaCorriente.png)
 
-**Figura 417 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)**
+**Figura 419 — DSD CU-237: Registrar un Pago de Cuenta Corriente — Operación: registrarPagoDeCuentaCorriente(cuentaId, importe, medio, cajaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24058,7 +24213,7 @@ sequenceDiagram
 
 ![DSD CU-329: Registrar un Ajuste de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)](diagramas/png/DSD_CU-329_registrarAjusteDeCuentaCorriente.png)
 
-**Figura 418 — DSD CU-329: Registrar un Ajuste de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)**
+**Figura 420 — DSD CU-329: Registrar un Ajuste de Cuenta Corriente — Operación: registrarAjusteDeCuentaCorriente(cuentaId, tipo, importe, motivo)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24121,7 +24276,7 @@ sequenceDiagram
 
 ![DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)](diagramas/png/DSD_CU-238_consultarEstadoDeCuenta.png)
 
-**Figura 419 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)**
+**Figura 421 — DSD CU-238: Consultar el Estado de Cuenta de un Cliente — Operación: consultarEstadoDeCuenta(cuentaId, fechaDesde, fechaHasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24173,7 +24328,7 @@ sequenceDiagram
 
 ![DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()](diagramas/png/DSD_CU-239_consultarAntiguedadDeDeuda.png)
 
-**Figura 420 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()**
+**Figura 422 — DSD CU-239: Consultar la Antigüedad de la Deuda — Operación: consultarAntiguedadDeDeuda()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24222,7 +24377,7 @@ sequenceDiagram
 
 ![DSD CU-240: Crear una Regla de Comisión por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)](diagramas/png/DSD_CU-240_crearReglaDeComision.png)
 
-**Figura 421 — DSD CU-240: Crear una Regla de Comisión por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)**
+**Figura 423 — DSD CU-240: Crear una Regla de Comisión por Entrega — Operación: crearReglaDeComision(empleadoId, productoId, base, valor, vigenteDesde)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24284,7 +24439,7 @@ sequenceDiagram
 
 ![DSD CU-333: Modificar una Regla de Comisión por Entrega — Operación: modificarReglaDeComision(reglaId, datos)](diagramas/png/DSD_CU-333_modificarReglaDeComision.png)
 
-**Figura 422 — DSD CU-333: Modificar una Regla de Comisión por Entrega — Operación: modificarReglaDeComision(reglaId, datos)**
+**Figura 424 — DSD CU-333: Modificar una Regla de Comisión por Entrega — Operación: modificarReglaDeComision(reglaId, datos)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24335,7 +24490,7 @@ sequenceDiagram
 
 ![DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)](diagramas/png/DSD_CU-241_registrarComisionDeEntrega.png)
 
-**Figura 423 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)**
+**Figura 425 — DSD CU-241: Registrar la Comisión de una Entrega — Operación: registrarComisionDeEntrega(pedidoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24406,7 +24561,7 @@ sequenceDiagram
 
 ![DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)](diagramas/png/DSD_CU-242_liquidarComisionesDelChofer.png)
 
-**Figura 424 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)**
+**Figura 426 — DSD CU-242: Liquidar las Comisiones de un Chofer — Operación: liquidarComisionesDelChofer(empleadoId, fechaDesde, fechaHasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24472,7 +24627,7 @@ sequenceDiagram
 
 ![DSD CU-334: Aprobar una Liquidación de Comisiones — Operación: aprobarLiquidacion(liquidacionId)](diagramas/png/DSD_CU-334_aprobarLiquidacion.png)
 
-**Figura 425 — DSD CU-334: Aprobar una Liquidación de Comisiones — Operación: aprobarLiquidacion(liquidacionId)**
+**Figura 427 — DSD CU-334: Aprobar una Liquidación de Comisiones — Operación: aprobarLiquidacion(liquidacionId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24526,7 +24681,7 @@ sequenceDiagram
 
 ![DSD CU-335: Anular una Liquidación de Comisiones — Operación: anularLiquidacion(liquidacionId)](diagramas/png/DSD_CU-335_anularLiquidacion.png)
 
-**Figura 426 — DSD CU-335: Anular una Liquidación de Comisiones — Operación: anularLiquidacion(liquidacionId)**
+**Figura 428 — DSD CU-335: Anular una Liquidación de Comisiones — Operación: anularLiquidacion(liquidacionId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24582,7 +24737,7 @@ sequenceDiagram
 
 ![DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)](diagramas/png/DSD_CU-243_pagarLiquidacion.png)
 
-**Figura 427 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)**
+**Figura 429 — DSD CU-243: Registrar el Pago de una Liquidación — Operación: pagarLiquidacion(liquidacionId, cajaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24642,7 +24797,7 @@ sequenceDiagram
 
 ![DSD CU-347: Anular el Pago de una Liquidación](diagramas/png/DSD_CU-347_anularPagoDeLiquidacion.png)
 
-**Figura 428 — DSD CU-347: Anular el Pago de una Liquidación**
+**Figura 430 — DSD CU-347: Anular el Pago de una Liquidación**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24705,7 +24860,7 @@ sequenceDiagram
 
 ![DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)](diagramas/png/DSD_CU-244_consultarMisComisiones.png)
 
-**Figura 429 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)**
+**Figura 431 — DSD CU-244: Consultar Mis Comisiones — Operación: consultarMisComisiones(fechaDesde, fechaHasta)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24757,7 +24912,7 @@ sequenceDiagram
 
 ![DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)](diagramas/png/DSD_CU-245_consultarTableroFinanciero.png)
 
-**Figura 430 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)**
+**Figura 432 — DSD CU-245: Consultar el Tablero Financiero — Operación: consultarTableroFinanciero(fecha)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24816,7 +24971,7 @@ como propuestas no existen aún en el código.
 
 ![DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota](diagramas/png/DSD_CU-105_planificarMantenimientoDeFlota.png)
 
-**Figura 431 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota**
+**Figura 433 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24871,7 +25026,7 @@ sequenceDiagram
 
 ![DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)](diagramas/png/DSD_CU-105_aceptarVentanaDeMantenimiento.png)
 
-**Figura 432 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
+**Figura 434 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: aceptarVentanaDeMantenimiento(propuestaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24907,7 +25062,7 @@ sequenceDiagram
 
 ![DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)](diagramas/png/DSD_CU-105_confirmarVentanaDeTaller.png)
 
-**Figura 433 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
+**Figura 435 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24945,7 +25100,7 @@ sequenceDiagram
 
 ![DSD CU-106: Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra](diagramas/png/DSD_CU-106_aceptarInvitacionDeRecompra.png)
 
-**Figura 434 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra**
+**Figura 436 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -24983,7 +25138,7 @@ sequenceDiagram
 
 ![DSD CU-106: Anticipar la Recompra por Consumo Estimado · anticiparRecompras](diagramas/png/DSD_CU-106_anticiparRecompras.png)
 
-**Figura 435 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · anticiparRecompras**
+**Figura 437 — DSD CU-106: Anticipar la Recompra por Consumo Estimado · anticiparRecompras**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -25037,7 +25192,7 @@ sequenceDiagram
 
 ![DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()](diagramas/png/DSD_CU-107_agruparPedidosPorRecorrido.png)
 
-**Figura 436 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()**
+**Figura 438 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -25096,7 +25251,7 @@ sequenceDiagram
 
 ![DSD CU-107: Agrupar Pedidos por Recorrido — Operación: aceptarRecorrido(recorridoId)](diagramas/png/DSD_CU-107_aceptarRecorrido.png)
 
-**Figura 437 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: aceptarRecorrido(recorridoId)**
+**Figura 439 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: aceptarRecorrido(recorridoId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -25144,7 +25299,7 @@ sequenceDiagram
 
 ![DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()](diagramas/png/DSD_CU-108_gestionarEnvasesNoDevueltos.png)
 
-**Figura 438 — DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()**
+**Figura 440 — DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -25202,7 +25357,7 @@ sequenceDiagram
 
 ![DSD CU-108: Recuperar Envases No Devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)](diagramas/png/DSD_CU-108_aceptarRetiroEnLaEntrega.png)
 
-**Figura 439 — DSD CU-108: Recuperar Envases No Devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
+**Figura 441 — DSD CU-108: Recuperar Envases No Devueltos — Operación: aceptarRetiroEnLaEntrega(ofertaId)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -25242,7 +25397,7 @@ sequenceDiagram
 
 ![DSD CU-108: Recuperar Envases No Devueltos — Operación: resolverCasoDeRecupero(casoId, decision)](diagramas/png/DSD_CU-108_resolverCasoDeRecupero.png)
 
-**Figura 440 — DSD CU-108: Recuperar Envases No Devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
+**Figura 442 — DSD CU-108: Recuperar Envases No Devueltos — Operación: resolverCasoDeRecupero(casoId, decision)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -25715,7 +25870,7 @@ Los casos de uso esenciales (Documento 1 §7) describen qué hace el actor y qu�
 | CU | Operación del sistema | Ruta de la API | Respuestas y códigos | Notas técnicas |
 |---|---|---|---|---|
 | CU-005 Crear un Pedido | `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | `POST /orders/quote`<br>`POST /orders`<br>`GET /user-address/user/:userId/default` | Paso 8: Si el cliente no existe, el sistema revierte e informa "Cliente no encontrado" (404).<br>Paso 8: Si la dirección no existe o no es del cliente, el sistema revierte e informa "Dirección no encontrada" (404).<br>Paso 8: Si algún producto del pedido no existe, el sistema revierte por completo e informa "Garrafa no encontrada", con el identificador del producto (404).<br>Paso 8: Si el stock de cualquier ítem es menor que la cantidad pedida, el sistema revierte por completo e informa "Stock insuficiente para <producto>" (400).<br>Paso 8: Ante cualquier otro error durante la transacción, el sistema revierte por completo e informa "Error al crear el pedido" (500).<br>Paso 6: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 2: La app le pide el precio al sistema (**CU-302 Cotizar un Pedido**, `POST /orders/quote`) cada vez que cambia lo que lo mueve y muestra el total que devuelve: no calcula promociones ni recargos. | Excepción, paso 6: Si el pedido se marca como pre-reserva sin indicar la fecha agendada, el sistema lo rechaza antes de abrir la transacción.<br>Excepción, paso 8: Ante un choque de bloqueos entre dos pedidos concurrentes sobre las mismas garrafas, el sistema revierte y reintenta la operación completa antes de dar error.<br>Descripción: El sistema verifica la cobertura de la dirección, reserva el stock y el cupo de la franja de forma atómica, calcula el total con promociones y recargos, registra el pedido y —salvo que el pago sea por MercadoPago o el pedido sea una pre-reserva— abre la oferta a un chofer.<br>Paso 3: Selecciona la dirección de entrega desde su lista guardada.<br>Paso 5: Selecciona el método de pago: EFECTIVO, MERCADOPAGO o TRANSFERENCIA.<br>Paso 5: Con MERCADOPAGO o TRANSFERENCIA el sistema aplica un recargo del 10 % sobre el total; el pago en efectivo no tiene recargo.<br>Paso 6: La app acompaña el envío con una clave de idempotencia, la misma para el mismo intento de checkout mientras no se resuelva, de modo que un reintento por corte de red no genere un segundo pedido.<br>Paso 8: El sistema abre una transacción y, dentro de ella: comprueba que el cliente exista y que la dirección elegida sea suya; verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por zona que esa zona tenga definido; reserva con bloqueo el cupo de la franja horaria elegida para esa fecha; y, por cada ítem, bloquea la garrafa, comprueba que alcance el stock y lo descuenta, lee sus promociones, comprueba que pertenezca a la distribuidora del pedido, aplica los descuentos por volumen configurados, redondea el precio unitario a centavos y calcula el subtotal como cantidad por ese precio, tomando el precio de la base y nunca el que envía el cliente.<br>Paso 10: Persiste el pedido y sus ítems con estado PENDING —o con estado RESERVED si es una pre-reserva— y confirma la transacción.<br>Paso 11: Si el pago es por MercadoPago, genera el enlace de cobro y **no ofrece el pedido a nadie**: el despacho lo dispara la confirmación del cobro.<br>Paso 11: Si el pedido es una pre-reserva, tampoco se ofrece: lo activa el proceso temporal el día agendado, y si la seña es por MercadoPago se genera un cobro solo por ese monto.<br>Postcondición: Existe un pedido con estado PENDING, o RESERVED si es una pre-reserva.<br>Postcondición: El stock de cada ítem y el cupo de la franja fueron descontados dentro de la misma transacción.<br>Postcondición: Salvo en pago con MercadoPago y en pre-reserva, existe además una oferta abierta a un único chofer.<br>Rendimiento (diseño): La creación del pedido se completa en menos de 5 segundos.<br>Comentarios: La precisión del cálculo de totales se garantiza con aritmética decimal.<br>Comentarios: El proceso de compra con carrito persistente (CU-122 a CU-126, C-12) y la elección explícita de modalidad (CU-148, frente a la express de CU-147, C-17) están construidos; este caso no los usa: crea el pedido con los ítems y la dirección ya armados en un único `POST /orders`, y la compra express y el carrito persistente tienen sus propios casos.<br>Comentarios: Tampoco incluye CU-121: la ruta `GET /user-address/user/:userId/default` existe y funciona, pero ninguna app lo invoca; el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada.<br>Comentarios: En los rechazos que las excepciones describen el sistema deshace todo: la transacción se revierte y ni el pedido ni el inventario cambian. |
-| CU-006 Consultar el Detalle de un Pedido | `consultarPedido(pedidoId identificador)` | `GET /orders/:id` | Paso 3: Si quien consulta es un chofer y el pedido no es suyo, ni tiene una oferta vigente para él, ni está en su pool, el sistema responde que el pedido no existe (404).<br>Paso 3: Si el chofer tuvo el pedido (lo aceptó o se lo asignaron) y ya no es suyo —lo liberó un administrador, lo reasignaron o el control de carga lo sacó del pool—, el sistema responde 410 "Este pedido ya no está asignado a tu usuario", sin datos del pedido, para que la app salga de la pantalla en vez de quedarse con el estado viejo. | Excepción, paso 3: Si quien consulta es el Administrador General y no indica distribuidora (`X-Distributor`), el sistema le muestra el pedido de cualquier distribuidora: es a propósito, porque es el dueño de la plataforma; con la encabezado solo ve los de esa distribuidora.<br>Paso 2: El sistema recupera el pedido con todos sus datos: ítems —cada uno con el precio unitario y el subtotal que quedaron guardados en su renglón al crear el pedido—, total, estado, distribuidora a la que pertenece (`distributor_id`), chofer asignado si lo hay —con su nombre, su teléfono y su calificación, solo para el cliente dueño y el administrador y solo mientras el pedido está aceptado o en camino—, quién canceló el pedido si está cancelado (`cancelledBy`), dirección de entrega, franja horaria, método y estado del pago, y las marcas de tiempo de cada transición.<br>Rendimiento (diseño): La consulta del detalle se completa en menos de 1 segundo.<br>Comentarios: La respuesta informa además `distributor_id`, la distribuidora dueña del pedido, que el Administrador General usa para operar sobre el pedido sin elegir una distribuidora con «Ver como» (por ejemplo, CU-012).<br>Comentarios: **Datos del chofer.** `driver` trae `userId`, nombre, teléfono, `ratingAverage` y `ratingCount` (las calificaciones ocultas no cuentan), solo en la lectura individual, para el cliente dueño y el administrador, con el pedido aceptado o en camino y con chofer; con el pedido cerrado, sin chofer o visto por el propio chofer es nulo, de modo que el teléfono no queda expuesto.<br>Comentarios: `driver.location` es la última posición conocida (`lat`, `lng`, `at`) y es más sensible: solo con el pedido en camino y siendo ése el pedido que el chofer lleva, y solo si tiene menos de `DRIVER_LOCATION_MAX_AGE_MIN` minutos (10 por omisión); en cualquier otro caso, o si el radar no responde, es nula y el cliente debe tomarla como «sin posición reciente», no como un error.<br>Comentarios: La patente está en `vehicle.patent`.<br>Comentarios: **Quién canceló.** `cancelledBy` es `customer`, `admin` (el administrador general cuenta como administrador), `driver` o `system`, y sale del historial de estados (CU-169): `system` es el vencimiento por falta de pago o de seña, que no emite el evento en vivo; es nulo si el pedido no está cancelado o es anterior al historial. |
+| CU-006 Consultar el Detalle de un Pedido | `consultarPedido(pedidoId identificador)` | `GET /orders/:id` | Paso 3: Si quien consulta es un chofer y el pedido no es suyo, ni tiene una oferta vigente para él, ni está en su pool, el sistema responde que el pedido no existe (404).<br>Paso 3: Si el chofer tuvo el pedido (lo aceptó o se lo asignaron) y ya no es suyo —lo liberó un administrador, lo reasignaron o el control de carga lo sacó del pool—, el sistema responde 410 "Este pedido ya no está asignado a tu usuario", sin datos del pedido, para que la app salga de la pantalla en vez de quedarse con el estado viejo. | Excepción, paso 3: Si no hay distribuidora en el contexto, el sistema responde 400 «Falta la distribuidora: enviá el header X-Distributor (slug o id)». El administrador de empresa siempre la tiene: el caso es el del Administrador General sin «Ver como»; con el encabezado `X-Distributor` solo ve los pedidos de esa distribuidora. En ese caso el panel muestra «Elegí una distribuidora» en lugar del detalle.<br>Paso 2: El sistema recupera el pedido con todos sus datos: ítems —cada uno con el precio unitario y el subtotal que quedaron guardados en su renglón al crear el pedido—, total, estado, distribuidora a la que pertenece (`distributor_id`), chofer asignado si lo hay —con su nombre, su teléfono y su calificación, solo para el cliente dueño y el administrador y solo mientras el pedido está aceptado o en camino—, quién canceló el pedido si está cancelado (`cancelledBy`), dirección de entrega, franja horaria, método y estado del pago, y las marcas de tiempo de cada transición.<br>Rendimiento (diseño): La consulta del detalle se completa en menos de 1 segundo.<br>Comentarios: La respuesta informa además `distributor_id`, la distribuidora dueña del pedido, que el Administrador General ve para saber a qué distribuidora pertenece el pedido; para leerlo tiene que elegir una con «Ver como».<br>Comentarios: **Datos del chofer.** `driver` trae `userId`, nombre, teléfono, `ratingAverage` y `ratingCount` (las calificaciones ocultas no cuentan), solo en la lectura individual, para el cliente dueño y el administrador, con el pedido aceptado o en camino y con chofer; con el pedido cerrado, sin chofer o visto por el propio chofer es nulo, de modo que el teléfono no queda expuesto.<br>Comentarios: `driver.location` es la última posición conocida (`lat`, `lng`, `at`) y es más sensible: solo con el pedido en camino y siendo ése el pedido que el chofer lleva, y solo si tiene menos de `DRIVER_LOCATION_MAX_AGE_MIN` minutos (10 por omisión); en cualquier otro caso, o si el radar no responde, es nula y el cliente debe tomarla como «sin posición reciente», no como un error.<br>Comentarios: La patente está en `vehicle.patent`.<br>Comentarios: **Quién canceló.** `cancelledBy` es `customer`, `admin` (el administrador general cuenta como administrador), `driver` o `system`, y sale del historial de estados (CU-169): `system` es el vencimiento por falta de pago o de seña, que no emite el evento en vivo; es nulo si el pedido no está cancelado o es anterior al historial.<br>Comentarios: **Enlace de pago.** `payment_url` es el enlace de MercadoPago del último intento de cobro, y solo viaja si el pedido es de MercadoPago, no está cancelado, su cobro sigue pendiente, la seña no está cobrada y quien lee no es un chofer; sirve para recuperarlo si se perdió la respuesta del alta. El panel lo muestra en el detalle con «Copiar enlace» y «Abrir». |
 | CU-007 Consultar el Historial de Pedidos | `consultarHistorialDePedidos(clienteId identificador, pagina entero, limite entero)` | `GET /orders/customer/:customerId` | Paso 1: Si el solicitante es un chofer, el sistema responde 403: el chofer lista lo suyo con `GET /orders/delivery/:deliveryId` (CU-081). | Excepción: Si el token de sesión venció o hay un error de red, la solicitud se rechaza por el mismo circuito de autenticación que gobierna el resto de las operaciones (CU-001), y la app debe pedir un nuevo inicio de sesión o reintentar.<br>Paso 2: El sistema consulta todos los pedidos donde `customer_id = clienteAutenticado`, ordenados por `createdAt` descendente.<br>Rendimiento (diseño): El listado se completa en menos de 2 segundos. |
 | CU-008 Cancelar un Pedido (Cliente) | `cancelarMiPedido(pedidoId identificador, motivo cadena)` | `PATCH /orders/:id/cancel`<br>`PATCH /orders/:id/status` | Paso 3: Si el pedido ya está entregado o cancelado, el sistema informa "No se puede cancelar un pedido finalizado".<br>Paso 2: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 2: La App Cliente cancela por esta ruta: `PATCH /orders/:id/status` está reservada al chofer y al administrador y responde 403 a un cliente. | Precondición: El pedido le pertenece y su estado es RESERVED, PENDING o ACCEPTED.<br>Paso 2: La solicitud (`PATCH /orders/:id/cancel`) lleva una clave de idempotencia, de modo que un reintento no vuelve a procesar la cancelación.<br>Paso 4: Marca el pedido como CANCELLED con el motivo recibido; si el cliente no indicó ninguno, registra que lo canceló el cliente.<br>Paso 5: Dentro de la misma transacción y bloqueando cada garrafa, devuelve al inventario la cantidad de cada ítem del pedido.<br>Paso 6: Persiste el pedido cancelado y confirma la transacción: la lectura con bloqueo del pedido, el cambio de estado, la restitución del stock y el guardado se confirman juntos.<br>Paso 7: Avisa al cliente en tiempo real de la cancelación, con el motivo y quién canceló (`cancelledBy`: `customer`), avisa al panel de administración y, si había chofer asignado, le avisa también a él que ya no hace falta ir.<br>Postcondición: El pedido tiene estado CANCELLED con su motivo.<br>Postcondición: El stock de todos los ítems fue restituido al inventario con bloqueo sobre cada garrafa.<br>Postcondición: Ambos efectos se confirmaron en una única transacción con bloqueo del pedido: dos cancelaciones simultáneas no devuelven el stock dos veces.<br>Rendimiento (diseño): La cancelación, con su transacción de restitución de stock, se completa en menos de 3 segundos.<br>Comentarios: La cancelación del cliente es una de las tres vías de cancelación (CU-008, CU-009 y CU-010) que comparten el mismo caso de uso del servidor; lo que cambia es el actor, que sale siempre del token.<br>Comentarios: La App Cliente cancela por `PATCH /orders/:id/cancel`, la ruta que admite al cliente, y la respuesta devuelve el pedido con `cancelledBy`; `PATCH /orders/:id/status` con `cancelled` hace lo mismo pero está reservada al chofer y al administrador.<br>Comentarios: El evento `order:cancelled` lleva `orderId`, `status`, `reason` (el motivo dado o «Cancelado por <rol>») y `cancelledBy`.<br>Comentarios: Los vencimientos automáticos (CU-076, CU-077) no emiten el evento: el cliente se entera al leer el pedido (CU-006), que trae `cancelledBy: system`.<br>Paso 8: La devolución del pago aprobado por una pasarela (CU-168) corre después de la cancelación, fuera de su transacción: un fallo de la pasarela no revierte la cancelación y se reintenta desde `POST /orders/:id/refunds/retry`. |
 | CU-009 Liberar un Pedido (Chofer) | `liberarPedido(pedidoId identificador, motivo cadena)` | `PATCH /orders/:id/cancel (lo pide el chofer: libera el pedido)`<br>`PATCH /orders/:id/status (con estado pendiente)` | Paso 3: Si el pedido no está asignado al chofer que lo libera, el sistema responde 403 "Este pedido no está asignado a tu usuario": solo el chofer asignado puede liberarlo.<br>Paso 3: Si el pedido ya está entregado o cancelado, el sistema informa "No se puede cancelar un pedido finalizado". | Precondición: El pedido es de la distribuidora del chofer, está asignado a él y su estado es ACCEPTED u ON_THE_WAY.<br>Paso 4: Devuelve el pedido a estado PENDING, le quita el chofer asignado y borra las marcas de aceptación y de salida.<br>Postcondición: El pedido tiene estado PENDING sin chofer asignado y sin oferta vigente.<br>Rendimiento (diseño): La liberación del pedido se completa en menos de 1 segundo, al no abrir transacción ni restituir stock.<br>Comentarios: El sistema no guarda el motivo por el que el chofer libera el pedido, con lo que se pierde la información que permitiría medir la calidad del servicio. |
@@ -25982,8 +26137,8 @@ Los casos de uso esenciales (Documento 1 §7) describen qué hace el actor y qu�
 
 | CU | Operación del sistema | Ruta de la API | Respuestas y códigos | Notas técnicas |
 |---|---|---|---|---|
-| CU-048 Procesar el Pago con MercadoPago | `notificarResultadoDePago(tipoDeNotificacion cadena, identificadorDelPago cadena, firma cadena)` | `POST /webhook/mercadopago (aviso de la pasarela)` | Paso 4: Si la firma es inválida, falta, o la clave secreta del webhook no está configurada, el sistema registra la advertencia, **no** procesa la notificación y responde 200 de todas formas, para no revelar si el pago o el pedido existen.<br>Paso 9–12: Ante cualquier error dentro de la transacción, el sistema revierte la transacción y propaga el error; el controlador lo captura, lo registra y responde 200 igualmente, para que MercadoPago no reintente en bucle contra una respuesta de error.<br>Paso 9: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 15: El sistema responde 200 a MercadoPago acusando recibo.<br>Comentarios: Rechaza con 409 el pedido que ya está pago, cancelado o entregado, y con 404 el que no existe. | Excepción, paso 6: Si la consulta del pago a MercadoPago falla o supera el tiempo de espera, el sistema registra el error y aborta el procesamiento sin tocar el pedido.<br>Excepción, paso 9: Si el pedido desaparece entre la consulta inicial y la toma del bloqueo, el sistema confirma la transacción, registra la advertencia y aborta.<br>Descripción: Cuando un pedido se paga con MercadoPago, la pasarela notifica al backend mediante un webhook.<br>Descripción: El sistema valida la firma de la notificación, consulta el estado real del pago en MercadoPago —sin confiar nunca en el contenido recibido—, actualiza el registro de pagos, marca el pedido como pagado y recién entonces dispara el despacho automático.<br>Descripción: Todo el procesamiento es idempotente: la misma notificación repetida no produce efectos nuevos.<br>Precondición: Existe un pedido con método de pago MERCADOPAGO y un intento de cobro registrado en estado pendiente, cuya referencia externa es el identificador del pedido.<br>Precondición: La clave secreta del webhook y la URL de notificación están configuradas y apuntan a la ruta del backend.<br>Paso 1: El cliente completa el pago en la pantalla de Checkout Pro de MercadoPago.<br>Paso 2: MercadoPago envía una notificación a la ruta pública del backend con el tipo de evento y el identificador del pago como parámetros de consulta, más los encabezados de firma y de identificación de la solicitud.<br>Paso 3: El sistema tolera los dos formatos que usa MercadoPago para nombrar esos parámetros y normaliza el identificador del pago y el tipo de evento.<br>Paso 4: El sistema valida la firma HMAC de la notificación con la clave secreta configurada.<br>Paso 6: El sistema consulta el pago real en la API de MercadoPago; el cliente HTTP tiene un tiempo máximo de espera de 5 segundos para no retener conexiones.<br>Paso 9: Si el estado del pago es aprobado, el sistema abre una transacción y vuelve a leer el pedido con bloqueo pesimista, para que dos notificaciones simultáneas del mismo pago no atraviesen ambas el control de idempotencia.<br>Paso 10: Si el pedido está en un estado terminal, o ya tiene grabado un identificador de pago, o su estado de pago ya es PAGADO, el sistema confirma la transacción sin modificar nada y termina.<br>Paso 11: Si el pedido está en estado RESERVADO, el pago corresponde a la seña de una reserva: el sistema marca la seña como pagada, graba el identificador del pago, confirma la transacción y **no** despacha, porque la reserva la activa el proceso programado el día agendado.<br>Paso 12: En el caso general, el sistema marca el estado de pago del pedido como PAGADO, graba el identificador del pago de la pasarela y confirma la transacción.<br>Paso 13: Recién después del commit, y fuera de la transacción, el sistema le avisa al Cliente que su pago fue aprobado, por tiempo real (evento `order:payment-approved`) y por notificación push, en modo de mejor esfuerzo.<br>Postcondición: Si el pago fue aprobado, el pedido quedó con estado de pago PAGADO y con el identificador del pago de la pasarela grabado —o con la seña marcada como pagada, si era una reserva— y el despacho se disparó exactamente una vez.<br>Rendimiento (diseño): El procesamiento completo de una notificación se resuelve en menos de 3 segundos; la consulta a MercadoPago está acotada a 5 segundos de espera máxima.<br>Frecuencia: Una o más notificaciones por cada pedido pagado con MercadoPago.<br>Comentarios: La idempotencia no descansa en un solo mecanismo sino en tres, encadenados: un índice único parcial sobre el identificador de pago en el registro de pagos, un índice análogo sobre el identificador de pago del pedido, y el bloqueo pesimista sobre el pedido dentro de la transacción, que serializa dos notificaciones concurrentes del mismo pago.<br>Comentarios: Quien termina resolviendo esa situación es un proceso temporal que corre cada 30 minutos y cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado, restituyendo el stock recién en ese momento.<br>Comentarios: Ese proceso, además, vuelve a tomar el pedido con bloqueo pesimista y solo lo cancela si sigue pendiente y sin identificador de pago, de modo que la carrera entre el pago tardío y la expiración está resuelta en ambas direcciones.<br>Comentarios: Por último, si la pasarela está caída al crear el pedido, este queda sin URL de pago y no existe una ruta para regenerar el checkout.<br>Comentarios: La creación del enlace de pago (`crearCheckoutDePago`) no tiene ruta propia: la invoca la creación del pedido (CU-005) cuando el medio de pago es MercadoPago, y la creación de la reserva (CU-072) para su seña. |
-| CU-168 Reintegrar el Pago de un Pedido | `reintegrarPagoDelPedido(pedidoId identificador, importe moneda)` | `POST /orders/:id/refunds/retry`<br>`GET /orders/:id/refunds`<br>`GET /refunds` | Paso 2: El administrador puede reintentar una devolución fallida con `POST /orders/:id/refunds/retry`: el sistema responde 404 si el pedido no existe o es de otra distribuidora, 409 si el pedido no está cancelado ni tiene pendiente la devolución del recargo express, y 403 si quien llama es un cliente. Una devolución que sigue fallando queda `failed` y la respuesta es 200.<br>Paso 4: Si la pasarela rechaza la devolución o no responde, la devolución queda `failed` y el pago, aprobado; el pedido sigue cancelado. | Descripción: Los endpoints son de administrador o administrador general (con `X-Distributor`): `GET /refunds?status=&limit=&offset=` lista las devoluciones de la distribuidora, las más nuevas primero (`status=failed`: las que esperan reintento), con `{ items, total, limit, offset }`; `GET /orders/:id/refunds` lista las del pedido; la consulta del cliente es CU-348; `POST /orders/:id/refunds/retry` es idempotente (`Idempotency-Key`).<br>Paso 1: La devolución es un efecto posterior a la cancelación, fuera de su transacción, y se dispara en la cancelación del cliente o del administrador (`PATCH /orders/:id/cancel`, `DELETE /orders/:id`, `PATCH /orders/:id/status` con `cancelled`), en un pago aprobado que llega después de la cancelación (webhook tardío) y en el pase de un express al reparto común, donde devuelve solo el recargo express.<br>Paso 3: Los pagos en efectivo o por transferencia, y los que nunca se aprobaron, no hacen nada.<br>Paso 4: Cada devolución es una fila de `payment_refund`, única por pago y tipo: `kind` (`full` o `express_surcharge`), `amount`, `status` (`pending`, `succeeded` o `failed`), `gatewayRefundId`, `errorMessage` y `attempts`. Su `refund_id` viaja a la pasarela como clave de idempotencia: repetir o reintentar no devuelve el dinero dos veces. Nunca se pide más de lo que la pasarela cobró y no devolvió. Si la pasarela informa que el pago ya estaba devuelto, se marca `succeeded` sin repetir la solicitud.<br>Paso 5: Una devolución total deja el pago del registro en `refunded`; la parcial lo deja `approved`. El estado de cobro del pedido no cambia (`paymentStatus` sigue `paid`).<br>Paso 6: Avisa por socket y push al cliente con `order:payment-refunded` (`{ orderId, refundId, kind, amount, at }`) y al panel; `order:refund-failed` (con `reason`) va solo al panel.<br>Rendimiento (diseño): Una consulta al registro de pagos y una llamada a la pasarela por cada pago. La cancelación no espera la devolución: responde antes.<br>Comentarios: La devolución es una consecuencia posterior a la cancelación y no forma parte de su transacción: llamar a una pasarela dentro de una transacción de base de datos la mantendría abierta mientras se espera a un tercero, y un fallo de la pasarela no debe impedir que el cliente cancele; por eso existe el reintento manual.<br>Comentarios: La pasarela se abstrae detrás de `PaymentGatewayPort`, que suma `refundPayment({ gatewayPaymentId, amount, idempotencyKey })`; hoy hay un solo adaptador, `MercadoPagoAdapter`. Stripe no existe en este backend: incorporarlo es un adaptador nuevo con su `refundPayment`.<br>Comentarios: La migración `ExpressYReintegros` crea la tabla `payment_refund`. |
+| CU-048 Procesar el Pago con MercadoPago | `notificarResultadoDePago(tipoDeNotificacion cadena, identificadorDelPago cadena, firma cadena)` | `POST /webhook/mercadopago (aviso de la pasarela)` | Paso 4: Si la firma es inválida, falta, o la clave secreta del webhook no está configurada, el sistema registra la advertencia, **no** procesa la notificación y responde 200 de todas formas, para no revelar si el pago o el pedido existen.<br>Paso 9–12: Ante cualquier error dentro de la transacción, el sistema revierte la transacción y propaga el error; el controlador lo captura, lo registra y responde 200 igualmente, para que MercadoPago no reintente en bucle contra una respuesta de error.<br>Paso 9: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 15: El sistema responde 200 a MercadoPago acusando recibo.<br>Comentarios: Rechaza con 409 el pedido que ya está pago, cancelado o entregado, y con 404 el que no existe. | Excepción, paso 6: Si la consulta del pago a MercadoPago falla o supera el tiempo de espera, el sistema registra el error y aborta el procesamiento sin tocar el pedido.<br>Excepción, paso 9: Si el pedido desaparece entre la consulta inicial y la toma del bloqueo, el sistema confirma la transacción, registra la advertencia y aborta.<br>Descripción: Cuando un pedido se paga con MercadoPago, la pasarela notifica al backend mediante un webhook.<br>Descripción: El sistema valida la firma de la notificación, consulta el estado real del pago en MercadoPago —sin confiar nunca en el contenido recibido—, actualiza el registro de pagos, marca el pedido como pagado y recién entonces dispara el despacho automático.<br>Descripción: Todo el procesamiento es idempotente: la misma notificación repetida no produce efectos nuevos.<br>Precondición: Existe un pedido con método de pago MERCADOPAGO y un intento de cobro registrado en estado pendiente, cuya referencia externa es el identificador del pedido.<br>Precondición: La clave secreta del webhook y la URL de notificación están configuradas y apuntan a la ruta del backend.<br>Paso 1: El cliente completa el pago en la pantalla de Checkout Pro de MercadoPago.<br>Paso 2: MercadoPago envía una notificación a la ruta pública del backend con el tipo de evento y el identificador del pago como parámetros de consulta, más los encabezados de firma y de identificación de la solicitud.<br>Paso 3: El sistema tolera los dos formatos que usa MercadoPago para nombrar esos parámetros y normaliza el identificador del pago y el tipo de evento.<br>Paso 4: El sistema valida la firma HMAC de la notificación con la clave secreta configurada.<br>Paso 6: El sistema consulta el pago real en la API de MercadoPago; el cliente HTTP tiene un tiempo máximo de espera de 5 segundos para no retener conexiones.<br>Paso 9: Si el estado del pago es aprobado, el sistema abre una transacción y vuelve a leer el pedido con bloqueo pesimista, para que dos notificaciones simultáneas del mismo pago no atraviesen ambas el control de idempotencia.<br>Paso 10: Si el pedido está en un estado terminal, o ya tiene grabado un identificador de pago, o su estado de pago ya es PAGADO, el sistema confirma la transacción sin modificar nada y termina.<br>Paso 11: Si el pedido está en estado RESERVADO, el pago corresponde a la seña de una reserva: el sistema marca la seña como pagada, graba el identificador del pago, confirma la transacción y **no** despacha, porque la reserva la activa el proceso programado el día agendado.<br>Paso 12: En el caso general, el sistema marca el estado de pago del pedido como PAGADO, graba el identificador del pago de la pasarela y confirma la transacción.<br>Paso 13: Recién después del commit, y fuera de la transacción, el sistema le avisa al Cliente que su pago fue aprobado, por tiempo real (evento `order:payment-approved`) y por notificación push, en modo de mejor esfuerzo.<br>Postcondición: Si el pago fue aprobado, el pedido quedó con estado de pago PAGADO y con el identificador del pago de la pasarela grabado —o con la seña marcada como pagada, si era una reserva— y el despacho se disparó exactamente una vez.<br>Rendimiento (diseño): El procesamiento completo de una notificación se resuelve en menos de 3 segundos; la consulta a MercadoPago está acotada a 5 segundos de espera máxima.<br>Frecuencia: Una o más notificaciones por cada pedido pagado con MercadoPago.<br>Comentarios: La idempotencia no descansa en un solo mecanismo sino en tres, encadenados: un índice único parcial sobre el identificador de pago en el registro de pagos, un índice análogo sobre el identificador de pago del pedido, y el bloqueo pesimista sobre el pedido dentro de la transacción, que serializa dos notificaciones concurrentes del mismo pago.<br>Comentarios: Quien termina resolviendo esa situación es un proceso temporal que corre cada 30 minutos y cancela los pedidos de MercadoPago sin pago confirmado más antiguos que el plazo configurado, restituyendo el stock recién en ese momento.<br>Comentarios: Ese proceso, además, vuelve a tomar el pedido con bloqueo pesimista y solo lo cancela si sigue pendiente y sin identificador de pago, de modo que la carrera entre el pago tardío y la expiración está resuelta en ambas direcciones.<br>Comentarios: Por último, si la pasarela está caída al crear el pedido, este queda sin URL de pago y no existe una ruta para regenerar el checkout.<br>Comentarios: La creación del enlace de pago (`crearCheckoutDePago`) no tiene ruta propia: la invoca la creación del pedido (CU-005) cuando el medio de pago es MercadoPago, y la creación de la reserva (CU-072) para su seña.<br>Comentarios: El enlace del intento vigente se puede volver a leer mientras el cobro siga pendiente: `GET /orders/:id` devuelve `payment_url` y `GET /orders/reservations` devuelve `paymentUrl`; sigue sin existir una ruta para regenerarlo. |
+| CU-168 Reintegrar el Pago de un Pedido | `reintegrarPagoDelPedido(pedidoId identificador, importe moneda)` | `POST /orders/:id/refunds/retry`<br>`GET /orders/:id/refunds`<br>`GET /refunds` | Paso 2: El administrador puede reintentar una devolución fallida con `POST /orders/:id/refunds/retry`: el sistema responde 404 si el pedido no existe o es de otra distribuidora, 409 si el pedido no está cancelado ni tiene pendiente la devolución del recargo express, y 403 si quien llama es un cliente. Una devolución que sigue fallando queda `failed` y la respuesta es 200.<br>Paso 4: Si la pasarela rechaza la devolución o no responde, la devolución queda `failed` y el pago, aprobado; el pedido sigue cancelado. | Descripción: Los endpoints son de administrador o administrador general (con `X-Distributor`): `GET /refunds?status=&limit=&offset=` lista las devoluciones de la distribuidora, las más nuevas primero (`status=failed`: las que esperan reintento), con `{ items, total, limit, offset }`; `GET /orders/:id/refunds` lista las del pedido; la consulta del cliente es CU-348; `POST /orders/:id/refunds/retry` es idempotente (`Idempotency-Key`).<br>Paso 1: La devolución es un efecto posterior a la cancelación, fuera de su transacción, y se dispara en la cancelación del cliente o del administrador (`PATCH /orders/:id/cancel`, `DELETE /orders/:id`, `PATCH /orders/:id/status` con `cancelled`), en un pago aprobado que llega después de la cancelación (webhook tardío) y en el pase de un express al reparto común, donde devuelve solo el recargo express.<br>Paso 3: Los pagos en efectivo o por transferencia, y los que nunca se aprobaron, no hacen nada.<br>Paso 4: Cada devolución es una fila de `payment_refund`, única por pago y tipo: `kind` (`full` o `express_surcharge`), `amount`, `status` (`pending`, `succeeded` o `failed`), `gatewayRefundId`, `errorMessage` y `attempts`. Su `refund_id` viaja a la pasarela como clave de idempotencia: repetir o reintentar no devuelve el dinero dos veces. Nunca se pide más de lo que la pasarela cobró y no devolvió. Si la pasarela informa que el pago ya estaba devuelto, se marca `succeeded` sin repetir la solicitud.<br>Paso 5: Una devolución total deja el pago del registro en `refunded`; la parcial lo deja `approved`. El estado de cobro del pedido no cambia (`paymentStatus` sigue `paid`).<br>Paso 6: Avisa por socket y push al cliente con `order:payment-refunded` (`{ orderId, refundId, kind, amount, at }`) y al panel; `order:refund-failed` (con `reason`) va solo al panel.<br>Rendimiento (diseño): Una consulta al registro de pagos y una llamada a la pasarela por cada pago. La cancelación no espera la devolución: responde antes.<br>Comentarios: La devolución es una consecuencia posterior a la cancelación y no forma parte de su transacción: llamar a una pasarela dentro de una transacción de base de datos la mantendría abierta mientras se espera a un tercero, y un fallo de la pasarela no debe impedir que el cliente cancele; por eso existe el reintento manual.<br>Comentarios: La pasarela se abstrae detrás de `PaymentGatewayPort`, que suma `refundPayment({ gatewayPaymentId, amount, idempotencyKey })`; hoy hay un solo adaptador, `MercadoPagoAdapter`. Stripe no existe en este backend: incorporarlo es un adaptador nuevo con su `refundPayment`.<br>Comentarios: La migración `ExpressYReintegros` crea la tabla `payment_refund`.<br>Comentarios: El panel escucha `order:refund-failed`: avisa con un mensaje en pantalla, deja una entrada en la campana de notificaciones con el motivo y refresca «Reintegros» y el pedido, para resolver la devolución a mano. |
 | CU-292 Confirmar el Cobro en Efectivo | `confirmarCobroEnEfectivo(pedidoId identificador)` | `PATCH /orders/:id/payment/cash-received` | Paso 4: Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404).<br>Paso 5: Si el pedido está asignado a otro chofer, el sistema rechaza la operación con "Este pedido no está asignado a tu usuario" (403), antes de mirar el estado.<br>Paso 5: Si el pedido no está entregado, el sistema rechaza la operación (400).<br>Paso 5: Si no se pagó en efectivo, también (400).<br>Paso 6: Si el pago ya se informó como impago, el sistema responde 409: lo resuelve un administrador (CU-294).<br>Paso 3: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422. | Excepción, paso 6: Si el pago ya estaba pagado, no es un error: el sistema devuelve el pedido tal cual (idempotente).<br>Precondición: El solicitante está autenticado como Chofer (ACT-02) y es el asignado al pedido.<br>Precondición: El pedido tiene estado DELIVERED, se paga en efectivo y su pago está pendiente.<br>Paso 3: La app envía `PATCH /orders/:id/payment/cash-received`, sin cuerpo y con el encabezado `Idempotency-Key`.<br>Paso 4: El sistema comprueba que el pedido sea de la distribuidora y relee el pedido con bloqueo.<br>Rendimiento (diseño): Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo.<br>Comentarios: Es el dato que alimenta el efectivo cobrado de la jornada del chofer (CU-291).<br>Comentarios: Si el cliente no pagó, el chofer informa el impago con CU-293. |
 | CU-293 Informar el Cobro Impago | `informarCobroImpago(pedidoId identificador, nota cadena)` | `PUT /incidents/:incidentId/photo`<br>`PATCH /orders/:id/payment/unpaid` | Paso 4: Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404).<br>Paso 5: Si el pedido está asignado a otro chofer, el sistema rechaza la operación (403), antes de mirar el estado.<br>Paso 5: Si el pedido no está entregado o no se pagó en efectivo, el sistema rechaza la operación (400).<br>Paso 3: Si la nota supera los 500 caracteres, el sistema rechaza la operación (400).<br>Paso 9: Si la incidencia la reportó otro chofer, el sistema responde 403; si ya no está abierta (la resolvió un administrador, CU-294), responde 409.<br>Paso 6: Si el pago ya no está pendiente (cobrado o resuelto), el sistema responde 409.<br>Paso 3: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 2: En su app, el chofer elige informar que no cobró y, si quiere, escribe una nota (hasta 500 caracteres). | Descripción: El pago pasa a impago y el sistema abre una incidencia de tipo cobro impago, cuya descripción es la nota del chofer, y avisa a los administradores por el panel en vivo (evento `incident:created`).<br>Descripción: La foto es opcional y se sube después, como un paso más de este mismo caso (`PUT /incidents/:incidentId/photo`).<br>Precondición: El solicitante está autenticado como Chofer (ACT-02) y es el asignado al pedido.<br>Precondición: El pedido tiene estado DELIVERED, se paga en efectivo y su pago está pendiente.<br>Paso 3: La app envía `PATCH /orders/:id/payment/unpaid` con `{ note }` opcional y el encabezado `Idempotency-Key`.<br>Paso 4: El sistema comprueba que el pedido sea de la distribuidora y relee el pedido con bloqueo.<br>Paso 7: Si el pedido no tiene una incidencia de cobro impago viva, crea una, abierta, con la nota como descripción (o un texto por defecto) y el momento «posterior a la entrega», en la misma transacción.<br>Paso 8: Después de confirmada la transacción, avisa a los administradores de la distribuidora, una sola vez por incidencia.<br>Paso 9: Opcional: el chofer sube la foto de la incidencia con `PUT /incidents/:incidentId/photo` (JPG, PNG o WEBP); también puede reemplazarla o sacarla mientras la incidencia siga abierta.<br>Rendimiento (diseño): Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo.<br>Comentarios: Hay una sola incidencia de cobro impago viva por pedido, garantizada por un índice único en la base.<br>Comentarios: La incidencia no se crea ni se cambia a mano por CU-060 ni CU-063: se abre acá y se cierra con CU-294, que también resuelve el pago.<br>Comentarios: El aviso a los administradores es de mejor esfuerzo: la incidencia ya está guardada. |
 | CU-294 Resolver un Cobro Impago | `resolverCobroImpago(pedidoId identificador, resolucion cadena, nota cadena, cajaId identificador)` | `PATCH /orders/:id/payment/resolve-unpaid` | Paso 4: Si el pedido no existe o es de otra distribuidora, el sistema informa que no lo encontró (404).<br>Paso 3: Si la resolución no es `paid` ni `written_off`, o la nota falta o está vacía, el sistema rechaza la operación (400).<br>Paso 5: Si el pago no está informado como impago, el sistema responde 409.<br>Paso 5: Repetir la misma resolución, el mismo administrador u otro, no es un error: el sistema responde 200 con `alreadyResolved: true` y no toca la nota ni la incidencia.<br>Paso 3: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 4: Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".<br>Paso 2: Si la distribuidora tiene alguna caja de efectivo activa y no se indica `cashBoxId`, el sistema responde 400 «Indicá la caja donde entra el efectivo cobrado (cashBoxId)»; si la caja no es de efectivo, 400; si no existe o es de otra distribuidora, 404; si exige sesión y no la tiene abierta, o está desactivada, 409 y el pedido no cambia.<br>Paso 4: Si el chofer ya rindió el pedido, el sistema responde 409 «El chofer ya rindió este pedido». | Descripción: El administrador resuelve un pedido cuyo pago el chofer informó como impago: `paid` (el cliente pagó después) o `written_off` (se da por perdido).<br>Descripción: Quedan registrados quién y cuándo (`paymentResolvedBy`, `paymentResolvedAt`, `paymentResolutionNote`); el momento y el usuario de la confirmación del cobro se llenan solo con `paid`, porque una pérdida no es un cobro.<br>Descripción: En la misma transacción cierra la incidencia de cobro impago del pedido con la misma nota.<br>Precondición: El solicitante está autenticado como Administrador (ACT-03) o Administrador General (ACT-05), que indica la distribuidora con `X-Distributor`.<br>Paso 3: El panel envía `PATCH /orders/:id/payment/resolve-unpaid` con `{ resolution, note, cashBoxId? }` (la caja solo cuenta con `resolution: paid`) y el encabezado `Idempotency-Key`.<br>Paso 4: El sistema comprueba que el pedido sea de la distribuidora y relee el pedido con bloqueo.<br>Paso 6: Registra quién y cuándo lo resolvió y la nota; si fue `paid`, registra también el momento y el usuario de la confirmación del cobro.<br>Paso 7: Cierra la incidencia de cobro impago abierta del pedido, con la misma nota, en la misma transacción.<br>Paso 8: El sistema devuelve el pedido con `alreadyResolved: false`.<br>Rendimiento (diseño): Una transacción corta sobre un pedido, con bloqueo; responde en menos de 1 segundo.<br>Comentarios: Un pago confirmado antes por el chofer (CU-292) no es un impago resuelto y no se puede resolver por acá.<br>Comentarios: El alta de la incidencia es de CU-293; esta operación solo la cierra.<br>Paso 5: Con `cashBoxId`, el sistema asienta en la misma transacción una entrada en esa caja de efectivo por el saldo a cobrar (total menos la seña ya paga; si da 0 no se asienta), `method: cash`, categoría de sistema `order_payment` «Cobro de pedido», `referenceType: order_payment` y `referenceId` el pedido, por `CashLedgerService.registrar`. Sin cajas de efectivo en la distribuidora se cobra sin movimiento (si otro administrador crea la primera caja entre el chequeo y el asiento, se corrige con un ingreso manual). Repetir la operación sobre un pedido ya cobrado no asienta otra entrada. El movimiento `order_payment` no se anula a mano: se corrige con una transferencia entre cajas (CU-310).<br>Comentarios: Un pedido cobrado por el administrador no entra en lo esperado de la rendición del chofer. |
@@ -25995,9 +26150,9 @@ Los casos de uso esenciales (Documento 1 §7) describen qué hace el actor y qu�
 
 | CU | Operación del sistema | Ruta de la API | Respuestas y códigos | Notas técnicas |
 |---|---|---|---|---|
-| CU-072 Crear una Reserva Programada con Seña | `crearReserva(items lista, direccionId identificador, fechaAgendada fecha, franjaId identificador, metodoDePago cadena, montoDeLaSenia moneda)` | `POST /orders (con la fecha agendada y la seña)` | Paso 2: Si un cliente intenta crear el pedido a nombre de otro, el sistema responde 403 Forbidden con el mensaje «No autorizado a crear pedidos para otro cliente».<br>Paso 3: Si la clave de idempotencia no tiene el formato exigido, el sistema responde 400 Bad Request.<br>Paso 3: Si otra petición con la misma clave todavía está en curso, responde 409 Conflict pidiendo reintentar más tarde.<br>Paso 4: Si el pedido se declara reserva pero no trae fecha agendada, el sistema responde 400 Bad Request con el mensaje «Una reserva requiere scheduledDate (fecha de entrega agendada)».<br>Paso 6: Si el cliente no existe o no tiene perfil de cliente, el sistema responde 404 Not Found.<br>Paso 6: Si la dirección no existe o no le pertenece, responde 404 Not Found.<br>Paso 7: Si la dirección queda fuera de toda zona de cobertura, el sistema revierte la transacción y responde 400 Bad Request.<br>Paso 9: Si la garrafa pedida pertenece a otra distribuidora, el sistema revierte y responde 400 Bad Request.<br>Paso 9: Si no queda stock suficiente, el dominio levanta un error de stock insuficiente que no lleva código HTTP asociado; el manejador del alta solo repropaga los errores que ya traen 404 o 400, así que ese error termina convertido en 500 Internal Server Error con el mensaje genérico «Error al crear el pedido» y el cliente nunca se entera del motivo real.<br>Paso 9: Lo mismo ocurre cuando la garrafa pedida no existe, caso que debería resolverse como 404.<br>Paso 12: Si dos altas concurrentes toman los bloqueos en distinto orden y la base detecta un bloqueo cruzado, el sistema revierte y reintenta la operación completa; agotados los reintentos, la respuesta también termina siendo 500 Internal Server Error.<br>Paso 3: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 13: El sistema envía la confirmación al cliente, avisa al panel en vivo del nuevo pedido y responde 201 con el pedido y, cuando corresponde, el enlace de pago de la seña.<br>Comentarios: El mapeo de los errores de dominio se pierde en el camino: el filtro global de excepciones traduciría el error de stock insuficiente a 400 y el de garrafa inexistente a 404, pero el manejador del alta los convierte en 500 antes de que lleguen a él.<br>Comentarios: Corresponde corregirlo dejando pasar los errores de dominio hacia el filtro, para que la falta de stock vuelva a ser un 400 con mensaje de negocio. | Descripción: El alta es idempotente y descuenta el stock dentro de una transacción con bloqueo pesimista.<br>Precondición: El alta de pedidos no declara restricción de roles, de modo que la pueden invocar tanto un cliente como un administrador o un chofer autenticado; un cliente solo puede crear pedidos a su propio nombre.<br>Paso 2: El sistema toma el rol y la identidad del solicitante del token y, si es un cliente, verifica que el pedido sea a su propio nombre.<br>Paso 3: El sistema resuelve la idempotencia por la clave que llega en el encabezado: si esa clave ya se resolvió, devuelve la respuesta guardada sin volver a crear nada.<br>Paso 4: El sistema comprueba que la reserva traiga fecha agendada, antes de abrir ninguna transacción.<br>Paso 6: El sistema abre la transacción y recupera al cliente y la dirección de entrega, que debe pertenecerle.<br>Paso 8: Si el pedido trae fecha y franja horaria, el sistema bloquea la franja dentro de la misma transacción y valida que quede cupo para ese día.<br>Paso 9: Por cada ítem, el sistema bloquea la garrafa con un bloqueo pesimista, descuenta el stock, comprueba que la garrafa pertenezca exactamente a la distribuidora del pedido y calcula el precio con la lista y las promociones por volumen leídas de esa misma fila bloqueada, nunca de lo que envió el cliente.<br>Paso 11: El sistema crea el pedido en estado reservado, porque el cuerpo trae el indicador de reserva, con el monto de la seña registrado, la seña marcada como no cobrada y la fecha agendada guardada.<br>Paso 12: El sistema confirma la transacción.<br>Paso 13: Fuera de la transacción y sin ofrecer el pedido a ningún chofer, si la seña es por MercadoPago y tiene monto, el sistema genera un enlace de pago solo por el importe de la seña, que el webhook usará para marcarla cobrada.<br>Rendimiento (diseño): Medio: la operación abre una transacción con bloqueos pesimistas sobre las garrafas y, si hay agenda, sobre la franja horaria.<br>Comentarios: Limitación: el alta de pedidos no declara restricción de roles, de modo que un chofer autenticado también puede crear la reserva; el único control es el que impide a un cliente pedir a nombre de otro.<br>Comentarios: En los rechazos que las excepciones describen el sistema deshace todo: la transacción se revierte.<br>Concurrencia: el sistema bloquea la franja y cada garrafa mientras lo verifica y lo modifica, para evitar la carrera con otra operación simultánea. |
-| CU-073 Consultar las Reservas y el Estado de la Seña | `listarReservas()` | `GET /orders/reservations` | — | Paso 1: El administrador manda a llamar los pedidos suspendidos en RESERVED.<br>Paso 2: El sistema procesa select de BD y ordena los pedidos por próximo cronograma.<br>Rendimiento (diseño): Inmediato. |
-| CU-074 Confirmar la Seña Cobrada en Efectivo | `confirmarSenia(pedidoId identificador)` | `PATCH /orders/:id/confirm-deposit` | Paso 2: Un UUID trunco o desasociado reporta 404 Not Found.<br>Paso 3: Si el pedido no clasifica (no es una reserva pendiente) expulsa Bad Request 400. | Paso 1: El administrador indica la UUID via PATCH para dar el alta de confirmación.<br>Paso 3: El sistema verifica la salud (que su status siga siendo RESERVED).<br>Paso 4: El sistema altera el flag interno deposit_paid a true y guarda.<br>Rendimiento (diseño): Inmediato. |
+| CU-072 Crear una Reserva Programada con Seña | `crearReserva(items lista, direccionId identificador, fechaAgendada fecha, franjaId identificador, metodoDePago cadena, montoDeLaSenia moneda)` | `POST /orders/quote` (cotiza con la misma regla, para avisar antes de enviar)<br>`POST /orders (con la fecha agendada y la seña)`<br>`GET /time-slot/availability?date=` (las franjas con su cupo) | Paso 2: Si un cliente intenta crear el pedido a nombre de otro, el sistema responde 403 Forbidden con el mensaje «No autorizado a crear pedidos para otro cliente».<br>Paso 3: Si la clave de idempotencia no tiene el formato exigido, el sistema responde 400 Bad Request.<br>Paso 3: Si otra petición con la misma clave todavía está en curso, responde 409 Conflict pidiendo reintentar más tarde.<br>Paso 4: Si el pedido se declara reserva pero no trae fecha agendada, el sistema responde 400 Bad Request con el mensaje «Una reserva requiere scheduledDate (fecha de entrega agendada)».<br>Paso 6: Si el cliente no existe o no tiene perfil de cliente, el sistema responde 404 Not Found.<br>Paso 6: Si la dirección no existe o no le pertenece, responde 404 Not Found.<br>Paso 7: Si la dirección queda fuera de toda zona de cobertura, el sistema revierte la transacción y responde 400 Bad Request.<br>Paso 9: Si la garrafa pedida pertenece a otra distribuidora, el sistema revierte y responde 400 Bad Request.<br>Paso 9: Si no queda stock suficiente, el sistema revierte y responde 400 «Stock insuficiente para <producto>».<br>Paso 9: Si la garrafa pedida no existe, responde 404 «Garrafa no encontrada: …».<br>Paso 12: Si dos altas concurrentes toman los bloqueos en distinto orden y la base detecta un bloqueo cruzado, el sistema revierte y reintenta la operación completa; agotados los reintentos, la respuesta también termina siendo 500 Internal Server Error.<br>Paso 4: Si la reserva se paga con cuenta corriente, el sistema responde 400 «Una reserva no se puede pagar con cuenta corriente»; si se pide la modalidad express, 400 «Un pedido express no se agenda: no se combina con reserva, franja horaria ni fecha agendada».<br>Paso 8: Si la reserva trae franja y la fecha es anterior a hoy, el sistema responde 400 «No se puede agendar en una fecha pasada»; si la franja de hoy ya terminó, 400 «La franja ya terminó, elegí otra».<br>Paso 10: Si la seña supera el total del pedido —con el recargo de zona y el de medio de pago, redondeado a dos decimales—, el sistema responde 400 «La seña ($X) no puede superar el total del pedido ($Y)» sin escribir nada; `POST /orders/quote` da el mismo 400. Una seña igual al total se acepta.<br>Paso 3: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 13: El sistema envía la confirmación al cliente, avisa al panel en vivo del nuevo pedido y responde 201 con el pedido y, cuando corresponde, el enlace de pago de la seña. | Descripción: El alta es idempotente y descuenta el stock dentro de una transacción con bloqueo pesimista.<br>Precondición: El alta de pedidos no declara restricción de roles, de modo que la pueden invocar tanto un cliente como un administrador o un chofer autenticado; un cliente solo puede crear pedidos a su propio nombre.<br>Paso 2: El sistema toma el rol y la identidad del solicitante del token y, si es un cliente, verifica que el pedido sea a su propio nombre.<br>Paso 3: El sistema resuelve la idempotencia por la clave que llega en el encabezado: si esa clave ya se resolvió, devuelve la respuesta guardada sin volver a crear nada.<br>Paso 4: El sistema comprueba que la reserva traiga fecha agendada, antes de abrir ninguna transacción.<br>Paso 6: El sistema abre la transacción y recupera al cliente y la dirección de entrega, que debe pertenecerle.<br>Paso 8: Si el pedido trae fecha y franja horaria, el sistema bloquea la franja dentro de la misma transacción y valida que quede cupo para ese día.<br>Paso 9: Por cada ítem, el sistema bloquea la garrafa con un bloqueo pesimista, descuenta el stock, comprueba que la garrafa pertenezca exactamente a la distribuidora del pedido y calcula el precio con la lista y las promociones por volumen leídas de esa misma fila bloqueada, nunca de lo que envió el cliente.<br>Paso 11: El sistema crea el pedido en estado reservado, porque el cuerpo trae el indicador de reserva, con el monto de la seña registrado, la seña marcada como no cobrada y la fecha agendada guardada.<br>Paso 12: El sistema confirma la transacción.<br>Paso 13: Fuera de la transacción y sin ofrecer el pedido a ningún chofer, si la seña es por MercadoPago y tiene monto, el sistema genera un enlace de pago solo por el importe de la seña, que el webhook usará para marcarla cobrada.<br>Rendimiento (diseño): Medio: la operación abre una transacción con bloqueos pesimistas sobre las garrafas y, si hay agenda, sobre la franja horaria.<br>Comentarios: Limitación: el alta de pedidos no declara restricción de roles, de modo que un chofer autenticado también puede crear la reserva; el único control es el que impide a un cliente pedir a nombre de otro.<br>Comentarios: En los rechazos que las excepciones describen el sistema deshace todo: la transacción se revierte.<br>Concurrencia: el sistema bloquea la franja y cada garrafa mientras lo verifica y lo modifica, para evitar la carrera con otra operación simultánea.<br>Paso 1: Desde el panel la crea el administrador en «Nuevo pedido telefónico» (`/orders/new`, `NewOrder`): al marcar «Es una reserva con seña» aparecen la fecha de entrega (no anterior a hoy, día argentino), la franja y el monto de la seña (`ReservationFields`, `reservationBody`). La franja sale de `GET /time-slot/availability?date=`: no se ofrecen las agotadas ni, si el día es hoy, las ya terminadas. Con una reserva el panel pasa el medio de pago de cuenta corriente a efectivo y no ofrece el express.<br>Paso 10: El panel compara la seña con el `total` de la cotización (`POST /orders/quote`) y muestra el mismo mensaje del tope en el campo, sin enviar el alta.<br>Comentarios: Una reserva no se edita: `PATCH /orders/:id` responde 409 «Sólo se edita un pedido pendiente sin chofer asignado (estado actual: reserved)». Para cambiarla se cancela (`PATCH /orders/:id/cancel`) y se crea otra; por eso el tope de la seña corre sólo en el alta y en su cotización.<br>Comentarios: La fecha anterior a hoy se rechaza únicamente si la reserva trae franja: sin franja la API de develop acepta la fecha pasada y la reserva nace igual; el panel no deja elegir un día pasado. Esto cambia cuando se integre la tanda del back que rechaza siempre la fecha pasada.<br>Comentarios: El enlace de pago de la seña viaja en la respuesta del alta (`payment_url`) y se vuelve a leer, mientras la seña siga pendiente, con `GET /orders/:id` (`payment_url`) y `GET /orders/reservations` (`paymentUrl`). Si la reserva es en efectivo o por transferencia no hay enlace: la seña la confirma a mano un administrador (CU-074). |
+| CU-073 Consultar las Reservas y el Estado de la Seña | `listarReservas()` | `GET /orders/reservations` | Paso 1: Si quien consulta es el Administrador General y no envía `X-Distributor`, el sistema responde 400 «Falta la distribuidora: enviá el header X-Distributor (slug o id)» y no lista nada.<br>Paso 2: Si no hay reservas, el sistema responde 200 con una lista vacía. | Paso 1: El administrador abre «Reservas» (`/reservations`) y el panel envía `GET /orders/reservations`.<br>Paso 2: El sistema lee los pedidos en estado `reserved` de la distribuidora —incluso los de clientes o choferes dados de baja—, ordenados por `scheduledDate` ascendente y, a igual fecha, por alta descendente.<br>Paso 3: Cada reserva trae `id`, `customerName`, `customerPhone`, `scheduledDate`, `paymentMethod`, `total`, `depositAmount`, `depositPaid`, `remainingBalance` (el total, menos la seña sólo si ya está paga), `timeSlot` (`name`, `startTime` y `endTime` en HH:MM, o `null` si la reserva es sólo por día), `paymentUrl`, `createdAt` e `items` (`quantity` y `type`).<br>Paso 4: `paymentUrl` es el enlace de MercadoPago de la seña mientras ese cobro siga pendiente: es `null` con efectivo o transferencia, con la seña ya paga o si la pasarela no lo generó. Es el enlace del último intento de cobro del pedido: uno posterior rechazado, cancelado o sin enlace reemplaza al anterior.<br>Paso 4: El detalle de la reserva en el panel muestra la franja, el enlace de pago con «Copiar enlace» y «Abrir» y el «Saldo al entregar» (`total − depositAmount`, porque `remainingBalance` con la seña pendiente trae el total entero).<br>Rendimiento (diseño): Una lectura de los pedidos con sus ítems y su franja y una consulta de los enlaces vigentes, sólo de las señas de MercadoPago pendientes. |
+| CU-074 Confirmar la Seña Cobrada en Efectivo | `confirmarSenia(pedidoId identificador)` | `PATCH /orders/:id/confirm-deposit` | Paso 2: Si la reserva no existe o es de otra distribuidora, el sistema responde 404 «Reserva no encontrada».<br>Paso 3: Si el pedido no está en estado `reserved`, responde 400 «El pedido no es una reserva pendiente».<br>Paso 3: Si la seña es de MercadoPago, responde 400 «La seña por MercadoPago se confirma sola cuando la pasarela avisa el pago: no se confirma a mano». | Paso 1: El administrador abre el detalle de la reserva en «Reservas» y elige «Confirmar seña cobrada» (efectivo) o «Confirmar transferencia recibida» (transferencia); para una seña de MercadoPago el panel no ofrece ninguna acción. El panel envía `PATCH /orders/:id/confirm-deposit`.<br>Paso 2: El sistema lee el pedido de la distribuidora del contexto.<br>Paso 3: Comprueba que el estado siga siendo `reserved` y que `paymentMethod` no sea `mercadopago`.<br>Paso 4: Marca `deposit_paid` en verdadero y guarda; el estado sigue `reserved` hasta que el proceso automático lo active (CU-075). Confirmar otra vez una seña ya confirmada responde 200 y no cambia nada.<br>Rendimiento (diseño): Una lectura y una escritura. |
 | CU-075 Activar las Reservas Vencidas Automáticamente | `activarReservasDelDia()` | — (proceso programado del sistema: no tiene ruta) | — | Paso 4: Por cada reserva, y de forma secuencial, el sistema valida contra la máquina de estados del pedido el paso de reservado a pendiente, guarda el pedido, recupera su versión completa con coordenadas e ítems y se la entrega al orquestador de despacho para que la ofrezca al chofer más cercano.<br>Rendimiento (diseño): En diferido y automático, sin usuario esperando la respuesta. |
 | CU-076 Expirar las Reservas sin Seña Pagada | `expirarReservasSinSenia()` | — (proceso programado del sistema: no tiene ruta) | — | Excepción, paso 3: Si falla la expiración de una reserva, el sistema revierte su transacción, registra el error en el registro de eventos y sigue con la siguiente: el pedido y el stock de esa reserva quedan como estaban.<br>Descripción: El sistema aborta a modo barredora las órdenes inescrupulosas que nunca depositaron dinero superando el TTL de gracia.<br>Precondición: Reservas RESERVED impagas (deposit_paid = false) que han sido generadas pre-umbral max.<br>Paso 2: El plazo en horas lo lee de la configuración al arrancar (`RESERVATION_DEPOSIT_TTL_HOURS`, 48 horas por defecto).<br>Paso 3: Por cada reserva, abre una transacción y pasa el pedido a CANCELLED.<br>Paso 4: Dentro de la misma transacción, el servicio de productos devuelve al inventario la cantidad de cada ítem, bloqueando cada producto; un producto que ya no existe se ignora.<br>Paso 5: El sistema confirma la transacción, de modo que la cancelación y la devolución del stock quedan hechas juntas o no quedan.<br>Rendimiento (diseño): En diferido, Automático.<br>Comentarios: El vencimiento por TTL configurado corre dentro de una transacción propia que revierte el pedido y restituye el stock de forma atómica, a diferencia de la cancelación manual de CU-008 y CU-010, que no comparten esa garantía. |
 | CU-077 Expirar los Pedidos de MercadoPago sin Pagar | `expirarPedidosSinPagar()` | — (proceso programado del sistema: no tiene ruta) | — | Excepción, paso 4: Si falla la expiración de un pedido, el sistema revierte su transacción, registra el error en el registro de eventos y sigue con el siguiente.<br>Descripción: El sistema desestima órdenes standard (checkout en línea) que caducaron su espera de notificación de pasarela IPN.<br>Precondición: Órdenes PENDING cuyo motor de pago era MERCADOPAGO sin acreditación (gatewayPaymentId en null) transcurrido su TTL veloz.<br>Paso 2: El sistema busca hasta cincuenta pedidos pendientes, pagados con MercadoPago y sin pago acreditado, creados antes del plazo configurado.<br>Paso 2: El plazo en minutos lo lee de la configuración al arrancar (`ORDER_MERCADOPAGO_PENDING_TTL_MINUTES`, 60 minutos por defecto).<br>Paso 3: El sistema asegura con lock DB (pessimistic_write) el pedido para bloquear concurrencia fortuita (un ping del webhook IPN ingresando idéntico microsegundo).<br>Paso 4: El sistema re-chequea condición, transiciona la petición a un CANCELLED irrecuperable con reason.<br>Paso 5: Dentro de la misma transacción, el servicio de productos devuelve al inventario la cantidad de cada ítem, bloqueando cada producto, y el sistema confirma la transacción.<br>Rendimiento (diseño): En diferido, Automático.<br>Comentarios: El bloqueo pesimista sobre el pedido antes de cancelarlo es lo que evita la carrera con un webhook de MercadoPago que confirme el pago casi al mismo tiempo que el proceso decide expirarlo; si el pago llega primero, el proceso descarta la cancelación de ese pedido sin reintentarla.<br>Concurrencia: el sistema bloquea el pedido mientras lo verifica y lo modifica, para evitar la carrera con otra operación simultánea. |
@@ -26101,9 +26256,9 @@ Los casos de uso esenciales (Documento 1 §7) describen qué hace el actor y qu�
 
 | CU | Operación del sistema | Ruta de la API | Respuestas y códigos | Notas técnicas |
 |---|---|---|---|---|
-| CU-225 Crear una Caja | `crearCaja(nombre cadena, tipo cadena, requiereSesion booleano)` | `POST /cash-boxes`<br>`GET /cash-boxes` | Paso 4: Si ya existe una caja vigente con ese nombre, el sistema responde 409.<br>Paso 4: Si el tipo no es efectivo, banco ni billetera, el sistema responde 400. | Precondición: El Administrador General indica la distribuidora con `X-Distributor`.<br>Paso 1: El administrador abre «Finanzas · Cajas» en el panel y ve las cajas de la distribuidora con su saldo: `GET /cash-boxes`.<br>Paso 3: El panel envía `POST /cash-boxes`.<br>Rendimiento (diseño): Una lectura y una escritura. Responde en menos de 1 segundo.<br>Comentarios: Una restricción de la base impide que una caja de efectivo tenga saldo negativo.<br>Comentarios: La migración `CajaYRendicion` crea las tablas de caja, los tres disparadores de solo agregar y siembra la «Caja central» y las categorías de sistema de cada distribuidora existente; las distribuidoras nuevas las reciben con el evento `distribuidora.creada`. El `balance` de la caja es la suma de su libro.<br>Comentarios: Una caja de efectivo no admite saldo negativo (restricción `CHECK`); una de banco o de billetera no controla saldo. |
-| CU-226 Abrir la Caja | `abrirCaja(cajaId identificador, montoInicial moneda)` | `POST /cash-boxes/:id/sessions`<br>`GET /cash-boxes/:id/sessions` | Paso 3: Si la caja no existe o es de otra distribuidora, el sistema responde 404.<br>Paso 4: Si la caja ya tiene una sesión abierta, el sistema responde 409.<br>Paso 4: Si la caja no exige sesión, el sistema responde 400.<br>Paso 2: Si el monto inicial es negativo, el sistema responde 400. | Paso 3: El panel envía `POST /cash-boxes/:id/sessions`.<br>Paso 6: Si el monto inicial no coincide con el saldo que el libro le da a la caja, el sistema asienta un ajuste de apertura, por el libro de movimientos (CU-228), para que el saldo sea el monto inicial.<br>Rendimiento (diseño): Una lectura y una escritura. Responde en menos de 1 segundo.<br>Comentarios: Una caja tiene a lo sumo una sesión abierta: un índice único parcial sobre la caja con `WHERE status = 'open'` hace que dos aperturas simultáneas no puedan convivir.<br>Comentarios: Abrir con un monto distinto del saldo del libro asienta un ajuste de apertura; el esperado de la sesión se calcula sin ese ajuste. |
-| CU-227 Cerrar la Caja con Arqueo | `cerrarCajaConArqueo(sesionId identificador, montoContado moneda)` | `GET /cash-sessions/:id`<br>`PATCH /cash-sessions/:id/close` | Paso 3: Si la sesión no existe o es de otra distribuidora, el sistema responde 404.<br>Paso 3: Si la sesión ya está cerrada, el sistema responde 409.<br>Paso 2: Si el monto contado es negativo, el sistema responde 400. | Paso 1: El administrador abre la sesión actual de la caja y elige «Cerrar caja»: `GET /cash-sessions/:id` le muestra el monto inicial, los movimientos y el saldo.<br>Paso 3: El panel envía `PATCH /cash-sessions/:id/close`.<br>Paso 6: Si la diferencia no es cero, el sistema asienta primero un movimiento de ajuste con la categoría de sistema «sobrante de caja» o «faltante de caja» —punto de extensión *Diferencia de arqueo*: si es un sobrante, **«extend» CU-228 Registrar una Entrada de Dinero en la Caja**; si es un faltante, **«extend» CU-309 Registrar una Salida de Dinero de la Caja**—, para que el saldo quede igual a lo contado.<br>Rendimiento (diseño): Una lectura, una suma sobre los movimientos de la sesión y dos escrituras. Responde en menos de 1 segundo.<br>Comentarios: El ajuste no es una excepción al libro sino un movimiento más, de modo que `saldo = Σ ingresos − Σ egresos` sigue siendo cierto después del cierre y la verificación nocturna del saldo no lo marca.<br>Comentarios: Un faltante no se carga a nadie desde acá: si corresponde descontárselo a un chofer, se hace al aprobar su rendición (CU-233), donde está la persona responsable.<br>Comentarios: La suma se hace con `decimal.js` y `numeric` en la base, nunca con punto flotante.<br>Punto de extensión: *Diferencia de arqueo*: si el monto contado es mayor que el saldo teórico (sobrante), lo extiende CU-228 Registrar una Entrada de Dinero en la Caja; si es menor (faltante), lo extiende CU-309 Registrar una Salida de Dinero de la Caja.<br>Comentarios: `esperado = apertura + Σ movimientos de la sesión` (sin el ajuste de apertura) y `diferencia = contado − esperado`; el saldo de la caja queda igual a lo contado. |
+| CU-225 Crear una Caja | `crearCaja(nombre cadena, tipo cadena, requiereSesion booleano)` | `POST /cash-boxes`<br>`GET /cash-boxes`<br>`GET /cash-boxes/:id` | Paso 4: Si ya existe una caja vigente con ese nombre, el sistema responde 409.<br>Paso 4: Si el tipo no es efectivo, banco ni billetera, el sistema responde 400. | Precondición: El Administrador General indica la distribuidora con `X-Distributor`.<br>Paso 1: El administrador abre «Finanzas · Cajas» en el panel y ve las cajas de la distribuidora con su saldo: `GET /cash-boxes`.<br>Paso 3: El panel envía `POST /cash-boxes`.<br>Paso 5: La ficha de la caja (`/finance/boxes/:id`, `CashBoxDetails`) lee `GET /cash-boxes/:id`: nombre, tipo, estado, si exige sesión, saldo según el libro y fechas; si la caja no existe o es de otra distribuidora, el sistema responde 404 «Caja no encontrada: …».<br>Rendimiento (diseño): Una lectura y una escritura. Responde en menos de 1 segundo.<br>Comentarios: Una restricción de la base impide que una caja de efectivo tenga saldo negativo.<br>Comentarios: La migración `CajaYRendicion` crea las tablas de caja, los tres disparadores de solo agregar y siembra la «Caja central» y las categorías de sistema de cada distribuidora existente; las distribuidoras nuevas las reciben con el evento `distribuidora.creada`. El `balance` de la caja es la suma de su libro.<br>Comentarios: Una caja de efectivo no admite saldo negativo (restricción `CHECK`); una de banco o de billetera no controla saldo. |
+| CU-226 Abrir la Caja | `abrirCaja(cajaId identificador, montoInicial moneda)` | `POST /cash-boxes/:id/sessions`<br>`GET /cash-boxes/:id/sessions`<br>`GET /cash-boxes/:id` | Paso 3: Si la caja no existe o es de otra distribuidora, el sistema responde 404.<br>Paso 4: Si la caja ya tiene una sesión abierta, el sistema responde 409.<br>Paso 4: Si la caja no exige sesión, el sistema responde 400.<br>Paso 2: Si el monto inicial es negativo, el sistema responde 400. | Paso 3: El panel envía `POST /cash-boxes/:id/sessions`, desde «Abrir caja» en la ficha de la caja (`/finance/boxes/:id`).<br>Paso 7: La ficha lista el historial de sesiones con `GET /cash-boxes/:id/sessions`, de la más nueva a la más vieja y paginado con `page` (desde 1) y `limit`: cada sesión trae `openedAt`, `openedByUserId`, `openingAmount`, `closedAt`, `closedByUserId`, `expectedAmount`, `countedAmount`, `difference` y `notes`; los del arqueo son `null` mientras la sesión está abierta.<br>Paso 6: Si el monto inicial no coincide con el saldo que el libro le da a la caja, el sistema asienta un ajuste de apertura, por el libro de movimientos (CU-228), para que el saldo sea el monto inicial.<br>Rendimiento (diseño): Una lectura y una escritura. Responde en menos de 1 segundo.<br>Comentarios: Una caja tiene a lo sumo una sesión abierta: un índice único parcial sobre la caja con `WHERE status = 'open'` hace que dos aperturas simultáneas no puedan convivir.<br>Comentarios: Abrir con un monto distinto del saldo del libro asienta un ajuste de apertura; el esperado de la sesión se calcula sin ese ajuste. |
+| CU-227 Cerrar la Caja con Arqueo | `cerrarCajaConArqueo(sesionId identificador, montoContado moneda)` | `GET /cash-boxes/:id`<br>`GET /cash-boxes/:id/sessions`<br>`GET /cash-sessions/:id`<br>`PATCH /cash-sessions/:id/close` | Paso 3: Si la sesión no existe o es de otra distribuidora, el sistema responde 404.<br>Paso 3: Si la sesión ya está cerrada, el sistema responde 409.<br>Paso 2: Si el monto contado es negativo, el sistema responde 400. | Paso 1: El administrador abre la ficha de la caja (`/finance/boxes/:id`, `CashBoxDetails`; `GET /cash-boxes/:id`), con el saldo según el libro, la sesión en curso y el historial de sesiones, y con la sesión abierta elige «Cerrar con arqueo»: `GET /cash-sessions/:id` le muestra el monto inicial, los movimientos y el saldo.<br>Paso 3: El panel envía `PATCH /cash-sessions/:id/close`.<br>Paso 6: Si la diferencia no es cero, el sistema asienta primero un movimiento de ajuste con la categoría de sistema «sobrante de caja» o «faltante de caja» —punto de extensión *Diferencia de arqueo*: si es un sobrante, **«extend» CU-228 Registrar una Entrada de Dinero en la Caja**; si es un faltante, **«extend» CU-309 Registrar una Salida de Dinero de la Caja**—, para que el saldo quede igual a lo contado.<br>Rendimiento (diseño): Una lectura, una suma sobre los movimientos de la sesión y dos escrituras. Responde en menos de 1 segundo.<br>Comentarios: El ajuste no es una excepción al libro sino un movimiento más, de modo que `saldo = Σ ingresos − Σ egresos` sigue siendo cierto después del cierre y la verificación nocturna del saldo no lo marca.<br>Comentarios: Un faltante no se carga a nadie desde acá: si corresponde descontárselo a un chofer, se hace al aprobar su rendición (CU-233), donde está la persona responsable.<br>Comentarios: La suma se hace con `decimal.js` y `numeric` en la base, nunca con punto flotante.<br>Punto de extensión: *Diferencia de arqueo*: si el monto contado es mayor que el saldo teórico (sobrante), lo extiende CU-228 Registrar una Entrada de Dinero en la Caja; si es menor (faltante), lo extiende CU-309 Registrar una Salida de Dinero de la Caja.<br>Comentarios: `esperado = apertura + Σ movimientos de la sesión` (sin el ajuste de apertura) y `diferencia = contado − esperado`; el saldo de la caja queda igual a lo contado.<br>Paso 8: El historial de la ficha (`GET /cash-boxes/:id/sessions`) muestra por cada sesión cerrada el arqueo (contado y esperado) y la diferencia al centavo, rotulada «Faltante» si es negativa, «Sobrante» si es positiva y «Cuadra» si es cero; la sesión abierta no tiene arqueo. |
 | CU-228 Registrar una Entrada de Dinero en la Caja | `registrarEntradaDeDinero(cajaId identificador, importe moneda, categoriaId identificador, medio cadena, motivo cadena)` | `POST /cash-movements` | Paso 4: Si la caja exige sesión y no la tiene abierta, el sistema responde 409.<br>Paso 3: Si la categoría no es de entrada, el sistema responde 400.<br>Paso 3: Si el monto no es mayor que cero, el sistema responde 400.<br>Paso 3: Si la caja o la categoría no existen o son de otra distribuidora, el sistema responde 404.<br>Paso 3: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. | Descripción: La salida de dinero es CU-309 y el movimiento de fondos entre dos cajas, CU-310.<br>Paso 3: El panel envía `POST /cash-movements` con el tipo entrada y una clave de idempotencia.<br>Paso 5: El sistema asienta el movimiento de entrada, a nombre del administrador que lo registra, y sube el saldo de la caja en la misma transacción.<br>Rendimiento (diseño): Una escritura al libro y una al saldo, con bloqueo de la fila de la caja. Responde en menos de 1 segundo.<br>Comentarios: Es el punto único del dinero: la rendición de un chofer (CU-233) y el pago de una cuenta corriente (CU-237) asientan sus entradas por esta misma operación, en vez de escribir cada una su propio asiento.<br>Comentarios: El libro es de solo agregar: un disparador de la base rechaza todo `UPDATE` y todo `DELETE` sobre los movimientos, y una corrección es otro movimiento (CU-229).<br>Comentarios: La clave de idempotencia evita que un reintento de la app por un corte de red duplique el asiento.<br>Comentarios: Cada movimiento guarda quién lo registró.<br>Comentarios: `CashLedgerService.registrar` es el único punto por el que el dinero entra o sale de una caja: bloquea la caja (`FOR UPDATE`), valida la sesión, que la categoría sea del mismo sentido y que una caja de efectivo no quede en negativo, inserta el movimiento y actualiza `balance` en la transacción de quien llama. El invariante `balance = Σ entradas − Σ salidas` lo verifica la conciliación nocturna.<br>Comentarios: `GET /cash-movements` lista el libro (CU-340). |
 | CU-229 Anular un Movimiento de Caja | `anularMovimientoDeCaja(movimientoId identificador, motivo cadena)` | `POST /cash-movements/:id/reverse` | Paso 4: Si el movimiento ya fue anulado o es a su vez una anulación, el sistema responde 409.<br>Paso 5: Si el contraasiento dejaría una caja de efectivo en saldo negativo, el sistema responde 409.<br>Paso 2: Si no se indica el motivo, o el movimiento no es manual, el sistema responde 400 y el mensaje dice por dónde se corrige.<br>Paso 3: Si el movimiento no existe o es de otra distribuidora, el sistema responde 404.<br>Paso 3: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación. | Paso 3: El panel envía `POST /cash-movements/:id/reverse` con una clave de idempotencia.<br>Rendimiento (diseño): Dos lecturas y dos escrituras, con bloqueo de la caja. Responde en menos de 1 segundo.<br>Comentarios: La anulación es un contraasiento con la misma categoría y el sentido opuesto, asociado al original (`reverses_movement_id`, único): un movimiento se anula una sola vez y una anulación no se anula. Pagos de liquidaciones: `PATCH /driver-liquidations/:id/unpay`; pata de una transferencia: `POST /cash-movements/:id/reverse-transfer`; cobro de cuenta corriente: un ajuste en la cuenta del cliente. |
 | CU-230 Crear una Categoría de Ingresos y Gastos | `crearCategoriaDeCaja(nombre cadena, sentido cadena)` | `POST /cash-categories` | Paso 3: Si ya existe una categoría con ese nombre y sentido, el sistema responde 409. | Paso 3: El panel envía `POST /cash-categories`.<br>Rendimiento (diseño): Una lectura y una escritura. Responde en menos de 1 segundo.<br>Comentarios: Las diez categorías de sistema (`system_code`) se siembran por distribuidora: cobro de cuenta corriente, rendición de chofer, sobrante y faltante de caja, transferencia (entrada y salida), combustible, compra de mercadería, multa de tránsito y pago de comisiones. `GET /cash-categories` las lista (también al chofer, para los gastos de su rendición); las de sistema no se editan ni se desactivan. |
@@ -26244,83 +26399,83 @@ Las clases del modelo conceptual, con sus atributos tipados y las operaciones qu
 
 ![Clases de dominio: vista general](diagramas/clases-diseno/DC_General.png)
 
-**Figura 441 — Diagrama de Clases de Dominio**
+**Figura 443 — Diagrama de Clases de Dominio**
 
 ![Clases de dominio: organización y acceso](diagramas/clases-diseno/DC_Organizacion-y-acceso.png)
 
-**Figura 442 — Clases de dominio: organización y acceso**
+**Figura 444 — Clases de dominio: organización y acceso**
 
 ![Clases de dominio: clientes](diagramas/clases-diseno/DC_Clientes.png)
 
-**Figura 443 — Clases de dominio: clientes**
+**Figura 445 — Clases de dominio: clientes**
 
 ![Clases de dominio: pedido, líneas y pago](diagramas/clases-diseno/DC_Pedido.png)
 
-**Figura 444 — Clases de dominio: pedido, líneas y pago**
+**Figura 446 — Clases de dominio: pedido, líneas y pago**
 
 ![Clases de dominio: carrito, franjas y cobertura](diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png)
 
-**Figura 445 — Clases de dominio: carrito, franjas y cobertura**
+**Figura 447 — Clases de dominio: carrito, franjas y cobertura**
 
 ![Clases de dominio: despacho y propuestas con vigencia](diagramas/clases-diseno/DC_Despacho.png)
 
-**Figura 446 — Clases de dominio: despacho y propuestas con vigencia**
+**Figura 448 — Clases de dominio: despacho y propuestas con vigencia**
 
 ![Clases de dominio: choferes y vehículos](diagramas/clases-diseno/DC_Choferes-y-vehiculos.png)
 
-**Figura 447 — Clases de dominio: choferes y vehículos**
+**Figura 449 — Clases de dominio: choferes y vehículos**
 
 ![Clases de dominio: mantenimiento de la flota](diagramas/clases-diseno/DC_Mantenimiento.png)
 
-**Figura 448 — Clases de dominio: mantenimiento de la flota**
+**Figura 450 — Clases de dominio: mantenimiento de la flota**
 
 ![Clases de dominio: productos y envases](diagramas/clases-diseno/DC_Productos-y-envases.png)
 
-**Figura 449 — Clases de dominio: productos y envases**
+**Figura 451 — Clases de dominio: productos y envases**
 
 ![Clases de dominio: personal](diagramas/clases-diseno/DC_Personal.png)
 
-**Figura 450 — Clases de dominio: personal**
+**Figura 452 — Clases de dominio: personal**
 
 ![Clases de dominio: recupero de envases](diagramas/clases-diseno/DC_Recupero.png)
 
-**Figura 451 — Clases de dominio: recupero de envases**
+**Figura 453 — Clases de dominio: recupero de envases**
 
 ![Clases de dominio: posventa](diagramas/clases-diseno/DC_Posventa.png)
 
-**Figura 452 — Clases de dominio: posventa**
+**Figura 454 — Clases de dominio: posventa**
 
 ![Clases de dominio: gastos de la flota](diagramas/clases-diseno/DC_Gastos-de-flota.png)
 
-**Figura 453 — Clases de dominio: gastos de la flota**
+**Figura 455 — Clases de dominio: gastos de la flota**
 
 ![Clases de dominio: stock físico](diagramas/clases-diseno/DC_Stock-fisico.png)
 
-**Figura 454 — Clases de dominio: stock físico**
+**Figura 456 — Clases de dominio: stock físico**
 
 ![Clases de dominio: carga del camión](diagramas/clases-diseno/DC_Carga-del-camion.png)
 
-**Figura 455 — Clases de dominio: carga del camión**
+**Figura 457 — Clases de dominio: carga del camión**
 
 ![Clases de dominio: compras](diagramas/clases-diseno/DC_Compras.png)
 
-**Figura 456 — Clases de dominio: compras**
+**Figura 458 — Clases de dominio: compras**
 
 ![Clases de dominio: caja y movimientos](diagramas/clases-diseno/DC_Caja.png)
 
-**Figura 457 — Clases de dominio: caja y movimientos**
+**Figura 459 — Clases de dominio: caja y movimientos**
 
 ![Clases de dominio: rendición del chofer](diagramas/clases-diseno/DC_Rendicion.png)
 
-**Figura 458 — Clases de dominio: rendición del chofer**
+**Figura 460 — Clases de dominio: rendición del chofer**
 
 ![Clases de dominio: cuentas corrientes](diagramas/clases-diseno/DC_Cuentas-corrientes.png)
 
-**Figura 459 — Clases de dominio: cuentas corrientes**
+**Figura 461 — Clases de dominio: cuentas corrientes**
 
 ![Clases de dominio: comisiones y liquidaciones](diagramas/clases-diseno/DC_Comisiones.png)
 
-**Figura 460 — Clases de dominio: comisiones y liquidaciones**
+**Figura 462 — Clases de dominio: comisiones y liquidaciones**
 
 ### 5.2 Clases de Diseño, por módulo
 
@@ -26338,119 +26493,119 @@ Ningún DSD llega hasta un adaptador (los diagramas terminan en el puerto), así
 
 ![Clases de diseño: sesión, registro e identidad](diagramas/clases-diseno/DC_Mod_Sesion-y-registro.png)
 
-**Figura 461 — Clases de diseño: sesión, registro e identidad**
+**Figura 463 — Clases de diseño: sesión, registro e identidad**
 
 ![Clases de diseño: usuarios, roles, administradores y auditoría](diagramas/clases-diseno/DC_Mod_Usuarios.png)
 
-**Figura 462 — Clases de diseño: usuarios, roles, administradores y auditoría**
+**Figura 464 — Clases de diseño: usuarios, roles, administradores y auditoría**
 
 ![Clases de diseño: clientes y direcciones de entrega](diagramas/clases-diseno/DC_Mod_Clientes.png)
 
-**Figura 463 — Clases de diseño: clientes y direcciones de entrega**
+**Figura 465 — Clases de diseño: clientes y direcciones de entrega**
 
 ![Clases de diseño: carrito y recompra](diagramas/clases-diseno/DC_Mod_Carrito-y-recompra.png)
 
-**Figura 464 — Clases de diseño: carrito y recompra**
+**Figura 466 — Clases de diseño: carrito y recompra**
 
 ![Clases de diseño: productos y franjas horarias](diagramas/clases-diseno/DC_Mod_Productos-y-franjas.png)
 
-**Figura 465 — Clases de diseño: productos y franjas horarias**
+**Figura 467 — Clases de diseño: productos y franjas horarias**
 
 ![Clases de diseño: cobertura y distribuidoras](diagramas/clases-diseno/DC_Mod_Cobertura-y-distribuidoras.png)
 
-**Figura 466 — Clases de diseño: cobertura y distribuidoras**
+**Figura 468 — Clases de diseño: cobertura y distribuidoras**
 
 ![Clases de diseño: pedidos: alta y cancelación](diagramas/clases-diseno/DC_Mod_Pedidos-alta.png)
 
-**Figura 467 — Clases de diseño: pedidos: alta y cancelación**
+**Figura 469 — Clases de diseño: pedidos: alta y cancelación**
 
 ![Clases de diseño: pedidos: consulta y estado](diagramas/clases-diseno/DC_Mod_Pedidos-estado.png)
 
-**Figura 468 — Clases de diseño: pedidos: consulta y estado**
+**Figura 470 — Clases de diseño: pedidos: consulta y estado**
 
 ![Clases de diseño: pagos y reservas](diagramas/clases-diseno/DC_Mod_Pagos.png)
 
-**Figura 469 — Clases de diseño: pagos y reservas**
+**Figura 471 — Clases de diseño: pagos y reservas**
 
 ![Clases de diseño: despacho de pedidos](diagramas/clases-diseno/DC_Mod_Despacho.png)
 
-**Figura 470 — Clases de diseño: despacho de pedidos**
+**Figura 472 — Clases de diseño: despacho de pedidos**
 
 ![Clases de diseño: seguimiento en tiempo real](diagramas/clases-diseno/DC_Mod_Tiempo-real.png)
 
-**Figura 471 — Clases de diseño: seguimiento en tiempo real**
+**Figura 473 — Clases de diseño: seguimiento en tiempo real**
 
 ![Clases de diseño: choferes y vehículos](diagramas/clases-diseno/DC_Mod_Choferes-y-vehiculos.png)
 
-**Figura 472 — Clases de diseño: choferes y vehículos**
+**Figura 474 — Clases de diseño: choferes y vehículos**
 
 ![Clases de diseño: flota: tareas, adjuntos y vencimientos](diagramas/clases-diseno/DC_Mod_Flota-tareas.png)
 
-**Figura 473 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
+**Figura 475 — Clases de diseño: flota: tareas, adjuntos y vencimientos**
 
 ![Clases de diseño: flota: planificador de mantenimiento](diagramas/clases-diseno/DC_Mod_Flota-planificador.png)
 
-**Figura 474 — Clases de diseño: flota: planificador de mantenimiento**
+**Figura 476 — Clases de diseño: flota: planificador de mantenimiento**
 
 ![Clases de diseño: personal: puestos, legajos, jornadas y licencias](diagramas/clases-diseno/DC_Mod_Personal.png)
 
-**Figura 475 — Clases de diseño: personal: puestos, legajos, jornadas y licencias**
+**Figura 477 — Clases de diseño: personal: puestos, legajos, jornadas y licencias**
 
 ![Clases de diseño: adjuntos](diagramas/clases-diseno/DC_Mod_Adjuntos.png)
 
-**Figura 476 — Clases de diseño: adjuntos**
+**Figura 478 — Clases de diseño: adjuntos**
 
 ![Clases de diseño: envases](diagramas/clases-diseno/DC_Mod_Envases.png)
 
-**Figura 477 — Clases de diseño: envases**
+**Figura 479 — Clases de diseño: envases**
 
 ![Clases de diseño: recupero de envases](diagramas/clases-diseno/DC_Mod_Recupero.png)
 
-**Figura 478 — Clases de diseño: recupero de envases**
+**Figura 480 — Clases de diseño: recupero de envases**
 
 ![Clases de diseño: flota: gastos, multas y siniestros](diagramas/clases-diseno/DC_Mod_Flota-gastos.png)
 
-**Figura 479 — Clases de diseño: flota: gastos, multas y siniestros**
+**Figura 481 — Clases de diseño: flota: gastos, multas y siniestros**
 
 ![Clases de diseño: reclamos, incidencias y calificaciones](diagramas/clases-diseno/DC_Mod_Posventa.png)
 
-**Figura 480 — Clases de diseño: reclamos, incidencias y calificaciones**
+**Figura 482 — Clases de diseño: reclamos, incidencias y calificaciones**
 
 ![Clases de diseño: notificaciones y correo](diagramas/clases-diseno/DC_Mod_Notificaciones.png)
 
-**Figura 481 — Clases de diseño: notificaciones y correo**
+**Figura 483 — Clases de diseño: notificaciones y correo**
 
 ![Clases de diseño: reportes, salud y almacenamiento](diagramas/clases-diseno/DC_Mod_Soporte.png)
 
-**Figura 482 — Clases de diseño: reportes, salud y almacenamiento**
+**Figura 484 — Clases de diseño: reportes, salud y almacenamiento**
 
 ![Clases de diseño: stock](diagramas/clases-diseno/DC_Mod_Stock.png)
 
-**Figura 483 — Clases de diseño: stock**
+**Figura 485 — Clases de diseño: stock**
 
 ![Clases de diseño: compras](diagramas/clases-diseno/DC_Mod_Compras.png)
 
-**Figura 484 — Clases de diseño: compras**
+**Figura 486 — Clases de diseño: compras**
 
 ![Clases de diseño: carga del camión](diagramas/clases-diseno/DC_Mod_Carga-del-camion.png)
 
-**Figura 485 — Clases de diseño: carga del camión**
+**Figura 487 — Clases de diseño: carga del camión**
 
 ![Clases de diseño: caja: cajas, sesiones y libro](diagramas/clases-diseno/DC_Mod_Caja.png)
 
-**Figura 486 — Clases de diseño: caja: cajas, sesiones y libro**
+**Figura 488 — Clases de diseño: caja: cajas, sesiones y libro**
 
 ![Clases de diseño: rendición del chofer](diagramas/clases-diseno/DC_Mod_Rendicion.png)
 
-**Figura 487 — Clases de diseño: rendición del chofer**
+**Figura 489 — Clases de diseño: rendición del chofer**
 
 ![Clases de diseño: cuentas corrientes](diagramas/clases-diseno/DC_Mod_Cuentas-corrientes.png)
 
-**Figura 488 — Clases de diseño: cuentas corrientes**
+**Figura 490 — Clases de diseño: cuentas corrientes**
 
 ![Clases de diseño: comisiones y liquidaciones](diagramas/clases-diseno/DC_Mod_Comisiones.png)
 
-**Figura 489 — Clases de diseño: comisiones y liquidaciones**
+**Figura 491 — Clases de diseño: comisiones y liquidaciones**
 
 ### 5.3 Dependencias entre módulos
 
@@ -26458,7 +26613,7 @@ Un módulo depende de otro cuando alguna de sus clases le manda un mensaje, en a
 
 ![Dependencias entre módulos](diagramas/clases-diseno/DC_Paquetes.png)
 
-**Figura 490 — Dependencias entre módulos**
+**Figura 492 — Dependencias entre módulos**
 
 | Módulo | Depende de |
 |---|---|
@@ -26897,7 +27052,7 @@ El sistema no fuerza la asignación. Si se agotan los radios sin que ningún cho
 
 ![Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia](diagramas/png/MOD_M1_Negociacion-secuencial-de-asignacion-de-pedidos.png)
 
-**Figura 491 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
+**Figura 493 — Módulo M1 — Negociación secuencial de asignación de pedidos — Diagrama de secuencia**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -27563,7 +27718,7 @@ UI App Cliente. Lista de garrafas disponibles con precio, stock y selector de ca
 
 ![D-16 Catálogo de Productos (App Cliente)](diagramas/wireframes/D-16.png)
 
-**Figura 492 — D-16 — Catálogo de Productos (App Cliente)**
+**Figura 494 — D-16 — Catálogo de Productos (App Cliente)**
 
 #### D-17 — Checkout (App Cliente)
 
@@ -27571,7 +27726,7 @@ UI App Cliente. Formulario de confirmación del pedido con resumen, dirección, 
 
 ![D-17 Checkout (App Cliente)](diagramas/wireframes/D-17.png)
 
-**Figura 493 — D-17 — Checkout (App Cliente)**
+**Figura 495 — D-17 — Checkout (App Cliente)**
 
 #### D-18 — Seguimiento en Tiempo Real (App Cliente)
 
@@ -27579,7 +27734,7 @@ UI más importante de la app. Mapa con pin del chofer en movimiento + stepper de
 
 ![D-18 Seguimiento en Tiempo Real (App Cliente)](diagramas/wireframes/D-18.png)
 
-**Figura 494 — D-18 — Seguimiento en Tiempo Real (App Cliente)**
+**Figura 496 — D-18 — Seguimiento en Tiempo Real (App Cliente)**
 
 #### D-19 — Login y Registro (App Cliente + Chofer)
 
@@ -27587,7 +27742,7 @@ UI de autenticación compartida por App Cliente y App Chofer.
 
 ![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19a.png)
 
-**Figura 495 — D-19 — Login y Registro (App Cliente + Chofer)**
+**Figura 497 — D-19 — Login y Registro (App Cliente + Chofer)**
 
 ![D-19 Login y Registro (App Cliente + Chofer)](diagramas/wireframes/D-19b.png)
 
@@ -27597,7 +27752,7 @@ UI principal del chofer. Mapa con su posición actual + toggle grande de disponi
 
 ![D-20 Home del Chofer (App Chofer)](diagramas/wireframes/D-20.png)
 
-**Figura 496 — D-20 — Home del Chofer (App Chofer)**
+**Figura 498 — D-20 — Home del Chofer (App Chofer)**
 
 #### D-21 — Pedido Entrante Bottom Sheet (App Chofer)
 
@@ -27605,7 +27760,7 @@ UI de pedido entrante. Bottom sheet que sube desde abajo con datos del pedido, d
 
 ![D-21 Pedido Entrante Bottom Sheet (App Chofer)](diagramas/wireframes/D-21.png)
 
-**Figura 497 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)**
+**Figura 499 — D-21 — Pedido Entrante Bottom Sheet (App Chofer)**
 
 #### D-22 — En Ruta (App Chofer)
 
@@ -27613,7 +27768,7 @@ UI del chofer navegando hacia el cliente. Mapa con ruta trazada + botones Avisar
 
 ![D-22 En Ruta (App Chofer)](diagramas/wireframes/D-22.png)
 
-**Figura 498 — D-22 — En Ruta (App Chofer)**
+**Figura 500 — D-22 — En Ruta (App Chofer)**
 
 #### D-23 — tablero Administrador (Panel Web)
 
@@ -27621,7 +27776,7 @@ UI Panel Web. tablero con KPIs del día, choferes activos y gráfico de ventas �
 
 ![D-23 tablero Administrador (Panel Web)](diagramas/wireframes/D-23.png)
 
-**Figura 499 — D-23 — tablero Administrador (Panel Web)**
+**Figura 501 — D-23 — tablero Administrador (Panel Web)**
 
 #### D-24 — Listado de Pedidos Admin (Panel Web)
 
@@ -27629,7 +27784,7 @@ UI Panel Web. Tabla paginada con todos los pedidos, filtros e insignias de estad
 
 ![D-24 Listado de Pedidos Admin (Panel Web)](diagramas/wireframes/D-24.png)
 
-**Figura 500 — D-24 — Listado de Pedidos Admin (Panel Web)**
+**Figura 502 — D-24 — Listado de Pedidos Admin (Panel Web)**
 
 ---
 
@@ -27795,7 +27950,7 @@ La base completa en una sola lámina: las 85 tablas implementadas agrupadas por 
 
 ![Modelo físico de la base de datos: vista general](diagramas/base-de-datos/fisico/SPLG-fisico-00-general.png)
 
-**Figura 501 — Modelo físico de la base de datos: vista general**
+**Figura 503 — Modelo físico de la base de datos: vista general**
 
 #### 7.4.2 Diagrama Entidad-Relación (Mermaid)
 
@@ -27803,7 +27958,7 @@ La base completa en una sola lámina: las 85 tablas implementadas agrupadas por 
 
 ![Organización y acceso](diagramas/png/ER_01_Organizacion-y-acceso.png)
 
-**Figura 502 — Organización y acceso**
+**Figura 504 — Organización y acceso**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -27919,7 +28074,7 @@ erDiagram
 
 ![Clientes](diagramas/png/ER_02_Clientes.png)
 
-**Figura 503 — Clientes**
+**Figura 505 — Clientes**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -27978,7 +28133,7 @@ erDiagram
 
 ![Catálogo e inventario de envases](diagramas/png/ER_03_Catalogo-e-inventario-de-envases.png)
 
-**Figura 504 — Catálogo e inventario de envases**
+**Figura 506 — Catálogo e inventario de envases**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28079,7 +28234,7 @@ erDiagram
 
 ![Venta y pedidos](diagramas/png/ER_04_Venta-y-pedidos.png)
 
-**Figura 505 — Venta y pedidos**
+**Figura 507 — Venta y pedidos**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28215,7 +28370,7 @@ erDiagram
 
 ![Pagos](diagramas/png/ER_05_Pagos.png)
 
-**Figura 506 — Pagos**
+**Figura 508 — Pagos**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28266,7 +28421,7 @@ erDiagram
 
 ![Despacho y logística](diagramas/png/ER_06_Despacho-y-logistica.png)
 
-**Figura 507 — Despacho y logística**
+**Figura 509 — Despacho y logística**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28314,7 +28469,7 @@ erDiagram
 
 ![Flota y choferes](diagramas/png/ER_07_Flota-y-choferes.png)
 
-**Figura 508 — Flota y choferes**
+**Figura 510 — Flota y choferes**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28459,7 +28614,7 @@ erDiagram
 
 ![Posventa](diagramas/png/ER_08_Posventa.png)
 
-**Figura 509 — Posventa**
+**Figura 511 — Posventa**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28517,7 +28672,7 @@ erDiagram
 
 ![Personal](diagramas/png/ER_09_Personal.png)
 
-**Figura 510 — Personal**
+**Figura 512 — Personal**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28622,7 +28777,7 @@ erDiagram
 
 ![Gastos de la flota](diagramas/png/ER_10_Gastos-de-la-flota.png)
 
-**Figura 511 — Gastos de la flota**
+**Figura 513 — Gastos de la flota**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28734,7 +28889,7 @@ erDiagram
 
 ![Stock físico y carga del camión](diagramas/png/ER_11_Stock-fisico-y-carga-del-camion.png)
 
-**Figura 512 — Stock físico y carga del camión**
+**Figura 514 — Stock físico y carga del camión**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28874,7 +29029,7 @@ erDiagram
 
 ![Compras](diagramas/png/ER_12_Compras.png)
 
-**Figura 513 — Compras**
+**Figura 515 — Compras**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -28974,7 +29129,7 @@ erDiagram
 
 ![Tablas técnicas](diagramas/png/ER_13_Tablas-tecnicas.png)
 
-**Figura 514 — Tablas técnicas**
+**Figura 516 — Tablas técnicas**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -29010,7 +29165,7 @@ erDiagram
 
 ![Caja y finanzas](diagramas/png/ER_14_Caja-y-finanzas.png)
 
-**Figura 515 — Caja y finanzas**
+**Figura 517 — Caja y finanzas**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -29235,7 +29390,7 @@ Las que cruzan de un contexto a otro (ya sin repetir la entidad completa; sus co
 
 ![Relaciones entre contextos](diagramas/png/ER_15_Relaciones-entre-contextos.png)
 
-**Figura 516 — Relaciones entre contextos**
+**Figura 518 — Relaciones entre contextos**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -29537,67 +29692,67 @@ los atributos también se comprueba contra la base.
 
 ![DER conceptual: vista general](diagramas/base-de-datos/conceptual/SPLG-der-00-general.png)
 
-**Figura 517 — Modelo entidad-relación conceptual: vista general**
+**Figura 519 — Modelo entidad-relación conceptual: vista general**
 
 ![DER conceptual: usuarios y cuentas](diagramas/base-de-datos/conceptual/SPLG-der-01-usuarios-y-cuentas.png)
 
-**Figura 518 — Modelo entidad-relación conceptual: usuarios y cuentas**
+**Figura 520 — Modelo entidad-relación conceptual: usuarios y cuentas**
 
 ![DER conceptual: pedidos y pagos](diagramas/base-de-datos/conceptual/SPLG-der-02-pedidos-y-pagos.png)
 
-**Figura 519 — Modelo entidad-relación conceptual: pedidos y pagos**
+**Figura 521 — Modelo entidad-relación conceptual: pedidos y pagos**
 
 ![DER conceptual: despacho y propuestas con vigencia](diagramas/base-de-datos/conceptual/SPLG-der-03-despacho-y-propuestas-con-vigencia.png)
 
-**Figura 520 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
+**Figura 522 — Modelo entidad-relación conceptual: despacho y propuestas con vigencia**
 
 ![DER conceptual: flota y choferes](diagramas/base-de-datos/conceptual/SPLG-der-04-flota-y-choferes.png)
 
-**Figura 521 — Modelo entidad-relación conceptual: flota y choferes**
+**Figura 523 — Modelo entidad-relación conceptual: flota y choferes**
 
 ![DER conceptual: envases y catálogo](diagramas/base-de-datos/conceptual/SPLG-der-05-envases-y-catalogo.png)
 
-**Figura 522 — Modelo entidad-relación conceptual: envases y catálogo**
+**Figura 524 — Modelo entidad-relación conceptual: envases y catálogo**
 
 ![DER conceptual: personal](diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png)
 
-**Figura 523 — Modelo entidad-relación conceptual: personal**
+**Figura 525 — Modelo entidad-relación conceptual: personal**
 
 ![DER conceptual: posventa](diagramas/base-de-datos/conceptual/SPLG-der-07-posventa.png)
 
-**Figura 524 — Modelo entidad-relación conceptual: posventa**
+**Figura 526 — Modelo entidad-relación conceptual: posventa**
 
 ![DER conceptual: gastos de la flota](diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png)
 
-**Figura 525 — Modelo entidad-relación conceptual: gastos de la flota**
+**Figura 527 — Modelo entidad-relación conceptual: gastos de la flota**
 
 ![DER conceptual: stock físico](diagramas/base-de-datos/conceptual/SPLG-der-09-stock-fisico.png)
 
-**Figura 526 — Modelo entidad-relación conceptual: stock físico**
+**Figura 528 — Modelo entidad-relación conceptual: stock físico**
 
 ![DER conceptual: carga del camión](diagramas/base-de-datos/conceptual/SPLG-der-10-carga-del-camion.png)
 
-**Figura 527 — Modelo entidad-relación conceptual: carga del camión**
+**Figura 529 — Modelo entidad-relación conceptual: carga del camión**
 
 ![DER conceptual: compras](diagramas/base-de-datos/conceptual/SPLG-der-11-compras.png)
 
-**Figura 528 — Modelo entidad-relación conceptual: compras**
+**Figura 530 — Modelo entidad-relación conceptual: compras**
 
 ![DER conceptual: caja y movimientos](diagramas/base-de-datos/conceptual/SPLG-der-12-caja-y-movimientos.png)
 
-**Figura 529 — Modelo entidad-relación conceptual: caja y movimientos**
+**Figura 531 — Modelo entidad-relación conceptual: caja y movimientos**
 
 ![DER conceptual: rendiciones de choferes](diagramas/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png)
 
-**Figura 530 — Modelo entidad-relación conceptual: rendiciones de choferes**
+**Figura 532 — Modelo entidad-relación conceptual: rendiciones de choferes**
 
 ![DER conceptual: cuentas corrientes](diagramas/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png)
 
-**Figura 531 — Modelo entidad-relación conceptual: cuentas corrientes**
+**Figura 533 — Modelo entidad-relación conceptual: cuentas corrientes**
 
 ![DER conceptual: comisiones y liquidaciones](diagramas/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png)
 
-**Figura 532 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
+**Figura 534 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
 
 #### 7.4.8 Tablas de los módulos de gestión de la distribuidora
 
@@ -29618,11 +29773,11 @@ Además el módulo agregó a `maintenance_plan` el documento que controla y las 
 
 ![Modelo físico: personal](diagramas/base-de-datos/fisico/SPLG-fisico-09-personal.png)
 
-**Figura 533 — Modelo físico: personal**
+**Figura 535 — Modelo físico: personal**
 
 ![DER conceptual: personal](diagramas/base-de-datos/conceptual/SPLG-der-06-personal.png)
 
-**Figura 534 — Modelo entidad-relación conceptual: personal**
+**Figura 536 — Modelo entidad-relación conceptual: personal**
 
 ##### 7.4.8.2 Flota ampliada (iteración C-18)
 
@@ -29652,11 +29807,11 @@ Tipos enumerados nuevos:
 
 ![Modelo físico: gastos de la flota](diagramas/base-de-datos/fisico/SPLG-fisico-10-gastos-de-la-flota.png)
 
-**Figura 535 — Modelo físico: gastos de la flota**
+**Figura 537 — Modelo físico: gastos de la flota**
 
 ![DER conceptual: gastos de la flota](diagramas/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png)
 
-**Figura 536 — Modelo entidad-relación conceptual: gastos de la flota**
+**Figura 538 — Modelo entidad-relación conceptual: gastos de la flota**
 
 **Decisiones de modelado.** (1) La carga, la multa y el siniestro son registros propios del vehículo y no
 columnas de `car`: cada uno tiene fecha, importe y ciclo de vida, y alimentan el costo por vehículo.
@@ -29691,23 +29846,23 @@ A estas se suma `payment_refund` (ReintegroDePago), del contexto «Pagos»: la d
 
 ![Modelo físico: caja y finanzas](diagramas/base-de-datos/fisico/SPLG-fisico-14-caja-y-finanzas.png)
 
-**Figura 537 — Modelo físico: caja y finanzas**
+**Figura 539 — Modelo físico: caja y finanzas**
 
 ![DER conceptual: caja y movimientos](diagramas/base-de-datos/conceptual/SPLG-der-12-caja-y-movimientos.png)
 
-**Figura 538 — Modelo entidad-relación conceptual: caja y movimientos**
+**Figura 540 — Modelo entidad-relación conceptual: caja y movimientos**
 
 ![DER conceptual: rendiciones de choferes](diagramas/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png)
 
-**Figura 539 — Modelo entidad-relación conceptual: rendiciones de choferes**
+**Figura 541 — Modelo entidad-relación conceptual: rendiciones de choferes**
 
 ![DER conceptual: cuentas corrientes](diagramas/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png)
 
-**Figura 540 — Modelo entidad-relación conceptual: cuentas corrientes**
+**Figura 542 — Modelo entidad-relación conceptual: cuentas corrientes**
 
 ![DER conceptual: comisiones y liquidaciones](diagramas/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png)
 
-**Figura 541 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
+**Figura 543 — Modelo entidad-relación conceptual: comisiones y liquidaciones**
 
 ## 8. Decisiones de Diseño Relevantes
 
@@ -29826,21 +29981,21 @@ chofer o el administrador lo liberan, y entonces se despacha de nuevo.
 
 ![Diagrama de estados del pedido](diagramas/uml/UML_Estados_Pedido.png)
 
-**Figura 542 — Diagrama de estados del pedido**
+**Figura 544 — Diagrama de estados del pedido**
 
 
 #### Reclamo
 
 ![Diagrama de estados del reclamo](diagramas/uml/UML_Estados_Reclamo.png)
 
-**Figura 543 — Diagrama de estados del reclamo**
+**Figura 545 — Diagrama de estados del reclamo**
 
 
 #### Envase
 
 ![Diagrama de estados del envase](diagramas/uml/UML_Estados_Envase.png)
 
-**Figura 544 — Diagrama de estados del envase**
+**Figura 546 — Diagrama de estados del envase**
 
 
 #### Reserva programada
@@ -29850,21 +30005,21 @@ la seña, y el diagrama muestra cómo llega a `PENDING` o a `CANCELLED`.
 
 ![Diagrama de estados de la reserva programada](diagramas/uml/UML_Estados_Reserva.png)
 
-**Figura 545 — Diagrama de estados de la reserva programada**
+**Figura 547 — Diagrama de estados de la reserva programada**
 
 
 #### Tarea de flota
 
 ![Diagrama de estados de la tarea de flota](diagramas/uml/UML_Estados_TareaFlota.png)
 
-**Figura 546 — Diagrama de estados de la tarea de flota**
+**Figura 548 — Diagrama de estados de la tarea de flota**
 
 
 #### Oferta de despacho
 
 ![Diagrama de estados de la oferta de despacho](diagramas/uml/UML_Estados_OfertaDespacho.png)
 
-**Figura 547 — Diagrama de estados de la oferta de despacho**
+**Figura 549 — Diagrama de estados de la oferta de despacho**
 
 
 #### Orden de compra
@@ -29873,7 +30028,7 @@ La orden nace en borrador, se envía, se recibe de a partes y termina recibida, 
 
 ![Diagrama de estados de la orden de compra](diagramas/uml/UML_Estados_OrdenDeCompra.png)
 
-**Figura 548 — Diagrama de estados de la orden de compra**
+**Figura 550 — Diagrama de estados de la orden de compra**
 
 
 #### Recepción de compra
@@ -29882,14 +30037,14 @@ La recepción nace confirmada y solo sale por la anulación; el pago al proveedo
 
 ![Diagrama de estados de la recepción de compra](diagramas/uml/UML_Estados_RecepcionDeCompra.png)
 
-**Figura 549 — Diagrama de estados de la recepción de compra**
+**Figura 551 — Diagrama de estados de la recepción de compra**
 
 
 #### Carga de camión
 
 ![Diagrama de estados de la carga de camión](diagramas/uml/UML_Estados_CargaDeCamion.png)
 
-**Figura 550 — Diagrama de estados de la carga de camión**
+**Figura 552 — Diagrama de estados de la carga de camión**
 
 
 #### Empleado
@@ -29898,7 +30053,7 @@ El legajo nace activo y sale por el egreso; el reingreso lo reactiva. «En servi
 
 ![Diagrama de estados del empleado](diagramas/uml/UML_Estados_Empleado.png)
 
-**Figura 551 — Diagrama de estados del empleado**
+**Figura 553 — Diagrama de estados del empleado**
 
 
 #### Licencia laboral
@@ -29907,7 +30062,7 @@ La licencia nace solicitada y un administrador la aprueba o la rechaza; se cance
 
 ![Diagrama de estados de la licencia laboral](diagramas/uml/UML_Estados_Licencia.png)
 
-**Figura 552 — Diagrama de estados de la licencia laboral**
+**Figura 554 — Diagrama de estados de la licencia laboral**
 
 
 #### Jornada de trabajo
@@ -29916,7 +30071,7 @@ Una sola jornada abierta por empleado a la vez; se cierra con la marca del chofe
 
 ![Diagrama de estados de la jornada de trabajo](diagramas/uml/UML_Estados_Jornada.png)
 
-**Figura 553 — Diagrama de estados de la jornada de trabajo**
+**Figura 555 — Diagrama de estados de la jornada de trabajo**
 #### Carga de combustible
 
 La carga nace normal o anómala, según el desvío de su consumo respecto del promedio de las últimas cinco
@@ -29925,7 +30080,7 @@ no cuenta en los cálculos. El estado se deriva de la marca de anomalía y de la
 
 ![Diagrama de estados de la carga de combustible](diagramas/uml/UML_Estados_CargaCombustible.png)
 
-**Figura 554 — Diagrama de estados de la carga de combustible**
+**Figura 556 — Diagrama de estados de la carga de combustible**
 
 
 #### Multa de tránsito
@@ -29935,7 +30090,7 @@ está pendiente y vence en siete días o menos sin aviso, el aviso diario la mar
 
 ![Diagrama de estados de la multa de tránsito](diagramas/uml/UML_Estados_MultaTransito.png)
 
-**Figura 555 — Diagrama de estados de la multa de tránsito**
+**Figura 557 — Diagrama de estados de la multa de tránsito**
 
 
 #### Siniestro
@@ -29945,7 +30100,7 @@ Un siniestro cerrado no admite cambios y no devuelve el vehículo a la flota act
 
 ![Diagrama de estados del siniestro](diagramas/uml/UML_Estados_Siniestro.png)
 
-**Figura 556 — Diagrama de estados del siniestro**
+**Figura 558 — Diagrama de estados del siniestro**
 
 
 #### Neumático
@@ -29954,7 +30109,7 @@ El neumático nace en depósito; se monta, se rota, se desmonta y se recapa, y l
 
 ![Diagrama de estados del neumático](diagramas/uml/UML_Estados_Neumatico.png)
 
-**Figura 557 — Diagrama de estados del neumático**
+**Figura 559 — Diagrama de estados del neumático**
 
 
 #### Vigencia de la póliza y de la habilitación
@@ -29965,8 +30120,8 @@ habilitación para transportar mercancías peligrosas.
 
 ![Diagrama de estados de la vigencia de la póliza](diagramas/uml/UML_Estados_PolizaDelVehiculo.png)
 
-**Figura 558 — Diagrama de estados de la vigencia de la póliza y de la habilitación**
-**Figura 559 — Diagrama de estados de la oferta de despacho**
+**Figura 560 — Diagrama de estados de la vigencia de la póliza y de la habilitación**
+**Figura 561 — Diagrama de estados de la oferta de despacho**
 
 
 #### Sesión de caja
@@ -29975,7 +30130,7 @@ La sesión se abre con un monto inicial y se cierra con un arqueo. Una caja tien
 
 ![Diagrama de estados: sesión de caja](diagramas/uml/UML_Estados_SesionDeCaja.png)
 
-**Figura 560 — Diagrama de estados: sesión de caja**
+**Figura 562 — Diagrama de estados: sesión de caja**
 
 
 #### Rendición del chofer
@@ -29984,7 +30139,7 @@ La rendición nace abierta por el proceso de las 23:30, el chofer la presenta y 
 
 ![Diagrama de estados: rendición del chofer](diagramas/uml/UML_Estados_RendicionChofer.png)
 
-**Figura 561 — Diagrama de estados: rendición del chofer**
+**Figura 563 — Diagrama de estados: rendición del chofer**
 
 
 #### Liquidación de comisiones
@@ -29993,7 +30148,7 @@ La liquidación nace como borrador y se aprueba siempre; el neto cero o negativo
 
 ![Diagrama de estados: liquidación de comisiones](diagramas/uml/UML_Estados_LiquidacionComisiones.png)
 
-**Figura 562 — Diagrama de estados: liquidación de comisiones**
+**Figura 564 — Diagrama de estados: liquidación de comisiones**
 
 
 #### Cuenta corriente
@@ -30002,7 +30157,7 @@ La cuenta se habilita activa. El administrador la bloquea y la reactiva, y solo 
 
 ![Diagrama de estados: cuenta corriente](diagramas/uml/UML_Estados_CuentaCorriente.png)
 
-**Figura 563 — Diagrama de estados: cuenta corriente**
+**Figura 565 — Diagrama de estados: cuenta corriente**
 
 
 ### 11.2 Diagramas de Actividad
@@ -30016,7 +30171,7 @@ responde, el pedido pasa al siguiente candidato que no haya sido contactado ante
 
 ![Diagrama de actividad del despacho por proximidad](diagramas/uml/UML_Actividad_Despacho.png)
 
-**Figura 564 — Diagrama de actividad del despacho por proximidad**
+**Figura 566 — Diagrama de actividad del despacho por proximidad**
 
 
 #### Ciclo de vida del pedido
@@ -30026,7 +30181,7 @@ pago. Las dos ramas paralelas del tramo en camino terminan cuando el pedido qued
 
 ![Diagrama de actividad del ciclo de vida del pedido](diagramas/uml/UML_Actividad_CicloPedido.png)
 
-**Figura 565 — Diagrama de actividad del ciclo de vida del pedido**
+**Figura 567 — Diagrama de actividad del ciclo de vida del pedido**
 
 
 ---
