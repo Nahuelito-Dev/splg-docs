@@ -9,8 +9,8 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 
 | Vista | Archivo | Clases | Operaciones |
 |---|---|---:|---:|
-| Organización y acceso (dominio) | `diagramas/clases-diseno/DC_Organizacion-y-acceso.png` | 9 | 71 |
-| Clientes (dominio) | `diagramas/clases-diseno/DC_Clientes.png` | 4 | 33 |
+| Organización y acceso (dominio) | `diagramas/clases-diseno/DC_Organizacion-y-acceso.png` | 9 | 72 |
+| Clientes (dominio) | `diagramas/clases-diseno/DC_Clientes.png` | 4 | 32 |
 | Pedido, líneas y pago (dominio) | `diagramas/clases-diseno/DC_Pedido.png` | 6 | 88 |
 | Carrito, franjas y cobertura (dominio) | `diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png` | 4 | 32 |
 | Despacho y propuestas con vigencia (dominio) | `diagramas/clases-diseno/DC_Despacho.png` | 5 | 15 |
@@ -29,8 +29,8 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Cuentas corrientes (dominio) | `diagramas/clases-diseno/DC_Cuentas-corrientes.png` | 3 | 17 |
 | Comisiones y liquidaciones (dominio) | `diagramas/clases-diseno/DC_Comisiones.png` | 3 | 19 |
 | Sesión, registro e identidad (módulo) | `diagramas/clases-diseno/DC_Mod_Sesion-y-registro.png` | 4 | 14 |
-| Usuarios, roles, administradores y auditoría (módulo) | `diagramas/clases-diseno/DC_Mod_Usuarios.png` | 13 | 29 |
-| Clientes y direcciones de entrega (módulo) | `diagramas/clases-diseno/DC_Mod_Clientes.png` | 7 | 22 |
+| Usuarios, roles, administradores y auditoría (módulo) | `diagramas/clases-diseno/DC_Mod_Usuarios.png` | 13 | 30 |
+| Clientes y direcciones de entrega (módulo) | `diagramas/clases-diseno/DC_Mod_Clientes.png` | 7 | 21 |
 | Carrito y recompra (módulo) | `diagramas/clases-diseno/DC_Mod_Carrito-y-recompra.png` | 5 | 12 |
 | Productos y franjas horarias (módulo) | `diagramas/clases-diseno/DC_Mod_Productos-y-franjas.png` | 5 | 22 |
 | Cobertura y distribuidoras (módulo) | `diagramas/clases-diseno/DC_Mod_Cobertura-y-distribuidoras.png` | 10 | 27 |

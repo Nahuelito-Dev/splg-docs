@@ -79,6 +79,7 @@
 | 24 | 2026-10-16 | Pasada de coherencia: las iteraciones se identifican solo como C-07 a C-20 (el paquete de la sección 4 es el nombre de cada conjunto de casos), CU-103 retirado por duplicar CU-343 (334 casos de uso, diez retirados) y casos retirados fuera del catálogo. | Nahuel Wagner |
 | 25 | 2026-10-18 | Casos de uso construidos el 17/10/2026 pasan a «Implementado» en el catálogo (CU-122 a CU-128, CU-132 a CU-135, CU-143, CU-144, CU-147 a CU-149, CU-151, CU-168, CU-172, CU-183 a CU-206, CU-225 a CU-247, CU-264, CU-265, CU-268, CU-269, CU-309, CU-310, CU-313 a CU-335 y CU-340); plan de construcción y cronograma con las fechas reales; quedan planificados seis casos (CU-105 a CU-108, CU-145 y CU-146). Calendario: la construcción termina el 20/11/2026 con C-19 y la transición va del 23/11/2026 al 22/01/2027; 338 casos de uso con CU-345 a CU-348. | Nahuel Wagner |
 | 26 | 2026-10-22 | Auditoría de contenido: el actor ACT-04 se define como el Tiempo (actor externo, convención de Larman); el alcance pendiente se distingue entre ampliaciones planificadas con iteración (CU-017, CU-116, CU-118) y mejoras diferidas a Trabajo futuro (CU-013, CU-180, CU-181). Re-auditoría: ACT-04 como el Tiempo, con CU-013 como excepción documentada. | Nahuel Wagner |
+| 27 | 2026-10-22 | Cuentas de clientes: CU-050, CU-270 y CU-085 suman al Administrador General (ACT-05) junto al Administrador (ACT-03), que no administra la cuenta de un cliente, y CU-131 pasa a ACT-05; conteos por actor y láminas al día. | Nahuel Wagner |
 
 ---
 
@@ -255,9 +256,9 @@ quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
 |--------|-------|:----:|-------------|
 | ACT-01 | **Cliente** | Humano | Usuario final que compra garrafas de gas. Usa la aplicación del cliente en su teléfono: hace pedidos, elige la franja de entrega y el medio de pago, sigue el pedido en el mapa, administra sus direcciones y puede reclamar si algo sale mal. Inicia 48 casos de uso. |
 | ACT-02 | **Chofer** | Humano | Repartidor de la distribuidora. Usa la aplicación del chofer en su teléfono: se pone en línea, recibe las ofertas de pedidos cercanos, las acepta o las rechaza, informa su posición, entrega y rinde lo cobrado. Inicia 45 casos de uso. |
-| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora. Inicia 249 casos de uso. |
+| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 248 casos de uso. |
 | ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
-| ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 67 casos de uso. |
+| ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 71 casos de uso. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
 | ACT-07 | **Firebase** | Secundario (sistema externo) | Servicio externo de identidad y mensajería. Verifica quién es el usuario que ingresa, crea y deshabilita cuentas, genera el enlace de recuperación de contraseña y entrega las notificaciones a los dispositivos. No inicia ningún caso de uso; participa como actor secundario en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-047, CU-072, CU-079, CU-082, CU-085, CU-100, CU-101 y CU-147. |
 | ACT-08 | **Servicio de correo** | Secundario (sistema externo) | Servicio externo que envía los correos del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y avisos de vencimientos, de stock bajo, de rendiciones sin cerrar y de multas por vencer. No inicia ningún caso de uso; participa como actor secundario en CU-002, CU-047, CU-102, CU-142, CU-188, CU-211, CU-224, CU-234 y CU-326. |
@@ -1340,19 +1341,19 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 
 
 **Código:** CU-050 | **Caso de Uso:** Bloquear un Usuario  
-**Actor/es:** Administrador (ACT-03)  
+**Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Secundario  
-**Descripción:** El administrador bloquea a un usuario —cliente o chofer— por moderación o seguridad. Un usuario bloqueado no puede iniciar sesión ni operar mientras dure el bloqueo. Es la alternativa reversible a dar de baja la cuenta (CU-085).
+**Descripción:** El administrador bloquea a un usuario por moderación o seguridad: el de empresa, a los choferes y administradores de su distribuidora; el Administrador General, también a los clientes, porque un cliente puede comprarle a varias distribuidoras. Un usuario bloqueado no puede iniciar sesión ni operar mientras dure el bloqueo. Es la alternativa reversible a dar de baja la cuenta (CU-085).
 
 ---
 
 
 **Código:** CU-270 | **Caso de Uso:** Desbloquear un Usuario  
-**Actor/es:** Administrador (ACT-03)  
+**Actor/es:** Administrador (ACT-03), Administrador General (ACT-05)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Secundario  
-**Descripción:** El administrador levanta el bloqueo de un usuario —cliente o chofer—. El usuario vuelve a poder iniciar sesión y operar.
+**Descripción:** El administrador levanta el bloqueo de un usuario: el de empresa, el de los choferes y administradores de su distribuidora; el Administrador General, también el de los clientes. El usuario vuelve a poder iniciar sesión y operar.
 
 ---
 
@@ -1790,10 +1791,10 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 
 
 **Código:** CU-085 | **Caso de Uso:** Dar de Baja un Usuario  
-**Actor/es:** Administrador (ACT-03); actores secundarios: Firebase (ACT-07)  
+**Actor/es:** Administrador (ACT-03), Administrador General (ACT-05); actores secundarios: Firebase (ACT-07)  
 **Subsistema:** SS-01 Autenticación y Usuarios  
 **Calificación:** Importante  
-**Descripción:** El administrador da de baja la cuenta de un usuario. La baja es lógica: el usuario, su perfil y sus direcciones dejan de aparecer pero se conservan para el historial y la auditoría, y el acceso queda deshabilitado. Los vehículos no se dan de baja: la flota es de la distribuidora. Un chofer con pedidos en curso o con una carga de camión abierta no puede darse de baja.
+**Descripción:** El administrador da de baja la cuenta de un usuario. La baja es lógica: el usuario, su perfil y sus direcciones dejan de aparecer pero se conservan para el historial y la auditoría, y el acceso queda deshabilitado. Los vehículos no se dan de baja: la flota es de la distribuidora. Un chofer con pedidos en curso o con una carga de camión abierta no puede darse de baja. La cuenta de un cliente la da de baja solo el Administrador General.
 
 ---
 
@@ -1925,10 +1926,10 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 
 
 **Código:** CU-131 | **Caso de Uso:** Modificar los Datos del Cliente  
-**Actor/es:** Administrador (ACT-03)  
+**Actor/es:** Administrador General (ACT-05)  
 **Subsistema:** SS-16 Administración de Cuentas y Roles  
 **Calificación:** Importante  
-**Descripción:** El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre la misma ficha.
+**Descripción:** El Administrador General corrige los datos de la cuenta de un cliente: su nombre y su teléfono, o le fija una contraseña nueva. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095), que son operaciones distintas sobre el mismo cliente. Un administrador de empresa no puede hacerlo, porque un cliente puede comprarle a varias distribuidoras.
 
 ---
 
@@ -3587,7 +3588,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 | CU-047 Recuperar la Contraseña | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
 | CU-048 Procesar el Pago con MercadoPago | SS-14 | ACT-06 | Crítico | Implementado |
 | CU-049 Consultar las Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante | Implementado |
-| CU-050 Bloquear un Usuario | SS-01 | ACT-03 | Secundario | Implementado |
+| CU-050 Bloquear un Usuario | SS-01 | ACT-03, ACT-05 | Secundario | Implementado |
 | CU-051 Consultar el Listado de Vehículos | SS-07 | ACT-03 | Importante | Implementado |
 | CU-052 Registrar una Distribuidora | SS-10 | ACT-05 | Crítico | Implementado |
 | CU-053 Consultar las Distribuidoras | SS-10 | ACT-05 | Crítico | Implementado |
@@ -3621,7 +3622,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 | CU-081 Consultar los Pedidos Asignados al Chofer | SS-02 | ACT-02, ACT-03, ACT-05 | Crítico | Implementado |
 | CU-082 Crear un Usuario Base | SS-01 | — | Importante | Implementado |
 | CU-083 Consultar los Usuarios | SS-01 | ACT-03 | Importante | Implementado |
-| CU-085 Dar de Baja un Usuario | SS-01 | ACT-03 | Importante | Implementado |
+| CU-085 Dar de Baja un Usuario | SS-01 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-086 Registrar un Administrador | SS-16 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-087 Crear el Primer Administrador General | SS-16 | ACT-10 | Importante | Implementado |
 | CU-088 Consultar los Administradores | SS-16 | ACT-03 | Secundario | Implementado |
@@ -3661,7 +3662,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 | CU-128 Indicar Quién Recibe el Pedido | SS-02 | ACT-01 | Importante | Implementado |
 | CU-129 Consultar el Detalle del Cliente | SS-16 | ACT-03 | Importante | Implementado |
 | CU-130 Buscar un Cliente por Usuario | SS-16 | ACT-03 | Importante | Implementado |
-| CU-131 Modificar los Datos del Cliente | SS-16 | ACT-03 | Importante | Implementado |
+| CU-131 Modificar los Datos del Cliente | SS-16 | ACT-05 | Importante | Implementado |
 | CU-132 Registrar la Revisión Periódica de un Envase | SS-13 | ACT-03 | Crítico | Implementado |
 | CU-133 Consultar la Vigencia de un Envase | SS-13 | ACT-03 | Importante | Implementado |
 | CU-134 Consultar los Envases Próximos a Vencer | SS-13 | ACT-03 | Importante | Implementado |
@@ -3799,7 +3800,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 | CU-267 Desactivar un Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-268 Reactivar un Producto | SS-08 | ACT-03 | Importante | Implementado |
 | CU-269 Consultar los Productos Inactivos | SS-08 | ACT-03 | Importante | Implementado |
-| CU-270 Desbloquear un Usuario | SS-01 | ACT-03 | Secundario | Implementado |
+| CU-270 Desbloquear un Usuario | SS-01 | ACT-03, ACT-05 | Secundario | Implementado |
 | CU-271 Invalidar un Chofer | SS-07 | ACT-03 | Crítico | Implementado |
 | CU-272 Buscar un Usuario | SS-01 | ACT-03 | Importante | Implementado |
 | CU-273 Marcar el Depósito Predeterminado | SS-08 | ACT-03 | Importante | Implementado |

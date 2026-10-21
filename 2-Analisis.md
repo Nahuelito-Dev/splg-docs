@@ -398,6 +398,7 @@
 | 25 | 2026-10-16 | Pasada de coherencia: 334 diagramas de secuencia, 362 operaciones y 227 contratos (CU-103 retirado, duplicaba CU-343). | Nahuel Wagner |
 | 26 | 2026-10-18 | Contratos de las operaciones construidas el 17/10/2026 sin la marca de planificados; diagramas de secuencia de CU-268, CU-269 y CU-010 al día. El cobro del administrador sobre un pedido en efectivo (CU-294 y CU-299) asienta una entrada en una caja de efectivo: contratos con la caja y el MovimientoDeCaja. DSS y contratos de CU-345 a CU-348. | Nahuel Wagner |
 | 27 | 2026-10-22 | Auditoría de contenido: glosario con Actor, Sistema Automático (ACT-04) como el Tiempo, Pedido cancelado (cliente o administrador) y Pedido liberado (chofer), y MVVM sólo en las apps Flutter. Re-auditoría: contratos de CU-068, CU-070, CU-217 y CU-233 al día con el código; DSS de CU-013 con su disparo real. | Nahuel Wagner |
+| 28 | 2026-10-22 | Cuentas de clientes: DSS de CU-050 y CU-270 con el rechazo al administrador de empresa; DSS, contrato y operación de CU-131 a nombre del Administrador General (ACT-05). | Nahuel Wagner |
 
 ---
 
@@ -1438,7 +1439,7 @@ sequenceDiagram
 
 #### DSS — CU-050: Bloquear un Usuario
 
-**Actor:** Administrador (ACT-03)
+**Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `bloquearUsuario(usuarioId)`
 
 ```mermaid
@@ -1452,6 +1453,8 @@ sequenceDiagram
     activate SIS
     alt el usuario existe
         SIS-->>ADM: usuario bloqueado
+    else un administrador de empresa sobre la cuenta de un cliente
+        SIS-->>ADM: acceso denegado, la cuenta de un cliente la administra el administrador general
     else el usuario no existe
         SIS-->>ADM: recurso no encontrado
     end
@@ -1514,7 +1517,7 @@ sequenceDiagram
 
 #### DSS — CU-085: Dar de Baja un Usuario
 
-**Actor:** Administrador (ACT-03)
+**Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `eliminarUsuario(usuarioId)`
 
 ```mermaid
@@ -1567,7 +1570,7 @@ sequenceDiagram
 
 #### DSS — CU-270: Desbloquear un Usuario
 
-**Actor:** Administrador (ACT-03)
+**Actor:** Administrador (ACT-03), Administrador General (ACT-05)
 **Operaciones del sistema:** `desbloquearUsuario(usuarioId)`
 
 ```mermaid
@@ -1581,6 +1584,8 @@ sequenceDiagram
     activate SIS
     alt el usuario existe
         SIS-->>ADM: usuario desbloqueado
+    else un administrador de empresa sobre la cuenta de un cliente
+        SIS-->>ADM: acceso denegado, la cuenta de un cliente la administra el administrador general
     else el usuario no existe
         SIS-->>ADM: recurso no encontrado
     end
@@ -7886,21 +7891,23 @@ sequenceDiagram
 
 #### DSS — CU-131: Modificar los Datos del Cliente
 
-**Actor:** Administrador (ACT-03)
+**Actor:** Administrador General (ACT-05)
 **Operaciones del sistema:** `editarDatosDelCliente(clienteId, cambios)`
 
 ```mermaid
 sequenceDiagram
     title DSS — CU-131 Modificar los Datos del Cliente
     autonumber
-    actor ADM as Administrador (ACT-03)
+    actor ADM as Administrador General (ACT-05)
     participant SIS as :Sistema
 
     ADM->>SIS: editarDatosDelCliente(clienteId, cambios)
     activate SIS
     alt el cliente existe
-        SIS-->>ADM: ficha actualizada
-    else el cliente no existe o nunca le compró a la distribuidora del administrador
+        SIS-->>ADM: cuenta actualizada
+    else un administrador de empresa
+        SIS-->>ADM: acceso denegado, la cuenta de un cliente la administra el administrador general
+    else el cliente no existe o nunca le compró a la distribuidora elegida
         SIS-->>ADM: recurso no encontrado
     end
     deactivate SIS
@@ -10455,7 +10462,7 @@ Son **367 operaciones**. **230** modifican el modelo conceptual y tienen contrat
 | `avisarStockBajo()` | CU-211 | Sistema Automático (ACT-04) | Sí |
 | `avisarVencimientosDeLaFlota()` | CU-142 | Sistema Automático (ACT-04) | Sí |
 | `avisarVencimientosDelPersonal()` | CU-188 | Sistema Automático (ACT-04) | Sí |
-| `bloquearUsuario(usuarioId identificador)` | CU-050 | Administrador (ACT-03) | Sí |
+| `bloquearUsuario(usuarioId identificador)` | CU-050 | Administrador (ACT-03), Administrador General (ACT-05) | Sí |
 | `buscarAdministrador(termino cadena)` | CU-088 | Administrador (ACT-03) | No |
 | `buscarChoferPorUsuario(usuarioId identificador)` | CU-110 | Administrador (ACT-03) | No |
 | `buscarClientePorUsuario(usuarioId identificador)` | CU-130 | Administrador (ACT-03) | No |
@@ -10613,11 +10620,11 @@ Son **367 operaciones**. **230** modifican el modelo conceptual y tienen contrat
 | `desactivarProducto(productoId identificador)` | CU-040 | Administrador (ACT-03) | Sí |
 | `desactivarZonaDeCobertura(zonaId identificador)` | CU-308 | Administrador (ACT-03) | Sí |
 | `desactivarZonasVencidas()` | CU-151 | Sistema Automático (ACT-04) | Sí |
-| `desbloquearUsuario(usuarioId identificador)` | CU-270 | Administrador (ACT-03) | Sí |
+| `desbloquearUsuario(usuarioId identificador)` | CU-270 | Administrador (ACT-03), Administrador General (ACT-05) | Sí |
 | `descargarAdjunto(tareaId identificador, adjuntoId identificador)` | CU-157 | Administrador (ACT-03) | No |
 | `descontarStockDeLaEntrega(pedidoId identificador)` | CU-220 | Administrador (ACT-03) | Sí |
 | `despacharPedidoExpress(pedidoId identificador)` | CU-149 | Sistema Automático (ACT-04) | Sí |
-| `editarDatosDelCliente(clienteId identificador, cambios registro)` | CU-131 | Administrador (ACT-03) | Sí |
+| `editarDatosDelCliente(clienteId identificador, cambios registro)` | CU-131 | Administrador General (ACT-05) | Sí |
 | `editarDireccionDeEntrega(direccionId identificador, cambios registro)` | CU-118 | Cliente (ACT-01) | Sí |
 | `editarVehiculo(vehiculoId identificador, datos registro)` | CU-111 | Administrador (ACT-03) | Sí |
 | `eliminarAdjunto(tareaId identificador, adjuntoId identificador)` | CU-158 | Administrador (ACT-03) | Sí |
@@ -10627,7 +10634,7 @@ Son **367 operaciones**. **230** modifican el modelo conceptual y tienen contrat
 | `eliminarEmpleado(empleadoId identificador)` | CU-311 | Administrador (ACT-03) | Sí |
 | `eliminarPuestoDeTrabajo(puestoId identificador)` | CU-257 | Administrador (ACT-03) | Sí |
 | `eliminarRol(rolId identificador)` | CU-254 | Administrador General (ACT-05) | Sí |
-| `eliminarUsuario(usuarioId identificador)` | CU-085 | Administrador (ACT-03) | Sí |
+| `eliminarUsuario(usuarioId identificador)` | CU-085 | Administrador (ACT-03), Administrador General (ACT-05) | Sí |
 | `eliminarVehiculo(vehiculoId identificador)` | CU-112 | Administrador (ACT-03) | Sí |
 | `eliminarZonaDeCobertura(zonaId identificador)` | CU-059 | Administrador (ACT-03) | Sí |
 | `emitirOrdenDeCompra(proveedorId identificador, depositoId identificador, items lista, fechaEsperada fecha)` | CU-215 | Administrador (ACT-03) | Sí |
@@ -12499,14 +12506,14 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | Campo | Detalle |
 |-------|---------|
 | **Nombre** | `editarDatosDelCliente(clienteId identificador, cambios registro)` |
-| **Responsabilidades** | Corregir los datos de la ficha de un cliente desde el panel. |
+| **Responsabilidades** | Corregir los datos de la cuenta de un cliente desde el panel. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-131. Funciones: IRQ-03, OBJ-05. |
-| **Notas** | Es la modificación del ABM de clientes, separada de la actualización de ubicación (actualizarUbicacionDelCliente) y de la baja (eliminarCliente). |
-| **Excepciones** | Si el identificador no es válido o se envía un campo no declarado → error de solicitud. Si el cliente no existe o nunca le compró a la distribuidora del administrador → recurso no encontrado. |
-| **Salida** | La ficha del cliente actualizada. |
-| **Precondiciones** | El solicitante está autenticado. El Cliente existe y, si quien pide es un Administrador con distribuidora en contexto, le compró alguna vez a ella. |
-| **Postcondiciones** | Los atributos de la instancia de Cliente enviados tomaron los valores corregidos. |
+| **Notas** | Es la modificación del ABM de clientes, separada de la actualización de ubicación (actualizarUbicacionDelCliente) y de la baja (eliminarCliente). La cuenta de un cliente la administra el Administrador General: un cliente puede comprarle a varias distribuidoras. |
+| **Excepciones** | Si el identificador no es válido o se envía un campo no declarado → error de solicitud. Si quien pide es un Administrador de empresa → acceso denegado. Si el cliente no existe o nunca le compró a la distribuidora elegida → recurso no encontrado. |
+| **Salida** | La cuenta del cliente actualizada. |
+| **Precondiciones** | El solicitante está autenticado como Administrador General. El Cliente existe y, si hay una distribuidora en contexto, le compró alguna vez a ella. |
+| **Postcondiciones** | Los atributos nombre completo y teléfono de la instancia de Usuario del cliente tomaron los valores enviados. |
 
 ---
 

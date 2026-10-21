@@ -119,6 +119,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 24 | 2026-10-16 | Pasada de coherencia: 334 casos de uso expandidos (CU-103 retirado, duplicaba CU-343), estados «Planificado (C-nn)» con la numeración única de iteraciones. | Nahuel Wagner |
 | 25 | 2026-10-18 | Casos de uso expandidos construidos el 17/10/2026 con el estado «Implementado»: excepciones, códigos y reglas ajustados a lo construido (CU-127, CU-128, CU-172, CU-190, CU-201, CU-229, CU-242, CU-243, CU-334, CU-335, entre otros); CU-008, CU-010, CU-012, CU-015 y CU-311 sin su tramo planificado. CU-294 y CU-299 eligen la caja de efectivo donde entra el cobro; CU-168 suma la consulta del cliente. CU-345 a CU-348: 338 casos de uso. | Nahuel Wagner |
 | 26 | 2026-10-22 | Auditoría de contenido: cantidades por calificación al día (63 críticos, 218 importantes, 55 secundarios, 2 menores; 338 casos), definición de ACT-04 como el Tiempo, CU-008, CU-009 y CU-010 (la liberación del chofer no es una cancelación), CU-233 con una sola regla para la caja de destino, y contrato del back del 22/10 en CU-068 (pedido despachable y propio del chofer), CU-070 (pedido obligatorio para «con el cliente», reglas del chofer, texto con caracteres no válidos) y CU-217 (depósito de la orden). Re-auditoría: casos de uso esenciales sin mecanismos técnicos (cabecera de distribuidora, bloqueos, mensajes de bajo nivel) y costo de la recepción sin orden sólo en los renglones con llenas. | Nahuel Wagner |
+| 27 | 2026-10-22 | Cuentas de clientes: los CUE de CU-050, CU-270, CU-085 y CU-131 dicen que la cuenta de un cliente la administra el Administrador General y que el administrador de empresa recibe acceso denegado (verificado contra la API); conteos por actor al día. | Nahuel Wagner |
 
 ---
 
@@ -758,9 +759,9 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |--------|-------|:----:|-------------|
 | ACT-01 | **Cliente** | Humano | Usuario final que compra garrafas de gas. Usa la aplicación del cliente en su teléfono: hace pedidos, elige la franja de entrega y el medio de pago, sigue el pedido en el mapa, administra sus direcciones y puede reclamar si algo sale mal. Inicia 48 casos de uso. |
 | ACT-02 | **Chofer** | Humano | Repartidor de la distribuidora. Usa la aplicación del chofer en su teléfono: se pone en línea, recibe las ofertas de pedidos cercanos, las acepta o las rechaza, informa su posición, entrega y rinde lo cobrado. Inicia 45 casos de uso. |
-| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora. Inicia 249 casos de uso. |
+| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 248 casos de uso. |
 | ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
-| ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 67 casos de uso. |
+| ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 71 casos de uso. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
 | ACT-07 | **Firebase** | Secundario (sistema externo) | Servicio externo de identidad y mensajería. Verifica quién es el usuario que ingresa, crea y deshabilita cuentas, genera el enlace de recuperación de contraseña y entrega las notificaciones a los dispositivos. No inicia ningún caso de uso; participa como actor secundario en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-047, CU-072, CU-079, CU-082, CU-085, CU-100, CU-101 y CU-147. |
 | ACT-08 | **Servicio de correo** | Secundario (sistema externo) | Servicio externo que envía los correos del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y avisos de vencimientos, de stock bajo, de rendiciones sin cerrar y de multas por vencer. No inicia ningún caso de uso; participa como actor secundario en CU-002, CU-047, CU-102, CU-142, CU-188, CU-211, CU-224, CU-234 y CU-326. |
@@ -805,11 +806,11 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | Paso | Acción |
 |------|--------|
 | 1 | El usuario informa su correo y su contraseña en la aplicación que le corresponde. |
-| 2 | El sistema pide al proveedor de identidad que verifique las credenciales. |
-| 3 | El proveedor de identidad confirma la identidad del usuario. |
-| 4 | El sistema entrega a la aplicación la constancia de identidad, con su duración y los datos básicos del usuario, y sin las credenciales con que el proveedor de identidad renueva la sesión. |
-| 5 | Si el ingreso es al panel de administración, el sistema verifica además que el correo pertenezca a un administrador registrado y mantiene la sesión abierta durante una hora. |
-| 6 | En cada solicitud posterior, el sistema verifica la identidad, comprueba que el rol del usuario corresponda a la aplicación desde la que opera y lo habilita para las funciones de su rol. |
+| 2 | La aplicación pide al proveedor de identidad que verifique las credenciales. |
+| 3 | El proveedor de identidad confirma la identidad del usuario y entrega a la aplicación la constancia de identidad. |
+| 4 | La aplicación presenta la constancia al sistema y le pide el usuario de ese correo. |
+| 5 | El sistema verifica la constancia, comprueba que la cuenta no esté bloqueada y que el rol del usuario corresponda a la aplicación desde la que opera, y le entrega el usuario con su rol. |
+| 6 | La aplicación comprueba que el rol sirva para ella —el panel de administración admite a los administradores y al Administrador General— y deja al usuario operando con las funciones de su rol; el panel mantiene la sesión abierta durante una hora. |
 
 **Postcondición:** El usuario está identificado y opera con las funciones de su rol. El sistema no conserva una sesión propia: cada solicitud se verifica de nuevo.
 
@@ -817,14 +818,12 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si el correo o la contraseña son incorrectos, o el usuario no existe, el sistema informa «El email o la contraseña son incorrectos». El mensaje es el mismo en los dos casos, para no revelar cuál fue; una cuenta dada de baja recibe el mismo mensaje. |
-| 4 | Si la cuenta está bloqueada, o ya no existe en el sistema, el sistema informa «La cuenta no está habilitada». |
-| 2 | Si el usuario superó el máximo de intentos permitidos en poco tiempo —ocho por minuto por cuenta—, el sistema rechaza el intento sin verificar la identidad y le pide esperar. |
-| 2 | Si el proveedor de identidad informa demasiados intentos fallidos, el sistema rechaza el ingreso y le pide esperar; si el ingreso falla por cualquier otra causa, informa «No pudimos iniciar sesión en este momento: probá de nuevo en unos minutos». |
-| 5 | Si el correo no pertenece a un administrador registrado, el sistema informa «Admin not found». Es la única puerta de ingreso que rechaza por rol. |
-| 6 | Si el rol del usuario no corresponde a la aplicación desde la que opera —por ejemplo, un cliente que entra por la aplicación de choferes—, el sistema deniega la solicitud. |
-| 6 | Si la identidad del usuario venció o fue revocada, el sistema deniega la solicitud y la aplicación vuelve a pedir el ingreso. |
+| 2 | Si el correo o la contraseña son incorrectos, o el usuario no existe, el proveedor de identidad rechaza el ingreso y la aplicación informa el error. |
 | 2 | Si hay un error de red, la aplicación informa «Sin conexión a internet. Verificá tu conexión e intentá de nuevo.» |
+| 5 | Si la cuenta está bloqueada, el sistema deniega la solicitud e informa «La cuenta está bloqueada. Comuníquese con la distribuidora.» |
+| 5 | Si el usuario no existe en el sistema, o si su rol no corresponde a la aplicación desde la que opera —por ejemplo, un cliente que entra por la aplicación de choferes—, el sistema deniega la solicitud. |
+| 5 | Si la constancia de identidad venció o fue revocada, el sistema deniega la solicitud y la aplicación vuelve a pedir el ingreso. |
+| 6 | Si el rol del usuario no sirve para la aplicación, esta no abre la sesión; el panel informa «No tenés permisos de administrador». |
 
 **Rendimiento**
 
@@ -836,7 +835,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Múltiples veces por día por usuario. Varía según la duración de la sesión. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema depende del proveedor de identidad: si éste no responde, nadie puede ingresar. El ingreso no impide entrar a un chofer no habilitado: la validación que otorga el administrador (CU-032) y la habilitación (CU-033) se exigen cuando el chofer quiere ponerse en línea (CU-022) y al elegirlo como candidato para un pedido. Un usuario inexistente y una contraseña equivocada reciben el mismo mensaje. |
+| **Comentarios** | El sistema depende del proveedor de identidad: si éste no responde, nadie puede ingresar. El ingreso no impide entrar a un chofer no habilitado: la validación que otorga el administrador (CU-032) y la habilitación (CU-033) se exigen cuando el chofer quiere ponerse en línea (CU-022) y al elegirlo como candidato para un pedido. |
 
 ---
 
@@ -5217,17 +5216,17 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador marca a un usuario como bloqueado. Mientras esté bloqueado, el sistema rechaza todo lo que ese usuario intente hacer. La operación es reversible (CU-270). |
-| **Precondición** | El administrador está identificado y el usuario a bloquear existe. |
+| **Descripción** | El administrador marca a un usuario como bloqueado. Mientras esté bloqueado, el sistema rechaza todo lo que ese usuario intente hacer. La operación es reversible (CU-270). Un administrador de empresa bloquea a los choferes y administradores de su distribuidora; la cuenta de un cliente la bloquea solo el Administrador General. |
+| **Precondición** | El administrador está identificado y el usuario a bloquear existe. Un administrador de empresa solo bloquea a su personal: la cuenta de un cliente la bloquea el Administrador General. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador elige a un cliente o a un chofer en el listado de usuarios. |
+| 1 | El administrador elige a un usuario en el listado de usuarios: un chofer o un administrador de su distribuidora o, si es el Administrador General, también un cliente. |
 | 2 | Pide bloquearlo. |
-| 3 | El sistema verifica que quien lo pide sea administrador y que el usuario exista. |
+| 3 | El sistema verifica que quien lo pide sea administrador, que el usuario exista y que, si quien lo pide es un administrador de empresa, la cuenta no sea la de un cliente. |
 | 4 | El sistema marca al usuario como bloqueado. |
 | 5 | El sistema informa que el usuario quedó bloqueado. |
 | 6 | El panel muestra el listado con el nuevo estado. |
@@ -5240,6 +5239,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 3 | Si el solicitante no es administrador, el sistema deniega la operación. |
 | 3 | Si el usuario no existe, el sistema informa «Usuario no encontrado». |
+| 3 | Si quien lo pide es un administrador de empresa y la cuenta es la de un cliente, el sistema rechaza la operación e informa «La cuenta de un cliente la administra el administrador general». |
 
 **Rendimiento**
 
@@ -5261,17 +5261,17 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador quita la marca de bloqueo de un usuario. El sistema deja de rechazar lo que ese usuario intente hacer. |
-| **Precondición** | El administrador está identificado y el usuario a desbloquear existe y está bloqueado. |
+| **Descripción** | El administrador quita la marca de bloqueo de un usuario. El sistema deja de rechazar lo que ese usuario intente hacer. Un administrador de empresa desbloquea a los choferes y administradores de su distribuidora; la cuenta de un cliente la desbloquea solo el Administrador General. |
+| **Precondición** | El administrador está identificado y el usuario a desbloquear existe y está bloqueado. Un administrador de empresa solo desbloquea a su personal: la cuenta de un cliente la desbloquea el Administrador General. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador elige a un cliente o a un chofer bloqueado en el listado de usuarios. |
+| 1 | El administrador elige a un usuario bloqueado en el listado de usuarios: un chofer o un administrador de su distribuidora o, si es el Administrador General, también un cliente. |
 | 2 | Pide desbloquearlo. |
-| 3 | El sistema verifica que quien lo pide sea administrador y que el usuario exista. |
+| 3 | El sistema verifica que quien lo pide sea administrador, que el usuario exista y que, si quien lo pide es un administrador de empresa, la cuenta no sea la de un cliente. |
 | 4 | El sistema quita la marca de bloqueo. |
 | 5 | El sistema informa que el usuario quedó desbloqueado. |
 | 6 | El panel muestra el listado con el nuevo estado. |
@@ -5284,6 +5284,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |------|--------|
 | 3 | Si el solicitante no es administrador, el sistema deniega la operación. |
 | 3 | Si el usuario no existe, el sistema informa «Usuario no encontrado». |
+| 3 | Si quien lo pide es un administrador de empresa y la cuenta es la de un cliente, el sistema rechaza la operación e informa «La cuenta de un cliente la administra el administrador general». |
 
 **Rendimiento**
 
@@ -7496,7 +7497,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-01 |
-| **Descripción** | El administrador da de baja una cuenta de usuario. El usuario, su perfil de cliente o de chofer y sus direcciones dejan de aparecer pero se conservan para el historial; la cuenta de acceso queda deshabilitada, no borrada, y el correo sigue ocupado. Los vehículos no se dan de baja. Si es un chofer, la baja se rechaza mientras tenga pedidos aceptados o en camino, o una carga de camión abierta; si no los tiene, se libera el vehículo que tenía en uso y el chofer deja de recibir ofertas. |
+| **Descripción** | El administrador da de baja una cuenta de usuario; la de un cliente, solo el Administrador General. El usuario, su perfil de cliente o de chofer y sus direcciones dejan de aparecer pero se conservan para el historial; la cuenta de acceso queda deshabilitada, no borrada, y el correo sigue ocupado. Los vehículos no se dan de baja. Si es un chofer, la baja se rechaza mientras tenga pedidos aceptados o en camino, o una carga de camión abierta; si no los tiene, se libera el vehículo que tenía en uso y el chofer deja de recibir ofertas. |
 | **Precondición** | El administrador está identificado y el usuario existe y pertenece a su distribuidora. Un administrador de empresa solo da de baja a su personal: la cuenta de un cliente la da de baja el Administrador General. |
 | **Estado** | Implementado |
 
@@ -8203,20 +8204,20 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-03 |
-| **Descripción** | El administrador corrige los datos de la ficha de un cliente. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095). |
-| **Precondición** | El administrador está identificado. El cliente existe y, si hay una distribuidora elegida, le compró alguna vez a ella. |
+| **Descripción** | El Administrador General corrige los datos de la cuenta de un cliente: su nombre y su teléfono, o le fija una contraseña nueva. Es la modificación del ABM de clientes, separada de la actualización de ubicación (CU-094) y de la baja (CU-095). Un administrador de empresa no puede hacerlo, porque un cliente puede comprarle a varias distribuidoras. |
+| **Precondición** | El Administrador General está identificado. El cliente existe y, si hay una distribuidora elegida, le compró alguna vez a ella. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador modifica los datos de la ficha. |
-| 2 | El sistema valida el identificador y los datos. Si hay una distribuidora elegida, comprueba que el cliente le haya comprado alguna vez a ella. |
-| 3 | El sistema arma la ficha con los datos nuevos sobre los existentes. |
-| 4 | El sistema guarda los cambios y muestra la ficha actualizada. |
+| 1 | El Administrador General modifica los datos de la cuenta del cliente. |
+| 2 | El sistema valida el identificador y los datos, y comprueba que quien lo pide sea el Administrador General. Si hay una distribuidora elegida, comprueba que el cliente le haya comprado alguna vez a ella. |
+| 3 | El sistema conserva los datos que no se modificaron. |
+| 4 | El sistema guarda los cambios y muestra la cuenta actualizada. |
 
-**Postcondición:** La ficha del cliente queda con los datos corregidos.
+**Postcondición:** La cuenta del cliente queda con los datos corregidos.
 
 **Excepciones**
 
@@ -8224,8 +8225,9 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |------|--------|
 | 2 | Si el identificador no es válido, el sistema rechaza la operación. |
 | 2 | Si el cliente nunca le compró a la distribuidora del administrador, el sistema informa que no lo encontró, sin revelar que existe. |
-| 3 | Si el cliente no existe, el sistema informa «Customer with ID: … not found». |
-| 2 | Si se envía un dato que la ficha no admite, el sistema rechaza la operación. |
+| 3 | Si el cliente no existe, el sistema informa «User with ID: … not found». |
+| 2 | Si se envía un dato que la cuenta no admite, el sistema rechaza la operación. |
+| 2 | Si quien lo pide es un administrador de empresa, el sistema rechaza la operación e informa «La cuenta de un cliente la administra el administrador general». |
 
 **Rendimiento**
 
@@ -8237,7 +8239,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Baja: se modifica cuando el cliente informa un cambio o se detecta un error de carga. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La modificación trae la ficha y le superpone los cambios en un solo paso: si el cliente no existe, el resultado es vacío y de ahí sale el aviso de que no se encontró. |
+| **Comentarios** | Si el cliente no existe, el sistema lo informa. La ubicación del cliente se corrige con otro caso (CU-094). |
 
 ---
 

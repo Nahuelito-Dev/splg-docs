@@ -2,16 +2,18 @@ sequenceDiagram
     title DSD — CU-001 Iniciar Sesión · iniciarSesion
     autonumber
     actor CLI as Cliente (ACT-01)
-    participant FIR as :FirebaseAuthPort
     participant SRV as :AuthService
+    participant FIR as :FirebaseAuthPort
     participant COL as :Map#lt;String, Usuario#gt;
     participant USR as usuario:Usuario
 
     CLI->>+SRV: iniciarSesion(correo, contrasena)
-    SRV->>+FIR: signInWithEmailAndPassword(correo, contrasena)
+    SRV->>+FIR: autenticar(correo, contrasena)
     FIR-->>-SRV: credencial
+    SRV->>+FIR: verifyIdToken(credencial)
+    FIR-->>-SRV: identidad
     SRV->>+COL: get(correo)
     COL-->>-SRV: usuario
     SRV->>+USR: estaHabilitado()
     USR-->>-SRV: habilitado
-    SRV-->>-CLI: sesion
+    SRV-->>-CLI: usuario

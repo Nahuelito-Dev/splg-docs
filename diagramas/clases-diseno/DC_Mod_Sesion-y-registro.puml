@@ -31,7 +31,7 @@ left to right direction
 skinparam nodesep 25
 skinparam ranksep 90
 class AuthService <<fachada>> {
-  + iniciarSesion(correo: Cadena,\n      contrasena: Cadena): Registro
+  + iniciarSesion(correo: Cadena, contrasena: Cadena): Usuario
 }
 class RegistroService <<fachada>> {
   + autorizarAlta(solicitante: Usuario,\n      distribuidoraId: Identificador,\n      rolChofer: TipoDeRol = ninguno,\n      rol: Rol = ninguno): Usuario
@@ -42,12 +42,12 @@ class RegistroService <<fachada>> {
   + registrarse(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, contrasena: Cadena,\n      datosDelCliente: Registro): Usuario
 }
 interface FirebaseAuthPort <<puerto>> {
+  + autenticar(correo: Cadena, contrasena: Cadena): Registro
   + createUserSafe(correo: Cadena, contrasena: Cadena,\n      nombreCompleto: Cadena, telefono: Cadena): Registro
   + deleteUserSafe(cuenta: Registro)
   + generatePasswordResetLink(correo: Cadena,\n      ajustes: Registro): Cadena
-  + signInWithEmailAndPassword(correo: Cadena,\n      contrasena: Cadena): Registro
   + updateUser(cuenta: Registro,\n      deshabilitada: Booleano = ninguno,\n      correoNuevo: Cadena = ninguno)
-  + verifyIdToken(token: Cadena)
+  + verifyIdToken(credencial: Registro = ninguno,\n      token: Cadena = ninguno): Registro
 }
 interface FcmPort <<puerto>> {
   + sendToToken(token: Cadena,\n      notificacion: Registro = ninguno,\n      confirmacion: Cadena = ninguno)

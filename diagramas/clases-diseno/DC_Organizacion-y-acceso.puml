@@ -98,6 +98,7 @@ class Usuario {
   + cambiarBloqueo(falso: Booleano)
   + cambiarCorreo(correoNuevo: Cadena)
   + darDeBaja(): Cadena
+  + editarDatos(cambios: Registro)
   + estaHabilitado(): Booleano
   + getCalificacionesRecibidas(): Calificacion[*]
   + getChofer(): Chofer

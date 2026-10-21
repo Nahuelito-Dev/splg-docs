@@ -8,6 +8,8 @@ sequenceDiagram
     activate SIS
     alt el usuario existe
         SIS-->>ADM: usuario bloqueado
+    else un administrador de empresa sobre la cuenta de un cliente
+        SIS-->>ADM: acceso denegado, la cuenta de un cliente la administra el administrador general
     else el usuario no existe
         SIS-->>ADM: recurso no encontrado
     end

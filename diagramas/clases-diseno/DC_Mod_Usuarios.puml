@@ -41,6 +41,7 @@ class UsersService <<fachada>> {
   + buscarUsuarioPorTelefono(telefono: Cadena): Usuario
   + consultarPerfil(usuario: Usuario): Usuario
   + desbloquearUsuario(usuario: Usuario): Usuario
+  + editarDatosDelCliente(cliente: Cliente,\n      cambios: Registro): Usuario
   + eliminarUsuario(usuario: Usuario): Cadena
   + listarUsuarios(pagina: Entero, limite: Entero,\n      textoDeBusqueda: Cadena): Registro
 }

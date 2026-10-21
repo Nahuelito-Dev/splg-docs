@@ -2972,7 +2972,7 @@
         "CU-131"
       ],
       "actores": [
-        "ACT-03"
+        "ACT-05"
       ],
       "cambiaEstado": true
     },
@@ -3212,7 +3212,8 @@
         "CU-085"
       ],
       "actores": [
-        "ACT-03"
+        "ACT-03",
+        "ACT-05"
       ],
       "cambiaEstado": true
     },
@@ -7232,7 +7233,8 @@
         "CU-050"
       ],
       "actores": [
-        "ACT-03"
+        "ACT-03",
+        "ACT-05"
       ],
       "cambiaEstado": true
     },
@@ -7250,7 +7252,8 @@
         "CU-270"
       ],
       "actores": [
-        "ACT-03"
+        "ACT-03",
+        "ACT-05"
       ],
       "cambiaEstado": true
     },

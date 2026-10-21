@@ -39,7 +39,6 @@ class Cliente {
   + declararConsumo(tipoGarrafa: Cadena,\n      cantidadPorMes: Decimal)
   + desmarcarLasDemas(direccion: DireccionEntrega)
   + desmarcarPredeterminadas()
-  + editarDatos(cambios: Registro)
   + getCarrito(distribuidoraId: Identificador): Carrito
   + getCuentaCorriente(distribuidoraId: Identificador): CuentaCorriente
   + getDireccion(direccionId: Identificador): DireccionEntrega

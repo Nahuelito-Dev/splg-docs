@@ -1,13 +1,13 @@
 sequenceDiagram
     title DSD — CU-131 Modificar los Datos del Cliente · editarDatosDelCliente
     autonumber
-    actor ADM as Administrador (ACT-03)
-    participant SRV as :CustomersService
-    participant COL as :Map#lt;String, Cliente#gt;
-    participant CLE as cliente:Cliente
+    actor AGN as Administrador General (ACT-05)
+    participant SRV as :UsersService
+    participant COL as :Map#lt;String, Usuario#gt;
+    participant USR as usuario:Usuario
 
-    ADM->>+SRV: editarDatosDelCliente(clienteId, cambios)
+    AGN->>+SRV: editarDatosDelCliente(clienteId, cambios)
     SRV->>+COL: get(clienteId)
-    COL-->>-SRV: cliente
-    SRV->>CLE: editarDatos(cambios)
-    SRV-->>-ADM: cliente
+    COL-->>-SRV: usuario
+    SRV->>USR: editarDatos(cambios)
+    SRV-->>-AGN: usuario

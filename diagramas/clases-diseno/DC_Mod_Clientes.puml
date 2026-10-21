@@ -36,7 +36,6 @@ class CustomersService <<fachada>> {
   + configurarDiasDeAviso(dias: Entero): Cliente
   + consultarDetalleDelCliente(cliente: Cliente): Cliente
   + consultarPerfilCliente(usuario: Usuario): Cliente
-  + editarDatosDelCliente(cliente: Cliente,\n      cambios: Registro): Cliente
   + eliminarCliente(cliente: Cliente): Cadena
   + listarClientes(pagina: Entero, limite: Entero): Registro
 }
