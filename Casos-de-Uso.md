@@ -32169,7 +32169,7 @@ sequenceDiagram
 | `ItemPedido.«create»` | `CreateOrderUseCase.reservarRenglones`: crea el `OrderItem` de cada renglón con el precio y el subtotal del momento de pedir |
 | `Pedido.calcularTotal(...)` | `CreateOrderUseCase.calcularTotales`: `(subtotal + recargo de zona) × (1 + recargo por medio de pago) + recargo express` |
 | `Pedido.aplicarRecargoExpress(...)` | `CreateOrderUseCase.calcularTotales`: suma al final el recargo express, que no lleva el recargo por medio de pago, y `Order.expressSurchargeAmount` lo conserva para explicar el total |
-| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`: con MercadoPago el checkout cobra el recargo como un renglón más (`itemDeRecargoExpress()`) |
+| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`: con MercadoPago el checkout cobra el recargo express como un renglón más, armado por `renglonesDelCheckout` (`src/order/domain/checkout-items.ts`) junto con los de zona y pago online |
 
 **Observaciones de diseño**
 

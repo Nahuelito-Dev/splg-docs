@@ -613,6 +613,7 @@
 | 24 | 2026-10-22 | Contrato del back del 22/10 en CU-068, CU-070 y CU-217; CU-233 con la regla de la caja de destino verificada contra la API; remisiones de cada DSD a su secuencia, contrato y tabla de implementación; CU-242 y CU-335 con la anulación del pago en CU-347; un solo bloque de casos retirados; postcondiciones de M5 al final de §6.5; alcance pendiente unificado en §10; 21 subsistemas y 26 láminas en §7.3. Re-auditoría: CU-217 (depósito de la orden y costo), CU-013 en Trabajo futuro (§10.1). | Nahuel Wagner |
 | 25 | 2026-10-22 | Panel contra la API: CU-001 con el ingreso real (SDK de Firebase, AuthGuard y GET /users/email/:email) en §3, §4.1 y §4.25, con su DSD rehecho sobre ese flujo y una sola versión de cómo actúa AuthGuard en las rutas públicas; rutas del panel en CU-096, CU-131 y CU-086; DSD de CU-131 sobre UsersService a nombre del Administrador General. | Nahuel Wagner |
 | 26 | 2026-10-22 | Documentación al día con el panel: nuevo CU Real CU-072 (alta de la reserva con seña; ya son 36 CU Reales); CU-006 con el enlace de pago y el rechazo al personal sin distribuidora; CU-227 sobre la ficha de la caja con su historial de sesiones y arqueo; DSD de CU-072 y CU-074 con las validaciones nuevas; §4.25 con las rutas de la ficha de caja, las lecturas de reservas, el enlace de pago y el aviso de reintegro fallido; capturas de los CU Reales del panel rehechas con el kit nuevo. | Nahuel Wagner |
+| 27 | 2026-10-22 | Casos de Uso Reales de la App Cliente (CU-001, CU-002, CU-005, CU-008, CU-017, CU-023, CU-041, CU-048 y CU-079) con capturas reales de la app corriendo contra la API, en lugar de goldens de tests y wireframes; las descripciones de «Interfaz Gráfica» siguen lo que muestra cada captura. | Nahuel Wagner |
 
 ---
 
@@ -917,11 +918,11 @@ complementaria.
 
 #### Interfaz Gráfica
 
-![Pantalla de inicio de sesión](diagramas/wireframes/D-19a.png)
+![Pantalla de inicio de sesión de la App Cliente, con el correo y la contraseña completos](diagramas/pantallas/CU-001-iniciar-sesion.png)
 
 **Figura 4 — CU-001 Iniciar Sesión — Interfaz Gráfica**
 
-Pantalla de inicio de sesión de la App Cliente. La App Chofer y el Panel Admin la repiten con variantes mínimas; los campos comunes son el correo y la contraseña.
+Pantalla de inicio de sesión de la App Cliente con el correo y la contraseña cargados, antes de tocar «Continuar». Debajo están «¿Olvidaste tu contraseña?» y «Registrarse» (CU-002). La App Chofer y el Panel Admin la repiten con variantes mínimas; los campos comunes son el correo y la contraseña. Captura de la app corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -1022,11 +1023,11 @@ La operación del sistema es `iniciarSesion`. Su diagrama de interacción es el 
 
 #### Interfaz Gráfica
 
-![Pantalla de confirmación del pedido](diagramas/wireframes/D-17.png)
+![Pantalla «Confirmación» de la App Cliente, con el renglón del pedido, el total, la forma de pago, la fecha y la franja elegidas](diagramas/pantallas/CU-005-confirmacion-pedido.png)
 
 **Figura 6 — CU-005 Crear un Pedido — Interfaz Gráfica**
 
-Pantalla de confirmación del pedido: carrito, dirección, franja horaria, fecha y método de pago.
+Pantalla «Confirmación» de la App Cliente: el renglón del pedido con su promoción por cantidad, el recargo por zona, el total, la forma de pago (efectivo), la fecha de entrega y la franja elegida. Al pie, «Confirmar pedido» crea el pedido y «Cancelar» vuelve al carrito. Captura de la app corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -1574,11 +1575,11 @@ La operación del sistema es `aceptarPedido` (CU-015). Su diagrama de interacci�
 
 #### Interfaz Gráfica
 
-![Seguimiento del pedido en la App Cliente](diagramas/wireframes/D-18.png)
+![Seguimiento del pedido en la App Cliente con el chofer en camino: avance del pedido, hora estimada de llegada, datos del repartidor y del vehículo](diagramas/pantallas/CU-017-seguimiento-en-camino.png)
 
 **Figura 13 — CU-017 Modificar la Ubicación GPS del Chofer — Interfaz Gráfica**
 
-El chofer envía su posición desde la App Chofer sin intervención de pantalla. El cliente ve esa posición en el seguimiento de su pedido, que muestra la figura.
+El chofer envía su posición desde la App Chofer sin intervención de pantalla. El cliente ve esa posición en el seguimiento de su pedido, que muestra la figura: el chofer en el mapa, el avance «En camino», la hora estimada de llegada, el repartidor con su patente y su vehículo, y las acciones «Llamar» y «Escribirle». Captura de la App Cliente corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -1789,9 +1790,11 @@ La operación del sistema es `confirmarEntrega` (CU-020). Su diagrama de interac
 
 CU sin pantalla propia (proceso automático del Sistema, disparado por la notificación webhook de MercadoPago). La pantalla visible asociada es la selección del método de pago dentro del checkout — ver la figura siguiente, opción "MercadoPago" del selector de método de pago (parte de CU-005). El pago en sí se completa en el Checkout Pro de MercadoPago, fuera de las aplicaciones del sistema: ninguna pantalla de la App Cliente, la App Chofer ni el Panel Admin interviene en la confirmación que describe este CU.
 
-![Selección del método de pago en la confirmación del pedido](diagramas/wireframes/D-17.png)
+![Pantalla «Confirmación» de la App Cliente con «Mercado Pago» elegido como forma de pago, antes de confirmar el pedido](diagramas/pantallas/CU-048-pago-mercadopago.png)
 
 **Figura 17 — CU-048 Procesar el Pago con MercadoPago — Interfaz Gráfica**
+
+Pantalla «Confirmación» con «Mercado Pago» como forma de pago, tal como la ve el cliente antes de confirmar. Al tocar «Confirmar pedido» la app abre el Checkout Pro de MercadoPago; esa pantalla y el pago quedan fuera de la captura. Captura de la App Cliente corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -1923,11 +1926,13 @@ sequenceDiagram
 
 #### Interfaz Gráfica
 
-La vista de escaneo del código QR no tiene wireframe: el diseño de pantallas no incluye una cámara lectora. La acción se dispara desde el seguimiento del pedido mientras el estado es «En camino» (figura siguiente): el cliente abre el lector de cámara para leer el QR que el chofer le muestra en su pantalla (obtenido en CU-078), y la app extrae del contenido leído el código de diez caracteres.
+La cámara lectora no se captura (el simulador no tiene cámara). La acción se dispara desde el seguimiento del pedido mientras el estado es «En camino» (figura siguiente): el cliente abre el lector de cámara para leer el QR que el chofer le muestra en su pantalla (obtenido en CU-078), y la app extrae del contenido leído el código de diez caracteres.
 
-![Seguimiento del pedido](diagramas/wireframes/D-18.png)
+![Seguimiento del pedido en la App Cliente con el botón «Confirmar entrega (escanear QR)»](diagramas/pantallas/CU-079-confirmar-entrega-qr.png)
 
 **Figura 19 — CU-079 Confirmar una Entrega Escaneando el QR (cliente) — Interfaz Gráfica**
+
+Seguimiento del pedido en camino de la App Cliente: el botón «Confirmar entrega (escanear QR)» abre el lector de cámara. Captura de la app corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -2047,11 +2052,11 @@ La operación del sistema es `confirmarEntregaConCodigo` (CU-079). Su diagrama d
 
 #### Interfaz Gráfica
 
-![Seguimiento del pedido con el botón Cancelar](diagramas/wireframes/D-18.png)
+![Seguimiento del pedido en la App Cliente con el botón «Cancelar pedido» mientras se busca repartidor](diagramas/pantallas/CU-008-cancelar-pedido.png)
 
 **Figura 21 — CU-008 Cancelar un Pedido (Cliente) — Interfaz Gráfica**
 
-El botón «Cancelar» está en la fila de acciones junto a «Llamar», debajo de la tarjeta del chofer, y queda disponible mientras el pedido no salió hacia el domicilio.
+El botón rojo «Cancelar pedido» está al pie del seguimiento y la app lo ofrece mientras el pedido está pendiente, es decir, «Buscando repartidor». Al tocarlo la app pide el motivo («¿Por qué querés cancelar?») y recién con «Confirmar cancelación» se cancela. Captura de la App Cliente corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -2175,7 +2180,7 @@ La operación del sistema es `cancelarMiPedido` (CU-008). Su diagrama de interac
 
 **Figura 23 — CU-002 Registrarse como Cliente — Interfaz Gráfica**
 
-Segundo paso del registro de la App Cliente. El primer paso toma el nombre y el teléfono; éste, el correo y la contraseña con los dos consentimientos. El tercero es opcional y declara el consumo mensual de gas (CU-143). Captura del golden de la app.
+Segundo paso del registro de la App Cliente. El primer paso toma el nombre y el teléfono; éste, el correo y la contraseña con los dos consentimientos. El tercero es opcional y declara el consumo mensual de gas (CU-143). La captura muestra el formulario completo, con los dos consentimientos aceptados, antes de seguir. Captura de la app corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -2288,7 +2293,7 @@ La operación del sistema es `registrarse`. Su diagrama de interacción es el de
 
 **Figura 25 — CU-041 Consultar el Catálogo de Productos (Cliente) — Interfaz Gráfica**
 
-Hoja de catálogo de la App Cliente: cada producto con su tipo, su precio, las promociones por cantidad (por ejemplo «-5% x2» y «-12% x4») y el selector de unidades; al pie, «Continuar» con el total de garrafas elegidas. Captura del golden de la app.
+Hoja de catálogo de la App Cliente: cada producto con su tipo, su precio, las promociones por cantidad (por ejemplo «-5% x2» y «-12% x4») y el selector de unidades; al pie, «Continuar» con el total de garrafas elegidas (en la captura, dos garrafas de 10 kg). Captura de la app corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -4633,11 +4638,11 @@ La operación del sistema es `registrarIncidencia`. Su diagrama de interacción 
 
 #### Interfaz Gráfica
 
-![Pantalla «Mis reclamos» de la App Cliente, con un reclamo pendiente y otro resuelto](diagramas/pantallas/CU-023-mis-reclamos.png)
+![Hoja «Hacer un reclamo» de la App Cliente, con el motivo elegido y la descripción escrita, antes de enviar](diagramas/pantallas/CU-023-registrar-reclamo.png)
 
 **Figura 67 — CU-023 Registrar un Reclamo — Interfaz Gráfica**
 
-«Mis reclamos» de la App Cliente: cada reclamo con su motivo, su fecha, la descripción y su estado —pendiente o resuelto—. El reclamo se registra desde el detalle de un pedido, con la hoja `ClaimSheet`: el motivo, la descripción y, si el cliente quiere, una foto. Captura del golden de la app, con datos de prueba.
+Hoja «Hacer un reclamo» del detalle de un pedido entregado en la App Cliente (`ClaimSheet`): el motivo (en la captura, «Demora excesiva»), la descripción de hasta 300 caracteres y, si el cliente quiere, una foto con «Sacar foto» o «Elegir de la galería». «Enviar reclamo» crea el reclamo; el resultado se ve en «Mis reclamos» (`ClaimsView`). La captura se tomó sin enviar el reclamo. Captura de la app corriendo contra la API.
 
 #### Especificación del CU Real
 
@@ -6528,7 +6533,7 @@ sequenceDiagram
 | `ItemPedido.«create»` | `CreateOrderUseCase.reservarRenglones`: crea el `OrderItem` de cada renglón con el precio y el subtotal del momento de pedir |
 | `Pedido.calcularTotal(...)` | `CreateOrderUseCase.calcularTotales`: `(subtotal + recargo de zona) × (1 + recargo por medio de pago) + recargo express` |
 | `Pedido.aplicarRecargoExpress(...)` | `CreateOrderUseCase.calcularTotales`: suma al final el recargo express, que no lleva el recargo por medio de pago, y `Order.expressSurchargeAmount` lo conserva para explicar el total |
-| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`: con MercadoPago el checkout cobra el recargo como un renglón más (`itemDeRecargoExpress()`) |
+| `PaymentsService.crearCheckoutDePago(...)` | `PaymentsService.createCheckout`: con MercadoPago el checkout cobra el recargo express como un renglón más, armado por `renglonesDelCheckout` (`src/order/domain/checkout-items.ts`) junto con los de zona y pago online |
 
 **Observaciones de diseño**
 

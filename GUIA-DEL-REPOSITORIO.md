@@ -123,6 +123,18 @@ gate avisa si alguno quedó viejo.
 | `design/wireframes.html` | Los nueve wireframes renderizados, listos para capturar |
 | `doc-old/` | Material superado, conservado para consulta (ver `doc-old/LEEME.md`) |
 | `design/*.png` | Capturas de las aplicaciones en el simulador |
+| `diagramas/pantallas/CU-xxx-<pantalla>.png` | Capturas de las pantallas de cada CU Real (§3 de `3-Diseño.md`); las de las apps son reales, tomadas con la app corriendo contra la API |
+
+### Regenerar las capturas de las apps
+
+Con el entorno levantado (`./splg-dev.sh --seed`, back en `:3010`) y el simulador de cada app abierto:
+
+| App | Comando (desde el repo de la app) | Salida |
+|---|---|---|
+| Cliente (iPhone 16 Pro) | `scripts/capturas_cu_reales.py` | `build/capturas_cu_reales/CU-xxx-*.png` |
+| Chofer (iPhone 16 Pro Max) | `scripts/capturas_cu_reales.py` | `build/capturas_cu_reales/CU-xxx-*.png` |
+
+Cada script corre `integration_test/capturas_cu_reales_test.dart` con `--dart-define=API_BASE_URL=http://localhost:3010 --dart-define=PUSH_ENABLED=false`, saca la captura con `xcrun simctl io <udid> screenshot` cada vez que el test avisa `SHOT:<nombre>` y prepara y limpia por la API los pedidos «Prueba capturas …». Después se copian a `diagramas/pantallas/` (reducidas a 603 px de ancho con `sips -z 1311 603`). La app del chofer necesita a `chofer@splg.com` sin pedidos en curso.
 
 ## Verificación contra el código
 
