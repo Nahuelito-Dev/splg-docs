@@ -1047,6 +1047,39 @@ _correr("Relaciones include/extend: fuente, diagramas, tabla §7.7 y CUE (verifi
 _correr("Lenguaje esencial: ningún CUA ni CUE nombra rutas, códigos, clases ni infraestructura (verificar-lenguaje-esencial.py)",
         "verificar-lenguaje-esencial.py", r"Textos revisados: [1-9]\d*")
 
+# ---------- tablas: cada fila tiene tantas celdas como su encabezado ----------
+def _celdas(linea):
+    """Celdas de una fila de tabla Markdown. Todo `|` corta una celda, también dentro de un code span
+    (generar-sitio.py parte por `|` sin más): en el texto de una celda no puede haber ninguno."""
+    l = linea.strip()
+    return len(l.strip("|").split("|")) if l.startswith("|") else 0
+
+def verificar_celdas_por_fila():
+    """Una fila con una celda de más (un `|` suelto o un texto pegado después del cierre) deja vacío el campo
+    en el sitio: se compara cada fila de las tablas de los CUE (Casos y Documento 1), de la tabla de
+    implementación (Casos §8 y Documento 3 §4.25) y de los contratos (Documento 2) con su encabezado."""
+    malas = []
+    for f in ("Casos-de-Uso.md", "1-Requisitos.md", "2-Analisis.md", "3-Diseño.md"):
+        ancho, previa = 0, ""
+        for n, l in enumerate(open(D + f, encoding="utf-8").read().split("\n"), 1):
+            if not l.startswith("|"):
+                ancho, previa = 0, l
+                continue
+            if not previa.startswith("|"):
+                ancho = _celdas(l)          # encabezado de una tabla nueva
+            elif re.match(r"^\|[\s:|-]+\|$", l):
+                pass
+            elif ancho and _celdas(l) != ancho:
+                malas.append(f"{f}:{n} ({_celdas(l)} celdas, la tabla tiene {ancho})")
+            elif ancho and not l.rstrip().endswith("|"):
+                malas.append(f"{f}:{n} (la fila no cierra con «|»)")
+            previa = l
+    ok = not malas
+    if not ok: FALLAS.append("Tablas: celdas por fila")
+    print(f"[{'OK' if ok else 'FALLA':5}] Tablas de los CUE, de la tabla de implementación y de los contratos: cada fila tiene las celdas de su encabezado"
+          + ("" if ok else " | " + "; ".join(malas[:8]) + (f" … ({len(malas)})" if len(malas) > 8 else "")))
+verificar_celdas_por_fila()
+
 print()
 if FALLAS:
     print(f"INCUMPLIMIENTOS: {len(FALLAS)} -> {FALLAS}"); sys.exit(1)

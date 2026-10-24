@@ -121,6 +121,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 26 | 2026-10-22 | Auditoría de contenido: cantidades por calificación al día (63 críticos, 218 importantes, 55 secundarios, 2 menores; 338 casos), definición de ACT-04 como el Tiempo, CU-008, CU-009 y CU-010 (la liberación del chofer no es una cancelación), CU-233 con una sola regla para la caja de destino, y contrato del back del 22/10 en CU-068 (pedido despachable y propio del chofer), CU-070 (pedido obligatorio para «con el cliente», reglas del chofer, texto con caracteres no válidos) y CU-217 (depósito de la orden). Re-auditoría: casos de uso esenciales sin mecanismos técnicos (cabecera de distribuidora, bloqueos, mensajes de bajo nivel) y costo de la recepción sin orden sólo en los renglones con llenas. | Nahuel Wagner |
 | 27 | 2026-10-22 | Cuentas de clientes: los CUE de CU-050, CU-270, CU-085 y CU-131 dicen que la cuenta de un cliente la administra el Administrador General y que el administrador de empresa recibe acceso denegado (verificado contra la API); conteos por actor al día. | Nahuel Wagner |
 | 28 | 2026-10-22 | Reservas, seña y enlace de pago, verificados contra la API: CUE de CU-072 (tope de la seña, sin cuenta corriente ni express, fecha y franja, reserva que no se edita, falta de stock con su mensaje real), CU-073 (franja, enlace de pago y distribuidora obligatoria para el Administrador General), CU-074 (efectivo o transferencia; MercadoPago sólo por la pasarela) y CU-006 (enlace de pago; el Administrador General debe indicar distribuidora). | Nahuel Wagner |
+| 29 | 2026-10-24 | Altas largas del panel como página (legajo, combustible, siniestro, chofer y empresa) con su aviso de cambios sin guardar, y reglas de validación en tres capas (panel, sistema y base de datos) en los CUE de pedidos y cancelación con motivo, franjas, zonas, catálogo, envases, cuentas corrientes, vehículos, multas, personal, perfil, caja y pagos; la reserva rechaza siempre una fecha pasada. | Nahuel Wagner |
 
 ---
 
@@ -940,6 +941,8 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 13 | Si no hay ningún chofer elegible, el pedido queda pendiente sin oferta y lo retoma la re-oferta automática (CU-014). |
 | 14 | Si falla el envío del aviso, el pedido queda creado igual. |
 | 6 | Si se reintenta el mismo pedido con datos distintos, el sistema lo rechaza y no ejecuta la operación. |
+| 6 | Si el pedido no trae ningún ítem, el sistema lo rechaza e informa «El pedido necesita al menos un renglón»; si repite la misma garrafa en dos renglones, lo rechaza y pide sumar las cantidades en uno solo. El panel lo avisa antes de enviar («Esta garrafa ya está en otro renglón: sumá las cantidades en uno solo»). |
+| 4 | Si el pedido trae una fecha agendada anterior a hoy, con franja o sin ella, el sistema lo rechaza e informa que la fecha agendada no puede ser pasada. |
 
 **Rendimiento**
 
@@ -951,7 +954,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Variable según la demanda de la distribuidora (estimado: 10 a 50 pedidos por día en la Fase 1). |
 | **Estabilidad** | Alta |
-| **Comentarios** | Los totales se calculan con aritmética decimal exacta y las promociones se aplican según la cantidad mínima configurada en cada producto. Si ningún chofer resulta elegible, el pedido queda pendiente en silencio: el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: cualquier usuario identificado puede crear uno, aunque un cliente solo puede hacerlo para sí mismo. El proceso de compra con carrito persistente (CU-122 a CU-126), la elección explícita de modalidad (CU-148) y la compra express en un paso (CU-147) están construidos: este caso puede recibir los ítems armados o tomarlos del carrito, y puede recibir la modalidad de entrega y quién va a recibir el pedido (CU-128). Tampoco usa CU-121: el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. |
+| **Comentarios** | Los totales se calculan con aritmética decimal exacta y las promociones se aplican según la cantidad mínima configurada en cada producto. Si ningún chofer resulta elegible, el pedido queda pendiente en silencio: el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: cualquier usuario identificado puede crear uno, aunque un cliente solo puede hacerlo para sí mismo. El proceso de compra con carrito persistente (CU-122 a CU-126), la elección explícita de modalidad (CU-148) y la compra express en un paso (CU-147) están construidos: este caso puede recibir los ítems armados o tomarlos del carrito, y puede recibir la modalidad de entrega y quién va a recibir el pedido (CU-128). Tampoco usa CU-121: el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. El total que guarda el sistema es la suma exacta de los renglones, el recargo de la zona, el recargo del medio de pago en línea —que se guarda aparte— y, si corresponde, el de la entrega express; la base de datos rechaza un pedido cuyo total no coincida con esa suma y no admite la misma garrafa en dos renglones del mismo pedido. |
 
 ---
 
@@ -1502,7 +1505,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la sección de choferes y elige dar de alta uno nuevo. |
+| 1 | El administrador abre «Choferes» y elige «Nuevo chofer»: el alta es una página propia, con los datos del chofer y su contraseña inicial y, para el Administrador General, la empresa. |
 | 2 | Completa nombre completo, teléfono, correo y contraseña inicial. Si quiere, indica si el chofer está validado y si está activo; el Administrador General, además, la distribuidora. |
 | 3 | El sistema valida el formato de lo informado, como en CU-002. |
 | 4 | El sistema resuelve la distribuidora: un administrador de empresa da de alta siempre en la suya; el Administrador General, en la que indique o en la que tenga elegida. |
@@ -1521,6 +1524,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 4 | Si el Administrador General no indica distribuidora ni tiene una elegida, el sistema rechaza el alta e informa «Falta la distribuidora». |
 | 5 | Si la distribuidora no existe, está dada de baja o no está activa, el sistema informa que no la encontró. |
 | 6 | Si el correo o el teléfono ya están en uso, el sistema rechaza el alta. Las demás fallas se tratan como en CU-082. |
+| 3 | Si el teléfono no está en formato internacional, o la contraseña tiene menos de seis caracteres, el sistema —y antes el panel, con «Formato internacional, por ejemplo +5493764000000» y «Mínimo 6 caracteres»— rechaza el alta e indica el campo. Que la contraseña coincida con su repetición sólo lo controla el panel («Las contraseñas no coinciden»): el sistema no recibe la repetición. |
 
 **Rendimiento**
 
@@ -1532,7 +1536,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Baja: al incorporar un chofer a la flota. |
 | **Estabilidad** | Alta |
-| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. El alta de un chofer crea también su legajo (CU-177) en la misma operación, o vincula el existente si el pedido lo indica. |
+| **Comentarios** | No existe el auto-registro de choferes: el alta la hace siempre un administrador. El alta de un chofer crea también su legajo (CU-177) en la misma operación, o vincula el existente si el pedido lo indica. El alta es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. La edición del chofer es otra página propia, con su nombre, teléfono, validación, habilitación y una contraseña nueva opcional; cada dato se guarda por su caso de uso (CU-251 el nombre, el teléfono y la contraseña; CU-032 la validación; CU-033 y CU-267 la habilitación). |
 
 ---
 
@@ -1640,7 +1644,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |------|--------|
 | 1 | El administrador abre la sección de productos y elige dar de alta uno nuevo. |
 | 2 | Completa el tipo (por ejemplo «10kg», «15kg», «45kg»), el peso en kilogramos y el precio de venta, que son obligatorios, y opcionalmente el stock inicial, la descripción y las promociones por cantidad. |
-| 3 | El sistema valida que el tipo sea un texto no vacío de hasta 50 caracteres, que el peso y el precio sean mayores que cero y, si vienen, que el stock sea un entero no negativo y que las promociones sean reglas válidas (CU-039), sin dos reglas para la misma cantidad. |
+| 3 | El sistema valida que el tipo sea un texto no vacío de hasta 50 caracteres, que el peso sea mayor que cero y no pase de 1000 kilogramos, que el precio sea mayor que cero y no pase de 10.000.000, ambos con hasta dos decimales, y, si vienen, que el stock sea un entero no negativo y que las promociones sean reglas válidas (CU-039), sin dos reglas para la misma cantidad. |
 | 4 | El sistema toma la distribuidora elegida y verifica que no exista ya un producto de ese tipo en esa distribuidora. |
 | 5 | El sistema registra el producto, asociado a la distribuidora y activo. |
 | 6 | Si el stock es mayor a cero, el producto aparece de inmediato entre los productos disponibles del cliente. |
@@ -1654,8 +1658,9 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |------|--------|
 | 3 | Si falta el tipo, el peso o el precio, o alguno no es del tipo esperado, o se envía un dato no previsto, el sistema rechaza el alta e indica el campo. |
 | 4 | Si el administrador no tiene distribuidora elegida, el sistema rechaza el alta y pide que se indique. |
-| 4 | Si ya existe un producto de ese tipo en la distribuidora —esté activo o dado de baja—, el sistema rechaza el alta e informa «Ya existe una garrafa con este tipo en tu distribuidora». |
-| 4 | Si dos altas simultáneas del mismo tipo pasan ese control, el sistema rechaza la segunda e informa «Ya existe un registro con esos datos (productos)». |
+| 4 | Si ya existe un producto de ese tipo en la distribuidora —esté activo o dado de baja, y sin distinguir mayúsculas ni espacios—, el sistema rechaza el alta e informa «Ya existe una garrafa con este tipo en tu distribuidora». |
+| 4 | Si dos altas simultáneas del mismo tipo pasan ese control, el sistema rechaza la segunda por conflicto e informa «Ya existe un registro con esos datos (productos)» si el tipo es idéntico, o «Ya existe una garrafa con ese tipo (no se distinguen mayúsculas ni espacios)» si sólo cambian mayúsculas o espacios: la base tiene dos restricciones de unicidad sobre el tipo. |
+| 3 | Si el precio supera 10.000.000, el peso supera 1000 kilogramos, alguno de los dos tiene más de dos decimales, o el tipo son sólo espacios, el sistema rechaza el alta e indica el campo. El panel lo avisa antes de enviar («No puede superar $ 10.000.000», «No puede superar 1000 kg», «Hasta 2 decimales»). |
 
 **Rendimiento**
 
@@ -1667,7 +1672,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Muy baja: el catálogo de tipos de garrafa es estable en el tiempo. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El stock inicial se registra como stock físico —llenas del depósito predeterminado, con su ajuste— en la misma operación del alta (CU-213 y CU-274): si ese registro falla, el producto no se crea. El control de tipo duplicado no distingue producto activo de dado de baja; dar de baja un producto deja ese nombre de tipo bloqueado para la distribuidora hasta que se lo reactive (CU-268). |
+| **Comentarios** | El stock inicial se registra como stock físico —llenas del depósito predeterminado, con su ajuste— en la misma operación del alta (CU-213 y CU-274): si ese registro falla, el producto no se crea. El control de tipo duplicado no distingue producto activo de dado de baja; dar de baja un producto deja ese nombre de tipo bloqueado para la distribuidora hasta que se lo reactive (CU-268). Los topes y los decimales se validan en tres capas —el formulario del panel, el sistema y la base de datos, que exige precio y peso mayores que cero, stock no negativo y un tipo no vacío—. |
 
 ---
 
@@ -1702,7 +1707,8 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 3 | Si el precio no es un número mayor que cero, o se envía un dato no previsto, el sistema rechaza el cambio. |
 | 3 | Si el administrador no tiene distribuidora elegida, el sistema rechaza el cambio y pide que se indique. |
 | 4 | Si el producto no existe, o es de otra distribuidora, el sistema informa que no lo encontró, sin distinguir los dos casos. |
-| 4 | Si en la misma modificación se cambia el tipo al de otro producto de la distribuidora, el sistema lo rechaza e informa «Ya existe un registro con esos datos (productos)». |
+| 4 | Si en la misma modificación se cambia el tipo al de otro producto de la distribuidora, el sistema lo rechaza por conflicto: informa «Ya existe un registro con esos datos (productos)» si el tipo es idéntico y «Ya existe una garrafa con ese tipo (no se distinguen mayúsculas ni espacios)» si sólo cambian mayúsculas o espacios (son dos restricciones de unicidad de la base). |
+| 3 | Si el precio supera 10.000.000 o tiene más de dos decimales, el sistema rechaza el cambio; el panel lo avisa antes de enviar («No puede superar $ 10.000.000»). |
 
 **Rendimiento**
 
@@ -2320,9 +2326,9 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | Paso | Acción |
 |------|--------|
 | 1 | El cliente abre el detalle del pedido y elige cancelarlo. |
-| 2 | Puede indicar un motivo. Si la solicitud se repite por un corte de conexión, el sistema no vuelve a procesarla. |
+| 2 | Indica el motivo de la cancelación, que es obligatorio. Si la solicitud se repite por un corte de conexión, el sistema no vuelve a procesarla. |
 | 3 | El sistema comprueba, en este orden, que el pedido pertenezca al cliente, que no esté ya entregado ni cancelado y que no esté en camino. |
-| 4 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema marca el pedido como cancelado con el motivo recibido —si el cliente no indicó ninguno, registra que lo canceló el cliente— y lo asienta en el historial. |
+| 4 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema marca el pedido como cancelado con el motivo recibido y lo asienta en el historial. |
 | 5 | En la misma operación, el sistema devuelve al inventario la cantidad de cada ítem del pedido. |
 | 6 | El sistema confirma juntos el cambio de estado y la restitución del stock. |
 | 7 | El sistema avisa al cliente de la cancelación, con el motivo y quién canceló, avisa al panel de administración y, si había chofer asignado, le avisa que ya no hace falta ir. |
@@ -2339,6 +2345,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 3 | Si el pedido ya está entregado o cancelado, el sistema informa «No se puede cancelar un pedido finalizado». |
 | 3 | Si el pedido ya está en camino, el sistema informa «El pedido ya está en camino. Contacte al soporte.» |
 | 2 | Si se reintenta la misma solicitud con datos distintos, el sistema la rechaza y no la ejecuta. |
+| 2 | Si el motivo falta, el sistema rechaza la cancelación e informa «Para cancelar el pedido hay que indicar el motivo»; si son sólo espacios, la rechaza e informa que el motivo no puede estar vacío; el motivo admite hasta 500 caracteres. El panel pide el motivo antes de enviar: «Escribí el motivo de la cancelación». |
 
 **Rendimiento**
 
@@ -2350,7 +2357,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Baja: solo cuando el cliente necesita cancelar un pedido de manera excepcional. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La cancelación del cliente (CU-008) y la del administrador (CU-010) comparten el mismo comportamiento del sistema —cancelan el pedido y restituyen el stock—; lo que cambia es el actor. La liberación del chofer (CU-009) es otra cosa: el pedido vuelve a pendiente y no se restituye stock. El aviso a la aplicación del chofer viaja solo por la conexión en tiempo real: un chofer con la aplicación cerrada puede no enterarse. Los vencimientos automáticos (CU-076 y CU-077) no emiten el aviso en vivo: el cliente se entera al ver el pedido (CU-006). Un chofer que «cancela» no cancela: libera el pedido a pendiente (CU-009). |
+| **Comentarios** | La cancelación del cliente (CU-008) y la del administrador (CU-010) comparten el mismo comportamiento del sistema —cancelan el pedido y restituyen el stock—; lo que cambia es el actor. La liberación del chofer (CU-009) es otra cosa: el pedido vuelve a pendiente y no se restituye stock. El aviso a la aplicación del chofer viaja solo por la conexión en tiempo real: un chofer con la aplicación cerrada puede no enterarse. Los vencimientos automáticos (CU-076 y CU-077) no emiten el aviso en vivo: el cliente se entera al ver el pedido (CU-006). Un chofer que «cancela» no cancela: libera el pedido a pendiente (CU-009). El motivo es obligatorio en tres capas: el formulario de cancelación del panel, el sistema y la base de datos, que no admite un pedido cancelado sin motivo; las cancelaciones automáticas por vencimiento dejan el suyo. |
 
 ---
 
@@ -2418,7 +2425,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador abre el detalle del pedido en el panel y elige cancelarlo. |
-| 2 | Puede indicar el motivo. Si lo omite, el sistema registra que lo canceló el administrador. |
+| 2 | Indica el motivo de la cancelación, que es obligatorio. |
 | 3 | El sistema verifica que el pedido sea de su distribuidora y que no esté ya entregado ni cancelado. |
 | 4 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema marca el pedido como cancelado con el motivo y lo asienta en el historial. |
 | 5 | En la misma operación, el sistema devuelve al inventario la cantidad de cada ítem del pedido. |
@@ -2435,6 +2442,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 3 | Si el pedido no existe, el sistema informa que no lo encontró. |
 | 3 | Si el pedido es de otra distribuidora que la del administrador, el sistema informa que no lo encontró, sin revelar que existe. |
 | 3 | Si el pedido ya está entregado o cancelado, el sistema informa «No se puede cancelar un pedido finalizado». |
+| 2 | Si el motivo falta, el sistema rechaza la cancelación e informa «Para cancelar el pedido hay que indicar el motivo»; si son sólo espacios, la rechaza e informa que el motivo no puede estar vacío; el motivo admite hasta 500 caracteres. El panel pide el motivo antes de enviar, también al cancelar varios pedidos juntos (el mismo motivo para todos): «Escribí el motivo de la cancelación». |
 
 **Rendimiento**
 
@@ -2446,7 +2454,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Baja: a demanda del administrador, ante reclamos o pedidos que no se pueden cumplir. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El panel dispone de dos vías equivalentes para cancelar: la cancelación con motivo y una cancelación forzada que no lo pide. El aviso al cliente viaja solo por la conexión en tiempo real: un cliente con la aplicación cerrada no se entera hasta abrirla. La restitución del stock y el cambio de estado se confirman juntos, igual que en CU-008. |
+| **Comentarios** | El panel dispone de dos vías equivalentes para cancelar: la cancelación con el motivo que escribe el administrador y una cancelación forzada, en desuso, que registra un motivo fijo. El aviso al cliente viaja solo por la conexión en tiempo real: un cliente con la aplicación cerrada no se entera hasta abrirla. La restitución del stock y el cambio de estado se confirman juntos, igual que en CU-008. El motivo es obligatorio en tres capas: el formulario del panel, el sistema y la base de datos, que no admite un pedido cancelado sin motivo. |
 
 ---
 
@@ -2660,6 +2668,8 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |------|--------|
 | 3 | Si el perfil a modificar no es el del usuario y éste no es administrador, el sistema deniega la operación e informa «No podés modificar a otro usuario». |
 | 5 | Si el usuario no existe, el sistema informa que no lo encontró. |
+| 5 | Si el nombre tiene menos de dos caracteres o el teléfono no está en formato internacional (con «+» y entre ocho y quince dígitos), el sistema rechaza el cambio e indica el campo. |
+| 5 | Si el teléfono ya lo tiene otro usuario, el sistema rechaza el cambio por conflicto e informa «Ya existe un usuario con ese teléfono». |
 
 **Rendimiento**
 
@@ -2671,7 +2681,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Esporádica: el usuario la usa solo cuando necesita corregir su nombre, su teléfono o su foto. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no valida el contenido de los datos: un nombre vacío se acepta y el teléfono se admite con cualquier formato. Esas dos comprobaciones quedan pendientes. |
+| **Comentarios** | El nombre y el teléfono se validan igual que en el alta (CU-002): el formato del teléfono lo repite la base de datos y su unicidad también. |
 
 ---
 
@@ -3464,10 +3474,10 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador abre la lista de choferes, elige uno y elige registrarle un vehículo. |
-| 2 | Completa el formulario. El chofer es obligatorio; el tipo, la patente, la marca, el modelo, el año, el color y la capacidad de carga son opcionales. El tipo, si viene, tiene al menos dos caracteres, y la patente, al menos cuatro. |
+| 2 | Completa el formulario. El chofer es obligatorio; el tipo, la patente, la marca, el modelo, el año, el color y la capacidad de carga son opcionales. El tipo, si viene, tiene al menos dos caracteres, y la patente, si viene, es argentina: tres letras y tres números (AAA123) o dos letras, tres números y dos letras (AA123AA). |
 | 3 | El sistema toma la distribuidora elegida y exige que haya una. |
 | 4 | El sistema verifica que el chofer indicado exista. |
-| 5 | Si el alta trae patente, el sistema verifica que ninguna otra unidad, de ninguna distribuidora, la tenga registrada. |
+| 5 | Si el alta trae patente, el sistema la deja en mayúsculas y sin espacios ni guiones y verifica que ninguna otra unidad vigente de la distribuidora la tenga registrada. |
 | 6 | El sistema crea el vehículo, asociado al chofer y a la distribuidora, y lo muestra. |
 
 **Postcondición:** El vehículo queda registrado, asociado al chofer indicado y acotado a la distribuidora del administrador que lo cargó.
@@ -3479,7 +3489,8 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 2 | Si falta el chofer, no es válido o se envía un dato no previsto, el sistema rechaza el alta e indica el campo. La ausencia de cualquiera de los datos opcionales no produce error. |
 | 3 | Si el administrador no tiene distribuidora elegida, el sistema rechaza el alta y pide que se indique. |
 | 4 | Si el chofer indicado no existe, el sistema informa que no lo encontró. |
-| 5 | Si la patente ya está registrada, el sistema rechaza el alta e informa «La patente del vehículo ya está registrada». |
+| 5 | Si la patente ya está registrada en la distribuidora, el sistema rechaza el alta por conflicto e informa «La patente del vehículo ya está registrada en la distribuidora». |
+| 2 | Si la patente no tiene el formato argentino, el sistema rechaza el alta e informa «La patente tiene que ser AAA123 (formato anterior) o AA123AA (Mercosur)» en el panel, y que tiene que ser una patente argentina en el sistema. |
 
 **Rendimiento**
 
@@ -3491,7 +3502,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Baja: se ejecuta al incorporar un chofer o al cambiar su unidad. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La patente es única en todo el sistema, no por distribuidora: dos empresas no pueden registrar la misma patente, y el mensaje revela indirectamente que esa patente existe en otra distribuidora. El sistema no exige ningún dato descriptivo del vehículo: es posible registrar una unidad sin patente, sin tipo y sin capacidad; si el negocio requiere esos datos, la restricción está pendiente. El conflicto de patente se informa como una solicitud inválida y no como un conflicto de recurso. |
+| **Comentarios** | La patente es única por distribuidora entre los vehículos vigentes: dos empresas pueden tener la misma patente, y la de un vehículo dado de baja se puede volver a registrar. El formato y la unicidad se validan en el panel, en el sistema y en la base de datos. El sistema no exige ningún dato descriptivo del vehículo: es posible registrar una unidad sin patente, sin tipo y sin capacidad; si el negocio requiere esos datos, la restricción está pendiente. |
 
 ---
 
@@ -3557,7 +3568,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 1 | El administrador abre la sección de productos, elige un producto y abre la configuración de promociones. |
 | 2 | Define las reglas de descuento por cantidad, por ejemplo tres unidades con cinco por ciento y diez unidades con diez por ciento. |
 | 3 | Confirma el cambio, enviando la lista completa de promociones. |
-| 4 | El sistema valida cada regla —cantidad mínima entera desde 2, descuento mayor que 0 y hasta 100— y comprueba que no haya dos reglas para la misma cantidad. |
+| 4 | El sistema valida cada regla —cantidad mínima entera desde 2, descuento mayor que 0 y hasta 99, con hasta dos decimales— y comprueba que no haya dos reglas para la misma cantidad. |
 | 5 | El sistema verifica que el producto exista y sea de la distribuidora y guarda sus promociones: la lista recibida reemplaza a las anteriores, y las que no vienen en ella se borran. |
 | 6 | Al crear un pedido, el sistema lee las promociones del producto con su stock bloqueado (CU-005); al calcular el precio de un ítem, busca la mejor regla aplicable a la cantidad pedida y descuenta ese porcentaje del precio unitario. |
 
@@ -3567,10 +3578,11 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 
 | Paso | Acción |
 |------|--------|
-| 4 | Si lo recibido no es una lista, alguna regla tiene una cantidad menor que 2 o no entera, un descuento que no es mayor que 0 o que supera 100, o se envía un dato no previsto, el sistema rechaza el cambio. |
+| 4 | Si lo recibido no es una lista, alguna regla tiene una cantidad menor que 2 o no entera, un descuento que no es mayor que 0, que supera 99 o que tiene más de dos decimales, o se envía un dato no previsto, el sistema rechaza el cambio. |
 | 4 | Si hay dos reglas para la misma cantidad de unidades, el sistema rechaza el cambio e informa «Hay dos promociones para la misma cantidad de unidades». |
 | 4 | Si el administrador no tiene distribuidora elegida, el sistema rechaza el cambio y pide que se indique. |
 | 4 | Si el producto no existe, o es de otra distribuidora, el sistema informa que no lo encontró, sin distinguir los dos casos. |
+| 3 | Si una promoción pide menos de 2 unidades, o su descuento es cero, negativo, mayor que 99 % o tiene más de dos decimales, el sistema rechaza el cambio e indica el campo; el panel lo avisa antes de enviar («No puede superar el 99%»). La base de datos rechaza también un descuento fuera de ese rango. |
 
 **Rendimiento**
 
@@ -3582,7 +3594,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Baja: las campañas de descuento por volumen se configuran de manera esporádica. |
 | **Estabilidad** | Media |
-| **Comentarios** | El sistema no ofrece una operación para agregar o quitar una sola promoción: la configuración se hace siempre enviando la lista completa, que reemplaza a la anterior. El sistema no acota el descuento por debajo del 100 %: una promoción del 100 % se acepta y deja en cero el precio del ítem. |
+| **Comentarios** | El sistema no ofrece una operación para agregar o quitar una sola promoción: la configuración se hace siempre enviando la lista completa, que reemplaza a la anterior. El descuento máximo es 99 %: una promoción del 100 % se rechaza, de modo que el precio de un ítem nunca queda en cero. |
 
 ---
 
@@ -3728,7 +3740,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |------|--------|
 | 1 | El administrador abre «Franjas Horarias» en el panel y elige crear una nueva. |
 | 2 | Completa el nombre —por ejemplo «Mañana 9 a 13»—, la hora de inicio y la hora de fin. La capacidad es opcional: si se omite, la franja toma la capacidad por omisión de cincuenta pedidos diarios. |
-| 3 | El sistema valida que el nombre no esté vacío, que ambas horas tengan el formato de horas y minutos de veinticuatro horas y que la capacidad, si viene, sea un entero. |
+| 3 | El sistema valida que el nombre no esté vacío ni pase de cincuenta caracteres, que ambas horas tengan el formato de horas y minutos de veinticuatro horas y que la de inicio sea anterior a la de fin, y que la capacidad, si viene, sea un entero entre 1 y 10000. |
 | 4 | El sistema toma la distribuidora elegida y exige que haya una. |
 | 5 | El sistema crea la franja, asociada a esa distribuidora y activa. |
 | 6 | El sistema muestra la franja creada. |
@@ -3741,6 +3753,9 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |------|--------|
 | 3 | Si el nombre viene vacío, si alguna hora no respeta el formato, si la capacidad no es un entero, o se envía un dato no previsto, el sistema rechaza el alta e indica el campo. |
 | 4 | Si el administrador no tiene distribuidora elegida, el sistema rechaza el alta y pide que se indique. |
+| 3 | Si la hora de inicio no es anterior a la de fin, el sistema rechaza el alta e informa «La hora de inicio tiene que ser anterior a la de fin»; si la capacidad es cero, negativa o mayor que 10000, también la rechaza. El panel lo avisa antes de enviar («Tiene que ser mayor que 0», «Máximo 10000 pedidos por franja»). |
+| 4 | Si ya hay una franja activa de la distribuidora con ese nombre —sin distinguir mayúsculas—, el sistema rechaza el alta por conflicto e informa «Ya existe una franja activa con el nombre …». |
+| 4 | Si el horario se superpone con el de otra franja activa, el sistema rechaza el alta por conflicto e informa «La franja se solapa con … (08:00 a 12:00): ajustá el horario o desactivá esa franja». Una franja que empieza justo donde termina otra es válida. |
 
 **Rendimiento**
 
@@ -3752,7 +3767,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Muy baja: las franjas se definen una vez y se ajustan de manera excepcional. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Limitaciones registradas sobre algo que gobierna la capacidad diaria de entrega. El sistema no valida que la hora de fin sea posterior a la de inicio al crear: una franja invertida se guarda sin error y se ofrece al cliente como cualquier otra. Tampoco valida que la capacidad sea mayor a cero: una franja con capacidad cero o negativa queda permanentemente sin cupo, y aparece en la disponibilidad con cero lugares libres sin que nada explique por qué. Ambas validaciones están pendientes; la de horas ya existe al modificar la franja (CU-043). |
+| **Comentarios** | Limitaciones registradas sobre algo que gobierna la capacidad diaria de entrega. Las reglas de la franja se validan en tres capas: el formulario del panel, el sistema —que además mira las otras franjas activas— y la base de datos, que rechaza una franja invertida, una capacidad menor que 1, el nombre repetido entre activas y el solapamiento entre activas. Una franja desactivada no cuenta para el nombre ni para el solapamiento. |
 
 ---
 
@@ -3788,6 +3803,8 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | 5 | Si la capacidad nueva queda por debajo de lo ya agendado para algún día desde hoy, el sistema rechaza el cambio e informa «La franja ya tiene N pedidos agendados en un mismo día: la capacidad no puede ser menor», donde N es la mayor cantidad de pedidos de un día, y no guarda nada. |
 | 3 | Si el administrador no tiene distribuidora elegida, el sistema rechaza el cambio y pide que se indique. |
 | 3 | Si la franja no existe o es de otra distribuidora, el sistema informa «Time slot not found», sin distinguir los dos casos. |
+| 2 | Si la capacidad es menor que 1 o mayor que 10000, o el nombre pasa de cincuenta caracteres, el sistema rechaza el cambio e indica el campo. |
+| 4 | Si el nombre nuevo ya lo tiene otra franja activa, o el horario nuevo se superpone con el de otra franja activa, el sistema rechaza el cambio por conflicto e informa «Ya existe una franja activa con el nombre …» o «La franja se solapa con … (20:00 a 22:00): ajustá el horario o desactivá esa franja». |
 
 **Rendimiento**
 
@@ -4254,7 +4271,7 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 |-------|---------|
 | **Frecuencia** | Baja: se cambia cuando el cliente se muda o cambia su dirección habitual. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Esta operación estaba dentro de CU-046 y no se distinguía de la modificación, aunque no cambia ningún dato de la dirección sino su papel entre las demás. |
+| **Comentarios** | Esta operación estaba dentro de CU-046 y no se distinguía de la modificación, aunque no cambia ningún dato de la dirección sino su papel entre las demás. El sistema desmarca la dirección anterior antes de marcar la nueva, y la base de datos garantiza que un usuario no tenga dos direcciones predeterminadas vigentes. |
 
 ---
 
@@ -4749,6 +4766,8 @@ habían sido expandidos. Corresponden a funcionalidad que el sistema ya ejecuta.
 | 14 | Si el despacho falla, el sistema registra el error y el pedido queda pagado a la espera del reintento del despacho: el pago no se revierte. |
 | 9 | Si el pago llega rechazado o cancelado, el sistema únicamente lo registra, no realiza ninguna acción sobre el pedido y no avisa al cliente (ver Comentarios). |
 | 9 | Si el pago llega en un estado no definitivo, el sistema lo registra como tal y no actúa. |
+| 9 | Si el pago ya estaba aprobado y llega un aviso atrasado como pendiente, rechazado o cancelado, el sistema lo ignora: un pago aprobado sólo puede pasar a devuelto. La base de datos lo garantiza aunque el aviso llegue por otro camino. |
+| 9 | Si la pasarela aprueba un importe distinto del esperado, el sistema marca el pago, deja una alerta registrada, y no da el pedido por pagado ni lo despacha. |
 
 **Rendimiento**
 
@@ -5365,7 +5384,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 
 | Paso | Acción |
 |------|--------|
-| 1 | El Administrador General informa los datos de la distribuidora: nombre, nombre corto, correo, identificación fiscal, teléfono y estado. |
+| 1 | El Administrador General abre «Empresas» y elige «Nueva empresa»: el alta es una página propia, donde informa los datos de la distribuidora: nombre, nombre corto, razón social, CUIT, correo y teléfono. |
 | 2 | El sistema valida el formato de los datos —por ejemplo, que el nombre corto sea alfanumérico, con guiones—. |
 | 3 | El sistema comprueba si ya existe otra distribuidora con el mismo nombre corto. |
 | 4 | El sistema guarda la nueva distribuidora y confirma el alta. |
@@ -5378,6 +5397,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 2 | Si los datos informados no cumplen con el formato, el sistema rechaza el alta. |
 | 3 | Si el nombre corto ya existe, el sistema rechaza el alta por conflicto. |
+| 2 | Si el CUIT no tiene once dígitos —se aceptan guiones y espacios, que se quitan—, el sistema rechaza el alta; el panel lo avisa antes de enviar: «El CUIT tiene que tener 11 dígitos». |
+| 2 | Si el nombre corto tiene mayúsculas, espacios o símbolos, el sistema rechaza el alta; el panel lo avisa antes de enviar: «Minúsculas, números y guiones (ej: jeny-gas)». |
 
 **Rendimiento**
 
@@ -5389,7 +5410,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El alta no envía ningún aviso ni credencial inicial a la distribuidora registrada: su puesta en marcha operativa (usuarios, catálogo, franjas horarias) corre por fuera de este caso y depende de pasos posteriores a cargo del Administrador General. |
+| **Comentarios** | El alta no envía ningún aviso ni credencial inicial a la distribuidora registrada: su puesta en marcha operativa (usuarios, catálogo, franjas horarias) corre por fuera de este caso y depende de pasos posteriores a cargo del Administrador General. El alta es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. El nombre corto no se cambia después. El CUIT se guarda sólo con sus once dígitos y la base de datos rechaza cualquier otro valor. |
 
 ---
 
@@ -5461,6 +5482,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | Paso | Acción |
 |------|--------|
 | 2 | Si la distribuidora no existe, el sistema informa que no la encontró. |
+| 3 | Si el CUIT no tiene once dígitos, el sistema rechaza el cambio. |
 
 **Rendimiento**
 
@@ -5472,7 +5494,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no valida que la combinación de datos sea coherente entre sí —por ejemplo, un cambio de plan sin ajustar el estado— ni registra quién hizo el cambio ni cuándo, con lo que la operación no queda auditable por sí misma. |
+| **Comentarios** | El sistema no valida que la combinación de datos sea coherente entre sí —por ejemplo, un cambio de plan sin ajustar el estado— ni registra quién hizo el cambio ni cuándo, con lo que la operación no queda auditable por sí misma. La edición en el panel es una página propia, sin el nombre corto, que no se cambia. Si se sale con cambios sin guardar, el panel pregunta «Hay cambios sin guardar». |
 
 ---
 
@@ -5548,6 +5570,8 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 3 | Si los datos no son válidos —menos de tres vértices, un recargo negativo o un porcentaje mayor que 100—, el sistema rechaza el alta. |
 | 3 | Si el polígono no es válido —por ejemplo, se cruza consigo mismo—, el sistema rechaza el alta e informa «El polígono no es válido: …» con el motivo. |
 | 2 | Si no hay distribuidora elegida, el sistema rechaza el alta. |
+| 3 | Si ya hay una zona activa de la distribuidora con ese nombre, o con esa prioridad, el sistema rechaza el alta por conflicto e informa «Ya existe una zona activa con el nombre …» o «La zona … ya tiene la prioridad N: cada zona activa tiene una prioridad distinta». Sin prioridad en el alta, la zona toma la siguiente a la mayor de las activas. |
+| 3 | Si la vigencia termina antes de empezar, el sistema rechaza el alta; el panel lo avisa antes de enviar. |
 
 **Rendimiento**
 
@@ -5559,7 +5583,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Muy baja. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema valida la forma del polígono pero no comprueba superposición con otras zonas de la misma distribuidora: cuando dos se superponen, gana la de mayor prioridad y, a igual prioridad, la de menor área. El recargo admite las dos formas porque un monto fijo se desactualiza con la inflación y obliga a reeditar zona por zona, mientras que un porcentaje acompaña al precio del producto; una zona usa una u otra, nunca las dos a la vez. |
+| **Comentarios** | El sistema valida la forma del polígono pero no impide que dos zonas se superpongan: cuando eso pasa, gana la de mayor prioridad —y la prioridad no se repite entre zonas activas—. El nombre y la prioridad únicos entre las activas se validan en el panel, en el sistema y en la base de datos. El recargo admite las dos formas porque un monto fijo se desactualiza con la inflación y obliga a reeditar zona por zona, mientras que un porcentaje acompaña al precio del producto; una zona usa una u otra, nunca las dos a la vez. |
 
 ---
 
@@ -5720,6 +5744,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 5 | Si el recargo es negativo, o es porcentual y pasa de 100, el sistema rechaza el cambio. |
 | 5 | Si se intenta dejar vacío el tipo o el valor del recargo, el sistema rechaza el cambio e informa que el tipo y el valor del recargo no pueden quedar vacíos: hay que omitirlos para no cambiarlos. |
 | 3 | Si el color no es un hexadecimal de seis dígitos o la etiqueta pasa de 40 caracteres, el sistema rechaza el cambio. |
+| 3 | Si el nombre nuevo o la prioridad nueva ya los tiene otra zona activa, el sistema rechaza el cambio por conflicto, con los mismos mensajes del alta. |
 
 **Rendimiento**
 
@@ -6273,9 +6298,9 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |------|--------|
 | 1 | El administrador ingresa el número de serie del envase y, si corresponde, el producto de catálogo al que pertenece y el importe del depósito en garantía. |
 | 2 | El sistema exige una distribuidora elegida y rechaza la operación si no la hay. |
-| 3 | El sistema valida que el número de serie sea un texto y, cuando vienen informados, que el producto sea válido y que el depósito sea un número no negativo. |
+| 3 | El sistema valida que el número de serie sea un texto no vacío de hasta cien caracteres, lo deja sin espacios en los bordes y en mayúsculas, y cuando vienen informados, que el producto sea válido y que el depósito sea un número no negativo. |
 | 4 | El sistema arma el envase a nombre de la distribuidora elegida, con depósito en cero si no se informó, y con el estado inicial de en depósito. |
-| 5 | El sistema lo guarda. La unicidad del número de serie dentro de la distribuidora la garantiza el sistema al guardar: si ya existe, lo traduce en un conflicto. |
+| 5 | El sistema lo guarda. La unicidad del número de serie dentro de la distribuidora —sin distinguir mayúsculas ni espacios en los bordes— la garantiza el sistema al guardar: si ya existe, lo traduce en un conflicto. |
 | 6 | El sistema asienta en el historial del envase el movimiento inicial, sin estado de origen y con destino en depósito. |
 | 7 | El sistema muestra el envase creado. |
 
@@ -6288,6 +6313,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 2 | Si no hay distribuidora elegida —Administrador General que no la indica—, el sistema rechaza el alta e informa que falta indicar la distribuidora. |
 | 3 | Si el número de serie no es un texto, o el producto o el depósito informados no cumplen su formato, el sistema rechaza el alta e indica el detalle. |
 | 5 | Si el número de serie ya está en uso dentro de la misma distribuidora, el sistema rechaza el alta e informa «El serial ya existe en tu distribuidora». Un número repetido en otra distribuidora es válido. |
+| 3 | Si el número de serie está vacío o son sólo espacios, o pasa de cien caracteres, el sistema rechaza el alta e informa «El serial no puede estar vacío» o el límite de largo. |
 
 **Rendimiento**
 
@@ -6299,7 +6325,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Media. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El sistema no impone ningún formato al número de serie más allá de que sea texto: no valida longitud ni patrón ni que no esté vacío, de modo que admite cadenas sin sentido; si el negocio exige un formato de grabado, hay que incorporarlo a la validación. Limitación: el alta del envase y su movimiento inicial son dos escrituras sucesivas que no se confirman juntas; si la segunda falla, el envase queda creado sin su primer movimiento y el historial incompleto. |
+| **Comentarios** | El número de serie se guarda siempre en su forma canónica —sin espacios en los bordes y en mayúsculas—, de modo que «ab-1 » y «AB-1» son el mismo envase; la base de datos garantiza esa unicidad. No se exige un patrón de grabado. Limitación: el alta del envase y su movimiento inicial son dos escrituras sucesivas que no se confirman juntas; si la segunda falla, el envase queda creado sin su primer movimiento y el historial incompleto. |
 
 ---
 
@@ -6518,6 +6544,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 3 | Si el envase está dado de baja, el sistema rechaza la operación por conflicto. |
 | 4 | Si la fecha de revisión es futura, falta el vencimiento en un resultado que no es de rechazo, o el vencimiento no es posterior a la revisión, el sistema rechaza la operación. |
 | 7 | Si el envase está en poder de un cliente al momento del rechazo, el sistema lo marca para retirarlo y no lo saca de circulación hasta que vuelva. |
+| 3 | Si la fecha de la revisión es anterior a la fecha de fabricación del envase, el sistema rechaza el registro e informa «La revisión no puede ser anterior a la fabricación del envase». |
 
 **Rendimiento**
 
@@ -6689,7 +6716,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 5 | El sistema resuelve la distribuidora a la que se ata el pedido: la elegida o, si no hay ninguna, la distribuidora por defecto. |
 | 6 | El sistema recupera al cliente y la dirección de entrega, que debe pertenecerle. |
 | 7 | El sistema verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por lejanía de esa zona. Si la distribuidora no definió zonas, el control no se aplica. |
-| 8 | Si el pedido trae fecha y franja horaria, el sistema valida que la fecha no sea anterior a hoy, que la franja no haya terminado ya si es de hoy y que quede cupo para ese día. |
+| 8 | El sistema valida que la fecha agendada no sea anterior a hoy y, si el pedido trae franja horaria, que la franja no haya terminado ya si es de hoy y que quede cupo para ese día. |
 | 9 | Por cada ítem, el sistema descuenta el stock, comprueba que la garrafa pertenezca exactamente a la distribuidora del pedido y calcula el precio con la lista y las promociones por volumen, nunca con lo que envió el cliente. |
 | 10 | El sistema suma el recargo de zona y luego el recargo por medio de pago, y comprueba que la seña no supere el total así calculado. |
 | 11 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema registra el pedido como reservado —porque trae el indicador de reserva—, con el monto de la seña y la seña marcada como no cobrada y la fecha agendada, y asienta su creación en el historial. Sin ese indicador, el pedido nace pendiente aunque traiga fecha agendada. |
@@ -6708,7 +6735,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 | 4 | Si se pide pagar la reserva con cuenta corriente, o entregarla como express, el sistema rechaza el alta e informa que no se combina. |
 | 6 | Si el cliente no existe o no tiene perfil de cliente, o la dirección no existe o no le pertenece, el sistema informa que no lo encontró. |
 | 7 | Si la dirección queda fuera de toda zona de cobertura, el sistema cancela la operación y rechaza el alta. |
-| 8 | Si la reserva trae franja y la fecha es anterior a hoy, o la franja ya terminó, o no tiene cupo para ese día, el sistema cancela la operación y rechaza el alta e informa el motivo. |
+| 8 | Si la fecha es anterior a hoy —con franja o sin ella—, o la franja ya terminó, o no tiene cupo para ese día, el sistema cancela la operación y rechaza el alta e informa el motivo. |
 | 9 | Si la garrafa pedida es de otra distribuidora, el sistema cancela la operación y rechaza el alta. Si no queda stock suficiente para algún ítem, el sistema cancela la operación e informa «Stock insuficiente para <producto>». Si la garrafa no existe, informa que no la encontró. |
 | 9 | Si dos altas simultáneas se cruzan al tomar el stock, el sistema deshace y reintenta la operación completa; agotados los reintentos, informa un error genérico. |
 | 10 | Si la seña supera el total del pedido, el sistema cancela la operación y rechaza el alta e informa cuánto es la seña y cuánto el total. |
@@ -6724,7 +6751,7 @@ registrado. Se presentan agrupados por el subsistema al que pertenecen.
 |-------|---------|
 | **Frecuencia** | Media. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Lo que decide que el pedido nazca reservado es el indicador de reserva, no la presencia de una fecha agendada: un pedido con fecha futura y sin ese indicador nace pendiente y se despacha en el acto, con lo cual la fecha queda registrada pero sin efecto sobre el circuito. La relación es la inversa: la reserva exige fecha, pero la fecha no implica reserva. La seña arranca siempre marcada como no cobrada, nunca sin valor. Una reserva no se edita —solo se modifica un pedido pendiente—: si hay que cambiarla, se cancela y se crea otra, de modo que el tope de la seña corre solo al crearla. Una seña igual al total se acepta. La fecha anterior a hoy solo se rechaza cuando la reserva trae franja: sin franja el sistema acepta la fecha tal como llega y es la pantalla de alta la que no deja elegir un día pasado. |
+| **Comentarios** | Lo que decide que el pedido nazca reservado es el indicador de reserva, no la presencia de una fecha agendada: un pedido con fecha futura y sin ese indicador nace pendiente y se despacha en el acto, con lo cual la fecha queda registrada pero sin efecto sobre el circuito. La relación es la inversa: la reserva exige fecha, pero la fecha no implica reserva. La seña arranca siempre marcada como no cobrada, nunca sin valor. Una reserva no se edita —solo se modifica un pedido pendiente—: si hay que cambiarla, se cancela y se crea otra, de modo que el tope de la seña corre solo al crearla. Una seña igual al total se acepta. La fecha anterior a hoy se rechaza siempre, con franja o sin ella, y la pantalla de alta tampoco deja elegir un día pasado. |
 
 ---
 
@@ -8294,7 +8321,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Baja: corrección puntual de datos del repartidor. |
 | **Estabilidad** | Media |
-| **Comentarios** | La operación cambia el mismo dato que CU-032 cambia por su operación dedicada, con las mismas reglas de rol y de distribuidora. El estado de actividad se cambia únicamente por CU-033 y CU-267, que además sacan al chofer del despacho al desactivarlo: por eso este caso no lo acepta. Un dato distinto de la validación se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. |
+| **Comentarios** | La operación cambia el mismo dato que CU-032 cambia por su operación dedicada, con las mismas reglas de rol y de distribuidora. El estado de actividad se cambia únicamente por CU-033 y CU-267, que además sacan al chofer del despacho al desactivarlo: por eso este caso no lo acepta. Un dato distinto de la validación se rechaza en lugar de descartarse en silencio, para que el panel no dé por cambiado un dato que no cambió. La edición del chofer en el panel es una página propia que reúne este cambio con el de sus datos de cuenta, su habilitación y una contraseña nueva opcional; cada uno se guarda por su caso de uso (CU-251 el nombre, el teléfono y la contraseña; CU-033 y CU-267 la habilitación). Si el formulario tiene cambios sin guardar y se sale, el panel pregunta «Hay cambios sin guardar». |
 
 ---
 
@@ -8457,8 +8484,9 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |------|--------|
 | 2 | Si el identificador no es válido, el sistema rechaza la operación. |
 | 2 | Si el vehículo no existe o es de otra distribuidora, el sistema informa «Car with ID: … not found». |
-| 4 | Si la patente nueva ya pertenece a otro vehículo, el sistema rechaza el cambio. |
+| 4 | Si la patente nueva ya pertenece a otro vehículo de la distribuidora, el sistema rechaza el cambio por conflicto e informa «La patente del vehículo ya está registrada en la distribuidora». |
 | 5 | Si cambia la patente o el tipo de un vehículo que un chofer tiene en uso, el sistema rechaza el cambio e informa «El vehículo está en uso: liberalo primero». No modifica nada. |
+| 3 | Si la patente nueva no tiene el formato argentino (AAA123 o AA123AA), el sistema rechaza el cambio. |
 
 **Rendimiento**
 
@@ -9435,10 +9463,10 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la ficha del vehículo y elige cargar combustible. El chofer parte del vehículo que tiene en uso. |
+| 1 | El administrador abre «Combustible» —o la pestaña de combustible de la ficha del vehículo— y elige «Nueva carga»: el alta es una página propia, con el vehículo y el combustible, los litros y el importe, el kilometraje, el pago y las notas. El chofer parte del vehículo que tiene en uso. |
 | 2 | La aplicación sugiere el kilometraje de la última carga y el usuario informa los datos de la carga. |
 | 3 | El sistema comprueba que el importe coincida con los litros por el precio por litro, con una tolerancia del 1 %, y que los litros no superen en más de un 5 % la capacidad del tanque, si está cargada. |
-| 4 | El sistema comprueba que el kilometraje no sea menor que el de la última carga vigente del vehículo. |
+| 4 | El sistema comprueba que el kilometraje no sea menor que el de la última carga vigente anterior del vehículo ni mayor que el de la primera posterior, según la fecha de cada carga. |
 | 5 | El sistema registra la carga, con el tipo de combustible del vehículo si no se indicó otro, y actualiza el kilometraje del vehículo al mayor entre el que tenía y el de la carga. |
 | 6 | El sistema calcula el consumo del tramo desde la carga de tanque lleno anterior y lo compara con el promedio de las últimas cinco cargas; si se aparta más de un 25 %, marca la carga como anómala y avisa por correo a los administradores de la distribuidora. |
 | 7 | El sistema muestra la carga registrada. |
@@ -9454,6 +9482,9 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 3 | Si el importe no coincide con los litros por el precio por litro, o los litros superan la capacidad del tanque, el sistema rechaza la carga e indica el campo. |
 | 3 | Si ni la carga ni el vehículo indican el tipo de combustible, o la fecha de la carga es futura, el sistema rechaza la carga. |
 | 4 | Si el kilometraje es menor que el de la última carga, el sistema rechaza la carga e informa «El kilometraje es menor que el de la última carga». Solo el administrador puede corregirlo, con una nota. |
+| 4 | Si el kilometraje es mayor que el de una carga posterior, el sistema rechaza la carga e informa «El kilometraje es mayor que el de una carga posterior: corregí la fecha o el kilometraje». Corregirlo, también aquí, es cosa del administrador y pide una nota. |
+| 4 | Si el administrador marca la corrección del kilometraje y no escribe la nota, el sistema rechaza la carga e informa que la corrección necesita una nota; el panel pide la nota antes de enviar. |
+| 3 | Si la fecha de la carga es futura —con cinco minutos de tolerancia por el reloj—, el sistema la rechaza; el panel lo avisa antes de enviar: «La carga no puede ser futura». |
 
 **Rendimiento**
 
@@ -9465,7 +9496,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Alta: una carga por vehículo cada pocos días. |
 | **Estabilidad** | Media |
-| **Comentarios** | La carga no es un dato del vehículo sino un registro propio, de modo que cada carga conserva su fecha, su precio y su kilometraje y se pueden calcular consumos y costos por tramo. El kilometraje del vehículo se actualiza desde un único punto, que toma el mayor entre el valor vigente y el de la carga: así lo comparten la carga de combustible y el cierre de las tareas de mantenimiento, sin que uno pise al otro. El consumo se calcula con el método del tanque lleno: entre dos cargas de tanque lleno, los kilómetros recorridos sobre los litros cargados; es anómalo si se aparta más de un 25 % del promedio de las últimas cinco. El vehículo gana dos datos, el tipo de combustible y la capacidad del tanque, que se cargan con el alta y la modificación del vehículo (CU-034 y CU-111). La carga guarda el medio de pago, pero todavía no genera un egreso en la caja. El kilometraje de una carga no pasa de 2.000.000 km. |
+| **Comentarios** | La carga no es un dato del vehículo sino un registro propio, de modo que cada carga conserva su fecha, su precio y su kilometraje y se pueden calcular consumos y costos por tramo. El kilometraje del vehículo se actualiza desde un único punto, que toma el mayor entre el valor vigente y el de la carga: así lo comparten la carga de combustible y el cierre de las tareas de mantenimiento, sin que uno pise al otro. El consumo se calcula con el método del tanque lleno: entre dos cargas de tanque lleno, los kilómetros recorridos sobre los litros cargados; es anómalo si se aparta más de un 25 % del promedio de las últimas cinco. El vehículo gana dos datos, el tipo de combustible y la capacidad del tanque, que se cargan con el alta y la modificación del vehículo (CU-034 y CU-111). Si el medio de pago es la caja, el egreso sale de la caja de efectivo que se indica —con una sesión abierta y saldo suficiente— en la misma operación; con tarjeta, cuenta corriente de combustible o efectivo del chofer no sale nada de ninguna caja. El kilometraje de una carga no pasa de 2.000.000 km. El alta es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. La regla del kilometraje se valida en tres capas: el formulario del panel avisa los litros que no entran en el tanque y la diferencia entre el importe y los litros por el precio, el sistema controla el orden del kilometraje contra la carga anterior y la siguiente, y la base de datos exige un precio por litro mayor que cero y un kilometraje no negativo. |
 
 ---
 
@@ -9483,7 +9514,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la ficha del vehículo y elige una carga. |
+| 1 | El administrador abre la ficha del vehículo —o «Combustible»— y elige «Editar» en una carga: la edición es una página propia, con el mismo formulario del alta, donde el vehículo ya no se cambia. |
 | 2 | Cambia los datos y confirma. |
 | 3 | El sistema revalida el importe contra los litros por el precio por litro, con una tolerancia del 1 %, y los litros contra la capacidad del tanque. |
 | 4 | El sistema revalida que el kilometraje no sea menor que el de la última carga vigente anterior. |
@@ -9499,6 +9530,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 3 | Si el importe no coincide con los litros por el precio por litro, o los litros superan la capacidad del tanque, el sistema rechaza el cambio e indica el campo. |
 | 4 | Si el kilometraje es menor que el de la última carga, el sistema rechaza el cambio; solo el administrador puede forzarlo, con una nota. |
 | 1 | Si la carga está anulada, el sistema rechaza el cambio por conflicto. |
+| 4 | Si el kilometraje es mayor que el de una carga posterior, el sistema rechaza el cambio e informa «El kilometraje es mayor que el de una carga posterior: corregí la fecha o el kilometraje». |
 
 **Rendimiento**
 
@@ -9510,7 +9542,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Baja: cuando se detecta un error de carga. |
 | **Estabilidad** | Media |
-| **Comentarios** | Modificar una carga cambia los cálculos de consumo del tramo, no los de las demás: cada una se evalúa contra las cinco anteriores. |
+| **Comentarios** | Modificar una carga cambia los cálculos de consumo del tramo, no los de las demás: cada una se evalúa contra las cinco anteriores. La edición es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. Al guardar, el panel vuelve a la página desde la que se abrió. |
 
 ---
 
@@ -9716,6 +9748,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 2 | Si el vehículo no existe o es de otra distribuidora, el sistema informa «Vehículo … no encontrado». |
 | 3 | Si ya existe una multa con esa jurisdicción y ese número de acta, el sistema informa «La multa ya está registrada». |
 | 3 | Si falta un dato obligatorio o el importe no es positivo, el sistema rechaza el alta e indica el campo. |
+| 3 | Si la fecha de la infracción es futura, o el vencimiento es anterior a la fecha de la infracción, el sistema rechaza el alta; el panel lo avisa antes de enviar («La infracción no puede ser futura», «El vencimiento no puede ser anterior a la fecha de la infracción»). Un pago voluntario mayor que el importe de la multa también se rechaza. |
 
 **Rendimiento**
 
@@ -9760,6 +9793,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 3 | Si la multa está pagada o anulada, el sistema rechaza el cambio: no vuelve atrás. |
 | 3 | Si el número de acta ya pertenece a otra multa de la jurisdicción, el sistema informa «La multa ya está registrada». |
 | 3 | Si un dato no es válido o el importe no es positivo, el sistema rechaza el cambio e indica el campo. |
+| 3 | Si la fecha de la infracción pasa a ser futura o el vencimiento anterior a la infracción, el sistema rechaza el cambio. |
 
 **Rendimiento**
 
@@ -9929,6 +9963,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 3 | Si la multa no existe o es de otra distribuidora, el sistema informa «Multa … no encontrada». |
 | 3 | Si la multa ya está pagada o anulada, el sistema rechaza la operación e informa «La multa no admite el pago». |
 | 2 | Si la fecha de pago es posterior a hoy o el importe no es positivo, el sistema rechaza la operación e indica el campo. |
+| 2 | Si la fecha de pago es anterior a la fecha de la infracción, el sistema rechaza la operación e informa que el pago no puede ser anterior a la fecha de la infracción; el panel lo avisa antes de enviar («El pago no puede ser anterior a la fecha de la infracción», «El pago no puede ser posterior a hoy»). |
 
 **Rendimiento**
 
@@ -9940,7 +9975,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Media: una vez por multa. |
 | **Estabilidad** | Media |
-| **Comentarios** | El importe pagado se guarda aparte del importe de la multa porque suele ser menor: es el del pago voluntario. El pago no genera un movimiento de caja. El costo de la multa entra en el costo total del vehículo (CU-203) solo cuando está pagada y no se imputó al chofer. |
+| **Comentarios** | El importe pagado se guarda aparte del importe de la multa porque suele ser menor: es el del pago voluntario. Si el pago es en efectivo, el administrador indica la caja de la que sale y el egreso se asienta en esa caja en la misma operación; sin la caja, o con la caja sin sesión abierta o sin saldo, el sistema rechaza el pago. El costo de la multa entra en el costo total del vehículo (CU-203) solo cuando está pagada y no se imputó al chofer. |
 
 ---
 
@@ -10002,7 +10037,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la ficha del vehículo y elige registrar un siniestro. El chofer parte del vehículo que tiene en uso. |
+| 1 | El administrador abre «Siniestros» —o la pestaña de siniestros de la ficha del vehículo— y elige «Nuevo siniestro»: el alta es una página propia, con qué pasó, el lugar, la gravedad y los trámites. El chofer parte del vehículo que tiene en uso. |
 | 2 | Completa los datos del siniestro. |
 | 3 | El sistema registra el siniestro como denunciado, asociado al vehículo y al empleado que conducía, si se lo identifica. |
 | 4 | Si el vehículo quedó inutilizable, el sistema lo pasa a fuera de servicio y, si lo tenía en uso un chofer, lo libera de su asignación, salvo que ese chofer tenga un pedido en curso o una carga de camión abierta: entonces conserva la asignación y avisa por correo a los administradores para que resuelvan el pedido o la carga y liberen el vehículo. |
@@ -10018,6 +10053,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 3 | Si el vehículo no existe o es de otra distribuidora, el sistema informa «Vehículo … no encontrado». |
 | 3 | Si quien registra es un chofer y no tiene un vehículo en uso, el sistema informa «No tenés un vehículo en uso». |
 | 3 | Si falta la fecha o la descripción, la fecha es futura o el punto no es válido, el sistema rechaza el alta e indica el campo. |
+| 3 | Si la fecha del siniestro es futura —con cinco minutos de tolerancia por el reloj—, el sistema rechaza el alta; el panel lo avisa antes de enviar: «El siniestro no puede ser futuro». |
 
 **Rendimiento**
 
@@ -10029,7 +10065,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Baja: unos pocos siniestros por año en toda la flota. |
 | **Estabilidad** | Media |
-| **Comentarios** | El siniestro se registra siempre, aunque el vehículo quede inutilizable. El siniestro no se mezcla con la incidencia, que es el contratiempo de calidad de un pedido (CU-060): es un hecho del vehículo. El ciclo es denunciado, en revisión, en reparación y cerrado. Modificarlo es CU-327, consultarlos CU-328 y cerrarlo CU-202. La fuga o derrame de gas obliga a avisar: es un incidente de seguridad, no solo un costo. Un vehículo inutilizable pasa a fuera de servicio por el mismo estado que usa la flota, y el despacho ya excluye a los choferes sin vehículo habilitado. El vehículo no vuelve solo al servicio al cerrar el siniestro: se lo devuelve con CU-247. |
+| **Comentarios** | El siniestro se registra siempre, aunque el vehículo quede inutilizable. El siniestro no se mezcla con la incidencia, que es el contratiempo de calidad de un pedido (CU-060): es un hecho del vehículo. El ciclo es denunciado, en revisión, en reparación y cerrado. Modificarlo es CU-327, consultarlos CU-328 y cerrarlo CU-202. La fuga o derrame de gas obliga a avisar: es un incidente de seguridad, no solo un costo. Un vehículo inutilizable pasa a fuera de servicio por el mismo estado que usa la flota, y el despacho ya excluye a los choferes sin vehículo habilitado. El vehículo no vuelve solo al servicio al cerrar el siniestro: se lo devuelve con CU-247. El alta es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. |
 
 ---
 
@@ -10047,7 +10083,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la lista de siniestros del vehículo. |
+| 1 | El administrador abre «Siniestros» —o la lista de siniestros del vehículo— y elige «Editar»: la edición es una página propia, con el mismo formulario del alta, donde además se avanza el estado de a un paso. |
 | 2 | Cambia los datos o el estado y confirma. |
 | 3 | El sistema comprueba que el siniestro no esté cerrado y que el cambio de estado siga el ciclo: denunciado, en revisión, en reparación. |
 | 4 | El sistema guarda los cambios y muestra el siniestro. |
@@ -10073,7 +10109,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | Modificar un siniestro no devuelve el vehículo a la flota: eso es CU-247. |
+| **Comentarios** | Modificar un siniestro no devuelve el vehículo a la flota: eso es CU-247. La edición es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. Al guardar, el panel vuelve a la página desde la que se abrió. |
 
 ---
 
@@ -13524,12 +13560,12 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre «Empresa · Personal» y elige dar de alta un empleado. |
+| 1 | El administrador abre «Legajos» y elige «Nuevo legajo»: el alta es una página propia, con los datos personales, los laborales, el contacto y domicilio, el contacto de emergencia y las notas. |
 | 2 | Completa nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, contacto de emergencia, puesto, fecha de ingreso y modalidad de contratación. |
 | 3 | El sistema valida el formato de lo informado y, si trae CUIL, comprueba su dígito verificador. |
 | 4 | El sistema comprueba que el puesto exista, sea de la distribuidora y esté activo. |
 | 5 | El sistema comprueba que el documento, el CUIL y el número de legajo (si se informó) no pertenezcan a otro empleado vigente de la distribuidora. |
-| 6 | Si no se informó número de legajo, el sistema asigna el siguiente de la distribuidora, de cuatro dígitos; registra al empleado como activo y lo muestra. |
+| 6 | Si no se informó número de legajo, el sistema asigna el siguiente de la distribuidora, de cuatro dígitos; registra al empleado como activo y el panel muestra su ficha. |
 
 **Postcondición:** Existe un empleado activo en la distribuidora, con su puesto y su número de legajo, sin cuenta de acceso.
 
@@ -13541,6 +13577,8 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 | 4 | Si el puesto no existe o es de otra distribuidora, el sistema informa que no lo encontró. |
 | 4 | Si el puesto está inactivo, el sistema rechaza el alta por conflicto. |
 | 5 | Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema rechaza el alta por conflicto. |
+| 3 | Si la fecha de nacimiento no es anterior a la de ingreso, el sistema rechaza el alta; el panel lo avisa antes de enviar: «El nacimiento tiene que ser anterior al ingreso». |
+| 3 | Si el CUIL no tiene once dígitos o no es de una persona con el dígito verificador correcto, el sistema rechaza el alta; el panel lo avisa antes de enviar: «El CUIL no es válido: revisá el prefijo y el dígito verificador». |
 
 **Rendimiento**
 
@@ -13552,7 +13590,7 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 |-------|---------|
 | **Frecuencia** | Baja: al incorporar a cada persona. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El alta de un chofer (CU-031) crea también su legajo en la misma operación, o vincula el legajo existente si el pedido lo indica: un chofer es un empleado con cuenta y perfil de reparto (punto de extensión PE-07). Sin datos de legajo, queda con el puesto activo más antiguo de categoría chofer, ingreso hoy y un documento provisorio. Los datos personales del legajo son sensibles: solo los ven los administradores. |
+| **Comentarios** | El alta de un chofer (CU-031) crea también su legajo en la misma operación, o vincula el legajo existente si el pedido lo indica: un chofer es un empleado con cuenta y perfil de reparto (punto de extensión PE-07). Sin datos de legajo, queda con el puesto activo más antiguo de categoría chofer, ingreso hoy y un documento provisorio. Los datos personales del legajo son sensibles: solo los ven los administradores. El alta es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. Las reglas del legajo se validan en tres capas: el formulario del panel, el sistema al recibir el pedido y la base de datos, que además rechaza un CUIL inválido y un nacimiento no anterior al ingreso aunque el pedido llegue por otro camino. |
 
 ---
 
@@ -13570,7 +13608,7 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 
 | Paso | Acción |
 |------|--------|
-| 1 | El administrador abre la ficha del empleado. |
+| 1 | El administrador abre la ficha del empleado y elige «Editar»: la edición es una página propia, con el mismo formulario del alta. |
 | 2 | Modifica los datos y confirma. |
 | 3 | El sistema valida el formato de lo informado y, si cambió el CUIL, su dígito verificador. |
 | 4 | Si cambió el puesto, el sistema comprueba que exista, sea de la distribuidora y esté activo, y que, si el empleado tiene cuenta, el rol de su usuario corresponda a la categoría del puesto nuevo. |
@@ -13587,6 +13625,7 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 | 4 | Si el puesto no existe o es de otra distribuidora, el sistema informa que no lo encontró; si está inactivo o su categoría no corresponde al rol de la cuenta del empleado, rechaza el cambio por conflicto. |
 | 5 | Si la fecha de ingreso es posterior a la de egreso, el sistema rechaza el cambio. |
 | 5 | Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema rechaza el cambio por conflicto. |
+| 3 | Si la fecha de nacimiento no es anterior a la de ingreso, el sistema rechaza el cambio. |
 
 **Rendimiento**
 
@@ -13598,7 +13637,7 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 |-------|---------|
 | **Frecuencia** | Baja: una modificación cada tanto por empleado. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El estado del empleado, su fecha y su motivo de egreso no se modifican por esta vía: solo cambian con el egreso y el reingreso (CU-181 y CU-312); enviarlos se rechaza. El historial de lo que se modificó queda en el registro de auditoría, que solo ven los administradores. |
+| **Comentarios** | El estado del empleado, su fecha y su motivo de egreso no se modifican por esta vía: solo cambian con el egreso y el reingreso (CU-181 y CU-312); enviarlos se rechaza. El historial de lo que se modificó queda en el registro de auditoría, que solo ven los administradores. La edición es una página propia del panel, no una ventana sobre el listado. Si se sale con datos cargados sin guardar —con «Cancelar», las migas de pan, el menú o el botón «Atrás» del navegador— el panel pregunta «Hay cambios sin guardar» («Si salís ahora se pierde lo que cargaste.») y deja elegir entre «Cancelar» y «Salir sin guardar»; al recargar o cerrar la pestaña avisa el navegador, y al cerrar la sesión o cambiar de empresa con «Ver como» el panel pregunta «Seguir sin guardar». Un formulario sin cambios, o que ya se guardó, sale sin preguntar. Al guardar, el panel vuelve a la página desde la que se abrió. |
 
 ---
 
@@ -13761,6 +13800,7 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 | 3 | Si el empleado ya está egresado, el sistema rechaza el egreso por conflicto; si la fecha de egreso es anterior a la de ingreso, lo rechaza como inválido. |
 | 4 | Si el chofer tiene pedidos en curso, el sistema rechaza el egreso e informa la cantidad: hay que cancelarlos o reasignarlos antes. |
 | 4 | Si el chofer tiene una carga de camión abierta, el sistema rechaza el egreso con el mensaje «No se puede dar de baja al chofer mientras haya una carga de camión abierta (carga N° n): cerrala o cancelala antes» y no queda ningún cambio. Trabajo futuro (Doc 3, §10): lo mismo con una rendición pendiente. |
+| 3 | Si la fecha de egreso es anterior a la de ingreso, el panel lo avisa antes de enviar: «El egreso no puede ser anterior al ingreso». |
 
 **Rendimiento**
 
@@ -14159,7 +14199,7 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 | Paso | Acción |
 |------|--------|
 | 2 | Si el empleado no existe o es de otra distribuidora, el sistema informa que no lo encontró; si está egresado, rechaza el registro por conflicto. |
-| 2 | Si el egreso no es posterior al ingreso, o el ingreso o el egreso son futuros, el sistema rechaza el registro. |
+| 2 | Si el egreso no es posterior al ingreso, o el ingreso o el egreso son futuros, el sistema rechaza el registro; el panel avisa antes de enviar «El ingreso no puede ser futuro» o «El egreso no puede ser futuro». |
 | 2 | Si la jornada se superpone con otra del mismo empleado, o se carga sin egreso y el empleado ya tiene una jornada abierta, el sistema rechaza el registro por conflicto. |
 
 **Rendimiento**
@@ -14201,7 +14241,7 @@ Módulo de la iteración C-08, construido: los puestos, los legajos, el egreso y
 | Paso | Acción |
 |------|--------|
 | 2 | Si falta la nota de la corrección, el sistema rechaza el cambio. |
-| 2 | Si el egreso no es posterior al ingreso, o el ingreso o el egreso son futuros, el sistema rechaza el cambio. |
+| 2 | Si el egreso no es posterior al ingreso, o el ingreso o el egreso son futuros, el sistema rechaza el cambio; el panel avisa antes de enviar «El ingreso no puede ser futuro» o «El egreso no puede ser futuro». |
 | 2 | Si la jornada corregida se superpone con otra del mismo empleado, el sistema rechaza el cambio por conflicto. |
 | 2 | Si la jornada no existe o es de otra distribuidora, el sistema informa que no la encontró. |
 
@@ -14929,6 +14969,7 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | 3 | Si el monto no es mayor que cero, el sistema rechaza el movimiento. |
 | 3 | Si la caja o la categoría no existen o son de otra distribuidora, el sistema informa que no las encontró. |
 | 3 | Si el mismo pedido se reintenta con otros datos, el sistema lo rechaza por no procesable y no ejecuta la operación. |
+| 3 | Si el monto supera 9.999.999.999,99, el sistema rechaza el movimiento e indica el campo. |
 
 **Rendimiento**
 
@@ -14977,6 +15018,7 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | 3 | Si el monto no es mayor que cero, el sistema rechaza el movimiento. |
 | 3 | Si la caja o la categoría no existen o son de otra distribuidora, el sistema informa que no las encontró. |
 | 3 | Si el mismo pedido se reintenta con otros datos, el sistema lo rechaza por no procesable y no ejecuta la operación. |
+| 3 | Si el monto supera 9.999.999.999,99, el sistema rechaza el movimiento e indica el campo. |
 
 **Rendimiento**
 
@@ -15023,6 +15065,7 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | 3 | Si la caja de origen y la de destino son la misma, el sistema rechaza la transferencia. |
 | 3 | Si el monto no es mayor que cero, el sistema rechaza la transferencia. |
 | 3 | Si alguna de las cajas no existe o es de otra distribuidora, el sistema informa que no la encontró. |
+| 3 | Si el monto supera 9.999.999.999,99, el sistema rechaza el movimiento e indica el campo. |
 
 **Rendimiento**
 
@@ -15459,6 +15502,7 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | 3 | Si el CUIT no tiene once dígitos o su dígito verificador es inválido, el sistema rechaza el alta. |
 | 3 | Si el cliente no existe, el sistema informa que no lo encontró. |
 | 2 | Si el límite es negativo o el plazo no es un entero positivo, el sistema rechaza el alta. |
+| 3 | Si el CUIT no es válido —once dígitos con dígito verificador correcto—, el plazo de pago es menor que un día, o el límite de crédito supera 9.999.999.999,99, el sistema rechaza el alta e indica el campo. |
 
 **Rendimiento**
 
@@ -15502,6 +15546,8 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 | 3 | Si la cuenta no existe o es de otra distribuidora, el sistema informa que no la encontró. |
 | 3 | Si se cierra una cuenta con saldo distinto de cero, o con pedidos a cuenta todavía sin entregar, el sistema rechaza el cambio por conflicto. |
 | 3 | Si el límite es negativo o el plazo no es un entero positivo, el sistema rechaza el cambio. |
+| 3 | Si el CUIT no es válido, el plazo de pago es menor que un día o el límite de crédito supera 9.999.999.999,99, el sistema rechaza el cambio e indica el campo. |
+| 4 | Si se pide un cambio de estado que el ciclo no permite —una cuenta cerrada no pasa a bloqueada: hay que reabrirla primero—, el sistema rechaza el cambio por conflicto e informa «Una cuenta cerrada no puede pasar a …: reabrila primero (estado active)». El ciclo es: activa y bloqueada se alternan; ambas pueden cerrarse; la cerrada sólo vuelve a activa. |
 
 **Rendimiento**
 
@@ -15513,7 +15559,7 @@ Subsistema SS-21, construido en la iteración C-20 (17/10/2026). Los casos son l
 |-------|---------|
 | **Frecuencia** | Baja. |
 | **Estabilidad** | Media |
-| **Comentarios** | Bloquear impide las ventas nuevas a cuenta pero no los cobros ni los ajustes, y es reversible; cerrar exige saldo cero y no se revierte. |
+| **Comentarios** | Bloquear impide las ventas nuevas a cuenta pero no los cobros ni los ajustes, y es reversible; cerrar exige saldo cero, y una cuenta cerrada puede reabrirse: vuelve a activa, nunca directo a bloqueada. El panel sólo ofrece los estados a los que la cuenta puede pasar desde el que tiene; la base de datos no admite una cuenta cerrada con saldo. |
 
 ---
 

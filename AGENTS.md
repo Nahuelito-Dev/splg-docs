@@ -9,7 +9,7 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 
 | Para | Comando |
 |---|---|
-| Gate: ¿cumple las plantillas de la cátedra? | `python3 verificar-conformidad.py` (32 chequeos, con el cruce de los DSD contra el código y los diagramas de los CU como imagen con su PNG al día) |
+| Gate: ¿cumple las plantillas de la cátedra? | `python3 verificar-conformidad.py` (33 chequeos, con el cruce de los DSD contra el código y los diagramas de los CU como imagen con su PNG al día) |
 | DSS y DSD como imagen en `Casos-de-Uso.md`, `2-Analisis.md` y `3-Diseño.md` (Mermaid plegado debajo) | `python3 incrustar-imagenes-cu.py --aplicar` (idempotente; `--quitar` vuelve al bloque suelto). Tras tocar un `.mmd`: `material-de-trabajo/renderizar-dsd.py` y `sincronizar-diagramas.py --aplicar` |
 | Regenerar el sitio | `python3 generar-sitio.py` → `splg-documentacion.html` |
 | Regenerar los HTML para Drive | `python3 generar-html-drive.py` |

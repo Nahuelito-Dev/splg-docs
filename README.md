@@ -41,7 +41,7 @@ la cátedra exige su artefacto ahí**. Este archivo los reúne para no saltar en
 ## Los comandos
 
 ```bash
-python3 verificar-conformidad.py   # ¿cumple las plantillas? (32 chequeos)
+python3 verificar-conformidad.py   # ¿cumple las plantillas? (33 chequeos)
 python3 incrustar-imagenes-cu.py --aplicar  # cada DSS/DSD de los .md como imagen (PNG) con su Mermaid plegado debajo
 python3 generar-tabla-implementacion.py  # copia la tabla de implementación (Casos §8) al Documento 3 §4.25
 python3 generar-html-drive.py      # regenera drive/*.html
