@@ -35,8 +35,7 @@ splg-docs/
 │   ├── .catedra-ref/               las plantillas originales de la cátedra
 │   └── material-de-trabajo/        auditorías, guías, trazabilidad, notas
 ├── sitio/                          generador y archivos del sitio publicado
-├── herramientas/                   los scripts .py y scripts/ (versionado)
-└── archivo/doc-old/                material superado, conservado para consulta (no se entrega)
+└── herramientas/                   los scripts .py y scripts/ (versionado)
 ```
 
 Los links de los `.md` de `documentos/` a las imágenes son relativos a esa carpeta: `../diagramas/png/…`.
@@ -138,7 +137,6 @@ gate avisa si alguno quedó viejo.
 | Ruta | Contenido |
 |------|-----------|
 | `diagramas/design/wireframes.html` | Los nueve wireframes renderizados, listos para capturar |
-| `archivo/doc-old/` | Material superado, conservado para consulta (ver `archivo/doc-old/LEEME.md`) |
 | `diagramas/design/*.png` | Capturas de las aplicaciones en el simulador |
 | `capturas/` | Capturas reales del panel y de las apps, sin reducir (`customer/`, `driver/`, `panel/`, `referencias-figma/`) |
 | `diagramas/pantallas/CU-xxx-<pantalla>.png` | Capturas de las pantallas de cada CU Real (§3 de `3-Diseño.md`); las de las apps son reales, tomadas con la app corriendo contra la API |
@@ -159,9 +157,9 @@ Cada script corre `integration_test/capturas_cu_reales_test.dart` con `--dart-de
 La documentación se contrasta contra el sistema construido con los verificadores de
 `herramientas/` (artefactos, relaciones, cifras de la base, cruce DSD↔clases y MC↔DER)
 y el gate `verificar-conformidad.py`. Lo pendiente de implementación está en `3-Diseño.md` §10.
-Los informes de auditoría anteriores quedaron en `archivo/doc-old/`.
+Los informes de auditoría anteriores están en el historial de git del repositorio (se retiraron el 24/10/2026, antes de congelar la v1).
 
-Lo anterior a esa revisión quedó en `archivo/doc-old/` y no forma parte de la entrega.
+Lo anterior a esa revisión está en el historial de git y no forma parte de la entrega.
 
 ## Qué no está acá
 

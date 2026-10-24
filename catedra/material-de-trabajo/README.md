@@ -1,35 +1,21 @@
 # Material de trabajo
 
 Los documentos que se usan para **construir** el sistema. No son entregables de
-la cátedra: los cinco documentos del Proceso Unificado están en la raíz del
-repositorio, y el sitio publicado se genera de ahí.
+la cátedra: los cinco documentos del Proceso Unificado están en `documentos/`, y el sitio publicado se genera de ahí.
 
-Acá hay nueve, y cada uno responde una pregunta distinta.
+Cada uno responde una pregunta distinta.
 
 | Si querés saber… | Abrí |
 |---|---|
-| **en qué quedamos y qué sigue mañana** | [DONDE-QUEDAMOS](DONDE-QUEDAMOS.md) |
-| en qué trabajar, con el panorama completo | [ESTADO-Y-PRIORIDADES](ESTADO-Y-PRIORIDADES.md) |
-| si un endpoint o un caso de uso puntual anda | [ESTADO-DETALLE](ESTADO-DETALLE.md) |
-| qué está mal y falta corregir | [HALLAZGOS](HALLAZGOS.md) |
-| cómo está armado el backend y qué refactorizar | [ARQUITECTURA](ARQUITECTURA.md) |
-| cómo están el panel y las dos apps por dentro | [CLIENTES](CLIENTES.md) |
-| qué cumple el esquema y cómo se lo modifica | [BASE-DE-DATOS](BASE-DE-DATOS.md) |
 | qué son los procesos automáticos de la tesis | [MODULOS-INTELIGENTES](MODULOS-INTELIGENTES.md) |
 | qué hay alrededor: mercado y otros sistemas propios | [REFERENCIAS](REFERENCIAS.md) |
+| cómo se dibuja un DSD al estilo Larman | [GUIA-DSD-LARMAN](GUIA-DSD-LARMAN.md) |
+| qué conceptos tiene el dominio | [MODELO-DE-DOMINIO](MODELO-DE-DOMINIO.md) |
+| qué clases de diseño hay y dónde están | [indice-clases-diseno](indice-clases-diseno.md) |
+| cuál es el sistema visual (Brasa) | [MARCA](MARCA.md) |
 
-**Empezá por `DONDE-QUEDAMOS`.** Los demás son el detalle que respalda lo
-que ese documento afirma.
-
-## historico/
-
-Trabajo que ya cumplió su propósito y se guarda por si hay que remitirse a él:
-las auditorías de fidelidad entre los casos de uso y el código, la trazabilidad,
-la cobertura, las revisiones de notación UML y mermaid, las guías de diagramas y
-la revisión de arquitectura de julio, que se resolvió entera.
-
-No se borró nada: en una tesis el rastro de cómo se verificó algo a veces se
-pide, y son varios miles de líneas que no se recuperan.
+El estado del trabajo, los hallazgos y las auditorías anteriores se retiraron el 24/10/2026
+(antes de congelar la v1): están en el historial de git.
 
 ## Una nota sobre las fechas
 

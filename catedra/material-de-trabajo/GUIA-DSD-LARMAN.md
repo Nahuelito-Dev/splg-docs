@@ -153,10 +153,9 @@ servicio, se dice, para no inventar ni ocultar. Después del diagrama, en Doc 3 
 
 ## 8. Qué pasa con los DSD viejos y con el cruce
 
-- Los `.mmd`, PNG y SVG de traza de cada caso rehecho se mueven a
-  `archivo/doc-old/diagramas-dsd-trazas/` (los PNG a `png/`, los SVG a `svg/`), con el mismo nombre:
-  `mv diagramas/DSD_CU-025_Resolver-Reclamo.mmd archivo/doc-old/diagramas-dsd-trazas/`, ídem
-  `diagramas/png/…png` y `diagramas/svg/…svg`.
+- Los `.mmd`, PNG y SVG de traza de cada caso rehecho se borran con `git rm` (quedan en el
+  historial): `git rm diagramas/DSD_CU-025_Resolver-Reclamo.mmd`, ídem `diagramas/png/…png` y
+  `diagramas/svg/…svg`.
 - Los tres lugares (`.mmd`, `3-Diseño.md` §4 o su caso, `Casos-de-Uso.md`) llevan el mismo
   bloque, byte a byte.
 - El cruce `cruzar-dsd-clases.py` ya no compara trazas con el código: lee las clases de diseño

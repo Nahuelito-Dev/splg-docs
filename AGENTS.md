@@ -3,7 +3,7 @@
 Documentación de la tesis SPLG (Proceso Unificado, FCEQyN – UNaM) y el sitio publicado en
 https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 
-<!-- orq:gate: python3 herramientas/verificar-conformidad.py && python3 sitio/generar-sitio.py -->
+<!-- orq:gate: python3 herramientas/verificar-conformidad.py && python3 herramientas/verificar-links.py && python3 sitio/generar-sitio.py -->
 
 ## Comandos
 
@@ -29,7 +29,6 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 | `catedra/` | `drive/`, `entregables/`, `.catedra-ref/` y `material-de-trabajo/` |
 | `sitio/` | generador y archivos del sitio publicado |
 | `herramientas/` | los scripts de generación y verificación (`*.py`, `scripts/`) |
-| `archivo/` | `doc-old/`, histórico |
 
 ## Reglas
 

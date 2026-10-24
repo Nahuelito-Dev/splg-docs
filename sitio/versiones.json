@@ -1,6 +1,6 @@
 {
   "versiones": [
-    {"id": "v1", "titulo": "v1 — 24/10/2026", "ref": "", "congelada": true}
+    {"id": "v1", "titulo": "v1 — 24/10/2026", "ref": "v1", "congelada": true}
   ],
   "actual": {"titulo": "v1 (actual)", "equivale": "v1"}
 }

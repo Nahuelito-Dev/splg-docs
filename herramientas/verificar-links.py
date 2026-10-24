@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Recorre los .md y los .html del repo y verifica que cada ruta local que enlazan exista.
 
-    python3 herramientas/verificar-links.py            # todo menos archivo/
-    python3 herramientas/verificar-links.py --todo     # también archivo/
+    python3 herramientas/verificar-links.py
 
 Revisa `[texto](ruta)` e `![alt](ruta)` en los .md y `src="..."` / `href="..."` en los .html.
 Ignora URLs, anclas, data: y lo que arma el JavaScript de la página. Sale 1 si hay alguna rota.

@@ -35,8 +35,7 @@ splg-docs/
 ├─ capturas/      capturas reales del panel y de las apps
 ├─ catedra/       drive/, entregables/, .catedra-ref/ y material-de-trabajo/
 ├─ sitio/         generador y archivos del sitio publicado
-├─ herramientas/  los scripts de generación y verificación
-└─ archivo/       doc-old/, material superado
+└─ herramientas/  los scripts de generación y verificación
 ```
 
 Los links de `documentos/*.md` a las imágenes son relativos a esa carpeta (`../diagramas/png/…`).
