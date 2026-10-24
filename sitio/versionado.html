@@ -315,6 +315,23 @@
   </section>
 
   <section>
+    <h3>Versiones de la documentación en el sitio</h3>
+    <p>La numeración automática da el número de cada release; aparte, el sitio sirve <strong>cada versión congelada</strong> en su carpeta: la v1 (cerrada el 24/10/2026) en <code>/v1/</code> y la versión en curso (v2 desde el 25/10) en la raíz. Hasta que exista la v2, la raíz se muestra como «v1 (actual)».</p>
+    <div class="marco">
+      <table>
+        <thead><tr><th>Dónde</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">sitio/versiones.json</td><td>Lista las versiones: <code>id</code>, <code>titulo</code>, <code>ref</code> (el tag de git de la documentación) y <code>congelada</code>. La clave <code>actual</code> da el título de la raíz</td></tr>
+          <tr><td class="mono">./publicar.sh</td><td>Arma la raíz con el repositorio y, por cada versión congelada, extrae su <code>ref</code>, corre <em>su</em> generador y deja el resultado en <code>publicar/&lt;id&gt;/</code>. Si un <code>ref</code> no existe, corta antes de publicar</td></tr>
+          <tr><td class="mono">SPLG_REF_V1</td><td>Variable de entorno que pisa el <code>ref</code> de la v1 sin editar el json</td></tr>
+          <tr><td class="mono">Selector de la cabecera</td><td>Lee <code>/versiones.json</code> y cambia de versión conservando la sección abierta</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Para sumar una versión nueva: se completa su tag, se agrega su entrada en <code>versiones.json</code> con <code>congelada: true</code> y se cambia <code>actual</code> al título de la siguiente («v3 (en desarrollo)»), sin <code>equivale</code>.</p>
+  </section>
+
+  <section>
     <h3>Ver qué va a pasar antes de mergear</h3>
     <p>La lógica vive en dos scripts dentro de cada repositorio, no dentro del workflow, justamente para poder correrla antes.</p>
     <div class="marco">

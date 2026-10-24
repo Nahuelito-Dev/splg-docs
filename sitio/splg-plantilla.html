@@ -400,6 +400,24 @@ footer.pie .cierre{margin-top:16px;padding-top:14px;border-top:1px solid var(--o
 .menu-nav-panel a:hover,.menu-nav-panel button:hover{background:var(--tint);color:var(--primary)}
 @media(max-width:880px){.navbar-menus{display:none}}
 
+/* ---------- selector de versión ----------
+   Lo arma el script del final con /versiones.json (ruta absoluta del sitio).
+   Si el archivo no está (abierto desde disco) queda oculto. A diferencia de
+   los menús de la barra, también se ve en pantalla angosta. */
+.selector-version{flex:none}
+.selector-version>summary{border:1px solid var(--outline);background:var(--surface);
+  font-family:var(--mono);font-size:12px;padding:0 10px;height:34px;white-space:nowrap}
+.selector-version .menu-nav-panel{left:auto;right:0;min-width:210px;max-width:calc(100vw - 16px)}
+.selector-version .menu-nav-panel a[aria-current=true]{color:var(--primary);font-weight:600}
+.selector-version .menu-nav-panel a small{display:block;color:var(--muted);font-size:11.5px}
+@media(max-width:560px){
+  .navbar{gap:8px;padding:0 10px}
+  .navbar .marca-nav .txt span{display:none}
+  .selector-version>summary{padding:0 8px;font-size:11.5px}
+  .navbar .accion{padding:0 9px}
+  .navbar .accion kbd{display:none}
+}
+
 /* ---------- buscar en la documentación (⌘K) ----------
    Antes el buscador vivía adentro del panel, filtrando la lista que se veía
    debajo. Ahora el panel de la izquierda es navegación pura y buscar abre una
@@ -755,6 +773,13 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     </details>
   </nav>
   <div class="espacio"></div>
+  <details class="menu-nav selector-version" id="selectorVersion" hidden>
+    <summary aria-label="Versión de la documentación"><span id="versionActual"></span>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </summary>
+    <div class="menu-nav-panel" id="versionLista"></div>
+  </details>
   <button class="accion" id="irABuscar" type="button" aria-label="Buscar en la documentación">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="2" stroke-linecap="round" aria-hidden="true">
@@ -1695,6 +1720,48 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       if (!det.contains(ev.target)) det.open = false;
     });
   });
+
+  /* Selector de versión: /versiones.json lista las versiones congeladas (cada
+     una servida en /<id>/) y la actual (en la raíz). Al cambiar se conserva el
+     ancla. Una congelada que equivale a la actual sólo aparece en el menú si
+     es donde se está parado. */
+  (function(){
+    var sel = document.getElementById("selectorVersion");
+    if (!sel || !window.fetch) return;
+    fetch("/versiones.json", {cache: "no-cache"}).then(function(r){
+      if (!r.ok) throw 0; return r.json();
+    }).then(function(cfg){
+      var cong = cfg.versiones || [], act = cfg.actual || {};
+      var aqui = null;
+      cong.forEach(function(v){ if (location.pathname.indexOf("/" + v.id + "/") === 0) aqui = v; });
+      var items = [];
+      items.push({titulo: act.titulo, base: "/", actual: !aqui,
+                  nota: act.equivale ? "última, en la raíz" : ""});
+      cong.forEach(function(v){
+        if (v.id === act.equivale && v !== aqui) return;
+        items.push({titulo: v.titulo, base: "/" + v.id + "/", actual: v === aqui,
+                    nota: "congelada"});
+      });
+      var lista = document.getElementById("versionLista");
+      var esc = function(s){ return String(s).replace(/[&<>"]/g, function(c){
+        return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); };
+      lista.innerHTML = items.map(function(i){
+        return '<a href="' + i.base + 'splg-documentacion.html"' +
+          (i.actual ? ' aria-current="true"' : "") + '>' + esc(i.titulo) +
+          (i.nota ? "<small>" + esc(i.nota) + "</small>" : "") + "</a>";
+      }).join("");
+      document.getElementById("versionActual").textContent =
+        (aqui ? aqui.titulo : act.titulo);
+      var anclar = function(){
+        lista.querySelectorAll("a").forEach(function(a){
+          a.href = a.getAttribute("href").split("#")[0] + location.hash;
+        });
+      };
+      anclar();
+      window.addEventListener("hashchange", anclar);
+      sel.hidden = false;
+    }).catch(function(){});
+  })();
 
   var app = document.querySelector(".app");
   var alternar = document.getElementById("alternarPanel");

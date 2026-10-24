@@ -17,7 +17,7 @@ Sistema de Pedidos y Logística de Garrafas de Gas · Proceso Unificado · FCEQy
 | **Saber qué le falta al sistema** | `documentos/3-Diseño.md` §10 (pendientes de implementación) |
 | **Entender cómo está hecho el código** (backend, Postman, setup) | `sistema/` — ver `sistema/README.md` |
 | **Ver las pantallas reales** del panel y de las apps | `capturas/` |
-| **Ver el sitio** | `sitio/` (se publica en https://splg-atlas.netlify.app con `./publicar.sh`) |
+| **Ver el sitio** | `sitio/` (se publica en https://splg-atlas.netlify.app con `./publicar.sh`; la v1 congelada queda en `/v1/` y el selector de la cabecera cambia de versión — config en `sitio/versiones.json`) |
 
 Todo lo demás está en `catedra/material-de-trabajo/` y no hace falta para entregar.
 

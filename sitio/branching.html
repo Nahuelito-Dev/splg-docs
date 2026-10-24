@@ -113,7 +113,7 @@
     </figure>
 
     <div class="aviso">
-      <strong>¿Y la rama release?</strong> En este flujo no existe, porque el número de versión ya no se elige de antemano: lo calcula la automatización al mergear. Una rama <code>release/x.y.z</code> sirve solo para un caso puntual, congelar una versión y seguir trabajando en paralelo. Es lo que se hizo con la <code>v1.0.0</code> al cerrar la etapa previa a la cursada. Cuando haga falta otra vez, sale de <code>develop</code>, recibe únicamente correcciones, se mergea a <code>main</code> y después de vuelta a <code>develop</code>.
+      <strong>¿Y la rama release?</strong> En este flujo no existe, porque el número de versión ya no se elige de antemano: lo calcula la automatización al mergear. Una rama <code>release/x.y.z</code> sirve solo para un caso puntual, congelar una versión y seguir trabajando en paralelo. Es lo que se hizo con la <code>v1.0.0</code> al cerrar la etapa previa a la cursada y con <code>release/v1</code> al congelar la v1 el 24/10/2026. Cuando haga falta otra vez, sale de <code>develop</code>, recibe únicamente correcciones, se mergea a <code>main</code> y después de vuelta a <code>develop</code>.
     </div>
   </section>
 
@@ -227,6 +227,17 @@
       </table>
     </div>
     <p>Los commits de merge no cuentan para la versión: la automatización los descarta y mira solo los commits reales.</p>
+  </section>
+
+  <section>
+    <h3>v1 congelada, v2 en curso</h3>
+    <p>El 24/10/2026 se cerró la <strong>v1</strong>: la API, el panel, las apps, la librería y la documentación tal como estaban ese día. Desde el 25/10 se trabaja en la <strong>v2</strong>.</p>
+    <ul class="reglas">
+      <li>La v1 queda guardada en GitHub con su <strong>tag</strong> (el que crea el workflow de release) y con la rama <code>release/v1</code>.</li>
+      <li><code>develop</code> y <code>main</code> siguen avanzando: de ahí en más contienen la v2.</li>
+      <li>Un arreglo a la v1 se hace sobre <code>release/v1</code> (con ramas <code>fix/*</code> que salen de ella y vuelven a ella). No se mezcla con el trabajo de la v2; si también corresponde a la v2, se lleva con un cherry-pick.</li>
+      <li>El sitio publica la v1 congelada en <code>/v1/</code> y la versión en curso en la raíz; el selector de la cabecera pasa de una a otra y conserva la sección que se está leyendo.</li>
+    </ul>
   </section>
 
   <section>
