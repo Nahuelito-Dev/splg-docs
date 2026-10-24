@@ -31,9 +31,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 
 | Archivo | Tema | De dónde vino |
 |---|---|---|
-| `porcentaje-de-implementacion.md` | Estado de implementación por subsistema | `splg-app-backend/porcentaje de implementacion.md` |
 | `postman.md` | Cómo usar la colección de Postman | `splg-app-backend/postman/LEEME.md` |
-| `setup-windows.md` | Guía de setup del entorno en Windows | `docs/setup-windows.md` del workspace |
 
 La colección de Postman (`SPLG.postman_collection.json`, el environment y `openapi.json`) es una
 herramienta, no documentación: se queda en `splg-app-backend/postman/`. Las rutas que menciona
