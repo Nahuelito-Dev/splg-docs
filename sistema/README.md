@@ -27,6 +27,34 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/VALIDACIONES-BASE.md` | Validaciones en la base (tanda V1) |
 | `back/VIGENCIA-ENVASES.md` | Vigencia de envases (C-11) |
 
+## Backend: convenciones, tests y scripts
+
+| Archivo | Tema | De dónde vino |
+|---|---|---|
+| `back/CONVENCIONES.md` | Convenciones de código del back (manda sobre todo módulo nuevo) | `splg-app-backend/CONVENCIONES.md` |
+| `back/TESTS.md` | Tests de integración (testcontainers) | `splg-app-backend/test/README.md` |
+| `back/scripts/ALINEACION.md` | Batería de alineación API ↔ doc | `splg-app-backend/scripts/alineacion/LEEME.md` |
+| `back/scripts/AISLAMIENTO.md` | Batería de aislamiento entre distribuidoras | `splg-app-backend/scripts/alineacion/aislamiento/LEEME.md` |
+
+## Panel
+
+| Archivo | Tema | De dónde vino |
+|---|---|---|
+| `panel/CONVENCIONES.md` | Convenciones de código del panel | `splg-app-admin/CONVENCIONES.md` |
+
+## Landing
+
+| Archivo | Tema | De dónde vino |
+|---|---|---|
+| `landing/README.md` | Landing comercial: stack, contenido y cómo levantarla | `splg-landing/README.md` |
+
+## Lo que queda en los repos de código
+
+Sólo lo que no es documentación: `AGENTS.md` y `CLAUDE.md` (configuración de los agentes y del
+gate), un `README.md` de dos líneas que apunta acá, `legal/` de las apps (va empaquetado en la
+app) y `ASSETS_LICENSES.md` de `splg-lib` (licencias de los recursos). Desde el 24/10/2026 la
+documentación de cada repo se escribe acá, en la misma tanda que el cambio de código.
+
 ## Otros
 
 | Archivo | Tema | De dónde vino |
