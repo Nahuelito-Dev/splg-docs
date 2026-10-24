@@ -31,7 +31,7 @@ erDiagram
         text error_message "nullable"
         int attempts
         timestamptz refunded_at "nullable"
-        uuid requested_by_user_id "nullable"
+        uuid requested_by_user_id FK "nullable"
         timestamptz createdAt
         timestamptz updatedAt
         decimal refunded_baseline "nullable"

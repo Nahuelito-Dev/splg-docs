@@ -110,12 +110,12 @@ e_user |o--o{ e_cylinder : current_customer_id
 e_order |o--o{ e_cylinder : current_order_id
 e_gas_cylinder |o--o{ e_cylinder : gas_cylinder_id
 e_cylinder ||--o{ e_cylinder_inspection : cylinder_id
-e_user |o--o{ e_cylinder_movement : actor_user_id
 e_cylinder ||--o{ e_cylinder_movement : cylinder_id
 e_order |o--o{ e_cylinder_movement : order_id
+e_user |o--o{ e_cylinder_movement : actor_user_id
 e_cylinder ||--o{ e_cylinder_recovery_case : cylinder_id
-e_user |o--o{ e_cylinder_recovery_case : resolved_by_user_id
 e_user ||--o{ e_cylinder_recovery_case : user_id
+e_user |o--o{ e_cylinder_recovery_case : resolved_by_user_id
 e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice : case_id
 e_order |o--o{ e_cylinder_recovery_notice #line:1F5E8C;text:1F5E8C : order_id
 

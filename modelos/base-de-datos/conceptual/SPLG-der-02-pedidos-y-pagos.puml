@@ -149,35 +149,35 @@ entity PedidoRendido #F1F1F1 {
 Distribuidora ||--o{ ZonaCobertura : define >
 Distribuidora ||--o{ FranjaHoraria : define >
 Cliente ||--o{ Carrito : arma >
-Carrito ||--o{ ItemCarrito : contiene >
 ItemCarrito }o--|| Producto : corresponde a >
-Pedido }o--|| DireccionEntrega : se entrega en >
+Carrito ||--o{ ItemCarrito : contiene >
 Pedido }o--o| ZonaCobertura : aplica el recargo de >
-Cliente ||--o{ Pedido : realiza >
 Chofer |o--o{ Pedido : entrega >
-Distribuidora ||--o{ Pedido : gestiona >
 Pedido }o--o| FranjaHoraria : se programa en >
+Cliente ||--o{ Pedido : realiza >
+Distribuidora ||--o{ Pedido : gestiona >
+Pedido }o--|| DireccionEntrega : se entrega en >
 Pedido ||--o{ Reclamo : origina >
 Pedido |o--o{ AsientoCuentaCorriente : origina >
 Pedido |o--o{ Envase : despacha >
 Pedido ||--o{ Incidencia : origina >
-Usuario ||--o{ CambioDireccion : realiza >
-CambioDireccion }o--|| DireccionEntrega : cambia desde >
-Pedido ||--o{ CambioDireccion : registra >
 CambioDireccion }o--|| DireccionEntrega : cambia hacia >
+Pedido ||--o{ CambioDireccion : registra >
+CambioDireccion }o--|| DireccionEntrega : cambia desde >
+Usuario ||--o{ CambioDireccion : realiza >
 Pedido ||--o{ OfertaDespacho : genera >
 ItemPedido }o--|| Producto : corresponde a >
 Pedido ||--|{ ItemPedido : contiene >
-Usuario |o--o{ CambioEstadoPedido : efectúa >
 Pedido ||--o{ CambioEstadoPedido : registra >
+Usuario |o--o{ CambioEstadoPedido : efectúa >
 Pedido ||--o{ Pago : se salda con >
 Pedido ||--o{ Calificacion : recibe [0..2] >
 InvitacionRecompra |o--o| Pedido : se convierte en >
 ParadaLote }o--|| Pedido : atiende >
 AsientoComision }o--o| Pedido : corresponde a >
 Pedido |o--o{ MovimientoEnvase : origina >
-ReintegroDePago }o--|| Pedido : devuelve el cobro de >
 Pago ||--o{ ReintegroDePago : se devuelve con >
+ReintegroDePago }o--|| Pedido : devuelve el cobro de >
 PedidoRendido |o--|| Pedido : corresponde a >
 Usuario |o--o{ Pedido : confirmó el cobro de >
 Usuario |o--o{ Pedido : resolvió el cobro de >

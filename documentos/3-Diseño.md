@@ -28292,7 +28292,7 @@ Cada tipo de diagrama figura en el documento que le corresponde, según la tabla
 
 ### 7.4 Diagrama Entidad-Relación y Diccionario de Datos
 
-Modelo de datos de las **85 tablas** de la base (972 columnas y **230 claves foráneas, todas declaradas**: no quedan relaciones sin `FOREIGN KEY`). A diferencia del modelo conceptual
+Modelo de datos de las **85 tablas** de la base (977 columnas y **293 claves foráneas, todas declaradas**: no quedan relaciones sin `FOREIGN KEY`). Las 293 son 238 simples (las 230 de las migraciones originales y las 8 que cerró la validación V1 sobre columnas que ya existían) y 55 compuestas `(id, distributor_id)` que impiden que una fila apunte a algo de otra distribuidora. A diferencia del modelo conceptual
 del Documento 2 —que describe el dominio del problema—, éste es el modelo de la solución:
 incluye claves primarias y foráneas, tipos de dato, restricciones e índices.
 
@@ -28301,7 +28301,7 @@ partido por contexto de negocio para que cada lámina se pueda leer. El dicciona
 columna, con descripción, valor por defecto, `CHECK`, índices y claves únicas de cada tabla,
 acompaña a la documentación como el archivo `SPLG-modelo-de-datos.md`.
 
-**Cardinalidades.** Cada relación se lee de la clave foránea: el lado del padre es obligatorio
+**Cardinalidades.** Cada relación se lee de la clave foránea simple (la compuesta `(id, distributor_id)` se suma a la simple sobre `id`, es la misma relación y no se dibuja dos veces): el lado del padre es obligatorio
 (`||`) si la columna no admite nulos y opcional (`o|`) si los admite; el lado del hijo es
 «muchos» (`}o`) salvo que la columna sea única, en cuyo caso es «cero o uno» (`|o`). Por eso
 `user` se relaciona con `admin`, `customer` y `delivery` de uno a cero-o-uno: un usuario tiene
@@ -28317,7 +28317,7 @@ hizo; el modelo conceptual no se ve afectado porque nombra los atributos en leng
 
 **Alcance del modelo.** Las tablas y los diagramas de esta sección corresponden a las migraciones de `develop` hasta el reintegro de pagos y la rendición de cobros de cuenta corriente (85 tablas), que incluyen las cinco de compras (`supplier`, `purchase_order`, `purchase_order_item`, `purchase_receipt` y `purchase_receipt_item`) y las dos de la carga del camión (`truck_load` y `truck_load_item`).
 
-**Módulos de gestión de la distribuidora.** Las 85 tablas, las 230 claves foráneas y los 79 tipos enumerados que cuenta esta sección son los de la base actual, que ya incluye los módulos de personal (`job_position`, `employee`, `employee_attendance` y `employee_leave`), flota ampliada (`fuel_load`, `traffic_fine`, `vehicle_accident`, `tire` y `tire_event`), stock físico, compras, carga del camión y caja y rendición (§7.4.8), además de `payment_refund` (reintegros de pagos), `attachment` (adjuntos genéricos), `document_sequence` (numeración de comprobantes), `storage_orphan` (archivos pendientes de borrar), la auditoría de datos (`audit`, `audit_detail` y `audit_action_type`) y las columnas `claims.photo_key` y `gas_cylinder.average_unit_cost`. Lo único que sigue propuesto son dos columnas del módulo inteligente M5 (recupero de envases): `cylinder.decommissioned_at` y `cylinder_recovery_notice.order_id`.
+**Módulos de gestión de la distribuidora.** Las 85 tablas, las 293 claves foráneas (238 simples y 55 compuestas por distribuidora) y los 79 tipos enumerados que cuenta esta sección son los de la base actual, que ya incluye los módulos de personal (`job_position`, `employee`, `employee_attendance` y `employee_leave`), flota ampliada (`fuel_load`, `traffic_fine`, `vehicle_accident`, `tire` y `tire_event`), stock físico, compras, carga del camión y caja y rendición (§7.4.8), además de `payment_refund` (reintegros de pagos), `attachment` (adjuntos genéricos), `document_sequence` (numeración de comprobantes), `storage_orphan` (archivos pendientes de borrar), la auditoría de datos (`audit`, `audit_detail` y `audit_action_type`) y las columnas `claims.photo_key` y `gas_cylinder.average_unit_cost`. Lo único que sigue propuesto son dos columnas del módulo inteligente M5 (recupero de envases): `cylinder.decommissioned_at` y `cylinder_recovery_notice.order_id`.
 
 #### 7.4.1 Inventario de Entidades
 
@@ -28344,7 +28344,7 @@ hizo; el modelo conceptual no se ve afectado porque nombra los atributos en leng
 | Catálogo e inventario de envases | `cylinder_recovery_notice` | 7 | Aviso u oferta de retiro dentro de un caso de recupero. |
 | Venta y pedidos | `cart` | 4 | Carrito abierto de un cliente para una distribuidora. |
 | Venta y pedidos | `cart_item` | 5 | Ítem cargado en un carrito. |
-| Venta y pedidos | `order` | 46 | El pedido (incluye el snapshot `vehicle_*` del vehículo en uso del chofer al aceptarlo). |
+| Venta y pedidos | `order` | 47 | El pedido (incluye el snapshot `vehicle_*` del vehículo en uso del chofer al aceptarlo). |
 | Venta y pedidos | `order_item` | 6 | Ítem de un pedido. |
 | Venta y pedidos | `order_status_history` | 7 | Historial de cambios de estado de un pedido. |
 | Venta y pedidos | `order_address_change` | 7 | Historial de cambios de dirección de un pedido. |
@@ -28372,8 +28372,8 @@ hizo; el modelo conceptual no se ve afectado porque nombra los atributos en leng
 | Personal | `employee_attendance` | 11 | Una jornada de un empleado: su ingreso y su egreso, marcados por él o cargados por un administrador. |
 | Personal | `employee_leave` | 15 | Licencia o ausencia de un empleado, con su período y su estado. |
 | Personal | `attachment` | 12 | Archivo adjunto a un dueño de otro módulo; el dueño es polimórfico (`owner_type`, `owner_id`) y no lleva clave foránea. |
-| Gastos de la flota | `fuel_load` | 21 | Una carga de combustible de un vehículo, con su kilometraje y su importe. |
-| Gastos de la flota | `traffic_fine` | 20 | Una multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada. |
+| Gastos de la flota | `fuel_load` | 24 | Una carga de combustible de un vehículo, con su kilometraje y su importe. |
+| Gastos de la flota | `traffic_fine` | 21 | Una multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada. |
 | Gastos de la flota | `vehicle_accident` | 22 | Un siniestro de un vehículo, de denunciado a cerrado, con sus costos. |
 | Gastos de la flota | `tire` | 14 | Un neumático de la distribuidora, en depósito, montado en un vehículo o dado de baja. |
 | Gastos de la flota | `tire_event` | 9 | Un movimiento de un neumático; el libro no se modifica. |
@@ -28431,8 +28431,8 @@ erDiagram
     ADMIN }o--o| DISTRIBUTOR : "distributor_id"
     ADMIN |o--|| USER : "user_id"
     AUDIT }o--|| AUDIT_ACTION_TYPE : "action_type_id"
-    AUDIT }o--o| DISTRIBUTOR : "distributor_id"
     AUDIT }o--o| USER : "user_id"
+    AUDIT }o--o| DISTRIBUTOR : "distributor_id"
     AUDIT_LOG }o--o| USER : "actor_user_id"
     AUDIT_LOG }o--o| DISTRIBUTOR : "distributor_id"
     MODULE_CONFIG }o--|| DISTRIBUTOR : "distributor_id"
@@ -28787,17 +28787,18 @@ erDiagram
         decimal zone_surcharge_value "nullable"
         decimal zone_surcharge_amount
         decimal subtotal_items
-        uuid vehicle_car_id "nullable"
+        uuid vehicle_car_id FK "nullable"
         varchar vehicle_patent "nullable"
         varchar vehicle_brand "nullable"
         varchar vehicle_model "nullable"
         timestamptz payment_confirmed_at "nullable"
-        uuid payment_confirmed_by "nullable"
+        uuid payment_confirmed_by FK "nullable"
         text payment_resolution_note "nullable"
         timestamptz payment_resolved_at "nullable"
-        uuid payment_resolved_by "nullable"
+        uuid payment_resolved_by FK "nullable"
         decimal express_surcharge_amount
         timestamptz express_degraded_at "nullable"
+        decimal payment_surcharge_amount
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK
@@ -28871,7 +28872,7 @@ erDiagram
         text error_message "nullable"
         int attempts
         timestamptz refunded_at "nullable"
-        uuid requested_by_user_id "nullable"
+        uuid requested_by_user_id FK "nullable"
         timestamptz createdAt
         timestamptz updatedAt
         decimal refunded_baseline "nullable"
@@ -28938,15 +28939,15 @@ erDiagram
 
 ```mermaid
 erDiagram
-    MAINTENANCE_TASK }o--o| CAR : "car_id"
     MAINTENANCE_TASK }o--o| DELIVERY : "delivery_id"
     MAINTENANCE_TASK }o--|| MAINTENANCE_PLAN : "plan_id"
-    VEHICLE_ASSIGNMENT }o--|| CAR : "car_id"
+    MAINTENANCE_TASK }o--o| CAR : "car_id"
     VEHICLE_ASSIGNMENT }o--|| DELIVERY : "delivery_id"
+    VEHICLE_ASSIGNMENT }o--|| CAR : "car_id"
     VEHICLE_USAGE_LOG }o--|| CAR : "car_id"
     MAINTENANCE_TASK_ATTACHMENT }o--|| MAINTENANCE_TASK : "task_id"
-    MAINTENANCE_WINDOW_PROPOSAL }o--|| DELIVERY : "delivery_id"
     MAINTENANCE_WINDOW_PROPOSAL }o--|| MAINTENANCE_TASK : "task_id"
+    MAINTENANCE_WINDOW_PROPOSAL }o--|| DELIVERY : "delivery_id"
 
     MAINTENANCE_PLAN {
         uuid plan_id PK
@@ -28996,7 +28997,7 @@ erDiagram
         boolean validated
         boolean isActive
         text notification_token "nullable"
-        float balance
+        decimal balance
         timestamptz createdAt "nullable"
         timestamptz deletedAt "nullable"
         geometry location "nullable"
@@ -29248,29 +29249,6 @@ erDiagram
 erDiagram
     TIRE_EVENT }o--|| TIRE : "tire_id"
 
-    FUEL_LOAD {
-        uuid fuel_load_id PK
-        uuid distributor_id FK
-        uuid car_id FK
-        uuid employee_id FK "nullable"
-        timestamptz loaded_at
-        enum fuel_type
-        decimal liters
-        decimal unit_price
-        decimal total_amount
-        int odometer_km
-        boolean is_full_tank
-        varchar station "nullable"
-        enum payment_method
-        varchar receipt_number "nullable"
-        boolean anomaly
-        text notes "nullable"
-        text odometer_correction_note "nullable"
-        uuid created_by_user_id FK
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
-    }
     TIRE {
         uuid tire_id PK
         uuid distributor_id FK
@@ -29284,28 +29262,6 @@ erDiagram
         int mounted_odometer_km "nullable"
         int km_traveled
         int retread_count
-        timestamptz createdAt
-        timestamptz updatedAt
-    }
-    TRAFFIC_FINE {
-        uuid fine_id PK
-        uuid distributor_id FK
-        uuid car_id FK
-        uuid employee_id FK "nullable"
-        timestamptz occurred_at
-        varchar jurisdiction
-        varchar act_number
-        text infraction
-        decimal amount
-        decimal voluntary_payment_amount "nullable"
-        date due_date "nullable"
-        enum status
-        timestamptz paid_at "nullable"
-        decimal paid_amount "nullable"
-        boolean charged_to_employee
-        text void_reason "nullable"
-        timestamptz voided_at "nullable"
-        timestamptz alerted_at "nullable"
         timestamptz createdAt
         timestamptz updatedAt
     }
@@ -29333,6 +29289,32 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
     }
+    FUEL_LOAD {
+        uuid fuel_load_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz loaded_at
+        enum fuel_type
+        decimal liters
+        decimal unit_price
+        decimal total_amount
+        int odometer_km
+        boolean is_full_tank
+        varchar station "nullable"
+        enum payment_method
+        varchar receipt_number "nullable"
+        boolean anomaly
+        text notes "nullable"
+        text odometer_correction_note "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+        uuid cash_movement_id FK "nullable"
+        boolean registered_by_driver
+        boolean cash_payment_legacy
+    }
     TIRE_EVENT {
         uuid event_id PK
         uuid tire_id FK
@@ -29343,6 +29325,29 @@ erDiagram
         int odometer_km
         uuid created_by_user_id FK
         timestamptz createdAt
+    }
+    TRAFFIC_FINE {
+        uuid fine_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz occurred_at
+        varchar jurisdiction
+        varchar act_number
+        text infraction
+        decimal amount
+        decimal voluntary_payment_amount "nullable"
+        date due_date "nullable"
+        enum status
+        timestamptz paid_at "nullable"
+        decimal paid_amount "nullable"
+        boolean charged_to_employee
+        text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        timestamptz alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        uuid cash_movement_id FK "nullable"
     }
 ```
 
@@ -29362,9 +29367,9 @@ erDiagram
     STOCK_LOCATION |o--o| WAREHOUSE : "warehouse_id"
     STOCK_ADJUSTMENT }o--|| STOCK_LOCATION : "location_id"
     STOCK_BALANCE }o--|| STOCK_LOCATION : "location_id"
+    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "to_location_id"
     STOCK_MOVEMENT }o--o| STOCK_LOCATION : "from_location_id"
     STOCK_MOVEMENT }o--o| STOCK_MOVEMENT : "reversed_movement_id"
-    STOCK_MOVEMENT }o--o| STOCK_LOCATION : "to_location_id"
     TRUCK_LOAD }o--|| STOCK_LOCATION : "origin_location_id"
     STOCK_ADJUSTMENT_ITEM }o--|| STOCK_ADJUSTMENT : "adjustment_id"
     TRUCK_LOAD_ITEM }o--|| TRUCK_LOAD : "load_id"
@@ -29500,8 +29505,8 @@ erDiagram
 erDiagram
     PURCHASE_ORDER }o--|| SUPPLIER : "supplier_id"
     PURCHASE_ORDER_ITEM }o--|| PURCHASE_ORDER : "purchase_order_id"
-    PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
     PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
     PURCHASE_RECEIPT_ITEM }o--|| PURCHASE_RECEIPT : "receipt_id"
 
     SUPPLIER {
@@ -29559,11 +29564,11 @@ erDiagram
         uuid received_by_user_id FK
         decimal total_amount
         enum payment_status
-        uuid cash_movement_id "nullable"
+        uuid cash_movement_id FK "nullable"
         enum status
         text void_reason "nullable"
         timestamptz voided_at "nullable"
-        uuid voided_by_user_id "nullable"
+        uuid voided_by_user_id FK "nullable"
         uuid batch_id
         uuid void_batch_id "nullable"
         text notes "nullable"
@@ -29635,24 +29640,24 @@ erDiagram
 ```mermaid
 erDiagram
     CASH_SESSION }o--|| CASH_BOX : "cash_box_id"
+    CASH_MOVEMENT }o--o| CASH_MOVEMENT : "reverses_movement_id"
     CASH_MOVEMENT }o--|| CASH_BOX : "cash_box_id"
     CASH_MOVEMENT }o--|| CASH_CATEGORY : "category_id"
-    CASH_MOVEMENT }o--o| CASH_MOVEMENT : "reverses_movement_id"
     CASH_MOVEMENT }o--o| CASH_SESSION : "session_id"
-    CUSTOMER_ACCOUNT_ENTRY }o--|| CUSTOMER_ACCOUNT : "account_id"
     CUSTOMER_ACCOUNT_ENTRY }o--o| CASH_MOVEMENT : "cash_movement_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--|| CUSTOMER_ACCOUNT : "account_id"
     DRIVER_LIQUIDATION }o--o| CASH_MOVEMENT : "cash_movement_id"
-    COMMISSION_ENTRY }o--o| DRIVER_LIQUIDATION : "liquidation_id"
     COMMISSION_ENTRY }o--o| COMMISSION_RULE : "rule_id"
-    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT : "account_id"
-    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "credit_entry_id"
+    COMMISSION_ENTRY }o--o| DRIVER_LIQUIDATION : "liquidation_id"
     CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "debit_entry_id"
-    DRIVER_SETTLEMENT }o--o| CASH_MOVEMENT : "cash_movement_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT_ENTRY : "credit_entry_id"
+    CUSTOMER_ACCOUNT_ALLOCATION }o--|| CUSTOMER_ACCOUNT : "account_id"
     DRIVER_SETTLEMENT }o--o| CASH_BOX : "destination_cash_box_id"
+    DRIVER_SETTLEMENT }o--o| CASH_MOVEMENT : "cash_movement_id"
     DRIVER_SETTLEMENT_COLLECTION |o--|| CUSTOMER_ACCOUNT_ENTRY : "entry_id"
     DRIVER_SETTLEMENT_COLLECTION }o--|| DRIVER_SETTLEMENT : "settlement_id"
-    DRIVER_SETTLEMENT_EXPENSE }o--|| CASH_CATEGORY : "category_id"
     DRIVER_SETTLEMENT_EXPENSE }o--|| DRIVER_SETTLEMENT : "settlement_id"
+    DRIVER_SETTLEMENT_EXPENSE }o--|| CASH_CATEGORY : "category_id"
     DRIVER_SETTLEMENT_ORDER }o--|| DRIVER_SETTLEMENT : "settlement_id"
 
     CASH_BOX {
@@ -29862,15 +29867,15 @@ erDiagram
     ATTACHMENT }o--|| USER : "uploaded_by_user_id"
     CAR }o--|| USER : "user_id"
     CART }o--|| USER : "user_id"
-    CASH_SESSION }o--o| USER : "closed_by_user_id"
     CASH_SESSION }o--|| USER : "opened_by_user_id"
-    CUSTOMER }o--o| GAS_CYLINDER : "declared_cylinder_type_id"
+    CASH_SESSION }o--o| USER : "closed_by_user_id"
     CUSTOMER |o--|| USER : "user_id"
+    CUSTOMER }o--o| GAS_CYLINDER : "declared_cylinder_type_id"
     CUSTOMER_ACCOUNT }o--|| USER : "customer_user_id"
     DELIVERY |o--|| USER : "user_id"
     EMPLOYEE }o--o| USER : "user_id"
-    PURCHASE_ORDER }o--|| USER : "created_by_user_id"
     PURCHASE_ORDER }o--|| WAREHOUSE : "destination_warehouse_id"
+    PURCHASE_ORDER }o--|| USER : "created_by_user_id"
     STOCK_THRESHOLD }o--|| GAS_CYLINDER : "gas_cylinder_id"
     USER_ADDRESS }o--|| USER : "user_id"
     CART_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
@@ -29880,81 +29885,89 @@ erDiagram
     EMPLOYEE_ATTENDANCE }o--o| USER : "recorded_by_user_id"
     EMPLOYEE_LEAVE }o--o| USER : "decided_by_user_id"
     EMPLOYEE_LEAVE }o--o| USER : "requested_by_user_id"
-    FUEL_LOAD }o--|| CAR : "car_id"
-    FUEL_LOAD }o--|| USER : "created_by_user_id"
-    FUEL_LOAD }o--o| EMPLOYEE : "employee_id"
     MAINTENANCE_TASK }o--o| EMPLOYEE : "employee_id"
-    ORDER }o--|| USER_ADDRESS : "address_id"
-    ORDER }o--|| USER : "customer_id"
     ORDER }o--o| DELIVERY : "delivery_id"
+    ORDER }o--|| USER : "customer_id"
+    ORDER }o--|| USER_ADDRESS : "address_id"
+    ORDER }o--o| USER : "payment_confirmed_by"
+    ORDER }o--o| USER : "payment_resolved_by"
+    ORDER }o--o| CAR : "vehicle_car_id"
     PURCHASE_ORDER_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
-    PURCHASE_RECEIPT }o--|| USER : "received_by_user_id"
-    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
     ROUTE_BATCH }o--o| DELIVERY : "delivery_id"
     STOCK_LOCATION |o--o| CAR : "car_id"
     TIRE }o--o| CAR : "car_id"
-    TRAFFIC_FINE }o--|| CAR : "car_id"
-    TRAFFIC_FINE }o--o| EMPLOYEE : "employee_id"
-    VEHICLE_ACCIDENT }o--|| CAR : "car_id"
-    VEHICLE_ACCIDENT }o--|| USER : "created_by_user_id"
     VEHICLE_ACCIDENT }o--o| EMPLOYEE : "employee_id"
-    VEHICLE_ASSIGNMENT }o--o| USER : "assigned_by_user_id"
+    VEHICLE_ACCIDENT }o--|| USER : "created_by_user_id"
+    VEHICLE_ACCIDENT }o--|| CAR : "car_id"
     VEHICLE_ASSIGNMENT }o--o| USER : "released_by_user_id"
-    CLAIMS }o--|| USER : "customer_id"
+    VEHICLE_ASSIGNMENT }o--o| USER : "assigned_by_user_id"
     CLAIMS }o--|| ORDER : "order_id"
+    CLAIMS }o--|| USER : "customer_id"
     CUSTOMER_ACCOUNT_ENTRY }o--o| DELIVERY : "collected_by_delivery_id"
-    CUSTOMER_ACCOUNT_ENTRY }o--o| USER : "created_by_user_id"
     CUSTOMER_ACCOUNT_ENTRY }o--o| ORDER : "order_id"
+    CUSTOMER_ACCOUNT_ENTRY }o--o| USER : "created_by_user_id"
     CYLINDER }o--o| USER : "current_customer_id"
     CYLINDER }o--o| ORDER : "current_order_id"
-    DRIVER_LIQUIDATION }o--o| USER : "approved_by_user_id"
     DRIVER_LIQUIDATION }o--|| USER : "created_by_user_id"
-    DRIVER_LIQUIDATION }o--|| EMPLOYEE : "employee_id"
     DRIVER_LIQUIDATION }o--o| USER : "paid_by_user_id"
-    INCIDENT }o--|| ORDER : "order_id"
+    DRIVER_LIQUIDATION }o--o| USER : "approved_by_user_id"
+    DRIVER_LIQUIDATION }o--|| EMPLOYEE : "employee_id"
+    FUEL_LOAD }o--|| CAR : "car_id"
+    FUEL_LOAD }o--|| USER : "created_by_user_id"
+    FUEL_LOAD }o--o| EMPLOYEE : "employee_id"
+    FUEL_LOAD }o--o| CASH_MOVEMENT : "cash_movement_id"
     INCIDENT }o--|| USER : "reported_by"
+    INCIDENT }o--|| ORDER : "order_id"
     MAINTENANCE_TASK_ATTACHMENT }o--|| USER : "uploaded_by_user_id"
-    ORDER_ADDRESS_CHANGE }o--|| USER : "changed_by_user_id"
-    ORDER_ADDRESS_CHANGE }o--|| USER_ADDRESS : "from_address_id"
     ORDER_ADDRESS_CHANGE }o--|| USER_ADDRESS : "to_address_id"
+    ORDER_ADDRESS_CHANGE }o--|| USER_ADDRESS : "from_address_id"
+    ORDER_ADDRESS_CHANGE }o--|| USER : "changed_by_user_id"
     ORDER_DISPATCH_OFFER }o--|| USER : "driver_id"
     ORDER_DISPATCH_OFFER }o--|| ORDER : "order_id"
     ORDER_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     ORDER_STATUS_HISTORY }o--o| USER : "changed_by_user_id"
     PAYMENT }o--|| ORDER : "order_id"
-    PURCHASE_RECEIPT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
-    RATING }o--|| USER : "from_user_id"
+    PURCHASE_RECEIPT }o--|| WAREHOUSE : "warehouse_id"
+    PURCHASE_RECEIPT }o--|| USER : "received_by_user_id"
+    PURCHASE_RECEIPT }o--o| CASH_MOVEMENT : "cash_movement_id"
+    PURCHASE_RECEIPT }o--o| USER : "voided_by_user_id"
     RATING }o--o| USER : "hidden_by_user_id"
-    RATING }o--|| ORDER : "order_id"
     RATING }o--|| USER : "to_user_id"
-    REPURCHASE_INVITATION }o--o| ORDER : "order_id"
+    RATING }o--|| ORDER : "order_id"
+    RATING }o--|| USER : "from_user_id"
     REPURCHASE_INVITATION }o--|| USER : "user_id"
+    REPURCHASE_INVITATION }o--o| ORDER : "order_id"
     ROUTE_BATCH_OFFER }o--|| DELIVERY : "delivery_id"
     ROUTE_BATCH_STOP }o--|| ORDER : "order_id"
     STOCK_ADJUSTMENT }o--|| USER : "created_by_user_id"
     STOCK_BALANCE }o--|| GAS_CYLINDER : "gas_cylinder_id"
-    STOCK_MOVEMENT }o--o| USER : "actor_user_id"
     STOCK_MOVEMENT }o--|| GAS_CYLINDER : "gas_cylinder_id"
+    STOCK_MOVEMENT }o--o| USER : "actor_user_id"
     TIRE_EVENT }o--o| CAR : "car_id"
     TIRE_EVENT }o--|| USER : "created_by_user_id"
-    TRUCK_LOAD }o--|| CAR : "car_id"
-    TRUCK_LOAD }o--o| USER : "closed_by_user_id"
-    TRUCK_LOAD }o--|| DELIVERY : "delivery_id"
+    TRAFFIC_FINE }o--|| CAR : "car_id"
+    TRAFFIC_FINE }o--o| EMPLOYEE : "employee_id"
+    TRAFFIC_FINE }o--o| CASH_MOVEMENT : "cash_movement_id"
     TRUCK_LOAD }o--o| EMPLOYEE : "helper_employee_id"
     TRUCK_LOAD }o--|| USER : "opened_by_user_id"
-    COMMISSION_ENTRY }o--o| USER : "created_by_user_id"
-    COMMISSION_ENTRY }o--o| DELIVERY : "delivery_id"
-    COMMISSION_ENTRY }o--|| EMPLOYEE : "employee_id"
+    TRUCK_LOAD }o--o| USER : "closed_by_user_id"
+    TRUCK_LOAD }o--|| CAR : "car_id"
+    TRUCK_LOAD }o--|| DELIVERY : "delivery_id"
     COMMISSION_ENTRY }o--o| ORDER : "order_id"
-    CYLINDER_MOVEMENT }o--o| USER : "actor_user_id"
+    COMMISSION_ENTRY }o--o| DELIVERY : "delivery_id"
+    COMMISSION_ENTRY }o--o| USER : "created_by_user_id"
+    COMMISSION_ENTRY }o--|| EMPLOYEE : "employee_id"
     CYLINDER_MOVEMENT }o--o| ORDER : "order_id"
-    CYLINDER_RECOVERY_CASE }o--o| USER : "resolved_by_user_id"
+    CYLINDER_MOVEMENT }o--o| USER : "actor_user_id"
     CYLINDER_RECOVERY_CASE }o--|| USER : "user_id"
+    CYLINDER_RECOVERY_CASE }o--o| USER : "resolved_by_user_id"
+    DRIVER_SETTLEMENT }o--o| TRUCK_LOAD : "truck_load_id"
     DRIVER_SETTLEMENT }o--o| USER : "approved_by_user_id"
     DRIVER_SETTLEMENT }o--|| DELIVERY : "delivery_id"
     DRIVER_SETTLEMENT }o--o| USER : "submitted_by_user_id"
-    DRIVER_SETTLEMENT }o--o| TRUCK_LOAD : "truck_load_id"
     PAYMENT_REFUND }o--|| ORDER : "order_id"
+    PAYMENT_REFUND }o--o| USER : "requested_by_user_id"
+    PURCHASE_RECEIPT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     STOCK_ADJUSTMENT_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     TRUCK_LOAD_ITEM }o--|| GAS_CYLINDER : "gas_cylinder_id"
     CYLINDER_RECOVERY_NOTICE }o--o| ORDER : "order_id"
@@ -29969,7 +29982,7 @@ El diccionario completo de las 85 tablas —columna, tipo, obligatoriedad, clave
 default, descripción, restricciones `CHECK` e índices— acompaña a la documentación como el
 archivo `SPLG-modelo-de-datos.md`. La descripción de cada columna se toma del comentario de la
 entidad de TypeORM que la define; las columnas sin comentario en el código figuran allí como
-«sin descripción documentada en el código» en vez de inventarse una (son 819 de 972).
+«sin descripción documentada en el código» en vez de inventarse una (son 825 de 977).
 
 #### 7.4.4 Tipos enumerados
 
@@ -30248,8 +30261,8 @@ Las tablas de esta sección (CU-195 a CU-206 y CU-247) referencian al legajo del
 
 | Contexto | Tabla | Columnas | Qué guarda |
 |---|---|:-:|---|
-| Gastos de la flota | `fuel_load` | 21 | Una carga de combustible de un vehículo, con su kilometraje y su importe. |
-| Gastos de la flota | `traffic_fine` | 20 | Una multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada. |
+| Gastos de la flota | `fuel_load` | 24 | Una carga de combustible de un vehículo, con su kilometraje y su importe. |
+| Gastos de la flota | `traffic_fine` | 21 | Una multa de tránsito de un vehículo, con su ciclo de pendiente a pagada o anulada. |
 | Gastos de la flota | `vehicle_accident` | 22 | Un siniestro de un vehículo, de denunciado a cerrado, con sus costos. |
 | Gastos de la flota | `tire` | 14 | Un neumático de la distribuidora, en depósito, montado en un vehículo o dado de baja. |
 | Gastos de la flota | `tire_event` | 9 | Un movimiento de un neumático; el libro no se modifica. |

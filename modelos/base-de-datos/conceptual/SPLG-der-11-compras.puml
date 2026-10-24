@@ -87,15 +87,15 @@ entity Distribuidora #F1F1F1 {
 }
 
 Distribuidora ||--o{ Proveedor : compra a >
-Usuario ||--o{ OrdenDeCompra : emite >
 OrdenDeCompra }o--|| Deposito : se destina a >
+Usuario ||--o{ OrdenDeCompra : emite >
 Proveedor ||--o{ OrdenDeCompra : recibe >
-ItemOrdenDeCompra }o--|| Producto : corresponde a >
 OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
-OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
-Usuario ||--o{ RecepcionDeCompra : registra >
-Proveedor ||--o{ RecepcionDeCompra : entrega >
+ItemOrdenDeCompra }o--|| Producto : corresponde a >
 RecepcionDeCompra }o--|| Deposito : ingresa en >
+Proveedor ||--o{ RecepcionDeCompra : entrega >
+Usuario ||--o{ RecepcionDeCompra : registra >
+OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
 ItemRecepcion }o--|| Producto : corresponde a >
 RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
 

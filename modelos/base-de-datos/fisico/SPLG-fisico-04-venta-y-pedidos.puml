@@ -95,17 +95,18 @@ entity "order" as e_order {
   {field} zone_surcharge_value : numeric(10,2)
   {field} zone_surcharge_amount : numeric(10,2) *
   {field} subtotal_items : numeric(10,2) *
-  {field} vehicle_car_id : uuid
+  {field} //vehicle_car_id// : uuid <<FK>>
   {field} vehicle_patent : varchar(20)
   {field} vehicle_brand : varchar(50)
   {field} vehicle_model : varchar(50)
   {field} payment_confirmed_at : timestamptz
-  {field} payment_confirmed_by : uuid
+  {field} //payment_confirmed_by// : uuid <<FK>>
   {field} payment_resolution_note : text
   {field} payment_resolved_at : timestamptz
-  {field} payment_resolved_by : uuid
+  {field} //payment_resolved_by// : uuid <<FK>>
   {field} express_surcharge_amount : numeric(10,2) *
   {field} express_degraded_at : timestamptz
+  {field} payment_surcharge_amount : numeric(10,2) *
 }
 entity "order_address_change" as e_order_address_change {
   {field} **change_id** : uuid * <<PK>>
@@ -137,27 +138,32 @@ entity "user" as e_user #F1F1F1 {
 }
 entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
 }
+entity "delivery" as e_delivery #F1F1F1 {
+}
 entity "user_address" as e_user_address #F1F1F1 {
 }
-entity "delivery" as e_delivery #F1F1F1 {
+entity "car" as e_car #F1F1F1 {
 }
 
 e_user ||--o{ e_cart : user_id
-e_cart ||--o{ e_cart_item : cart_id
 e_gas_cylinder ||--o{ e_cart_item : gas_cylinder_id
-e_user_address ||--o{ e_order : address_id
+e_cart ||--o{ e_cart_item : cart_id
 e_coverage_zone |o--o{ e_order : coverage_zone_id
-e_user ||--o{ e_order : customer_id
 e_delivery |o--o{ e_order : delivery_id
 e_time_slot |o--o{ e_order : time_slot_id
-e_user ||--o{ e_order_address_change : changed_by_user_id
-e_user_address ||--o{ e_order_address_change : from_address_id
-e_order ||--o{ e_order_address_change : order_id
+e_user ||--o{ e_order : customer_id
+e_user_address ||--o{ e_order : address_id
+e_user |o--o{ e_order : payment_confirmed_by
+e_user |o--o{ e_order : payment_resolved_by
+e_car |o--o{ e_order : vehicle_car_id
 e_user_address ||--o{ e_order_address_change : to_address_id
+e_order ||--o{ e_order_address_change : order_id
+e_user_address ||--o{ e_order_address_change : from_address_id
+e_user ||--o{ e_order_address_change : changed_by_user_id
 e_gas_cylinder ||--o{ e_order_item : gas_cylinder_id
 e_order ||--o{ e_order_item : order_id
-e_user |o--o{ e_order_status_history : changed_by_user_id
 e_order ||--o{ e_order_status_history : order_id
+e_user |o--o{ e_order_status_history : changed_by_user_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

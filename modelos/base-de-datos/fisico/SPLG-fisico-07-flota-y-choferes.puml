@@ -66,7 +66,7 @@ entity "delivery" as e_delivery {
   {field} validated : boolean *
   {field} isActive : boolean *
   {field} notification_token : text
-  {field} balance : double precision *
+  {field} balance : numeric(12,2) *
   {field} createdAt : timestamptz
   {field} deletedAt : timestamptz
   {field} location : geometry
@@ -146,19 +146,19 @@ entity "employee" as e_employee #F1F1F1 {
 
 e_user ||--o{ e_car : user_id
 e_user ||--o| e_delivery : user_id
-e_car |o--o{ e_maintenance_task : car_id
 e_delivery |o--o{ e_maintenance_task : delivery_id
-e_employee |o--o{ e_maintenance_task : employee_id
 e_maintenance_plan ||--o{ e_maintenance_task : plan_id
-e_user |o--o{ e_vehicle_assignment : assigned_by_user_id
-e_car ||--o{ e_vehicle_assignment : car_id
+e_employee |o--o{ e_maintenance_task : employee_id
+e_car |o--o{ e_maintenance_task : car_id
 e_delivery ||--o{ e_vehicle_assignment : delivery_id
 e_user |o--o{ e_vehicle_assignment : released_by_user_id
+e_user |o--o{ e_vehicle_assignment : assigned_by_user_id
+e_car ||--o{ e_vehicle_assignment : car_id
 e_car ||--o{ e_vehicle_usage_log : car_id
-e_maintenance_task ||--o{ e_maintenance_task_attachment : task_id
 e_user ||--o{ e_maintenance_task_attachment : uploaded_by_user_id
-e_delivery ||--o{ e_maintenance_window_proposal : delivery_id
+e_maintenance_task ||--o{ e_maintenance_task_attachment : task_id
 e_maintenance_task ||--o{ e_maintenance_window_proposal : task_id
+e_delivery ||--o{ e_maintenance_window_proposal : delivery_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

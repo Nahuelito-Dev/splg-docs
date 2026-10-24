@@ -73,11 +73,11 @@ entity "purchase_receipt" as e_purchase_receipt {
   {field} //received_by_user_id// : uuid * <<FK>>
   {field} total_amount : numeric(12,2) *
   {field} payment_status : purchase_payment_status_enum *
-  {field} cash_movement_id : uuid
+  {field} //cash_movement_id// : uuid <<FK>>
   {field} status : purchase_receipt_status_enum *
   {field} void_reason : text
   {field} voided_at : timestamptz
-  {field} voided_by_user_id : uuid
+  {field} //voided_by_user_id// : uuid <<FK>>
   {field} batch_id : uuid *
   {field} void_batch_id : uuid
   {field} notes : text
@@ -95,22 +95,26 @@ entity "purchase_receipt_item" as e_purchase_receipt_item {
   {field} previous_on_hand : integer
   {field} previous_on_hand_at : timestamptz
 }
-entity "user" as e_user #F1F1F1 {
-}
 entity "warehouse" as e_warehouse #F1F1F1 {
+}
+entity "user" as e_user #F1F1F1 {
 }
 entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
 }
+entity "cash_movement" as e_cash_movement #F1F1F1 {
+}
 
-e_user ||--o{ e_purchase_order : created_by_user_id
 e_warehouse ||--o{ e_purchase_order : destination_warehouse_id
+e_user ||--o{ e_purchase_order : created_by_user_id
 e_supplier ||--o{ e_purchase_order : supplier_id
-e_gas_cylinder ||--o{ e_purchase_order_item : gas_cylinder_id
 e_purchase_order ||--o{ e_purchase_order_item : purchase_order_id
-e_purchase_order |o--o{ e_purchase_receipt : purchase_order_id
-e_user ||--o{ e_purchase_receipt : received_by_user_id
-e_supplier ||--o{ e_purchase_receipt : supplier_id
+e_gas_cylinder ||--o{ e_purchase_order_item : gas_cylinder_id
 e_warehouse ||--o{ e_purchase_receipt : warehouse_id
+e_supplier ||--o{ e_purchase_receipt : supplier_id
+e_user ||--o{ e_purchase_receipt : received_by_user_id
+e_purchase_order |o--o{ e_purchase_receipt : purchase_order_id
+e_cash_movement |o--o{ e_purchase_receipt : cash_movement_id
+e_user |o--o{ e_purchase_receipt : voided_by_user_id
 e_gas_cylinder ||--o{ e_purchase_receipt_item : gas_cylinder_id
 e_purchase_receipt ||--o{ e_purchase_receipt_item : receipt_id
 

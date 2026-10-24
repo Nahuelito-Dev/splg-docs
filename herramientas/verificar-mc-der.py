@@ -51,13 +51,14 @@ columnas = collections.defaultdict(set)
 for t, c in psql("select table_name, column_name from information_schema.columns "
                  "where table_schema='public'"):
     columnas[t].add(c)
+# Sólo las FK de una columna: las 55 compuestas `(id, distributor_id)` repiten una relación que ya tiene su
+# FK simple, y information_schema las cruzaría columna por columna inventando relaciones.
 fks = [(t, c, d) for t, c, d in psql(
-    "select tc.table_name, kcu.column_name, ccu.table_name "
-    "from information_schema.table_constraints tc "
-    "join information_schema.key_column_usage kcu on kcu.constraint_name=tc.constraint_name "
-    "join information_schema.constraint_column_usage ccu on ccu.constraint_name=tc.constraint_name "
-    "where tc.constraint_type='FOREIGN KEY' and tc.table_schema='public' "
-    f"and tc.table_name not in {SALTAR} and ccu.table_name not in {SALTAR}")]
+    "select cl.relname, a.attname, fo.relname from pg_constraint co "
+    "join pg_class cl on cl.oid=co.conrelid join pg_class fo on fo.oid=co.confrelid "
+    "join pg_attribute a on a.attrelid=co.conrelid and a.attnum=co.conkey[1] "
+    "where co.contype='f' and co.connamespace='public'::regnamespace and cardinality(co.conkey)=1 "
+    f"and cl.relname not in {SALTAR} and fo.relname not in {SALTAR}")]
 
 # Lo planificado (conceptos de MC.PLANIFICADOS): sus tablas todavía no están en la base. Se las
 # lee de la propuesta que genera generar-modelo-datos.py (SQL portable del modelo completo).
@@ -145,13 +146,13 @@ sin_asoc, sostenidas = [], collections.defaultdict(list)
 for t, c, d in fks:
     a = MC.asociacion_de_fk(t, c, d)
     if a is None:
-        if d == "distributor" or (t, c) in MC.AUTORIA_TECNICA:
+        if d == "distributor" or (t, c) in MC.AUTORIA_TECNICA or (t, c) in MC.REFERENCIAS_TECNICAS:
             continue
         sin_asoc.append(f"{t}.{c} -> {d}")
     elif a[0] != "ESPECIALIZACION":
         sostenidas[(a[0], a[4], a[5])].append((t, c))
 check("Relaciones: toda clave foránea es una asociación del modelo, la pertenencia a la "
-      "distribuidora o una columna de autoría", not sin_asoc, sin_asoc)
+      "distribuidora, una columna de autoría o una referencia técnica", not sin_asoc, sin_asoc)
 
 sin_fk = []
 for a, ma, t, mb, b, n, _ in MC.ASOCIACIONES:
@@ -198,7 +199,7 @@ print()
 n_aso = len(MC.ASOCIACIONES)
 n_esp = sum(len(h) for _, h, _ in MC.GENERALIZACIONES)
 print(f"{len(MC.CLASES)} conceptos · {n_aso} asociaciones · {n_esp} especializaciones · "
-      f"{len(fks)} claves foráneas · {len(tablas)} tablas")
+      f"{len(fks)} claves foráneas simples (las compuestas por distribuidora repiten una de ellas) · {len(tablas)} tablas")
 if fallas:
     print(f"\n{len(fallas)} verificación(es) fallida(s).")
     sys.exit(1)

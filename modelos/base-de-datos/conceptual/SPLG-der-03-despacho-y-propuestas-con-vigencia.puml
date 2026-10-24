@@ -53,8 +53,8 @@ OfertaDespacho }o--|| Chofer : se dirige a >
 Pedido ||--o{ OfertaDespacho : genera >
 LoteRecorrido ||--o{ OfertaLote : genera >
 OfertaLote }o--|| Chofer : se dirige a >
-LoteRecorrido ||--|{ ParadaLote : se compone de >
 ParadaLote }o--|| Pedido : atiende >
+LoteRecorrido ||--|{ ParadaLote : se compone de >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

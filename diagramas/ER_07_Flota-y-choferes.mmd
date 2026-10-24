@@ -1,13 +1,13 @@
 erDiagram
-    MAINTENANCE_TASK }o--o| CAR : "car_id"
     MAINTENANCE_TASK }o--o| DELIVERY : "delivery_id"
     MAINTENANCE_TASK }o--|| MAINTENANCE_PLAN : "plan_id"
-    VEHICLE_ASSIGNMENT }o--|| CAR : "car_id"
+    MAINTENANCE_TASK }o--o| CAR : "car_id"
     VEHICLE_ASSIGNMENT }o--|| DELIVERY : "delivery_id"
+    VEHICLE_ASSIGNMENT }o--|| CAR : "car_id"
     VEHICLE_USAGE_LOG }o--|| CAR : "car_id"
     MAINTENANCE_TASK_ATTACHMENT }o--|| MAINTENANCE_TASK : "task_id"
-    MAINTENANCE_WINDOW_PROPOSAL }o--|| DELIVERY : "delivery_id"
     MAINTENANCE_WINDOW_PROPOSAL }o--|| MAINTENANCE_TASK : "task_id"
+    MAINTENANCE_WINDOW_PROPOSAL }o--|| DELIVERY : "delivery_id"
 
     MAINTENANCE_PLAN {
         uuid plan_id PK
@@ -57,7 +57,7 @@ erDiagram
         boolean validated
         boolean isActive
         text notification_token "nullable"
-        float balance
+        decimal balance
         timestamptz createdAt "nullable"
         timestamptz deletedAt "nullable"
         geometry location "nullable"

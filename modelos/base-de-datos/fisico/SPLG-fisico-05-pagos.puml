@@ -48,17 +48,20 @@ entity "payment_refund" as e_payment_refund {
   {field} error_message : text
   {field} attempts : integer *
   {field} refunded_at : timestamptz
-  {field} requested_by_user_id : uuid
+  {field} //requested_by_user_id// : uuid <<FK>>
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
   {field} refunded_baseline : numeric(10,2)
 }
 entity "order" as e_order #F1F1F1 {
 }
+entity "user" as e_user #F1F1F1 {
+}
 
 e_order ||--o{ e_payment : order_id
-e_order ||--o{ e_payment_refund : order_id
 e_payment ||--o{ e_payment_refund : payment_id
+e_order ||--o{ e_payment_refund : order_id
+e_user |o--o{ e_payment_refund : requested_by_user_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

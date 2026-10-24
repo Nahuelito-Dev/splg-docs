@@ -143,8 +143,8 @@ pedidos, cada uno con el motivo por el que está.
 
 Si además se quiere que revise el DDL, sumar
 **`SPLG-base-de-datos-completa-portable.sql`**, que es el modelo entero en
-menos de 56 KB.
-No conviene pegar `SPLG-base-de-datos.sql`: son 203 KB
+menos de 63 KB.
+No conviene pegar `SPLG-base-de-datos.sql`: son 273 KB
 en su mayoría de índices y funciones de PostGIS que no aportan al análisis del
 modelo.
 

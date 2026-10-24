@@ -108,6 +108,7 @@ for t, cols in psql(f"""
          string_agg(a.attname, ',' order by array_position(i.indkey::int2[], a.attnum))
   from pg_index i join pg_attribute a on a.attrelid=i.indrelid and a.attnum = any(i.indkey)
   where i.indisunique and not i.indisprimary and i.indpred is null
+    and 0 <> all(i.indkey::int2[])      -- un índice sobre una expresión (lower(...)) no es un único de columnas
     and i.indrelid::regclass::text not in {SALTAR}
   group by i.indexrelid, i.indrelid;"""):
     grupo = cols.split(",")
@@ -116,17 +117,41 @@ for t, cols in psql(f"""
         unicos.setdefault(t, []).append(grupo)
 unicos_simples = {t: {g[0] for g in v if len(g) == 1} for t, v in unicos.items()}
 
-fks = []
-for t, c, dt, dc, borrado in psql(f"""
-  select tc.table_name, kcu.column_name, ccu.table_name, ccu.column_name, rc.delete_rule
-  from information_schema.table_constraints tc
-  join information_schema.key_column_usage kcu on kcu.constraint_name=tc.constraint_name
-  join information_schema.constraint_column_usage ccu on ccu.constraint_name=tc.constraint_name
-  join information_schema.referential_constraints rc on rc.constraint_name=tc.constraint_name
-  where tc.constraint_type='FOREIGN KEY' and tc.table_schema='public'
-    and tc.table_name not in {SALTAR} and ccu.table_name not in {SALTAR}
-  order by 1,2;"""):
-    fks.append({"tabla": t, "col": c, "destino": dt, "destcol": dc, "borrado": borrado})
+# Una clave foránea de varias columnas (las 55 `(id, distributor_id)` que fijan la distribuidora) es UNA
+# relación. Se lee de pg_constraint emparejando cada columna con la suya del destino; con
+# information_schema se cruzan todas con todas y salen relaciones que no existen.
+_FK_SQL = f"""
+  select cl.relname, co.conname, fo.relname, rc.delete_rule,
+         (select string_agg(a.attname || ':' || b.attname, ',' order by k.o)
+            from unnest(co.conkey, co.confkey) with ordinality k(x, y, o)
+            join pg_attribute a on a.attrelid=co.conrelid and a.attnum=k.x
+            join pg_attribute b on b.attrelid=co.confrelid and b.attnum=k.y)
+  from pg_constraint co
+  join pg_class cl on cl.oid=co.conrelid
+  join pg_class fo on fo.oid=co.confrelid
+  join information_schema.referential_constraints rc
+    on rc.constraint_name=co.conname and rc.constraint_schema='public'
+  where co.contype='f' and co.connamespace='public'::regnamespace
+    and cl.relname not in {SALTAR} and fo.relname not in {SALTAR}
+  order by 1,2;"""
+fks, fks_comp = [], []
+for t, nombre, dt, borrado, pares in psql(_FK_SQL):
+    pares = [p.split(":") for p in pares.split(",")]
+    if len(pares) == 1:
+        fks.append({"tabla": t, "col": pares[0][0], "destino": dt, "destcol": pares[0][1], "borrado": borrado})
+    else:
+        fks_comp.append({"tabla": t, "nombre": nombre, "destino": dt, "pares": pares, "borrado": borrado})
+# toda compuesta repite una relación que ya tiene su FK simple sobre la columna propia (no `distributor_id`):
+# por eso en el DBD no lleva una arista más, sólo marca `distributor_id`.
+_simples = {(f["tabla"], f["col"], f["destino"]) for f in fks}
+for f in fks_comp:
+    f["propias"] = [c for c, _ in f["pares"] if c != "distributor_id"]
+    sin_simple = [c for c in f["propias"] if (f["tabla"], c, f["destino"]) not in _simples]
+    if sin_simple:
+        sys.exit(f"FK compuesta {f['nombre']}: sin FK simple sobre {sin_simple} hacia {f['destino']}; hay que dibujarla")
+n_fk_total = len(fks) + len(fks_comp)
+DESGLOSE_FK = (f"{n_fk_total} claves foráneas: {len(fks)} simples y {len(fks_comp)} compuestas "
+               "`(id, distributor_id)` que fijan la distribuidora")
 
 enums = {n: v.split(",") for n, v in psql("""
   select t.typname, string_agg(e.enumlabel, ',' order by e.enumsortorder)
@@ -139,7 +164,8 @@ enums = {n: v.split(",") for n, v in psql("""
 # coverage_zone) no sale completa de information_schema.check_constraints.
 checks = collections.defaultdict(list)
 for t, nom, defi in psql("""
-  select conrelid::regclass::text, conname, pg_get_constraintdef(oid)
+  select conrelid::regclass::text, conname,
+         regexp_replace(pg_get_constraintdef(oid), '\s+', ' ', 'g')
   from pg_constraint
   where contype='c' and connamespace='public'::regnamespace
   order by 1, 2;"""):
@@ -1493,6 +1519,10 @@ def crear_tabla(t, d, con_fks=True):
         for f in d["fks"]:
             ln.append(f'  FOREIGN KEY ("{f["col"]}") REFERENCES "{f["destino"]}" ("{f["destcol"]}")'
                       + ("" if f["borrado"] in ("NO ACTION", "RESTRICT") else f' ON DELETE {f["borrado"]}'))
+        for f in fks_comp:
+            if f["tabla"] == t:
+                ln.append("  FOREIGN KEY (" + ", ".join(f'"{c}"' for c, _ in f["pares"]) + ") REFERENCES "
+                          f'"{f["destino"]}" (' + ", ".join(f'"{d}"' for _, d in f["pares"]) + ")")
     return f'CREATE TABLE "{t}" (\n' + ",\n".join(ln) + "\n);\n"
 
 actual = armar(con_propuesta=False, con_sin_fk=False)
@@ -1508,7 +1538,7 @@ if r.returncode == 0:
 
 # ------------------------------------------- 2. esquema actual en SQL portable
 sql = ["-- Esquema de SPLG — Sistema de Pedidos y Logística de Garrafas de Gas",
-       f"-- Estado actual de la base: {len(tablas)} tablas, {len(fks)} claves foráneas.",
+       f"-- Estado actual de la base: {len(tablas)} tablas, {DESGLOSE_FK}.",
        "-- Generado por generar-modelo-datos.py",
        "-- Los tipos enumerados y los geográficos de PostGIS se escriben como varchar para",
        "-- que cualquier herramienta de diagramación pueda leer el archivo.",
@@ -1575,7 +1605,7 @@ open(SAL + "SPLG-base-de-datos-propuesta.sql", "w", encoding="utf-8").write("\n"
 n_fk_completo = sum(len(d["fks"]) for d in completo.values())
 comp = ["-- Modelo completo de SPLG: lo implementado más lo planificado",
         f"-- {len(completo)} tablas y {n_fk_completo} relaciones.",
-        f"-- Hoy en la base hay {len(tablas)} tablas y {len(fks)} claves foráneas declaradas;",
+        f"-- Hoy en la base hay {len(tablas)} tablas y {DESGLOSE_FK}, todas declaradas;",
         f"-- este archivo suma {len(tablas_prop)} tablas planificadas y "
         f"{sum(len(v) for v in cols_prop.values())} columnas nuevas en tablas que ya existen."]
 if sin_fk:
@@ -1950,7 +1980,8 @@ for k, (ttl, _arch, foco, ref) in enumerate(MC.VISTAS, 1):
 
 # --------------------------------------------------- 7. diccionario de datos
 md = ["# Modelo de Datos — SPLG", "",
-      f"{len(tablas)} tablas y {len(fks)} claves foráneas, leídas de la base en ejecución.", "",
+      f"{len(tablas)} tablas y {DESGLOSE_FK}, leídas de la base en ejecución.", "",
+      "Cada FK compuesta `(id, distributor_id)` se suma a la FK simple sobre `id` y le impide a una fila apuntar a otra distribuidora; en el diagrama de base de datos es la misma relación que la simple, así que no lleva otra arista.", "",
       "| Sección | Qué contiene |", "|---|---|",
       "| [Diccionario de datos](#diccionario-de-datos) | Las tablas tal cual están hoy en la base, "
       "con tipo, obligatoriedad, clave, referencia, default, descripción, `CHECK` e índices |",
@@ -2034,7 +2065,7 @@ else:
     md += ["## Relaciones no declaradas", "",
            "No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN "
            "KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). "
-           f"Hoy las {len(fks)} relaciones del dominio están todas declaradas.", ""]
+           f"Hoy las {n_fk_total} claves foráneas del dominio ({len(fks)} simples y {len(fks_comp)} compuestas por distribuidora) están todas declaradas.", ""]
 
 if not PROPUESTO:
     md += ["## Modelo propuesto", "",
@@ -2201,7 +2232,7 @@ def relacion_mermaid(f, t, modelo=None):
 _tabla_a_ctx = {t: ctx for ctx, ts in CONTEXTOS for t in ts}
 der = ["# DER de SPLG, en Mermaid — generado", "",
        f"Generado por `generar-modelo-datos.py` desde la base en ejecución: "
-       f"{len(tablas)} tablas, {len(fks)} relaciones. Se pega tal cual en "
+       f"{len(tablas)} tablas, {len(fks)} relaciones (las {len(fks_comp)} claves compuestas por distribuidora repiten una relación simple y no se dibujan). Se pega tal cual en "
        "`3-Diseño.md` §7.4.2 (los `.md` son la fuente; esto se corre de nuevo y se vuelve "
        "a pegar si la base cambia). Cada lámina es un `erDiagram` válido por separado "
        "(uno por contexto de negocio) más una lámina final con las relaciones que cruzan "
@@ -2258,7 +2289,10 @@ for _t in tablas:
                       "pk": _c["nombre"] in _d["pk"],
                       "unico": any(g == [_c["nombre"]] for g in _d["unicos"]),
                       "fk": ({"destino": _f["destino"], "destcol": _f["destcol"], "borrado": _f["borrado"],
-                              "card_padre": card_padre(_t, _f), "card_hijo": card_hijo(_t, _f)} if _f else None)})
+                              "card_padre": card_padre(_t, _f), "card_hijo": card_hijo(_t, _f)} if _f else None),
+                      "fk_compuesta": [{"destino": g["destino"], "columnas": [c for c, _ in g["pares"]]}
+                                       for g in fks_comp
+                                       if g["tabla"] == _t and _c["nombre"] == "distributor_id"] or None})
     _modelo["dbd"]["tablas"][_t] = {
         "columnas": _cols, "pk": _d["pk"], "unicos": _d["unicos"],
         "indices": [[n, dfn] for n, dfn in indices.get(_t, [])]}
@@ -2287,7 +2321,7 @@ for carpeta, nombres in ((FIS, fisicos), (CON, conceptuales)):
 
 for a in avisos: print("  ·", a)
 print(f"implementado · tablas: {len(tablas)} · columnas: {sum(len(v) for v in columnas.values())} · "
-      f"claves foráneas: {len(fks)} · sin declarar: {len(sin_fk)} · enumerados: {len(enums)}")
+      f"claves foráneas: {n_fk_total} ({len(fks)} simples + {len(fks_comp)} compuestas) · sin declarar: {len(sin_fk)} · enumerados: {len(enums)}")
 print(f"propuesto    · tablas: {len(tablas_prop)} · columnas: {sum(len(v) for v in cols_prop.values())} · "
       f"claves foráneas: {sum(1 for d in completo.values() for f in d['fks'] if f['prop'])} · "
       f"enumerados: {len(enums_prop)}")

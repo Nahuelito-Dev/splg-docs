@@ -1038,6 +1038,26 @@ CREATE FUNCTION public.audit_log_inmutable() RETURNS trigger
 
 
 --
+-- Name: cobro_de_cuenta_maximo(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.cobro_de_cuenta_maximo() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_deuda numeric;
+       BEGIN
+         IF current_setting('splg.bypass_saldos', true) = 'on' THEN RETURN NEW; END IF;
+         SELECT coalesce(sum(CASE WHEN "type" IN ('sale_charge', 'debit_note') THEN "amount" ELSE -"amount" END), 0) INTO v_deuda
+           FROM "customer_account_entry" WHERE "account_id" = NEW."account_id";
+         IF NEW."amount" > v_deuda THEN
+           RAISE EXCEPTION 'El cobro (%) supera la deuda de la cuenta (%)', NEW."amount", v_deuda
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_customer_account_entry_cobro_mayor_a_la_deuda';
+         END IF;
+         RETURN NEW;
+       END $$;
+
+
+--
 -- Name: employee_leave_no_overlap(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1065,6 +1085,56 @@ CREATE FUNCTION public.employee_leave_no_overlap() RETURNS trigger
 
 
 --
+-- Name: es_cuil_valido(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.es_cuil_valido(cuil text) RETURNS boolean
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $$
+         SELECT es_cuit_valido(cuil) AND left(cuil, 2) IN ('20', '23', '24', '27')
+       $$;
+
+
+--
+-- Name: es_cuit_valido(text); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.es_cuit_valido(cuit text) RETURNS boolean
+    LANGUAGE sql IMMUTABLE PARALLEL SAFE
+    AS $_$
+         SELECT CASE
+           WHEN cuit IS NULL OR cuit !~ '^(20|23|24|27|30|33|34)[0-9]{9}$' THEN false
+           ELSE (
+             SELECT CASE WHEN r = 0 THEN 0 ELSE 11 - r END
+               FROM (
+                 SELECT mod(sum(substr(cuit, i, 1)::int * (ARRAY[5,4,3,2,7,6,5,4,3,2])[i]), 11) AS r
+                   FROM generate_series(1, 10) AS i
+               ) AS s
+           ) = substr(cuit, 11, 1)::int
+         END
+       $_$;
+
+
+--
+-- Name: fabricacion_de_envase_no_futura(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.fabricacion_de_envase_no_futura() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF current_setting('splg.bypass_reglas', true) = 'on' THEN RETURN NEW; END IF;
+         IF NEW."manufactured_at" IS NOT NULL
+            AND (TG_OP = 'INSERT' OR NEW."manufactured_at" IS DISTINCT FROM OLD."manufactured_at")
+            AND NEW."manufactured_at" > now() + interval '5 minutes' THEN
+           RAISE EXCEPTION 'La fecha de fabricación del envase (%) es futura', NEW."manufactured_at"
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_cylinder_fabricacion_futura';
+         END IF;
+         RETURN NEW;
+       END $$;
+
+
+--
 -- Name: libro_de_solo_agregar(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1085,6 +1155,113 @@ CREATE FUNCTION public.libro_de_solo_agregar() RETURNS trigger
 
 
 --
+-- Name: odometro_de_carga_monotono(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.odometro_de_carga_monotono() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_anterior integer; v_siguiente integer;
+       BEGIN
+         IF current_setting('splg.bypass_reglas', true) = 'on' THEN RETURN NEW; END IF;
+         IF NEW."deletedAt" IS NOT NULL OR NEW."odometer_correction_note" IS NOT NULL THEN RETURN NEW; END IF;
+         SELECT "odometer_km" INTO v_anterior FROM "fuel_load"
+           WHERE "car_id" = NEW."car_id" AND "deletedAt" IS NULL AND "fuel_load_id" <> NEW."fuel_load_id" AND "loaded_at" <= NEW."loaded_at"
+           ORDER BY "loaded_at" DESC, "odometer_km" DESC LIMIT 1;
+         SELECT "odometer_km" INTO v_siguiente FROM "fuel_load"
+           WHERE "car_id" = NEW."car_id" AND "deletedAt" IS NULL AND "fuel_load_id" <> NEW."fuel_load_id" AND "loaded_at" > NEW."loaded_at"
+           ORDER BY "loaded_at" ASC, "odometer_km" ASC LIMIT 1;
+         IF (v_anterior IS NOT NULL AND NEW."odometer_km" < v_anterior)
+            OR (v_siguiente IS NOT NULL AND NEW."odometer_km" > v_siguiente) THEN
+           RAISE EXCEPTION 'El kilometraje de la carga (%) no encaja entre el de la carga anterior (%) y el de la siguiente (%)', NEW."odometer_km", v_anterior, v_siguiente
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_fuel_load_odometro_monotono';
+         END IF;
+         RETURN NEW;
+       END $$;
+
+
+--
+-- Name: odometro_de_neumatico_monotono(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.odometro_de_neumatico_monotono() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_ultimo integer;
+       BEGIN
+         IF current_setting('splg.bypass_reglas', true) = 'on' THEN RETURN NEW; END IF;
+         IF NEW."car_id" IS NULL THEN RETURN NEW; END IF;
+         SELECT max("odometer_km") INTO v_ultimo FROM "tire_event" WHERE "tire_id" = NEW."tire_id" AND "car_id" = NEW."car_id";
+         IF v_ultimo IS NOT NULL AND NEW."odometer_km" < v_ultimo THEN
+           RAISE EXCEPTION 'El kilometraje del movimiento (%) es menor que el último del neumático en el vehículo (%)', NEW."odometer_km", v_ultimo
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_tire_event_odometro_monotono';
+         END IF;
+         RETURN NEW;
+       END $$;
+
+
+--
+-- Name: odometro_de_tarea_monotono(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.odometro_de_tarea_monotono() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_anterior integer; v_siguiente integer;
+       BEGIN
+         IF current_setting('splg.bypass_reglas', true) = 'on' THEN RETURN NEW; END IF;
+         IF NEW."status" <> 'done' OR NEW."odometer_km" IS NULL OR NEW."car_id" IS NULL OR NEW."performed_at" IS NULL THEN RETURN NEW; END IF;
+         SELECT "odometer_km" INTO v_anterior FROM "maintenance_task"
+           WHERE "car_id" = NEW."car_id" AND "status" = 'done' AND "odometer_km" IS NOT NULL AND "task_id" <> NEW."task_id" AND "performed_at" <= NEW."performed_at"
+           ORDER BY "performed_at" DESC, "odometer_km" DESC LIMIT 1;
+         SELECT "odometer_km" INTO v_siguiente FROM "maintenance_task"
+           WHERE "car_id" = NEW."car_id" AND "status" = 'done' AND "odometer_km" IS NOT NULL AND "task_id" <> NEW."task_id" AND "performed_at" > NEW."performed_at"
+           ORDER BY "performed_at" ASC, "odometer_km" ASC LIMIT 1;
+         IF (v_anterior IS NOT NULL AND NEW."odometer_km" < v_anterior)
+            OR (v_siguiente IS NOT NULL AND NEW."odometer_km" > v_siguiente) THEN
+           RAISE EXCEPTION 'El kilometraje de la tarea (%) no encaja entre el de la anterior (%) y el de la siguiente (%)', NEW."odometer_km", v_anterior, v_siguiente
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_maintenance_task_odometro_monotono';
+         END IF;
+         RETURN NEW;
+       END $$;
+
+
+--
+-- Name: payment_estado_no_retrocede(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.payment_estado_no_retrocede() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD.status = NEW.status
+            OR OLD.status = 'pending'
+            OR (OLD.status = 'approved' AND NEW.status = 'refunded') THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'El estado del pago no puede pasar de % a %', OLD.status, NEW.status
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_payment_estado_no_retrocede';
+       END $$;
+
+
+--
+-- Name: rendicion_sin_fecha_futura(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.rendicion_sin_fecha_futura() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF current_setting('splg.bypass_reglas', true) = 'on' THEN RETURN NEW; END IF;
+         IF NEW."business_date" > (now() AT TIME ZONE 'America/Argentina/Buenos_Aires')::date THEN
+           RAISE EXCEPTION 'No se abre la rendición de un día futuro (%)', NEW."business_date"
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_driver_settlement_fecha_futura';
+         END IF;
+         RETURN NEW;
+       END $$;
+
+
+--
 -- Name: stock_movement_inmutable(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1095,6 +1272,288 @@ CREATE FUNCTION public.stock_movement_inmutable() RETURNS trigger
         RAISE EXCEPTION 'stock_movement es de sólo escritura: no se modifican ni se borran movimientos; se corrige con un contraasiento';
       END;
       $$;
+
+
+--
+-- Name: transicion_de_estado_claims(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_claims() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['in_process>rejected', 'in_process>resolved', 'pending>in_process', 'pending>rejected', 'pending>resolved', 'rejected>in_process', 'resolved>in_process']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'El reclamo no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_claims_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_customer_account(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_customer_account() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['active>blocked', 'active>closed', 'blocked>active', 'blocked>closed', 'closed>active']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'La cuenta corriente no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_customer_account_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_cylinder(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_cylinder() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."state" IS NOT DISTINCT FROM NEW."state"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."state"::text || '>' || NEW."state"::text) = ANY (ARRAY['dispatched>in_depot', 'dispatched>with_customer', 'empty_returned>in_depot', 'empty_returned>retired', 'filled>dispatched', 'filled>in_depot', 'in_depot>filled', 'in_depot>retired', 'with_customer>empty_returned']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'El envase no puede pasar de % a %', OLD."state", NEW."state"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_cylinder_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_driver_liquidation(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_driver_liquidation() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['approved>paid', 'approved>voided', 'draft>approved', 'draft>voided', 'paid>approved']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'La liquidación no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_driver_liquidation_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_driver_settlement(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_driver_settlement() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['open>submitted', 'submitted>approved', 'submitted>open']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'La rendición no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_driver_settlement_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_order(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_order() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['accepted>cancelled', 'accepted>on_the_way', 'accepted>pending', 'on_the_way>cancelled', 'on_the_way>delivered', 'on_the_way>pending', 'pending>accepted', 'pending>cancelled', 'reserved>cancelled', 'reserved>pending']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'El pedido no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_order_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_order_dispatch_offer(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_order_dispatch_offer() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['accepted>rejected', 'offered>accepted', 'offered>expired', 'offered>rejected', 'offered>superseded']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'La oferta de despacho no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_order_dispatch_offer_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_purchase_order(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_purchase_order() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['draft>cancelled', 'draft>sent', 'partially_received>closed_short', 'partially_received>partially_received', 'partially_received>received', 'partially_received>sent', 'received>partially_received', 'received>sent', 'sent>cancelled', 'sent>partially_received', 'sent>received']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'La orden de compra no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_purchase_order_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: transicion_de_estado_truck_load(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.transicion_de_estado_truck_load() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF OLD."status" IS NOT DISTINCT FROM NEW."status"
+            OR current_setting('splg.bypass_transiciones', true) = 'on'
+            OR (OLD."status"::text || '>' || NEW."status"::text) = ANY (ARRAY['loading>cancelled', 'loading>on_route', 'on_route>returned', 'returned>closed', 'returned>closed_with_difference']) THEN
+           RETURN NEW;
+         END IF;
+         RAISE EXCEPTION 'La carga del camión no puede pasar de % a %', OLD."status", NEW."status"
+           USING ERRCODE = '23514', CONSTRAINT = 'CHK_truck_load_transicion_de_estado';
+       END $$;
+
+
+--
+-- Name: verificar_existencia_contra_libro(uuid, uuid, public.stock_condition_enum); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.verificar_existencia_contra_libro(p_ubicacion uuid, p_garrafa uuid, p_condicion public.stock_condition_enum) RETURNS void
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_saldo bigint; v_libro bigint;
+       BEGIN
+         IF p_ubicacion IS NULL THEN RETURN; END IF;
+         SELECT coalesce(sum("quantity"), 0) INTO v_saldo FROM "stock_balance"
+           WHERE "location_id" = p_ubicacion AND "gas_cylinder_id" = p_garrafa AND "condition" = p_condicion;
+         SELECT coalesce((SELECT sum("quantity") FROM "stock_movement"
+                           WHERE "to_location_id" = p_ubicacion AND "gas_cylinder_id" = p_garrafa AND "to_condition" = p_condicion), 0)
+              - coalesce((SELECT sum("quantity") FROM "stock_movement"
+                           WHERE "from_location_id" = p_ubicacion AND "gas_cylinder_id" = p_garrafa AND "from_condition" = p_condicion), 0)
+           INTO v_libro;
+         IF v_saldo <> v_libro THEN
+           RAISE EXCEPTION 'La existencia (%) no coincide con la suma de los movimientos de stock (%)', v_saldo, v_libro
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_stock_balance_saldo_contra_libro';
+         END IF;
+       END $$;
+
+
+--
+-- Name: verificar_existencia_del_movimiento(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.verificar_existencia_del_movimiento() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF current_setting('splg.bypass_saldos', true) = 'on' THEN RETURN NULL; END IF;
+         PERFORM verificar_existencia_contra_libro(NEW."to_location_id", NEW."gas_cylinder_id", NEW."to_condition");
+         PERFORM verificar_existencia_contra_libro(NEW."from_location_id", NEW."gas_cylinder_id", NEW."from_condition");
+         RETURN NULL;
+       END $$;
+
+
+--
+-- Name: verificar_existencia_del_saldo(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.verificar_existencia_del_saldo() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       BEGIN
+         IF current_setting('splg.bypass_saldos', true) = 'on' THEN RETURN NULL; END IF;
+         PERFORM verificar_existencia_contra_libro(NEW."location_id", NEW."gas_cylinder_id", NEW."condition");
+         RETURN NULL;
+       END $$;
+
+
+--
+-- Name: verificar_imputacion_de_cuenta(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.verificar_imputacion_de_cuenta() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_asiento uuid; v_importe numeric; v_aplicado numeric;
+       BEGIN
+         IF current_setting('splg.bypass_saldos', true) = 'on' THEN RETURN NULL; END IF;
+         FOREACH v_asiento IN ARRAY ARRAY[NEW."debit_entry_id", NEW."credit_entry_id"] LOOP
+           SELECT "amount" INTO v_importe FROM "customer_account_entry" WHERE "entry_id" = v_asiento;
+           SELECT coalesce(sum("amount"), 0) INTO v_aplicado FROM "customer_account_allocation"
+             WHERE "debit_entry_id" = v_asiento OR "credit_entry_id" = v_asiento;
+           IF v_aplicado > v_importe THEN
+             RAISE EXCEPTION 'Lo imputado (%) supera el importe del asiento (%)', v_aplicado, v_importe
+               USING ERRCODE = '23514', CONSTRAINT = 'CHK_customer_account_allocation_tope';
+           END IF;
+         END LOOP;
+         RETURN NULL;
+       END $$;
+
+
+--
+-- Name: verificar_saldo_de_caja(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.verificar_saldo_de_caja() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_saldo numeric; v_libro numeric;
+       BEGIN
+         IF current_setting('splg.bypass_saldos', true) = 'on' THEN RETURN NULL; END IF;
+         SELECT "balance" INTO v_saldo FROM "cash_box" WHERE "cash_box_id" = NEW."cash_box_id";
+         IF NOT FOUND THEN RETURN NULL; END IF;
+         SELECT coalesce(sum(CASE "direction" WHEN 'in' THEN "amount" ELSE -"amount" END), 0) INTO v_libro
+           FROM "cash_movement" WHERE "cash_box_id" = NEW."cash_box_id";
+         IF v_saldo <> v_libro THEN
+           RAISE EXCEPTION 'El saldo de la caja (%) no coincide con la suma de sus movimientos (%)', v_saldo, v_libro
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_cash_box_saldo_contra_libro';
+         END IF;
+         RETURN NULL;
+       END $$;
+
+
+--
+-- Name: verificar_saldo_de_cuenta(); Type: FUNCTION; Schema: public; Owner: -
+--
+
+CREATE FUNCTION public.verificar_saldo_de_cuenta() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+       DECLARE v_saldo numeric; v_libro numeric;
+       BEGIN
+         IF current_setting('splg.bypass_saldos', true) = 'on' THEN RETURN NULL; END IF;
+         SELECT "balance" INTO v_saldo FROM "customer_account" WHERE "account_id" = NEW."account_id";
+         IF NOT FOUND THEN RETURN NULL; END IF;
+         SELECT coalesce(sum(CASE WHEN "type" IN ('sale_charge', 'debit_note') THEN "amount" ELSE -"amount" END), 0) INTO v_libro
+           FROM "customer_account_entry" WHERE "account_id" = NEW."account_id";
+         IF v_saldo <> v_libro THEN
+           RAISE EXCEPTION 'El saldo de la cuenta corriente (%) no coincide con la suma de sus asientos (%)', v_saldo, v_libro
+             USING ERRCODE = '23514', CONSTRAINT = 'CHK_customer_account_saldo_contra_libro';
+         END IF;
+         RETURN NULL;
+       END $$;
 
 
 SET default_tablespace = '';
@@ -1220,7 +1679,8 @@ CREATE TABLE public.car (
     in_service_since timestamp with time zone,
     photo_key character varying(512),
     fuel_type public.fuel_type_enum,
-    tank_capacity_liters numeric(6,2)
+    tank_capacity_liters numeric(6,2),
+    CONSTRAINT "CHK_car_patente" CHECK (((car_patent IS NULL) OR ((car_patent)::text ~ '^([A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$'::text)))
 );
 
 
@@ -1245,7 +1705,9 @@ CREATE TABLE public.cart_item (
     cart_id uuid NOT NULL,
     gas_cylinder_id uuid NOT NULL,
     quantity integer NOT NULL,
-    unit_price numeric(10,2) NOT NULL
+    unit_price numeric(10,2) NOT NULL,
+    CONSTRAINT "CHK_cart_item_cantidad" CHECK (((quantity >= 1) AND (quantity <= 999))),
+    CONSTRAINT "CHK_cart_item_precio" CHECK ((unit_price >= (0)::numeric))
 );
 
 
@@ -1325,7 +1787,11 @@ CREATE TABLE public.cash_session (
     expected_amount numeric(14,2),
     counted_amount numeric(14,2),
     difference numeric(14,2),
-    notes text
+    notes text,
+    CONSTRAINT "CHK_cash_session_cierre_completo" CHECK (((status <> 'closed'::public.cash_session_status_enum) OR ((closed_by_user_id IS NOT NULL) AND (counted_amount IS NOT NULL) AND (expected_amount IS NOT NULL) AND (difference = (counted_amount - expected_amount))))),
+    CONSTRAINT "CHK_cash_session_cierre_fecha" CHECK (((status = 'closed'::public.cash_session_status_enum) = (closed_at IS NOT NULL))),
+    CONSTRAINT "CHK_cash_session_montos" CHECK (((opening_amount >= (0)::numeric) AND ((counted_amount IS NULL) OR (counted_amount >= (0)::numeric)))),
+    CONSTRAINT "CHK_cash_session_periodo" CHECK (((closed_at IS NULL) OR (closed_at >= opened_at)))
 );
 
 
@@ -1344,7 +1810,9 @@ CREATE TABLE public.claims (
     status public.claims_status_enum DEFAULT 'pending'::public.claims_status_enum NOT NULL,
     "resolutionNote" text,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    photo_key character varying(512)
+    photo_key character varying(512),
+    CONSTRAINT "CHK_claims_largo_de_textos" CHECK (((char_length((reason)::text) <= 120) AND (char_length(description) <= 1000) AND (("resolutionNote" IS NULL) OR (char_length("resolutionNote") <= 1000)))),
+    CONSTRAINT "CHK_claims_textos" CHECK (((btrim((reason)::text) <> ''::text) AND (btrim(description) <> ''::text)))
 );
 
 
@@ -1367,7 +1835,9 @@ CREATE TABLE public.commission_entry (
     description character varying(255) NOT NULL,
     occurred_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by_user_id uuid,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_commission_entry_importe" CHECK ((amount <> (0)::numeric)),
+    CONSTRAINT "CHK_commission_entry_signo" CHECK ((((type <> 'delivery_commission'::public.commission_entry_type_enum) OR (amount > (0)::numeric)) AND ((type <> 'settlement_shortage'::public.commission_entry_type_enum) OR (amount < (0)::numeric))))
 );
 
 
@@ -1387,6 +1857,7 @@ CREATE TABLE public.commission_rule (
     is_active boolean DEFAULT true NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_commission_rule_porcentaje" CHECK (((basis <> 'percent_of_total'::public.commission_rule_basis_enum) OR (value <= (100)::numeric))),
     CONSTRAINT "CHK_commission_rule_valor" CHECK ((value >= (0)::numeric)),
     CONSTRAINT "CHK_commission_rule_vigencia" CHECK (((valid_to IS NULL) OR (valid_to >= valid_from)))
 );
@@ -1412,7 +1883,8 @@ CREATE TABLE public.coverage_zone (
     valid_until timestamp with time zone,
     priority integer DEFAULT 0 NOT NULL,
     valid_from timestamp with time zone,
-    CONSTRAINT "CHK_coverage_zone_surcharge" CHECK ((((surcharge_type = 'fixed'::public.coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric)) OR ((surcharge_type = 'percentage'::public.coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric) AND (surcharge_value <= (100)::numeric))))
+    CONSTRAINT "CHK_coverage_zone_surcharge" CHECK ((((surcharge_type = 'fixed'::public.coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric)) OR ((surcharge_type = 'percentage'::public.coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric) AND (surcharge_value <= (100)::numeric)))),
+    CONSTRAINT "CHK_coverage_zone_vigencia" CHECK (((valid_until IS NULL) OR (valid_from IS NULL) OR (valid_until > valid_from)))
 );
 
 
@@ -1430,7 +1902,8 @@ CREATE TABLE public.customer (
     avg_monthly_consumption_kg numeric(10,2),
     declared_cylinder_type_id uuid,
     repurchase_notice_days integer DEFAULT 3,
-    next_repurchase_estimate_at timestamp with time zone
+    next_repurchase_estimate_at timestamp with time zone,
+    CONSTRAINT "CHK_customer_consumo" CHECK (((avg_monthly_consumption_kg IS NULL) OR (avg_monthly_consumption_kg > (0)::numeric)))
 );
 
 
@@ -1452,8 +1925,11 @@ CREATE TABLE public.customer_account (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone,
+    CONSTRAINT "CHK_customer_account_cerrada_sin_saldo" CHECK (((status <> 'closed'::public.customer_account_status_enum) OR (balance = (0)::numeric))),
+    CONSTRAINT "CHK_customer_account_cuit" CHECK (((tax_id IS NULL) OR public.es_cuit_valido((tax_id)::text))),
     CONSTRAINT "CHK_customer_account_limite" CHECK ((credit_limit >= (0)::numeric)),
-    CONSTRAINT "CHK_customer_account_plazo" CHECK ((payment_terms_days > 0))
+    CONSTRAINT "CHK_customer_account_plazo" CHECK ((payment_terms_days > 0)),
+    CONSTRAINT "CHK_customer_account_plazo_maximo" CHECK ((payment_terms_days <= 365))
 );
 
 
@@ -1490,7 +1966,8 @@ CREATE TABLE public.customer_account_entry (
     occurred_at timestamp with time zone DEFAULT now() NOT NULL,
     created_by_user_id uuid,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    CONSTRAINT "CHK_customer_account_entry_importe" CHECK ((amount > (0)::numeric))
+    CONSTRAINT "CHK_customer_account_entry_importe" CHECK ((amount > (0)::numeric)),
+    CONSTRAINT "CHK_customer_account_entry_vencimiento" CHECK (((due_date IS NULL) OR (due_date >= ((occurred_at AT TIME ZONE 'America/Argentina/Buenos_Aires'::text))::date)))
 );
 
 
@@ -1511,7 +1988,11 @@ CREATE TABLE public.cylinder (
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     manufactured_at timestamp with time zone,
     last_inspection_at timestamp with time zone,
-    expires_at timestamp with time zone
+    expires_at timestamp with time zone,
+    CONSTRAINT "CHK_cylinder_cliente_segun_estado" CHECK (((state = 'with_customer'::public.cylinder_state_enum) = (current_customer_id IS NOT NULL))),
+    CONSTRAINT "CHK_cylinder_garantia" CHECK ((deposit >= (0)::numeric)),
+    CONSTRAINT "CHK_cylinder_serial" CHECK ((btrim((serial)::text) <> ''::text)),
+    CONSTRAINT "CHK_cylinder_vencimiento" CHECK (((expires_at IS NULL) OR (manufactured_at IS NULL) OR (expires_at >= manufactured_at)))
 );
 
 
@@ -1526,7 +2007,9 @@ CREATE TABLE public.cylinder_inspection (
     inspected_at timestamp with time zone DEFAULT now() NOT NULL,
     result public.cylinder_inspection_result_enum NOT NULL,
     next_due_at timestamp with time zone,
-    notes text
+    notes text,
+    CONSTRAINT "CHK_cylinder_inspection_proxima" CHECK (((result = 'rejected'::public.cylinder_inspection_result_enum) OR (next_due_at IS NOT NULL))),
+    CONSTRAINT "CHK_cylinder_inspection_vencimiento" CHECK (((next_due_at IS NULL) OR (next_due_at > inspected_at)))
 );
 
 
@@ -1543,7 +2026,8 @@ CREATE TABLE public.cylinder_movement (
     order_id uuid,
     actor_user_id uuid,
     note text,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_cylinder_movement_cambio" CHECK (((from_state IS NULL) OR ((from_state)::text <> (to_state)::text) OR (note IS NOT NULL)))
 );
 
 
@@ -1596,12 +2080,13 @@ CREATE TABLE public.delivery (
     validated boolean DEFAULT false NOT NULL,
     "isActive" boolean DEFAULT true NOT NULL,
     notification_token text,
-    balance double precision DEFAULT '0'::double precision NOT NULL,
+    balance numeric(12,2) DEFAULT 0 NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now(),
     "deletedAt" timestamp with time zone,
     location public.geometry(Point,4326),
     "isEnabled" boolean DEFAULT true NOT NULL,
-    "isAvailable" boolean DEFAULT false NOT NULL
+    "isAvailable" boolean DEFAULT false NOT NULL,
+    CONSTRAINT "CHK_delivery_calificacion" CHECK (((calification IS NULL) OR ((calification >= (0)::double precision) AND (calification <= (5)::double precision))))
 );
 
 
@@ -1623,7 +2108,9 @@ CREATE TABLE public.distributor (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone,
-    logo_key character varying(512)
+    logo_key character varying(512),
+    CONSTRAINT "CHK_distributor_cuit" CHECK (((tax_id IS NULL) OR ((tax_id)::text ~ '^[0-9]{11}$'::text))),
+    CONSTRAINT "CHK_distributor_slug" CHECK (((slug)::text ~ '^[a-z0-9]+(-[a-z0-9]+)*$'::text))
 );
 
 
@@ -1634,7 +2121,8 @@ CREATE TABLE public.distributor (
 CREATE TABLE public.document_sequence (
     distributor_id uuid NOT NULL,
     doc_type character varying(40) NOT NULL,
-    last_number integer DEFAULT 0 NOT NULL
+    last_number integer DEFAULT 0 NOT NULL,
+    CONSTRAINT "CHK_document_sequence_valores" CHECK (((last_number >= 0) AND ((doc_type)::text ~ '^[a-z][a-z0-9_]{0,39}$'::text)))
 );
 
 
@@ -1661,7 +2149,12 @@ CREATE TABLE public.driver_liquidation (
     cash_movement_id uuid,
     created_by_user_id uuid NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_driver_liquidation_anulada" CHECK (((status = 'voided'::public.driver_liquidation_status_enum) = (voided_at IS NOT NULL))),
+    CONSTRAINT "CHK_driver_liquidation_aprobada" CHECK (((status <> ALL (ARRAY['approved'::public.driver_liquidation_status_enum, 'paid'::public.driver_liquidation_status_enum])) OR (approved_at IS NOT NULL))),
+    CONSTRAINT "CHK_driver_liquidation_montos" CHECK (((gross >= (0)::numeric) AND (deductions >= (0)::numeric) AND (net = (gross - deductions)))),
+    CONSTRAINT "CHK_driver_liquidation_pagada" CHECK (((status = 'paid'::public.driver_liquidation_status_enum) = (paid_at IS NOT NULL))),
+    CONSTRAINT "CHK_driver_liquidation_periodo" CHECK ((period_from <= period_to))
 );
 
 
@@ -1691,7 +2184,11 @@ CREATE TABLE public.driver_settlement (
     notes text,
     overdue_alerted_at timestamp with time zone,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_driver_settlement_aprobada" CHECK (((status = 'approved'::public.driver_settlement_status_enum) = (approved_at IS NOT NULL))),
+    CONSTRAINT "CHK_driver_settlement_diferencia" CHECK (((difference IS NULL) OR (difference = ((declared_cash + driver_expenses) - expected_cash)))),
+    CONSTRAINT "CHK_driver_settlement_montos" CHECK (((expected_cash >= (0)::numeric) AND (driver_expenses >= (0)::numeric) AND ((declared_cash IS NULL) OR (declared_cash >= (0)::numeric)))),
+    CONSTRAINT "CHK_driver_settlement_presentada" CHECK (((status = 'open'::public.driver_settlement_status_enum) OR ((submitted_at IS NOT NULL) AND (declared_cash IS NOT NULL))))
 );
 
 
@@ -1704,7 +2201,8 @@ CREATE TABLE public.driver_settlement_collection (
     settlement_id uuid NOT NULL,
     entry_id uuid NOT NULL,
     amount numeric(12,2) NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_driver_settlement_collection_importe" CHECK ((amount > (0)::numeric))
 );
 
 
@@ -1731,7 +2229,8 @@ CREATE TABLE public.driver_settlement_order (
     settlement_id uuid NOT NULL,
     order_id uuid NOT NULL,
     amount numeric(12,2) NOT NULL,
-    payment_method character varying(20) NOT NULL
+    payment_method character varying(20) NOT NULL,
+    CONSTRAINT "CHK_driver_settlement_order_importe" CHECK ((amount >= (0)::numeric))
 );
 
 
@@ -1771,6 +2270,10 @@ CREATE TABLE public.employee (
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone,
     photo_key character varying(512),
+    CONSTRAINT "CHK_employee_cbu" CHECK (((bank_cbu IS NULL) OR ((bank_cbu)::text ~ '^[0-9]{22}$'::text))),
+    CONSTRAINT "CHK_employee_cuil" CHECK (((cuil IS NULL) OR public.es_cuil_valido((cuil)::text))),
+    CONSTRAINT "CHK_employee_email" CHECK (((personal_email IS NULL) OR ((personal_email)::text ~* '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$'::text))),
+    CONSTRAINT "CHK_employee_nacimiento" CHECK (((birth_date IS NULL) OR (birth_date < hire_date))),
     CONSTRAINT "CHK_employee_status_termination" CHECK (((status = 'terminated'::public.employee_status_enum) = (termination_date IS NOT NULL))),
     CONSTRAINT "CHK_employee_termination_date" CHECK (((termination_date IS NULL) OR (termination_date >= hire_date)))
 );
@@ -1846,7 +2349,12 @@ CREATE TABLE public.fuel_load (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone,
+    cash_movement_id uuid,
+    registered_by_driver boolean DEFAULT false NOT NULL,
+    cash_payment_legacy boolean DEFAULT false NOT NULL,
     CONSTRAINT "CHK_fuel_load_liters" CHECK ((liters > (0)::numeric)),
+    CONSTRAINT "CHK_fuel_load_odometro" CHECK ((odometer_km >= 0)),
+    CONSTRAINT "CHK_fuel_load_precio" CHECK ((unit_price > (0)::numeric)),
     CONSTRAINT "CHK_fuel_load_total" CHECK ((total_amount >= (0)::numeric))
 );
 
@@ -1868,7 +2376,9 @@ CREATE TABLE public.gas_cylinder (
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
     photo_key character varying(512),
     average_unit_cost numeric(12,2),
-    reservation_deficit integer DEFAULT 0 NOT NULL
+    reservation_deficit integer DEFAULT 0 NOT NULL,
+    CONSTRAINT "CHK_gas_cylinder_tipo" CHECK ((btrim((type)::text) <> ''::text)),
+    CONSTRAINT "CHK_gas_cylinder_valores" CHECK (((price > (0)::numeric) AND (weight > (0)::numeric) AND (stock >= 0) AND (reservation_deficit >= 0) AND ((average_unit_cost IS NULL) OR (average_unit_cost >= (0)::numeric))))
 );
 
 
@@ -1883,7 +2393,7 @@ CREATE TABLE public.gas_cylinder_promotion (
     discount_percentage numeric(5,2) NOT NULL,
     "deletedAt" timestamp with time zone,
     CONSTRAINT "CHK_promocion_cantidad" CHECK ((quantity >= 2)),
-    CONSTRAINT "CHK_promocion_descuento" CHECK (((discount_percentage > (0)::numeric) AND (discount_percentage <= (100)::numeric)))
+    CONSTRAINT "CHK_promocion_descuento" CHECK (((discount_percentage > (0)::numeric) AND (discount_percentage <= (99)::numeric)))
 );
 
 
@@ -1904,7 +2414,9 @@ CREATE TABLE public.incident (
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "resolvedAt" timestamp with time zone,
     moment public.incident_moment_enum,
-    photo_key character varying(512)
+    photo_key character varying(512),
+    CONSTRAINT "CHK_incident_descripcion" CHECK ((btrim(description) <> ''::text)),
+    CONSTRAINT "CHK_incident_largo_de_textos" CHECK (((char_length(description) <= 1000) AND ((resolution_note IS NULL) OR (char_length(resolution_note) <= 1000))))
 );
 
 
@@ -1970,7 +2482,10 @@ CREATE TABLE public.maintenance_task (
     notes text,
     valid_from timestamp with time zone,
     employee_id uuid,
-    details jsonb
+    details jsonb,
+    CONSTRAINT "CHK_maintenance_task_hecha_fecha" CHECK (((status <> 'done'::public.maintenance_task_status_enum) OR (performed_at IS NOT NULL))),
+    CONSTRAINT "CHK_maintenance_task_un_sujeto" CHECK ((num_nonnulls(car_id, delivery_id, employee_id) = 1)),
+    CONSTRAINT "CHK_maintenance_task_valores" CHECK (((COALESCE(cost, (0)::numeric) >= (0)::numeric) AND (COALESCE(due_km, 0) >= 0) AND (COALESCE(odometer_km, 0) >= 0)))
 );
 
 
@@ -2086,7 +2601,21 @@ CREATE TABLE public."order" (
     payment_resolved_at timestamp with time zone,
     payment_resolved_by uuid,
     express_surcharge_amount numeric(10,2) DEFAULT '0'::numeric NOT NULL,
-    express_degraded_at timestamp with time zone
+    express_degraded_at timestamp with time zone,
+    payment_surcharge_amount numeric(10,2) DEFAULT '0'::numeric NOT NULL,
+    CONSTRAINT "CHK_order_aceptado_fecha" CHECK (((status <> ALL (ARRAY['accepted'::public.order_status_enum, 'on_the_way'::public.order_status_enum, 'delivered'::public.order_status_enum])) OR ("acceptedAt" IS NOT NULL))),
+    CONSTRAINT "CHK_order_cancelado_motivo" CHECK (((status <> 'cancelled'::public.order_status_enum) OR (btrim(COALESCE("cancellationReason", ''::text)) <> ''::text))),
+    CONSTRAINT "CHK_order_chofer_asignado" CHECK (((status <> ALL (ARRAY['accepted'::public.order_status_enum, 'on_the_way'::public.order_status_enum, 'delivered'::public.order_status_enum])) OR (delivery_id IS NOT NULL))),
+    CONSTRAINT "CHK_order_en_camino_fecha" CHECK (((status <> ALL (ARRAY['on_the_way'::public.order_status_enum, 'delivered'::public.order_status_enum])) OR ("onTheWayAt" IS NOT NULL))),
+    CONSTRAINT "CHK_order_entregado_fecha" CHECK (((status = 'delivered'::public.order_status_enum) = ("deliveredAt" IS NOT NULL))),
+    CONSTRAINT "CHK_order_montos" CHECK ((("totalAmount" >= (0)::numeric) AND (subtotal_items >= (0)::numeric) AND (zone_surcharge_amount >= (0)::numeric) AND (express_surcharge_amount >= (0)::numeric) AND (payment_surcharge_amount >= (0)::numeric) AND (deposit_amount >= (0)::numeric))),
+    CONSTRAINT "CHK_order_nota_de_impago_largo" CHECK (((payment_resolution_note IS NULL) OR ((char_length(payment_resolution_note) <= 500) AND (char_length(btrim(payment_resolution_note)) >= 10)))),
+    CONSTRAINT "CHK_order_pago_coherente" CHECK (((("paymentMethod" = 'cash'::public.order_paymentmethod_enum) = ("paymentType" = 'cash'::public.order_paymenttype_enum)) AND (("paymentMethod" = 'account'::public.order_paymentmethod_enum) = ("paymentType" = 'account'::public.order_paymenttype_enum)))),
+    CONSTRAINT "CHK_order_total_formula" CHECK (("totalAmount" = (((subtotal_items + zone_surcharge_amount) + payment_surcharge_amount) +
+CASE
+    WHEN (express_degraded_at IS NULL) THEN express_surcharge_amount
+    ELSE (0)::numeric
+END)))
 );
 
 
@@ -2116,7 +2645,8 @@ CREATE TABLE public.order_dispatch_offer (
     driver_id uuid NOT NULL,
     status public.order_dispatch_offer_status_enum DEFAULT 'offered'::public.order_dispatch_offer_status_enum NOT NULL,
     "expiresAt" timestamp with time zone NOT NULL,
-    "offeredAt" timestamp with time zone DEFAULT now() NOT NULL
+    "offeredAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_order_dispatch_offer_vencimiento" CHECK (("expiresAt" > "offeredAt"))
 );
 
 
@@ -2130,7 +2660,9 @@ CREATE TABLE public.order_item (
     gas_cylinder_id uuid NOT NULL,
     quantity integer NOT NULL,
     "unitPrice" numeric(10,2) NOT NULL,
-    subtotal numeric(10,2) NOT NULL
+    subtotal numeric(10,2) NOT NULL,
+    CONSTRAINT "CHK_order_item_cantidad" CHECK ((quantity > 0)),
+    CONSTRAINT "CHK_order_item_importes" CHECK ((("unitPrice" >= (0)::numeric) AND (subtotal >= (0)::numeric)))
 );
 
 
@@ -2169,7 +2701,8 @@ CREATE TABLE public.payment (
     is_deposit boolean DEFAULT false NOT NULL,
     metadata jsonb,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_payment_importe" CHECK ((amount > (0)::numeric))
 );
 
 
@@ -2192,7 +2725,10 @@ CREATE TABLE public.payment_refund (
     requested_by_user_id uuid,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-    refunded_baseline numeric(10,2)
+    refunded_baseline numeric(10,2),
+    CONSTRAINT "CHK_payment_refund_exito_fecha" CHECK (((status <> 'succeeded'::public.payment_refund_status_enum) OR (refunded_at IS NOT NULL))),
+    CONSTRAINT "CHK_payment_refund_importe" CHECK ((amount > (0)::numeric)),
+    CONSTRAINT "CHK_payment_refund_intentos" CHECK ((attempts >= 0))
 );
 
 
@@ -2215,7 +2751,12 @@ CREATE TABLE public.purchase_order (
     created_by_user_id uuid NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-    close_reason text
+    close_reason text,
+    CONSTRAINT "CHK_purchase_order_cancelada" CHECK (((status <> 'cancelled'::public.purchase_order_status_enum) OR (cancel_reason IS NOT NULL))),
+    CONSTRAINT "CHK_purchase_order_cerrada_corta" CHECK (((status <> 'closed_short'::public.purchase_order_status_enum) OR (close_reason IS NOT NULL))),
+    CONSTRAINT "CHK_purchase_order_emitida" CHECK (((status = ANY (ARRAY['draft'::public.purchase_order_status_enum, 'cancelled'::public.purchase_order_status_enum])) OR (issued_at IS NOT NULL))),
+    CONSTRAINT "CHK_purchase_order_fecha_esperada" CHECK (((expected_date IS NULL) OR (expected_date >= (("createdAt" AT TIME ZONE 'America/Argentina/Buenos_Aires'::text))::date))),
+    CONSTRAINT "CHK_purchase_order_total" CHECK ((total_amount >= (0)::numeric))
 );
 
 
@@ -2264,7 +2805,10 @@ CREATE TABLE public.purchase_receipt (
     void_batch_id uuid,
     notes text,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_purchase_receipt_anulacion_datos" CHECK (((status <> 'voided'::public.purchase_receipt_status_enum) OR ((void_reason IS NOT NULL) AND (voided_by_user_id IS NOT NULL)))),
+    CONSTRAINT "CHK_purchase_receipt_anulada_fecha" CHECK (((status = 'voided'::public.purchase_receipt_status_enum) = (voided_at IS NOT NULL))),
+    CONSTRAINT "CHK_purchase_receipt_total" CHECK ((total_amount >= (0)::numeric))
 );
 
 
@@ -2304,7 +2848,9 @@ CREATE TABLE public.rating (
     hidden boolean DEFAULT false NOT NULL,
     hidden_reason text,
     hidden_at timestamp with time zone,
-    hidden_by_user_id uuid
+    hidden_by_user_id uuid,
+    CONSTRAINT "CHK_rating_largo_de_textos" CHECK ((((comment IS NULL) OR (char_length(comment) <= 500)) AND ((hidden_reason IS NULL) OR (char_length(hidden_reason) <= 500)))),
+    CONSTRAINT "CHK_rating_valores" CHECK ((((stars >= 1) AND (stars <= 5)) AND (from_user_id <> to_user_id) AND ((NOT hidden) OR (hidden_at IS NOT NULL))))
 );
 
 
@@ -2376,7 +2922,8 @@ CREATE TABLE public.route_batch_stop (
     stop_id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     batch_id uuid NOT NULL,
     order_id uuid NOT NULL,
-    sequence integer NOT NULL
+    sequence integer NOT NULL,
+    CONSTRAINT "CHK_route_batch_stop_secuencia" CHECK ((sequence >= 1))
 );
 
 
@@ -2393,7 +2940,8 @@ CREATE TABLE public.stock_adjustment (
     notes text NOT NULL,
     batch_id uuid NOT NULL,
     created_by_user_id uuid NOT NULL,
-    "createdAt" timestamp with time zone DEFAULT now() NOT NULL
+    "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_stock_adjustment_notas" CHECK ((btrim(notes) <> ''::text))
 );
 
 
@@ -2468,6 +3016,7 @@ CREATE TABLE public.stock_movement (
     CONSTRAINT "CHK_stock_movement_cantidad" CHECK ((quantity > 0)),
     CONSTRAINT "CHK_stock_movement_destino_coherente" CHECK (((to_location_id IS NULL) = (to_condition IS NULL))),
     CONSTRAINT "CHK_stock_movement_origen_coherente" CHECK (((from_location_id IS NULL) = (from_condition IS NULL))),
+    CONSTRAINT "CHK_stock_movement_origen_destino_distintos" CHECK ((NOT ((from_location_id = to_location_id) AND (from_condition = to_condition)))),
     CONSTRAINT "CHK_stock_movement_origen_o_destino" CHECK (((from_location_id IS NOT NULL) OR (to_location_id IS NOT NULL)))
 );
 
@@ -2535,7 +3084,8 @@ CREATE TABLE public.supplier (
     is_active boolean DEFAULT true NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "deletedAt" timestamp with time zone
+    "deletedAt" timestamp with time zone,
+    CONSTRAINT "CHK_supplier_cuit" CHECK (public.es_cuit_valido((cuit)::text))
 );
 
 
@@ -2552,7 +3102,9 @@ CREATE TABLE public.time_slot (
     capacity integer DEFAULT 50 NOT NULL,
     "isActive" boolean DEFAULT true NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_time_slot_capacidad" CHECK ((capacity > 0)),
+    CONSTRAINT "CHK_time_slot_horario" CHECK (("startTime" < "endTime"))
 );
 
 
@@ -2574,7 +3126,9 @@ CREATE TABLE public.tire (
     km_traveled integer DEFAULT 0 NOT NULL,
     retread_count integer DEFAULT 0 NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_tire_montaje" CHECK (((status = 'mounted'::public.tire_status_enum) = ((car_id IS NOT NULL) AND ("position" IS NOT NULL)))),
+    CONSTRAINT "CHK_tire_valores" CHECK (((cost >= (0)::numeric) AND (km_traveled >= 0) AND (retread_count >= 0)))
 );
 
 
@@ -2620,7 +3174,13 @@ CREATE TABLE public.traffic_fine (
     alerted_at timestamp with time zone,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-    CONSTRAINT "CHK_traffic_fine_amount" CHECK ((amount > (0)::numeric))
+    cash_movement_id uuid,
+    CONSTRAINT "CHK_traffic_fine_amount" CHECK ((amount > (0)::numeric)),
+    CONSTRAINT "CHK_traffic_fine_anulada_fecha" CHECK (((status <> 'voided'::public.traffic_fine_status_enum) OR (voided_at IS NOT NULL))),
+    CONSTRAINT "CHK_traffic_fine_importe_pagado" CHECK (((paid_amount IS NULL) OR (paid_amount > (0)::numeric))),
+    CONSTRAINT "CHK_traffic_fine_pagada_datos" CHECK (((status <> 'paid'::public.traffic_fine_status_enum) OR ((paid_at IS NOT NULL) AND (paid_amount IS NOT NULL)))),
+    CONSTRAINT "CHK_traffic_fine_pago_contra_importe" CHECK (((paid_amount IS NULL) OR (paid_amount <= amount))),
+    CONSTRAINT "CHK_traffic_fine_pago_voluntario" CHECK (((voluntary_payment_amount IS NULL) OR ((voluntary_payment_amount > (0)::numeric) AND (voluntary_payment_amount <= amount))))
 );
 
 
@@ -2648,7 +3208,11 @@ CREATE TABLE public.truck_load (
     cancel_reason text,
     notes text,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_truck_load_cancelada" CHECK (((status <> 'cancelled'::public.truck_load_status_enum) OR (cancel_reason IS NOT NULL))),
+    CONSTRAINT "CHK_truck_load_cierre" CHECK (((status <> ALL (ARRAY['closed'::public.truck_load_status_enum, 'closed_with_difference'::public.truck_load_status_enum, 'cancelled'::public.truck_load_status_enum])) OR (closed_at IS NOT NULL))),
+    CONSTRAINT "CHK_truck_load_regreso" CHECK (((status <> ALL (ARRAY['returned'::public.truck_load_status_enum, 'closed'::public.truck_load_status_enum, 'closed_with_difference'::public.truck_load_status_enum])) OR (returned_at IS NOT NULL))),
+    CONSTRAINT "CHK_truck_load_salida" CHECK (((status = ANY (ARRAY['loading'::public.truck_load_status_enum, 'cancelled'::public.truck_load_status_enum])) OR (departed_at IS NOT NULL)))
 );
 
 
@@ -2693,7 +3257,9 @@ CREATE TABLE public."user" (
     blocked boolean DEFAULT false NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "deletedAt" timestamp with time zone,
-    photo_key character varying(512)
+    photo_key character varying(512),
+    CONSTRAINT "CHK_user_email" CHECK (((email IS NULL) OR ((email)::text ~* '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$'::text))),
+    CONSTRAINT "CHK_user_telefono" CHECK (((phone_number IS NULL) OR ((phone_number)::text ~ '^[+][1-9][0-9]{7,14}$'::text)))
 );
 
 
@@ -2747,7 +3313,9 @@ CREATE TABLE public.vehicle_accident (
     closed_at timestamp with time zone,
     created_by_user_id uuid NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL
+    "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
+    CONSTRAINT "CHK_vehicle_accident_cerrado_fecha" CHECK (((status <> 'closed'::public.vehicle_accident_status_enum) OR (closed_at IS NOT NULL))),
+    CONSTRAINT "CHK_vehicle_accident_montos" CHECK (((COALESCE(repair_cost, (0)::numeric) >= (0)::numeric) AND (COALESCE(insurer_reimbursement, (0)::numeric) >= (0)::numeric) AND (COALESCE(deductible_amount, (0)::numeric) >= (0)::numeric) AND ((insurer_reimbursement IS NULL) OR (repair_cost IS NULL) OR (insurer_reimbursement <= repair_cost))))
 );
 
 
@@ -2764,7 +3332,8 @@ CREATE TABLE public.vehicle_assignment (
     released_at timestamp with time zone,
     assigned_by_user_id uuid,
     released_by_user_id uuid,
-    note text
+    note text,
+    CONSTRAINT "CHK_vehicle_assignment_periodo" CHECK (((released_at IS NULL) OR (released_at >= assigned_at)))
 );
 
 
@@ -2779,7 +3348,8 @@ CREATE TABLE public.vehicle_usage_log (
     day date NOT NULL,
     km numeric(10,2) NOT NULL,
     orders integer DEFAULT 0 NOT NULL,
-    route_hours numeric(6,2) DEFAULT '0'::numeric NOT NULL
+    route_hours numeric(6,2) DEFAULT '0'::numeric NOT NULL,
+    CONSTRAINT "CHK_vehicle_usage_log_valores" CHECK (((km >= (0)::numeric) AND (orders >= 0) AND (route_hours >= (0)::numeric)))
 );
 
 
@@ -2798,8 +3368,57 @@ CREATE TABLE public.warehouse (
     is_active boolean DEFAULT true NOT NULL,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
     "updatedAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "deletedAt" timestamp with time zone
+    "deletedAt" timestamp with time zone,
+    CONSTRAINT "CHK_warehouse_codigo" CHECK (((code)::text ~ '^[A-Z0-9_-]{1,12}$'::text))
 );
+
+
+--
+-- Name: commission_rule EXC_commission_rule_solapada; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_rule
+    ADD CONSTRAINT "EXC_commission_rule_solapada" EXCLUDE USING gist (distributor_id WITH =, COALESCE(employee_id, '00000000-0000-0000-0000-000000000000'::uuid) WITH =, COALESCE(gas_cylinder_id, '00000000-0000-0000-0000-000000000000'::uuid) WITH =, daterange(valid_from, valid_to, '[]'::text) WITH &&) WHERE (is_active);
+
+
+--
+-- Name: driver_liquidation EXC_driver_liquidation_periodo_solapado; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "EXC_driver_liquidation_periodo_solapado" EXCLUDE USING gist (employee_id WITH =, daterange(period_from, period_to, '[]'::text) WITH &&) WHERE ((status <> 'voided'::public.driver_liquidation_status_enum));
+
+
+--
+-- Name: employee_attendance EXC_employee_attendance_solapada; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee_attendance
+    ADD CONSTRAINT "EXC_employee_attendance_solapada" EXCLUDE USING gist (employee_id WITH =, tstzrange(check_in_at, COALESCE(check_out_at, 'infinity'::timestamp with time zone)) WITH &&);
+
+
+--
+-- Name: time_slot EXC_time_slot_solapada; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.time_slot
+    ADD CONSTRAINT "EXC_time_slot_solapada" EXCLUDE USING gist (distributor_id WITH =, tsrange(('2000-01-01 00:00:00'::timestamp without time zone + ("startTime")::interval), ('2000-01-01 00:00:00'::timestamp without time zone + ("endTime")::interval)) WITH &&) WHERE (("isActive" AND ("startTime" IS NOT NULL) AND ("endTime" IS NOT NULL)));
+
+
+--
+-- Name: vehicle_assignment EXC_vehicle_assignment_chofer_solapada; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "EXC_vehicle_assignment_chofer_solapada" EXCLUDE USING gist (delivery_id WITH =, tstzrange(assigned_at, COALESCE(released_at, 'infinity'::timestamp with time zone)) WITH &&);
+
+
+--
+-- Name: vehicle_assignment EXC_vehicle_assignment_vehiculo_solapada; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.vehicle_assignment
+    ADD CONSTRAINT "EXC_vehicle_assignment_vehiculo_solapada" EXCLUDE USING gist (car_id WITH =, tstzrange(assigned_at, COALESCE(released_at, 'infinity'::timestamp with time zone)) WITH &&);
 
 
 --
@@ -3547,6 +4166,14 @@ ALTER TABLE ONLY public.cylinder
 
 
 --
+-- Name: car UQ_car_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.car
+    ADD CONSTRAINT "UQ_car_id_distribuidora" UNIQUE (car_id, distributor_id);
+
+
+--
 -- Name: cart_item UQ_cart_item_cart_gascylinder; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3563,11 +4190,91 @@ ALTER TABLE ONLY public.cart
 
 
 --
+-- Name: cash_box UQ_cash_box_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_box
+    ADD CONSTRAINT "UQ_cash_box_id_distribuidora" UNIQUE (cash_box_id, distributor_id);
+
+
+--
+-- Name: cash_category UQ_cash_category_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_category
+    ADD CONSTRAINT "UQ_cash_category_id_distribuidora" UNIQUE (category_id, distributor_id);
+
+
+--
+-- Name: cash_movement UQ_cash_movement_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "UQ_cash_movement_id_distribuidora" UNIQUE (movement_id, distributor_id);
+
+
+--
+-- Name: cash_session UQ_cash_session_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_session
+    ADD CONSTRAINT "UQ_cash_session_id_distribuidora" UNIQUE (session_id, distributor_id);
+
+
+--
+-- Name: coverage_zone UQ_coverage_zone_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coverage_zone
+    ADD CONSTRAINT "UQ_coverage_zone_id_distribuidora" UNIQUE (coverage_zone_id, distributor_id);
+
+
+--
+-- Name: customer_account UQ_customer_account_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account
+    ADD CONSTRAINT "UQ_customer_account_id_distribuidora" UNIQUE (account_id, distributor_id);
+
+
+--
+-- Name: cylinder UQ_cylinder_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cylinder
+    ADD CONSTRAINT "UQ_cylinder_id_distribuidora" UNIQUE (cylinder_id, distributor_id);
+
+
+--
+-- Name: delivery UQ_delivery_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.delivery
+    ADD CONSTRAINT "UQ_delivery_id_distribuidora" UNIQUE (delivery_id, distributor_id);
+
+
+--
+-- Name: driver_liquidation UQ_driver_liquidation_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "UQ_driver_liquidation_id_distribuidora" UNIQUE (liquidation_id, distributor_id);
+
+
+--
 -- Name: user UQ_e12875dfb3b1d92d7d7c5377e22; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE (email);
+
+
+--
+-- Name: employee UQ_employee_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT "UQ_employee_id_distribuidora" UNIQUE (employee_id, distributor_id);
 
 
 --
@@ -3579,6 +4286,14 @@ ALTER TABLE ONLY public.gas_cylinder
 
 
 --
+-- Name: gas_cylinder UQ_gas_cylinder_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.gas_cylinder
+    ADD CONSTRAINT "UQ_gas_cylinder_id_distribuidora" UNIQUE (gas_cylinder_id, distributor_id);
+
+
+--
 -- Name: module_config UQ_module_config_distributor_module; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3587,11 +4302,27 @@ ALTER TABLE ONLY public.module_config
 
 
 --
+-- Name: order UQ_order_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "UQ_order_id_distribuidora" UNIQUE (order_id, distributor_id);
+
+
+--
 -- Name: payment_refund UQ_payment_refund_payment_kind; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_refund
     ADD CONSTRAINT "UQ_payment_refund_payment_kind" UNIQUE (payment_id, kind);
+
+
+--
+-- Name: purchase_order UQ_purchase_order_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "UQ_purchase_order_id_distribuidora" UNIQUE (purchase_order_id, distributor_id);
 
 
 --
@@ -3611,11 +4342,59 @@ ALTER TABLE ONLY public.route_batch_stop
 
 
 --
+-- Name: stock_location UQ_stock_location_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_location
+    ADD CONSTRAINT "UQ_stock_location_id_distribuidora" UNIQUE (location_id, distributor_id);
+
+
+--
+-- Name: stock_movement UQ_stock_movement_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "UQ_stock_movement_id_distribuidora" UNIQUE (movement_id, distributor_id);
+
+
+--
+-- Name: supplier UQ_supplier_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.supplier
+    ADD CONSTRAINT "UQ_supplier_id_distribuidora" UNIQUE (supplier_id, distributor_id);
+
+
+--
+-- Name: time_slot UQ_time_slot_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.time_slot
+    ADD CONSTRAINT "UQ_time_slot_id_distribuidora" UNIQUE (time_slot_id, distributor_id);
+
+
+--
+-- Name: truck_load UQ_truck_load_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "UQ_truck_load_id_distribuidora" UNIQUE (load_id, distributor_id);
+
+
+--
 -- Name: vehicle_usage_log UQ_vehicle_usage_log_car_day; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.vehicle_usage_log
     ADD CONSTRAINT "UQ_vehicle_usage_log_car_day" UNIQUE (car_id, day);
+
+
+--
+-- Name: warehouse UQ_warehouse_id_distribuidora; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.warehouse
+    ADD CONSTRAINT "UQ_warehouse_id_distribuidora" UNIQUE (warehouse_id, distributor_id);
 
 
 --
@@ -4448,7 +5227,7 @@ CREATE INDEX "IDX_stock_movement_alta" ON public.stock_movement USING btree (dis
 -- Name: IDX_stock_movement_destino; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "IDX_stock_movement_destino" ON public.stock_movement USING btree (to_location_id);
+CREATE INDEX "IDX_stock_movement_destino" ON public.stock_movement USING btree (to_location_id, gas_cylinder_id, to_condition);
 
 
 --
@@ -4476,7 +5255,7 @@ CREATE INDEX "IDX_stock_movement_lote" ON public.stock_movement USING btree (bat
 -- Name: IDX_stock_movement_origen; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX "IDX_stock_movement_origen" ON public.stock_movement USING btree (from_location_id);
+CREATE INDEX "IDX_stock_movement_origen" ON public.stock_movement USING btree (from_location_id, gas_cylinder_id, from_condition);
 
 
 --
@@ -4557,13 +5336,6 @@ CREATE INDEX "IDX_truck_load_item_garrafa" ON public.truck_load_item USING btree
 
 
 --
--- Name: IDX_user_email_lower; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX "IDX_user_email_lower" ON public."user" USING btree (lower((email)::text));
-
-
---
 -- Name: IDX_vehicle_accident_car; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4592,10 +5364,10 @@ CREATE UNIQUE INDEX "UQ_admin_user" ON public.admin USING btree (user_id);
 
 
 --
--- Name: UQ_car_patente_vigente; Type: INDEX; Schema: public; Owner: -
+-- Name: UQ_car_patente_distribuidora_vigente; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX "UQ_car_patente_vigente" ON public.car USING btree (car_patent) WHERE ("deletedAt" IS NULL);
+CREATE UNIQUE INDEX "UQ_car_patente_distribuidora_vigente" ON public.car USING btree (distributor_id, car_patent) WHERE ("deletedAt" IS NULL);
 
 
 --
@@ -4648,6 +5420,20 @@ CREATE UNIQUE INDEX "UQ_commission_entry_pedido" ON public.commission_entry USIN
 
 
 --
+-- Name: UQ_coverage_zone_nombre_activa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_coverage_zone_nombre_activa" ON public.coverage_zone USING btree (distributor_id, lower((name)::text)) WHERE ("isActive" AND ("deletedAt" IS NULL));
+
+
+--
+-- Name: UQ_coverage_zone_prioridad_activa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_coverage_zone_prioridad_activa" ON public.coverage_zone USING btree (distributor_id, priority) WHERE ("isActive" AND ("deletedAt" IS NULL));
+
+
+--
 -- Name: UQ_customer_account_cliente_vigente; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4659,6 +5445,13 @@ CREATE UNIQUE INDEX "UQ_customer_account_cliente_vigente" ON public.customer_acc
 --
 
 CREATE UNIQUE INDEX "UQ_customer_account_entry_cargo_pedido" ON public.customer_account_entry USING btree (order_id) WHERE (type = 'sale_charge'::public.customer_account_entry_type_enum);
+
+
+--
+-- Name: UQ_cylinder_serial_normalizado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_cylinder_serial_normalizado" ON public.cylinder USING btree (distributor_id, upper(btrim((serial)::text)));
 
 
 --
@@ -4739,6 +5532,13 @@ CREATE UNIQUE INDEX "UQ_employee_user_vigente" ON public.employee USING btree (u
 
 
 --
+-- Name: UQ_gas_cylinder_tipo_normalizado; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_gas_cylinder_tipo_normalizado" ON public.gas_cylinder USING btree (distributor_id, lower(btrim((type)::text)));
+
+
+--
 -- Name: UQ_incident_cobro_impago; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4750,6 +5550,27 @@ CREATE UNIQUE INDEX "UQ_incident_cobro_impago" ON public.incident USING btree (o
 --
 
 CREATE UNIQUE INDEX "UQ_job_position_name_vigente" ON public.job_position USING btree (distributor_id, lower((name)::text)) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_order_dispatch_offer_aceptada; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_order_dispatch_offer_aceptada" ON public.order_dispatch_offer USING btree (order_id) WHERE (status = 'accepted'::public.order_dispatch_offer_status_enum);
+
+
+--
+-- Name: UQ_order_dispatch_offer_viva; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_order_dispatch_offer_viva" ON public.order_dispatch_offer USING btree (order_id, driver_id) WHERE (status = 'offered'::public.order_dispatch_offer_status_enum);
+
+
+--
+-- Name: UQ_order_item_pedido_producto; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_order_item_pedido_producto" ON public.order_item USING btree (order_id, gas_cylinder_id);
 
 
 --
@@ -4799,6 +5620,13 @@ CREATE UNIQUE INDEX "UQ_purchase_receipt_numero" ON public.purchase_receipt USIN
 --
 
 CREATE UNIQUE INDEX "UQ_role_type_vigente" ON public.role USING btree (type) WHERE ("deletedAt" IS NULL);
+
+
+--
+-- Name: UQ_route_batch_stop_secuencia; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_route_batch_stop_secuencia" ON public.route_batch_stop USING btree (batch_id, sequence);
 
 
 --
@@ -4865,6 +5693,13 @@ CREATE UNIQUE INDEX "UQ_supplier_cuit_vigente" ON public.supplier USING btree (d
 
 
 --
+-- Name: UQ_time_slot_nombre_activa; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_time_slot_nombre_activa" ON public.time_slot USING btree (distributor_id, lower((name)::text)) WHERE "isActive";
+
+
+--
 -- Name: UQ_tire_posicion_ocupada; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4911,6 +5746,20 @@ CREATE UNIQUE INDEX "UQ_truck_load_item_garrafa" ON public.truck_load_item USING
 --
 
 CREATE UNIQUE INDEX "UQ_truck_load_numero" ON public.truck_load USING btree (distributor_id, number);
+
+
+--
+-- Name: UQ_user_address_principal; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_user_address_principal" ON public.user_address USING btree (user_id) WHERE ("isDefault" AND ("deletedAt" IS NULL));
+
+
+--
+-- Name: UQ_user_email_minusculas; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX "UQ_user_email_minusculas" ON public."user" USING btree (lower((email)::text));
 
 
 --
@@ -4967,6 +5816,167 @@ CREATE INDEX idx_order_dist_status_delivered ON public."order" USING btree (dist
 --
 
 CREATE INDEX idx_order_status_delivery ON public."order" USING btree (status, delivery_id);
+
+
+--
+-- Name: cash_box TRG_cash_box_saldo_contra_libro; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER "TRG_cash_box_saldo_contra_libro" AFTER INSERT OR UPDATE OF balance ON public.cash_box DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.verificar_saldo_de_caja();
+
+
+--
+-- Name: cash_movement TRG_cash_movement_saldo_contra_libro; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER "TRG_cash_movement_saldo_contra_libro" AFTER INSERT ON public.cash_movement DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.verificar_saldo_de_caja();
+
+
+--
+-- Name: claims TRG_claims_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_claims_transicion_de_estado" BEFORE UPDATE OF status ON public.claims FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_claims();
+
+
+--
+-- Name: customer_account_allocation TRG_customer_account_allocation_tope; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER "TRG_customer_account_allocation_tope" AFTER INSERT ON public.customer_account_allocation DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.verificar_imputacion_de_cuenta();
+
+
+--
+-- Name: customer_account_entry TRG_customer_account_entry_cobro_maximo; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_customer_account_entry_cobro_maximo" BEFORE INSERT ON public.customer_account_entry FOR EACH ROW WHEN ((new.type = 'payment'::public.customer_account_entry_type_enum)) EXECUTE FUNCTION public.cobro_de_cuenta_maximo();
+
+
+--
+-- Name: customer_account_entry TRG_customer_account_entry_saldo_contra_libro; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER "TRG_customer_account_entry_saldo_contra_libro" AFTER INSERT ON public.customer_account_entry DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.verificar_saldo_de_cuenta();
+
+
+--
+-- Name: customer_account TRG_customer_account_saldo_contra_libro; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER "TRG_customer_account_saldo_contra_libro" AFTER INSERT OR UPDATE OF balance ON public.customer_account DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.verificar_saldo_de_cuenta();
+
+
+--
+-- Name: customer_account TRG_customer_account_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_customer_account_transicion_de_estado" BEFORE UPDATE OF status ON public.customer_account FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_customer_account();
+
+
+--
+-- Name: cylinder TRG_cylinder_fabricacion_no_futura; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_cylinder_fabricacion_no_futura" BEFORE INSERT OR UPDATE OF manufactured_at ON public.cylinder FOR EACH ROW EXECUTE FUNCTION public.fabricacion_de_envase_no_futura();
+
+
+--
+-- Name: cylinder TRG_cylinder_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_cylinder_transicion_de_estado" BEFORE UPDATE OF state ON public.cylinder FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_cylinder();
+
+
+--
+-- Name: driver_liquidation TRG_driver_liquidation_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_driver_liquidation_transicion_de_estado" BEFORE UPDATE OF status ON public.driver_liquidation FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_driver_liquidation();
+
+
+--
+-- Name: driver_settlement TRG_driver_settlement_fecha_futura; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_driver_settlement_fecha_futura" BEFORE INSERT ON public.driver_settlement FOR EACH ROW EXECUTE FUNCTION public.rendicion_sin_fecha_futura();
+
+
+--
+-- Name: driver_settlement TRG_driver_settlement_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_driver_settlement_transicion_de_estado" BEFORE UPDATE OF status ON public.driver_settlement FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_driver_settlement();
+
+
+--
+-- Name: fuel_load TRG_fuel_load_odometro_monotono; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_fuel_load_odometro_monotono" BEFORE INSERT OR UPDATE OF odometer_km, loaded_at, car_id, "deletedAt" ON public.fuel_load FOR EACH ROW EXECUTE FUNCTION public.odometro_de_carga_monotono();
+
+
+--
+-- Name: maintenance_task TRG_maintenance_task_odometro_monotono; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_maintenance_task_odometro_monotono" BEFORE INSERT OR UPDATE OF odometer_km, performed_at, status, car_id ON public.maintenance_task FOR EACH ROW EXECUTE FUNCTION public.odometro_de_tarea_monotono();
+
+
+--
+-- Name: order_dispatch_offer TRG_order_dispatch_offer_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_order_dispatch_offer_transicion_de_estado" BEFORE UPDATE OF status ON public.order_dispatch_offer FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_order_dispatch_offer();
+
+
+--
+-- Name: order TRG_order_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_order_transicion_de_estado" BEFORE UPDATE OF status ON public."order" FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_order();
+
+
+--
+-- Name: payment TRG_payment_estado_no_retrocede; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_payment_estado_no_retrocede" BEFORE UPDATE OF status ON public.payment FOR EACH ROW EXECUTE FUNCTION public.payment_estado_no_retrocede();
+
+
+--
+-- Name: purchase_order TRG_purchase_order_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_purchase_order_transicion_de_estado" BEFORE UPDATE OF status ON public.purchase_order FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_purchase_order();
+
+
+--
+-- Name: stock_balance TRG_stock_balance_saldo_contra_libro; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER "TRG_stock_balance_saldo_contra_libro" AFTER INSERT OR UPDATE OF quantity ON public.stock_balance DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.verificar_existencia_del_saldo();
+
+
+--
+-- Name: stock_movement TRG_stock_movement_saldo_contra_libro; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE CONSTRAINT TRIGGER "TRG_stock_movement_saldo_contra_libro" AFTER INSERT ON public.stock_movement DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.verificar_existencia_del_movimiento();
+
+
+--
+-- Name: tire_event TRG_tire_event_odometro_monotono; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_tire_event_odometro_monotono" BEFORE INSERT ON public.tire_event FOR EACH ROW EXECUTE FUNCTION public.odometro_de_neumatico_monotono();
+
+
+--
+-- Name: truck_load TRG_truck_load_transicion_de_estado; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER "TRG_truck_load_transicion_de_estado" BEFORE UPDATE OF status ON public.truck_load FOR EACH ROW EXECUTE FUNCTION public.transicion_de_estado_truck_load();
 
 
 --
@@ -5318,7 +6328,7 @@ ALTER TABLE ONLY public.purchase_order_item
 --
 
 ALTER TABLE ONLY public.order_status_history
-    ADD CONSTRAINT "FK_1ca7d5228cf9dc589b60243933c" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_1ca7d5228cf9dc589b60243933c" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
 
 
 --
@@ -5414,7 +6424,7 @@ ALTER TABLE ONLY public.maintenance_task
 --
 
 ALTER TABLE ONLY public.user_address
-    ADD CONSTRAINT "FK_29d6df815a78e4c8291d3cf5e53" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_29d6df815a78e4c8291d3cf5e53" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -5630,7 +6640,7 @@ ALTER TABLE ONLY public.stock_location
 --
 
 ALTER TABLE ONLY public.order_address_change
-    ADD CONSTRAINT "FK_4c82c1fe16612f55a925ec87741" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_4c82c1fe16612f55a925ec87741" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
 
 
 --
@@ -5782,7 +6792,7 @@ ALTER TABLE ONLY public.driver_settlement_collection
 --
 
 ALTER TABLE ONLY public.customer
-    ADD CONSTRAINT "FK_5d1f609371a285123294fddcf3a" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_5d1f609371a285123294fddcf3a" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -5982,7 +6992,7 @@ ALTER TABLE ONLY public.claims
 --
 
 ALTER TABLE ONLY public.incident
-    ADD CONSTRAINT "FK_8a89ba6c226022354d0d8b4ada0" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_8a89ba6c226022354d0d8b4ada0" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
 
 
 --
@@ -6222,7 +7232,7 @@ ALTER TABLE ONLY public.incident
 --
 
 ALTER TABLE ONLY public.admin
-    ADD CONSTRAINT "FK_a28028ba709cd7e5053a86857b4" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_a28028ba709cd7e5053a86857b4" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -6230,7 +7240,7 @@ ALTER TABLE ONLY public.admin
 --
 
 ALTER TABLE ONLY public.delivery
-    ADD CONSTRAINT "FK_a3b8af1ce2f6e143d416d83080a" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_a3b8af1ce2f6e143d416d83080a" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -6422,7 +7432,7 @@ ALTER TABLE ONLY public.module_config
 --
 
 ALTER TABLE ONLY public.rating
-    ADD CONSTRAINT "FK_beb6f44b22a7f1ed7cad984a2e1" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_beb6f44b22a7f1ed7cad984a2e1" FOREIGN KEY (order_id) REFERENCES public."order"(order_id) ON DELETE RESTRICT;
 
 
 --
@@ -6470,7 +7480,7 @@ ALTER TABLE ONLY public.tire_event
 --
 
 ALTER TABLE ONLY public.car
-    ADD CONSTRAINT "FK_c8d34198d86de9e96aae03b8990" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE CASCADE;
+    ADD CONSTRAINT "FK_c8d34198d86de9e96aae03b8990" FOREIGN KEY (user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
 
 
 --
@@ -6479,6 +7489,46 @@ ALTER TABLE ONLY public.car
 
 ALTER TABLE ONLY public.purchase_receipt
     ADD CONSTRAINT "FK_c92afda2aff490f63e02ea303bb" FOREIGN KEY (received_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: cash_movement FK_cash_movement_cash_box_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_cash_movement_cash_box_distribuidora" FOREIGN KEY (cash_box_id, distributor_id) REFERENCES public.cash_box(cash_box_id, distributor_id);
+
+
+--
+-- Name: cash_movement FK_cash_movement_category_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_cash_movement_category_distribuidora" FOREIGN KEY (category_id, distributor_id) REFERENCES public.cash_category(category_id, distributor_id);
+
+
+--
+-- Name: cash_movement FK_cash_movement_reverses_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_cash_movement_reverses_movement_distribuidora" FOREIGN KEY (reverses_movement_id, distributor_id) REFERENCES public.cash_movement(movement_id, distributor_id);
+
+
+--
+-- Name: cash_movement FK_cash_movement_session_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_movement
+    ADD CONSTRAINT "FK_cash_movement_session_distribuidora" FOREIGN KEY (session_id, distributor_id) REFERENCES public.cash_session(session_id, distributor_id);
+
+
+--
+-- Name: cash_session FK_cash_session_cash_box_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cash_session
+    ADD CONSTRAINT "FK_cash_session_cash_box_distribuidora" FOREIGN KEY (cash_box_id, distributor_id) REFERENCES public.cash_box(cash_box_id, distributor_id);
 
 
 --
@@ -6511,6 +7561,118 @@ ALTER TABLE ONLY public."order"
 
 ALTER TABLE ONLY public.cash_box
     ADD CONSTRAINT "FK_cf2a6266f8dc0f2d942fe88aa6e" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: claims FK_claims_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claims
+    ADD CONSTRAINT "FK_claims_order_distribuidora" FOREIGN KEY (order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
+
+
+--
+-- Name: commission_entry FK_commission_entry_delivery_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_commission_entry_delivery_distribuidora" FOREIGN KEY (delivery_id, distributor_id) REFERENCES public.delivery(delivery_id, distributor_id);
+
+
+--
+-- Name: commission_entry FK_commission_entry_employee_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_commission_entry_employee_distribuidora" FOREIGN KEY (employee_id, distributor_id) REFERENCES public.employee(employee_id, distributor_id);
+
+
+--
+-- Name: commission_entry FK_commission_entry_liquidation_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_commission_entry_liquidation_distribuidora" FOREIGN KEY (liquidation_id, distributor_id) REFERENCES public.driver_liquidation(liquidation_id, distributor_id);
+
+
+--
+-- Name: commission_entry FK_commission_entry_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.commission_entry
+    ADD CONSTRAINT "FK_commission_entry_order_distribuidora" FOREIGN KEY (order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
+
+
+--
+-- Name: customer_account_entry FK_customer_account_entry_account_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_customer_account_entry_account_distribuidora" FOREIGN KEY (account_id, distributor_id) REFERENCES public.customer_account(account_id, distributor_id);
+
+
+--
+-- Name: customer_account_entry FK_customer_account_entry_cash_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_customer_account_entry_cash_movement_distribuidora" FOREIGN KEY (cash_movement_id, distributor_id) REFERENCES public.cash_movement(movement_id, distributor_id);
+
+
+--
+-- Name: customer_account_entry FK_customer_account_entry_collected_by_delivery_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_customer_account_entry_collected_by_delivery_distribuidora" FOREIGN KEY (collected_by_delivery_id, distributor_id) REFERENCES public.delivery(delivery_id, distributor_id);
+
+
+--
+-- Name: customer_account_entry FK_customer_account_entry_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.customer_account_entry
+    ADD CONSTRAINT "FK_customer_account_entry_order_distribuidora" FOREIGN KEY (order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
+
+
+--
+-- Name: cylinder FK_cylinder_current_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cylinder
+    ADD CONSTRAINT "FK_cylinder_current_order_distribuidora" FOREIGN KEY (current_order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
+
+
+--
+-- Name: cylinder FK_cylinder_gas_cylinder_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cylinder
+    ADD CONSTRAINT "FK_cylinder_gas_cylinder_distribuidora" FOREIGN KEY (gas_cylinder_id, distributor_id) REFERENCES public.gas_cylinder(gas_cylinder_id, distributor_id);
+
+
+--
+-- Name: cylinder_inspection FK_cylinder_inspection_cylinder_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cylinder_inspection
+    ADD CONSTRAINT "FK_cylinder_inspection_cylinder_distribuidora" FOREIGN KEY (cylinder_id, distributor_id) REFERENCES public.cylinder(cylinder_id, distributor_id);
+
+
+--
+-- Name: cylinder_movement FK_cylinder_movement_cylinder_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cylinder_movement
+    ADD CONSTRAINT "FK_cylinder_movement_cylinder_distribuidora" FOREIGN KEY (cylinder_id, distributor_id) REFERENCES public.cylinder(cylinder_id, distributor_id);
+
+
+--
+-- Name: cylinder_movement FK_cylinder_movement_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cylinder_movement
+    ADD CONSTRAINT "FK_cylinder_movement_order_distribuidora" FOREIGN KEY (order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
 
 
 --
@@ -6631,6 +7793,54 @@ ALTER TABLE ONLY public."order"
 
 ALTER TABLE ONLY public.document_sequence
     ADD CONSTRAINT "FK_document_sequence_distributor" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: driver_liquidation FK_driver_liquidation_cash_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_driver_liquidation_cash_movement_distribuidora" FOREIGN KEY (cash_movement_id, distributor_id) REFERENCES public.cash_movement(movement_id, distributor_id);
+
+
+--
+-- Name: driver_liquidation FK_driver_liquidation_employee_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_liquidation
+    ADD CONSTRAINT "FK_driver_liquidation_employee_distribuidora" FOREIGN KEY (employee_id, distributor_id) REFERENCES public.employee(employee_id, distributor_id);
+
+
+--
+-- Name: driver_settlement FK_driver_settlement_cash_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_driver_settlement_cash_movement_distribuidora" FOREIGN KEY (cash_movement_id, distributor_id) REFERENCES public.cash_movement(movement_id, distributor_id);
+
+
+--
+-- Name: driver_settlement FK_driver_settlement_delivery_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_driver_settlement_delivery_distribuidora" FOREIGN KEY (delivery_id, distributor_id) REFERENCES public.delivery(delivery_id, distributor_id);
+
+
+--
+-- Name: driver_settlement FK_driver_settlement_destination_cash_box_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_driver_settlement_destination_cash_box_distribuidora" FOREIGN KEY (destination_cash_box_id, distributor_id) REFERENCES public.cash_box(cash_box_id, distributor_id);
+
+
+--
+-- Name: driver_settlement FK_driver_settlement_truck_load_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.driver_settlement
+    ADD CONSTRAINT "FK_driver_settlement_truck_load_distribuidora" FOREIGN KEY (truck_load_id, distributor_id) REFERENCES public.truck_load(load_id, distributor_id);
 
 
 --
@@ -6858,11 +8068,315 @@ ALTER TABLE ONLY public.driver_settlement_collection
 
 
 --
+-- Name: fuel_load FK_fuel_load_cash_movement; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fuel_load
+    ADD CONSTRAINT "FK_fuel_load_cash_movement" FOREIGN KEY (cash_movement_id) REFERENCES public.cash_movement(movement_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: fuel_load FK_fuel_load_cash_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fuel_load
+    ADD CONSTRAINT "FK_fuel_load_cash_movement_distribuidora" FOREIGN KEY (cash_movement_id, distributor_id) REFERENCES public.cash_movement(movement_id, distributor_id);
+
+
+--
+-- Name: incident FK_incident_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.incident
+    ADD CONSTRAINT "FK_incident_order_distribuidora" FOREIGN KEY (order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
+
+
+--
+-- Name: order FK_order_coverage_zone_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_order_coverage_zone_distribuidora" FOREIGN KEY (coverage_zone_id, distributor_id) REFERENCES public.coverage_zone(coverage_zone_id, distributor_id);
+
+
+--
+-- Name: order FK_order_delivery_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_order_delivery_distribuidora" FOREIGN KEY (delivery_id, distributor_id) REFERENCES public.delivery(delivery_id, distributor_id);
+
+
+--
+-- Name: order_dispatch_offer FK_order_dispatch_offer_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.order_dispatch_offer
+    ADD CONSTRAINT "FK_order_dispatch_offer_order_distribuidora" FOREIGN KEY (order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
+
+
+--
+-- Name: order FK_order_payment_confirmed_by; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_order_payment_confirmed_by" FOREIGN KEY (payment_confirmed_by) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: order FK_order_payment_resolved_by; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_order_payment_resolved_by" FOREIGN KEY (payment_resolved_by) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: order FK_order_time_slot_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_order_time_slot_distribuidora" FOREIGN KEY (time_slot_id, distributor_id) REFERENCES public.time_slot(time_slot_id, distributor_id);
+
+
+--
+-- Name: order FK_order_vehicle_car; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_order_vehicle_car" FOREIGN KEY (vehicle_car_id) REFERENCES public.car(car_id) ON DELETE SET NULL;
+
+
+--
+-- Name: order FK_order_vehicle_car_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public."order"
+    ADD CONSTRAINT "FK_order_vehicle_car_distribuidora" FOREIGN KEY (vehicle_car_id, distributor_id) REFERENCES public.car(car_id, distributor_id);
+
+
+--
+-- Name: payment_refund FK_payment_refund_requested_by; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_refund
+    ADD CONSTRAINT "FK_payment_refund_requested_by" FOREIGN KEY (requested_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: purchase_order FK_purchase_order_destination_warehouse_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "FK_purchase_order_destination_warehouse_distribuidora" FOREIGN KEY (destination_warehouse_id, distributor_id) REFERENCES public.warehouse(warehouse_id, distributor_id);
+
+
+--
+-- Name: purchase_order FK_purchase_order_supplier_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_order
+    ADD CONSTRAINT "FK_purchase_order_supplier_distribuidora" FOREIGN KEY (supplier_id, distributor_id) REFERENCES public.supplier(supplier_id, distributor_id);
+
+
+--
+-- Name: purchase_receipt FK_purchase_receipt_cash_movement; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_purchase_receipt_cash_movement" FOREIGN KEY (cash_movement_id) REFERENCES public.cash_movement(movement_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: purchase_receipt FK_purchase_receipt_cash_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_purchase_receipt_cash_movement_distribuidora" FOREIGN KEY (cash_movement_id, distributor_id) REFERENCES public.cash_movement(movement_id, distributor_id);
+
+
+--
+-- Name: purchase_receipt FK_purchase_receipt_purchase_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_purchase_receipt_purchase_order_distribuidora" FOREIGN KEY (purchase_order_id, distributor_id) REFERENCES public.purchase_order(purchase_order_id, distributor_id);
+
+
+--
+-- Name: purchase_receipt FK_purchase_receipt_supplier_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_purchase_receipt_supplier_distribuidora" FOREIGN KEY (supplier_id, distributor_id) REFERENCES public.supplier(supplier_id, distributor_id);
+
+
+--
+-- Name: purchase_receipt FK_purchase_receipt_voided_by; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_purchase_receipt_voided_by" FOREIGN KEY (voided_by_user_id) REFERENCES public."user"(user_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: purchase_receipt FK_purchase_receipt_warehouse_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.purchase_receipt
+    ADD CONSTRAINT "FK_purchase_receipt_warehouse_distribuidora" FOREIGN KEY (warehouse_id, distributor_id) REFERENCES public.warehouse(warehouse_id, distributor_id);
+
+
+--
+-- Name: rating FK_rating_order_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rating
+    ADD CONSTRAINT "FK_rating_order_distribuidora" FOREIGN KEY (order_id, distributor_id) REFERENCES public."order"(order_id, distributor_id);
+
+
+--
+-- Name: stock_adjustment FK_stock_adjustment_location_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_adjustment
+    ADD CONSTRAINT "FK_stock_adjustment_location_distribuidora" FOREIGN KEY (location_id, distributor_id) REFERENCES public.stock_location(location_id, distributor_id);
+
+
+--
+-- Name: stock_balance FK_stock_balance_gas_cylinder_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_balance
+    ADD CONSTRAINT "FK_stock_balance_gas_cylinder_distribuidora" FOREIGN KEY (gas_cylinder_id, distributor_id) REFERENCES public.gas_cylinder(gas_cylinder_id, distributor_id);
+
+
+--
+-- Name: stock_balance FK_stock_balance_location_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_balance
+    ADD CONSTRAINT "FK_stock_balance_location_distribuidora" FOREIGN KEY (location_id, distributor_id) REFERENCES public.stock_location(location_id, distributor_id);
+
+
+--
+-- Name: stock_location FK_stock_location_car_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_location
+    ADD CONSTRAINT "FK_stock_location_car_distribuidora" FOREIGN KEY (car_id, distributor_id) REFERENCES public.car(car_id, distributor_id);
+
+
+--
+-- Name: stock_location FK_stock_location_warehouse_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_location
+    ADD CONSTRAINT "FK_stock_location_warehouse_distribuidora" FOREIGN KEY (warehouse_id, distributor_id) REFERENCES public.warehouse(warehouse_id, distributor_id);
+
+
+--
+-- Name: stock_movement FK_stock_movement_from_location_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_stock_movement_from_location_distribuidora" FOREIGN KEY (from_location_id, distributor_id) REFERENCES public.stock_location(location_id, distributor_id);
+
+
+--
+-- Name: stock_movement FK_stock_movement_gas_cylinder_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_stock_movement_gas_cylinder_distribuidora" FOREIGN KEY (gas_cylinder_id, distributor_id) REFERENCES public.gas_cylinder(gas_cylinder_id, distributor_id);
+
+
+--
+-- Name: stock_movement FK_stock_movement_reversed_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_stock_movement_reversed_movement_distribuidora" FOREIGN KEY (reversed_movement_id, distributor_id) REFERENCES public.stock_movement(movement_id, distributor_id);
+
+
+--
+-- Name: stock_movement FK_stock_movement_to_location_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_movement
+    ADD CONSTRAINT "FK_stock_movement_to_location_distribuidora" FOREIGN KEY (to_location_id, distributor_id) REFERENCES public.stock_location(location_id, distributor_id);
+
+
+--
 -- Name: stock_reconciliation_alert FK_stock_reconciliation_alert_distributor; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.stock_reconciliation_alert
     ADD CONSTRAINT "FK_stock_reconciliation_alert_distributor" FOREIGN KEY (distributor_id) REFERENCES public.distributor(distributor_id) ON DELETE CASCADE;
+
+
+--
+-- Name: stock_threshold FK_stock_threshold_gas_cylinder_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_threshold
+    ADD CONSTRAINT "FK_stock_threshold_gas_cylinder_distribuidora" FOREIGN KEY (gas_cylinder_id, distributor_id) REFERENCES public.gas_cylinder(gas_cylinder_id, distributor_id);
+
+
+--
+-- Name: stock_threshold FK_stock_threshold_warehouse_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.stock_threshold
+    ADD CONSTRAINT "FK_stock_threshold_warehouse_distribuidora" FOREIGN KEY (warehouse_id, distributor_id) REFERENCES public.warehouse(warehouse_id, distributor_id);
+
+
+--
+-- Name: traffic_fine FK_traffic_fine_cash_movement; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.traffic_fine
+    ADD CONSTRAINT "FK_traffic_fine_cash_movement" FOREIGN KEY (cash_movement_id) REFERENCES public.cash_movement(movement_id) ON DELETE RESTRICT;
+
+
+--
+-- Name: traffic_fine FK_traffic_fine_cash_movement_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.traffic_fine
+    ADD CONSTRAINT "FK_traffic_fine_cash_movement_distribuidora" FOREIGN KEY (cash_movement_id, distributor_id) REFERENCES public.cash_movement(movement_id, distributor_id);
+
+
+--
+-- Name: truck_load FK_truck_load_car_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_truck_load_car_distribuidora" FOREIGN KEY (car_id, distributor_id) REFERENCES public.car(car_id, distributor_id);
+
+
+--
+-- Name: truck_load FK_truck_load_delivery_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_truck_load_delivery_distribuidora" FOREIGN KEY (delivery_id, distributor_id) REFERENCES public.delivery(delivery_id, distributor_id);
+
+
+--
+-- Name: truck_load FK_truck_load_helper_employee_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_truck_load_helper_employee_distribuidora" FOREIGN KEY (helper_employee_id, distributor_id) REFERENCES public.employee(employee_id, distributor_id);
+
+
+--
+-- Name: truck_load FK_truck_load_origin_location_distribuidora; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.truck_load
+    ADD CONSTRAINT "FK_truck_load_origin_location_distribuidora" FOREIGN KEY (origin_location_id, distributor_id) REFERENCES public.stock_location(location_id, distributor_id);
 
 
 --

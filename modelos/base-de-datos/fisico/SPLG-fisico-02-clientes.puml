@@ -61,19 +61,19 @@ entity "repurchase_invitation" as e_repurchase_invitation {
   {field} //order_id// : uuid <<FK>>
   {field} created_at : timestamptz *
 }
-entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
-}
 entity "user" as e_user #F1F1F1 {
+}
+entity "gas_cylinder" as e_gas_cylinder #F1F1F1 {
 }
 entity "order" as e_order #F1F1F1 {
 }
 
-e_gas_cylinder |o--o{ e_customer : declared_cylinder_type_id
 e_user ||--o| e_customer : user_id
+e_gas_cylinder |o--o{ e_customer : declared_cylinder_type_id
 e_user ||--o{ e_user_address : user_id
 e_user_address |o--o{ e_repurchase_invitation : address_id
-e_order |o--o{ e_repurchase_invitation : order_id
 e_user ||--o{ e_repurchase_invitation : user_id
+e_order |o--o{ e_repurchase_invitation : order_id
 e_user_address ||--o{ e_order : address_id
 
 legend bottom

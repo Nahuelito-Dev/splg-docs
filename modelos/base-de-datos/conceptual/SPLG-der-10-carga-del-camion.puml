@@ -64,15 +64,15 @@ entity Empleado #F1F1F1 {
 entity RendicionChofer #F1F1F1 {
 }
 
-Vehiculo ||--o{ CargaDeCamion : transporta >
-Usuario |o--o{ CargaDeCamion : cierra >
-Chofer ||--o{ CargaDeCamion : reparte con >
 Empleado |o--o{ CargaDeCamion : ayuda en >
 Usuario ||--o{ CargaDeCamion : abre >
+Usuario |o--o{ CargaDeCamion : cierra >
+Vehiculo ||--o{ CargaDeCamion : transporta >
+Chofer ||--o{ CargaDeCamion : reparte con >
 CargaDeCamion }o--|| UbicacionDeStock : parte de >
 CargaDeCamion |o--o{ RendicionChofer : respalda >
-ItemCarga }o--|| Producto : corresponde a >
 CargaDeCamion ||--|{ ItemCarga : contiene >
+ItemCarga }o--|| Producto : corresponde a >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

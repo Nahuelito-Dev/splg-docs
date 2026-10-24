@@ -95,8 +95,6 @@ entity Usuario #F1F1F1 {
 }
 entity Distribuidora #F1F1F1 {
 }
-entity CargaCombustible #F1F1F1 {
-}
 entity Empleado #F1F1F1 {
 }
 entity Pedido #F1F1F1 {
@@ -107,17 +105,19 @@ entity UbicacionDeStock #F1F1F1 {
 }
 entity Neumatico #F1F1F1 {
 }
-entity MultaTransito #F1F1F1 {
-}
 entity Siniestro #F1F1F1 {
 }
 entity AsientoCuentaCorriente #F1F1F1 {
+}
+entity CargaCombustible #F1F1F1 {
 }
 entity OfertaDespacho #F1F1F1 {
 }
 entity OfertaLote #F1F1F1 {
 }
 entity MovimientoNeumatico #F1F1F1 {
+}
+entity MultaTransito #F1F1F1 {
 }
 entity CargaDeCamion #F1F1F1 {
 }
@@ -129,27 +129,27 @@ entity RendicionChofer #F1F1F1 {
 Chofer ||--o{ Vehiculo : tiene registrado >
 Distribuidora ||--o{ Chofer : emplea >
 Chofer |o--|| Usuario : es un >
-Vehiculo ||--o{ CargaCombustible : registra >
-TareaMantenimiento }o--o| Vehiculo : habilita >
 TareaMantenimiento }o--o| Chofer : habilita >
-TareaMantenimiento }o--o| Empleado : habilita >
 PlanMantenimiento ||--o{ TareaMantenimiento : genera >
+TareaMantenimiento }o--o| Empleado : habilita >
+TareaMantenimiento }o--o| Vehiculo : habilita >
 Chofer |o--o{ Pedido : entrega >
 Chofer |o--o{ LoteRecorrido : acepta >
 Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
 Vehiculo |o--o{ Neumatico : monta >
-Vehiculo ||--o{ MultaTransito : acumula >
 Vehiculo ||--o{ Siniestro : sufre >
-Vehiculo ||--o{ AsignacionVehiculo : figura en >
 Chofer ||--o{ AsignacionVehiculo : figura en >
+Vehiculo ||--o{ AsignacionVehiculo : figura en >
 Vehiculo ||--o{ RegistroUsoVehiculo : acumula >
 Chofer |o--o{ AsientoCuentaCorriente : cobra >
+Vehiculo ||--o{ CargaCombustible : registra >
 TareaMantenimiento ||--o{ AdjuntoTarea : adjunta >
-PropuestaVentanaTaller }o--|| Chofer : se dirige a >
 TareaMantenimiento ||--o{ PropuestaVentanaTaller : origina >
+PropuestaVentanaTaller }o--|| Chofer : se dirige a >
 OfertaDespacho }o--|| Chofer : se dirige a >
 OfertaLote }o--|| Chofer : se dirige a >
 MovimientoNeumatico }o--o| Vehiculo : ocurre en >
+Vehiculo ||--o{ MultaTransito : acumula >
 Vehiculo ||--o{ CargaDeCamion : transporta >
 Chofer ||--o{ CargaDeCamion : reparte con >
 Chofer |o--o{ AsientoComision : genera >

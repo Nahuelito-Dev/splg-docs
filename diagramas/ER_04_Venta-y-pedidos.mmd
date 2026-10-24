@@ -83,17 +83,18 @@ erDiagram
         decimal zone_surcharge_value "nullable"
         decimal zone_surcharge_amount
         decimal subtotal_items
-        uuid vehicle_car_id "nullable"
+        uuid vehicle_car_id FK "nullable"
         varchar vehicle_patent "nullable"
         varchar vehicle_brand "nullable"
         varchar vehicle_model "nullable"
         timestamptz payment_confirmed_at "nullable"
-        uuid payment_confirmed_by "nullable"
+        uuid payment_confirmed_by FK "nullable"
         text payment_resolution_note "nullable"
         timestamptz payment_resolved_at "nullable"
-        uuid payment_resolved_by "nullable"
+        uuid payment_resolved_by FK "nullable"
         decimal express_surcharge_amount
         timestamptz express_degraded_at "nullable"
+        decimal payment_surcharge_amount
     }
     ORDER_ADDRESS_CHANGE {
         uuid change_id PK

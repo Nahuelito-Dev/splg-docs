@@ -219,48 +219,48 @@ entity "order" as e_order #F1F1F1 {
 entity "truck_load" as e_truck_load #F1F1F1 {
 }
 
+e_user ||--o{ e_cash_session : opened_by_user_id
 e_cash_box ||--o{ e_cash_session : cash_box_id
 e_user |o--o{ e_cash_session : closed_by_user_id
-e_user ||--o{ e_cash_session : opened_by_user_id
 e_user ||--o{ e_customer_account : customer_user_id
+e_cash_movement |o--o{ e_cash_movement : reverses_movement_id
 e_cash_box ||--o{ e_cash_movement : cash_box_id
 e_cash_category ||--o{ e_cash_movement : category_id
 e_user ||--o{ e_cash_movement : created_by_user_id
-e_cash_movement |o--o{ e_cash_movement : reverses_movement_id
 e_cash_session |o--o{ e_cash_movement : session_id
 e_employee |o--o{ e_commission_rule : employee_id
 e_gas_cylinder |o--o{ e_commission_rule : gas_cylinder_id
-e_customer_account ||--o{ e_customer_account_entry : account_id
-e_cash_movement |o--o{ e_customer_account_entry : cash_movement_id
 e_delivery |o--o{ e_customer_account_entry : collected_by_delivery_id
-e_user |o--o{ e_customer_account_entry : created_by_user_id
 e_order |o--o{ e_customer_account_entry : order_id
-e_user |o--o{ e_driver_liquidation : approved_by_user_id
-e_cash_movement |o--o{ e_driver_liquidation : cash_movement_id
+e_cash_movement |o--o{ e_customer_account_entry : cash_movement_id
+e_customer_account ||--o{ e_customer_account_entry : account_id
+e_user |o--o{ e_customer_account_entry : created_by_user_id
 e_user ||--o{ e_driver_liquidation : created_by_user_id
-e_employee ||--o{ e_driver_liquidation : employee_id
 e_user |o--o{ e_driver_liquidation : paid_by_user_id
-e_user |o--o{ e_commission_entry : created_by_user_id
+e_user |o--o{ e_driver_liquidation : approved_by_user_id
+e_employee ||--o{ e_driver_liquidation : employee_id
+e_cash_movement |o--o{ e_driver_liquidation : cash_movement_id
+e_order |o--o{ e_commission_entry : order_id
 e_delivery |o--o{ e_commission_entry : delivery_id
+e_commission_rule |o--o{ e_commission_entry : rule_id
+e_user |o--o{ e_commission_entry : created_by_user_id
 e_employee ||--o{ e_commission_entry : employee_id
 e_driver_liquidation |o--o{ e_commission_entry : liquidation_id
-e_order |o--o{ e_commission_entry : order_id
-e_commission_rule |o--o{ e_commission_entry : rule_id
-e_customer_account ||--o{ e_customer_account_allocation : account_id
-e_customer_account_entry ||--o{ e_customer_account_allocation : credit_entry_id
 e_customer_account_entry ||--o{ e_customer_account_allocation : debit_entry_id
+e_customer_account_entry ||--o{ e_customer_account_allocation : credit_entry_id
+e_customer_account ||--o{ e_customer_account_allocation : account_id
+e_truck_load |o--o{ e_driver_settlement : truck_load_id
 e_user |o--o{ e_driver_settlement : approved_by_user_id
+e_cash_box |o--o{ e_driver_settlement : destination_cash_box_id
 e_cash_movement |o--o{ e_driver_settlement : cash_movement_id
 e_delivery ||--o{ e_driver_settlement : delivery_id
-e_cash_box |o--o{ e_driver_settlement : destination_cash_box_id
 e_user |o--o{ e_driver_settlement : submitted_by_user_id
-e_truck_load |o--o{ e_driver_settlement : truck_load_id
 e_customer_account_entry ||--o| e_driver_settlement_collection : entry_id
 e_driver_settlement ||--o{ e_driver_settlement_collection : settlement_id
-e_cash_category ||--o{ e_driver_settlement_expense : category_id
 e_driver_settlement ||--o{ e_driver_settlement_expense : settlement_id
-e_order ||--o| e_driver_settlement_order : order_id
+e_cash_category ||--o{ e_driver_settlement_expense : category_id
 e_driver_settlement ||--o{ e_driver_settlement_order : settlement_id
+e_order ||--o| e_driver_settlement_order : order_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

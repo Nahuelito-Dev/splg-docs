@@ -139,34 +139,34 @@ entity "car" as e_car #F1F1F1 {
 }
 entity "user" as e_user #F1F1F1 {
 }
-entity "delivery" as e_delivery #F1F1F1 {
-}
 entity "employee" as e_employee #F1F1F1 {
+}
+entity "delivery" as e_delivery #F1F1F1 {
 }
 
 e_gas_cylinder ||--o{ e_stock_threshold : gas_cylinder_id
 e_warehouse ||--o{ e_stock_threshold : warehouse_id
-e_car |o--o| e_stock_location : car_id
 e_warehouse |o--o| e_stock_location : warehouse_id
+e_car |o--o| e_stock_location : car_id
 e_user ||--o{ e_stock_adjustment : created_by_user_id
 e_stock_location ||--o{ e_stock_adjustment : location_id
 e_gas_cylinder ||--o{ e_stock_balance : gas_cylinder_id
 e_stock_location ||--o{ e_stock_balance : location_id
-e_user |o--o{ e_stock_movement : actor_user_id
-e_stock_location |o--o{ e_stock_movement : from_location_id
 e_gas_cylinder ||--o{ e_stock_movement : gas_cylinder_id
-e_stock_movement |o--o{ e_stock_movement : reversed_movement_id
+e_user |o--o{ e_stock_movement : actor_user_id
 e_stock_location |o--o{ e_stock_movement : to_location_id
-e_car ||--o{ e_truck_load : car_id
-e_user |o--o{ e_truck_load : closed_by_user_id
-e_delivery ||--o{ e_truck_load : delivery_id
+e_stock_location |o--o{ e_stock_movement : from_location_id
+e_stock_movement |o--o{ e_stock_movement : reversed_movement_id
 e_employee |o--o{ e_truck_load : helper_employee_id
 e_user ||--o{ e_truck_load : opened_by_user_id
+e_user |o--o{ e_truck_load : closed_by_user_id
+e_car ||--o{ e_truck_load : car_id
+e_delivery ||--o{ e_truck_load : delivery_id
 e_stock_location ||--o{ e_truck_load : origin_location_id
 e_stock_adjustment ||--o{ e_stock_adjustment_item : adjustment_id
 e_gas_cylinder ||--o{ e_stock_adjustment_item : gas_cylinder_id
-e_gas_cylinder ||--o{ e_truck_load_item : gas_cylinder_id
 e_truck_load ||--o{ e_truck_load_item : load_id
+e_gas_cylinder ||--o{ e_truck_load_item : gas_cylinder_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

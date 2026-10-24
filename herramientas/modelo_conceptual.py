@@ -877,7 +877,15 @@ AUTORIA_TECNICA = {("maintenance_task_attachment", "uploaded_by_user_id"),
                    ("driver_settlement", "approved_by_user_id"),
                    ("customer_account_entry", "created_by_user_id"), ("commission_entry", "created_by_user_id"),
                    ("driver_liquidation", "approved_by_user_id"), ("driver_liquidation", "paid_by_user_id"),
-                   ("driver_liquidation", "created_by_user_id"), ("vehicle_accident", "created_by_user_id")}
+                   ("driver_liquidation", "created_by_user_id"), ("vehicle_accident", "created_by_user_id"),
+                   ("payment_refund", "requested_by_user_id")}
+
+# Claves foráneas que la validación de la base (V1) declaró sobre columnas que ya existían y que son referencias
+# de trazabilidad, no asociaciones nuevas del modelo conceptual: el vehículo que entregó un pedido (el pedido
+# guarda además patente, marca y modelo como foto) y el asiento de caja que dejó una compra, una carga de
+# combustible o una multa.
+REFERENCIAS_TECNICAS = {("order", "vehicle_car_id"), ("purchase_receipt", "cash_movement_id"),
+                        ("fuel_load", "cash_movement_id"), ("traffic_fine", "cash_movement_id")}
 
 def asociacion_de_fk(tabla, col, destino):
     """La asociación del modelo conceptual que sostiene una clave foránea, o None

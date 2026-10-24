@@ -91,12 +91,21 @@ def verificar_dbd():
     saltar = "('migrations','spatial_ref_sys','geography_columns','geometry_columns')"
     tablas = {t[0] for t in psql(f"select table_name from information_schema.tables where table_schema='public' "
                                  f"and table_type='BASE TABLE' and table_name not in {saltar}")}
-    fks = collections.Counter(tuple(f) for f in psql(f"""
-      select tc.table_name, kcu.column_name, ccu.table_name, ccu.column_name
-      from information_schema.table_constraints tc
-      join information_schema.key_column_usage kcu on kcu.constraint_name=tc.constraint_name
-      join information_schema.constraint_column_usage ccu on ccu.constraint_name=tc.constraint_name
-      where tc.constraint_type='FOREIGN KEY' and tc.table_schema='public' and tc.table_name not in {saltar}"""))
+    # pg_constraint empareja cada columna con su destino (information_schema cruza todas con todas en las compuestas)
+    todas = psql(f"""
+      select cl.relname, (select string_agg(a.attname || ':' || b.attname, ',' order by k.o)
+               from unnest(co.conkey, co.confkey) with ordinality k(x, y, o)
+               join pg_attribute a on a.attrelid=co.conrelid and a.attnum=k.x
+               join pg_attribute b on b.attrelid=co.confrelid and b.attnum=k.y), fo.relname
+      from pg_constraint co join pg_class cl on cl.oid=co.conrelid join pg_class fo on fo.oid=co.confrelid
+      where co.contype='f' and co.connamespace='public'::regnamespace and cl.relname not in {saltar}""")
+    fks, compuestas = collections.Counter(), []
+    for t, pares, dt in todas:
+        pares = [p.split(":") for p in pares.split(",")]
+        if len(pares) == 1:
+            fks[(t, pares[0][0], dt, pares[0][1])] += 1
+        else:
+            compuestas.append((t, pares, dt))
     dib = collections.Counter()
     for _id, at, o, d in aristas:
         co, cd = celdas.get(o), celdas.get(d)
@@ -115,6 +124,10 @@ def verificar_dbd():
         dib[(t_o, col_o, t_d, col_d)] += 1
     # las tablas dibujadas: los swimlane de primer nivel que tienen filas
     padres = {c.get("parent") for c in celdas.values()}
+    padres_de = collections.defaultdict(set)
+    for i, c in celdas.items():
+        if i in padres and "swimlane" in (c.get("style") or ""):
+            padres_de[c.get("value")].add(i)
     dibujadas = {c.get("value") for i, c in celdas.items() if i in padres and "swimlane" in (c.get("style") or "")}
     print(f"  tablas: esperadas {len(tablas)} · dibujadas {len(dibujadas)}")
     if tablas != dibujadas:
@@ -122,7 +135,29 @@ def verificar_dbd():
     fondos = [c for c in celdas.values() if "container=1" in (c.get("style") or "")]
     if fondos:
         fallas.append(f"SPLG-DBD: tiene {len(fondos)} contenedores de fondo y no tiene que tener ninguno")
-    comparar("claves foráneas", dib, fks)
+    comparar("claves foráneas simples", dib, fks)
+    # una FK compuesta `(id, distributor_id)` es la misma relación que la simple sobre su columna propia: no lleva
+    # otra arista, pero esa arista tiene que existir y la columna distributor_id tiene que estar marcada.
+    sin_arista = []
+    for t, pares, dt in compuestas:
+        for c, d in pares:
+            if c != "distributor_id" and dib[(t, c, dt, d)] < 1:
+                sin_arista.append((t, c, dt, d))
+    print(f"  claves foráneas compuestas: {len(compuestas)} · cubiertas por la arista de su FK simple: "
+          f"{len(compuestas) - len(sin_arista)}")
+    for k in sin_arista[:8]:
+        print("     falta la arista de la compuesta:", k)
+    if sin_arista:
+        fallas.append(f"claves foráneas compuestas: {len(sin_arista)} sin la arista de su FK simple")
+    sin_marca = []
+    for t, pares, dt in compuestas:
+        fila = next((c for c in celdas.values() if c.get("parent") in padres_de.get(t, ())
+                     and (c.get("value") or "").split()[1:2] == ["distributor_id"]), None)
+        if fila is None or "FK compuesta" not in (fila.get("value") or ""):
+            sin_marca.append((t, dt))
+    if sin_marca:
+        print("     compuestas sin marca en distributor_id:", sin_marca[:8])
+        fallas.append(f"claves foráneas compuestas: {len(sin_marca)} sin marca en la columna distributor_id")
 
 
 # ------------------------------------------------------------------ DER

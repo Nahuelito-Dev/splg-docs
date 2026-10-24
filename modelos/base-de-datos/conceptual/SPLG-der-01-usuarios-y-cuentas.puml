@@ -136,8 +136,6 @@ entity ReglaComision #F1F1F1 {
 }
 entity LicenciaLaboral #F1F1F1 {
 }
-entity RecepcionDeCompra #F1F1F1 {
-}
 entity Neumatico #F1F1F1 {
 }
 entity Reclamo #F1F1F1 {
@@ -149,6 +147,8 @@ entity Incidencia #F1F1F1 {
 entity CambioDireccion #F1F1F1 {
 }
 entity CambioEstadoPedido #F1F1F1 {
+}
+entity RecepcionDeCompra #F1F1F1 {
 }
 entity Calificacion #F1F1F1 {
 }
@@ -175,12 +175,12 @@ Distribuidora ||--o{ Deposito : dispone de >
 Distribuidora |o--o{ Administrador : emplea >
 Administrador |o--|| Usuario : es un >
 TipoAccionAuditoria ||--o{ Auditoria : clasifica >
-Distribuidora |o--o{ Auditoria : delimita >
 Usuario |o--o{ Auditoria : realiza >
+Distribuidora |o--o{ Auditoria : delimita >
 Usuario |o--o{ AsientoAuditoria : origina >
 Cliente ||--o{ Carrito : arma >
-Cliente }o--o| Producto : usa habitualmente >
 Cliente |o--|| Usuario : es un >
+Cliente }o--o| Producto : usa habitualmente >
 Cliente ||--o{ CuentaCorriente : tiene habilitada >
 Distribuidora ||--o{ CuentaCorriente : lleva >
 Distribuidora ||--o{ Chofer : emplea >
@@ -194,31 +194,31 @@ Auditoria ||--o{ DetalleAuditoria : detalla con >
 Usuario ||--o{ MovimientoDeCaja : registró >
 Distribuidora ||--o{ ReglaComision : define >
 Usuario |o--o{ LicenciaLaboral : resuelve >
-Pedido }o--|| DireccionEntrega : se entrega en >
 Cliente ||--o{ Pedido : realiza >
 Distribuidora ||--o{ Pedido : gestiona >
-Usuario ||--o{ RecepcionDeCompra : registra >
+Pedido }o--|| DireccionEntrega : se entrega en >
 Distribuidora ||--o{ Neumatico : posee >
 Cliente ||--o{ Reclamo : presenta >
 Cliente |o--o{ Envase : tiene en su poder >
 Distribuidora ||--o{ Envase : posee >
 Usuario ||--o{ Incidencia : reporta >
-Usuario ||--o{ CambioDireccion : realiza >
-CambioDireccion }o--|| DireccionEntrega : cambia desde >
 CambioDireccion }o--|| DireccionEntrega : cambia hacia >
+CambioDireccion }o--|| DireccionEntrega : cambia desde >
+Usuario ||--o{ CambioDireccion : realiza >
 Usuario |o--o{ CambioEstadoPedido : efectúa >
+Usuario ||--o{ RecepcionDeCompra : registra >
 Usuario ||--o{ Calificacion : emite >
 Usuario ||--o{ Calificacion : recibe >
 InvitacionRecompra }o--o| DireccionEntrega : sugiere entregar en >
-InvitacionRecompra |o--o| Pedido : se convierte en >
 Cliente ||--o{ InvitacionRecompra : recibe >
+InvitacionRecompra |o--o| Pedido : se convierte en >
 Usuario ||--o{ AjusteDeStock : registra >
 Usuario |o--o{ MovimientoDeStock : ejecuta >
-Usuario |o--o{ CargaDeCamion : cierra >
 Usuario ||--o{ CargaDeCamion : abre >
+Usuario |o--o{ CargaDeCamion : cierra >
 Usuario |o--o{ MovimientoEnvase : ejecuta >
-Usuario |o--o{ CasoRecupero : resuelve >
 CasoRecupero }o--|| Cliente : se abre contra >
+Usuario |o--o{ CasoRecupero : resuelve >
 Usuario |o--o{ Pedido : confirmó el cobro de >
 Usuario |o--o{ Pedido : resolvió el cobro de >
 

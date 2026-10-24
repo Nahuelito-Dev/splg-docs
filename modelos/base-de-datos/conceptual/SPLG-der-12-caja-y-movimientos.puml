@@ -75,15 +75,15 @@ entity GastoDeRendicion #F1F1F1 {
 Distribuidora ||--o{ Caja : define >
 Distribuidora ||--o{ CategoriaDeCaja : define >
 Caja ||--o{ SesionDeCaja : registra >
+MovimientoDeCaja |o--o| MovimientoDeCaja : anula a >
 Caja ||--o{ MovimientoDeCaja : asienta >
 CategoriaDeCaja ||--o{ MovimientoDeCaja : clasifica >
 Usuario ||--o{ MovimientoDeCaja : registró >
-MovimientoDeCaja |o--o| MovimientoDeCaja : anula a >
 SesionDeCaja |o--o{ MovimientoDeCaja : agrupa >
 AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
 LiquidacionComisiones |o--o| MovimientoDeCaja : se paga con >
-RendicionChofer |o--o| MovimientoDeCaja : genera >
 RendicionChofer }o--o| Caja : ingresa en >
+RendicionChofer |o--o| MovimientoDeCaja : genera >
 GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
 
 legend bottom right

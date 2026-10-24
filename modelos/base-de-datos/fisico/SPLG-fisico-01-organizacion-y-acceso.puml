@@ -113,8 +113,8 @@ e_role |o--o{ e_user : role_id
 e_distributor |o--o{ e_admin : distributor_id
 e_user ||--o| e_admin : user_id
 e_audit_action_type ||--o{ e_audit : action_type_id
-e_distributor |o--o{ e_audit : distributor_id
 e_user |o--o{ e_audit : user_id
+e_distributor |o--o{ e_audit : distributor_id
 e_user |o--o{ e_audit_log : actor_user_id
 e_distributor |o--o{ e_audit_log : distributor_id
 e_distributor ||--o{ e_module_config : distributor_id

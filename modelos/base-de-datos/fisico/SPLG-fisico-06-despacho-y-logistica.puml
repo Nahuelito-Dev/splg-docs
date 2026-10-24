@@ -61,8 +61,8 @@ e_user ||--o{ e_order_dispatch_offer : driver_id
 e_order ||--o{ e_order_dispatch_offer : order_id
 e_route_batch ||--o{ e_route_batch_offer : batch_id
 e_delivery ||--o{ e_route_batch_offer : delivery_id
-e_route_batch ||--o{ e_route_batch_stop : batch_id
 e_order ||--o{ e_route_batch_stop : order_id
+e_route_batch ||--o{ e_route_batch_stop : batch_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

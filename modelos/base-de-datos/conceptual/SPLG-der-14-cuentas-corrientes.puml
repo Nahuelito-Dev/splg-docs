@@ -61,13 +61,13 @@ entity CobroDeRendicion #F1F1F1 {
 
 Cliente ||--o{ CuentaCorriente : tiene habilitada >
 Distribuidora ||--o{ CuentaCorriente : lleva >
-CuentaCorriente ||--o{ AsientoCuentaCorriente : registra >
-AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
 Chofer |o--o{ AsientoCuentaCorriente : cobra >
 Pedido |o--o{ AsientoCuentaCorriente : origina >
-CuentaCorriente ||--o{ ImputacionCuentaCorriente : contiene >
-ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : se aplica con >
+AsientoCuentaCorriente |o--o| MovimientoDeCaja : se asienta en >
+CuentaCorriente ||--o{ AsientoCuentaCorriente : registra >
 ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : salda >
+ImputacionCuentaCorriente }o--|| AsientoCuentaCorriente : se aplica con >
+CuentaCorriente ||--o{ ImputacionCuentaCorriente : contiene >
 CobroDeRendicion |o--|| AsientoCuentaCorriente : rinde >
 
 legend bottom right

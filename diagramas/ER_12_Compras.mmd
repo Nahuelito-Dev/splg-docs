@@ -1,8 +1,8 @@
 erDiagram
     PURCHASE_ORDER }o--|| SUPPLIER : "supplier_id"
     PURCHASE_ORDER_ITEM }o--|| PURCHASE_ORDER : "purchase_order_id"
-    PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
     PURCHASE_RECEIPT }o--|| SUPPLIER : "supplier_id"
+    PURCHASE_RECEIPT }o--o| PURCHASE_ORDER : "purchase_order_id"
     PURCHASE_RECEIPT_ITEM }o--|| PURCHASE_RECEIPT : "receipt_id"
 
     SUPPLIER {
@@ -60,11 +60,11 @@ erDiagram
         uuid received_by_user_id FK
         decimal total_amount
         enum payment_status
-        uuid cash_movement_id "nullable"
+        uuid cash_movement_id FK "nullable"
         enum status
         text void_reason "nullable"
         timestamptz voided_at "nullable"
-        uuid voided_by_user_id "nullable"
+        uuid voided_by_user_id FK "nullable"
         uuid batch_id
         uuid void_batch_id "nullable"
         text notes "nullable"

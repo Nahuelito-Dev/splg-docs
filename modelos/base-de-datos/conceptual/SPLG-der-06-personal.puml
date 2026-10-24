@@ -82,13 +82,13 @@ entity TareaMantenimiento #F1F1F1 {
 }
 entity ReglaComision #F1F1F1 {
 }
-entity CargaCombustible #F1F1F1 {
-}
-entity MultaTransito #F1F1F1 {
-}
 entity Siniestro #F1F1F1 {
 }
 entity LiquidacionComisiones #F1F1F1 {
+}
+entity CargaCombustible #F1F1F1 {
+}
+entity MultaTransito #F1F1F1 {
 }
 entity CargaDeCamion #F1F1F1 {
 }
@@ -105,11 +105,11 @@ ReglaComision }o--o| Empleado : se aplica a >
 Empleado ||--o{ JornadaDeTrabajo : registra >
 Usuario |o--o{ LicenciaLaboral : resuelve >
 Empleado ||--o{ LicenciaLaboral : solicita >
-Empleado |o--o{ CargaCombustible : carga >
 TareaMantenimiento }o--o| Empleado : habilita >
-Empleado |o--o{ MultaTransito : responde por >
 Empleado |o--o{ Siniestro : interviene en >
 Empleado ||--o{ LiquidacionComisiones : percibe >
+Empleado |o--o{ CargaCombustible : carga >
+Empleado |o--o{ MultaTransito : responde por >
 Empleado |o--o{ CargaDeCamion : ayuda en >
 Empleado ||--o{ AsientoComision : devenga >
 Empleado ||--o{ Adjunto : conserva >

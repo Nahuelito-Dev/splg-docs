@@ -7,7 +7,7 @@ elementos (si se mueve una tabla o una clase, la línea la sigue). Los genera `g
 |---|---|---|
 | `SPLG-MC.drawio` | Modelo conceptual: conceptos con atributos, asociaciones con nombre y multiplicidades en los dos extremos, composición, generalización y la clase de asociación | `modelo_conceptual.py` |
 | `SPLG-DER.drawio` | DER conceptual: una entidad por concepto con tabla, con el vocabulario del modelo conceptual y las relaciones en pata de gallo | `modelos/base-de-datos/SPLG-modelo.json` |
-| `SPLG-DBD.drawio` | Diagrama de base de datos físico: las 85 tablas de la base con columnas, tipos, claves, únicos e índices, y cada una de las 230 claves foráneas como una arista de la columna FK a la clave primaria destino | `modelos/base-de-datos/SPLG-modelo.json` (leído de la base) |
+| `SPLG-DBD.drawio` | Diagrama de base de datos físico: las 85 tablas de la base con columnas, tipos, claves, únicos e índices, y cada una de las 238 claves foráneas simples como una arista de la columna FK a la clave primaria destino; las 55 compuestas `(id, distributor_id)` repiten esa relación y se marcan en la columna `distributor_id` («FK compuesta») | `modelos/base-de-datos/SPLG-modelo.json` (leído de la base) |
 | `SPLG-DC.drawio` | Diagrama de clases de diseño: 301 clases con atributos y operaciones, asociaciones con navegabilidad y multiplicidades, composición, agregación, generalización y dependencias | `herramientas/dc_larman.py` (derivado de los DSD) |
 
 Cada archivo tiene **una sola página** con el diagrama completo, sin módulos ni recuadros de agrupación: los

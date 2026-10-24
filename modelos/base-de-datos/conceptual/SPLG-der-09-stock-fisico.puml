@@ -91,18 +91,18 @@ Distribuidora ||--o{ Deposito : dispone de >
 OrdenDeCompra }o--|| Deposito : se destina a >
 UmbralDeStock }o--|| Producto : controla >
 Deposito ||--o{ UmbralDeStock : fija >
-RecepcionDeCompra }o--|| Deposito : ingresa en >
-Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
 Deposito ||--o| UbicacionDeStock : se registra como {xor} >
+Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
+RecepcionDeCompra }o--|| Deposito : ingresa en >
 Usuario ||--o{ AjusteDeStock : registra >
 UbicacionDeStock ||--o{ AjusteDeStock : se corrige con >
 SaldoDeStock }o--|| Producto : corresponde a >
 UbicacionDeStock ||--o{ SaldoDeStock : acumula >
-Usuario |o--o{ MovimientoDeStock : ejecuta >
-MovimientoDeStock }o--o| UbicacionDeStock : sale de >
 MovimientoDeStock }o--|| Producto : corresponde a >
-MovimientoDeStock |o--o| MovimientoDeStock : corrige a >
+Usuario |o--o{ MovimientoDeStock : ejecuta >
 MovimientoDeStock }o--o| UbicacionDeStock : entra en >
+MovimientoDeStock }o--o| UbicacionDeStock : sale de >
+MovimientoDeStock |o--o| MovimientoDeStock : corrige a >
 CargaDeCamion }o--|| UbicacionDeStock : parte de >
 AjusteDeStock ||--|{ ItemAjusteDeStock : contiene >
 ItemAjusteDeStock }o--|| Producto : corresponde a >

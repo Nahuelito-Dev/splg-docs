@@ -133,6 +133,9 @@ package "Venta y pedidos" {
     {field} //delivery_id// : uuid <<FK>>
     {field} //address_id// : uuid * <<FK>>
     {field} //coverage_zone_id// : uuid <<FK>>
+    {field} //vehicle_car_id// : uuid <<FK>>
+    {field} //payment_confirmed_by// : uuid <<FK>>
+    {field} //payment_resolved_by// : uuid <<FK>>
   }
   entity "order_address_change" as e_order_address_change {
     {field} **change_id** : uuid * <<PK>>
@@ -161,6 +164,7 @@ package "Pagos" {
     {field} **refund_id** : uuid * <<PK>>
     {field} //payment_id// : uuid * <<FK>>
     {field} //order_id// : uuid * <<FK>>
+    {field} //requested_by_user_id// : uuid <<FK>>
   }
 }
 package "Despacho y logística" {
@@ -270,20 +274,9 @@ package "Personal" {
   }
 }
 package "Gastos de la flota" {
-  entity "fuel_load" as e_fuel_load {
-    {field} **fuel_load_id** : uuid * <<PK>>
-    {field} //car_id// : uuid * <<FK>>
-    {field} //employee_id// : uuid <<FK>>
-    {field} //created_by_user_id// : uuid * <<FK>>
-  }
   entity "tire" as e_tire {
     {field} **tire_id** : uuid * <<PK>>
     {field} //car_id// : uuid <<FK>>
-  }
-  entity "traffic_fine" as e_traffic_fine {
-    {field} **fine_id** : uuid * <<PK>>
-    {field} //car_id// : uuid * <<FK>>
-    {field} //employee_id// : uuid <<FK>>
   }
   entity "vehicle_accident" as e_vehicle_accident {
     {field} **accident_id** : uuid * <<PK>>
@@ -291,11 +284,24 @@ package "Gastos de la flota" {
     {field} //employee_id// : uuid <<FK>>
     {field} //created_by_user_id// : uuid * <<FK>>
   }
+  entity "fuel_load" as e_fuel_load {
+    {field} **fuel_load_id** : uuid * <<PK>>
+    {field} //car_id// : uuid * <<FK>>
+    {field} //employee_id// : uuid <<FK>>
+    {field} //created_by_user_id// : uuid * <<FK>>
+    {field} //cash_movement_id// : uuid <<FK>>
+  }
   entity "tire_event" as e_tire_event {
     {field} **event_id** : uuid * <<PK>>
     {field} //tire_id// : uuid * <<FK>>
     {field} //car_id// : uuid <<FK>>
     {field} //created_by_user_id// : uuid * <<FK>>
+  }
+  entity "traffic_fine" as e_traffic_fine {
+    {field} **fine_id** : uuid * <<PK>>
+    {field} //car_id// : uuid * <<FK>>
+    {field} //employee_id// : uuid <<FK>>
+    {field} //cash_movement_id// : uuid <<FK>>
   }
 }
 package "Stock físico y carga del camión" {
@@ -371,6 +377,8 @@ package "Compras" {
     {field} //purchase_order_id// : uuid <<FK>>
     {field} //warehouse_id// : uuid * <<FK>>
     {field} //received_by_user_id// : uuid * <<FK>>
+    {field} //cash_movement_id// : uuid <<FK>>
+    {field} //voided_by_user_id// : uuid <<FK>>
   }
   entity "purchase_receipt_item" as e_purchase_receipt_item {
     {field} **item_id** : uuid * <<PK>>
@@ -485,30 +493,30 @@ e_user |o--o{ e_audit
 e_user |o--o{ e_audit_log
 e_user ||--o{ e_car
 e_user ||--o{ e_cart
+e_user ||--o{ e_cash_session
 e_cash_box ||--o{ e_cash_session
 e_user |o--o{ e_cash_session
-e_user ||--o{ e_cash_session
-e_gas_cylinder |o--o{ e_customer
 e_user ||--o| e_customer
+e_gas_cylinder |o--o{ e_customer
 e_user ||--o{ e_customer_account
 e_user ||--o| e_delivery
 e_job_position ||--o{ e_employee
 e_user |o--o{ e_employee
 e_gas_cylinder ||--o{ e_gas_cylinder_promotion
 e_user |o--o{ e_module_config
-e_user ||--o{ e_purchase_order
 e_warehouse ||--o{ e_purchase_order
+e_user ||--o{ e_purchase_order
 e_supplier ||--o{ e_purchase_order
 e_gas_cylinder ||--o{ e_stock_threshold
 e_warehouse ||--o{ e_stock_threshold
 e_user ||--o{ e_user_address
 e_audit ||--o{ e_audit_detail
-e_cart ||--o{ e_cart_item
 e_gas_cylinder ||--o{ e_cart_item
+e_cart ||--o{ e_cart_item
+e_cash_movement |o--o{ e_cash_movement
 e_cash_box ||--o{ e_cash_movement
 e_cash_category ||--o{ e_cash_movement
 e_user ||--o{ e_cash_movement
-e_cash_movement |o--o{ e_cash_movement
 e_cash_session |o--o{ e_cash_movement
 e_employee |o--o{ e_commission_rule
 e_gas_cylinder |o--o{ e_commission_rule
@@ -517,139 +525,147 @@ e_user |o--o{ e_employee_attendance
 e_user |o--o{ e_employee_leave
 e_employee ||--o{ e_employee_leave
 e_user |o--o{ e_employee_leave
-e_car ||--o{ e_fuel_load
-e_user ||--o{ e_fuel_load
-e_employee |o--o{ e_fuel_load
-e_car |o--o{ e_maintenance_task
 e_delivery |o--o{ e_maintenance_task
-e_employee |o--o{ e_maintenance_task
 e_maintenance_plan ||--o{ e_maintenance_task
-e_user_address ||--o{ e_order
+e_employee |o--o{ e_maintenance_task
+e_car |o--o{ e_maintenance_task
 e_coverage_zone |o--o{ e_order
-e_user ||--o{ e_order
 e_delivery |o--o{ e_order
 e_time_slot |o--o{ e_order
-e_gas_cylinder ||--o{ e_purchase_order_item
+e_user ||--o{ e_order
+e_user_address ||--o{ e_order
+e_user |o--o{ e_order
+e_user |o--o{ e_order
+e_car |o--o{ e_order
 e_purchase_order ||--o{ e_purchase_order_item
-e_purchase_order |o--o{ e_purchase_receipt
-e_user ||--o{ e_purchase_receipt
-e_supplier ||--o{ e_purchase_receipt
-e_warehouse ||--o{ e_purchase_receipt
+e_gas_cylinder ||--o{ e_purchase_order_item
 e_delivery |o--o{ e_route_batch
-e_car |o--o| e_stock_location
 e_warehouse |o--o| e_stock_location
+e_car |o--o| e_stock_location
 e_car |o--o{ e_tire
-e_car ||--o{ e_traffic_fine
-e_employee |o--o{ e_traffic_fine
-e_car ||--o{ e_vehicle_accident
-e_user ||--o{ e_vehicle_accident
 e_employee |o--o{ e_vehicle_accident
-e_user |o--o{ e_vehicle_assignment
-e_car ||--o{ e_vehicle_assignment
+e_user ||--o{ e_vehicle_accident
+e_car ||--o{ e_vehicle_accident
 e_delivery ||--o{ e_vehicle_assignment
 e_user |o--o{ e_vehicle_assignment
+e_user |o--o{ e_vehicle_assignment
+e_car ||--o{ e_vehicle_assignment
 e_car ||--o{ e_vehicle_usage_log
-e_user ||--o{ e_claims
 e_order ||--o{ e_claims
-e_customer_account ||--o{ e_customer_account_entry
-e_cash_movement |o--o{ e_customer_account_entry
+e_user ||--o{ e_claims
 e_delivery |o--o{ e_customer_account_entry
-e_user |o--o{ e_customer_account_entry
 e_order |o--o{ e_customer_account_entry
+e_cash_movement |o--o{ e_customer_account_entry
+e_customer_account ||--o{ e_customer_account_entry
+e_user |o--o{ e_customer_account_entry
 e_user |o--o{ e_cylinder
 e_order |o--o{ e_cylinder
 e_gas_cylinder |o--o{ e_cylinder
-e_user |o--o{ e_driver_liquidation
-e_cash_movement |o--o{ e_driver_liquidation
 e_user ||--o{ e_driver_liquidation
-e_employee ||--o{ e_driver_liquidation
 e_user |o--o{ e_driver_liquidation
-e_order ||--o{ e_incident
+e_user |o--o{ e_driver_liquidation
+e_employee ||--o{ e_driver_liquidation
+e_cash_movement |o--o{ e_driver_liquidation
+e_car ||--o{ e_fuel_load
+e_user ||--o{ e_fuel_load
+e_employee |o--o{ e_fuel_load
+e_cash_movement |o--o{ e_fuel_load
 e_user ||--o{ e_incident
-e_maintenance_task ||--o{ e_maintenance_task_attachment
+e_order ||--o{ e_incident
 e_user ||--o{ e_maintenance_task_attachment
-e_delivery ||--o{ e_maintenance_window_proposal
+e_maintenance_task ||--o{ e_maintenance_task_attachment
 e_maintenance_task ||--o{ e_maintenance_window_proposal
-e_user ||--o{ e_order_address_change
+e_delivery ||--o{ e_maintenance_window_proposal
 e_user_address ||--o{ e_order_address_change
 e_order ||--o{ e_order_address_change
 e_user_address ||--o{ e_order_address_change
+e_user ||--o{ e_order_address_change
 e_user ||--o{ e_order_dispatch_offer
 e_order ||--o{ e_order_dispatch_offer
 e_gas_cylinder ||--o{ e_order_item
 e_order ||--o{ e_order_item
-e_user |o--o{ e_order_status_history
 e_order ||--o{ e_order_status_history
+e_user |o--o{ e_order_status_history
 e_order ||--o{ e_payment
-e_gas_cylinder ||--o{ e_purchase_receipt_item
-e_purchase_receipt ||--o{ e_purchase_receipt_item
-e_user ||--o{ e_rating
+e_warehouse ||--o{ e_purchase_receipt
+e_supplier ||--o{ e_purchase_receipt
+e_user ||--o{ e_purchase_receipt
+e_purchase_order |o--o{ e_purchase_receipt
+e_cash_movement |o--o{ e_purchase_receipt
+e_user |o--o{ e_purchase_receipt
 e_user |o--o{ e_rating
+e_user ||--o{ e_rating
 e_order ||--o{ e_rating
 e_user ||--o{ e_rating
 e_user_address |o--o{ e_repurchase_invitation
-e_order |o--o{ e_repurchase_invitation
 e_user ||--o{ e_repurchase_invitation
+e_order |o--o{ e_repurchase_invitation
 e_route_batch ||--o{ e_route_batch_offer
 e_delivery ||--o{ e_route_batch_offer
-e_route_batch ||--o{ e_route_batch_stop
 e_order ||--o{ e_route_batch_stop
+e_route_batch ||--o{ e_route_batch_stop
 e_user ||--o{ e_stock_adjustment
 e_stock_location ||--o{ e_stock_adjustment
 e_gas_cylinder ||--o{ e_stock_balance
 e_stock_location ||--o{ e_stock_balance
+e_gas_cylinder ||--o{ e_stock_movement
 e_user |o--o{ e_stock_movement
 e_stock_location |o--o{ e_stock_movement
-e_gas_cylinder ||--o{ e_stock_movement
-e_stock_movement |o--o{ e_stock_movement
 e_stock_location |o--o{ e_stock_movement
+e_stock_movement |o--o{ e_stock_movement
+e_tire ||--o{ e_tire_event
 e_car |o--o{ e_tire_event
 e_user ||--o{ e_tire_event
-e_tire ||--o{ e_tire_event
-e_car ||--o{ e_truck_load
-e_user |o--o{ e_truck_load
-e_delivery ||--o{ e_truck_load
+e_car ||--o{ e_traffic_fine
+e_employee |o--o{ e_traffic_fine
+e_cash_movement |o--o{ e_traffic_fine
 e_employee |o--o{ e_truck_load
 e_user ||--o{ e_truck_load
+e_user |o--o{ e_truck_load
+e_car ||--o{ e_truck_load
+e_delivery ||--o{ e_truck_load
 e_stock_location ||--o{ e_truck_load
-e_user |o--o{ e_commission_entry
+e_order |o--o{ e_commission_entry
 e_delivery |o--o{ e_commission_entry
+e_commission_rule |o--o{ e_commission_entry
+e_user |o--o{ e_commission_entry
 e_employee ||--o{ e_commission_entry
 e_driver_liquidation |o--o{ e_commission_entry
-e_order |o--o{ e_commission_entry
-e_commission_rule |o--o{ e_commission_entry
+e_customer_account_entry ||--o{ e_customer_account_allocation
+e_customer_account_entry ||--o{ e_customer_account_allocation
 e_customer_account ||--o{ e_customer_account_allocation
-e_customer_account_entry ||--o{ e_customer_account_allocation
-e_customer_account_entry ||--o{ e_customer_account_allocation
 e_cylinder ||--o{ e_cylinder_inspection
-e_user |o--o{ e_cylinder_movement
 e_cylinder ||--o{ e_cylinder_movement
 e_order |o--o{ e_cylinder_movement
+e_user |o--o{ e_cylinder_movement
 e_cylinder ||--o{ e_cylinder_recovery_case
-e_user |o--o{ e_cylinder_recovery_case
 e_user ||--o{ e_cylinder_recovery_case
+e_user |o--o{ e_cylinder_recovery_case
+e_truck_load |o--o{ e_driver_settlement
 e_user |o--o{ e_driver_settlement
+e_cash_box |o--o{ e_driver_settlement
 e_cash_movement |o--o{ e_driver_settlement
 e_delivery ||--o{ e_driver_settlement
-e_cash_box |o--o{ e_driver_settlement
 e_user |o--o{ e_driver_settlement
-e_truck_load |o--o{ e_driver_settlement
-e_order ||--o{ e_payment_refund
 e_payment ||--o{ e_payment_refund
+e_order ||--o{ e_payment_refund
+e_user |o--o{ e_payment_refund
+e_gas_cylinder ||--o{ e_purchase_receipt_item
+e_purchase_receipt ||--o{ e_purchase_receipt_item
 e_stock_adjustment ||--o{ e_stock_adjustment_item
 e_gas_cylinder ||--o{ e_stock_adjustment_item
-e_gas_cylinder ||--o{ e_truck_load_item
 e_truck_load ||--o{ e_truck_load_item
+e_gas_cylinder ||--o{ e_truck_load_item
 e_cylinder_recovery_case ||--o{ e_cylinder_recovery_notice
 e_customer_account_entry ||--o| e_driver_settlement_collection
 e_driver_settlement ||--o{ e_driver_settlement_collection
-e_cash_category ||--o{ e_driver_settlement_expense
 e_driver_settlement ||--o{ e_driver_settlement_expense
-e_order ||--o| e_driver_settlement_order
+e_cash_category ||--o{ e_driver_settlement_expense
 e_driver_settlement ||--o{ e_driver_settlement_order
+e_order ||--o| e_driver_settlement_order
 
 legend bottom right
-  85 tablas implementadas y 170 relaciones dibujadas.
+  85 tablas implementadas y 178 relaciones dibujadas.
   Además, 60 tablas tienen distributor_id (FK a distributor, multi-distribuidora): esa línea no se dibuja.
   Cada tabla muestra solo su PK y sus FK; las columnas completas están en la lámina de su contexto
   y en el diccionario de datos. * = obligatoria.

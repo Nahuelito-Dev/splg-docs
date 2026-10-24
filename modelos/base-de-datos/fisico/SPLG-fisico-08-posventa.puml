@@ -61,19 +61,19 @@ entity "rating" as e_rating {
   {field} hidden_at : timestamptz
   {field} //hidden_by_user_id// : uuid <<FK>>
 }
-entity "user" as e_user #F1F1F1 {
-}
 entity "order" as e_order #F1F1F1 {
 }
+entity "user" as e_user #F1F1F1 {
+}
 
-e_user ||--o{ e_claims : customer_id
 e_order ||--o{ e_claims : order_id
-e_order ||--o{ e_incident : order_id
+e_user ||--o{ e_claims : customer_id
 e_user ||--o{ e_incident : reported_by
-e_user ||--o{ e_rating : from_user_id
+e_order ||--o{ e_incident : order_id
 e_user |o--o{ e_rating : hidden_by_user_id
-e_order ||--o{ e_rating : order_id
 e_user ||--o{ e_rating : to_user_id
+e_order ||--o{ e_rating : order_id
+e_user ||--o{ e_rating : from_user_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

@@ -1,6 +1,8 @@
 # Modelo de Datos — SPLG
 
-85 tablas y 230 claves foráneas, leídas de la base en ejecución.
+85 tablas y 293 claves foráneas: 238 simples y 55 compuestas `(id, distributor_id)` que fijan la distribuidora, leídas de la base en ejecución.
+
+Cada FK compuesta `(id, distributor_id)` se suma a la FK simple sobre `id` y le impide a una fila apuntar a otra distribuidora; en el diagrama de base de datos es la misma relación que la simple, así que no lleva otra arista.
 
 | Sección | Qué contiene |
 |---|---|
@@ -121,7 +123,7 @@
 | `user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `type_car` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `car_capacity` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `car_patent` | varchar(20) | no |  |  |  | Única entre los vehículos vigentes: dar de baja uno no bloquea volver a registrar la misma patente. |
+| `car_patent` | varchar(20) | no |  |  |  | Única por distribuidora entre los vehículos vigentes (`UQ_car_patente_ distribuidora_vigente`): dar de baja uno no bloquea volver a registrar la misma patente. |
 | `car_brand` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `car_model` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `car_year` | integer | no |  |  |  | _(sin descripción documentada en el código)_ |
@@ -138,9 +140,15 @@
 | `fuel_type` | fuel_type_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `tank_capacity_liters` | numeric(6,2) | no |  |  |  | Capacidad del tanque en litros: tope de cada carga de combustible (+5 %). |
 
+Claves únicas compuestas: (`car_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_car_patente`: `CHECK (((car_patent IS NULL) OR ((car_patent)::text ~ '^([A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$'::text)))`
+
 Índices (además de la clave primaria):
 - `IDX_e823ac113ba2af8cbe72ddcbe8`: `CREATE INDEX "IDX_e823ac113ba2af8cbe72ddcbe8" ON public.car USING btree (distributor_id)`
-- `UQ_car_patente_vigente`: `CREATE UNIQUE INDEX "UQ_car_patente_vigente" ON public.car USING btree (car_patent) WHERE ("deletedAt" IS NULL)`
+- `UQ_car_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_car_id_distribuidora" ON public.car USING btree (car_id, distributor_id)`
+- `UQ_car_patente_distribuidora_vigente`: `CREATE UNIQUE INDEX "UQ_car_patente_distribuidora_vigente" ON public.car USING btree (distributor_id, car_patent) WHERE ("deletedAt" IS NULL)`
 
 ### `cart` — Carrito
 
@@ -168,6 +176,10 @@ Claves únicas compuestas: (`user_id`, `distributor_id`).
 
 Claves únicas compuestas: (`cart_id`, `gas_cylinder_id`).
 
+Restricciones `CHECK`:
+- `CHK_cart_item_cantidad`: `CHECK (((quantity >= 1) AND (quantity <= 999)))`
+- `CHK_cart_item_precio`: `CHECK ((unit_price >= (0)::numeric))`
+
 Índices (además de la clave primaria):
 - `UQ_cart_item_cart_gascylinder`: `CREATE UNIQUE INDEX "UQ_cart_item_cart_gascylinder" ON public.cart_item USING btree (cart_id, gas_cylinder_id)`
 
@@ -186,11 +198,14 @@ Claves únicas compuestas: (`cart_id`, `gas_cylinder_id`).
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`cash_box_id`, `distributor_id`).
+
 Restricciones `CHECK`:
 - `CHK_cash_box_efectivo_no_negativo`: `CHECK (((kind <> 'cash'::cash_box_kind_enum) OR (balance >= (0)::numeric)))`
 
 Índices (además de la clave primaria):
 - `IDX_cash_box_distributor`: `CREATE INDEX "IDX_cash_box_distributor" ON public.cash_box USING btree (distributor_id)`
+- `UQ_cash_box_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_cash_box_id_distribuidora" ON public.cash_box USING btree (cash_box_id, distributor_id)`
 - `UQ_cash_box_nombre_vigente`: `CREATE UNIQUE INDEX "UQ_cash_box_nombre_vigente" ON public.cash_box USING btree (distributor_id, name) WHERE ("deletedAt" IS NULL)`
 
 ### `cash_category` — CategoriaDeCaja
@@ -206,8 +221,11 @@ Restricciones `CHECK`:
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`category_id`, `distributor_id`).
+
 Índices (además de la clave primaria):
 - `IDX_cash_category_distributor`: `CREATE INDEX "IDX_cash_category_distributor" ON public.cash_category USING btree (distributor_id)`
+- `UQ_cash_category_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_cash_category_id_distribuidora" ON public.cash_category USING btree (category_id, distributor_id)`
 - `UQ_cash_category_nombre_activa`: `CREATE UNIQUE INDEX "UQ_cash_category_nombre_activa" ON public.cash_category USING btree (distributor_id, direction, name) WHERE ((is_active = true) AND (system_code IS NULL))`
 - `UQ_cash_category_sistema`: `CREATE UNIQUE INDEX "UQ_cash_category_sistema" ON public.cash_category USING btree (distributor_id, system_code) WHERE (system_code IS NOT NULL)`
 
@@ -231,6 +249,8 @@ Restricciones `CHECK`:
 | `created_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`movement_id`, `distributor_id`).
+
 Restricciones `CHECK`:
 - `CHK_cash_movement_importe`: `CHECK ((amount > (0)::numeric))`
 
@@ -240,6 +260,7 @@ Restricciones `CHECK`:
 - `IDX_cash_movement_referencia`: `CREATE INDEX "IDX_cash_movement_referencia" ON public.cash_movement USING btree (reference_type, reference_id)`
 - `IDX_cash_movement_sesion`: `CREATE INDEX "IDX_cash_movement_sesion" ON public.cash_movement USING btree (session_id)`
 - `UQ_cash_movement_anula`: `CREATE UNIQUE INDEX "UQ_cash_movement_anula" ON public.cash_movement USING btree (reverses_movement_id) WHERE (reverses_movement_id IS NOT NULL)`
+- `UQ_cash_movement_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_cash_movement_id_distribuidora" ON public.cash_movement USING btree (movement_id, distributor_id)`
 
 ### `cash_session` — SesionDeCaja
 
@@ -259,10 +280,19 @@ Restricciones `CHECK`:
 | `difference` | numeric(14,2) | no |  |  |  | Contado menos esperado: negativa es faltante, positiva sobrante. |
 | `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`session_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_cash_session_cierre_completo`: `CHECK (((status <> 'closed'::cash_session_status_enum) OR ((closed_by_user_id IS NOT NULL) AND (counted_amount IS NOT NULL) AND (expected_amount IS NOT NULL) AND (difference = (counted_amount - expected_amount)))))`
+- `CHK_cash_session_cierre_fecha`: `CHECK (((status = 'closed'::cash_session_status_enum) = (closed_at IS NOT NULL)))`
+- `CHK_cash_session_montos`: `CHECK (((opening_amount >= (0)::numeric) AND ((counted_amount IS NULL) OR (counted_amount >= (0)::numeric))))`
+- `CHK_cash_session_periodo`: `CHECK (((closed_at IS NULL) OR (closed_at >= opened_at)))`
+
 Índices (además de la clave primaria):
 - `IDX_cash_session_caja_fecha`: `CREATE INDEX "IDX_cash_session_caja_fecha" ON public.cash_session USING btree (cash_box_id, opened_at)`
 - `IDX_cash_session_distributor`: `CREATE INDEX "IDX_cash_session_distributor" ON public.cash_session USING btree (distributor_id)`
 - `UQ_cash_session_abierta`: `CREATE UNIQUE INDEX "UQ_cash_session_abierta" ON public.cash_session USING btree (cash_box_id) WHERE (status = 'open'::cash_session_status_enum)`
+- `UQ_cash_session_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_cash_session_id_distribuidora" ON public.cash_session USING btree (session_id, distributor_id)`
 
 ### `claims` — Reclamo
 
@@ -279,6 +309,10 @@ Restricciones `CHECK`:
 | `resolutionNote` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `photo_key` | varchar(512) | no |  |  |  | Key de la foto en el bucket (`claims/{distribuidora}/{reclamo}/{uuid}.{ext}`). |
+
+Restricciones `CHECK`:
+- `CHK_claims_largo_de_textos`: `CHECK (((char_length((reason)::text) <= 120) AND (char_length(description) <= 1000) AND (("resolutionNote" IS NULL) OR (char_length("resolutionNote") <= 1000))))`
+- `CHK_claims_textos`: `CHECK (((btrim((reason)::text) <> ''::text) AND (btrim(description) <> ''::text)))`
 
 Índices (además de la clave primaria):
 - `IDX_870bf1e0dc6005837ff0643b5f`: `CREATE INDEX "IDX_870bf1e0dc6005837ff0643b5f" ON public.claims USING btree (distributor_id)`
@@ -302,6 +336,10 @@ Restricciones `CHECK`:
 | `occurred_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `created_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_commission_entry_importe`: `CHECK ((amount <> (0)::numeric))`
+- `CHK_commission_entry_signo`: `CHECK ((((type <> 'delivery_commission'::commission_entry_type_enum) OR (amount > (0)::numeric)) AND ((type <> 'settlement_shortage'::commission_entry_type_enum) OR (amount < (0)::numeric))))`
 
 Índices (además de la clave primaria):
 - `IDX_commission_entry_distributor`: `CREATE INDEX "IDX_commission_entry_distributor" ON public.commission_entry USING btree (distributor_id)`
@@ -327,10 +365,12 @@ Restricciones `CHECK`:
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
 Restricciones `CHECK`:
+- `CHK_commission_rule_porcentaje`: `CHECK (((basis <> 'percent_of_total'::commission_rule_basis_enum) OR (value <= (100)::numeric)))`
 - `CHK_commission_rule_valor`: `CHECK ((value >= (0)::numeric))`
 - `CHK_commission_rule_vigencia`: `CHECK (((valid_to IS NULL) OR (valid_to >= valid_from)))`
 
 Índices (además de la clave primaria):
+- `EXC_commission_rule_solapada`: `CREATE INDEX "EXC_commission_rule_solapada" ON public.commission_rule USING gist (distributor_id, COALESCE(employee_id, '00000000-0000-0000-0000-000000000000'::uuid), COALESCE(gas_cylinder_id, '00000000-0000-0000-0000-000000000000'::uuid), daterange(valid_from, valid_to, '[]'::text)) WHERE is_active`
 - `IDX_commission_rule_distribuidora`: `CREATE INDEX "IDX_commission_rule_distribuidora" ON public.commission_rule USING btree (distributor_id, is_active)`
 
 ### `coverage_zone` — ZonaCobertura
@@ -353,12 +393,18 @@ Restricciones `CHECK`:
 | `priority` | integer | sí |  |  | `0` | Desempate entre zonas superpuestas: gana la de mayor `priority` (y, a igual prioridad, la de menor área). 0 = sin prioridad especial. |
 | `valid_from` | timestamptz | no |  |  |  | Desde cuándo rige la zona. Null = rige desde siempre. |
 
+Claves únicas compuestas: (`coverage_zone_id`, `distributor_id`).
+
 Restricciones `CHECK`:
 - `CHK_coverage_zone_surcharge`: `CHECK ((((surcharge_type = 'fixed'::coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric)) OR ((surcharge_type = 'percentage'::coverage_zone_surcharge_type_enum) AND (surcharge_value >= (0)::numeric) AND (surcharge_value <= (100)::numeric))))`
+- `CHK_coverage_zone_vigencia`: `CHECK (((valid_until IS NULL) OR (valid_from IS NULL) OR (valid_until > valid_from)))`
 
 Índices (además de la clave primaria):
 - `IDX_01a53f7455396839c245037c9f`: `CREATE INDEX "IDX_01a53f7455396839c245037c9f" ON public.coverage_zone USING gist (area)`
 - `IDX_50ad99ebfb6554428f39160228`: `CREATE INDEX "IDX_50ad99ebfb6554428f39160228" ON public.coverage_zone USING btree (distributor_id)`
+- `UQ_coverage_zone_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_coverage_zone_id_distribuidora" ON public.coverage_zone USING btree (coverage_zone_id, distributor_id)`
+- `UQ_coverage_zone_nombre_activa`: `CREATE UNIQUE INDEX "UQ_coverage_zone_nombre_activa" ON public.coverage_zone USING btree (distributor_id, lower((name)::text)) WHERE ("isActive" AND ("deletedAt" IS NULL))`
+- `UQ_coverage_zone_prioridad_activa`: `CREATE UNIQUE INDEX "UQ_coverage_zone_prioridad_activa" ON public.coverage_zone USING btree (distributor_id, priority) WHERE ("isActive" AND ("deletedAt" IS NULL))`
 
 ### `customer` — Cliente
 
@@ -374,6 +420,9 @@ Restricciones `CHECK`:
 | `declared_cylinder_type_id` | uuid | no | FK | `gas_cylinder.gas_cylinder_id` |  | _(sin descripción documentada en el código)_ |
 | `repurchase_notice_days` | integer | no |  |  | `3` | _(sin descripción documentada en el código)_ |
 | `next_repurchase_estimate_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_customer_consumo`: `CHECK (((avg_monthly_consumption_kg IS NULL) OR (avg_monthly_consumption_kg > (0)::numeric)))`
 
 Índices (además de la clave primaria):
 - `IDX_0124ec56df62d9a9ba58cb41a2`: `CREATE INDEX "IDX_0124ec56df62d9a9ba58cb41a2" ON public.customer USING gist (location)`
@@ -397,13 +446,19 @@ Restricciones `CHECK`:
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`account_id`, `distributor_id`).
+
 Restricciones `CHECK`:
+- `CHK_customer_account_cerrada_sin_saldo`: `CHECK (((status <> 'closed'::customer_account_status_enum) OR (balance = (0)::numeric)))`
+- `CHK_customer_account_cuit`: `CHECK (((tax_id IS NULL) OR es_cuit_valido((tax_id)::text)))`
 - `CHK_customer_account_limite`: `CHECK ((credit_limit >= (0)::numeric))`
 - `CHK_customer_account_plazo`: `CHECK ((payment_terms_days > 0))`
+- `CHK_customer_account_plazo_maximo`: `CHECK ((payment_terms_days <= 365))`
 
 Índices (además de la clave primaria):
 - `IDX_customer_account_distributor`: `CREATE INDEX "IDX_customer_account_distributor" ON public.customer_account USING btree (distributor_id)`
 - `UQ_customer_account_cliente_vigente`: `CREATE UNIQUE INDEX "UQ_customer_account_cliente_vigente" ON public.customer_account USING btree (distributor_id, customer_user_id) WHERE ("deletedAt" IS NULL)`
+- `UQ_customer_account_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_customer_account_id_distribuidora" ON public.customer_account USING btree (account_id, distributor_id)`
 
 ### `customer_account_allocation` — ImputacionCuentaCorriente
 
@@ -444,6 +499,7 @@ Restricciones `CHECK`:
 
 Restricciones `CHECK`:
 - `CHK_customer_account_entry_importe`: `CHECK ((amount > (0)::numeric))`
+- `CHK_customer_account_entry_vencimiento`: `CHECK (((due_date IS NULL) OR (due_date >= ((occurred_at AT TIME ZONE 'America/Argentina/Buenos_Aires'::text))::date)))`
 
 Índices (además de la clave primaria):
 - `IDX_customer_account_entry_cuenta_fecha`: `CREATE INDEX "IDX_customer_account_entry_cuenta_fecha" ON public.customer_account_entry USING btree (account_id, occurred_at)`
@@ -468,7 +524,13 @@ Restricciones `CHECK`:
 | `last_inspection_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `expires_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 
-Claves únicas compuestas: (`distributor_id`, `serial`).
+Claves únicas compuestas: (`distributor_id`, `serial`), (`cylinder_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_cylinder_cliente_segun_estado`: `CHECK (((state = 'with_customer'::cylinder_state_enum) = (current_customer_id IS NOT NULL)))`
+- `CHK_cylinder_garantia`: `CHECK ((deposit >= (0)::numeric))`
+- `CHK_cylinder_serial`: `CHECK ((btrim((serial)::text) <> ''::text))`
+- `CHK_cylinder_vencimiento`: `CHECK (((expires_at IS NULL) OR (manufactured_at IS NULL) OR (expires_at >= manufactured_at)))`
 
 Índices (además de la clave primaria):
 - `IDX_7a848929dbfa5535e93e9494e7`: `CREATE INDEX "IDX_7a848929dbfa5535e93e9494e7" ON public.cylinder USING btree (serial)`
@@ -476,6 +538,8 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 - `IDX_9e32d1c8fd5721ba71e98c5c93`: `CREATE INDEX "IDX_9e32d1c8fd5721ba71e98c5c93" ON public.cylinder USING btree (state)`
 - `IDX_9e8b3d9c0ecf2651f6e836aca4`: `CREATE INDEX "IDX_9e8b3d9c0ecf2651f6e836aca4" ON public.cylinder USING btree (distributor_id)`
 - `UQ_9e39bbb32ed614ddd09ac126e37`: `CREATE UNIQUE INDEX "UQ_9e39bbb32ed614ddd09ac126e37" ON public.cylinder USING btree (distributor_id, serial)`
+- `UQ_cylinder_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_cylinder_id_distribuidora" ON public.cylinder USING btree (cylinder_id, distributor_id)`
+- `UQ_cylinder_serial_normalizado`: `CREATE UNIQUE INDEX "UQ_cylinder_serial_normalizado" ON public.cylinder USING btree (distributor_id, upper(btrim((serial)::text)))`
 
 ### `cylinder_inspection` — RevisionEnvase
 
@@ -488,6 +552,10 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `result` | cylinder_inspection_result_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `next_due_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_cylinder_inspection_proxima`: `CHECK (((result = 'rejected'::cylinder_inspection_result_enum) OR (next_due_at IS NOT NULL)))`
+- `CHK_cylinder_inspection_vencimiento`: `CHECK (((next_due_at IS NULL) OR (next_due_at > inspected_at)))`
 
 Índices (además de la clave primaria):
 - `IDX_1cbfd2007890911e8b42d207d4`: `CREATE INDEX "IDX_1cbfd2007890911e8b42d207d4" ON public.cylinder_inspection USING btree (distributor_id)`
@@ -506,6 +574,9 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `actor_user_id` | uuid | no | FK | `user.user_id` |  | Usuario (chofer/admin) que ejecutó la transición, si aplica. |
 | `note` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_cylinder_movement_cambio`: `CHECK (((from_state IS NULL) OR ((from_state)::text <> (to_state)::text) OR (note IS NOT NULL)))`
 
 Índices (además de la clave primaria):
 - `IDX_1c48ac355fa0315ba792b68045`: `CREATE INDEX "IDX_1c48ac355fa0315ba792b68045" ON public.cylinder_movement USING btree (cylinder_id)`
@@ -561,18 +632,24 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `validated` | boolean | sí |  |  | `false` | _(sin descripción documentada en el código)_ |
 | `isActive` | boolean | sí |  |  | `true` | _(sin descripción documentada en el código)_ |
 | `notification_token` | text | no |  |  |  | Token FCM del dispositivo del chofer, para push de ofertas/estado. |
-| `balance` | double precision | sí |  |  | `'0'::double precision` | _(sin descripción documentada en el código)_ |
+| `balance` | numeric(12,2) | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | no |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `location` | geometry | no |  |  |  | Última ubicación conocida (antes texto "lat,lng" en latLng). |
 | `isEnabled` | boolean | sí |  |  | `true` | Habilitación ADMINISTRATIVA: la pone/saca un admin con `PATCH /delivery/:id/status`. Un chofer deshabilitado no puede ponerse en línea aunque lo intente desde su app. Reemplaza a la vieja columna `isActive`, que mezclaba esto con la presencia del chofer (ver `isAvailable`): un chofer deshabilitado podía "conectarse" desde su app y volver a recibir pedidos. La columna `isActive` sigue existiendo en la base (no se borra ni se renombra: la sigue usando el proceso viejo mientras conviven ambos) pero este código ya no la lee ni la escribe. |
 | `isAvailable` | boolean | sí |  |  | `false` | Presencia: true mientras el chofer está "en línea" en su app (`PATCH /delivery/user/:userId/availability`). Sale de línea al desconectarse, al deshabilitarlo un admin, o al cerrar la app (el gateway de sockets lo saca del radar al desconectar). |
 
+Claves únicas compuestas: (`delivery_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_delivery_calificacion`: `CHECK (((calification IS NULL) OR ((calification >= (0)::double precision) AND (calification <= (5)::double precision))))`
+
 Índices (además de la clave primaria):
 - `IDX_8b64ee4e6e615c2082862f9e09`: `CREATE INDEX "IDX_8b64ee4e6e615c2082862f9e09" ON public.delivery USING btree (distributor_id)`
 - `IDX_a3b8af1ce2f6e143d416d83080`: `CREATE INDEX "IDX_a3b8af1ce2f6e143d416d83080" ON public.delivery USING btree (user_id)`
 - `IDX_c270386a78fdf46067bc9a94a7`: `CREATE INDEX "IDX_c270386a78fdf46067bc9a94a7" ON public.delivery USING gist (location)`
 - `REL_a3b8af1ce2f6e143d416d83080`: `CREATE UNIQUE INDEX "REL_a3b8af1ce2f6e143d416d83080" ON public.delivery USING btree (user_id)`
+- `UQ_delivery_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_delivery_id_distribuidora" ON public.delivery USING btree (delivery_id, distributor_id)`
 
 ### `distributor` — Distribuidora
 
@@ -593,6 +670,10 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `logo_key` | varchar(512) | no |  |  |  | Key de el logo en el bucket (`distributors/{distribuidora}/logo/{uuid}.{ext}`). |
 
+Restricciones `CHECK`:
+- `CHK_distributor_cuit`: `CHECK (((tax_id IS NULL) OR ((tax_id)::text ~ '^[0-9]{11}$'::text)))`
+- `CHK_distributor_slug`: `CHECK (((slug)::text ~ '^[a-z0-9]+(-[a-z0-9]+)*$'::text))`
+
 Índices (además de la clave primaria):
 - `IDX_02331b27890084627684d99ec5`: `CREATE UNIQUE INDEX "IDX_02331b27890084627684d99ec5" ON public.distributor USING btree (slug)`
 - `UQ_02331b27890084627684d99ec5b`: `CREATE UNIQUE INDEX "UQ_02331b27890084627684d99ec5b" ON public.distributor USING btree (slug)`
@@ -604,6 +685,9 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `distributor_id` | uuid | sí | PK | `distributor.distributor_id` |  | _(sin descripción documentada en el código)_ |
 | `doc_type` | varchar(40) | sí | PK |  |  | _(sin descripción documentada en el código)_ |
 | `last_number` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_document_sequence_valores`: `CHECK (((last_number >= 0) AND ((doc_type)::text ~ '^[a-z][a-z0-9_]{0,39}$'::text)))`
 
 ### `driver_liquidation` — LiquidacionComisiones
 
@@ -629,11 +713,20 @@ Claves únicas compuestas: (`distributor_id`, `serial`).
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
-Claves únicas compuestas: (`distributor_id`, `number`).
+Claves únicas compuestas: (`liquidation_id`, `distributor_id`), (`distributor_id`, `number`).
+
+Restricciones `CHECK`:
+- `CHK_driver_liquidation_anulada`: `CHECK (((status = 'voided'::driver_liquidation_status_enum) = (voided_at IS NOT NULL)))`
+- `CHK_driver_liquidation_aprobada`: `CHECK (((status <> ALL (ARRAY['approved'::driver_liquidation_status_enum, 'paid'::driver_liquidation_status_enum])) OR (approved_at IS NOT NULL)))`
+- `CHK_driver_liquidation_montos`: `CHECK (((gross >= (0)::numeric) AND (deductions >= (0)::numeric) AND (net = (gross - deductions))))`
+- `CHK_driver_liquidation_pagada`: `CHECK (((status = 'paid'::driver_liquidation_status_enum) = (paid_at IS NOT NULL)))`
+- `CHK_driver_liquidation_periodo`: `CHECK ((period_from <= period_to))`
 
 Índices (además de la clave primaria):
+- `EXC_driver_liquidation_periodo_solapado`: `CREATE INDEX "EXC_driver_liquidation_periodo_solapado" ON public.driver_liquidation USING gist (employee_id, daterange(period_from, period_to, '[]'::text)) WHERE (status <> 'voided'::driver_liquidation_status_enum)`
 - `IDX_driver_liquidation_distributor`: `CREATE INDEX "IDX_driver_liquidation_distributor" ON public.driver_liquidation USING btree (distributor_id)`
 - `IDX_driver_liquidation_empleado`: `CREATE INDEX "IDX_driver_liquidation_empleado" ON public.driver_liquidation USING btree (employee_id, status)`
+- `UQ_driver_liquidation_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_driver_liquidation_id_distribuidora" ON public.driver_liquidation USING btree (liquidation_id, distributor_id)`
 - `UQ_driver_liquidation_numero`: `CREATE UNIQUE INDEX "UQ_driver_liquidation_numero" ON public.driver_liquidation USING btree (distributor_id, number)`
 
 ### `driver_settlement` — RendicionChofer
@@ -665,6 +758,12 @@ Claves únicas compuestas: (`distributor_id`, `number`).
 
 Claves únicas compuestas: (`delivery_id`, `business_date`), (`distributor_id`, `number`).
 
+Restricciones `CHECK`:
+- `CHK_driver_settlement_aprobada`: `CHECK (((status = 'approved'::driver_settlement_status_enum) = (approved_at IS NOT NULL)))`
+- `CHK_driver_settlement_diferencia`: `CHECK (((difference IS NULL) OR (difference = ((declared_cash + driver_expenses) - expected_cash))))`
+- `CHK_driver_settlement_montos`: `CHECK (((expected_cash >= (0)::numeric) AND (driver_expenses >= (0)::numeric) AND ((declared_cash IS NULL) OR (declared_cash >= (0)::numeric))))`
+- `CHK_driver_settlement_presentada`: `CHECK (((status = 'open'::driver_settlement_status_enum) OR ((submitted_at IS NOT NULL) AND (declared_cash IS NOT NULL))))`
+
 Índices (además de la clave primaria):
 - `IDX_driver_settlement_chofer`: `CREATE INDEX "IDX_driver_settlement_chofer" ON public.driver_settlement USING btree (delivery_id)`
 - `IDX_driver_settlement_estado`: `CREATE INDEX "IDX_driver_settlement_estado" ON public.driver_settlement USING btree (distributor_id, status)`
@@ -682,6 +781,9 @@ Claves únicas compuestas: (`delivery_id`, `business_date`), (`distributor_id`, 
 | `entry_id` | uuid | sí | FK | `customer_account_entry.entry_id` |  | _(sin descripción documentada en el código)_ |
 | `amount` | numeric(12,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+
+Restricciones `CHECK`:
+- `CHK_driver_settlement_collection_importe`: `CHECK ((amount > (0)::numeric))`
 
 Índices (además de la clave primaria):
 - `IDX_driver_settlement_collection_rendicion`: `CREATE INDEX "IDX_driver_settlement_collection_rendicion" ON public.driver_settlement_collection USING btree (settlement_id)`
@@ -712,6 +814,9 @@ Restricciones `CHECK`:
 | `order_id` | uuid | sí | FK | `order.order_id` |  | _(sin descripción documentada en el código)_ |
 | `amount` | numeric(12,2) | sí |  |  |  | Lo que el chofer cobraba: el total menos la seña ya paga. |
 | `payment_method` | varchar(20) | sí |  |  |  | Medio de pago del pedido al rendirlo (copia). |
+
+Restricciones `CHECK`:
+- `CHK_driver_settlement_order_importe`: `CHECK ((amount >= (0)::numeric))`
 
 Índices (además de la clave primaria):
 - `IDX_driver_settlement_order_rendicion`: `CREATE INDEX "IDX_driver_settlement_order_rendicion" ON public.driver_settlement_order USING btree (settlement_id)`
@@ -753,7 +858,13 @@ Restricciones `CHECK`:
 | `deletedAt` | timestamptz | no |  |  |  | Sólo para altas erróneas; la salida normal es el egreso. |
 | `photo_key` | varchar(512) | no |  |  |  | Key de la foto del legajo en el bucket (`employees/{distribuidora}/{legajo}/{uuid}.{ext}`). Sólo la usa un legajo SIN cuenta: con cuenta, la foto es la del usuario. |
 
+Claves únicas compuestas: (`employee_id`, `distributor_id`).
+
 Restricciones `CHECK`:
+- `CHK_employee_cbu`: `CHECK (((bank_cbu IS NULL) OR ((bank_cbu)::text ~ '^[0-9]{22}$'::text)))`
+- `CHK_employee_cuil`: `CHECK (((cuil IS NULL) OR es_cuil_valido((cuil)::text)))`
+- `CHK_employee_email`: `CHECK (((personal_email IS NULL) OR ((personal_email)::text ~* '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$'::text)))`
+- `CHK_employee_nacimiento`: `CHECK (((birth_date IS NULL) OR (birth_date < hire_date)))`
 - `CHK_employee_status_termination`: `CHECK (((status = 'terminated'::employee_status_enum) = (termination_date IS NOT NULL)))`
 - `CHK_employee_termination_date`: `CHECK (((termination_date IS NULL) OR (termination_date >= hire_date)))`
 
@@ -764,6 +875,7 @@ Restricciones `CHECK`:
 - `UQ_employee_cuil_vigente`: `CREATE UNIQUE INDEX "UQ_employee_cuil_vigente" ON public.employee USING btree (distributor_id, cuil) WHERE ((cuil IS NOT NULL) AND ("deletedAt" IS NULL))`
 - `UQ_employee_document_vigente`: `CREATE UNIQUE INDEX "UQ_employee_document_vigente" ON public.employee USING btree (distributor_id, document_number) WHERE ("deletedAt" IS NULL)`
 - `UQ_employee_file_number_vigente`: `CREATE UNIQUE INDEX "UQ_employee_file_number_vigente" ON public.employee USING btree (distributor_id, file_number) WHERE ("deletedAt" IS NULL)`
+- `UQ_employee_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_employee_id_distribuidora" ON public.employee USING btree (employee_id, distributor_id)`
 - `UQ_employee_user_vigente`: `CREATE UNIQUE INDEX "UQ_employee_user_vigente" ON public.employee USING btree (user_id) WHERE ((user_id IS NOT NULL) AND ("deletedAt" IS NULL))`
 
 ### `employee_attendance` — JornadaDeTrabajo
@@ -786,6 +898,7 @@ Restricciones `CHECK`:
 - `CHK_employee_attendance_period`: `CHECK (((check_out_at IS NULL) OR (check_out_at > check_in_at)))`
 
 Índices (además de la clave primaria):
+- `EXC_employee_attendance_solapada`: `CREATE INDEX "EXC_employee_attendance_solapada" ON public.employee_attendance USING gist (employee_id, tstzrange(check_in_at, COALESCE(check_out_at, 'infinity'::timestamp with time zone)))`
 - `IDX_employee_attendance_day`: `CREATE INDEX "IDX_employee_attendance_day" ON public.employee_attendance USING btree (distributor_id, work_date)`
 - `IDX_employee_attendance_employee`: `CREATE INDEX "IDX_employee_attendance_employee" ON public.employee_attendance USING btree (employee_id, work_date)`
 - `UQ_employee_attendance_abierta`: `CREATE UNIQUE INDEX "UQ_employee_attendance_abierta" ON public.employee_attendance USING btree (employee_id) WHERE (check_out_at IS NULL)`
@@ -842,9 +955,14 @@ Restricciones `CHECK`:
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `cash_movement_id` | uuid | no | FK | `cash_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
+| `registered_by_driver` | boolean | sí |  |  | `false` | La registró el chofer desde su app: no elige caja y su medio de pago no se cambia entre efectivo propio y caja. |
+| `cash_payment_legacy` | boolean | sí |  |  | `false` | Carga `cash_box` anterior al asiento de caja: se resolvió fuera del libro y no se ofrece para asentar. |
 
 Restricciones `CHECK`:
 - `CHK_fuel_load_liters`: `CHECK ((liters > (0)::numeric))`
+- `CHK_fuel_load_odometro`: `CHECK ((odometer_km >= 0))`
+- `CHK_fuel_load_precio`: `CHECK ((unit_price > (0)::numeric))`
 - `CHK_fuel_load_total`: `CHECK ((total_amount >= (0)::numeric))`
 
 Índices (además de la clave primaria):
@@ -869,11 +987,17 @@ Restricciones `CHECK`:
 | `average_unit_cost` | numeric(12,2) | no |  |  |  | Costo promedio ponderado de las llenas compradas; lo mantiene la recepción de compras. |
 | `reservation_deficit` | integer | sí |  |  | `0` | Unidades reservadas por pedidos abiertos que el físico no cubre (`max(0, reservadas − llenas)`). Lo escribe el módulo de stock cuando una pérdida física deja el vendible en cero: con esto el vendible vale siempre `llenas − reservadas + deficit` y una cancelación o una entrada de llenas primero cubre el déficit en lugar de inflar el vendible (sobreventa). |
 
-Claves únicas compuestas: (`distributor_id`, `type`).
+Claves únicas compuestas: (`distributor_id`, `type`), (`gas_cylinder_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_gas_cylinder_tipo`: `CHECK ((btrim((type)::text) <> ''::text))`
+- `CHK_gas_cylinder_valores`: `CHECK (((price > (0)::numeric) AND (weight > (0)::numeric) AND (stock >= 0) AND (reservation_deficit >= 0) AND ((average_unit_cost IS NULL) OR (average_unit_cost >= (0)::numeric))))`
 
 Índices (además de la clave primaria):
 - `IDX_990b829fdf06cb282d835a5d72`: `CREATE INDEX "IDX_990b829fdf06cb282d835a5d72" ON public.gas_cylinder USING btree (distributor_id)`
 - `UQ_gas_cylinder_distribuidora_tipo`: `CREATE UNIQUE INDEX "UQ_gas_cylinder_distribuidora_tipo" ON public.gas_cylinder USING btree (distributor_id, type)`
+- `UQ_gas_cylinder_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_gas_cylinder_id_distribuidora" ON public.gas_cylinder USING btree (gas_cylinder_id, distributor_id)`
+- `UQ_gas_cylinder_tipo_normalizado`: `CREATE UNIQUE INDEX "UQ_gas_cylinder_tipo_normalizado" ON public.gas_cylinder USING btree (distributor_id, lower(btrim((type)::text)))`
 
 ### `gas_cylinder_promotion` — Promocion
 
@@ -887,7 +1011,7 @@ Claves únicas compuestas: (`distributor_id`, `type`).
 
 Restricciones `CHECK`:
 - `CHK_promocion_cantidad`: `CHECK ((quantity >= 2))`
-- `CHK_promocion_descuento`: `CHECK (((discount_percentage > (0)::numeric) AND (discount_percentage <= (100)::numeric)))`
+- `CHK_promocion_descuento`: `CHECK (((discount_percentage > (0)::numeric) AND (discount_percentage <= (99)::numeric)))`
 
 Índices (además de la clave primaria):
 - `UQ_promocion_producto_cantidad`: `CREATE UNIQUE INDEX "UQ_promocion_producto_cantidad" ON public.gas_cylinder_promotion USING btree (gas_cylinder_id, quantity) WHERE ("deletedAt" IS NULL)`
@@ -909,6 +1033,10 @@ Restricciones `CHECK`:
 | `resolvedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `moment` | incident_moment_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `photo_key` | varchar(512) | no |  |  |  | Key de la foto de la incidencia en el bucket (`incidents/{distribuidora}/{incidencia}/{uuid}.{ext}`). |
+
+Restricciones `CHECK`:
+- `CHK_incident_descripcion`: `CHECK ((btrim(description) <> ''::text))`
+- `CHK_incident_largo_de_textos`: `CHECK (((char_length(description) <= 1000) AND ((resolution_note IS NULL) OR (char_length(resolution_note) <= 1000))))`
 
 Índices (además de la clave primaria):
 - `IDX_8a89ba6c226022354d0d8b4ada`: `CREATE INDEX "IDX_8a89ba6c226022354d0d8b4ada" ON public.incident USING btree (order_id)`
@@ -978,6 +1106,11 @@ Restricciones `CHECK`:
 | `valid_from` | timestamptz | no |  |  |  | Inicio de la vigencia del documento (póliza, habilitación). Fecha de calendario, normalizada como `dueAt`. Sin ella, el costo del vehículo prorratea la póliza con un año hacia atrás desde el vencimiento. |
 | `employee_id` | uuid | no | FK | `employee.employee_id` |  | _(sin descripción documentada en el código)_ |
 | `details` | jsonb | no |  |  |  | Datos propios del tipo de documento (número de certificado, aseguradora, fecha del examen...). La forma la fija `plan.documentKind` (`domain/document-details.ts`). |
+
+Restricciones `CHECK`:
+- `CHK_maintenance_task_hecha_fecha`: `CHECK (((status <> 'done'::maintenance_task_status_enum) OR (performed_at IS NOT NULL)))`
+- `CHK_maintenance_task_un_sujeto`: `CHECK ((num_nonnulls(car_id, delivery_id, employee_id) = 1))`
+- `CHK_maintenance_task_valores`: `CHECK (((COALESCE(cost, (0)::numeric) >= (0)::numeric) AND (COALESCE(due_km, 0) >= 0) AND (COALESCE(odometer_km, 0) >= 0)))`
 
 Índices (además de la clave primaria):
 - `IDX_ec96001f6fe2869ae6b40f2dc8`: `CREATE INDEX "IDX_ec96001f6fe2869ae6b40f2dc8" ON public.maintenance_task USING btree (distributor_id)`
@@ -1071,17 +1204,31 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `zone_surcharge_value` | numeric(10,2) | no |  |  |  | Valor crudo de la zona al momento de pedir (monto o %, según el tipo). |
 | `zone_surcharge_amount` | numeric(10,2) | sí |  |  | `'0'::numeric` | Recargo YA calculado (monto en la moneda del pedido). 0 si no hay zona. |
 | `subtotal_items` | numeric(10,2) | sí |  |  |  | Subtotal de los ítems (ya con promociones), antes de cualquier recargo. |
-| `vehicle_car_id` | uuid | no |  |  |  | Snapshot del vehículo con el que se entrega, tomado al aceptar el pedido (manual, `PATCH /orders/:id/status` o despacho automático): el vehículo EN USO del chofer en ese momento (decisión de nahue del 30/09, "vehículo en uso"). Igual que `zone_name`/`zone_surcharge_ `, es una copia a propósito: si el chofer cambia de vehículo después, o el auto se edita o se borra, este pedido no cambia — queda la trazabilidad de con qué vehículo se entregó de verdad. `null` en pedidos sin chofer asignado todavía, o de antes de esta funcionalidad. |
+| `vehicle_car_id` | uuid | no | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
 | `vehicle_patent` | varchar(20) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `vehicle_brand` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `vehicle_model` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `payment_confirmed_at` | timestamptz | no |  |  |  | Cuándo se confirmó el cobro (pago recibido por el chofer o resolución del admin). |
-| `payment_confirmed_by` | uuid | no |  |  |  | Usuario que confirmó el cobro (el chofer, o el admin que resolvió el impago). |
+| `payment_confirmed_by` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `payment_resolution_note` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `payment_resolved_at` | timestamptz | no |  |  |  | Motivo con el que el admin resolvió un impago. |
-| `payment_resolved_by` | uuid | no |  |  |  | Admin que resolvió el impago. |
+| `payment_resolved_by` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `express_surcharge_amount` | numeric(10,2) | sí |  |  | `'0'::numeric` | Recargo express que se cobró al pedir (CU-147). Queda guardado aunque el pedido pase al reparto común (`express_degraded_at`), para poder explicar el total y saber cuánto reintegrar; el `total_amount` ya no lo incluye en ese caso. |
 | `express_degraded_at` | timestamptz | no |  |  |  | Cuándo ningún chofer en moto aceptó y el pedido pasó al reparto común (CU-149). |
+| `payment_surcharge_amount` | numeric(10,2) | sí |  |  | `'0'::numeric` | Recargo por medio de pago online (+10 % de MercadoPago o transferencia), calculado sobre el subtotal de los ítems más el recargo de zona. 0 si se paga en efectivo o a cuenta. Con el resto de los recargos explica el total (`CHK_order_total_formula`). |
+
+Claves únicas compuestas: (`order_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_order_aceptado_fecha`: `CHECK (((status <> ALL (ARRAY['accepted'::order_status_enum, 'on_the_way'::order_status_enum, 'delivered'::order_status_enum])) OR ("acceptedAt" IS NOT NULL)))`
+- `CHK_order_cancelado_motivo`: `CHECK (((status <> 'cancelled'::order_status_enum) OR (btrim(COALESCE("cancellationReason", ''::text)) <> ''::text)))`
+- `CHK_order_chofer_asignado`: `CHECK (((status <> ALL (ARRAY['accepted'::order_status_enum, 'on_the_way'::order_status_enum, 'delivered'::order_status_enum])) OR (delivery_id IS NOT NULL)))`
+- `CHK_order_en_camino_fecha`: `CHECK (((status <> ALL (ARRAY['on_the_way'::order_status_enum, 'delivered'::order_status_enum])) OR ("onTheWayAt" IS NOT NULL)))`
+- `CHK_order_entregado_fecha`: `CHECK (((status = 'delivered'::order_status_enum) = ("deliveredAt" IS NOT NULL)))`
+- `CHK_order_montos`: `CHECK ((("totalAmount" >= (0)::numeric) AND (subtotal_items >= (0)::numeric) AND (zone_surcharge_amount >= (0)::numeric) AND (express_surcharge_amount >= (0)::numeric) AND (payment_surcharge_amount >= (0)::numeric) AND (deposit_amount >= (0)::numeric)))`
+- `CHK_order_nota_de_impago_largo`: `CHECK (((payment_resolution_note IS NULL) OR ((char_length(payment_resolution_note) <= 500) AND (char_length(btrim(payment_resolution_note)) >= 10))))`
+- `CHK_order_pago_coherente`: `CHECK (((("paymentMethod" = 'cash'::order_paymentmethod_enum) = ("paymentType" = 'cash'::order_paymenttype_enum)) AND (("paymentMethod" = 'account'::order_paymentmethod_enum) = ("paymentType" = 'account'::order_paymenttype_enum))))`
+- `CHK_order_total_formula`: `CHECK (("totalAmount" = (((subtotal_items + zone_surcharge_amount) + payment_surcharge_amount) + CASE WHEN (express_degraded_at IS NULL) THEN express_surcharge_amount ELSE (0)::numeric END)))`
 
 Índices (además de la clave primaria):
 - `IDX_3adf34152c77fdb4e8f7346c5f`: `CREATE UNIQUE INDEX "IDX_3adf34152c77fdb4e8f7346c5f" ON public."order" USING btree ("gatewayPaymentId") WHERE ("gatewayPaymentId" IS NOT NULL)`
@@ -1090,6 +1237,7 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 - `IDX_cd7812c96209c5bdd48a6b858b`: `CREATE INDEX "IDX_cd7812c96209c5bdd48a6b858b" ON public."order" USING btree (customer_id)`
 - `IDX_df56039592a4bbbd3fa4a19f14`: `CREATE INDEX "IDX_df56039592a4bbbd3fa4a19f14" ON public."order" USING btree (distributor_id)`
 - `IDX_f437a76442f23c89ad7652b2a4`: `CREATE INDEX "IDX_f437a76442f23c89ad7652b2a4" ON public."order" USING btree ("deliveredAt")`
+- `UQ_order_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_order_id_distribuidora" ON public."order" USING btree (order_id, distributor_id)`
 - `idx_order_dist_status_delivered`: `CREATE INDEX idx_order_dist_status_delivered ON public."order" USING btree (distributor_id, status, "deliveredAt")`
 - `idx_order_status_delivery`: `CREATE INDEX idx_order_status_delivery ON public."order" USING btree (status, delivery_id)`
 
@@ -1117,11 +1265,16 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `expiresAt` | timestamptz | sí |  |  |  | Momento hasta el cual la oferta es válida (offered_at + TTL). timestamptz (UTC) para que la comparación `expiresAt < now()` del cron sea correcta sin importar la TZ del servidor — con `timestamp` naive el timeout se rompe. |
 | `offeredAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Restricciones `CHECK`:
+- `CHK_order_dispatch_offer_vencimiento`: `CHECK (("expiresAt" > "offeredAt"))`
+
 Índices (además de la clave primaria):
 - `IDX_1231f4249963aa2efb93749a8e`: `CREATE INDEX "IDX_1231f4249963aa2efb93749a8e" ON public.order_dispatch_offer USING btree (order_id)`
 - `IDX_21b60d43f182e2b1e8a30ea0a5`: `CREATE INDEX "IDX_21b60d43f182e2b1e8a30ea0a5" ON public.order_dispatch_offer USING btree (status)`
 - `IDX_830f3888d1424414675f1c184d`: `CREATE INDEX "IDX_830f3888d1424414675f1c184d" ON public.order_dispatch_offer USING btree (distributor_id)`
 - `IDX_9ff85bc9c62717502d1ad68216`: `CREATE INDEX "IDX_9ff85bc9c62717502d1ad68216" ON public.order_dispatch_offer USING btree ("expiresAt")`
+- `UQ_order_dispatch_offer_aceptada`: `CREATE UNIQUE INDEX "UQ_order_dispatch_offer_aceptada" ON public.order_dispatch_offer USING btree (order_id) WHERE (status = 'accepted'::order_dispatch_offer_status_enum)`
+- `UQ_order_dispatch_offer_viva`: `CREATE UNIQUE INDEX "UQ_order_dispatch_offer_viva" ON public.order_dispatch_offer USING btree (order_id, driver_id) WHERE (status = 'offered'::order_dispatch_offer_status_enum)`
 - `idx_offer_order_status`: `CREATE INDEX idx_offer_order_status ON public.order_dispatch_offer USING btree (order_id, status)`
 - `idx_offer_status_expires`: `CREATE INDEX idx_offer_status_expires ON public.order_dispatch_offer USING btree (status, "expiresAt")`
 
@@ -1135,6 +1288,15 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `quantity` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `unitPrice` | numeric(10,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `subtotal` | numeric(10,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+
+Claves únicas compuestas: (`order_id`, `gas_cylinder_id`).
+
+Restricciones `CHECK`:
+- `CHK_order_item_cantidad`: `CHECK ((quantity > 0))`
+- `CHK_order_item_importes`: `CHECK ((("unitPrice" >= (0)::numeric) AND (subtotal >= (0)::numeric)))`
+
+Índices (además de la clave primaria):
+- `UQ_order_item_pedido_producto`: `CREATE UNIQUE INDEX "UQ_order_item_pedido_producto" ON public.order_item USING btree (order_id, gas_cylinder_id)`
 
 ### `order_status_history` — CambioEstadoPedido
 
@@ -1172,6 +1334,9 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Restricciones `CHECK`:
+- `CHK_payment_importe`: `CHECK ((amount > (0)::numeric))`
+
 Índices (además de la clave primaria):
 - `IDX_05b8eaefed5471a643ee578c74`: `CREATE UNIQUE INDEX "IDX_05b8eaefed5471a643ee578c74" ON public.payment USING btree (gateway_payment_id) WHERE (gateway_payment_id IS NOT NULL)`
 - `IDX_0cdad15fa39dd1ebace139096f`: `CREATE INDEX "IDX_0cdad15fa39dd1ebace139096f" ON public.payment USING btree (distributor_id)`
@@ -1192,12 +1357,17 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `error_message` | text | no |  |  |  | Por qué falló el último intento. |
 | `attempts` | integer | sí |  |  | `0` | _(sin descripción documentada en el código)_ |
 | `refunded_at` | timestamptz | no |  |  |  | Cuándo la pasarela confirmó la devolución. |
-| `requested_by_user_id` | uuid | no |  |  |  | Quién pidió el último reintento manual (null: lo hizo el sistema). |
+| `requested_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `refunded_baseline` | numeric(10,2) | no |  |  |  | Lo que la pasarela ya había devuelto del pago antes del último intento: permite saber, después de un corte o un timeout, si ese intento se aplicó. |
 
 Claves únicas compuestas: (`payment_id`, `kind`).
+
+Restricciones `CHECK`:
+- `CHK_payment_refund_exito_fecha`: `CHECK (((status <> 'succeeded'::payment_refund_status_enum) OR (refunded_at IS NOT NULL)))`
+- `CHK_payment_refund_importe`: `CHECK ((amount > (0)::numeric))`
+- `CHK_payment_refund_intentos`: `CHECK ((attempts >= 0))`
 
 Índices (además de la clave primaria):
 - `IDX_9649d0833082fad8f431ff1381`: `CREATE INDEX "IDX_9649d0833082fad8f431ff1381" ON public.payment_refund USING btree (distributor_id)`
@@ -1226,11 +1396,19 @@ Claves únicas compuestas: (`payment_id`, `kind`).
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `close_reason` | text | no |  |  |  | Motivo del cierre con faltante (`closed_short`). |
 
-Claves únicas compuestas: (`distributor_id`, `number`).
+Claves únicas compuestas: (`purchase_order_id`, `distributor_id`), (`distributor_id`, `number`).
+
+Restricciones `CHECK`:
+- `CHK_purchase_order_cancelada`: `CHECK (((status <> 'cancelled'::purchase_order_status_enum) OR (cancel_reason IS NOT NULL)))`
+- `CHK_purchase_order_cerrada_corta`: `CHECK (((status <> 'closed_short'::purchase_order_status_enum) OR (close_reason IS NOT NULL)))`
+- `CHK_purchase_order_emitida`: `CHECK (((status = ANY (ARRAY['draft'::purchase_order_status_enum, 'cancelled'::purchase_order_status_enum])) OR (issued_at IS NOT NULL)))`
+- `CHK_purchase_order_fecha_esperada`: `CHECK (((expected_date IS NULL) OR (expected_date >= (("createdAt" AT TIME ZONE 'America/Argentina/Buenos_Aires'::text))::date)))`
+- `CHK_purchase_order_total`: `CHECK ((total_amount >= (0)::numeric))`
 
 Índices (además de la clave primaria):
 - `IDX_purchase_order_estado`: `CREATE INDEX "IDX_purchase_order_estado" ON public.purchase_order USING btree (distributor_id, status)`
 - `IDX_purchase_order_proveedor`: `CREATE INDEX "IDX_purchase_order_proveedor" ON public.purchase_order USING btree (supplier_id)`
+- `UQ_purchase_order_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_purchase_order_id_distribuidora" ON public.purchase_order USING btree (purchase_order_id, distributor_id)`
 - `UQ_purchase_order_numero`: `CREATE UNIQUE INDEX "UQ_purchase_order_numero" ON public.purchase_order USING btree (distributor_id, number)`
 
 ### `purchase_order_item` — ItemOrdenDeCompra
@@ -1273,11 +1451,11 @@ Restricciones `CHECK`:
 | `received_by_user_id` | uuid | sí | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `total_amount` | numeric(12,2) | sí |  |  | `'0'::numeric` | _(sin descripción documentada en el código)_ |
 | `payment_status` | purchase_payment_status_enum | sí |  |  | `'unpaid'::purchase_payment_status_enum` | _(sin descripción documentada en el código)_ |
-| `cash_movement_id` | uuid | no |  |  |  | Lo completa la caja (M-D); sin clave foránea hasta que exista la tabla. |
+| `cash_movement_id` | uuid | no | FK | `cash_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
 | `status` | purchase_receipt_status_enum | sí |  |  | `'confirmed'::purchase_receipt_status_enum` | _(sin descripción documentada en el código)_ |
 | `void_reason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `voided_at` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `voided_by_user_id` | uuid | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `voided_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `batch_id` | uuid | sí |  |  |  | Lote del libro de movimientos que generó la recepción. |
 | `void_batch_id` | uuid | no |  |  |  | Lote del contraasiento, si se anuló. |
 | `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
@@ -1285,6 +1463,11 @@ Restricciones `CHECK`:
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
 Claves únicas compuestas: (`distributor_id`, `number`), (`distributor_id`, `supplier_id`, `supplier_document_type`, `supplier_document_number`).
+
+Restricciones `CHECK`:
+- `CHK_purchase_receipt_anulacion_datos`: `CHECK (((status <> 'voided'::purchase_receipt_status_enum) OR ((void_reason IS NOT NULL) AND (voided_by_user_id IS NOT NULL))))`
+- `CHK_purchase_receipt_anulada_fecha`: `CHECK (((status = 'voided'::purchase_receipt_status_enum) = (voided_at IS NOT NULL)))`
+- `CHK_purchase_receipt_total`: `CHECK ((total_amount >= (0)::numeric))`
 
 Índices (además de la clave primaria):
 - `IDX_purchase_receipt_fecha`: `CREATE INDEX "IDX_purchase_receipt_fecha" ON public.purchase_receipt USING btree (distributor_id, received_at)`
@@ -1336,6 +1519,10 @@ Restricciones `CHECK`:
 | `hidden_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 
 Claves únicas compuestas: (`order_id`, `from_role`).
+
+Restricciones `CHECK`:
+- `CHK_rating_largo_de_textos`: `CHECK ((((comment IS NULL) OR (char_length(comment) <= 500)) AND ((hidden_reason IS NULL) OR (char_length(hidden_reason) <= 500))))`
+- `CHK_rating_valores`: `CHECK ((((stars >= 1) AND (stars <= 5)) AND (from_user_id <> to_user_id) AND ((NOT hidden) OR (hidden_at IS NOT NULL))))`
 
 Índices (además de la clave primaria):
 - `IDX_6f590ebbc097c4ed21d5d3e11e`: `CREATE INDEX "IDX_6f590ebbc097c4ed21d5d3e11e" ON public.rating USING btree (to_user_id)`
@@ -1411,10 +1598,14 @@ Claves únicas compuestas: (`order_id`, `from_role`).
 | `order_id` | uuid | sí | FK | `order.order_id` |  | _(sin descripción documentada en el código)_ |
 | `sequence` | integer | sí |  |  |  | _(sin descripción documentada en el código)_ |
 
-Claves únicas compuestas: (`batch_id`, `order_id`).
+Claves únicas compuestas: (`batch_id`, `order_id`), (`batch_id`, `sequence`).
+
+Restricciones `CHECK`:
+- `CHK_route_batch_stop_secuencia`: `CHECK ((sequence >= 1))`
 
 Índices (además de la clave primaria):
 - `UQ_route_batch_stop_batch_order`: `CREATE UNIQUE INDEX "UQ_route_batch_stop_batch_order" ON public.route_batch_stop USING btree (batch_id, order_id)`
+- `UQ_route_batch_stop_secuencia`: `CREATE UNIQUE INDEX "UQ_route_batch_stop_secuencia" ON public.route_batch_stop USING btree (batch_id, sequence)`
 
 ### `stock_adjustment` — AjusteDeStock
 
@@ -1431,6 +1622,9 @@ Claves únicas compuestas: (`batch_id`, `order_id`).
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
 Claves únicas compuestas: (`distributor_id`, `number`).
+
+Restricciones `CHECK`:
+- `CHK_stock_adjustment_notas`: `CHECK ((btrim(notes) <> ''::text))`
 
 Índices (además de la clave primaria):
 - `IDX_stock_adjustment_fecha`: `CREATE INDEX "IDX_stock_adjustment_fecha" ON public.stock_adjustment USING btree (distributor_id, "createdAt")`
@@ -1488,6 +1682,8 @@ Restricciones `CHECK`:
 | `car_id` | uuid | no | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`location_id`, `distributor_id`).
+
 Restricciones `CHECK`:
 - `CHK_stock_location_kind`: `CHECK (((kind = 'warehouse'::stock_location_kind_enum) = (warehouse_id IS NOT NULL)))`
 - `CHK_stock_location_one_owner`: `CHECK ((num_nonnulls(warehouse_id, car_id) = 1))`
@@ -1495,6 +1691,7 @@ Restricciones `CHECK`:
 Índices (además de la clave primaria):
 - `IDX_stock_location_distributor`: `CREATE INDEX "IDX_stock_location_distributor" ON public.stock_location USING btree (distributor_id)`
 - `UQ_stock_location_car`: `CREATE UNIQUE INDEX "UQ_stock_location_car" ON public.stock_location USING btree (car_id)`
+- `UQ_stock_location_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_stock_location_id_distribuidora" ON public.stock_location USING btree (location_id, distributor_id)`
 - `UQ_stock_location_warehouse`: `CREATE UNIQUE INDEX "UQ_stock_location_warehouse" ON public.stock_location USING btree (warehouse_id)`
 
 ### `stock_movement` — MovimientoDeStock
@@ -1519,21 +1716,25 @@ Restricciones `CHECK`:
 | `occurred_at` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`movement_id`, `distributor_id`).
+
 Restricciones `CHECK`:
 - `CHK_stock_movement_cantidad`: `CHECK ((quantity > 0))`
 - `CHK_stock_movement_destino_coherente`: `CHECK (((to_location_id IS NULL) = (to_condition IS NULL)))`
 - `CHK_stock_movement_origen_coherente`: `CHECK (((from_location_id IS NULL) = (from_condition IS NULL)))`
+- `CHK_stock_movement_origen_destino_distintos`: `CHECK ((NOT ((from_location_id = to_location_id) AND (from_condition = to_condition))))`
 - `CHK_stock_movement_origen_o_destino`: `CHECK (((from_location_id IS NOT NULL) OR (to_location_id IS NOT NULL)))`
 
 Índices (además de la clave primaria):
 - `IDX_stock_movement_alta`: `CREATE INDEX "IDX_stock_movement_alta" ON public.stock_movement USING btree (distributor_id, "createdAt")`
-- `IDX_stock_movement_destino`: `CREATE INDEX "IDX_stock_movement_destino" ON public.stock_movement USING btree (to_location_id)`
+- `IDX_stock_movement_destino`: `CREATE INDEX "IDX_stock_movement_destino" ON public.stock_movement USING btree (to_location_id, gas_cylinder_id, to_condition)`
 - `IDX_stock_movement_fecha`: `CREATE INDEX "IDX_stock_movement_fecha" ON public.stock_movement USING btree (distributor_id, occurred_at)`
 - `IDX_stock_movement_garrafa_fecha`: `CREATE INDEX "IDX_stock_movement_garrafa_fecha" ON public.stock_movement USING btree (gas_cylinder_id, occurred_at)`
 - `IDX_stock_movement_lote`: `CREATE INDEX "IDX_stock_movement_lote" ON public.stock_movement USING btree (batch_id)`
-- `IDX_stock_movement_origen`: `CREATE INDEX "IDX_stock_movement_origen" ON public.stock_movement USING btree (from_location_id)`
+- `IDX_stock_movement_origen`: `CREATE INDEX "IDX_stock_movement_origen" ON public.stock_movement USING btree (from_location_id, gas_cylinder_id, from_condition)`
 - `IDX_stock_movement_referencia`: `CREATE INDEX "IDX_stock_movement_referencia" ON public.stock_movement USING btree (reference_type, reference_id)`
 - `UQ_stock_movement_contraasiento`: `CREATE UNIQUE INDEX "UQ_stock_movement_contraasiento" ON public.stock_movement USING btree (reversed_movement_id) WHERE (reversed_movement_id IS NOT NULL)`
+- `UQ_stock_movement_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_stock_movement_id_distribuidora" ON public.stock_movement USING btree (movement_id, distributor_id)`
 - `UQ_stock_movement_pedido`: `CREATE UNIQUE INDEX "UQ_stock_movement_pedido" ON public.stock_movement USING btree (reference_id, gas_cylinder_id, reason) WHERE ((reference_type = 'order'::stock_movement_reference_type_enum) AND (reason <> 'reversal'::stock_movement_reason_enum))`
 
 ### `stock_reconciliation_alert` — Aviso de conciliación de stock
@@ -1602,9 +1803,15 @@ Restricciones `CHECK`:
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`supplier_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_supplier_cuit`: `CHECK (es_cuit_valido((cuit)::text))`
+
 Índices (además de la clave primaria):
 - `IDX_supplier_distributor`: `CREATE INDEX "IDX_supplier_distributor" ON public.supplier USING btree (distributor_id)`
 - `UQ_supplier_cuit_vigente`: `CREATE UNIQUE INDEX "UQ_supplier_cuit_vigente" ON public.supplier USING btree (distributor_id, cuit) WHERE ("deletedAt" IS NULL)`
+- `UQ_supplier_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_supplier_id_distribuidora" ON public.supplier USING btree (supplier_id, distributor_id)`
 
 ### `time_slot` — FranjaHoraria
 
@@ -1620,8 +1827,17 @@ Restricciones `CHECK`:
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`time_slot_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_time_slot_capacidad`: `CHECK ((capacity > 0))`
+- `CHK_time_slot_horario`: `CHECK (("startTime" < "endTime"))`
+
 Índices (además de la clave primaria):
+- `EXC_time_slot_solapada`: `CREATE INDEX "EXC_time_slot_solapada" ON public.time_slot USING gist (distributor_id, tsrange(('2000-01-01 00:00:00'::timestamp without time zone + ("startTime")::interval), ('2000-01-01 00:00:00'::timestamp without time zone + ("endTime")::interval))) WHERE ("isActive" AND ("startTime" IS NOT NULL) AND ("endTime" IS NOT NULL))`
 - `IDX_e87ae54beaee42b885813deb8e`: `CREATE INDEX "IDX_e87ae54beaee42b885813deb8e" ON public.time_slot USING btree (distributor_id)`
+- `UQ_time_slot_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_time_slot_id_distribuidora" ON public.time_slot USING btree (time_slot_id, distributor_id)`
+- `UQ_time_slot_nombre_activa`: `CREATE UNIQUE INDEX "UQ_time_slot_nombre_activa" ON public.time_slot USING btree (distributor_id, lower((name)::text)) WHERE "isActive"`
 
 ### `tire` — Neumatico
 
@@ -1643,6 +1859,10 @@ Restricciones `CHECK`:
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
 Claves únicas compuestas: (`distributor_id`, `serial_number`).
+
+Restricciones `CHECK`:
+- `CHK_tire_montaje`: `CHECK (((status = 'mounted'::tire_status_enum) = ((car_id IS NOT NULL) AND ("position" IS NOT NULL))))`
+- `CHK_tire_valores`: `CHECK (((cost >= (0)::numeric) AND (km_traveled >= 0) AND (retread_count >= 0)))`
 
 Índices (además de la clave primaria):
 - `UQ_tire_posicion_ocupada`: `CREATE UNIQUE INDEX "UQ_tire_posicion_ocupada" ON public.tire USING btree (car_id, "position") WHERE (status = 'mounted'::tire_status_enum)`
@@ -1689,11 +1909,17 @@ Claves únicas compuestas: (`distributor_id`, `serial_number`).
 | `alerted_at` | timestamptz | no |  |  |  | Cuándo se avisó el vencimiento (CU-326); `null` = sin avisar. |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
+| `cash_movement_id` | uuid | no | FK | `cash_movement.movement_id` |  | _(sin descripción documentada en el código)_ |
 
 Claves únicas compuestas: (`distributor_id`, `jurisdiction`, `act_number`).
 
 Restricciones `CHECK`:
 - `CHK_traffic_fine_amount`: `CHECK ((amount > (0)::numeric))`
+- `CHK_traffic_fine_anulada_fecha`: `CHECK (((status <> 'voided'::traffic_fine_status_enum) OR (voided_at IS NOT NULL)))`
+- `CHK_traffic_fine_importe_pagado`: `CHECK (((paid_amount IS NULL) OR (paid_amount > (0)::numeric)))`
+- `CHK_traffic_fine_pagada_datos`: `CHECK (((status <> 'paid'::traffic_fine_status_enum) OR ((paid_at IS NOT NULL) AND (paid_amount IS NOT NULL))))`
+- `CHK_traffic_fine_pago_contra_importe`: `CHECK (((paid_amount IS NULL) OR (paid_amount <= amount)))`
+- `CHK_traffic_fine_pago_voluntario`: `CHECK (((voluntary_payment_amount IS NULL) OR ((voluntary_payment_amount > (0)::numeric) AND (voluntary_payment_amount <= amount))))`
 
 Índices (además de la clave primaria):
 - `IDX_traffic_fine_car`: `CREATE INDEX "IDX_traffic_fine_car" ON public.traffic_fine USING btree (car_id, occurred_at)`
@@ -1725,7 +1951,13 @@ Restricciones `CHECK`:
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
-Claves únicas compuestas: (`distributor_id`, `number`).
+Claves únicas compuestas: (`load_id`, `distributor_id`), (`distributor_id`, `number`).
+
+Restricciones `CHECK`:
+- `CHK_truck_load_cancelada`: `CHECK (((status <> 'cancelled'::truck_load_status_enum) OR (cancel_reason IS NOT NULL)))`
+- `CHK_truck_load_cierre`: `CHECK (((status <> ALL (ARRAY['closed'::truck_load_status_enum, 'closed_with_difference'::truck_load_status_enum, 'cancelled'::truck_load_status_enum])) OR (closed_at IS NOT NULL)))`
+- `CHK_truck_load_regreso`: `CHECK (((status <> ALL (ARRAY['returned'::truck_load_status_enum, 'closed'::truck_load_status_enum, 'closed_with_difference'::truck_load_status_enum])) OR (returned_at IS NOT NULL)))`
+- `CHK_truck_load_salida`: `CHECK (((status = ANY (ARRAY['loading'::truck_load_status_enum, 'cancelled'::truck_load_status_enum])) OR (departed_at IS NOT NULL)))`
 
 Índices (además de la clave primaria):
 - `IDX_truck_load_camion`: `CREATE INDEX "IDX_truck_load_camion" ON public.truck_load USING btree (car_id)`
@@ -1734,6 +1966,7 @@ Claves únicas compuestas: (`distributor_id`, `number`).
 - `IDX_truck_load_fecha`: `CREATE INDEX "IDX_truck_load_fecha" ON public.truck_load USING btree (distributor_id, business_date)`
 - `UQ_truck_load_camion_abierta`: `CREATE UNIQUE INDEX "UQ_truck_load_camion_abierta" ON public.truck_load USING btree (car_id) WHERE (status = ANY (ARRAY['loading'::truck_load_status_enum, 'on_route'::truck_load_status_enum, 'returned'::truck_load_status_enum]))`
 - `UQ_truck_load_chofer_abierta`: `CREATE UNIQUE INDEX "UQ_truck_load_chofer_abierta" ON public.truck_load USING btree (delivery_id) WHERE (status = ANY (ARRAY['loading'::truck_load_status_enum, 'on_route'::truck_load_status_enum, 'returned'::truck_load_status_enum]))`
+- `UQ_truck_load_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_truck_load_id_distribuidora" ON public.truck_load USING btree (load_id, distributor_id)`
 - `UQ_truck_load_numero`: `CREATE UNIQUE INDEX "UQ_truck_load_numero" ON public.truck_load USING btree (distributor_id, number)`
 
 ### `truck_load_item` — ItemCarga
@@ -1783,11 +2016,15 @@ Restricciones `CHECK`:
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `photo_key` | varchar(512) | no |  |  |  | Key de la foto de perfil en el bucket (`users/{usuario}/{uuid}.{ext}`). |
 
+Restricciones `CHECK`:
+- `CHK_user_email`: `CHECK (((email IS NULL) OR ((email)::text ~* '^[^@[:space:]]+@[^@[:space:]]+[.][^@[:space:]]+$'::text)))`
+- `CHK_user_telefono`: `CHECK (((phone_number IS NULL) OR ((phone_number)::text ~ '^[+][1-9][0-9]{7,14}$'::text)))`
+
 Índices (además de la clave primaria):
-- `IDX_user_email_lower`: `CREATE INDEX "IDX_user_email_lower" ON public."user" USING btree (lower((email)::text))`
 - `UQ_01eea41349b6c9275aec646eee0`: `CREATE UNIQUE INDEX "UQ_01eea41349b6c9275aec646eee0" ON public."user" USING btree (phone_number)`
 - `UQ_40fe3048b17f675b652c1999270`: `CREATE UNIQUE INDEX "UQ_40fe3048b17f675b652c1999270" ON public."user" USING btree (firebase_uid)`
 - `UQ_e12875dfb3b1d92d7d7c5377e22`: `CREATE UNIQUE INDEX "UQ_e12875dfb3b1d92d7d7c5377e22" ON public."user" USING btree (email)`
+- `UQ_user_email_minusculas`: `CREATE UNIQUE INDEX "UQ_user_email_minusculas" ON public."user" USING btree (lower((email)::text))`
 
 ### `user_address` — DireccionEntrega
 
@@ -1812,6 +2049,7 @@ Restricciones `CHECK`:
 
 Índices (además de la clave primaria):
 - `IDX_ef8ba785cbfbb81849828b38e7`: `CREATE INDEX "IDX_ef8ba785cbfbb81849828b38e7" ON public.user_address USING gist (location)`
+- `UQ_user_address_principal`: `CREATE UNIQUE INDEX "UQ_user_address_principal" ON public.user_address USING btree (user_id) WHERE ("isDefault" AND ("deletedAt" IS NULL))`
 
 ### `vehicle_accident` — Siniestro
 
@@ -1840,6 +2078,10 @@ Restricciones `CHECK`:
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 
+Restricciones `CHECK`:
+- `CHK_vehicle_accident_cerrado_fecha`: `CHECK (((status <> 'closed'::vehicle_accident_status_enum) OR (closed_at IS NOT NULL)))`
+- `CHK_vehicle_accident_montos`: `CHECK (((COALESCE(repair_cost, (0)::numeric) >= (0)::numeric) AND (COALESCE(insurer_reimbursement, (0)::numeric) >= (0)::numeric) AND (COALESCE(deductible_amount, (0)::numeric) >= (0)::numeric) AND ((insurer_reimbursement IS NULL) OR (repair_cost IS NULL) OR (insurer_reimbursement <= repair_cost))))`
+
 Índices (además de la clave primaria):
 - `IDX_vehicle_accident_car`: `CREATE INDEX "IDX_vehicle_accident_car" ON public.vehicle_accident USING btree (car_id, occurred_at)`
 - `IDX_vehicle_accident_status`: `CREATE INDEX "IDX_vehicle_accident_status" ON public.vehicle_accident USING btree (distributor_id, status)`
@@ -1858,7 +2100,12 @@ Restricciones `CHECK`:
 | `released_by_user_id` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `note` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 
+Restricciones `CHECK`:
+- `CHK_vehicle_assignment_periodo`: `CHECK (((released_at IS NULL) OR (released_at >= assigned_at)))`
+
 Índices (además de la clave primaria):
+- `EXC_vehicle_assignment_chofer_solapada`: `CREATE INDEX "EXC_vehicle_assignment_chofer_solapada" ON public.vehicle_assignment USING gist (delivery_id, tstzrange(assigned_at, COALESCE(released_at, 'infinity'::timestamp with time zone)))`
+- `EXC_vehicle_assignment_vehiculo_solapada`: `CREATE INDEX "EXC_vehicle_assignment_vehiculo_solapada" ON public.vehicle_assignment USING gist (car_id, tstzrange(assigned_at, COALESCE(released_at, 'infinity'::timestamp with time zone)))`
 - `IDX_1f986e62c32ac5ee2d8d7eb133`: `CREATE INDEX "IDX_1f986e62c32ac5ee2d8d7eb133" ON public.vehicle_assignment USING btree (distributor_id)`
 - `UQ_vehicle_assignment_car_abierta`: `CREATE UNIQUE INDEX "UQ_vehicle_assignment_car_abierta" ON public.vehicle_assignment USING btree (car_id) WHERE (released_at IS NULL)`
 - `UQ_vehicle_assignment_delivery_abierta`: `CREATE UNIQUE INDEX "UQ_vehicle_assignment_delivery_abierta" ON public.vehicle_assignment USING btree (delivery_id) WHERE (released_at IS NULL)`
@@ -1876,6 +2123,9 @@ Restricciones `CHECK`:
 | `route_hours` | numeric(6,2) | sí |  |  | `'0'::numeric` | _(sin descripción documentada en el código)_ |
 
 Claves únicas compuestas: (`car_id`, `day`).
+
+Restricciones `CHECK`:
+- `CHK_vehicle_usage_log_valores`: `CHECK (((km >= (0)::numeric) AND (orders >= 0) AND (route_hours >= (0)::numeric)))`
 
 Índices (además de la clave primaria):
 - `IDX_8d4be9c7008fc808b4900a83a5`: `CREATE INDEX "IDX_8d4be9c7008fc808b4900a83a5" ON public.vehicle_usage_log USING btree (distributor_id)`
@@ -1897,16 +2147,22 @@ Claves únicas compuestas: (`car_id`, `day`).
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `deletedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 
+Claves únicas compuestas: (`warehouse_id`, `distributor_id`).
+
+Restricciones `CHECK`:
+- `CHK_warehouse_codigo`: `CHECK (((code)::text ~ '^[A-Z0-9_-]{1,12}$'::text))`
+
 Índices (además de la clave primaria):
 - `IDX_warehouse_distributor`: `CREATE INDEX "IDX_warehouse_distributor" ON public.warehouse USING btree (distributor_id)`
 - `UQ_warehouse_code_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_code_vigente" ON public.warehouse USING btree (distributor_id, code) WHERE ("deletedAt" IS NULL)`
 - `UQ_warehouse_default_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL))`
+- `UQ_warehouse_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_warehouse_id_distribuidora" ON public.warehouse USING btree (warehouse_id, distributor_id)`
 
-> **Cobertura de las descripciones.** 154 de 972 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 152 de 977 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
-No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 230 relaciones del dominio están todas declaradas.
+No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN KEY` se declararon el 25/09/2026 (migración `DeclararRelacionesSinClaveForanea`). Hoy las 293 claves foráneas del dominio (238 simples y 55 compuestas por distribuidora) están todas declaradas.
 
 ### 1. Baja del envase y oferta de retiro
 

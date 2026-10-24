@@ -18,29 +18,6 @@ skinparam entity<<propuesto>> {
 hide circle
 skinparam linetype polyline
 
-entity "fuel_load" as e_fuel_load {
-  {field} **fuel_load_id** : uuid * <<PK>>
-  {field} //distributor_id// : uuid * <<FK>>
-  {field} //car_id// : uuid * <<FK>>
-  {field} //employee_id// : uuid <<FK>>
-  {field} loaded_at : timestamptz *
-  {field} fuel_type : fuel_type_enum *
-  {field} liters : numeric(10,2) *
-  {field} unit_price : numeric(12,3) *
-  {field} total_amount : numeric(12,2) *
-  {field} odometer_km : integer *
-  {field} is_full_tank : boolean *
-  {field} station : varchar(120)
-  {field} payment_method : fuel_payment_method_enum *
-  {field} receipt_number : varchar(40)
-  {field} anomaly : boolean *
-  {field} notes : text
-  {field} odometer_correction_note : text
-  {field} //created_by_user_id// : uuid * <<FK>>
-  {field} createdAt : timestamptz *
-  {field} updatedAt : timestamptz *
-  {field} deletedAt : timestamptz
-}
 entity "tire" as e_tire {
   {field} **tire_id** : uuid * <<PK>>
   {field} //distributor_id// : uuid * <<FK>>
@@ -54,28 +31,6 @@ entity "tire" as e_tire {
   {field} mounted_odometer_km : integer
   {field} km_traveled : integer *
   {field} retread_count : integer *
-  {field} createdAt : timestamptz *
-  {field} updatedAt : timestamptz *
-}
-entity "traffic_fine" as e_traffic_fine {
-  {field} **fine_id** : uuid * <<PK>>
-  {field} //distributor_id// : uuid * <<FK>>
-  {field} //car_id// : uuid * <<FK>>
-  {field} //employee_id// : uuid <<FK>>
-  {field} occurred_at : timestamptz *
-  {field} jurisdiction : varchar(80) *
-  {field} act_number : varchar(40) *
-  {field} infraction : text *
-  {field} amount : numeric(12,2) *
-  {field} voluntary_payment_amount : numeric(12,2)
-  {field} due_date : date
-  {field} status : traffic_fine_status_enum *
-  {field} paid_at : timestamptz
-  {field} paid_amount : numeric(12,2)
-  {field} charged_to_employee : boolean *
-  {field} void_reason : text
-  {field} voided_at : timestamptz
-  {field} alerted_at : timestamptz
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
 }
@@ -103,6 +58,32 @@ entity "vehicle_accident" as e_vehicle_accident {
   {field} createdAt : timestamptz *
   {field} updatedAt : timestamptz *
 }
+entity "fuel_load" as e_fuel_load {
+  {field} **fuel_load_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //car_id// : uuid * <<FK>>
+  {field} //employee_id// : uuid <<FK>>
+  {field} loaded_at : timestamptz *
+  {field} fuel_type : fuel_type_enum *
+  {field} liters : numeric(10,2) *
+  {field} unit_price : numeric(12,3) *
+  {field} total_amount : numeric(12,2) *
+  {field} odometer_km : integer *
+  {field} is_full_tank : boolean *
+  {field} station : varchar(120)
+  {field} payment_method : fuel_payment_method_enum *
+  {field} receipt_number : varchar(40)
+  {field} anomaly : boolean *
+  {field} notes : text
+  {field} odometer_correction_note : text
+  {field} //created_by_user_id// : uuid * <<FK>>
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} deletedAt : timestamptz
+  {field} //cash_movement_id// : uuid <<FK>>
+  {field} registered_by_driver : boolean *
+  {field} cash_payment_legacy : boolean *
+}
 entity "tire_event" as e_tire_event {
   {field} **event_id** : uuid * <<PK>>
   {field} //tire_id// : uuid * <<FK>>
@@ -114,25 +95,52 @@ entity "tire_event" as e_tire_event {
   {field} //created_by_user_id// : uuid * <<FK>>
   {field} createdAt : timestamptz *
 }
-entity "car" as e_car #F1F1F1 {
+entity "traffic_fine" as e_traffic_fine {
+  {field} **fine_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //car_id// : uuid * <<FK>>
+  {field} //employee_id// : uuid <<FK>>
+  {field} occurred_at : timestamptz *
+  {field} jurisdiction : varchar(80) *
+  {field} act_number : varchar(40) *
+  {field} infraction : text *
+  {field} amount : numeric(12,2) *
+  {field} voluntary_payment_amount : numeric(12,2)
+  {field} due_date : date
+  {field} status : traffic_fine_status_enum *
+  {field} paid_at : timestamptz
+  {field} paid_amount : numeric(12,2)
+  {field} charged_to_employee : boolean *
+  {field} void_reason : text
+  {field} voided_at : timestamptz
+  {field} alerted_at : timestamptz
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} //cash_movement_id// : uuid <<FK>>
 }
-entity "user" as e_user #F1F1F1 {
+entity "car" as e_car #F1F1F1 {
 }
 entity "employee" as e_employee #F1F1F1 {
 }
+entity "user" as e_user #F1F1F1 {
+}
+entity "cash_movement" as e_cash_movement #F1F1F1 {
+}
 
+e_car |o--o{ e_tire : car_id
+e_employee |o--o{ e_vehicle_accident : employee_id
+e_user ||--o{ e_vehicle_accident : created_by_user_id
+e_car ||--o{ e_vehicle_accident : car_id
 e_car ||--o{ e_fuel_load : car_id
 e_user ||--o{ e_fuel_load : created_by_user_id
 e_employee |o--o{ e_fuel_load : employee_id
-e_car |o--o{ e_tire : car_id
-e_car ||--o{ e_traffic_fine : car_id
-e_employee |o--o{ e_traffic_fine : employee_id
-e_car ||--o{ e_vehicle_accident : car_id
-e_user ||--o{ e_vehicle_accident : created_by_user_id
-e_employee |o--o{ e_vehicle_accident : employee_id
+e_cash_movement |o--o{ e_fuel_load : cash_movement_id
+e_tire ||--o{ e_tire_event : tire_id
 e_car |o--o{ e_tire_event : car_id
 e_user ||--o{ e_tire_event : created_by_user_id
-e_tire ||--o{ e_tire_event : tire_id
+e_car ||--o{ e_traffic_fine : car_id
+e_employee |o--o{ e_traffic_fine : employee_id
+e_cash_movement |o--o{ e_traffic_fine : cash_movement_id
 
 legend bottom
 |<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |

@@ -34,7 +34,7 @@ entity RendicionChofer {
   {field} presentada el
   {field} aprobada el
   {field} observaciones
-  {field} vencida avisada el
+  {field} aviso enviado el
 }
 entity PedidoRendido {
   * identificador
@@ -68,16 +68,16 @@ entity AsientoCuentaCorriente #F1F1F1 {
 entity CargaDeCamion #F1F1F1 {
 }
 
+CargaDeCamion |o--o{ RendicionChofer : respalda >
+RendicionChofer }o--o| Caja : ingresa en >
 RendicionChofer |o--o| MovimientoDeCaja : genera >
 Chofer ||--o{ RendicionChofer : presenta >
-RendicionChofer }o--o| Caja : ingresa en >
-CargaDeCamion |o--o{ RendicionChofer : respalda >
 CobroDeRendicion |o--|| AsientoCuentaCorriente : rinde >
 RendicionChofer ||--o{ CobroDeRendicion : incluye >
-GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
 RendicionChofer ||--o{ GastoDeRendicion : declara >
-PedidoRendido |o--|| Pedido : corresponde a >
+GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
 RendicionChofer ||--o{ PedidoRendido : rinde >
+PedidoRendido |o--|| Pedido : corresponde a >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

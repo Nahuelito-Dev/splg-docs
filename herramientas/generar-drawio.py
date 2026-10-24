@@ -10,8 +10,8 @@ Salen cuatro archivos, cada uno con **una sola página** y el diagrama completo:
   SPLG-DER.drawio   DER conceptual: una entidad por concepto con tabla, con el vocabulario del modelo
                     conceptual y las relaciones con su cardinalidad (pata de gallo)
   SPLG-DBD.drawio   diagrama de base de datos físico: las tablas reales de `splg_db` con columnas, tipos,
-                    claves, únicos e índices, y cada clave foránea como una arista de la columna FK a la
-                    clave primaria de la tabla destino
+                    claves, únicos e índices, y cada clave foránea simple como una arista de la columna FK a la
+                    clave primaria de la tabla destino (las compuestas por distribuidora se marcan en `distributor_id`)
   SPLG-DC.drawio    diagrama de clases de diseño: asociaciones con navegabilidad y multiplicidades,
                     composición y agregación, generalización y dependencias
 
@@ -634,7 +634,11 @@ def generar_dbd(modelo):
         out = []
         for c in d["columnas"]:
             marca = "PK" if c["pk"] else ("FK" if c["fk"] else ("UQ" if c["unico"] else "  "))
-            out.append((c, f"{marca}  {c['nombre']} : {c['tipo']}{'' if c['nulo'] else ' *'}"))
+            comp = ""
+            if c.get("fk_compuesta"):
+                dest = sorted({g["destino"] for g in c["fk_compuesta"]})
+                comp = f"  · FK compuesta: {', '.join(dest[:3])}{f' +{len(dest) - 3}' if len(dest) > 3 else ''}"
+            out.append((c, f"{marca}  {c['nombre']} : {c['tipo']}{'' if c['nulo'] else ' *'}{comp}"))
         return out
 
     def medidas(t):
@@ -818,7 +822,7 @@ elementos (si se mueve una tabla o una clase, la línea la sigue). Los genera `g
 |---|---|---|
 | `SPLG-MC.drawio` | Modelo conceptual: conceptos con atributos, asociaciones con nombre y multiplicidades en los dos extremos, composición, generalización y la clase de asociación | `modelo_conceptual.py` |
 | `SPLG-DER.drawio` | DER conceptual: una entidad por concepto con tabla, con el vocabulario del modelo conceptual y las relaciones en pata de gallo | `modelos/base-de-datos/SPLG-modelo.json` |
-| `SPLG-DBD.drawio` | Diagrama de base de datos físico: las {tablas} tablas de la base con columnas, tipos, claves, únicos e índices, y cada una de las {fks} claves foráneas como una arista de la columna FK a la clave primaria destino | `modelos/base-de-datos/SPLG-modelo.json` (leído de la base) |
+| `SPLG-DBD.drawio` | Diagrama de base de datos físico: las {tablas} tablas de la base con columnas, tipos, claves, únicos e índices, y cada una de las {fks} claves foráneas simples como una arista de la columna FK a la clave primaria destino; las {fks_comp} compuestas `(id, distributor_id)` repiten esa relación y se marcan en la columna `distributor_id` («FK compuesta») | `modelos/base-de-datos/SPLG-modelo.json` (leído de la base) |
 | `SPLG-DC.drawio` | Diagrama de clases de diseño: {clases} clases con atributos y operaciones, asociaciones con navegabilidad y multiplicidades, composición, agregación, generalización y dependencias | `herramientas/dc_larman.py` (derivado de los DSD) |
 
 Cada archivo tiene **una sola página** con el diagrama completo, sin módulos ni recuadros de agrupación: los
@@ -871,7 +875,7 @@ def main():
     dc_cl = len([1 for c in resultados["SPLG-DC"].celdas if 'vertex="1"' in c and "container=1" not in c])
     open(SAL + "LEEME.md", "w", encoding="utf-8").write(
         LEEME.replace("{tablas}", str(len(modelo["dbd"]["tablas"])))
-             .replace("{fks}", str(len(dbd.aristas))).replace("{clases}", str(dc_cl)))
+             .replace("{fks}", str(len(dbd.aristas))).replace("{fks_comp}", str(sum(1 for t in modelo["dbd"]["tablas"].values() for c in t["columnas"] if c.get("fk_compuesta") for _ in c["fk_compuesta"]))).replace("{clases}", str(dc_cl)))
 
 
 if __name__ == "__main__":

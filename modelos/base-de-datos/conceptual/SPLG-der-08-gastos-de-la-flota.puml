@@ -98,16 +98,16 @@ entity Empleado #F1F1F1 {
 entity Distribuidora #F1F1F1 {
 }
 
-Vehiculo ||--o{ CargaCombustible : registra >
-Empleado |o--o{ CargaCombustible : carga >
 Vehiculo |o--o{ Neumatico : monta >
 Distribuidora ||--o{ Neumatico : posee >
+Empleado |o--o{ Siniestro : interviene en >
+Vehiculo ||--o{ Siniestro : sufre >
+Vehiculo ||--o{ CargaCombustible : registra >
+Empleado |o--o{ CargaCombustible : carga >
+Neumatico ||--o{ MovimientoNeumatico : registra >
+MovimientoNeumatico }o--o| Vehiculo : ocurre en >
 Vehiculo ||--o{ MultaTransito : acumula >
 Empleado |o--o{ MultaTransito : responde por >
-Vehiculo ||--o{ Siniestro : sufre >
-Empleado |o--o{ Siniestro : interviene en >
-MovimientoNeumatico }o--o| Vehiculo : ocurre en >
-Neumatico ||--o{ MovimientoNeumatico : registra >
 
 legend bottom right
   * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.

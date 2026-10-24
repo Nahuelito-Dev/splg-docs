@@ -1,29 +1,6 @@
 erDiagram
     TIRE_EVENT }o--|| TIRE : "tire_id"
 
-    FUEL_LOAD {
-        uuid fuel_load_id PK
-        uuid distributor_id FK
-        uuid car_id FK
-        uuid employee_id FK "nullable"
-        timestamptz loaded_at
-        enum fuel_type
-        decimal liters
-        decimal unit_price
-        decimal total_amount
-        int odometer_km
-        boolean is_full_tank
-        varchar station "nullable"
-        enum payment_method
-        varchar receipt_number "nullable"
-        boolean anomaly
-        text notes "nullable"
-        text odometer_correction_note "nullable"
-        uuid created_by_user_id FK
-        timestamptz createdAt
-        timestamptz updatedAt
-        timestamptz deletedAt "nullable"
-    }
     TIRE {
         uuid tire_id PK
         uuid distributor_id FK
@@ -37,28 +14,6 @@ erDiagram
         int mounted_odometer_km "nullable"
         int km_traveled
         int retread_count
-        timestamptz createdAt
-        timestamptz updatedAt
-    }
-    TRAFFIC_FINE {
-        uuid fine_id PK
-        uuid distributor_id FK
-        uuid car_id FK
-        uuid employee_id FK "nullable"
-        timestamptz occurred_at
-        varchar jurisdiction
-        varchar act_number
-        text infraction
-        decimal amount
-        decimal voluntary_payment_amount "nullable"
-        date due_date "nullable"
-        enum status
-        timestamptz paid_at "nullable"
-        decimal paid_amount "nullable"
-        boolean charged_to_employee
-        text void_reason "nullable"
-        timestamptz voided_at "nullable"
-        timestamptz alerted_at "nullable"
         timestamptz createdAt
         timestamptz updatedAt
     }
@@ -86,6 +41,32 @@ erDiagram
         timestamptz createdAt
         timestamptz updatedAt
     }
+    FUEL_LOAD {
+        uuid fuel_load_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz loaded_at
+        enum fuel_type
+        decimal liters
+        decimal unit_price
+        decimal total_amount
+        int odometer_km
+        boolean is_full_tank
+        varchar station "nullable"
+        enum payment_method
+        varchar receipt_number "nullable"
+        boolean anomaly
+        text notes "nullable"
+        text odometer_correction_note "nullable"
+        uuid created_by_user_id FK
+        timestamptz createdAt
+        timestamptz updatedAt
+        timestamptz deletedAt "nullable"
+        uuid cash_movement_id FK "nullable"
+        boolean registered_by_driver
+        boolean cash_payment_legacy
+    }
     TIRE_EVENT {
         uuid event_id PK
         uuid tire_id FK
@@ -96,4 +77,27 @@ erDiagram
         int odometer_km
         uuid created_by_user_id FK
         timestamptz createdAt
+    }
+    TRAFFIC_FINE {
+        uuid fine_id PK
+        uuid distributor_id FK
+        uuid car_id FK
+        uuid employee_id FK "nullable"
+        timestamptz occurred_at
+        varchar jurisdiction
+        varchar act_number
+        text infraction
+        decimal amount
+        decimal voluntary_payment_amount "nullable"
+        date due_date "nullable"
+        enum status
+        timestamptz paid_at "nullable"
+        decimal paid_amount "nullable"
+        boolean charged_to_employee
+        text void_reason "nullable"
+        timestamptz voided_at "nullable"
+        timestamptz alerted_at "nullable"
+        timestamptz createdAt
+        timestamptz updatedAt
+        uuid cash_movement_id FK "nullable"
     }
