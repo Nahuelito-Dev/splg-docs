@@ -15,4 +15,4 @@ __pycache__/
 publicar/
 
 # Word de la cátedra (se regenera con generar-docx-catedra.py)
-entregables/catedra-docx/
+catedra/entregables/catedra-docx/

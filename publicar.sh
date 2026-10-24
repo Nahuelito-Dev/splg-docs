@@ -4,11 +4,11 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 echo "→ regenerando el sitio"
-python3 generar-sitio.py
+python3 sitio/generar-sitio.py
 
 echo "→ validando el script de la pagina"
 python3 - <<'PY'
-t = open("splg-documentacion.html", encoding="utf-8").read()
+t = open("sitio/splg-documentacion.html", encoding="utf-8").read()
 open("/tmp/_splg_check.js", "w", encoding="utf-8").write(
     t.split("<script>")[-1].split("</script>")[0])
 PY
@@ -19,8 +19,8 @@ rm -rf publicar && mkdir -p publicar
 # Todo lo que el sitio referencia. Estaba escrito a mano y se quedo corto: al
 # sumar el visor, publicar habria dejado la pagina sin visor.css ni visor.js
 # —404 en silencio—.
-cp splg-documentacion.html index.html branching.html versionado.html \
-   paginas.css visor.css visor.js publicar/
+cp sitio/splg-documentacion.html sitio/index.html sitio/branching.html sitio/versionado.html \
+   sitio/paginas.css sitio/visor.css sitio/visor.js publicar/
 
 echo "→ comprobando que no falte nada"
 python3 - <<'PY'

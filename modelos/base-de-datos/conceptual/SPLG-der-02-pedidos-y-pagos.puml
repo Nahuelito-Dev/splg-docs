@@ -1,0 +1,189 @@
+@startuml
+title Modelo entidad-relación conceptual — Pedidos y pagos
+!include ../../../diagramas/estilo-vp.iuml
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Pedido {
+  * identificador
+  --
+  {field} estado
+  {field} /total
+  {field} modalidad de entrega
+  {field} fecha agendada
+  {field} método de pago
+  {field} seña
+  {field} código de entrega
+  {field} nombre de quien recibe
+  {field} documento de quien recibe
+  {field} vínculo con quien recibe
+  {field} estado del cobro
+  {field} cobro confirmado el
+  {field} cobro resuelto el
+  {field} nota de resolución del cobro
+}
+entity ItemPedido {
+  * identificador
+  --
+  {field} cantidad
+  {field} precio unitario
+  {field} /subtotal
+}
+entity Carrito {
+  * identificador
+  --
+  {field} última modificación
+}
+entity ItemCarrito {
+  * identificador
+  --
+  {field} cantidad
+  {field} precio unitario
+}
+entity CambioEstadoPedido {
+  * identificador
+  --
+  {field} desde
+  {field} hacia
+  {field} motivo
+  {field} fecha
+}
+entity CambioDireccion {
+  * identificador
+  --
+  {field} motivo
+  {field} fecha
+}
+entity ZonaCobertura {
+  * identificador
+  --
+  {field} nombre
+  {field} área
+  {field} recargo
+  {field} tipo de recargo
+  {field} prioridad
+  {field} vigente desde
+  {field} vigente hasta
+  {field} activa
+}
+entity FranjaHoraria {
+  * identificador
+  --
+  {field} desde
+  {field} hasta
+  {field} cupo
+  {field} activa
+}
+entity Pago {
+  * identificador
+  --
+  {field} importe
+  {field} pasarela
+  {field} estado
+  {field} es seña
+  {field} fecha
+}
+entity ReintegroDePago {
+  * identificador
+  --
+  {field} tipo
+  {field} importe
+  {field} estado
+  {field} intentos
+  {field} reintegrado el
+  {field} referencia en la pasarela
+  {field} mensaje de error
+  {field} devuelto antes del intento
+}
+entity Cliente #F1F1F1 {
+}
+entity Chofer #F1F1F1 {
+}
+entity Producto #F1F1F1 {
+}
+entity DireccionEntrega #F1F1F1 {
+}
+entity Usuario #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+entity Reclamo #F1F1F1 {
+}
+entity AsientoCuentaCorriente #F1F1F1 {
+}
+entity Envase #F1F1F1 {
+}
+entity Incidencia #F1F1F1 {
+}
+entity OfertaDespacho #F1F1F1 {
+}
+entity Calificacion #F1F1F1 {
+}
+entity InvitacionRecompra #F1F1F1 {
+}
+entity ParadaLote #F1F1F1 {
+}
+entity AsientoComision #F1F1F1 {
+}
+entity MovimientoEnvase #F1F1F1 {
+}
+entity PedidoRendido #F1F1F1 {
+}
+
+Distribuidora ||--o{ ZonaCobertura : define >
+Distribuidora ||--o{ FranjaHoraria : define >
+Cliente ||--o{ Carrito : arma >
+Carrito ||--o{ ItemCarrito : contiene >
+ItemCarrito }o--|| Producto : corresponde a >
+Pedido }o--|| DireccionEntrega : se entrega en >
+Pedido }o--o| ZonaCobertura : aplica el recargo de >
+Cliente ||--o{ Pedido : realiza >
+Chofer |o--o{ Pedido : entrega >
+Distribuidora ||--o{ Pedido : gestiona >
+Pedido }o--o| FranjaHoraria : se programa en >
+Pedido ||--o{ Reclamo : origina >
+Pedido |o--o{ AsientoCuentaCorriente : origina >
+Pedido |o--o{ Envase : despacha >
+Pedido ||--o{ Incidencia : origina >
+Usuario ||--o{ CambioDireccion : realiza >
+CambioDireccion }o--|| DireccionEntrega : cambia desde >
+Pedido ||--o{ CambioDireccion : registra >
+CambioDireccion }o--|| DireccionEntrega : cambia hacia >
+Pedido ||--o{ OfertaDespacho : genera >
+ItemPedido }o--|| Producto : corresponde a >
+Pedido ||--|{ ItemPedido : contiene >
+Usuario |o--o{ CambioEstadoPedido : efectúa >
+Pedido ||--o{ CambioEstadoPedido : registra >
+Pedido ||--o{ Pago : se salda con >
+Pedido ||--o{ Calificacion : recibe [0..2] >
+InvitacionRecompra |o--o| Pedido : se convierte en >
+ParadaLote }o--|| Pedido : atiende >
+AsientoComision }o--o| Pedido : corresponde a >
+Pedido |o--o{ MovimientoEnvase : origina >
+ReintegroDePago }o--|| Pedido : devuelve el cobro de >
+Pago ||--o{ ReintegroDePago : se devuelve con >
+PedidoRendido |o--|| Pedido : corresponde a >
+Usuario |o--o{ Pedido : confirmó el cobro de >
+Usuario |o--o{ Pedido : resolvió el cobro de >
+
+legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
+  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

@@ -1,0 +1,53 @@
+@startuml
+title Modelo físico — Tablas técnicas
+!include ../../../diagramas/estilo-vp.iuml
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+
+hide circle
+skinparam linetype polyline
+
+entity "storage_orphan" as e_storage_orphan {
+  {field} **orphan_id** : uuid * <<PK>>
+  {field} storage_key : varchar(512) *
+  {field} attempts : integer *
+  {field} last_error : text
+  {field} created_at : timestamptz *
+  {field} updated_at : timestamptz *
+  {field} kind : varchar(10) *
+  {field} status : varchar(10) *
+  {field} next_attempt_at : timestamptz *
+}
+entity "document_sequence" as e_document_sequence {
+  {field} **distributor_id** : uuid * <<PK>>
+  {field} **doc_type** : varchar(40) * <<PK>>
+  {field} last_number : integer *
+}
+entity "stock_reconciliation_alert" as e_stock_reconciliation_alert {
+  {field} **distributor_id** : uuid * <<PK>>
+  {field} signature : varchar(64) *
+  {field} alerted_at : timestamptz *
+}
+
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

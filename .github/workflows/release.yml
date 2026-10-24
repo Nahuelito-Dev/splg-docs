@@ -31,7 +31,7 @@ jobs:
       - name: Calcular la version nueva
         id: calculo
         run: |
-          NUEVA=$(./scripts/version.sh siguiente)
+          NUEVA=$(./herramientas/scripts/version.sh siguiente)
           if [ -z "$NUEVA" ]; then
             echo "hay=no" >> "$GITHUB_OUTPUT"
             echo "No hay commits nuevos desde el ultimo tag. Nada que publicar."
@@ -44,18 +44,18 @@ jobs:
           fi
           echo "hay=si" >> "$GITHUB_OUTPUT"
           echo "version=$NUEVA" >> "$GITHUB_OUTPUT"
-          echo "Version anterior: $(./scripts/version.sh actual)"
+          echo "Version anterior: $(./herramientas/scripts/version.sh actual)"
           echo "Version nueva:    $NUEVA"
 
       - name: Escribir la version en el proyecto
         if: steps.calculo.outputs.hay == 'si'
-        run: ./scripts/version.sh fijar "${{ steps.calculo.outputs.version }}"
+        run: ./herramientas/scripts/version.sh fijar "${{ steps.calculo.outputs.version }}"
 
       - name: Armar el changelog
         if: steps.calculo.outputs.hay == 'si'
         env:
           VERSION: ${{ steps.calculo.outputs.version }}
-        run: ./scripts/release-notes.sh
+        run: ./herramientas/scripts/release-notes.sh
 
       - name: Commitear la version y crear el tag
         if: steps.calculo.outputs.hay == 'si'

@@ -1,0 +1,116 @@
+@startuml
+title Modelo entidad-relación conceptual — Gastos de la flota
+!include ../../../diagramas/estilo-vp.iuml
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity CargaCombustible {
+  * identificador
+  --
+  {field} fecha y hora
+  {field} tipo de combustible
+  {field} litros
+  {field} precio por litro
+  {field} importe
+  {field} kilometraje
+  {field} tanque lleno
+  {field} estación
+  {field} medio de pago
+  {field} comprobante
+  {field} anómala
+  {field} observación
+  {field} anulada el
+}
+entity MultaTransito {
+  * identificador
+  --
+  {field} fecha de la infracción
+  {field} jurisdicción
+  {field} número de acta
+  {field} infracción
+  {field} importe
+  {field} importe con pago voluntario
+  {field} vencimiento
+  {field} estado
+  {field} pagada el
+  {field} importe pagado
+  {field} imputada al chofer
+  {field} avisada el
+  {field} motivo de anulación
+}
+entity Siniestro {
+  * identificador
+  --
+  {field} fecha
+  {field} ubicación
+  {field} domicilio
+  {field} descripción
+  {field} hubo heridos
+  {field} hubo terceros
+  {field} derrame de GLP
+  {field} denuncia policial
+  {field} reclamo al seguro
+  {field} estado
+  {field} vehículo inutilizable
+  {field} costo de reparación
+  {field} reintegro del seguro
+  {field} franquicia
+  {field} cerrado el
+}
+entity Neumatico {
+  * identificador
+  --
+  {field} número de serie
+  {field} marca
+  {field} medida
+  {field} costo
+  {field} estado
+  {field} posición
+  {field} kilometraje de montaje
+}
+entity MovimientoNeumatico {
+  * identificador
+  --
+  {field} tipo
+  {field} kilometraje
+  {field} fecha
+}
+entity Vehiculo #F1F1F1 {
+}
+entity Empleado #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+
+Vehiculo ||--o{ CargaCombustible : registra >
+Empleado |o--o{ CargaCombustible : carga >
+Vehiculo |o--o{ Neumatico : monta >
+Distribuidora ||--o{ Neumatico : posee >
+Vehiculo ||--o{ MultaTransito : acumula >
+Empleado |o--o{ MultaTransito : responde por >
+Vehiculo ||--o{ Siniestro : sufre >
+Empleado |o--o{ Siniestro : interviene en >
+MovimientoNeumatico }o--o| Vehiculo : ocurre en >
+Neumatico ||--o{ MovimientoNeumatico : registra >
+
+legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
+  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

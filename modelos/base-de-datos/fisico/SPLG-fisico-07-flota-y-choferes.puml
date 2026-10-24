@@ -1,0 +1,172 @@
+@startuml
+title Modelo físico — Flota y choferes
+!include ../../../diagramas/estilo-vp.iuml
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+
+hide circle
+skinparam linetype polyline
+
+entity "maintenance_plan" as e_maintenance_plan {
+  {field} **plan_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} name : varchar(120) *
+  {field} subject : maintenance_subject_enum *
+  {field} trigger : maintenance_trigger_enum *
+  {field} interval_km : integer
+  {field} interval_months : integer
+  {field} lead_time_days : integer *
+  {field} criticality : maintenance_criticality_enum *
+  {field} car_type : varchar
+  {field} is_active : boolean *
+  {field} document_kind : plan_document_kind_enum
+  {field} applies_to_categories : _varchar
+}
+entity "car" as e_car {
+  {field} **car_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} type_car : varchar(50)
+  {field} car_capacity : integer
+  {field} car_patent : varchar(20)
+  {field} car_brand : varchar(50)
+  {field} car_model : varchar(50)
+  {field} car_year : integer
+  {field} car_color : varchar(50)
+  {field} createdAt : timestamptz *
+  {field} updatedAt : timestamptz *
+  {field} deletedAt : timestamptz
+  {field} tare_weight_kg : numeric(10,2)
+  {field} max_load_kg : numeric(10,2)
+  {field} odometer_km : integer
+  {field} fleet_status : fleet_status_enum *
+  {field} in_service_since : timestamptz
+  {field} photo_key : varchar(512)
+  {field} fuel_type : fuel_type_enum
+  {field} tank_capacity_liters : numeric(6,2)
+}
+entity "delivery" as e_delivery {
+  {field} **delivery_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //user_id// : uuid * <<FK>>
+  {field} calification : double precision
+  {field} actual_location : text
+  {field} cancelledCharge : real
+  {field} validated : boolean *
+  {field} isActive : boolean *
+  {field} notification_token : text
+  {field} balance : double precision *
+  {field} createdAt : timestamptz
+  {field} deletedAt : timestamptz
+  {field} location : geometry
+  {field} isEnabled : boolean *
+  {field} isAvailable : boolean *
+}
+entity "maintenance_task" as e_maintenance_task {
+  {field} **task_id** : uuid * <<PK>>
+  {field} //plan_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //car_id// : uuid <<FK>>
+  {field} //delivery_id// : uuid <<FK>>
+  {field} status : maintenance_task_status_enum *
+  {field} due_at : timestamptz
+  {field} due_km : integer
+  {field} predicted_due_at : timestamptz
+  {field} scheduled_at : timestamptz
+  {field} performed_at : timestamptz
+  {field} odometer_km : integer
+  {field} cost : numeric(10,2)
+  {field} provider : varchar(120)
+  {field} reference_number : varchar(60)
+  {field} category : varchar(10)
+  {field} alerted_at : timestamptz
+  {field} notes : text
+  {field} valid_from : timestamptz
+  {field} //employee_id// : uuid <<FK>>
+  {field} details : jsonb
+}
+entity "vehicle_assignment" as e_vehicle_assignment {
+  {field} **assignment_id** : uuid * <<PK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} //car_id// : uuid * <<FK>>
+  {field} //delivery_id// : uuid * <<FK>>
+  {field} assigned_at : timestamptz *
+  {field} released_at : timestamptz
+  {field} //assigned_by_user_id// : uuid <<FK>>
+  {field} //released_by_user_id// : uuid <<FK>>
+  {field} note : text
+}
+entity "vehicle_usage_log" as e_vehicle_usage_log {
+  {field} **log_id** : uuid * <<PK>>
+  {field} //car_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} day : date *
+  {field} km : numeric(10,2) *
+  {field} orders : integer *
+  {field} route_hours : numeric(6,2) *
+}
+entity "maintenance_task_attachment" as e_maintenance_task_attachment {
+  {field} **attachment_id** : uuid * <<PK>>
+  {field} //task_id// : uuid * <<FK>>
+  {field} //distributor_id// : uuid * <<FK>>
+  {field} storage_key : varchar(255) *
+  {field} original_name : varchar(255) *
+  {field} mime_type : varchar(100) *
+  {field} size_bytes : integer *
+  {field} //uploaded_by_user_id// : uuid * <<FK>>
+  {field} uploaded_at : timestamptz *
+  {field} deleted_at : timestamptz
+}
+entity "maintenance_window_proposal" as e_maintenance_window_proposal {
+  {field} **proposal_id** : uuid * <<PK>>
+  {field} //task_id// : uuid * <<FK>>
+  {field} //delivery_id// : uuid * <<FK>>
+  {field} window_start : timestamptz *
+  {field} window_end : timestamptz *
+  {field} rank : integer *
+  {field} status : proposal_status_enum *
+  {field} expires_at : timestamptz *
+  {field} responded_at : timestamptz
+}
+entity "user" as e_user #F1F1F1 {
+}
+entity "employee" as e_employee #F1F1F1 {
+}
+
+e_user ||--o{ e_car : user_id
+e_user ||--o| e_delivery : user_id
+e_car |o--o{ e_maintenance_task : car_id
+e_delivery |o--o{ e_maintenance_task : delivery_id
+e_employee |o--o{ e_maintenance_task : employee_id
+e_maintenance_plan ||--o{ e_maintenance_task : plan_id
+e_user |o--o{ e_vehicle_assignment : assigned_by_user_id
+e_car ||--o{ e_vehicle_assignment : car_id
+e_delivery ||--o{ e_vehicle_assignment : delivery_id
+e_user |o--o{ e_vehicle_assignment : released_by_user_id
+e_car ||--o{ e_vehicle_usage_log : car_id
+e_maintenance_task ||--o{ e_maintenance_task_attachment : task_id
+e_user ||--o{ e_maintenance_task_attachment : uploaded_by_user_id
+e_delivery ||--o{ e_maintenance_window_proposal : delivery_id
+e_maintenance_task ||--o{ e_maintenance_window_proposal : task_id
+
+legend bottom
+|<#F1F1F1> **tabla de otro contexto** | solo se muestra su nombre; sus columnas están en su propio contexto |
+|<#FFFFFF> **distributor_id** | la tabla pertenece a una distribuidora (FK a distributor); la línea no se dibuja |
+endlegend
+note as N
+  Los nombres reflejan la base real: conviven camelCase (paymentMethod, createdAt, isActive) y snake_case
+  (scheduled_date, delivery_mode) porque las columnas más antiguas se crearon así y las posteriores siguieron
+  otra convención; la tabla claims está en plural y el resto en singular.
+end note
+@enduml

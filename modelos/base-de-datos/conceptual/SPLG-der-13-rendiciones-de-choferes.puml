@@ -1,0 +1,86 @@
+@startuml
+title Modelo entidad-relación conceptual — Rendiciones de choferes
+!include ../../../diagramas/estilo-vp.iuml
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity RendicionChofer {
+  * identificador
+  --
+  {field} número
+  {field} fecha de negocio
+  {field} estado
+  {field} efectivo esperado
+  {field} efectivo declarado
+  {field} /gastos del chofer
+  {field} /diferencia
+  {field} resolución de la diferencia
+  {field} presentada el
+  {field} aprobada el
+  {field} observaciones
+  {field} vencida avisada el
+}
+entity PedidoRendido {
+  * identificador
+  --
+  {field} importe
+  {field} medio de pago
+}
+entity GastoDeRendicion {
+  * identificador
+  --
+  {field} importe
+  {field} descripción
+}
+entity CobroDeRendicion {
+  * identificador
+  --
+  {field} importe
+}
+entity Chofer #F1F1F1 {
+}
+entity Pedido #F1F1F1 {
+}
+entity Caja #F1F1F1 {
+}
+entity MovimientoDeCaja #F1F1F1 {
+}
+entity CategoriaDeCaja #F1F1F1 {
+}
+entity AsientoCuentaCorriente #F1F1F1 {
+}
+entity CargaDeCamion #F1F1F1 {
+}
+
+RendicionChofer |o--o| MovimientoDeCaja : genera >
+Chofer ||--o{ RendicionChofer : presenta >
+RendicionChofer }o--o| Caja : ingresa en >
+CargaDeCamion |o--o{ RendicionChofer : respalda >
+CobroDeRendicion |o--|| AsientoCuentaCorriente : rinde >
+RendicionChofer ||--o{ CobroDeRendicion : incluye >
+GastoDeRendicion }o--|| CategoriaDeCaja : se clasifica en >
+RendicionChofer ||--o{ GastoDeRendicion : declara >
+PedidoRendido |o--|| Pedido : corresponde a >
+RendicionChofer ||--o{ PedidoRendido : rinde >
+
+legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
+  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

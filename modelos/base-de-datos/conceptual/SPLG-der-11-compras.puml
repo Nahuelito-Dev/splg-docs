@@ -1,0 +1,106 @@
+@startuml
+title Modelo entidad-relación conceptual — Compras
+!include ../../../diagramas/estilo-vp.iuml
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Proveedor {
+  * identificador
+  --
+  {field} razón social
+  {field} CUIT
+  {field} tipo
+  {field} contacto
+  {field} teléfono
+  {field} correo
+  {field} dirección
+  {field} plazo de pago
+  {field} activo
+}
+entity OrdenDeCompra {
+  * identificador
+  --
+  {field} número
+  {field} estado
+  {field} emitida el
+  {field} fecha esperada
+  {field} total
+  {field} motivo de cancelación
+  {field} motivo de cierre
+  {field} notas
+}
+entity ItemOrdenDeCompra {
+  * identificador
+  --
+  {field} cantidad
+  {field} costo unitario
+  {field} vacíos a canjear
+  {field} cantidad recibida
+}
+entity RecepcionDeCompra {
+  * identificador
+  --
+  {field} número
+  {field} tipo de comprobante
+  {field} número de comprobante
+  {field} recibida el
+  {field} total
+  {field} estado de pago
+  {field} estado
+  {field} motivo de anulación
+  {field} anulada el
+  {field} notas
+}
+entity ItemRecepcion {
+  * identificador
+  --
+  {field} llenas recibidas
+  {field} vacías entregadas
+  {field} costo unitario
+  {field} costo promedio previo
+  {field} existencia previa
+  {field} existencia previa leída el
+}
+entity Deposito #F1F1F1 {
+}
+entity Producto #F1F1F1 {
+}
+entity Usuario #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+
+Distribuidora ||--o{ Proveedor : compra a >
+Usuario ||--o{ OrdenDeCompra : emite >
+OrdenDeCompra }o--|| Deposito : se destina a >
+Proveedor ||--o{ OrdenDeCompra : recibe >
+ItemOrdenDeCompra }o--|| Producto : corresponde a >
+OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
+OrdenDeCompra |o--o{ RecepcionDeCompra : se cumple con >
+Usuario ||--o{ RecepcionDeCompra : registra >
+Proveedor ||--o{ RecepcionDeCompra : entrega >
+RecepcionDeCompra }o--|| Deposito : ingresa en >
+ItemRecepcion }o--|| Producto : corresponde a >
+RecepcionDeCompra ||--|{ ItemRecepcion : contiene >
+
+legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
+  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

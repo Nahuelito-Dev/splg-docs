@@ -1,0 +1,163 @@
+@startuml
+title Modelo entidad-relación conceptual — Flota y choferes
+!include ../../../diagramas/estilo-vp.iuml
+skinparam entity<<ajena>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+skinparam entity<<propuesto>> {
+  BorderColor #1F5E8C
+  BackgroundColor #FFF6D9
+}
+
+hide circle
+
+skinparam nodesep 25
+skinparam ranksep 45
+
+entity Chofer {
+  * identificador
+  --
+  {field} disponible
+  {field} habilitado
+  {field} validado
+  {field} /calificación
+}
+entity Vehiculo {
+  * identificador
+  --
+  {field} patente
+  {field} tipo
+  {field} carga máxima
+  {field} kilometraje
+  {field} estado en la flota
+  {field} tipo de combustible
+  {field} capacidad del tanque
+}
+entity AsignacionVehiculo {
+  * identificador
+  --
+  {field} asignado el
+  {field} liberado el
+  {field} nota
+}
+entity PlanMantenimiento {
+  * identificador
+  --
+  {field} nombre
+  {field} disparo
+  {field} intervalo
+  {field} anticipación
+  {field} criticidad
+  {field} documento que controla
+  {field} aplica a
+}
+entity TareaMantenimiento {
+  * identificador
+  --
+  {field} estado
+  {field} vence
+  {field} vencimiento proyectado
+  {field} prestador
+  {field} número
+  {field} costo
+  {field} vigente desde
+  {field} detalle
+}
+entity AdjuntoTarea {
+  * identificador
+  --
+  {field} nombre original
+  {field} tipo de archivo
+  {field} fecha de carga
+}
+entity PropuestaVentanaTaller {
+  * identificador
+  --
+  {field} estado
+  {field} vence
+  {field} desde
+  {field} hasta
+}
+entity RegistroUsoVehiculo {
+  * identificador
+  --
+  {field} día
+  {field} kilómetros
+  {field} pedidos
+}
+entity Usuario #F1F1F1 {
+}
+entity Distribuidora #F1F1F1 {
+}
+entity CargaCombustible #F1F1F1 {
+}
+entity Empleado #F1F1F1 {
+}
+entity Pedido #F1F1F1 {
+}
+entity LoteRecorrido #F1F1F1 {
+}
+entity UbicacionDeStock #F1F1F1 {
+}
+entity Neumatico #F1F1F1 {
+}
+entity MultaTransito #F1F1F1 {
+}
+entity Siniestro #F1F1F1 {
+}
+entity AsientoCuentaCorriente #F1F1F1 {
+}
+entity OfertaDespacho #F1F1F1 {
+}
+entity OfertaLote #F1F1F1 {
+}
+entity MovimientoNeumatico #F1F1F1 {
+}
+entity CargaDeCamion #F1F1F1 {
+}
+entity AsientoComision #F1F1F1 {
+}
+entity RendicionChofer #F1F1F1 {
+}
+
+Chofer ||--o{ Vehiculo : tiene registrado >
+Distribuidora ||--o{ Chofer : emplea >
+Chofer |o--|| Usuario : es un >
+Vehiculo ||--o{ CargaCombustible : registra >
+TareaMantenimiento }o--o| Vehiculo : habilita >
+TareaMantenimiento }o--o| Chofer : habilita >
+TareaMantenimiento }o--o| Empleado : habilita >
+PlanMantenimiento ||--o{ TareaMantenimiento : genera >
+Chofer |o--o{ Pedido : entrega >
+Chofer |o--o{ LoteRecorrido : acepta >
+Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
+Vehiculo |o--o{ Neumatico : monta >
+Vehiculo ||--o{ MultaTransito : acumula >
+Vehiculo ||--o{ Siniestro : sufre >
+Vehiculo ||--o{ AsignacionVehiculo : figura en >
+Chofer ||--o{ AsignacionVehiculo : figura en >
+Vehiculo ||--o{ RegistroUsoVehiculo : acumula >
+Chofer |o--o{ AsientoCuentaCorriente : cobra >
+TareaMantenimiento ||--o{ AdjuntoTarea : adjunta >
+PropuestaVentanaTaller }o--|| Chofer : se dirige a >
+TareaMantenimiento ||--o{ PropuestaVentanaTaller : origina >
+OfertaDespacho }o--|| Chofer : se dirige a >
+OfertaLote }o--|| Chofer : se dirige a >
+MovimientoNeumatico }o--o| Vehiculo : ocurre en >
+Vehiculo ||--o{ CargaDeCamion : transporta >
+Chofer ||--o{ CargaDeCamion : reparte con >
+Chofer |o--o{ AsientoComision : genera >
+Chofer ||--o{ RendicionChofer : presenta >
+Empleado |o--o| Chofer : actúa como >
+
+legend bottom right
+  * identificador: atributo que identifica a cada instancia.  /atributo: atributo derivado.
+  Las entidades en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml
