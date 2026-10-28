@@ -83,6 +83,16 @@ TIPO_ATRIBUTO_SIN_COLUMNA = {
     ("DireccionEntrega", "punto"): "Coordenada",
     ("DireccionEntrega", "precisión"): "PrecisionDeGeocodificacion",
     ("Pedido", "modalidad de entrega"): "ModalidadDeEntrega",
+    ("Pedido", "subtotal de ítems"): "Moneda",
+    ("Pedido", "recargo de zona"): "Moneda",
+    ("Pedido", "recargo por medio de pago"): "Moneda",
+    ("Pedido", "recargo express"): "Moneda",
+    ("Pedido", "seña pagada"): "Booleano",
+    ("Pedido", "aceptado el"): "FechaHora",
+    ("Pedido", "nombre de la zona aplicada"): "Cadena",
+    ("Pedido", "patente del vehículo"): "Cadena",
+    ("Pedido", "marca del vehículo"): "Cadena",
+    ("Pedido", "modelo del vehículo"): "Cadena",
     # Stock y compras (planificado, C-09): conceptos sin entidad en el código
     ("Deposito", "nombre"): "Cadena",
     ("Deposito", "código"): "Cadena",
@@ -475,7 +485,7 @@ ALIAS_CLASE = {
     "pago": "Pago", "pagos": "Pago", "roles": "Rol", "rol": "Rol", "tareas": "TareaMantenimiento",
     "aviso": "AvisoRecupero", "cercanos": "Chofer", "contactados": "Chofer", "aceptados": "Chofer", "libres": "Chofer",
     "activos": "Chofer", "habilitados": "Chofer", "solicitante": "Usuario", "autor": "Usuario",
-    "usuario": "Usuario", "chofer": "Chofer", "choferAnterior": "Chofer", "choferConOferta": "Chofer", "administrador": "Usuario", "cliente": "Cliente",
+    "usuario": "Usuario", "chofer": "Chofer", "choferAnterior": "Chofer", "choferConOferta": "Chofer", "choferesConOferta": "Chofer[*]", "administrador": "Usuario", "cliente": "Cliente",
     "vehiculo": "Vehiculo", "producto": "Producto", "pedido": "Pedido", "reclamo": "Reclamo",
     "incidencia": "Incidencia", "distribuidora": "Distribuidora", "item": "ItemPedido", "items": "ItemPedido",
     "itemsDelCarrito": "ItemCarrito", "promociones": "Promocion",
@@ -710,7 +720,7 @@ GLOSARIO.update({
     "solicitudInvalida": "Booleano", "conflicto": "Booleano", "nadaQueHacer": "Booleano",
     "acumulado": "Booleano", "ordenNoAdmiteRecepciones": "Booleano", "ajustado": "Booleano",
     "esLaMisma": "Booleano", "restado": "Booleano", "sumado": "Booleano", "habilitado": "Booleano",
-    "hayCupo": "Booleano", "eliminable": "Booleano", "traslado": "MotivoDeMovimiento",
+    "hayCupo": "Booleano", "pertenece": "Booleano", "aceptada": "EstadoDeLaOferta", "eliminable": "Booleano", "traslado": "MotivoDeMovimiento",
     "anulacionDeCompra": "MotivoDeMovimiento", "cancelacionDeCarga": "MotivoDeMovimiento",
     "compra": "MotivoDeMovimiento", "entrega": "MotivoDeMovimiento", "reposicion": "MotivoDeMovimiento",
     "cargaDelCamion": "MotivoDeMovimiento", "cierreDeRendicion": "MotivoDeMovimiento",
@@ -1130,6 +1140,7 @@ def construir():
     # --- clases de los DSD, operaciones y mensajes entre objetos
     primeros = set()          # clases que reciben el primer mensaje de algún DSD
     mensajes = set()          # (origen, destino) entre clases distintas
+    guardadas = set()         # (clase, clase que recibe por parámetro y conserva)
     creaciones = set()
     for d in dsds:
         cat = {}
@@ -1166,6 +1177,11 @@ def construir():
                 cl.agregar_op(Op(c["nombre"], ps, ret, salidas=sal))
             if org and org != dst and ids.get(c["de"]) is not None:
                 mensajes.add((org, dst))
+            if dst == "Pedido" and _guarda_referencias(c["nombre"]):
+                for prm in c["params"]:
+                    cp = ARGUMENTO_A_CLASE.get(prm.strip().split(":")[0].strip())
+                    if cp:
+                        guardadas.add((dst, cp))
     # las clases de los DSD que son colecciones o de servicio reciben módulo y papel
     for nombre, cl in dc.clases.items():
         if cl.tipo == "dominio":
@@ -1176,7 +1192,7 @@ def construir():
     _unificar_firmas_en_conflicto(dc)
     _tipar_getters(dc)
     _tipar_consultas(dc)
-    _relaciones(dc, mensajes, creaciones)
+    _relaciones(dc, mensajes, creaciones, guardadas)
     _realizaciones(dc)
     return dc
 
@@ -1363,7 +1379,17 @@ def _indices_mc(o, d):
     return r
 
 
-def _relaciones(dc, mensajes, creaciones):
+# Un objeto que recibe a otro por parámetro al crearse o al asignárselo lo conserva como atributo
+# (Larman, cap. 18: visibilidad por atributo): la asociación del modelo conceptual es navegable hacia él.
+ARGUMENTO_A_CLASE = {"cliente": "Cliente", "direccion": "DireccionEntrega", "franja": "FranjaHoraria",
+                     "zona": "ZonaCobertura", "chofer": "Chofer", "vehiculo": "Vehiculo"}
+
+
+def _guarda_referencias(operacion):
+    return operacion == "«create»" or operacion.startswith(("asignar", "agregar"))
+
+
+def _relaciones(dc, mensajes, creaciones, guardadas=frozenset()):
     """La visibilidad entre dos objetos dice la relación (Larman, cap. 18):
 
       - dominio -> dominio con asociación en el modelo conceptual: la asociación, navegable de
@@ -1385,6 +1411,13 @@ def _relaciones(dc, mensajes, creaciones):
                     nav[i][0] = True
                 if y in ao and x in ad:
                     nav[i][1] = True
+    for (o, d) in guardadas:
+        for i in _indices_mc(o, d):
+            x, _, _, _, y, _, _ = M.ASOCIACIONES[i]
+            if x == o and y == d:
+                nav[i][0] = True
+            if y == o and x == d:
+                nav[i][1] = True
     for i, (a, ma, t, mb, b, n, cat) in enumerate(M.ASOCIACIONES):
         dc.asociaciones.append({"a": a, "b": b, "nombre": n, "ma": ma, "mb": mb,
                                 "tipo": "comp" if t == "*" else "asoc",

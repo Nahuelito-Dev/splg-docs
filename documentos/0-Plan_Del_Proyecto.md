@@ -257,7 +257,7 @@ quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
 |--------|-------|:----:|-------------|
 | ACT-01 | **Cliente** | Humano | Usuario final que compra garrafas de gas. Usa la aplicación del cliente en su teléfono: hace pedidos, elige la franja de entrega y el medio de pago, sigue el pedido en el mapa, administra sus direcciones y puede reclamar si algo sale mal. Inicia 48 casos de uso. |
 | ACT-02 | **Chofer** | Humano | Repartidor de la distribuidora. Usa la aplicación del chofer en su teléfono: se pone en línea, recibe las ofertas de pedidos cercanos, las acepta o las rechaza, informa su posición, entrega y rinde lo cobrado. Inicia 45 casos de uso. |
-| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 248 casos de uso. |
+| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 249 casos de uso. |
 | ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 71 casos de uso. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
@@ -523,10 +523,10 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 
 
 **Código:** CU-005 | **Caso de Uso:** Crear un Pedido  
-**Actor/es:** Cliente (ACT-01); actores secundarios: MercadoPago (ACT-06), Firebase (ACT-07)  
+**Actor/es:** Cliente (ACT-01), Administrador (ACT-03); actores secundarios: MercadoPago (ACT-06), Firebase (ACT-07)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Crítico  
-**Descripción:** El cliente arma un pedido eligiendo productos, cantidades, dirección de entrega, medio de pago y, si quiere, una franja horaria. El sistema comprueba la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta, calcula el total con promociones y recargos, registra el pedido y —salvo que el pago sea por MercadoPago o el pedido sea una reserva— lo ofrece a un chofer.
+**Descripción:** El cliente —o el administrador, por teléfono y a nombre de un cliente— arma un pedido eligiendo productos, cantidades, dirección de entrega, medio de pago y, si quiere, una franja horaria. El sistema comprueba la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta, calcula el total con promociones y recargos, registra el pedido y —salvo que el pago sea por MercadoPago— lo ofrece a un chofer.
 
 ---
 
@@ -3545,7 +3545,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 | CU-001 Iniciar Sesión | SS-01 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-002 Registrarse como Cliente | SS-01 | ACT-01 | Crítico | Implementado |
 | CU-004 Consultar el Perfil de Usuario | SS-01 | ACT-01, ACT-02 | Importante | Implementado |
-| CU-005 Crear un Pedido | SS-02 | ACT-01 | Crítico | Implementado |
+| CU-005 Crear un Pedido | SS-02 | ACT-01, ACT-03 | Crítico | Implementado |
 | CU-006 Consultar el Detalle de un Pedido | SS-02 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-007 Consultar el Historial de Pedidos | SS-02 | ACT-01 | Importante | Implementado |
 | CU-008 Cancelar un Pedido (Cliente) | SS-02 | ACT-01 | Importante | Implementado |

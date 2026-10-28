@@ -40,6 +40,7 @@
 | Se entrega en | Pedido | DireccionEntrega | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Se programa en | Pedido | FranjaHoraria | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
 | Aplica el recargo de | Pedido | ZonaCobertura | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
+| Se entrega con | Pedido | Vehiculo | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
 | Registra | Pedido | CambioEstadoPedido | Composición | 1 a 0..* | Es un registro de |
 | Efectúa | Usuario | CambioEstadoPedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Confirmó el cobro de | Usuario | Pedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |

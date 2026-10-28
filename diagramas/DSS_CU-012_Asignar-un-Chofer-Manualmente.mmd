@@ -3,18 +3,30 @@ sequenceDiagram
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
 
     ADM->>SIS: asignarChoferAPedido(pedidoId, choferId)
     activate SIS
-    alt el pedido está pendiente o aceptado por otro chofer, y el chofer es elegible
+    Note over SIS: Los rechazos se evalúan en este orden: gana el primero que corresponda
+    alt asignación válida: el pedido está pendiente o aceptado por otro chofer, y el chofer es elegible
+        SIS-)CHO: notificarNuevoPedido(pedido)
+        opt el pedido estaba aceptado por otro chofer
+            SIS-)CHO: notificarReasignacion(pedido)
+        end
         SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado, código de entrega nuevo)
-    else el pedido o el chofer no existen o son de otra distribuidora
+    else asignación inválida: el pedido o el chofer no existen o son de otra distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el chofer está deshabilitado, no está validado o tiene la flota inhabilitada
+    else asignación sin efecto: el pedido ya está aceptado por ese mismo chofer
+        SIS-->>ADM: pedido sin cambios (no se regenera el código de entrega)
+    else asignación inválida: el chofer está deshabilitado o no está validado
         SIS-->>ADM: asignación rechazada
-    else el chofer no puede recibir pedidos por su carga de camión
+    else asignación inválida: el chofer no puede recibir pedidos por su carga de camión
         SIS-->>ADM: asignación rechazada, con el motivo
-    else el pedido no admite pasar a aceptado
+    else asignación inválida: el chofer no tiene un vehículo en uso o tiene documentación vencida
+        SIS-->>ADM: asignación rechazada, con el motivo
+    else asignación inválida: el pedido es express y el chofer no tiene una moto en uso
+        SIS-->>ADM: asignación rechazada (el express sólo lo lleva un chofer en moto)
+    else asignación inválida: el pedido está reservado, cancelado, en camino o entregado
         SIS-->>ADM: asignación rechazada por transición no permitida
     end
     deactivate SIS

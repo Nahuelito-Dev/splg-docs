@@ -60,6 +60,7 @@ class FleetAlertsCron <<fachada>> {
 }
 class FleetDispatchLockService <<fachada>> {
   + assertChoferHabilitado(chofer: Chofer)
+  + assertEnMoto(chofer: Chofer)
   + vehiculoEnUsoDelChofer(chofer: Chofer): Vehiculo
   + verificarHabilitacionLaboral(chofer: Chofer): Booleano
 }

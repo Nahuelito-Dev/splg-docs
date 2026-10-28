@@ -42,7 +42,7 @@ Los casos **CU-001 a CU-051** corresponden al alcance relevado inicialmente. Los
 |--------|-------|:----:|-------------|
 | ACT-01 | **Cliente** | Humano | Usuario final que compra garrafas de gas. Usa la aplicación del cliente en su teléfono: hace pedidos, elige la franja de entrega y el medio de pago, sigue el pedido en el mapa, administra sus direcciones y puede reclamar si algo sale mal. Inicia 48 casos de uso. |
 | ACT-02 | **Chofer** | Humano | Repartidor de la distribuidora. Usa la aplicación del chofer en su teléfono: se pone en línea, recibe las ofertas de pedidos cercanos, las acepta o las rechaza, informa su posición, entrega y rinde lo cobrado. Inicia 45 casos de uso. |
-| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 248 casos de uso. |
+| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 249 casos de uso. |
 | ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 71 casos de uso. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
@@ -219,7 +219,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-001 Iniciar Sesión | SS-01 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-002 Registrarse como Cliente | SS-01 | ACT-01 | Crítico | Implementado |
 | CU-004 Consultar el Perfil de Usuario | SS-01 | ACT-01, ACT-02 | Importante | Implementado |
-| CU-005 Crear un Pedido | SS-02 | ACT-01 | Crítico | Implementado |
+| CU-005 Crear un Pedido | SS-02 | ACT-01, ACT-03 | Crítico | Implementado |
 | CU-006 Consultar el Detalle de un Pedido | SS-02 | ACT-01, ACT-02, ACT-03 | Crítico | Implementado |
 | CU-007 Consultar el Historial de Pedidos | SS-02 | ACT-01 | Importante | Implementado |
 | CU-008 Cancelar un Pedido (Cliente) | SS-02 | ACT-01 | Importante | Implementado |
@@ -704,10 +704,10 @@ Los recuentos salen del catálogo de arriba y se verifican contra él: entre CU-
 
 
 **Código:** CU-005 | **Caso de Uso:** Crear un Pedido  
-**Actor/es:** Cliente (ACT-01); actores secundarios: MercadoPago (ACT-06), Firebase (ACT-07)  
+**Actor/es:** Cliente (ACT-01), Administrador (ACT-03); actores secundarios: MercadoPago (ACT-06), Firebase (ACT-07)  
 **Subsistema:** SS-02 Gestión de Pedidos  
 **Calificación:** Crítico  
-**Descripción:** El cliente arma un pedido eligiendo productos, cantidades, dirección de entrega, medio de pago y, si quiere, una franja horaria. El sistema comprueba la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta, calcula el total con promociones y recargos, registra el pedido y —salvo que el pago sea por MercadoPago o el pedido sea una reserva— lo ofrece a un chofer.
+**Descripción:** El cliente —o el administrador, por teléfono y a nombre de un cliente— arma un pedido eligiendo productos, cantidades, dirección de entrega, medio de pago y, si quiere, una franja horaria. El sistema comprueba la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta, calcula el total con promociones y recargos, registra el pedido y —salvo que el pago sea por MercadoPago— lo ofrece a un chofer.
 
 ---
 
@@ -4282,8 +4282,8 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02, OBJ-06, OBJ-07 |
 | **Requisitos asociados** | IRQ-02, IRQ-04, IRQ-05, IRQ-07, IRQ-08, IRQ-10 |
-| **Descripción** | El cliente elige productos, cantidades, dirección de entrega y medio de pago, y confirma el pedido. El sistema verifica la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta —o no reserva nada—, calcula el total con las promociones y los recargos, registra el pedido y, salvo que el pago sea por MercadoPago o el pedido sea una reserva, lo ofrece a un chofer. Opcionalmente, el cliente agenda la entrega en una franja horaria (CU-044) o elige la modalidad express (CU-148). |
-| **Precondición** | El cliente está identificado. Existe al menos un producto activo con stock en la distribuidora elegida y el cliente tiene una dirección de entrega registrada. |
+| **Descripción** | El cliente —o el administrador, por teléfono y a nombre de un cliente— elige productos, cantidades, dirección de entrega y medio de pago, y confirma el pedido. El sistema verifica la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta —o no reserva nada—, calcula el total con las promociones y los recargos, registra el pedido y, salvo que el pago sea por MercadoPago, lo ofrece a un chofer. Opcionalmente, el cliente agenda la entrega en una franja horaria (CU-044) o elige la modalidad express (CU-148). La reserva con fecha agendada y seña no es parte de este caso: es CU-072. |
+| **Precondición** | El solicitante —el cliente o un administrador— está identificado. Existe al menos un producto activo con stock en la distribuidora elegida y el cliente tiene una dirección de entrega registrada. |
 | **Puntos de extensión** | PE-02: El cliente quiere agendar la entrega en una franja horaria, lo extiende CU-044 Seleccionar una Franja Horaria al Crear un Pedido. PE-03: El cliente puede elegir la modalidad express, lo extiende CU-148 Elegir la Modalidad de Entrega del Pedido. |
 | **Estado** | Implementado |
 
@@ -4291,43 +4291,48 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente consulta el catálogo de la distribuidora (CU-041). |
-| 2 | Elige uno o más productos e indica la cantidad de cada uno. Para ver el precio, el sistema le cotiza el pedido (CU-302) cada vez que cambia algo que lo afecta: el total que se muestra lo calcula el sistema, no la aplicación. |
+| 1 | El cliente consulta el catálogo de la distribuidora (CU-041). Si el pedido lo carga el administrador por teléfono, el administrador indica además a qué cliente pertenece. |
+| 2 | Elige uno o más productos e indica la cantidad de cada uno: en la aplicación del cliente los suma al carrito (CU-122 a CU-126) y el pedido sale de ese carrito; el administrador los arma directamente en el pedido. Para ver el precio, el sistema le cotiza el pedido (CU-302) cada vez que cambia algo que lo afecta: el total que se muestra lo calcula el sistema, no la aplicación. |
 | 3 | Elige la dirección de entrega entre las que tiene guardadas. |
-| 4 | Si quiere agendar la entrega, elige una fecha y una franja horaria disponible (CU-044, punto de extensión PE-02); también puede marcar el pedido como reserva a futuro, indicando la fecha agendada y el monto de la seña. |
-| 5 | Elige el medio de pago: efectivo, MercadoPago o transferencia. Con MercadoPago o con transferencia el sistema agrega un recargo del 10 %; el pago en efectivo no lleva recargo. |
-| 6 | Revisa el resumen —ítems, descuentos, subtotal, recargos y total— y confirma. Si la conexión se corta y reintenta, el sistema no crea un segundo pedido. |
-| 7 | El sistema comprueba que el pedido se cree a nombre del propio cliente; un administrador o un chofer sí pueden cargarlo a nombre de un cliente. |
-| 8 | El sistema verifica que la dirección sea del cliente y esté dentro de una zona de cobertura de la distribuidora, y toma el recargo de esa zona. |
-| 9 | El sistema reserva el cupo de la franja elegida y, por cada ítem, comprueba que el producto sea de la distribuidora y que alcance el stock, lo descuenta y le aplica las promociones por volumen, tomando siempre el precio del sistema y nunca el que informa el cliente. |
+| 4 | Si quiere agendar la entrega, elige una fecha y una franja horaria disponible (CU-044, punto de extensión PE-02). |
+| 5 | Elige el medio de pago: efectivo, MercadoPago o transferencia; el administrador puede cargarlo además a cuenta corriente (CU-236). Con MercadoPago o con transferencia el sistema agrega un recargo del 10 %; el pago en efectivo no lleva recargo. |
+| 6 | Revisa el resumen —ítems, descuentos, subtotal, recargos y total— y confirma. Si la aplicación acompaña el envío con una clave que identifica el intento y la conexión se corta y reintenta, el sistema no crea un segundo pedido. |
+| 7 | El sistema comprueba que el pedido se cree a nombre del propio cliente; un administrador sí puede cargarlo a nombre de un cliente. |
+| 8 | El sistema verifica que la dirección sea del cliente y esté dentro de una zona de cobertura de la distribuidora, y toma el recargo de esa zona. Si la distribuidora no definió zonas, o la dirección no tiene ubicación, no controla la cobertura. |
+| 9 | Si el pedido trae fecha y franja, el sistema reserva el cupo de la franja elegida; si trae franja sin fecha, solo comprueba que la franja exista y esté activa. Por cada ítem, comprueba que el producto sea de la distribuidora y que alcance el stock, lo descuenta y le aplica las promociones por volumen, tomando siempre el precio del sistema y nunca el que informa el cliente. |
 | 10 | El sistema suma al total el recargo de la zona y, si el pago es en línea, el recargo del 10 %. |
-| 11 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema registra el pedido y sus ítems como pendiente —o reservado, si es una reserva— y deja asentada la creación en el historial de estados. |
-| 12 | Si el pago es en efectivo o por transferencia, el sistema ofrece el pedido a un chofer (CU-013). Si es por MercadoPago, genera el enlace de cobro y no ofrece el pedido a nadie hasta que se confirme el cobro. Si es una reserva, no lo ofrece: se activa el día agendado y, si la seña es por MercadoPago, genera un cobro solo por ese monto. |
+| 11 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema registra el pedido y sus ítems como pendiente y deja asentada la creación en el historial de estados. Si el pedido salió del carrito, lo vacía en la misma operación. |
+| 12 | Si el pago es en efectivo, por transferencia o a cuenta corriente, el sistema ofrece el pedido a un chofer (CU-013). Si es por MercadoPago, genera el enlace de cobro y no ofrece el pedido a nadie hasta que se confirme el cobro. |
 | 13 | El sistema avisa al cliente que el pedido fue creado y avisa del alta al panel de administración. |
 | 14 | El cliente ve el seguimiento del pedido. |
 
-**Postcondición:** Existe un pedido pendiente, o reservado si es una reserva. El stock de cada ítem y el cupo de la franja se descontaron juntos con el alta. Salvo en pago con MercadoPago y en reserva, el pedido quedó ofrecido a un chofer.
+**Postcondición:** Existe un pedido pendiente. El stock de cada ítem y el cupo de la franja se descontaron juntos con el alta. Si el pedido salió del carrito, el carrito quedó vacío. Salvo en pago con MercadoPago, el pedido quedó ofrecido a un chofer.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 6 | Si el pedido se marca como reserva sin indicar la fecha agendada, el sistema lo rechaza. |
+| 4 | Si el pedido trae una fecha agendada anterior a hoy, con franja o sin ella, el sistema lo rechaza e informa que la fecha agendada no puede ser pasada. |
+| 4 | Si la franja elegida no existe o está inactiva, el sistema rechaza el pedido e informa «Franja horaria inválida o inactiva». |
+| 6 | Si se reintenta el mismo pedido con datos distintos, el sistema lo rechaza y no ejecuta la operación. |
+| 6 | Si el pedido no trae ningún ítem, el sistema lo rechaza e informa «El pedido necesita al menos un renglón»; si repite la misma garrafa en dos renglones, lo rechaza y pide sumar las cantidades en uno solo. El panel lo avisa antes de enviar («Esta garrafa ya está en otro renglón: sumá las cantidades en uno solo»). |
+| 6 | Si el pedido sale del carrito y además trae ítems, el sistema lo rechaza: con el carrito, los ítems son los del carrito. |
+| 6 | Si el pedido express trae también franja horaria o fecha agendada, el sistema lo rechaza: el express no se agenda. |
 | 7 | Si un cliente intenta crear un pedido a nombre de otro cliente, el sistema deniega la operación. |
+| 7 | Si el pedido sale del carrito y quien lo crea no es el cliente, el sistema deniega la operación. |
 | 8 | Si el cliente no existe, el sistema cancela la operación e informa «Cliente no encontrado». |
 | 8 | Si la dirección no existe o no es del cliente, el sistema cancela la operación e informa «Dirección no encontrada». |
 | 8 | Si la dirección está fuera de todas las zonas de cobertura de la distribuidora, el sistema rechaza el pedido antes de tocar el stock. |
+| 8 | Si el pedido es express y la modalidad dejó de estar disponible para esa dirección, el sistema rechaza el pedido, informa el motivo y deja que el cliente lo haga con franja horaria. |
 | 9 | Si la franja elegida no tiene cupo para esa fecha, el sistema cancela la operación y rechaza el pedido. |
+| 9 | Si la franja elegida es de hoy y ya terminó, el sistema rechaza el pedido e informa «La franja ya terminó, elegí otra». |
 | 9 | Si algún producto del pedido no existe, el sistema cancela la operación e informa «Garrafa no encontrada», con el producto. |
 | 9 | Si el stock de algún ítem es menor que la cantidad pedida, el sistema cancela la operación e informa «Stock insuficiente para <producto>». El pedido no se crea y el inventario no cambia. |
-| 9 | Si algún producto no pertenece a la distribuidora del pedido, el sistema cancela la operación y rechaza el pedido. |
-| 9 | Si dos pedidos simultáneos compiten por el mismo stock, el sistema deshace y reintenta la operación completa antes de dar error. |
+| 9 | Si algún producto no pertenece a la distribuidora del pedido, el sistema cancela la operación e informa «La garrafa <producto> no pertenece a la distribuidora seleccionada». |
+| 9 | Si dos pedidos simultáneos compiten por el mismo stock, el sistema deshace y reintenta la operación completa; si agotados los reintentos sigue el choque, informa un conflicto y el pedido no se crea. |
 | 9 | Ante cualquier otro error, el sistema cancela la operación e informa «Error al crear el pedido». |
-| 13 | Si no hay ningún chofer elegible, el pedido queda pendiente sin oferta y lo retoma la re-oferta automática (CU-014). |
-| 14 | Si falla el envío del aviso, el pedido queda creado igual. |
-| 6 | Si se reintenta el mismo pedido con datos distintos, el sistema lo rechaza y no ejecuta la operación. |
-| 6 | Si el pedido no trae ningún ítem, el sistema lo rechaza e informa «El pedido necesita al menos un renglón»; si repite la misma garrafa en dos renglones, lo rechaza y pide sumar las cantidades en uno solo. El panel lo avisa antes de enviar («Esta garrafa ya está en otro renglón: sumá las cantidades en uno solo»). |
-| 4 | Si el pedido trae una fecha agendada anterior a hoy, con franja o sin ella, el sistema lo rechaza e informa que la fecha agendada no puede ser pasada. |
+| 12 | Si no hay ningún chofer elegible, el pedido queda pendiente sin oferta y lo retoma la re-oferta automática (CU-014). |
+| 13 | Si falla el envío del aviso, el pedido queda creado igual. |
 
 **Rendimiento**
 
@@ -4339,8 +4344,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Frecuencia** | Variable según la demanda de la distribuidora (estimado: 10 a 50 pedidos por día en la Fase 1). |
 | **Estabilidad** | Alta |
-| **Comentarios** | Los totales se calculan con aritmética decimal exacta y las promociones se aplican según la cantidad mínima configurada en cada producto. Si ningún chofer resulta elegible, el pedido queda pendiente en silencio: el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: cualquier usuario identificado puede crear uno, aunque un cliente solo puede hacerlo para sí mismo. El proceso de compra con carrito persistente (CU-122 a CU-126), la elección explícita de modalidad (CU-148) y la compra express en un paso (CU-147) están construidos: este caso puede recibir los ítems armados o tomarlos del carrito, y puede recibir la modalidad de entrega y quién va a recibir el pedido (CU-128). Tampoco usa CU-121: el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. El total que guarda el sistema es la suma exacta de los renglones, el recargo de la zona, el recargo del medio de pago en línea —que se guarda aparte— y, si corresponde, el de la entrega express; la base de datos rechaza un pedido cuyo total no coincida con esa suma y no admite la misma garrafa en dos renglones del mismo pedido. |
-
+| **Comentarios** | Los totales se calculan con aritmética decimal exacta y las promociones se aplican según la cantidad mínima configurada en cada producto. Si ningún chofer resulta elegible, el pedido queda pendiente en silencio: el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: cualquier usuario identificado puede crear uno, aunque un cliente solo puede hacerlo para sí mismo, y solo el administrador puede cargarlo a cuenta corriente. El proceso de compra con carrito persistente (CU-122 a CU-126), la elección explícita de modalidad (CU-148) y la compra express en un paso (CU-147) están construidos: la aplicación del cliente crea siempre el pedido desde el carrito, y el administrador lo arma con los ítems en el propio pedido; también puede recibir la modalidad de entrega y quién va a recibir el pedido (CU-128). Tampoco usa CU-121: el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. La reserva con fecha agendada y seña pasa por la misma operación de alta pero es otro caso de uso, con su propia secuencia (CU-072). La protección contra pedidos duplicados depende de la clave que identifica cada intento y que acompaña el envío: la aplicación del cliente la envía y el panel no. El total que guarda el sistema es la suma exacta de los renglones, el recargo de la zona, el recargo del medio de pago en línea —que se guarda aparte— y, si corresponde, el de la entrega express; la base de datos rechaza un pedido cuyo total no coincida con esa suma y no admite la misma garrafa en dos renglones del mismo pedido. |
 ---
 
 #### Crítico CU-006 — Consultar el Detalle de un Pedido
@@ -6022,40 +6026,42 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador elige el pedido sin asignar en el panel y decide asignar un chofer manualmente. |
-| 2 | El panel muestra el listado de choferes de la distribuidora (CU-035). |
+| 2 | El panel muestra los choferes que se pueden asignar —los habilitados y validados de la distribuidora, estén o no en línea— (CU-035). |
 | 3 | El administrador elige uno y confirma. |
-| 4 | El sistema verifica que el chofer exista, sea de la distribuidora del pedido, esté habilitado y validado, tenga un vehículo en uso habilitado (CU-161) y ni su licencia ni ese vehículo tengan documentación vencida (CU-136 a CU-138). Incluye CU-246 Verificar la Habilitación Laboral del Chofer. |
+| 4 | El sistema verifica que el chofer exista, sea de la distribuidora del pedido, esté habilitado y validado. Incluye CU-246 Verificar la Habilitación Laboral del Chofer. |
 | 5 | Incluye CU-248 Verificar la Carga de Camión Abierta del Chofer: el sistema comprueba que la carga de camión del chofer lo habilite a recibir pedidos —con una carga abierta, que esté en ruta con ese vehículo; sin carga, que la distribuidora no exija tenerla (CU-249)—. Es el mismo control que en la aceptación y corre siempre, también al reasignar. |
-| 6 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema le asigna el pedido, lo pasa a aceptado, registra el momento, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo del chofer y genera un código de entrega nuevo, que deja sin efecto el anterior si es una reasignación. |
-| 7 | En la misma operación, el sistema retira las ofertas abiertas a los demás choferes, que dejan de contar como intento, y después les avisa que la oferta ya no está vigente. |
-| 8 | El sistema avisa al chofer nuevo, que recibe el pedido como si fuera una oferta; al chofer anterior, si lo hubo, que el pedido se reasignó y se le corta el seguimiento; y al panel. |
+| 6 | El sistema verifica que el chofer tenga un vehículo en uso habilitado (CU-161) y que ni su licencia ni ese vehículo tengan documentación vencida (CU-136 a CU-138). Si el pedido es express, el vehículo en uso además tiene que ser una moto. |
+| 7 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema le asigna el pedido, lo pasa a aceptado, registra el momento, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo del chofer y genera un código de entrega nuevo, que deja sin efecto el anterior si es una reasignación. También en una reasignación queda asentada la fila del historial, con el mismo estado de origen y de destino. |
+| 8 | En la misma operación, el sistema retira las ofertas abiertas a los demás choferes, que dejan de contar como intento, y deja constancia de que el chofer elegido tiene el pedido: una oferta aceptada a su nombre, que cierra la del chofer anterior si lo hubo. Después avisa a los choferes con oferta retirada que ya no está vigente. |
+| 9 | El sistema avisa al chofer nuevo, que recibe el pedido como si fuera una oferta; al chofer anterior, si lo hubo, que el pedido se reasignó y se le corta el seguimiento; y al panel. |
 
-**Postcondición:** El pedido está aceptado por el chofer elegido, con su propio código de entrega. Las ofertas abiertas a otros choferes quedaron retiradas y esos choferes fueron avisados. Si el pedido tenía otro chofer, éste quedó sin seguimiento.
+**Postcondición:** El pedido está aceptado por el chofer elegido, con su propio código de entrega. Las ofertas abiertas a otros choferes quedaron retiradas y esos choferes fueron avisados. El chofer elegido quedó registrado como quien tiene el pedido. Si el pedido tenía otro chofer, éste quedó sin seguimiento.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
+| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 4 | Si el pedido es de otra distribuidora que la del administrador, el sistema informa que no lo encontró, sin revelar que existe. |
 | 4 | Si el chofer no existe o es de otra distribuidora que la del pedido, el sistema informa «Repartidor no encontrado». |
+| 4 | Si el pedido ya está aceptado por ese mismo chofer —un reintento o un doble toque—, el sistema no cambia nada: no genera otro código de entrega, no avisa y no retira ofertas. |
 | 4 | Si el chofer fue deshabilitado entre la consulta del listado y la confirmación, el sistema rechaza la asignación e informa «El repartidor está deshabilitado»; si no está validado, informa «El repartidor no está validado». |
-| 4 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación e informa «No se puede asignar: …» con el motivo —por ejemplo, que no tiene un vehículo asignado—. |
 | 5 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la asignación e informa el motivo —por ejemplo «El chofer no tiene la carga del día abierta» o «La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos»—. |
-| 6 | Si el pedido ya no admite pasar a aceptado —está cancelado, en camino o entregado—, el sistema rechaza la asignación por transición no permitida. Un pedido aceptado por otro chofer no es un error: se reasigna. |
-| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
+| 6 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación e informa «No se puede asignar: …» con el motivo —por ejemplo, que no tiene un vehículo asignado—. |
+| 6 | Si el pedido es express y el chofer no tiene una moto en uso, el sistema rechaza la asignación e informa «Un pedido express sólo lo puede llevar un chofer con una moto en uso». |
+| 7 | Si el pedido ya no admite pasar a aceptado —está reservado, cancelado, en camino o entregado—, el sistema rechaza la asignación por transición no permitida. Un pedido aceptado por otro chofer no es un error: se reasigna. |
 
 **Rendimiento**
 
 | Paso | Cota de tiempo |
 |------|----------------|
-| 8 | 3 segundos |
+| 9 | 3 segundos |
 
 | Campo | Detalle |
 |-------|---------|
 | **Frecuencia** | Baja: es la vía de excepción cuando el despacho automático no encontró candidatos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas abiertas a los demás, guarda la copia del vehículo y avisa. El chofer nuevo recibe el pedido como una oferta y puede «aceptarla», sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Un chofer sin vehículo en uso no recibe pedidos ni siquiera por asignación manual. |
-
+| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas abiertas a los demás, guarda la copia del vehículo y avisa. El chofer nuevo recibe el pedido como una oferta y puede «aceptarla», sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Un chofer sin vehículo en uso no recibe pedidos ni siquiera por asignación manual. El panel permite además asignar varios pedidos a un mismo chofer desde el listado: repite esta asignación pedido por pedido. La oferta aceptada que queda como constancia se escribe después de confirmar la asignación y es de mejor esfuerzo: si falla, el pedido queda asignado igual, sin la constancia. |
 ---
 
 #### Crítico CU-149 — Despachar un Pedido Express a un Chofer en Moto
@@ -19534,7 +19540,7 @@ sequenceDiagram
 
 #### Crítico DSS — CU-005: Crear un Pedido
 
-**Actor:** Cliente (ACT-01)
+**Actor:** Cliente (ACT-01), Administrador (ACT-03)
 **Operaciones del sistema:** `crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)`
 
 ![DSS — CU-005 Crear un Pedido](../diagramas/png/DSS_CU-005_Crear-un-Pedido.png)
@@ -19546,22 +19552,37 @@ sequenceDiagram
     title DSS — CU-005 Crear un Pedido
     autonumber
     actor CLI as Cliente (ACT-01)
+    actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
+    actor MPA as MercadoPago (ACT-06)
+    actor FIR as Firebase (ACT-07)
 
+    Note over CLI,SIS: Antes de confirmar, la aplicación cotiza el pedido (ref CU-302)
+    Note over ADM,SIS: El administrador invoca la misma operación a nombre de un cliente (pedido telefónico)
     CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     activate SIS
-    alt Hay stock y la dirección está cubierta
+    Note over SIS: Los rechazos se evalúan en este orden: gana el primero que corresponda
+    alt pedido válido
+        opt el pago es por MercadoPago
+            SIS-)MPA: notificarSolicitudDeCobro(pedido)
+        end
+        SIS-)FIR: notificarConfirmacionDePedido(pedido)
         SIS-->>CLI: pedido creado (número, total, estado pendiente y, si el pago es por MercadoPago, enlace de pago)
         Note over CLI,SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
-        SIS-)CLI: notificarConfirmacionDePedido(pedido)
-    else Sin stock suficiente
-        SIS-->>CLI: rechazo (stock insuficiente para el producto)
-    else Un producto del pedido no existe
-        SIS-->>CLI: rechazo (producto no encontrado)
-    else Dirección fuera de la zona de cobertura
+    else pedido inválido: cliente ajeno, sin ítems, ítems repetidos, fecha pasada o clave reutilizada con otros datos
+        SIS-->>CLI: rechazo (solicitud no válida)
+    else pedido inválido: el cliente o la dirección no existen
+        SIS-->>CLI: rechazo (cliente o dirección no encontrados)
+    else pedido inválido: la dirección está fuera de la zona de cobertura
         SIS-->>CLI: rechazo (domicilio no cubierto)
-    else Franja horaria sin cupo
-        SIS-->>CLI: rechazo (franja completa para esa fecha)
+    else pedido inválido: la franja no existe, está completa o ya terminó
+        SIS-->>CLI: rechazo (franja no disponible para esa fecha)
+    else pedido inválido: un producto del pedido no existe
+        SIS-->>CLI: rechazo (producto no encontrado)
+    else pedido inválido: un producto es de otra distribuidora
+        SIS-->>CLI: rechazo (producto de otra distribuidora)
+    else pedido inválido: no hay stock suficiente
+        SIS-->>CLI: rechazo (stock insuficiente para el producto)
     end
     deactivate SIS
 ```
@@ -20656,18 +20677,30 @@ sequenceDiagram
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
 
     ADM->>SIS: asignarChoferAPedido(pedidoId, choferId)
     activate SIS
-    alt el pedido está pendiente o aceptado por otro chofer, y el chofer es elegible
+    Note over SIS: Los rechazos se evalúan en este orden: gana el primero que corresponda
+    alt asignación válida: el pedido está pendiente o aceptado por otro chofer, y el chofer es elegible
+        SIS-)CHO: notificarNuevoPedido(pedido)
+        opt el pedido estaba aceptado por otro chofer
+            SIS-)CHO: notificarReasignacion(pedido)
+        end
         SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado, código de entrega nuevo)
-    else el pedido o el chofer no existen o son de otra distribuidora
+    else asignación inválida: el pedido o el chofer no existen o son de otra distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el chofer está deshabilitado, no está validado o tiene la flota inhabilitada
+    else asignación sin efecto: el pedido ya está aceptado por ese mismo chofer
+        SIS-->>ADM: pedido sin cambios (no se regenera el código de entrega)
+    else asignación inválida: el chofer está deshabilitado o no está validado
         SIS-->>ADM: asignación rechazada
-    else el chofer no puede recibir pedidos por su carga de camión
+    else asignación inválida: el chofer no puede recibir pedidos por su carga de camión
         SIS-->>ADM: asignación rechazada, con el motivo
-    else el pedido no admite pasar a aceptado
+    else asignación inválida: el chofer no tiene un vehículo en uso o tiene documentación vencida
+        SIS-->>ADM: asignación rechazada, con el motivo
+    else asignación inválida: el pedido es express y el chofer no tiene una moto en uso
+        SIS-->>ADM: asignación rechazada (el express sólo lo lleva un chofer en moto)
+    else asignación inválida: el pedido está reservado, cancelado, en camino o entregado
         SIS-->>ADM: asignación rechazada por transición no permitida
     end
     deactivate SIS
@@ -29616,81 +29649,104 @@ sequenceDiagram
     actor CLI as Cliente (ACT-01)
     participant CRT as :CreateOrderUseCase
     participant CLE as cliente:Cliente
+    participant DIS as distribuidora:Distribuidora
     participant ZON as zona:ZonaCobertura
     participant FRA as franja:FranjaHoraria
+    participant CAR as carrito:Carrito
     participant PRO as producto:Producto
     participant NOT as :NotificationPort
 
     CLI->>+CRT: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     CRT->>+CLE: getDireccion(direccionId)
     CLE-->>-CRT: direccion
-    CRT->>+ZON: cubre(direccion)
-    ZON-->>-CRT: cubierta
-    opt La dirección está fuera de la zona de cobertura
+    CRT->>+DIS: zonaQueCubre(direccion)
+    DIS-->>-CRT: zona
+    break La distribuidora tiene zonas y ninguna cubre la dirección
         CRT-->>CLI: rechazo por domicilio fuera de la zona
     end
     opt Hay fechaAgendada y franjaId
         CRT->>+FRA: tieneCupo(fechaAgendada)
         FRA-->>-CRT: hayCupo
-        opt La franja no tiene cupo para esa fecha
+        break La franja no tiene cupo para esa fecha
             CRT-->>CLI: rechazo por franja sin cupo
         end
     end
-    create participant PED as :Pedido
-    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago)
+    alt El pedido sale del carrito del cliente
+        CRT->>+CAR: getItems()
+        CAR-->>-CRT: items
+    else El solicitante informa los items, como el administrador desde el panel
+        Note over CRT,CAR: Se usan los items recibidos
+    end
     loop Por cada item de items
         CRT->>+PRO: reservar(cantidad)
         PRO-->>-CRT: reservado
-        opt El producto no tiene stock suficiente
+        break El producto no tiene stock suficiente
             CRT-->>CLI: rechazo por stock insuficiente
         end
-        CRT->>+PED: agregarItem(producto, cantidad)
-        PED->>+PRO: precioPara(cantidad)
-        PRO-->>-PED: precioUnitario, subtotal
+        CRT->>+PRO: esDeLaDistribuidora(distribuidora)
+        PRO-->>-CRT: pertenece
+        break El producto es de otra distribuidora
+            CRT-->>CLI: rechazo por producto de otra distribuidora
+        end
+        CRT->>+PRO: precioPara(cantidad)
+        PRO-->>-CRT: precioUnitario, subtotal
+    end
+    create participant PED as :Pedido
+    CRT->>PED: «create»(cliente, direccion, franja, zona, fechaAgendada, metodoDePago)
+    loop Por cada item reservado
+        CRT->>+PED: agregarItem(producto, cantidad, precioUnitario, subtotal)
         create participant ITM as :ItemPedido
         PED->>ITM: «create»(producto, cantidad, precioUnitario, subtotal)
         deactivate PED
     end
     CRT->>+PED: calcularTotal()
     loop Por cada item del Pedido
-        PED->>ITM: getSubtotal()
+        PED->>+ITM: getSubtotal()
+        ITM-->>-PED: subtotal
     end
-    PED->>ZON: calcularRecargo(subtotalItems)
+    PED->>+ZON: calcularRecargo(subtotalItems)
+    ZON-->>-PED: recargoDeZona
     PED->>PED: aplicarRecargoDePago()
     PED-->>-CRT: total
-    Note over CRT,PED: Si metodoDePago es MERCADOPAGO: Pago, ver DSD de crearCheckoutDePago (CU-048),<br/>devuelve enlaceDePago y no se despacha hasta confirmarlo.<br/>Si es efectivo o transferencia: Despacho, ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
-    CRT-)NOT: sendOrderConfirmation(cliente, pedido)
+    Note over CRT,PED: Registro del cambio de estado: ver DSD de registrarCambioDeEstado (CU-169).<br/>Crea el CambioEstadoPedido
+    alt metodoDePago es MERCADOPAGO
+        Note over CRT,PED: Pago: ver DSD de crearCheckoutDePago (CU-048),<br/>devuelve enlaceDePago y no se despacha hasta confirmarlo
+    else metodoDePago es efectivo, transferencia o cuenta corriente
+        Note over CRT,PED: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013).<br/>Crea la OfertaDespacho
+    end
+    CRT->>NOT: sendOrderConfirmation(cliente, pedido)
     CRT-->>-CLI: pedido, enlaceDePago
 ```
 
 </details>
 
-**Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `ZonaCobertura`, `FranjaHoraria`, `Producto`, `Pedido` e `ItemPedido`, y `NotificationPort` (fabricación pura: el aviso al cliente). El diagrama sirve también a CU-044, que es la elección de la franja dentro de la misma operación.
+**Clases participantes:** `CreateOrderUseCase` (controlador de caso de uso), los objetos de dominio `Cliente`, `Distribuidora`, `ZonaCobertura`, `FranjaHoraria`, `Carrito`, `Producto`, `Pedido` e `ItemPedido`, y `NotificationPort` (fabricación pura: el aviso al cliente). El diagrama sirve también a CU-044, que es la elección de la franja dentro de la misma operación, y al administrador que carga el pedido por teléfono: es la misma operación, con los ítems informados en lugar de los del carrito (la rama del `alt`).
 
-**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. La navegación se resuelve por las asociaciones del modelo conceptual: el `Cliente` entrega su dirección, la `ZonaCobertura` dice si la cubre, la `FranjaHoraria` si tiene cupo y el `Producto` reserva su stock. *Creador*: el controlador crea el `Pedido`, porque tiene los datos con que se inicializa; el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido` y el recargo a la `ZonaCobertura`; `Producto` sabe su precio y su promoción por volumen.
+**GRASP.** *Controlador*: `CreateOrderUseCase` recibe la operación y coordina. La navegación se resuelve por las asociaciones del modelo conceptual: el `Cliente` entrega su dirección, la `Distribuidora` dice qué zona la cubre, la `FranjaHoraria` si tiene cupo, el `Carrito` entrega los ítems y el `Producto` reserva su stock, dice si es de la distribuidora y da su precio. *Creador*: el controlador crea el `Pedido` una vez reservados todos los renglones, porque recién entonces tiene los datos con que se inicializa; el `Pedido` crea sus `ItemPedido` (los contiene, composición). *Experto*: `Pedido` calcula su total pidiéndole el subtotal a cada `ItemPedido` y el recargo a la `ZonaCobertura`; `Producto` sabe su precio y su promoción por volumen.
 
-**Referencias.** El pago con MercadoPago es la operación `crearCheckoutDePago` (CU-048) y el ofrecimiento al chofer más cercano, que crea la `OfertaDespacho`, es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
+**Referencias.** El registro del cambio de estado es la operación `registrarCambioDeEstado` (CU-169, incluido): crea el `CambioEstadoPedido`. El pago con MercadoPago es la operación `crearCheckoutDePago` (CU-048) y el ofrecimiento al chofer más cercano, que crea la `OfertaDespacho`, es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama y, en el `alt`, se indica con una nota «ver DSD de …». El aviso al cliente es síncrono: el código espera el envío antes de responder.
 
-**Rechazos.** Los tres rechazos que el DSS muestra y que cambian el recorrido salen como retorno de error del controlador: `domicilioNoCubierto` (la zona no cubre la dirección), `franjaSinCupo` y `stockInsuficiente`; el producto inexistente se rechaza al buscarlo y no se dibuja.
+**Rechazos.** Los rechazos que cambian el recorrido terminan la operación con un `break`: `domicilioNoCubierto` (ninguna zona de la distribuidora cubre la dirección), `franjaSinCupo`, `stockInsuficiente` y el producto de otra distribuidora; después de cada uno no se crea el `Pedido`. El producto inexistente, el cliente o la dirección inexistentes y los errores de validación (sin ítems, ítems repetidos, fecha pasada, clave de idempotencia reutilizada) se rechazan al buscar o validar y no se dibujan: están en el DSS.
 
-**No se dibuja:** la transacción y el bloqueo de stock (`QueryRunner`), la persistencia, los servicios que el código usa para buscar al cliente, la dirección, la zona y la franja, el aviso en vivo al panel (`notifyAdmins`) y la lectura final del pedido. La reserva con seña es otra operación (`crearReserva`, CU-072).
+**No se dibuja:** la transacción y el bloqueo de stock y del carrito (`QueryRunner`), la persistencia, los servicios que el código usa para buscar al cliente, la dirección, la zona y la franja, la modalidad express (CU-148, que se evalúa antes de reservar el stock), el crédito de la cuenta corriente, el aviso en vivo al panel (`notifyAdmins`) y la lectura final del pedido. La reserva con seña es otra operación (`crearReserva`, CU-072).
 
 | Operación de diseño | Implementación |
 |---|---|
 | `CreateOrderUseCase.crearPedido(...)` | `OrderController.create` → `OrderService.create` → `CreateOrderUseCase.execute` |
 | `Cliente.getDireccion(...)` | `UserAddressService.buscarDelUsuario`; el cliente se obtiene con `CustomersService.buscarComprador` |
-| `ZonaCobertura.cubre(...)` | `CoverageZoneService.checkCoverage` |
+| `Distribuidora.zonaQueCubre(...)` | `CoverageZoneService.checkCoverage`, que `CreateOrderUseCase.resolverZona` usa para buscar, entre las zonas de la distribuidora, la que cubre el punto de la dirección; sin zonas definidas o sin punto en la dirección no hay control |
 | `FranjaHoraria.tieneCupo(...)` | `TimeSlotService.assertSlotAvailableTx`, con bloqueo de la franja |
-| `Pedido.«create»` | `CreateOrderUseCase.execute`: arma la entidad `Order` con el cliente, la dirección, la franja y el snapshot de la zona |
+| `Carrito.getItems()` | `CartService.itemsParaPedido`: lee los ítems del carrito del cliente con el carrito bloqueado hasta el commit; el carrito se vacía en la misma transacción (`CartService.vaciarEnTransaccion`) |
 | `Producto.reservar(...)` | `GasCylinderService.reservarStock`: bloquea la fila y resta de `GasCylinder.stock` |
-| `Pedido.agregarItem(...)` | `CreateOrderUseCase.execute`: acumula los `OrderItem` en `Order.items` |
+| `Producto.esDeLaDistribuidora(...)` | `CreateOrderUseCase.valorizarRenglon`: compara `GasCylinder.distributorId` con la distribuidora del pedido |
 | `Producto.precioPara(...)` | `OrderPricingService.priceItem`: precio de lista y promociones por volumen |
+| `Pedido.«create»` | `CreateOrderUseCase.execute`: arma la entidad `Order` con los renglones ya reservados, el cliente, la dirección, la franja y la copia de la zona (`Order.coverageZoneId`, `Order.zoneName`, `Order.zoneSurchargeType`, `Order.zoneSurchargeValue`) |
+| `Pedido.agregarItem(...)` | `CreateOrderUseCase.execute`: acumula los `OrderItem` en `Order.items` |
 | `ItemPedido.«create»` | `CreateOrderUseCase.execute`: crea cada `OrderItem` con su precio unitario y su subtotal |
 | `ItemPedido.getSubtotal()` | `OrderItem.subtotal` |
 | `Pedido.calcularTotal()` | `CreateOrderUseCase.execute`: suma los subtotales con `Decimal` y aplica los dos recargos; el resultado queda en `Order.totalAmount` |
 | `ZonaCobertura.calcularRecargo(...)` | `CoverageZonePricingService.zoneSurcharge` |
 | `Pedido.aplicarRecargoDePago()` | `OrderPricingService.applyPaymentSurcharge` |
-
 ### 4.2 Crítico · automático DSD — CU-013: Despacho por proximidad (vista general)
 
 La operación `ofrecerAlSiguienteChofer` de CU-013 se dibuja en la sección 4.4, con su contrato y su tabla de implementación.
@@ -33959,9 +34015,12 @@ sequenceDiagram
 
 Es la puerta **manual** al despacho, la que usa el admin cuando el M1 (oferta secuencial
 automática) no encontró chofer, cuando hay que forzar una asignación o cuando hay que pasar
-un pedido ya aceptado a otro chofer. Salta la negociación por completo: no crea `DispatchOffer` ni
+un pedido ya aceptado a otro chofer. Salta la negociación por completo: no ofrece el pedido ni
 espera aceptación; escribe el `delivery_id`, genera el código de entrega y transiciona
-directo a `ACCEPTED`, todo en una transacción con bloqueo del pedido.
+directo a `ACCEPTED`, todo en una transacción con bloqueo del pedido. Una vez confirmada, deja la
+constancia de quién lo tiene: crea una `DispatchOffer` en estado `accepted` a nombre del chofer
+nuevo y cierra como `rejected` la del chofer anterior, para que el despacho no se lo vuelva a
+ofrecer si lo libera.
 
 ##### Operación: asignarChoferAPedido(pedidoId, choferId)
 
@@ -33982,46 +34041,61 @@ sequenceDiagram
     participant TLG as :TruckLoadGateService
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
-    participant CFG as :DispatchSettingsService
 
     ADM->>+SRV: asignarChoferAPedido(pedidoId, choferId)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
     SRV->>+DEL: findById(choferId)
     DEL-->>-SRV: chofer
-    SRV->>CHO: assertElegibleParaAsignacion()
-    SRV->>FLK: assertChoferHabilitado(chofer)
-    SRV->>+FLK: vehiculoEnUsoDelChofer(chofer)
-    FLK-->>-SRV: vehiculo
-    SRV->>TLG: assertPuedeAsignar(chofer)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
     SRV->>+PED: getChofer()
     PED-->>-SRV: choferAnterior
+    break El pedido ya está aceptado por ese mismo chofer
+        SRV-->>ADM: pedido
+    end
+    Note over SRV,TLG: Cada assert termina sin valor o rechaza la asignación (ver el DSS)
+    SRV->>CHO: assertElegibleParaAsignacion()
+    SRV->>TLG: assertPuedeAsignar(chofer)
+    SRV->>FLK: assertChoferHabilitado(chofer)
+    opt El pedido es express
+        SRV->>FLK: assertEnMoto(chofer)
+    end
+    SRV->>+FLK: vehiculoEnUsoDelChofer(chofer)
+    FLK-->>-SRV: vehiculo
     SRV->>+PED: asignarChofer(chofer, vehiculo)
     PED->>PED: transicionar(aceptado)
     PED->>PED: generarCodigoDeEntrega()
     deactivate PED
-    SRV->>PED: retirarOtrasOfertas(chofer)
+    Note over SRV,PED: Registro del cambio de estado: ver DSD de registrarCambioDeEstado (CU-169).<br/>Crea el CambioEstadoPedido, también al reasignar (aceptado a aceptado)
+    SRV->>+PED: retirarOtrasOfertas(chofer)
+    PED-->>-SRV: choferesConOferta
     loop Por cada chofer con una oferta retirada
         SRV-)RT: notifyDriverOrderCancelled(choferConOferta, pedido)
     end
+    SRV->>+PED: registrarConstancia(chofer)
+    opt Había otro chofer asignado
+        PED->>PED: rechazarConstanciaAnterior(choferAnterior)
+    end
+    create participant OFE as :OfertaDespacho
+    PED->>OFE: «create»(chofer, aceptada)
+    deactivate PED
     opt Había otro chofer asignado
         SRV-)RT: stopTracking(choferAnterior)
         SRV-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)
     end
     SRV-)RT: notifyAdmins(pedido)
-    SRV->>+CFG: obtener(distribuidora)
-    CFG-->>-SRV: parametros
     SRV-)RT: notifyDriverNewOrder(chofer, pedido)
     SRV-->>-ADM: pedido
 ```
 
 </details>
 
-**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), `DeliveryService`, `FleetDispatchLockService`, `RealtimeDispatchPort`, la colección `Map<String, Pedido>` y los objetos de dominio `Pedido` y `Chofer`.
+**Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), `DeliveryService`, `FleetDispatchLockService`, `TruckLoadGateService`, `RealtimeDispatchPort`, la colección `Map<String, Pedido>` y los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`.
 
-**GRASP.** *Controlador*: `OrderService`. *Experto*: `Chofer` sabe si está habilitado y validado; `Pedido` conoce a su chofer, su estado, su código y sus ofertas, y es quien se asigna el chofer, guarda la copia del vehículo, pasa a «aceptado» y retira las ofertas abiertas a los demás choferes. *Fabricación pura*: `FleetDispatchLockService` reúne la documentación vencida de la flota (Alta Cohesión) y el puerto aísla el tiempo real (Bajo Acoplamiento).
+**GRASP.** *Controlador*: `OrderService`. *Experto*: `Chofer` sabe si está habilitado y validado; `Pedido` conoce a su chofer, su estado, su código y sus ofertas, y es quien se asigna el chofer, guarda la copia del vehículo, pasa a «aceptado», retira las ofertas abiertas a los demás choferes y deja la constancia del chofer que lo tiene. *Creador*: el `Pedido` crea la `OfertaDespacho` (la genera, composición). *Fabricación pura*: `FleetDispatchLockService` reúne la documentación vencida de la flota y el control de la moto del pedido express (Alta Cohesión) y el puerto aísla el tiempo real (Bajo Acoplamiento).
 
-**No se dibuja:** la transacción y el bloqueo del pedido y del chofer, el guardado y la lectura final del pedido; la verificación previa de que el pedido es de la distribuidora (`OrderService.assertDeLaDistribuidora`).
+**Rechazos.** Los controles `assertElegibleParaAsignacion`, `assertPuedeAsignar`, `assertChoferHabilitado` y `assertEnMoto` terminan sin valor o rechazan la asignación con el motivo que muestra el DSS; no se dibuja cada rechazo porque ninguno cambia qué objetos participan. Asignar al mismo chofer que ya tiene el pedido termina con un `break`: devuelve el pedido sin cambios, sin código nuevo, sin avisos y sin retirar ofertas. Un pedido express solo se asigna a un chofer con una moto en uso (`assertEnMoto`).
+
+**No se dibuja:** la transacción y el bloqueo del pedido y del chofer, el guardado y la lectura final del pedido; la lectura de los parámetros de despacho (`DispatchSettingsService`) para la vigencia del aviso al chofer nuevo; la verificación previa de que el pedido es de la distribuidora (`OrderService.assertDeLaDistribuidora`).
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -34029,18 +34103,21 @@ sequenceDiagram
 | `Map<String, Pedido>.get(...)` | `OrderService.assignDelivery`: lee el `Order` con bloqueo pesimista |
 | `Chofer.assertElegibleParaAsignacion()` | `DeliveryService.assertElegibleParaAsignacion`: verifica `Delivery.isEnabled` y `Delivery.validated` |
 | `Pedido.getChofer()` | `Order.delivery` |
-| `Pedido.asignarChofer(...)` | `OrderService.assignDelivery`: asigna `Order.deliveryId` y `Order.delivery`, copia `Order.vehiclePatent`, `Order.vehicleBrand` y `Order.vehicleModel`, y registra `Order.acceptedAt` |
+| `Pedido.asignarChofer(...)` | `OrderService.assignDelivery`: asigna `Order.deliveryId` y `Order.delivery`, copia `Order.vehicleCarId`, `Order.vehiclePatent`, `Order.vehicleBrand` y `Order.vehicleModel`, y registra `Order.acceptedAt` |
 | `Pedido.transicionar(...)` | `transitionOrder()` |
 | `Pedido.generarCodigoDeEntrega()` | `generateDeliveryCode()`, que queda en `Order.deliveryCode` |
 | `Pedido.retirarOtrasOfertas(...)` | `DispatchOfferRepositoryPort.withdrawOtherActiveOffers`: pasa a `superseded`, dentro de la transacción, las ofertas abiertas de `Order.orderId` de los demás choferes y devuelve a quiénes avisar |
+| `Pedido.registrarConstancia(...)` | `DispatchOrchestratorService.onOrderAssigned` → `DispatchOfferRepositoryPort.recordDriverHeldOrder`: después del commit y de mejor esfuerzo; si falla, el pedido queda asignado sin la constancia |
+| `Pedido.rechazarConstanciaAnterior(...)` | `DispatchOfferRepositoryPort.recordDriverHeldOrder`: pasa a `rejected` la `DispatchOffer` aceptada de otro chofer |
+| `OfertaDespacho.«create»` | `DispatchOfferRepositoryPort.recordDriverHeldOrder`: inserta la `DispatchOffer` en estado `accepted` con un vencimiento de un segundo (la constancia no vence) |
 | `TruckLoadGateService.assertPuedeAsignar(...)` | `OrderService.assignDelivery` llama a `TruckLoadGatePort.assertPuedeAsignar`, que implementa `TruckLoadGateService.assertPuedeAsignar` (CU-248): responde 400 con el motivo si el chofer no puede recibir pedidos según su carga de camión |
 
 **Observaciones de diseño**
 
 - La asignación manual tiene los mismos efectos que la aceptación por oferta (`UpdateOrderStatusUseCase`): genera el `deliveryCode`, retira las ofertas de despacho abiertas a los demás choferes (`withdrawOtherActiveOffers`, estado `superseded`, que no cuenta como intento) y avisa a esos choferes, a los administradores y al chofer nuevo; el pedido asignado a mano queda con código para la entrega verificada por QR (CU-078, CU-079). El cliente no recibe un aviso.
-- Reasignar es válido: `transitionOrder` admite ACCEPTED sobre ACCEPTED. El código nuevo reemplaza al del chofer anterior, y el anterior recibe el aviso de reasignación y se le corta el seguimiento (por `user_id`, no por el id de su perfil de reparto).
-- La elegibilidad es `assertElegibleParaAsignacion`: el chofer tiene que estar habilitado por el administrador (`isEnabled`) y validado (`validated`); no se exige que esté en línea. La habilitación y la presencia son columnas separadas (CU-033 y CU-022).
-
+- Reasignar es válido: `transitionOrder` admite ACCEPTED sobre ACCEPTED. El código nuevo reemplaza al del chofer anterior, y el anterior recibe el aviso de reasignación y se le corta el seguimiento (por `user_id`, no por el id de su perfil de reparto). La reasignación asienta en el historial una fila de aceptado a aceptado (CU-169).
+- La elegibilidad es `assertElegibleParaAsignacion`: el chofer tiene que estar habilitado por el administrador (`isEnabled`) y validado (`validated`); no se exige que esté en línea. La habilitación y la presencia son columnas separadas (CU-033 y CU-022). Los controles se aplican en este orden: elegibilidad, carga del camión, documentación de la flota (que incluye la habilitación laboral del legajo y la licencia, CU-246), moto del pedido express y vehículo en uso; el primero que falla da su mensaje.
+- La constancia (`DispatchOffer` aceptada) se escribe fuera de la transacción: el pedido ya está asignado cuando se crea, y el índice `UQ_order_dispatch_offer_aceptada` garantiza que un pedido tenga una sola.
 #### DSD — CU-171: Configurar los Parámetros de Despacho de la Distribuidora
 
 ##### Operación: configurarParametrosDeDespacho(radiosKm, ventanaDeAceptacion)
@@ -49409,7 +49486,7 @@ Los casos de uso expandidos de esencia (secciones 4 y 5 de este documento) descr
 
 | CU | Operación del sistema | Ruta de la API | Respuestas y códigos | Notas técnicas |
 |---|---|---|---|---|
-| CU-005 Crear un Pedido | `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | `POST /orders/quote`<br>`POST /orders`<br>`GET /user-address/user/:userId/default` | Paso 8: Si el cliente no existe, el sistema revierte e informa "Cliente no encontrado" (404).<br>Paso 8: Si la dirección no existe o no es del cliente, el sistema revierte e informa "Dirección no encontrada" (404).<br>Paso 8: Si algún producto del pedido no existe, el sistema revierte por completo e informa "Garrafa no encontrada", con el identificador del producto (404).<br>Paso 8: Si el stock de cualquier ítem es menor que la cantidad pedida, el sistema revierte por completo e informa "Stock insuficiente para <producto>" (400).<br>Paso 8: Ante cualquier otro error durante la transacción, el sistema revierte por completo e informa "Error al crear el pedido" (500).<br>Paso 6: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 2: La app le pide el precio al sistema (**CU-302 Cotizar un Pedido**, `POST /orders/quote`) cada vez que cambia lo que lo mueve y muestra el total que devuelve: no calcula promociones ni recargos.<br>Paso 6: Sin ítems: 400 «El pedido necesita al menos un renglón»; la misma garrafa en dos renglones: 400 «items no puede repetir la misma garrafa: sumá las cantidades en un solo renglón» (base: `UQ_order_item_pedido_producto`). Paso 4: `scheduledDate` anterior a hoy (día argentino), con franja o sin ella: 400 «scheduledDate no puede ser una fecha pasada». `POST /orders/quote` aplica las mismas reglas del ítem. | Excepción, paso 6: Si el pedido se marca como pre-reserva sin indicar la fecha agendada, el sistema lo rechaza antes de abrir la transacción.<br>Excepción, paso 8: Ante un choque de bloqueos entre dos pedidos concurrentes sobre las mismas garrafas, el sistema revierte y reintenta la operación completa antes de dar error.<br>Descripción: El sistema verifica la cobertura de la dirección, reserva el stock y el cupo de la franja de forma atómica, calcula el total con promociones y recargos, registra el pedido y —salvo que el pago sea por MercadoPago o el pedido sea una pre-reserva— abre la oferta a un chofer.<br>Paso 3: Selecciona la dirección de entrega desde su lista guardada.<br>Paso 5: Selecciona el método de pago: EFECTIVO, MERCADOPAGO o TRANSFERENCIA.<br>Paso 5: Con MERCADOPAGO o TRANSFERENCIA el sistema aplica un recargo del 10 % sobre el total; el pago en efectivo no tiene recargo.<br>Paso 6: La app acompaña el envío con una clave de idempotencia, la misma para el mismo intento de checkout mientras no se resuelva, de modo que un reintento por corte de red no genere un segundo pedido.<br>Paso 8: El sistema abre una transacción y, dentro de ella: comprueba que el cliente exista y que la dirección elegida sea suya; verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por zona que esa zona tenga definido; reserva con bloqueo el cupo de la franja horaria elegida para esa fecha; y, por cada ítem, bloquea la garrafa, comprueba que alcance el stock y lo descuenta, lee sus promociones, comprueba que pertenezca a la distribuidora del pedido, aplica los descuentos por volumen configurados, redondea el precio unitario a centavos y calcula el subtotal como cantidad por ese precio, tomando el precio de la base y nunca el que envía el cliente.<br>Paso 10: Persiste el pedido y sus ítems con estado PENDING —o con estado RESERVED si es una pre-reserva— y confirma la transacción.<br>Paso 11: Si el pago es por MercadoPago, genera el enlace de cobro y **no ofrece el pedido a nadie**: el despacho lo dispara la confirmación del cobro.<br>Paso 11: Si el pedido es una pre-reserva, tampoco se ofrece: lo activa el proceso temporal el día agendado, y si la seña es por MercadoPago se genera un cobro solo por ese monto.<br>Postcondición: Existe un pedido con estado PENDING, o RESERVED si es una pre-reserva.<br>Postcondición: El stock de cada ítem y el cupo de la franja fueron descontados dentro de la misma transacción.<br>Postcondición: Salvo en pago con MercadoPago y en pre-reserva, existe además una oferta abierta a un único chofer.<br>Rendimiento (diseño): La creación del pedido se completa en menos de 5 segundos.<br>Comentarios: La precisión del cálculo de totales se garantiza con aritmética decimal.<br>Comentarios: El proceso de compra con carrito persistente (CU-122 a CU-126, C-12) y la elección explícita de modalidad (CU-148, frente a la express de CU-147, C-17) están construidos; este caso no los usa: crea el pedido con los ítems y la dirección ya armados en un único `POST /orders`, y la compra express y el carrito persistente tienen sus propios casos.<br>Comentarios: Tampoco incluye CU-121: la ruta `GET /user-address/user/:userId/default` existe y funciona, pero ninguna app lo invoca; el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada.<br>Comentarios: En los rechazos que las excepciones describen el sistema deshace todo: la transacción se revierte y ni el pedido ni el inventario cambian.<br>Total: `order.payment_surcharge_amount` guarda el recargo del medio de pago en línea; la base exige `CHK_order_total_formula` (total = ítems + zona + recargo en línea + express, y el express no cuenta si el pedido pasó al reparto común). Una reserva por transferencia o MercadoPago responde 201 con ese total. |
+| CU-005 Crear un Pedido | `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | `POST /orders/quote`<br>`POST /orders` | Paso 4: Si el pedido trae `scheduledDate` anterior a hoy (día argentino), con franja o sin ella, responde 400 «scheduledDate no puede ser una fecha pasada». `POST /orders/quote` aplica las mismas reglas del ítem.<br>Paso 4: Si la franja no existe o está inactiva, responde 400 «Franja horaria inválida o inactiva».<br>Paso 6: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 6: Sin ítems: 400 «El pedido necesita al menos un renglón»; la misma garrafa en dos renglones: 400 «items no puede repetir la misma garrafa: sumá las cantidades en un solo renglón» (base: `UQ_order_item_pedido_producto`).<br>Paso 6: Con `fromCart` y `items` en el cuerpo, el sistema responde 400 «Con fromCart los ítems salen del carrito: no mandes items».<br>Paso 6: Un pedido express con franja horaria, fecha agendada o reserva responde 400 «Un pedido express no se agenda: no se combina con reserva, franja horaria ni fecha agendada».<br>Paso 7: Si un cliente intenta crear el pedido a nombre de otro, el sistema responde 403 Forbidden con el mensaje «No autorizado a crear pedidos para otro cliente»; con `fromCart`, si quien lo crea no es el cliente, también responde 403.<br>Paso 8: Si el cliente no existe, el sistema revierte e informa "Cliente no encontrado" (404).<br>Paso 8: Si la dirección no existe o no es del cliente, el sistema revierte e informa "Dirección no encontrada" (404).<br>Paso 8: Si la dirección está fuera de toda zona de cobertura de la distribuidora, el sistema revierte y responde 400 «La dirección está fuera de la zona de cobertura de la distribuidora».<br>Paso 8: Si el pedido es express y la modalidad dejó de estar disponible para la dirección, responde 409 con el código `EXPRESS_NOT_AVAILABLE` y el motivo.<br>Paso 9: Si la franja no tiene cupo para esa fecha, el sistema revierte y responde 400; si la franja de hoy ya terminó, 400 «La franja ya terminó, elegí otra».<br>Paso 9: Si algún producto del pedido no existe o está desactivado, el sistema revierte por completo e informa "Garrafa no encontrada", con el identificador del producto (404).<br>Paso 9: Si el stock de cualquier ítem es menor que la cantidad pedida, el sistema revierte por completo e informa "Stock insuficiente para <producto>" (400).<br>Paso 9: Si algún producto pertenece a otra distribuidora, el sistema revierte y responde 400 «La garrafa <producto> no pertenece a la distribuidora seleccionada».<br>Paso 9: Si dos altas concurrentes toman los bloqueos en distinto orden y la base detecta un bloqueo cruzado, el sistema revierte y reintenta la operación completa; agotados los reintentos, responde 409 «Dos operaciones chocaron al mismo tiempo. Probá de nuevo.».<br>Paso 9: Ante cualquier otro error durante la transacción, el sistema revierte por completo e informa "Error al crear el pedido" (500). | Descripción: El sistema verifica la cobertura de la dirección, reserva el stock y el cupo de la franja de forma atómica, calcula el total con promociones y recargos, registra el pedido y —salvo que el pago sea por MercadoPago— abre la oferta a un chofer.<br>Paso 2: La app le pide el precio al sistema (**CU-302 Cotizar un Pedido**, `POST /orders/quote`) cada vez que cambia lo que lo mueve y muestra el total que devuelve: no calcula promociones ni recargos.<br>Paso 3: Selecciona la dirección de entrega desde su lista guardada.<br>Paso 5: Selecciona el método de pago: EFECTIVO, MERCADOPAGO o TRANSFERENCIA; la cuenta corriente (ACCOUNT) sólo la puede cargar un administrador.<br>Paso 5: Con MERCADOPAGO o TRANSFERENCIA el sistema aplica un recargo del 10 % sobre el total; el pago en efectivo no tiene recargo.<br>Paso 6: La app acompaña el envío con una clave de idempotencia (`Idempotency-Key`), la misma para el mismo intento de checkout mientras no se resuelva, de modo que un reintento por corte de red no genere un segundo pedido. El panel no la envía: sin el encabezado el sistema ejecuta la operación normalmente.<br>Paso 9: El sistema abre una transacción y, dentro de ella: bloquea la cuenta del cliente y comprueba que el cliente exista y que la dirección elegida sea suya; verifica que la dirección caiga dentro de alguna zona de cobertura de la distribuidora y toma el recargo por zona que esa zona tenga definido (sin zonas definidas, o sin punto en la dirección, no controla); con fecha y franja, reserva con bloqueo el cupo de la franja; si el pedido sale del carrito, lee sus ítems; y, por cada ítem, bloquea la garrafa, comprueba que alcance el stock y lo descuenta, lee sus promociones, comprueba que pertenezca a la distribuidora del pedido, aplica los descuentos por volumen configurados, redondea el precio unitario a centavos y calcula el subtotal como cantidad por ese precio, tomando el precio de la base y nunca el que envía el cliente.<br>Paso 11: Persiste el pedido y sus ítems con estado PENDING, con la copia de la zona de cobertura y los recargos aparte, vacía el carrito si el pedido salió de él y confirma la transacción; el subscriber del historial asienta `null → pending` en la misma transacción (CU-169).<br>Paso 12: Si el pago es por MercadoPago, genera el enlace de cobro y **no ofrece el pedido a nadie**: el despacho lo dispara la confirmación del cobro. Si el pago es en efectivo, por transferencia o a cuenta corriente, ofrece el pedido al chofer más cercano.<br>Paso 13: Envía la confirmación al cliente (en secuencia, después del despacho) y avisa al panel en vivo (`order:created`).<br>Postcondición: Existe un pedido con estado PENDING.<br>Postcondición: El stock de cada ítem y el cupo de la franja fueron descontados dentro de la misma transacción.<br>Postcondición: Salvo en pago con MercadoPago, existe además una oferta abierta a un único chofer.<br>Rendimiento (diseño): La creación del pedido se completa en menos de 5 segundos.<br>Comentarios: La precisión del cálculo de totales se garantiza con aritmética decimal.<br>Comentarios: La app del cliente crea siempre el pedido desde el carrito (`fromCart: true` en el cuerpo de `POST /orders`): el sistema lee los ítems del carrito dentro de la misma transacción (`CartService.itemsParaPedido`), cobra el precio vigente y lo vacía en ella (CU-122 a CU-126, C-12). El panel —el pedido telefónico del administrador— envía los ítems en el cuerpo, con el `customerId` del cliente; la elección explícita de modalidad (CU-148, frente a la express de CU-147, C-17) está construida y es independiente.<br>Comentarios: Tampoco incluye CU-121: la ruta `GET /user-address/user/:userId/default` existe y funciona, pero ninguna app la invoca; el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada.<br>Comentarios: En los rechazos que las excepciones describen el sistema deshace todo: la transacción se revierte y ni el pedido ni el inventario cambian.<br>Comentarios: La reserva con fecha agendada y seña usa el mismo `POST /orders`, pero es otro caso de uso (CU-072).<br>Total: `order.payment_surcharge_amount` guarda el recargo del medio de pago en línea; la base exige `CHK_order_total_formula` (total = ítems + zona + recargo en línea + express, y el express no cuenta si el pedido pasó al reparto común). |
 | CU-006 Consultar el Detalle de un Pedido | `consultarPedido(pedidoId identificador)` | `GET /orders/:id` | Paso 3: Si quien consulta es un chofer y el pedido no es suyo, ni tiene una oferta vigente para él, ni está en su pool, el sistema responde que el pedido no existe (404).<br>Paso 3: Si el chofer tuvo el pedido (lo aceptó o se lo asignaron) y ya no es suyo —lo liberó un administrador, lo reasignaron o el control de carga lo sacó del pool—, el sistema responde 410 "Este pedido ya no está asignado a tu usuario", sin datos del pedido, para que la app salga de la pantalla en vez de quedarse con el estado viejo. | Excepción, paso 3: Si no hay distribuidora en el contexto, el sistema responde 400 «Falta la distribuidora: enviá el header X-Distributor (slug o id)». El administrador de empresa siempre la tiene: el caso es el del Administrador General sin «Ver como»; con el encabezado `X-Distributor` solo ve los pedidos de esa distribuidora. En ese caso el panel muestra «Elegí una distribuidora» en lugar del detalle.<br>Paso 2: El sistema recupera el pedido con todos sus datos: ítems —cada uno con el precio unitario y el subtotal que quedaron guardados en su renglón al crear el pedido—, total, estado, distribuidora a la que pertenece (`distributor_id`), chofer asignado si lo hay —con su nombre, su teléfono y su calificación, solo para el cliente dueño y el administrador y solo mientras el pedido está aceptado o en camino—, quién canceló el pedido si está cancelado (`cancelledBy`), dirección de entrega, franja horaria, método y estado del pago, y las marcas de tiempo de cada transición.<br>Rendimiento (diseño): La consulta del detalle se completa en menos de 1 segundo.<br>Comentarios: La respuesta informa además `distributor_id`, la distribuidora dueña del pedido, que el Administrador General ve para saber a qué distribuidora pertenece el pedido; para leerlo tiene que elegir una con «Ver como».<br>Comentarios: **Datos del chofer.** `driver` trae `userId`, nombre, teléfono, `ratingAverage` y `ratingCount` (las calificaciones ocultas no cuentan), solo en la lectura individual, para el cliente dueño y el administrador, con el pedido aceptado o en camino y con chofer; con el pedido cerrado, sin chofer o visto por el propio chofer es nulo, de modo que el teléfono no queda expuesto.<br>Comentarios: `driver.location` es la última posición conocida (`lat`, `lng`, `at`) y es más sensible: solo con el pedido en camino y siendo ése el pedido que el chofer lleva, y solo si tiene menos de `DRIVER_LOCATION_MAX_AGE_MIN` minutos (10 por omisión); en cualquier otro caso, o si el radar no responde, es nula y el cliente debe tomarla como «sin posición reciente», no como un error.<br>Comentarios: La patente está en `vehicle.patent`.<br>Comentarios: **Quién canceló.** `cancelledBy` es `customer`, `admin` (el administrador general cuenta como administrador), `driver` o `system`, y sale del historial de estados (CU-169): `system` es el vencimiento por falta de pago o de seña, que no emite el evento en vivo; es nulo si el pedido no está cancelado o es anterior al historial.<br>Comentarios: **Enlace de pago.** `payment_url` es el enlace de MercadoPago del último intento de cobro, y solo viaja si el pedido es de MercadoPago, no está cancelado, su cobro sigue pendiente, la seña no está cobrada y quien lee no es un chofer; sirve para recuperarlo si se perdió la respuesta del alta. El panel lo muestra en el detalle con «Copiar enlace» y «Abrir». |
 | CU-007 Consultar el Historial de Pedidos | `consultarHistorialDePedidos(clienteId identificador, pagina entero, limite entero)` | `GET /orders/customer/:customerId` | Paso 1: Si el solicitante es un chofer, el sistema responde 403: el chofer lista lo suyo con `GET /orders/delivery/:deliveryId` (CU-081). | Excepción: Si el token de sesión venció o hay un error de red, la solicitud se rechaza por el mismo circuito de autenticación que gobierna el resto de las operaciones (CU-001), y la app debe pedir un nuevo inicio de sesión o reintentar.<br>Paso 2: El sistema consulta todos los pedidos donde `customer_id = clienteAutenticado`, ordenados por `createdAt` descendente.<br>Rendimiento (diseño): El listado se completa en menos de 2 segundos. |
 | CU-008 Cancelar un Pedido (Cliente) | `cancelarMiPedido(pedidoId identificador, motivo cadena)` | `PATCH /orders/:id/cancel`<br>`PATCH /orders/:id/status` | Paso 3: Si el pedido ya está entregado o cancelado, el sistema informa "No se puede cancelar un pedido finalizado".<br>Paso 2: Si la misma clave de idempotencia se reutiliza con otros datos, el sistema responde 422 y no ejecuta la operación.<br>Paso 2: La App Cliente cancela por esta ruta: `PATCH /orders/:id/status` está reservada al chofer y al administrador y responde 403 a un cliente.<br>Paso 2: Sin `reason` (falta o es null): 400 «Para cancelar el pedido hay que indicar el motivo»; con espacios solos: 400 «reason should not be empty» (lo corta el DTO antes que el caso de uso); más de 500 caracteres: 400 «reason must be shorter than or equal to 500 characters». Base: `CHK_order_cancelado_motivo`. | Precondición: El pedido le pertenece y su estado es RESERVED, PENDING o ACCEPTED.<br>Paso 2: La solicitud (`PATCH /orders/:id/cancel`) lleva una clave de idempotencia, de modo que un reintento no vuelve a procesar la cancelación.<br>Paso 4: Marca el pedido como CANCELLED con el motivo recibido, que es obligatorio.<br>Paso 5: Dentro de la misma transacción y bloqueando cada garrafa, devuelve al inventario la cantidad de cada ítem del pedido.<br>Paso 6: Persiste el pedido cancelado y confirma la transacción: la lectura con bloqueo del pedido, el cambio de estado, la restitución del stock y el guardado se confirman juntos.<br>Paso 7: Avisa al cliente en tiempo real de la cancelación, con el motivo y quién canceló (`cancelledBy`: `customer`), avisa al panel de administración y, si había chofer asignado, le avisa también a él que ya no hace falta ir.<br>Postcondición: El pedido tiene estado CANCELLED con su motivo.<br>Postcondición: El stock de todos los ítems fue restituido al inventario con bloqueo sobre cada garrafa.<br>Postcondición: Ambos efectos se confirmaron en una única transacción con bloqueo del pedido: dos cancelaciones simultáneas no devuelven el stock dos veces.<br>Rendimiento (diseño): La cancelación, con su transacción de restitución de stock, se completa en menos de 3 segundos.<br>Comentarios: La cancelación del cliente es una de las tres vías de cancelación (CU-008, CU-009 y CU-010) que comparten el mismo caso de uso del servidor; lo que cambia es el actor, que sale siempre del token.<br>Comentarios: La App Cliente cancela por `PATCH /orders/:id/cancel`, la ruta que admite al cliente, y la respuesta devuelve el pedido con `cancelledBy`; `PATCH /orders/:id/status` con `cancelled` hace lo mismo pero está reservada al chofer y al administrador.<br>Comentarios: El evento `order:cancelled` lleva `orderId`, `status`, `reason` (el motivo dado) y `cancelledBy`.<br>Comentarios: Los vencimientos automáticos (CU-076, CU-077) no emiten el evento: el cliente se entera al leer el pedido (CU-006), que trae `cancelledBy: system`.<br>Paso 8: La devolución del pago aprobado por una pasarela (CU-168) corre después de la cancelación, fuera de su transacción: un fallo de la pasarela no revierte la cancelación y se reintenta desde `POST /orders/:id/refunds/retry`. |
@@ -49451,7 +49528,7 @@ Los casos de uso expandidos de esencia (secciones 4 y 5 de este documento) descr
 
 | CU | Operación del sistema | Ruta de la API | Respuestas y códigos | Notas técnicas |
 |---|---|---|---|---|
-| CU-012 Asignar un Chofer Manualmente | `asignarChoferAPedido(pedidoId identificador, choferId identificador)` | `PATCH /orders/:id/assign/:deliveryId` | Paso 5: Si el repartidor indicado no existe o es de otra distribuidora que la del pedido, el sistema informa "Repartidor no encontrado".<br>Paso 5: Si el repartidor fue deshabilitado entre la consulta del listado y la confirmación, el sistema responde 400 "El repartidor está deshabilitado"; si no está validado, 400 "El repartidor no está validado".<br>Paso 5: Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado").<br>Paso 5: Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la asignación con 400 y el motivo, por ejemplo "El chofer no tiene la carga del día abierta" o "La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos".<br>Paso 6: Si el pedido cambió de estado —por ejemplo, si ya fue cancelado, está en camino o fue entregado— y ya no admite la transición a aceptado, el sistema rechaza la asignación por transición no permitida (400).<br>Paso 2: Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)". | Paso 5: Dentro de una transacción con bloqueo del pedido, el sistema verifica que el repartidor exista, que sea de la misma distribuidora que el pedido, que esté habilitado y validado y que tenga un vehículo en uso habilitado (CU-161), y —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que su carga de camión lo habilite a recibir pedidos: con una carga abierta, que esté en ruta con ese vehículo; sin carga, que la distribuidora no exija tenerla (CU-249).<br>Paso 6: Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera un código de entrega nuevo, que deja sin efecto el anterior cuando se trata de una reasignación.<br>Paso 7: Retira, en la misma transacción, las ofertas de despacho abiertas a los demás choferes: pasan a «reemplazadas» (`superseded`) y no cuentan como intento.<br>Paso 7: Después de confirmada la transacción, avisa a esos choferes que la oferta ya no está vigente.<br>Postcondición: El pedido tiene estado ACCEPTED con el chofer seleccionado y con un código de entrega propio.<br>Rendimiento (diseño): La asignación manual se completa en menos de 1 segundo.<br>Comentarios: La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas de despacho abiertas a los demás choferes, guarda la copia del vehículo y avisa.<br>Comentarios: Incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer.<br>Comentarios: **Carga del camión (C-09, implementado):** antes de asignarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta solo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado).<br>Comentarios: Es idempotente por `Idempotency-Key`. |
+| CU-012 Asignar un Chofer Manualmente | `asignarChoferAPedido(pedidoId identificador, choferId identificador)` | `PATCH /orders/:id/assign/:deliveryId` | Paso 1: Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".<br>Paso 4: Si el repartidor indicado no existe o es de otra distribuidora que la del pedido, el sistema informa "Repartidor no encontrado".<br>Paso 4: Si el repartidor fue deshabilitado entre la consulta del listado y la confirmación, el sistema responde 400 "El repartidor está deshabilitado"; si no está validado, 400 "El repartidor no está validado".<br>Paso 5: Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la asignación con 400 y el motivo, por ejemplo "El chofer no tiene la carga del día abierta" o "La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos".<br>Paso 6: Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado").<br>Paso 6: Si el pedido es express y el chofer no tiene una moto en uso, el sistema responde 400 "Un pedido express sólo lo puede llevar un chofer con una moto en uso".<br>Paso 7: Si el pedido cambió de estado —por ejemplo, si está reservado, ya fue cancelado, está en camino o fue entregado— y ya no admite la transición a aceptado, el sistema rechaza la asignación por transición no permitida (400). | Paso 2: El panel lista los choferes asignables: los habilitados y validados de la distribuidora, estén o no en línea (el listado de choferes en línea, `GET /delivery/active`, deja afuera a los que no lo están).<br>Paso 4: Dentro de una transacción con bloqueo del pedido, el sistema verifica que el repartidor exista, que sea de la misma distribuidora que el pedido y que esté habilitado y validado. Si el pedido ya está ACCEPTED por ese mismo repartidor (reintento, doble clic), confirma sin cambios: no regenera el código de entrega, no avisa y no retira ofertas.<br>Paso 5: **Incluye CU-248 Verificar la Carga de Camión Abierta del Chofer** — que su carga de camión lo habilite a recibir pedidos: con una carga abierta, que esté en ruta con ese vehículo; sin carga, que la distribuidora no exija tenerla (CU-249).<br>Paso 6: Que tenga un vehículo en uso habilitado (CU-161) y documentación vigente (`assertChoferHabilitado`); si el pedido es express (`deliveryMode`), que el vehículo en uso sea una moto (`assertEnMoto`).<br>Paso 7: Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido el vehículo en uso del chofer (`vehicle_car_id`) y una copia de la patente, la marca y el modelo, y genera un código de entrega nuevo, que deja sin efecto el anterior cuando se trata de una reasignación. El historial asienta el cambio (CU-169), también en una reasignación (ACCEPTED → ACCEPTED).<br>Paso 8: Retira, en la misma transacción, las ofertas de despacho abiertas a los demás choferes: pasan a «reemplazadas» (`superseded`) y no cuentan como intento.<br>Paso 8: Después de confirmada la transacción, avisa a esos choferes que la oferta ya no está vigente y deja la constancia (`DispatchOffer` en estado `accepted`, a nombre del chofer nuevo; la del chofer anterior pasa a `rejected`); es de mejor esfuerzo, fuera de la transacción.<br>Postcondición: El pedido tiene estado ACCEPTED con el chofer seleccionado y con un código de entrega propio.<br>Rendimiento (diseño): La asignación manual se completa en menos de 1 segundo.<br>Comentarios: La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas de despacho abiertas a los demás choferes, guarda la copia del vehículo y avisa.<br>Comentarios: Incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la asignación manual comprueba además el legajo y las licencias del chofer.<br>Comentarios: **Carga del camión (C-09, implementado):** antes de asignarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta solo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado).<br>Comentarios: El panel permite asignar en lote varios pedidos a un mismo chofer: repite `PATCH /orders/:id/assign/:deliveryId` por cada pedido.<br>Comentarios: Es idempotente por `Idempotency-Key`. |
 | CU-013 Asignar un Pedido Automáticamente por Proximidad | `ofrecerAlSiguienteChofer(pedidoId identificador)` | — (proceso programado del sistema: no tiene ruta) | — | Excepción, paso 3: Avisa a los administradores de la distribuidora con el evento en vivo `order:no-drivers` (`orderId`, `distributorId`, `reason` y `at`), una sola vez por agotamiento: `reason` es `no_drivers_in_range` si no hay choferes elegibles en el radio o `all_drivers_exhausted` si los que había rechazaron o esperan una re-oferta.<br>Excepción, paso 3: Si el pedido no tiene punto de entrega, no hay contra qué medir la cercanía: no se emite oferta y se avisa con `order:no-drivers` y `reason` `no_delivery_point`.<br>Excepción, paso 3: Si el chofer tiene una carga de camión que no está en ruta, o su vehículo en uso no es el de la carga, o no tiene carga y la distribuidora exige tenerla (CU-249), queda descartado como candidato y la oferta pasa al siguiente.<br>Precondición: Existe un pedido en estado PENDING sin chofer asignado, con sus coordenadas de entrega cargadas.<br>Paso 1: El sistema recibe el aviso de que se creó un pedido, una vez confirmada la transacción del alta.<br>Paso 3: Lee los parámetros del despacho de la distribuidora (CU-171) y busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —por omisión 5, 10, 15 y 20 km—: en cada paso obtiene los choferes presentes en el radar ordenados por cercanía, los restringe a los de la distribuidora dueña del pedido y descarta los ya contactados y a los que no tienen un vehículo en uso o tienen vencida la licencia o la documentación del vehículo en uso (CU-161, CU-136 a CU-138), y —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— a los que no pueden recibir pedidos según su carga de camión.<br>Paso 4: Registra la oferta a nombre de ese chofer, con su momento de vencimiento fijado en la ventana de aceptación de la distribuidora (`offerTtlSeconds`, 30 segundos por omisión).<br>Postcondición: El pedido permanece en estado PENDING hasta que ese chofer la acepte, la rechace o la deje vencer.<br>Rendimiento (diseño): La búsqueda del candidato se completa en menos de 500 ms.<br>Comentarios: La elegibilidad del chofer (`choferesElegibles`) exige que esté presente en el radar de posiciones, que pertenezca a la distribuidora dueña del pedido, que esté habilitado por el administrador (`isEnabled`) y validado (`validated`), y que pase la regla de flota: sin vehículo en uso (CU-161), o con la licencia o la documentación del vehículo vencida, no se recibe ninguna oferta.<br>Comentarios: La habilitación que otorga el administrador en CU-032 y CU-033 (y que retira en CU-271 y CU-267) tiene así efecto sobre el despacho.<br>Comentarios: Incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: un chofer con el legajo egresado, con una licencia aprobada que cubre hoy o con documentación bloqueante vencida no recibe la oferta.<br>Comentarios: **Carga del camión (C-09, implementado):** antes de ofrecerle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta solo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado). |
 | CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer | `vencerOfertasExpiradas()` | — (proceso programado del sistema: no tiene ruta) | — | Precondición: Existe al menos una oferta vencida, o un pedido en estado PENDING sin oferta vigente.<br>Paso 2: A continuación decide, de una sola pasada, a qué distribuidoras con ofertas vencidas o pedidos pendientes les toca el ciclo según su intervalo `dispatchRetrySeconds` (CU-173; 15 segundos por omisión); las demás esperan a su propio ciclo.<br>Paso 5: Si el pedido sigue en estado PENDING y sin chofer asignado, ejecuta CU-013 para ofrecerlo al siguiente candidato.<br>Rendimiento (diseño): Cada ejecución del barrido, acotada a 50 pedidos, se completa en menos de 3 segundos.<br>Frecuencia: Automático: ciclo fijo de 15 segundos; cada distribuidora lo recibe con su propio intervalo (15 segundos por omisión, hasta 300).<br>Comentarios: Cuando se agotan los candidatos, el sistema avisa a los administradores de la distribuidora con el evento en vivo `order:no-drivers` (una sola vez por agotamiento, CU-013) y el pedido permanece pendiente.<br>Comentarios: Si la ejecución falla, el bloqueo que impide la ejecución simultánea se libera igual, de modo que la ejecución siguiente pueda tomarlo. |
 | CU-015 Aceptar un Pedido | `aceptarPedido(pedidoId identificador)` | `PATCH /orders/:id/status (aceptado)` | Paso 3: Si el pedido ya tiene asignado a otro chofer, el sistema rechaza la aceptación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición: una aceptación tardía no desplaza al chofer que ya lo tomó.<br>Paso 4: Si el repartidor está deshabilitado, el sistema responde 400 "El repartidor está deshabilitado"; si no está validado, 400 "El repartidor no está validado".<br>Paso 4: Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la aceptación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado").<br>Paso 4: Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la aceptación con 400 y el motivo, por ejemplo "Tu distribuidora exige una carga de camión abierta para trabajar: pedile al administrador que abra tu carga del día" o "La carga N° n ya volvió: no se reciben pedidos hasta cerrar su rendición".<br>Paso 2: Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".<br>Comentarios: La aceptación y la asignación manual toman la carga abierta del chofer en modo compartido dentro de su transacción, antes de leer su estado, y la vuelta del camión (CU-221) la toma en modo exclusivo: si ocurren a la vez, una espera a la otra y, o la aceptación termina antes —y la vuelta ve el pedido en curso y responde 409— o la vuelta termina antes —y la aceptación ve la carga devuelta y responde 400—. | Excepción, paso 3: Si el mismo chofer que ya tiene el pedido vuelve a aceptarlo, la operación no falla y no cambia nada: reaplicar el mismo estado es idempotente y conserva el código de entrega y el momento de aceptación que ya tenía.<br>Precondición: El pedido está en estado PENDING.<br>Paso 2: La app pide el paso del pedido a estado ACCEPTED.<br>Paso 2: La identidad del chofer sale de su token: cualquier identificador de repartidor que venga en el cuerpo de la solicitud se ignora.<br>Paso 4: Comprueba además —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que la carga de camión del chofer que queda con el pedido lo habilite a recibir pedidos; es el que acepta o, si acepta un administrador, el que indica con `deliveryId`.<br>Paso 5: Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera el código secreto de entrega que se usará en la confirmación por código QR (CU-079).<br>Paso 7: Retira, en la misma transacción, las ofertas abiertas a los demás choferes: pasan a «reemplazadas» (`superseded`), excluido el chofer que aceptó, y no cuentan como intento.<br>Paso 7: Después de confirmada la transacción, avisa a esos choferes que la oferta ya no está vigente.<br>Postcondición: El pedido tiene estado ACCEPTED con el chofer asignado y con su código de entrega generado.<br>Rendimiento (diseño): La aceptación se completa en menos de 1 segundo.<br>Comentarios: Incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la aceptación repite la comprobación de la situación laboral del chofer.<br>Comentarios: **Carga del camión (C-09, implementado):** antes de aceptarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta solo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado).<br>Comentarios: El momento de la aceptación, de la salida y de la entrega (`acceptedAt`, `onTheWayAt` y `deliveredAt`) sale del reloj de la base, el mismo que usa la carga del camión, de modo que los dos módulos comparan momentos del mismo reloj; los cobros y las ofertas de despacho siguen con el reloj del proceso. |

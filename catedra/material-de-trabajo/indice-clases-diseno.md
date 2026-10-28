@@ -2,21 +2,21 @@
 
 Las genera `generar-clases-diseno.py`; no se editan a mano.
 
-- Clases de diseño: **301**; operaciones: **1267**.
+- Clases de diseño: **301**; operaciones: **1273**.
 - Por papel: coleccion: 79, controlador: 27, dominio: 85, fabricación pura: 11, fachada: 89, puerto: 10.
-- Asociaciones: 499 (171 del modelo conceptual, 328 de colaboración); dependencias: 287; realizaciones: 0.
-- Dependencias entre módulos: 134.
+- Asociaciones: 499 (172 del modelo conceptual, 327 de colaboración); dependencias: 289; realizaciones: 0.
+- Dependencias entre módulos: 137.
 
 | Vista | Archivo | Clases | Operaciones |
 |---|---|---:|---:|
-| Organización y acceso (dominio) | `diagramas/clases-diseno/DC_Organizacion-y-acceso.png` | 9 | 72 |
+| Organización y acceso (dominio) | `diagramas/clases-diseno/DC_Organizacion-y-acceso.png` | 9 | 73 |
 | Clientes (dominio) | `diagramas/clases-diseno/DC_Clientes.png` | 4 | 32 |
-| Pedido, líneas y pago (dominio) | `diagramas/clases-diseno/DC_Pedido.png` | 6 | 90 |
-| Carrito, franjas y cobertura (dominio) | `diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png` | 4 | 32 |
+| Pedido, líneas y pago (dominio) | `diagramas/clases-diseno/DC_Pedido.png` | 6 | 92 |
+| Carrito, franjas y cobertura (dominio) | `diagramas/clases-diseno/DC_Carrito-franjas-y-cobertura.png` | 4 | 33 |
 | Despacho y propuestas con vigencia (dominio) | `diagramas/clases-diseno/DC_Despacho.png` | 5 | 15 |
 | Choferes y vehículos (dominio) | `diagramas/clases-diseno/DC_Choferes-y-vehiculos.png` | 5 | 77 |
 | Mantenimiento de la flota (dominio) | `diagramas/clases-diseno/DC_Mantenimiento.png` | 4 | 24 |
-| Productos y envases (dominio) | `diagramas/clases-diseno/DC_Productos-y-envases.png` | 5 | 41 |
+| Productos y envases (dominio) | `diagramas/clases-diseno/DC_Productos-y-envases.png` | 5 | 42 |
 | Personal (dominio) | `diagramas/clases-diseno/DC_Personal.png` | 5 | 63 |
 | Recupero de envases (dominio) | `diagramas/clases-diseno/DC_Recupero.png` | 2 | 10 |
 | Posventa (dominio) | `diagramas/clases-diseno/DC_Posventa.png` | 3 | 14 |
@@ -40,7 +40,7 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 | Despacho de pedidos (módulo) | `diagramas/clases-diseno/DC_Mod_Despacho.png` | 8 | 19 |
 | Seguimiento en tiempo real (módulo) | `diagramas/clases-diseno/DC_Mod_Tiempo-real.png` | 4 | 4 |
 | Choferes y vehículos (módulo) | `diagramas/clases-diseno/DC_Mod_Choferes-y-vehiculos.png` | 8 | 40 |
-| Flota: tareas, adjuntos y vencimientos (módulo) | `diagramas/clases-diseno/DC_Mod_Flota-tareas.png` | 8 | 29 |
+| Flota: tareas, adjuntos y vencimientos (módulo) | `diagramas/clases-diseno/DC_Mod_Flota-tareas.png` | 8 | 30 |
 | Flota: planificador de mantenimiento (módulo) | `diagramas/clases-diseno/DC_Mod_Flota-planificador.png` | 5 | 7 |
 | Personal: puestos, legajos, jornadas y licencias (módulo) | `diagramas/clases-diseno/DC_Mod_Personal.png` | 14 | 37 |
 | Adjuntos (módulo) | `diagramas/clases-diseno/DC_Mod_Adjuntos.png` | 1 | 1 |

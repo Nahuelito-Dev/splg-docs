@@ -1176,42 +1176,42 @@ Claves únicas compuestas: (`distributor_id`, `module`).
 | `scheduled_date` | date | no |  |  |  | Fecha agendada de entrega (YYYY-MM-DD). Null = pedido inmediato ("lo antes posible", comportamiento previo). Con fecha + time_slot_id, el pedido está agendado a esa franja de ese día (valida capacidad al crear). |
 | `deposit_amount` | numeric(10,2) | sí |  |  | `'0'::numeric` | Seña de la pre-reserva (0 = pedido normal, no reserva). |
 | `deposit_paid` | boolean | sí |  |  | `false` | Si la seña ya fue pagada (habilita la activación automática de la reserva). |
-| `delivery_id` | uuid | no | FK | `delivery.delivery_id` |  | _(sin descripción documentada en el código)_ |
+| `delivery_id` | uuid | no | FK | `delivery.delivery_id` |  | Chofer que tiene el pedido; nulo mientras está pendiente o reservado. Obligatorio desde que el pedido está aceptado. |
 | `address_id` | uuid | sí | FK | `user_address.address_id` |  | _(sin descripción documentada en el código)_ |
-| `status` | order_status_enum | sí |  |  | `'pending'::order_status_enum` | _(sin descripción documentada en el código)_ |
+| `status` | order_status_enum | sí |  |  | `'pending'::order_status_enum` | Estado del pedido: reservado, pendiente, aceptado, en camino, entregado o cancelado. Los cambios los controla un disparador (ver «Disparadores»). |
 | `paymentMethod` | order_paymentmethod_enum | sí |  |  |  | _(sin descripción documentada en el código)_ |
 | `paymentType` | order_paymenttype_enum | sí |  |  | `'cash'::order_paymenttype_enum` | _(sin descripción documentada en el código)_ |
 | `paymentStatus` | order_paymentstatus_enum | sí |  |  | `'pending'::order_paymentstatus_enum` | _(sin descripción documentada en el código)_ |
-| `totalAmount` | numeric(10,2) | sí |  |  |  | _(sin descripción documentada en el código)_ |
+| `totalAmount` | numeric(10,2) | sí |  |  |  | Total del pedido: subtotal de ítems + recargo de zona + recargo del medio de pago + recargo express (`CHK_order_total_formula`). |
 | `notes` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `deliveryInstructions` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `acceptedAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `acceptedAt` | timestamptz | no |  |  |  | Momento en que el chofer aceptó el pedido o el administrador se lo asignó. |
 | `onTheWayAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `deliveredAt` | timestamptz | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `createdAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `updatedAt` | timestamptz | sí |  |  | `now()` | _(sin descripción documentada en el código)_ |
 | `cancellationReason` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `gatewayPaymentId` | varchar(100) | no |  |  |  | ID del pago en la pasarela (MercadoPago) que marcó este pedido como PAID. Índice único PARCIAL (solo cuando no es null): garantiza idempotencia del webhook — un mismo `payment.id` no puede confirmar dos pedidos, y permite detectar reintentos (si ya está seteado, no se re-despacha). |
-| `deliveryCode` | varchar(12) | no |  |  |  | Código secreto de la prueba de entrega con QR. Se genera al ACEPTAR el pedido (ver UpdateOrderStatusUseCase) y viaja embebido en el QR que el chofer muestra en su app. El cliente lo obtiene ÚNICAMENTE escaneando ese QR físico; si al confirmar la entrega el código matchea, es prueba de que el chofer estuvo presente (ConfirmDeliveryUseCase). |
+| `deliveryCode` | varchar(12) | no |  |  |  | Código secreto de la prueba de entrega con QR. Se genera al aceptar el pedido (el chofer o, en la asignación manual, el administrador) y la reasignación lo reemplaza; viaja embebido en el QR que el chofer muestra al cliente. |
 | `receiver_name` | varchar(120) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `receiver_document` | varchar(20) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `receiver_relationship` | varchar(40) | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `delivery_mode` | order_delivery_mode_enum | sí |  |  | `'standard'::order_delivery_mode_enum` | _(sin descripción documentada en el código)_ |
 | `deliveryPoint` | geometry | no |  |  |  | Dónde se entrega: el punto de la dirección al momento de pedir. Es una copia a propósito, porque la dirección del cliente puede cambiar después (el cambio de dirección de un pedido queda en `order_address_change`). El despacho busca los choferes más cercanos a este punto. La posición del chofer no se guarda acá: vive en Redis (H-91). |
-| `coverage_zone_id` | uuid | no | FK | `coverage_zone.coverage_zone_id` |  | _(sin descripción documentada en el código)_ |
-| `zone_name` | varchar(120) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `coverage_zone_id` | uuid | no | FK | `coverage_zone.coverage_zone_id` |  | Zona de cobertura que cubría la dirección al pedir; nula si la distribuidora no definió zonas. |
+| `zone_name` | varchar(120) | no |  |  |  | Nombre de la zona de cobertura al momento de pedir (copia: la zona puede editarse o borrarse después). |
 | `zone_surcharge_type` | order_zone_surcharge_type_enum | no |  |  |  | _(sin descripción documentada en el código)_ |
 | `zone_surcharge_value` | numeric(10,2) | no |  |  |  | Valor crudo de la zona al momento de pedir (monto o %, según el tipo). |
 | `zone_surcharge_amount` | numeric(10,2) | sí |  |  | `'0'::numeric` | Recargo YA calculado (monto en la moneda del pedido). 0 si no hay zona. |
 | `subtotal_items` | numeric(10,2) | sí |  |  |  | Subtotal de los ítems (ya con promociones), antes de cualquier recargo. |
-| `vehicle_car_id` | uuid | no | FK | `car.car_id` |  | _(sin descripción documentada en el código)_ |
-| `vehicle_patent` | varchar(20) | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `vehicle_brand` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `vehicle_model` | varchar(50) | no |  |  |  | _(sin descripción documentada en el código)_ |
+| `vehicle_car_id` | uuid | no | FK | `car.car_id` |  | Vehículo en uso del chofer cuando tomó el pedido (se asigna al aceptar o al asignarlo a mano). |
+| `vehicle_patent` | varchar(20) | no |  |  |  | Copia de la patente de ese vehículo, para que el pedido la conserve aunque el vehículo cambie. |
+| `vehicle_brand` | varchar(50) | no |  |  |  | Copia de la marca de ese vehículo. |
+| `vehicle_model` | varchar(50) | no |  |  |  | Copia del modelo de ese vehículo. |
 | `payment_confirmed_at` | timestamptz | no |  |  |  | Cuándo se confirmó el cobro (pago recibido por el chofer o resolución del admin). |
 | `payment_confirmed_by` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `payment_resolution_note` | text | no |  |  |  | _(sin descripción documentada en el código)_ |
-| `payment_resolved_at` | timestamptz | no |  |  |  | Motivo con el que el admin resolvió un impago. |
+| `payment_resolved_at` | timestamptz | no |  |  |  | Cuándo el administrador cerró un cobro impago. |
 | `payment_resolved_by` | uuid | no | FK | `user.user_id` |  | _(sin descripción documentada en el código)_ |
 | `express_surcharge_amount` | numeric(10,2) | sí |  |  | `'0'::numeric` | Recargo express que se cobró al pedir (CU-147). Queda guardado aunque el pedido pase al reparto común (`express_degraded_at`), para poder explicar el total y saber cuánto reintegrar; el `total_amount` ya no lo incluye en ese caso. |
 | `express_degraded_at` | timestamptz | no |  |  |  | Cuándo ningún chofer en moto aceptó y el pedido pasó al reparto común (CU-149). |
@@ -2158,7 +2158,7 @@ Restricciones `CHECK`:
 - `UQ_warehouse_default_vigente`: `CREATE UNIQUE INDEX "UQ_warehouse_default_vigente" ON public.warehouse USING btree (distributor_id) WHERE (is_default AND ("deletedAt" IS NULL))`
 - `UQ_warehouse_id_distribuidora`: `CREATE UNIQUE INDEX "UQ_warehouse_id_distribuidora" ON public.warehouse USING btree (warehouse_id, distributor_id)`
 
-> **Cobertura de las descripciones.** 152 de 977 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
+> **Cobertura de las descripciones.** 162 de 977 columnas tienen descripción tomada del comentario de la entidad de TypeORM que las define; las que no la tienen en el código figuran arriba como «sin descripción documentada en el código» en lugar de inventarse una.
 
 ## Relaciones no declaradas
 
@@ -2259,3 +2259,41 @@ No hay ninguna: las 13 relaciones que en algún momento existieron sin `FOREIGN 
 | `truck_load_status_enum` | `loading`, `on_route`, `returned`, `closed`, `closed_with_difference`, `cancelled` | implementado |
 | `vehicle_accident_status_enum` | `reported`, `under_review`, `repairing`, `closed` | implementado |
 | `warehouse_kind_enum` | `depot`, `branch` | implementado |
+
+## Disparadores
+
+Reglas que la base hace cumplir por sí sola, aunque la escritura no venga de la aplicación. Los disparadores de transición de estado dejan pasar sólo los pares `desde>hacia` listados (la misma máquina de estados que valida el back); cualquier otro cambio de estado se rechaza con el código 23514.
+
+| Tabla | Disparador | Momento | Función | Transiciones permitidas |
+|---|---|---|---|---|
+| `audit` | `audit_inmutable` | BEFORE DELETE OR UPDATE | `audit_datos_inmutable()` | — |
+| `audit_detail` | `audit_detail_inmutable` | BEFORE DELETE OR UPDATE | `audit_datos_inmutable()` | — |
+| `audit_log` | `audit_log_inmutable` | BEFORE DELETE OR UPDATE | `audit_log_inmutable()` | — |
+| `cash_box` | `TRG_cash_box_saldo_contra_libro` | AFTER INSERT OR UPDATE OF balance | `verificar_saldo_de_caja()` | — |
+| `cash_movement` | `TRG_cash_movement_saldo_contra_libro` | AFTER INSERT | `verificar_saldo_de_caja()` | — |
+| `cash_movement` | `cash_movement_solo_agregar` | BEFORE DELETE OR UPDATE | `libro_de_solo_agregar()` | — |
+| `claims` | `TRG_claims_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_claims()` | `in_process>rejected`, `in_process>resolved`, `pending>in_process`, `pending>rejected`, `pending>resolved`, `rejected>in_process`, `resolved>in_process` |
+| `commission_entry` | `commission_entry_solo_agregar` | BEFORE DELETE OR UPDATE | `libro_de_solo_agregar()` | — |
+| `customer_account` | `TRG_customer_account_saldo_contra_libro` | AFTER INSERT OR UPDATE OF balance | `verificar_saldo_de_cuenta()` | — |
+| `customer_account` | `TRG_customer_account_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_customer_account()` | `active>blocked`, `active>closed`, `blocked>active`, `blocked>closed`, `closed>active` |
+| `customer_account_allocation` | `TRG_customer_account_allocation_tope` | AFTER INSERT | `verificar_imputacion_de_cuenta()` | — |
+| `customer_account_entry` | `TRG_customer_account_entry_cobro_maximo` | BEFORE INSERT | `cobro_de_cuenta_maximo()` | — |
+| `customer_account_entry` | `TRG_customer_account_entry_saldo_contra_libro` | AFTER INSERT | `verificar_saldo_de_cuenta()` | — |
+| `customer_account_entry` | `customer_account_entry_solo_agregar` | BEFORE DELETE OR UPDATE | `libro_de_solo_agregar()` | — |
+| `cylinder` | `TRG_cylinder_fabricacion_no_futura` | BEFORE INSERT OR UPDATE OF manufactured_at | `fabricacion_de_envase_no_futura()` | — |
+| `cylinder` | `TRG_cylinder_transicion_de_estado` | BEFORE UPDATE OF state | `transicion_de_estado_cylinder()` | `dispatched>in_depot`, `dispatched>with_customer`, `empty_returned>in_depot`, `empty_returned>retired`, `filled>dispatched`, `filled>in_depot`, `in_depot>filled`, `in_depot>retired`, `with_customer>empty_returned` |
+| `driver_liquidation` | `TRG_driver_liquidation_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_driver_liquidation()` | `approved>paid`, `approved>voided`, `draft>approved`, `draft>voided`, `paid>approved` |
+| `driver_settlement` | `TRG_driver_settlement_fecha_futura` | BEFORE INSERT | `rendicion_sin_fecha_futura()` | — |
+| `driver_settlement` | `TRG_driver_settlement_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_driver_settlement()` | `open>submitted`, `submitted>approved`, `submitted>open` |
+| `employee_leave` | `employee_leave_no_overlap` | BEFORE INSERT OR UPDATE | `employee_leave_no_overlap()` | — |
+| `fuel_load` | `TRG_fuel_load_odometro_monotono` | BEFORE INSERT OR UPDATE OF odometer_km, loaded_at, car_id, "deletedAt" | `odometro_de_carga_monotono()` | — |
+| `maintenance_task` | `TRG_maintenance_task_odometro_monotono` | BEFORE INSERT OR UPDATE OF odometer_km, performed_at, status, car_id | `odometro_de_tarea_monotono()` | — |
+| `order` | `TRG_order_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_order()` | `accepted>cancelled`, `accepted>on_the_way`, `accepted>pending`, `on_the_way>cancelled`, `on_the_way>delivered`, `on_the_way>pending`, `pending>accepted`, `pending>cancelled`, `reserved>cancelled`, `reserved>pending` |
+| `order_dispatch_offer` | `TRG_order_dispatch_offer_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_order_dispatch_offer()` | `accepted>rejected`, `offered>accepted`, `offered>expired`, `offered>rejected`, `offered>superseded` |
+| `payment` | `TRG_payment_estado_no_retrocede` | BEFORE UPDATE OF status | `payment_estado_no_retrocede()` | — |
+| `purchase_order` | `TRG_purchase_order_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_purchase_order()` | `draft>cancelled`, `draft>sent`, `partially_received>closed_short`, `partially_received>partially_received`, `partially_received>received`, `partially_received>sent`, `received>partially_received`, `received>sent`, `sent>cancelled`, `sent>partially_received`, `sent>received` |
+| `stock_balance` | `TRG_stock_balance_saldo_contra_libro` | AFTER INSERT OR UPDATE OF quantity | `verificar_existencia_del_saldo()` | — |
+| `stock_movement` | `TRG_stock_movement_saldo_contra_libro` | AFTER INSERT | `verificar_existencia_del_movimiento()` | — |
+| `stock_movement` | `stock_movement_inmutable` | BEFORE DELETE OR UPDATE | `stock_movement_inmutable()` | — |
+| `tire_event` | `TRG_tire_event_odometro_monotono` | BEFORE INSERT | `odometro_de_neumatico_monotono()` | — |
+| `truck_load` | `TRG_truck_load_transicion_de_estado` | BEFORE UPDATE OF status | `transicion_de_estado_truck_load()` | `loading>cancelled`, `loading>on_route`, `on_route>returned`, `returned>closed`, `returned>closed_with_difference` |

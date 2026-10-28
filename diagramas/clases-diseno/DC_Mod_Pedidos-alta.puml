@@ -58,8 +58,10 @@ class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class RealtimeDispatchPort <<referencia>>
 class PaymentsService <<referencia>>
 class Pedido <<referencia>>
+class Carrito <<referencia>>
 class Cliente <<referencia>>
 class CuentaCorriente <<referencia>>
+class Distribuidora <<referencia>>
 class FranjaHoraria <<referencia>>
 class Producto <<referencia>>
 class ZonaCobertura <<referencia>>
@@ -73,8 +75,10 @@ ReleaseOrderUseCase --> "1" Map_String_Pedido
 ReleaseOrderUseCase --> "1" RealtimeDispatchPort
 UpdateOrderUseCase --> "1" Map_String_Pedido
 CancelOrderUseCase ..> Pedido
+CreateOrderUseCase ..> Carrito
 CreateOrderUseCase ..> Cliente
 CreateOrderUseCase ..> CuentaCorriente
+CreateOrderUseCase ..> Distribuidora
 CreateOrderUseCase ..> FranjaHoraria
 CreateOrderUseCase ..> "<<create>>" Pedido
 CreateOrderUseCase ..> Producto

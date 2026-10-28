@@ -103,7 +103,6 @@ class "List<Pedido>" as List_Pedido <<colección>> {
 class Pedido <<referencia>>
 class DeliveryService <<referencia>>
 class DispatchOrchestratorService <<referencia>>
-class DispatchSettingsService <<referencia>>
 class FleetDispatchLockService <<referencia>>
 class "List<Chofer>" as List_Chofer <<referencia>>
 class "Map<String, Chofer>" as Map_String_Chofer <<referencia>>
@@ -131,7 +130,6 @@ CashCollectionUseCase --> "1" Map_String_Pedido
 ConfirmDeliveryUseCase --> "1" Map_String_Pedido
 OrderService --> "1" DeliveryService
 OrderService --> "1" DispatchOrchestratorService
-OrderService --> "1" DispatchSettingsService
 OrderService --> "1" FleetDispatchLockService
 OrderService --> "1" List_Chofer
 OrderService --> "1" List_Pedido

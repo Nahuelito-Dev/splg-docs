@@ -645,6 +645,7 @@ vehículo está abierto para un chofer.
 | Se entrega en | Pedido | DireccionEntrega | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Se programa en | Pedido | FranjaHoraria | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
 | Aplica el recargo de | Pedido | ZonaCobertura | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
+| Se entrega con | Pedido | Vehiculo | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
 | Registra | Pedido | CambioEstadoPedido | Composición | 1 a 0..* | Es un registro de |
 | Efectúa | Usuario | CambioEstadoPedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
 | Confirmó el cobro de | Usuario | Pedido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
@@ -878,7 +879,7 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **ItemCarrito** | cantidad: Unidades cargadas. |
 | **ItemCarrito** | precio unitario: Precio vigente al momento de agregarlo. |
 | **Pedido** | estado: Ciclo de vida: reservado, pendiente, aceptado, en camino, entregado, cancelado. |
-| **Pedido** | /total: Monto total. Se deriva de sus ítems, sus promociones y el recargo de la zona. |
+| **Pedido** | /total: Monto total. Se deriva del subtotal de sus ítems —con sus promociones— y de los recargos de zona, de medio de pago y express que el pedido guardó. |
 | **Pedido** | modalidad de entrega: Reparto programado o express. |
 | **Pedido** | fecha agendada: Fecha para la que el cliente programó la entrega. |
 | **Pedido** | método de pago: Efectivo, MercadoPago o transferencia. |
@@ -891,6 +892,16 @@ piden ni se guardan por separado— llevan `/` adelante, como indica la notació
 | **Pedido** | cobro confirmado el: Momento en que se confirmó el cobro, por el chofer o por el administrador que resolvió el impago como cobrado. |
 | **Pedido** | cobro resuelto el: Momento en que el administrador cerró un cobro impago. |
 | **Pedido** | nota de resolución del cobro: Motivo con el que el administrador cerró el cobro impago. |
+| **Pedido** | subtotal de ítems: Suma de los subtotales de sus ítems, antes de los recargos. |
+| **Pedido** | recargo de zona: Importe del recargo de la zona de cobertura que se aplicó al pedir; se guarda aparte para que el total no cambie aunque la zona se edite o se borre. |
+| **Pedido** | recargo por medio de pago: Importe del recargo del 10 % por pagar en línea (MercadoPago o transferencia); cero en efectivo. |
+| **Pedido** | recargo express: Importe del recargo de la entrega express; cero si el pedido es de reparto programado o pasó al reparto común. |
+| **Pedido** | seña pagada: Indica si la seña de una reserva ya se cobró. |
+| **Pedido** | aceptado el: Momento en que el chofer aceptó el pedido o el administrador se lo asignó. |
+| **Pedido** | nombre de la zona aplicada: Nombre de la zona de cobertura que cubría la dirección cuando se pidió. |
+| **Pedido** | patente del vehículo: Patente del vehículo en uso del chofer cuando tomó el pedido. |
+| **Pedido** | marca del vehículo: Marca de ese vehículo. |
+| **Pedido** | modelo del vehículo: Modelo de ese vehículo. |
 | **ItemPedido** | cantidad: Unidades solicitadas. |
 | **ItemPedido** | precio unitario: Precio con el que se vendió el renglón, con las promociones por volumen ya aplicadas y redondeado a centavos; se conserva aunque el producto cambie de precio. |
 | **ItemPedido** | /subtotal: Cantidad por precio unitario. |
@@ -1729,7 +1740,7 @@ sequenceDiagram
 
 #### Crítico DSS — CU-005: Crear un Pedido
 
-**Actor:** Cliente (ACT-01)
+**Actor:** Cliente (ACT-01), Administrador (ACT-03)
 **Operaciones del sistema:** `crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)`
 
 ![DSS CU-005: Crear un Pedido](../diagramas/png/DSS_CU-005_Crear-un-Pedido.png)
@@ -1743,22 +1754,37 @@ sequenceDiagram
     title DSS — CU-005 Crear un Pedido
     autonumber
     actor CLI as Cliente (ACT-01)
+    actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
+    actor MPA as MercadoPago (ACT-06)
+    actor FIR as Firebase (ACT-07)
 
+    Note over CLI,SIS: Antes de confirmar, la aplicación cotiza el pedido (ref CU-302)
+    Note over ADM,SIS: El administrador invoca la misma operación a nombre de un cliente (pedido telefónico)
     CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     activate SIS
-    alt Hay stock y la dirección está cubierta
+    Note over SIS: Los rechazos se evalúan en este orden: gana el primero que corresponda
+    alt pedido válido
+        opt el pago es por MercadoPago
+            SIS-)MPA: notificarSolicitudDeCobro(pedido)
+        end
+        SIS-)FIR: notificarConfirmacionDePedido(pedido)
         SIS-->>CLI: pedido creado (número, total, estado pendiente y, si el pago es por MercadoPago, enlace de pago)
         Note over CLI,SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
-        SIS-)CLI: notificarConfirmacionDePedido(pedido)
-    else Sin stock suficiente
-        SIS-->>CLI: rechazo (stock insuficiente para el producto)
-    else Un producto del pedido no existe
-        SIS-->>CLI: rechazo (producto no encontrado)
-    else Dirección fuera de la zona de cobertura
+    else pedido inválido: cliente ajeno, sin ítems, ítems repetidos, fecha pasada o clave reutilizada con otros datos
+        SIS-->>CLI: rechazo (solicitud no válida)
+    else pedido inválido: el cliente o la dirección no existen
+        SIS-->>CLI: rechazo (cliente o dirección no encontrados)
+    else pedido inválido: la dirección está fuera de la zona de cobertura
         SIS-->>CLI: rechazo (domicilio no cubierto)
-    else Franja horaria sin cupo
-        SIS-->>CLI: rechazo (franja completa para esa fecha)
+    else pedido inválido: la franja no existe, está completa o ya terminó
+        SIS-->>CLI: rechazo (franja no disponible para esa fecha)
+    else pedido inválido: un producto del pedido no existe
+        SIS-->>CLI: rechazo (producto no encontrado)
+    else pedido inválido: un producto es de otra distribuidora
+        SIS-->>CLI: rechazo (producto de otra distribuidora)
+    else pedido inválido: no hay stock suficiente
+        SIS-->>CLI: rechazo (stock insuficiente para el producto)
     end
     deactivate SIS
 ```
@@ -2925,18 +2951,30 @@ sequenceDiagram
     autonumber
     actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
+    actor CHO as Chofer (ACT-02)
 
     ADM->>SIS: asignarChoferAPedido(pedidoId, choferId)
     activate SIS
-    alt el pedido está pendiente o aceptado por otro chofer, y el chofer es elegible
+    Note over SIS: Los rechazos se evalúan en este orden: gana el primero que corresponda
+    alt asignación válida: el pedido está pendiente o aceptado por otro chofer, y el chofer es elegible
+        SIS-)CHO: notificarNuevoPedido(pedido)
+        opt el pedido estaba aceptado por otro chofer
+            SIS-)CHO: notificarReasignacion(pedido)
+        end
         SIS-->>ADM: pedido asignado (estado ACEPTADO, chofer vinculado, código de entrega nuevo)
-    else el pedido o el chofer no existen o son de otra distribuidora
+    else asignación inválida: el pedido o el chofer no existen o son de otra distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el chofer está deshabilitado, no está validado o tiene la flota inhabilitada
+    else asignación sin efecto: el pedido ya está aceptado por ese mismo chofer
+        SIS-->>ADM: pedido sin cambios (no se regenera el código de entrega)
+    else asignación inválida: el chofer está deshabilitado o no está validado
         SIS-->>ADM: asignación rechazada
-    else el chofer no puede recibir pedidos por su carga de camión
+    else asignación inválida: el chofer no puede recibir pedidos por su carga de camión
         SIS-->>ADM: asignación rechazada, con el motivo
-    else el pedido no admite pasar a aceptado
+    else asignación inválida: el chofer no tiene un vehículo en uso o tiene documentación vencida
+        SIS-->>ADM: asignación rechazada, con el motivo
+    else asignación inválida: el pedido es express y el chofer no tiene una moto en uso
+        SIS-->>ADM: asignación rechazada (el express sólo lo lleva un chofer en moto)
+    else asignación inválida: el pedido está reservado, cancelado, en camino o entregado
         SIS-->>ADM: asignación rechazada por transición no permitida
     end
     deactivate SIS
@@ -12632,7 +12670,7 @@ Son **367 operaciones**. **230** modifican el modelo conceptual y tienen contrat
 | `crearCaja(nombre cadena, tipo cadena, requiereSesion booleano)` | CU-225 | Administrador (ACT-03) | Sí |
 | `crearCategoriaDeCaja(nombre cadena, sentido cadena)` | CU-230 | Administrador (ACT-03) | Sí |
 | `crearFranjaHoraria(nombre cadena, horaInicio hora, horaFin hora, capacidad entero)` | CU-042 | Administrador (ACT-03) | Sí |
-| `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | CU-005 | Cliente (ACT-01) | Sí |
+| `crearPedido(items lista, direccionId identificador, franjaId identificador, fechaAgendada fecha, metodoDePago cadena)` | CU-005 | Cliente (ACT-01), Administrador (ACT-03) | Sí |
 | `crearPrimerSuperAdministrador(nombreCompleto cadena, correo cadena, telefono cadena, contrasena cadena)` | CU-087 | Operador Técnico (ACT-10) | Sí |
 | `crearProducto(tipo cadena, peso decimal, precio moneda, stockInicial entero, descripcion cadena, promociones lista)` | CU-036 | Administrador (ACT-03) | Sí |
 | `crearPuestoDeTrabajo(nombre cadena, categoria cadena)` | CU-255 | Administrador (ACT-03) | Sí |
@@ -12943,11 +12981,11 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Crear un pedido reservando el stock de forma atómica, calcular el total con promociones y recargos, y disparar el despacho automático. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-005. Funciones: IRQ-02, IRQ-04, IRQ-05, IRQ-07, IRQ-08, OBJ-01, OBJ-02, OBJ-04, OBJ-06, OBJ-07. |
-| **Notas** | El total incluye las promociones por volumen, el recargo por medio de pago y el recargo de zona. Si el medio de pago es MercadoPago, la propia operación registra el intento de cobro y le pide a la pasarela el enlace de pago, que devuelve en su respuesta (colaboración interna, `crearCheckoutDePago`, cuyo diagrama de interacción está en el Documento 3, CU-048): el intento de cobro se registra antes de conocer la respuesta de la pasarela, y el estado del Pedido no cambia hasta que la pasarela notifica el resultado (notificarResultadoDePago). Si la pasarela no devuelve el enlace, el Pago queda «pendiente» sin enlace y el pedido queda creado igual. La reserva con fecha y seña es una operación distinta: crearReserva. Al confirmarse el pedido se notifica al Cliente. El recargo por medio de pago en línea se guarda aparte del subtotal de los ítems; la base de datos rechaza un total distinto de ítems + recargo de zona + recargo en línea + recargo express (el express no cuenta si el pedido pasó al reparto común). |
-| **Excepciones** | Si algún producto no existe o no es de la distribuidora → error de solicitud (producto no encontrado). Si el stock es insuficiente → la operación se revierte por completo y se informa el producto. Si la dirección está fuera de la zona de cobertura → error de solicitud (domicilio no cubierto). Si la franja no tiene cupo para esa fecha → error de solicitud (franja completa). Si el cliente o la dirección no existen → recurso no encontrado. Si el pedido no trae ningún ítem o repite una misma garrafa en dos renglones, o si trae una fecha agendada anterior a hoy (con franja o sin ella) → error de solicitud; el panel valida lo mismo antes de enviar (capa 1) y la base impide dos renglones de la misma garrafa en un pedido (capa 3). |
+| **Notas** | Lo invoca el Cliente desde su aplicación, con los ítems de su Carrito, o el Administrador desde el panel, a nombre de un Cliente y con los ítems que informa. El total incluye las promociones por volumen, el recargo por medio de pago y el recargo de zona. Si el medio de pago es MercadoPago, la propia operación registra el intento de cobro y le pide a la pasarela el enlace de pago, que devuelve en su respuesta (colaboración interna, `crearCheckoutDePago`, cuyo diagrama de interacción está en el Documento 3, CU-048): el intento de cobro se registra antes de conocer la respuesta de la pasarela, y el estado del Pedido no cambia hasta que la pasarela notifica el resultado (notificarResultadoDePago). Si la pasarela no devuelve el enlace, el Pago queda «pendiente» sin enlace y el pedido queda creado igual. La reserva con fecha y seña es una operación distinta: crearReserva. Al confirmarse el pedido se notifica al Cliente. El recargo por medio de pago en línea se guarda aparte del subtotal de los ítems; la base de datos rechaza un total distinto de ítems + recargo de zona + recargo en línea + recargo express (el express no cuenta si el pedido pasó al reparto común). |
+| **Excepciones** | Si quien opera es un Cliente y el pedido es a nombre de otro Cliente, o si el pedido sale del Carrito y quien opera no es el Cliente → acceso denegado. Si el pedido sale del Carrito y trae además ítems → error de solicitud. Si algún producto no existe → recurso no encontrado (producto no encontrado). Si algún producto no es de la distribuidora → error de solicitud (el producto no pertenece a la distribuidora). Si el stock es insuficiente → la operación se revierte por completo y se informa el producto. Si la dirección está fuera de la zona de cobertura → error de solicitud (domicilio no cubierto). Si la franja no existe o está inactiva, no tiene cupo para esa fecha o es de hoy y ya terminó → error de solicitud (franja no disponible). Si el pedido es express y se combina con franja o fecha agendada → error de solicitud; si la modalidad express dejó de estar disponible → conflicto, con el motivo. Si el cliente o la dirección no existen → recurso no encontrado. Si el pedido no trae ningún ítem o repite una misma garrafa en dos renglones, o si trae una fecha agendada anterior a hoy (con franja o sin ella) → error de solicitud; el panel valida lo mismo antes de enviar (capa 1) y la base impide dos renglones de la misma garrafa en un pedido (capa 3). Si dos pedidos compiten por el mismo stock, la operación se reintenta completa; agotados los reintentos → conflicto. Si la clave de idempotencia se reutiliza con otros datos → la operación no se ejecuta (error de validación). |
 | **Salida** | El pedido creado con sus ítems (número, total, estado pendiente) y, si corresponde, el enlace de pago. |
-| **Precondiciones** | El Cliente está autenticado. La DireccionEntrega pertenece al Cliente. Cada Producto del pedido existe y es de la Distribuidora. Si se indica una FranjaHoraria, existe. |
-| **Postcondiciones** | Se creó una instancia de Pedido, en estado «pendiente», asociada al Cliente que lo realizó, a la DireccionEntrega elegida y, si se indicó, a la FranjaHoraria. Se crearon sus instancias de ItemPedido, cada una asociada a su Producto, con el precio unitario —con las promociones por volumen ya aplicadas y redondeado a centavos— y el subtotal, cantidad por ese precio, calculados en ese momento. El atributo stock de cada Producto pedido se decrementó en la cantidad pedida. Si el medio de pago es MercadoPago, se creó una instancia de Pago, en estado «pendiente», asociada al Pedido y a la Distribuidora, con el importe del intento y el enlace de pago. Si el medio de pago no es MercadoPago y hubo Chofer elegible, se creó una OfertaDespacho dirigida al Chofer disponible más cercano. |
+| **Precondiciones** | El solicitante —el Cliente o el Administrador que lo carga a su nombre— está autenticado. La DireccionEntrega pertenece al Cliente. Cada Producto del pedido existe y es de la Distribuidora. Si se indica una FranjaHoraria, existe, está activa y es de la Distribuidora. |
+| **Postcondiciones** | Se creó una instancia de Pedido, en estado «pendiente», asociada al Cliente que lo realizó, a la DireccionEntrega elegida y, si se indicó, a la FranjaHoraria. Si la Distribuidora tiene zonas y una cubre la dirección, el Pedido quedó asociado a esa ZonaCobertura y guardó una copia de su nombre y de su recargo, de modo que el total queda fijo aunque la zona se edite o se borre; el Pedido guardó aparte el subtotal de los ítems, el recargo de zona y el recargo del medio de pago. Se crearon sus instancias de ItemPedido, cada una asociada a su Producto, con el precio unitario —con las promociones por volumen ya aplicadas y redondeado a centavos— y el subtotal, cantidad por ese precio, calculados en ese momento. El atributo stock de cada Producto pedido se decrementó en la cantidad pedida. Se creó una instancia de CambioEstadoPedido asociada al Pedido, sin estado de origen y con estado de destino «pendiente». Si los ítems salieron del Carrito, se eliminaron las instancias de ItemCarrito del Cliente. Si el medio de pago es MercadoPago, se creó una instancia de Pago, en estado «pendiente», asociada al Pedido y a la Distribuidora, con el importe del intento y el enlace de pago. Si el medio de pago no es MercadoPago y hubo Chofer elegible, se creó una OfertaDespacho dirigida al Chofer disponible más cercano. |
 
 ---
 
@@ -13047,11 +13085,11 @@ Las operaciones de solo consulta, que devuelven información sin alterar ninguna
 | **Responsabilidades** | Asignar manualmente un chofer a un pedido pendiente, o reasignarlo a otro chofer si ya lo había aceptado uno. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-012. Funciones: IRQ-02, IRQ-03, OBJ-02, OBJ-05. |
-| **Notas** | Es la salida del administrador cuando el despacho automático no encuentra candidatos. Tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas abiertas a los demás choferes y guarda la copia del vehículo. En una reasignación, el código nuevo deja sin efecto el anterior. El Cliente no recibe aviso de la asignación manual. Se notifica al Chofer nuevo, al Chofer anterior (si lo hubo) y al panel. |
-| **Excepciones** | Si el pedido o el chofer no existen o son de otra distribuidora → recurso no encontrado. Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida, o no puede recibir pedidos por su carga de camión → error de solicitud (no se puede asignar). Si el pedido no admite pasar a «aceptado» (cancelado, en camino o entregado) → error de solicitud (transición no permitida). |
+| **Notas** | Es la salida del administrador cuando el despacho automático no encuentra candidatos. Tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas abiertas a los demás choferes y guarda la copia del vehículo. En una reasignación, el código nuevo deja sin efecto el anterior y el historial asienta el cambio con el mismo estado de origen y de destino. Si el pedido es express, el Chofer tiene que tener una moto en uso. Si el pedido ya está aceptado por el mismo Chofer, la operación no cambia nada. El Cliente no recibe aviso de la asignación manual. Se notifica al Chofer nuevo, al Chofer anterior (si lo hubo) y al panel. |
+| **Excepciones** | Si el pedido o el chofer no existen o son de otra distribuidora → recurso no encontrado. Si el chofer está deshabilitado, no está validado, no tiene un vehículo en uso o tiene documentación vencida, o no puede recibir pedidos por su carga de camión → error de solicitud (no se puede asignar). Si el pedido es express y el chofer no tiene una moto en uso → error de solicitud. Si el pedido no admite pasar a «aceptado» (reservado, cancelado, en camino o entregado) → error de solicitud (transición no permitida). |
 | **Salida** | El pedido con estado aceptado, el chofer vinculado y el código de entrega nuevo. |
 | **Precondiciones** | El Administrador está autenticado. El Pedido es de su distribuidora y su estado es «pendiente», o «aceptado» por otro Chofer. El Chofer existe y es de la misma distribuidora. |
-| **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer indicado; si el Pedido tenía otro Chofer, esa asociación se rompió. El atributo estado del Pedido pasó a «aceptado» y quedaron registrados el momento de la aceptación y un código de entrega nuevo. El Pedido guardó la patente, la marca y el modelo del Vehículo en uso del Chofer. Las OfertaDespacho abiertas a otros Choferes pasaron a «reemplazadas» y esos Choferes fueron avisados. |
+| **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer indicado; si el Pedido tenía otro Chofer, esa asociación se rompió. El atributo estado del Pedido pasó a «aceptado» y quedaron registrados el momento de la aceptación y un código de entrega nuevo. Se formó la asociación entre el Pedido y el Vehículo en uso del Chofer, y el Pedido guardó su patente, su marca y su modelo. Se creó una instancia de CambioEstadoPedido asociada al Pedido, con estado de destino «aceptado». Se creó una instancia de OfertaDespacho, en estado «aceptada», dirigida al Chofer indicado y asociada al Pedido; si el Pedido tenía otro Chofer, su OfertaDespacho aceptada pasó a «rechazada». Las OfertaDespacho abiertas a otros Choferes pasaron a «reemplazadas» y esos Choferes fueron avisados. |
 
 ---
 

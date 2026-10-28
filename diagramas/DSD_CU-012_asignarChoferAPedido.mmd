@@ -10,34 +10,47 @@ sequenceDiagram
     participant TLG as :TruckLoadGateService
     participant PED as pedido:Pedido
     participant RT as :RealtimeDispatchPort
-    participant CFG as :DispatchSettingsService
 
     ADM->>+SRV: asignarChoferAPedido(pedidoId, choferId)
-    SRV->>+PEDS: get(pedidoId)
-    PEDS-->>-SRV: pedido
     SRV->>+DEL: findById(choferId)
     DEL-->>-SRV: chofer
-    SRV->>CHO: assertElegibleParaAsignacion()
-    SRV->>FLK: assertChoferHabilitado(chofer)
-    SRV->>+FLK: vehiculoEnUsoDelChofer(chofer)
-    FLK-->>-SRV: vehiculo
-    SRV->>TLG: assertPuedeAsignar(chofer)
+    SRV->>+PEDS: get(pedidoId)
+    PEDS-->>-SRV: pedido
     SRV->>+PED: getChofer()
     PED-->>-SRV: choferAnterior
+    break El pedido ya está aceptado por ese mismo chofer
+        SRV-->>ADM: pedido
+    end
+    Note over SRV,TLG: Cada assert termina sin valor o rechaza la asignación (ver el DSS)
+    SRV->>CHO: assertElegibleParaAsignacion()
+    SRV->>TLG: assertPuedeAsignar(chofer)
+    SRV->>FLK: assertChoferHabilitado(chofer)
+    opt El pedido es express
+        SRV->>FLK: assertEnMoto(chofer)
+    end
+    SRV->>+FLK: vehiculoEnUsoDelChofer(chofer)
+    FLK-->>-SRV: vehiculo
     SRV->>+PED: asignarChofer(chofer, vehiculo)
     PED->>PED: transicionar(aceptado)
     PED->>PED: generarCodigoDeEntrega()
     deactivate PED
-    SRV->>PED: retirarOtrasOfertas(chofer)
+    Note over SRV,PED: Registro del cambio de estado: ver DSD de registrarCambioDeEstado (CU-169).<br/>Crea el CambioEstadoPedido, también al reasignar (aceptado a aceptado)
+    SRV->>+PED: retirarOtrasOfertas(chofer)
+    PED-->>-SRV: choferesConOferta
     loop Por cada chofer con una oferta retirada
         SRV-)RT: notifyDriverOrderCancelled(choferConOferta, pedido)
     end
+    SRV->>+PED: registrarConstancia(chofer)
+    opt Había otro chofer asignado
+        PED->>PED: rechazarConstanciaAnterior(choferAnterior)
+    end
+    create participant OFE as :OfertaDespacho
+    PED->>OFE: «create»(chofer, aceptada)
+    deactivate PED
     opt Había otro chofer asignado
         SRV-)RT: stopTracking(choferAnterior)
         SRV-)RT: notifyDriverOrderCancelled(choferAnterior, pedido)
     end
     SRV-)RT: notifyAdmins(pedido)
-    SRV->>+CFG: obtener(distribuidora)
-    CFG-->>-SRV: parametros
     SRV-)RT: notifyDriverNewOrder(chofer, pedido)
     SRV-->>-ADM: pedido

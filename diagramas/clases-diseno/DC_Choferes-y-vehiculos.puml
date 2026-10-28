@@ -139,7 +139,8 @@ class Pedido <<referencia>>
 
 Usuario <|-- Chofer : {overlapping, incomplete}
 Distribuidora "1" --> "0..*" Chofer : emplea
-Chofer "0..1" -- "0..*" Pedido : entrega
+Pedido "0..*" --> "0..1" Vehiculo : se entrega con
+Chofer "0..1" <-- "0..*" Pedido : entrega
 Chofer "1" --> "0..*" Vehiculo : tiene registrado
 Chofer "0..*" --> "0..*" Vehiculo : usa
 Chofer "1" --> "0..1" UbicacionGPS : se ubica en

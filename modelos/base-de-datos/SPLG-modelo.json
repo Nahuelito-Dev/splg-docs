@@ -13105,7 +13105,17 @@
      "estado del cobro",
      "cobro confirmado el",
      "cobro resuelto el",
-     "nota de resolución del cobro"
+     "nota de resolución del cobro",
+     "subtotal de ítems",
+     "recargo de zona",
+     "recargo por medio de pago",
+     "recargo express",
+     "seña pagada",
+     "aceptado el",
+     "nombre de la zona aplicada",
+     "patente del vehículo",
+     "marca del vehículo",
+     "modelo del vehículo"
     ],
     "planificado": false,
     "contexto": "VentaYPedidos"
@@ -14334,6 +14344,15 @@
     "nombre": "se entrega en",
     "extremo_izq": "Pedido",
     "extremo_der": "DireccionEntrega"
+   },
+   {
+    "izq": "Pedido",
+    "card_izq": "0..*",
+    "card_der": "0..1",
+    "der": "Vehiculo",
+    "nombre": "se entrega con",
+    "extremo_izq": "Pedido",
+    "extremo_der": "Vehiculo"
    },
    {
     "izq": "OrdenDeCompra",

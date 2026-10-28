@@ -2596,7 +2596,8 @@
         "CU-005"
       ],
       "actores": [
-        "ACT-01"
+        "ACT-01",
+        "ACT-03"
       ],
       "cambiaEstado": true
     },

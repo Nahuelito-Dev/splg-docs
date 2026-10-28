@@ -85,7 +85,10 @@ _c("Pedido", "VentaYPedidos",
    ["estado", "/total", "modalidad de entrega", "fecha agendada", "método de pago", "seña",
     "código de entrega", "nombre de quien recibe", "documento de quien recibe",
     "vínculo con quien recibe", "estado del cobro", "cobro confirmado el",
-    "cobro resuelto el", "nota de resolución del cobro"])
+    "cobro resuelto el", "nota de resolución del cobro",
+    "subtotal de ítems", "recargo de zona", "recargo por medio de pago", "recargo express",
+    "seña pagada", "aceptado el", "nombre de la zona aplicada",
+    "patente del vehículo", "marca del vehículo", "modelo del vehículo"])
 _c("ItemPedido", "VentaYPedidos", ["cantidad", "precio unitario", "/subtotal"])
 _c("CambioEstadoPedido", "VentaYPedidos", ["desde", "hacia", "motivo", "fecha"])
 _c("CambioDireccion", "VentaYPedidos", ["motivo", "fecha"])
@@ -254,6 +257,7 @@ ASOCIACIONES = [
     ("Pedido", "0..*", "-", "1", "DireccionEntrega", "se entrega en", TR),
     ("Pedido", "0..*", "-", "0..1", "FranjaHoraria", "se programa en", TR),
     ("Pedido", "0..*", "-", "0..1", "ZonaCobertura", "aplica el recargo de", TR),
+    ("Pedido", "0..*", "-", "0..1", "Vehiculo", "se entrega con", TR),
     ("Pedido", "1", "*", "0..*", "CambioEstadoPedido", "registra", RG),
     ("Usuario", "0..1", "-", "0..*", "CambioEstadoPedido", "efectúa", TR),
     ("Usuario", "0..1", "-", "0..*", "Pedido", "confirmó el cobro de", TR),
@@ -655,7 +659,13 @@ ATRIBUTOS = {
                "vínculo con quien recibe": "receiver_relationship",
                "estado del cobro": "paymentStatus", "cobro confirmado el": "payment_confirmed_at",
                "cobro resuelto el": "payment_resolved_at",
-               "nota de resolución del cobro": "payment_resolution_note"},
+               "nota de resolución del cobro": "payment_resolution_note",
+               "subtotal de ítems": "subtotal_items", "recargo de zona": "zone_surcharge_amount",
+               "recargo por medio de pago": "payment_surcharge_amount",
+               "recargo express": "express_surcharge_amount", "seña pagada": "deposit_paid",
+               "aceptado el": "acceptedAt", "nombre de la zona aplicada": "zone_name",
+               "patente del vehículo": "vehicle_patent", "marca del vehículo": "vehicle_brand",
+               "modelo del vehículo": "vehicle_model"},
     "ItemPedido": {"cantidad": "quantity", "precio unitario": "unitPrice", "/subtotal": "subtotal"},
     "CambioEstadoPedido": {"desde": "from_status", "hacia": "to_status", "motivo": "reason",
                            "fecha": "changed_at"},

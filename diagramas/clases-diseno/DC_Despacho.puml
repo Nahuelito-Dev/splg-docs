@@ -32,7 +32,7 @@ abstract class PropuestaConVigencia {
   - vence: FechaHora
 }
 class OfertaDespacho {
-  + «create» OfertaDespacho(chofer: Chofer, venceEn: Entero)
+  + «create» OfertaDespacho(chofer: Chofer,\n      aceptada: EstadoDeLaOferta = ninguno,\n      venceEn: Entero = ninguno)
   + aceptar()
   + cerrar()
   + getPedido(): Pedido

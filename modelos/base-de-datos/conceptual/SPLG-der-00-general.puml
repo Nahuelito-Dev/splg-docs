@@ -157,6 +157,7 @@ Pedido }o--o| FranjaHoraria : se programa en >
 Cliente ||--o{ Pedido : realiza >
 Distribuidora ||--o{ Pedido : gestiona >
 Pedido }o--|| DireccionEntrega : se entrega en >
+Pedido }o--o| Vehiculo : se entrega con >
 OrdenDeCompra ||--|{ ItemOrdenDeCompra : contiene >
 ItemOrdenDeCompra }o--|| Producto : corresponde a >
 Chofer |o--o{ LoteRecorrido : acepta >

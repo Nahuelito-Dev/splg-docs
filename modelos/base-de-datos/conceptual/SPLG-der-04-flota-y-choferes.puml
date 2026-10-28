@@ -134,6 +134,7 @@ PlanMantenimiento ||--o{ TareaMantenimiento : genera >
 TareaMantenimiento }o--o| Empleado : habilita >
 TareaMantenimiento }o--o| Vehiculo : habilita >
 Chofer |o--o{ Pedido : entrega >
+Pedido }o--o| Vehiculo : se entrega con >
 Chofer |o--o{ LoteRecorrido : acepta >
 Vehiculo ||--o| UbicacionDeStock : se registra como {xor} >
 Vehiculo |o--o{ Neumatico : monta >

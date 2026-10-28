@@ -135,6 +135,7 @@ ItemPedido "0..*" -- "1" Producto : corresponde a >
 Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
 Pedido "0..*" -- "0..1" FranjaHoraria : se programa en >
 Pedido "0..*" -- "0..1" ZonaCobertura : aplica el recargo de >
+Pedido "0..*" -- "0..1" Vehiculo : se entrega con >
 Pedido "1" *-- "0..*" CambioEstadoPedido : registra >
 Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de >
 Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de >

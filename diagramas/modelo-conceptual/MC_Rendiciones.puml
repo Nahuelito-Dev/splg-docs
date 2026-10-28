@@ -19,7 +19,7 @@ class RendicionChofer {
   presentada el
   aprobada el
   observaciones
-  vencida avisada el
+  aviso enviado el
 }
 class PedidoRendido {
   importe

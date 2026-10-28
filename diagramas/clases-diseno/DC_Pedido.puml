@@ -42,10 +42,20 @@ class Pedido {
   - cobroConfirmadoEl: FechaHora
   - cobroResueltoEl: FechaHora
   - notaDeResolucionDelCobro: Cadena
+  - subtotalDeItems: Moneda
+  - recargoDeZona: Moneda
+  - recargoPorMedioDePago: Moneda
+  - recargoExpress: Moneda
+  - seniaPagada: Booleano
+  - aceptadoEl: FechaHora
+  - nombreDeLaZonaAplicada: Cadena
+  - patenteDelVehiculo: Cadena
+  - marcaDelVehiculo: Cadena
+  - modeloDelVehiculo: Cadena
   + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega,\n      metodoDePago: MetodoDePago,\n      franja: FranjaHoraria = ninguno,\n      zona: ZonaCobertura = ninguno,\n      fechaAgendada: Fecha = ninguno,\n      montoDeLaSenia: Moneda = ninguno,\n      express: Booleano = ninguno)
   + aceptar(chofer: Chofer, vehiculo: Vehiculo)
   + activar()
-  + agregarItem(producto: Producto, cantidad: Entero)
+  + agregarItem(producto: Producto, cantidad: Entero,\n      precioUnitario: Moneda, subtotal: Moneda)
   + aplicarRecargoDePago()
   + aplicarRecargoExpress()
   + asignarChofer(chofer: Chofer, vehiculo: Vehiculo)
@@ -99,12 +109,14 @@ class Pedido {
   + pasarARepartoComun(): Moneda
   + puedeCalificar(usuario: Usuario): Booleano
   + quitarChofer()
+  + rechazarConstanciaAnterior(choferAnterior: Chofer)
   + registrarCambio(estadoAnterior: Cadena,\n      estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
   + registrarCobro(administrador: Usuario, motivo: Cadena)
+  + registrarConstancia(chofer: Chofer)
   + registrarIncidencia(usuario: Usuario, tipo: Cadena,\n      descripcion: Cadena, foto: Archivo): Incidencia
   + resolverImpago(administrador: Usuario,\n      resolucion: Cadena, nota: Cadena): Pedido
   + resolverTransferencia(administrador: Usuario,\n      recibida: Booleano, motivo: Cadena)
-  + retirarOtrasOfertas(chofer: Chofer)
+  + retirarOtrasOfertas(chofer: Chofer): Chofer[*]
   + tieneOfertaVigente(): Booleano
   + transicionar(estadoDestino: EstadoPedido)
   + validarCobroPendiente()
@@ -173,10 +185,10 @@ class Usuario <<referencia>>
 
 Usuario <|-- Cliente : {overlapping, incomplete}
 Usuario <|-- Chofer
-Cliente "1" -- "0..*" Pedido : realiza
+Cliente "1" <-- "0..*" Pedido : realiza
 Pedido "1" *--> "1..*" ItemPedido : contiene
 ItemPedido "0..*" --> "1" Producto : corresponde a
-Pedido "0..*" -- "1" DireccionEntrega : se entrega en
+Pedido "0..*" --> "1" DireccionEntrega : se entrega en
 Pedido "1" *--> "0..*" CambioEstadoPedido : registra
 Usuario "0..1" -- "0..*" CambioEstadoPedido : efectúa
 Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de
@@ -185,7 +197,7 @@ Pedido "1" *--> "0..*" CambioDireccion : registra
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
 Usuario "1" -- "0..*" CambioDireccion : realiza
-Chofer "0..1" -- "0..*" Pedido : entrega
+Chofer "0..1" <-- "0..*" Pedido : entrega
 Pedido "1" -- "0..*" Pago : se salda con
 Pago "1" -- "0..*" ReintegroDePago : se devuelve con
 ReintegroDePago "0..*" -- "1" Pedido : devuelve el cobro de

@@ -43,6 +43,7 @@ class Producto {
   + calcularDiferencia(llenasFisicas: Entero,\n      reservado: Entero): Entero
   + conciliarVendible(diferenciaEsperada: Entero): Entero
   + desactivar()
+  + esDeLaDistribuidora(distribuidora: Distribuidora): Booleano
   + estaDisponibleEn(distribuidoraId: Identificador): Booleano
   + getCostoPromedio(): Moneda
   + getPrecio(): Moneda

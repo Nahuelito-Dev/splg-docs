@@ -761,7 +761,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |--------|-------|:----:|-------------|
 | ACT-01 | **Cliente** | Humano | Usuario final que compra garrafas de gas. Usa la aplicación del cliente en su teléfono: hace pedidos, elige la franja de entrega y el medio de pago, sigue el pedido en el mapa, administra sus direcciones y puede reclamar si algo sale mal. Inicia 48 casos de uso. |
 | ACT-02 | **Chofer** | Humano | Repartidor de la distribuidora. Usa la aplicación del chofer en su teléfono: se pone en línea, recibe las ofertas de pedidos cercanos, las acepta o las rechaza, informa su posición, entrega y rinde lo cobrado. Inicia 45 casos de uso. |
-| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 248 casos de uso. |
+| ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 249 casos de uso. |
 | ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 71 casos de uso. |
 | ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
@@ -897,8 +897,8 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02, OBJ-06, OBJ-07 |
 | **Requisitos asociados** | IRQ-02, IRQ-04, IRQ-05, IRQ-07, IRQ-08, IRQ-10 |
-| **Descripción** | El cliente elige productos, cantidades, dirección de entrega y medio de pago, y confirma el pedido. El sistema verifica la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta —o no reserva nada—, calcula el total con las promociones y los recargos, registra el pedido y, salvo que el pago sea por MercadoPago o el pedido sea una reserva, lo ofrece a un chofer. Opcionalmente, el cliente agenda la entrega en una franja horaria (CU-044) o elige la modalidad express (CU-148). |
-| **Precondición** | El cliente está identificado. Existe al menos un producto activo con stock en la distribuidora elegida y el cliente tiene una dirección de entrega registrada. |
+| **Descripción** | El cliente —o el administrador, por teléfono y a nombre de un cliente— elige productos, cantidades, dirección de entrega y medio de pago, y confirma el pedido. El sistema verifica la cobertura de la dirección, reserva el stock y el cupo de la franja de forma conjunta —o no reserva nada—, calcula el total con las promociones y los recargos, registra el pedido y, salvo que el pago sea por MercadoPago, lo ofrece a un chofer. Opcionalmente, el cliente agenda la entrega en una franja horaria (CU-044) o elige la modalidad express (CU-148). La reserva con fecha agendada y seña no es parte de este caso: es CU-072. |
+| **Precondición** | El solicitante —el cliente o un administrador— está identificado. Existe al menos un producto activo con stock en la distribuidora elegida y el cliente tiene una dirección de entrega registrada. |
 | **Puntos de extensión** | PE-02: El cliente quiere agendar la entrega en una franja horaria, lo extiende CU-044 Seleccionar una Franja Horaria al Crear un Pedido. PE-03: El cliente puede elegir la modalidad express, lo extiende CU-148 Elegir la Modalidad de Entrega del Pedido. |
 | **Estado** | Implementado |
 
@@ -906,43 +906,48 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 
 | Paso | Acción |
 |------|--------|
-| 1 | El cliente consulta el catálogo de la distribuidora (CU-041). |
-| 2 | Elige uno o más productos e indica la cantidad de cada uno. Para ver el precio, el sistema le cotiza el pedido (CU-302) cada vez que cambia algo que lo afecta: el total que se muestra lo calcula el sistema, no la aplicación. |
+| 1 | El cliente consulta el catálogo de la distribuidora (CU-041). Si el pedido lo carga el administrador por teléfono, el administrador indica además a qué cliente pertenece. |
+| 2 | Elige uno o más productos e indica la cantidad de cada uno: en la aplicación del cliente los suma al carrito (CU-122 a CU-126) y el pedido sale de ese carrito; el administrador los arma directamente en el pedido. Para ver el precio, el sistema le cotiza el pedido (CU-302) cada vez que cambia algo que lo afecta: el total que se muestra lo calcula el sistema, no la aplicación. |
 | 3 | Elige la dirección de entrega entre las que tiene guardadas. |
-| 4 | Si quiere agendar la entrega, elige una fecha y una franja horaria disponible (CU-044, punto de extensión PE-02); también puede marcar el pedido como reserva a futuro, indicando la fecha agendada y el monto de la seña. |
-| 5 | Elige el medio de pago: efectivo, MercadoPago o transferencia. Con MercadoPago o con transferencia el sistema agrega un recargo del 10 %; el pago en efectivo no lleva recargo. |
-| 6 | Revisa el resumen —ítems, descuentos, subtotal, recargos y total— y confirma. Si la conexión se corta y reintenta, el sistema no crea un segundo pedido. |
-| 7 | El sistema comprueba que el pedido se cree a nombre del propio cliente; un administrador o un chofer sí pueden cargarlo a nombre de un cliente. |
-| 8 | El sistema verifica que la dirección sea del cliente y esté dentro de una zona de cobertura de la distribuidora, y toma el recargo de esa zona. |
-| 9 | El sistema reserva el cupo de la franja elegida y, por cada ítem, comprueba que el producto sea de la distribuidora y que alcance el stock, lo descuenta y le aplica las promociones por volumen, tomando siempre el precio del sistema y nunca el que informa el cliente. |
+| 4 | Si quiere agendar la entrega, elige una fecha y una franja horaria disponible (CU-044, punto de extensión PE-02). |
+| 5 | Elige el medio de pago: efectivo, MercadoPago o transferencia; el administrador puede cargarlo además a cuenta corriente (CU-236). Con MercadoPago o con transferencia el sistema agrega un recargo del 10 %; el pago en efectivo no lleva recargo. |
+| 6 | Revisa el resumen —ítems, descuentos, subtotal, recargos y total— y confirma. Si la aplicación acompaña el envío con una clave que identifica el intento y la conexión se corta y reintenta, el sistema no crea un segundo pedido. |
+| 7 | El sistema comprueba que el pedido se cree a nombre del propio cliente; un administrador sí puede cargarlo a nombre de un cliente. |
+| 8 | El sistema verifica que la dirección sea del cliente y esté dentro de una zona de cobertura de la distribuidora, y toma el recargo de esa zona. Si la distribuidora no definió zonas, o la dirección no tiene ubicación, no controla la cobertura. |
+| 9 | Si el pedido trae fecha y franja, el sistema reserva el cupo de la franja elegida; si trae franja sin fecha, solo comprueba que la franja exista y esté activa. Por cada ítem, comprueba que el producto sea de la distribuidora y que alcance el stock, lo descuenta y le aplica las promociones por volumen, tomando siempre el precio del sistema y nunca el que informa el cliente. |
 | 10 | El sistema suma al total el recargo de la zona y, si el pago es en línea, el recargo del 10 %. |
-| 11 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema registra el pedido y sus ítems como pendiente —o reservado, si es una reserva— y deja asentada la creación en el historial de estados. |
-| 12 | Si el pago es en efectivo o por transferencia, el sistema ofrece el pedido a un chofer (CU-013). Si es por MercadoPago, genera el enlace de cobro y no ofrece el pedido a nadie hasta que se confirme el cobro. Si es una reserva, no lo ofrece: se activa el día agendado y, si la seña es por MercadoPago, genera un cobro solo por ese monto. |
+| 11 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema registra el pedido y sus ítems como pendiente y deja asentada la creación en el historial de estados. Si el pedido salió del carrito, lo vacía en la misma operación. |
+| 12 | Si el pago es en efectivo, por transferencia o a cuenta corriente, el sistema ofrece el pedido a un chofer (CU-013). Si es por MercadoPago, genera el enlace de cobro y no ofrece el pedido a nadie hasta que se confirme el cobro. |
 | 13 | El sistema avisa al cliente que el pedido fue creado y avisa del alta al panel de administración. |
 | 14 | El cliente ve el seguimiento del pedido. |
 
-**Postcondición:** Existe un pedido pendiente, o reservado si es una reserva. El stock de cada ítem y el cupo de la franja se descontaron juntos con el alta. Salvo en pago con MercadoPago y en reserva, el pedido quedó ofrecido a un chofer.
+**Postcondición:** Existe un pedido pendiente. El stock de cada ítem y el cupo de la franja se descontaron juntos con el alta. Si el pedido salió del carrito, el carrito quedó vacío. Salvo en pago con MercadoPago, el pedido quedó ofrecido a un chofer.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 6 | Si el pedido se marca como reserva sin indicar la fecha agendada, el sistema lo rechaza. |
+| 4 | Si el pedido trae una fecha agendada anterior a hoy, con franja o sin ella, el sistema lo rechaza e informa que la fecha agendada no puede ser pasada. |
+| 4 | Si la franja elegida no existe o está inactiva, el sistema rechaza el pedido e informa «Franja horaria inválida o inactiva». |
+| 6 | Si se reintenta el mismo pedido con datos distintos, el sistema lo rechaza y no ejecuta la operación. |
+| 6 | Si el pedido no trae ningún ítem, el sistema lo rechaza e informa «El pedido necesita al menos un renglón»; si repite la misma garrafa en dos renglones, lo rechaza y pide sumar las cantidades en uno solo. El panel lo avisa antes de enviar («Esta garrafa ya está en otro renglón: sumá las cantidades en uno solo»). |
+| 6 | Si el pedido sale del carrito y además trae ítems, el sistema lo rechaza: con el carrito, los ítems son los del carrito. |
+| 6 | Si el pedido express trae también franja horaria o fecha agendada, el sistema lo rechaza: el express no se agenda. |
 | 7 | Si un cliente intenta crear un pedido a nombre de otro cliente, el sistema deniega la operación. |
+| 7 | Si el pedido sale del carrito y quien lo crea no es el cliente, el sistema deniega la operación. |
 | 8 | Si el cliente no existe, el sistema cancela la operación e informa «Cliente no encontrado». |
 | 8 | Si la dirección no existe o no es del cliente, el sistema cancela la operación e informa «Dirección no encontrada». |
 | 8 | Si la dirección está fuera de todas las zonas de cobertura de la distribuidora, el sistema rechaza el pedido antes de tocar el stock. |
+| 8 | Si el pedido es express y la modalidad dejó de estar disponible para esa dirección, el sistema rechaza el pedido, informa el motivo y deja que el cliente lo haga con franja horaria. |
 | 9 | Si la franja elegida no tiene cupo para esa fecha, el sistema cancela la operación y rechaza el pedido. |
+| 9 | Si la franja elegida es de hoy y ya terminó, el sistema rechaza el pedido e informa «La franja ya terminó, elegí otra». |
 | 9 | Si algún producto del pedido no existe, el sistema cancela la operación e informa «Garrafa no encontrada», con el producto. |
 | 9 | Si el stock de algún ítem es menor que la cantidad pedida, el sistema cancela la operación e informa «Stock insuficiente para <producto>». El pedido no se crea y el inventario no cambia. |
-| 9 | Si algún producto no pertenece a la distribuidora del pedido, el sistema cancela la operación y rechaza el pedido. |
-| 9 | Si dos pedidos simultáneos compiten por el mismo stock, el sistema deshace y reintenta la operación completa antes de dar error. |
+| 9 | Si algún producto no pertenece a la distribuidora del pedido, el sistema cancela la operación e informa «La garrafa <producto> no pertenece a la distribuidora seleccionada». |
+| 9 | Si dos pedidos simultáneos compiten por el mismo stock, el sistema deshace y reintenta la operación completa; si agotados los reintentos sigue el choque, informa un conflicto y el pedido no se crea. |
 | 9 | Ante cualquier otro error, el sistema cancela la operación e informa «Error al crear el pedido». |
-| 13 | Si no hay ningún chofer elegible, el pedido queda pendiente sin oferta y lo retoma la re-oferta automática (CU-014). |
-| 14 | Si falla el envío del aviso, el pedido queda creado igual. |
-| 6 | Si se reintenta el mismo pedido con datos distintos, el sistema lo rechaza y no ejecuta la operación. |
-| 6 | Si el pedido no trae ningún ítem, el sistema lo rechaza e informa «El pedido necesita al menos un renglón»; si repite la misma garrafa en dos renglones, lo rechaza y pide sumar las cantidades en uno solo. El panel lo avisa antes de enviar («Esta garrafa ya está en otro renglón: sumá las cantidades en uno solo»). |
-| 4 | Si el pedido trae una fecha agendada anterior a hoy, con franja o sin ella, el sistema lo rechaza e informa que la fecha agendada no puede ser pasada. |
+| 12 | Si no hay ningún chofer elegible, el pedido queda pendiente sin oferta y lo retoma la re-oferta automática (CU-014). |
+| 13 | Si falla el envío del aviso, el pedido queda creado igual. |
 
 **Rendimiento**
 
@@ -954,8 +959,7 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 |-------|---------|
 | **Frecuencia** | Variable según la demanda de la distribuidora (estimado: 10 a 50 pedidos por día en la Fase 1). |
 | **Estabilidad** | Alta |
-| **Comentarios** | Los totales se calculan con aritmética decimal exacta y las promociones se aplican según la cantidad mínima configurada en cada producto. Si ningún chofer resulta elegible, el pedido queda pendiente en silencio: el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: cualquier usuario identificado puede crear uno, aunque un cliente solo puede hacerlo para sí mismo. El proceso de compra con carrito persistente (CU-122 a CU-126), la elección explícita de modalidad (CU-148) y la compra express en un paso (CU-147) están construidos: este caso puede recibir los ítems armados o tomarlos del carrito, y puede recibir la modalidad de entrega y quién va a recibir el pedido (CU-128). Tampoco usa CU-121: el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. El total que guarda el sistema es la suma exacta de los renglones, el recargo de la zona, el recargo del medio de pago en línea —que se guarda aparte— y, si corresponde, el de la entrega express; la base de datos rechaza un pedido cuyo total no coincida con esa suma y no admite la misma garrafa en dos renglones del mismo pedido. |
-
+| **Comentarios** | Los totales se calculan con aritmética decimal exacta y las promociones se aplican según la cantidad mínima configurada en cada producto. Si ningún chofer resulta elegible, el pedido queda pendiente en silencio: el cliente no ve ninguna diferencia. El sistema no restringe la creación de pedidos a los clientes: cualquier usuario identificado puede crear uno, aunque un cliente solo puede hacerlo para sí mismo, y solo el administrador puede cargarlo a cuenta corriente. El proceso de compra con carrito persistente (CU-122 a CU-126), la elección explícita de modalidad (CU-148) y la compra express en un paso (CU-147) están construidos: la aplicación del cliente crea siempre el pedido desde el carrito, y el administrador lo arma con los ítems en el propio pedido; también puede recibir la modalidad de entrega y quién va a recibir el pedido (CU-128). Tampoco usa CU-121: el cliente elige la dirección de una lista completa que ya trae marcada la predeterminada. La reserva con fecha agendada y seña pasa por la misma operación de alta pero es otro caso de uso, con su propia secuencia (CU-072). La protección contra pedidos duplicados depende de la clave que identifica cada intento y que acompaña el envío: la aplicación del cliente la envía y el panel no. El total que guarda el sistema es la suma exacta de los renglones, el recargo de la zona, el recargo del medio de pago en línea —que se guarda aparte— y, si corresponde, el de la entrega express; la base de datos rechaza un pedido cuyo total no coincida con esa suma y no admite la misma garrafa en dos renglones del mismo pedido. |
 ---
 
 #### Crítico CU-006 — Consultar el Detalle de un Pedido
@@ -2700,40 +2704,42 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 | Paso | Acción |
 |------|--------|
 | 1 | El administrador elige el pedido sin asignar en el panel y decide asignar un chofer manualmente. |
-| 2 | El panel muestra el listado de choferes de la distribuidora (CU-035). |
+| 2 | El panel muestra los choferes que se pueden asignar —los habilitados y validados de la distribuidora, estén o no en línea— (CU-035). |
 | 3 | El administrador elige uno y confirma. |
-| 4 | El sistema verifica que el chofer exista, sea de la distribuidora del pedido, esté habilitado y validado, tenga un vehículo en uso habilitado (CU-161) y ni su licencia ni ese vehículo tengan documentación vencida (CU-136 a CU-138). Incluye CU-246 Verificar la Habilitación Laboral del Chofer. |
+| 4 | El sistema verifica que el chofer exista, sea de la distribuidora del pedido, esté habilitado y validado. Incluye CU-246 Verificar la Habilitación Laboral del Chofer. |
 | 5 | Incluye CU-248 Verificar la Carga de Camión Abierta del Chofer: el sistema comprueba que la carga de camión del chofer lo habilite a recibir pedidos —con una carga abierta, que esté en ruta con ese vehículo; sin carga, que la distribuidora no exija tenerla (CU-249)—. Es el mismo control que en la aceptación y corre siempre, también al reasignar. |
-| 6 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema le asigna el pedido, lo pasa a aceptado, registra el momento, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo del chofer y genera un código de entrega nuevo, que deja sin efecto el anterior si es una reasignación. |
-| 7 | En la misma operación, el sistema retira las ofertas abiertas a los demás choferes, que dejan de contar como intento, y después les avisa que la oferta ya no está vigente. |
-| 8 | El sistema avisa al chofer nuevo, que recibe el pedido como si fuera una oferta; al chofer anterior, si lo hubo, que el pedido se reasignó y se le corta el seguimiento; y al panel. |
+| 6 | El sistema verifica que el chofer tenga un vehículo en uso habilitado (CU-161) y que ni su licencia ni ese vehículo tengan documentación vencida (CU-136 a CU-138). Si el pedido es express, el vehículo en uso además tiene que ser una moto. |
+| 7 | Incluye CU-169 Registrar el Cambio de Estado de un Pedido: el sistema le asigna el pedido, lo pasa a aceptado, registra el momento, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo del chofer y genera un código de entrega nuevo, que deja sin efecto el anterior si es una reasignación. También en una reasignación queda asentada la fila del historial, con el mismo estado de origen y de destino. |
+| 8 | En la misma operación, el sistema retira las ofertas abiertas a los demás choferes, que dejan de contar como intento, y deja constancia de que el chofer elegido tiene el pedido: una oferta aceptada a su nombre, que cierra la del chofer anterior si lo hubo. Después avisa a los choferes con oferta retirada que ya no está vigente. |
+| 9 | El sistema avisa al chofer nuevo, que recibe el pedido como si fuera una oferta; al chofer anterior, si lo hubo, que el pedido se reasignó y se le corta el seguimiento; y al panel. |
 
-**Postcondición:** El pedido está aceptado por el chofer elegido, con su propio código de entrega. Las ofertas abiertas a otros choferes quedaron retiradas y esos choferes fueron avisados. Si el pedido tenía otro chofer, éste quedó sin seguimiento.
+**Postcondición:** El pedido está aceptado por el chofer elegido, con su propio código de entrega. Las ofertas abiertas a otros choferes quedaron retiradas y esos choferes fueron avisados. El chofer elegido quedó registrado como quien tiene el pedido. Si el pedido tenía otro chofer, éste quedó sin seguimiento.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
+| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 | 4 | Si el pedido es de otra distribuidora que la del administrador, el sistema informa que no lo encontró, sin revelar que existe. |
 | 4 | Si el chofer no existe o es de otra distribuidora que la del pedido, el sistema informa «Repartidor no encontrado». |
+| 4 | Si el pedido ya está aceptado por ese mismo chofer —un reintento o un doble toque—, el sistema no cambia nada: no genera otro código de entrega, no avisa y no retira ofertas. |
 | 4 | Si el chofer fue deshabilitado entre la consulta del listado y la confirmación, el sistema rechaza la asignación e informa «El repartidor está deshabilitado»; si no está validado, informa «El repartidor no está validado». |
-| 4 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación e informa «No se puede asignar: …» con el motivo —por ejemplo, que no tiene un vehículo asignado—. |
 | 5 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la asignación e informa el motivo —por ejemplo «El chofer no tiene la carga del día abierta» o «La carga N° n todavía no salió: confirmá la salida del camión para recibir pedidos»—. |
-| 6 | Si el pedido ya no admite pasar a aceptado —está cancelado, en camino o entregado—, el sistema rechaza la asignación por transición no permitida. Un pedido aceptado por otro chofer no es un error: se reasigna. |
-| 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
+| 6 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la asignación e informa «No se puede asignar: …» con el motivo —por ejemplo, que no tiene un vehículo asignado—. |
+| 6 | Si el pedido es express y el chofer no tiene una moto en uso, el sistema rechaza la asignación e informa «Un pedido express sólo lo puede llevar un chofer con una moto en uso». |
+| 7 | Si el pedido ya no admite pasar a aceptado —está reservado, cancelado, en camino o entregado—, el sistema rechaza la asignación por transición no permitida. Un pedido aceptado por otro chofer no es un error: se reasigna. |
 
 **Rendimiento**
 
 | Paso | Cota de tiempo |
 |------|----------------|
-| 8 | 3 segundos |
+| 9 | 3 segundos |
 
 | Campo | Detalle |
 |-------|---------|
 | **Frecuencia** | Baja: es la vía de excepción cuando el despacho automático no encontró candidatos. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas abiertas a los demás, guarda la copia del vehículo y avisa. El chofer nuevo recibe el pedido como una oferta y puede «aceptarla», sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Un chofer sin vehículo en uso no recibe pedidos ni siquiera por asignación manual. |
-
+| **Comentarios** | La asignación manual tiene los mismos efectos que la aceptación del chofer (CU-015): genera el código de entrega, retira las ofertas abiertas a los demás, guarda la copia del vehículo y avisa. El chofer nuevo recibe el pedido como una oferta y puede «aceptarla», sin efecto porque ya está asignado; si la rechaza o deja vencer el aviso, el pedido no se libera: queda asignado y se avisa al panel para que un administrador decida. El cliente no recibe un aviso de la asignación manual. Un chofer sin vehículo en uso no recibe pedidos ni siquiera por asignación manual. El panel permite además asignar varios pedidos a un mismo chofer desde el listado: repite esta asignación pedido por pedido. La oferta aceptada que queda como constancia se escribe después de confirmar la asignación y es de mejor esfuerzo: si falla, el pedido queda asignado igual, sin la constancia. |
 ---
 
 #### Crítico CU-149 — Despachar un Pedido Express a un Chofer en Moto

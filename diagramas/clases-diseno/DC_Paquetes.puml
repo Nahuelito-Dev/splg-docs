@@ -205,6 +205,8 @@ incident ..> gateways
 incident ..> order
 notifications ..> customer
 notifications ..> firebase
+order ..> car
+order ..> cart
 order ..> cash
 order ..> coverage_zone
 order ..> customer
@@ -220,6 +222,7 @@ order ..> payments
 order ..> stock
 order ..> time_slot
 order ..> truck_load
+order ..> user_address
 payments ..> order
 purchase ..> distributor
 purchase ..> gascylinder

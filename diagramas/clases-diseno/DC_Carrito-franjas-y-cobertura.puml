@@ -33,6 +33,7 @@ class Carrito {
   + agregarItem(producto: Producto, cantidad: Entero)
   + calcularTotal(): Moneda
   + getItem(itemId: Identificador): ItemCarrito
+  + getItems(): Registro
   + modificarCantidad(itemId: Identificador, cantidad: Entero)
   + quitarItem(itemId: Identificador)
   + vaciar()
@@ -72,7 +73,7 @@ class ZonaCobertura {
   + «create» ZonaCobertura(nombre: Cadena,\n      poligono: Poligono, recargo: Moneda,\n      activa: Booleano)
   + activar()
   + calcularRecargo(subtotalItems: Moneda): Moneda
-  + cubre(direccion: DireccionEntrega = ninguno,\n      latitud: Decimal = ninguno,\n      longitud: Decimal = ninguno): Booleano
+  + cubre(latitud: Decimal = ninguno,\n      longitud: Decimal = ninguno,\n      direccion: DireccionEntrega = ninguno): Booleano
   + darDeBaja()
   + desactivar()
   + getRecargo(): Moneda
@@ -92,7 +93,7 @@ Distribuidora "1" *--> "0..*" FranjaHoraria : define
 Cliente "1" *--> "0..*" Carrito : arma
 Carrito "1" *--> "0..*" ItemCarrito : contiene
 ItemCarrito "0..*" --> "1" Producto : corresponde a
-Pedido "0..*" -- "0..1" FranjaHoraria : se programa en
+Pedido "0..*" --> "0..1" FranjaHoraria : se programa en
 Pedido "0..*" --> "0..1" ZonaCobertura : aplica el recargo de
 Carrito ..> Producto
 

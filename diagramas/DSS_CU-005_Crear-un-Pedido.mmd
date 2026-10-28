@@ -2,21 +2,36 @@ sequenceDiagram
     title DSS — CU-005 Crear un Pedido
     autonumber
     actor CLI as Cliente (ACT-01)
+    actor ADM as Administrador (ACT-03)
     participant SIS as :Sistema
+    actor MPA as MercadoPago (ACT-06)
+    actor FIR as Firebase (ACT-07)
 
+    Note over CLI,SIS: Antes de confirmar, la aplicación cotiza el pedido (ref CU-302)
+    Note over ADM,SIS: El administrador invoca la misma operación a nombre de un cliente (pedido telefónico)
     CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     activate SIS
-    alt Hay stock y la dirección está cubierta
+    Note over SIS: Los rechazos se evalúan en este orden: gana el primero que corresponda
+    alt pedido válido
+        opt el pago es por MercadoPago
+            SIS-)MPA: notificarSolicitudDeCobro(pedido)
+        end
+        SIS-)FIR: notificarConfirmacionDePedido(pedido)
         SIS-->>CLI: pedido creado (número, total, estado pendiente y, si el pago es por MercadoPago, enlace de pago)
         Note over CLI,SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
-        SIS-)CLI: notificarConfirmacionDePedido(pedido)
-    else Sin stock suficiente
-        SIS-->>CLI: rechazo (stock insuficiente para el producto)
-    else Un producto del pedido no existe
-        SIS-->>CLI: rechazo (producto no encontrado)
-    else Dirección fuera de la zona de cobertura
+    else pedido inválido: cliente ajeno, sin ítems, ítems repetidos, fecha pasada o clave reutilizada con otros datos
+        SIS-->>CLI: rechazo (solicitud no válida)
+    else pedido inválido: el cliente o la dirección no existen
+        SIS-->>CLI: rechazo (cliente o dirección no encontrados)
+    else pedido inválido: la dirección está fuera de la zona de cobertura
         SIS-->>CLI: rechazo (domicilio no cubierto)
-    else Franja horaria sin cupo
-        SIS-->>CLI: rechazo (franja completa para esa fecha)
+    else pedido inválido: la franja no existe, está completa o ya terminó
+        SIS-->>CLI: rechazo (franja no disponible para esa fecha)
+    else pedido inválido: un producto del pedido no existe
+        SIS-->>CLI: rechazo (producto no encontrado)
+    else pedido inválido: un producto es de otra distribuidora
+        SIS-->>CLI: rechazo (producto de otra distribuidora)
+    else pedido inválido: no hay stock suficiente
+        SIS-->>CLI: rechazo (stock insuficiente para el producto)
     end
     deactivate SIS

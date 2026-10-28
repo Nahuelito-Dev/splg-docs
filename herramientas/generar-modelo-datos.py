@@ -1990,6 +1990,22 @@ md = ["# Modelo de Datos — SPLG", "",
       "| [Modelo propuesto](#modelo-propuesto) | Lo que falta agregar, por pedido de la cátedra |",
       "| [Tipos enumerados](#tipos-enumerados) | Los valores admitidos por cada enumerado |", "",
       "## Diccionario de datos", ""]
+# Descripciones que el comentario de la entidad no trae o trae mal; la doc las completa para las columnas
+# que más se muestran del pedido. Si el código las documenta mejor, se borra la entrada.
+AJUSTES_DE_DESCRIPCION = {
+    ("order", "status"): "Estado del pedido: reservado, pendiente, aceptado, en camino, entregado o cancelado. Los cambios los controla un disparador (ver «Disparadores»).",
+    ("order", "totalAmount"): "Total del pedido: subtotal de ítems + recargo de zona + recargo del medio de pago + recargo express (`CHK_order_total_formula`).",
+    ("order", "delivery_id"): "Chofer que tiene el pedido; nulo mientras está pendiente o reservado. Obligatorio desde que el pedido está aceptado.",
+    ("order", "vehicle_car_id"): "Vehículo en uso del chofer cuando tomó el pedido (se asigna al aceptar o al asignarlo a mano).",
+    ("order", "vehicle_patent"): "Copia de la patente de ese vehículo, para que el pedido la conserve aunque el vehículo cambie.",
+    ("order", "vehicle_brand"): "Copia de la marca de ese vehículo.",
+    ("order", "vehicle_model"): "Copia del modelo de ese vehículo.",
+    ("order", "acceptedAt"): "Momento en que el chofer aceptó el pedido o el administrador se lo asignó.",
+    ("order", "payment_resolved_at"): "Cuándo el administrador cerró un cobro impago.",
+    ("order", "deliveryCode"): "Código secreto de la prueba de entrega con QR. Se genera al aceptar el pedido (el chofer o, en la asignación manual, el administrador) y la reasignación lo reemplaza; viaja embebido en el QR que el chofer muestra al cliente.",
+    ("order", "zone_name"): "Nombre de la zona de cobertura al momento de pedir (copia: la zona puede editarse o borrarse después).",
+    ("order", "coverage_zone_id"): "Zona de cobertura que cubría la dirección al pedir; nula si la distribuidora no definió zonas.",
+}
 _sin_doc = []
 for t in tablas:
     nom = MC.CONCEPTO_DE_TABLA.get(t) or MC.TABLAS_TECNICAS.get(t, (None,))[0] or CONCEPTO.get(t, (t, []))[0]
@@ -2006,7 +2022,7 @@ for t in tablas:
                  else "FK" if any(f["tabla"] == t and f["col"] == c["nombre"] for f in fks)
                  else "U" if c["nombre"] in unicos_simples.get(t, set()) else "")
         dflt = c["default"].strip() or ""
-        desc = descripciones.get(t, {}).get(c["nombre"], "")
+        desc = AJUSTES_DE_DESCRIPCION.get((t, c["nombre"]), descripciones.get(t, {}).get(c["nombre"], ""))
         if not desc:
             _sin_doc.append(f"{t}.{c['nombre']}")
             desc = "_(sin descripción documentada en el código)_"
@@ -2108,6 +2124,24 @@ for n, v in sorted(enums.items()):
     md.append(f'| `{n}` | {", ".join("`"+x+"`" for x in v)} | implementado |')
 for n, v in sorted(enums_prop.items()):
     md.append(f'| `{n}` | {", ".join("`"+x+"`" for x in v)} | propuesto |')
+md.append("")
+
+# Disparadores: la tercera capa de las reglas (después del front y del back). Los de transición de estado
+# listan, además, los pares «desde>hacia» que la base deja pasar.
+md += ["## Disparadores", "",
+       "Reglas que la base hace cumplir por sí sola, aunque la escritura no venga de la aplicación. Los "
+       "disparadores de transición de estado dejan pasar sólo los pares `desde>hacia` listados (la misma "
+       "máquina de estados que valida el back); cualquier otro cambio de estado se rechaza con el código 23514.",
+       "", "| Tabla | Disparador | Momento | Función | Transiciones permitidas |", "|---|---|---|---|---|"]
+for tb, tg, momento, fn, cuerpo in psql("""
+    select c.relname, t.tgname,
+           regexp_replace(regexp_replace(pg_get_triggerdef(t.oid), '^.*? (BEFORE|AFTER|INSTEAD OF) ', '\\1 '), ' ON .*$', ''),
+           p.proname, replace(pg_get_functiondef(p.oid), E'\n', ' ')
+    from pg_trigger t join pg_class c on c.oid = t.tgrelid join pg_proc p on p.oid = t.tgfoid
+    where not t.tgisinternal and c.relnamespace = 'public'::regnamespace order by 1, 2"""):
+    par = re.search(r"ARRAY\[([^\]]*)\]", cuerpo) if fn.startswith("transicion_de_estado_") else None
+    trans = ", ".join("`" + x.strip().strip("'") + "`" for x in par.group(1).split(",")) if par else "—"
+    md.append(f"| `{tb}` | `{tg}` | {momento} | `{fn}()` | {trans} |")
 md.append("")
 open(SAL + "SPLG-modelo-de-datos.md", "w", encoding="utf-8").write("\n".join(md))
 

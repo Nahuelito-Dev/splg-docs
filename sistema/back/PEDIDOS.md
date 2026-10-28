@@ -122,7 +122,10 @@ Sin ninguno de los parámetros nuevos el listado es el de siempre (más nuevos p
 `order_status_history` registra **toda** transición del pedido (incluido el alta,
 `from_status = null`), en la misma transacción que el cambio: quién (el usuario del request;
 `null` si lo hizo el sistema: cron, webhook), cuándo, desde, hasta y el motivo si lo hay
-(cancelación o entrega manual). Lo asienta `OrderStatusHistorySubscriber`, que escucha los
+(cancelación o entrega manual). Además, sin cambio de estado, asienta notas (origen = destino,
+`isNote: true`): los cobros manuales del admin y la **reasignación** de un pedido aceptado a otro
+chofer (`accepted → accepted`, motivo «Reasignación de chofer»; sin nombres, porque el historial
+también lo leen el cliente y el chofer). Lo asienta `OrderStatusHistorySubscriber`, que escucha los
 `save` del pedido; las transiciones pasan por `transitionOrder`, así ningún caso de uso puede
 olvidarse. **No hay backfill:** los pedidos anteriores a este cambio no tienen el historial de
 sus transiciones pasadas; el historial empieza el día que se despliega.

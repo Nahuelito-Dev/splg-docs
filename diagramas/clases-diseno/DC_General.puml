@@ -139,7 +139,7 @@ Distribuidora "0..1" -- "0..*" Auditoria
 Auditoria "1" *-- "0..*" DetalleAuditoria
 TipoAccionAuditoria "1" -- "0..*" Auditoria
 Cliente "1" *-- "0..*" DireccionEntrega
-Cliente "1" -- "0..*" Pedido
+Cliente "1" <-- "0..*" Pedido
 Cliente "1" *--> "0..*" Carrito
 Cliente "1" -- "0..*" InvitacionRecompra
 Cliente "0..*" -- "0..1" Producto
@@ -151,16 +151,17 @@ Carrito "1" *--> "0..*" ItemCarrito
 ItemCarrito "0..*" --> "1" Producto
 Pedido "1" *--> "1..*" ItemPedido
 ItemPedido "0..*" --> "1" Producto
-Pedido "0..*" -- "1" DireccionEntrega
-Pedido "0..*" -- "0..1" FranjaHoraria
+Pedido "0..*" --> "1" DireccionEntrega
+Pedido "0..*" --> "0..1" FranjaHoraria
 Pedido "0..*" --> "0..1" ZonaCobertura
+Pedido "0..*" --> "0..1" Vehiculo
 Pedido "1" *--> "0..*" CambioEstadoPedido
 Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de
 Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de
 Pedido "1" *--> "0..*" CambioDireccion
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde
 CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
-Chofer "0..1" -- "0..*" Pedido
+Chofer "0..1" <-- "0..*" Pedido
 Pedido "1" -- "0..*" Pago
 Pago "1" -- "0..*" ReintegroDePago
 ReintegroDePago "0..*" -- "1" Pedido

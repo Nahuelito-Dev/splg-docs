@@ -76,6 +76,7 @@ class Distribuidora {
   + validarCuitSinUsar(cuit: Cadena)
   + validarNombreDisponible(nombre: Cadena)
   + validarSinSolapamiento(empleado: Empleado,\n      producto: Producto, vigenteDesde: Fecha)
+  + zonaQueCubre(direccion: Cadena): ZonaCobertura
 }
 class ConfiguracionModulo {
   - modulo: ProcesoConfigurable

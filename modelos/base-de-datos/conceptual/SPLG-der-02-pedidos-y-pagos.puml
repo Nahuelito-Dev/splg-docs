@@ -37,6 +37,16 @@ entity Pedido {
   {field} cobro confirmado el
   {field} cobro resuelto el
   {field} nota de resolución del cobro
+  {field} subtotal de ítems
+  {field} recargo de zona
+  {field} recargo por medio de pago
+  {field} recargo express
+  {field} seña pagada
+  {field} aceptado el
+  {field} nombre de la zona aplicada
+  {field} patente del vehículo
+  {field} marca del vehículo
+  {field} modelo del vehículo
 }
 entity ItemPedido {
   * identificador
@@ -123,6 +133,8 @@ entity Usuario #F1F1F1 {
 }
 entity Distribuidora #F1F1F1 {
 }
+entity Vehiculo #F1F1F1 {
+}
 entity Reclamo #F1F1F1 {
 }
 entity AsientoCuentaCorriente #F1F1F1 {
@@ -157,6 +169,7 @@ Pedido }o--o| FranjaHoraria : se programa en >
 Cliente ||--o{ Pedido : realiza >
 Distribuidora ||--o{ Pedido : gestiona >
 Pedido }o--|| DireccionEntrega : se entrega en >
+Pedido }o--o| Vehiculo : se entrega con >
 Pedido ||--o{ Reclamo : origina >
 Pedido |o--o{ AsientoCuentaCorriente : origina >
 Pedido |o--o{ Envase : despacha >

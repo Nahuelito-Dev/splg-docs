@@ -22,6 +22,16 @@ class Pedido {
   cobro confirmado el
   cobro resuelto el
   nota de resolución del cobro
+  subtotal de ítems
+  recargo de zona
+  recargo por medio de pago
+  recargo express
+  seña pagada
+  aceptado el
+  nombre de la zona aplicada
+  patente del vehículo
+  marca del vehículo
+  modelo del vehículo
 }
 class ItemPedido {
   cantidad
