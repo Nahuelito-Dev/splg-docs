@@ -21,6 +21,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/FLOTA-AMPLIADA.md` | Flota ampliada (C-18) |
 | `back/PARAMETROS-DESPACHO.md` | Parámetros del despacho y frecuencia de las tareas programadas (M1) |
 | `back/PEDIDOS.md` | Pedidos, cobros, cotización, historial y rutas |
+| `back/PDFS.md` | PDFs generados por el back: remito, recibo, rendición, liquidación, cierre de caja y ventas (F2, API v2) |
 | `back/PERSONAL.md` | Documentación, asistencia, licencias, tablero y habilitación laboral |
 | `back/PROCESOS-AUTOMATICOS.md` | Parámetros por distribuidora y zonas vencidas |
 | `back/S3.md` | Archivos: Amazon S3 |
