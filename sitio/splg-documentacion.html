@@ -1756,9 +1756,11 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   (function(){
     var sel = document.getElementById("selectorVersion");
     if (!sel || !window.fetch) return;
-    fetch("/versiones.json", {cache: "no-cache"}).then(function(r){
-      if (!r.ok) throw 0; return r.json();
-    }).then(function(cfg){
+    // Publicado, el archivo está en la raíz; en una copia local servida desde
+    // el repo está junto a la página (sitio/versiones.json).
+    var leer = function(url){ return fetch(url, {cache: "no-cache"}).then(function(r){
+      if (!r.ok) throw 0; return r.json(); }); };
+    leer("/versiones.json").catch(function(){ return leer("versiones.json"); }).then(function(cfg){
       var cong = cfg.versiones || [], act = cfg.actual || {};
       var aqui = null;
       cong.forEach(function(v){ if (location.pathname.indexOf("/" + v.id + "/") === 0) aqui = v; });

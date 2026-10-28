@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # Regenera el sitio y lo publica en https://splg-atlas.netlify.app
+#   ./publicar.sh               arma publicar/ y lo sube a Netlify
+#   ./publicar.sh --solo-armar  arma publicar/ igual que para subir, sin subirlo
+#                               (para verlo en local: python3 -m http.server -d publicar)
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -104,6 +107,11 @@ cat > publicar/netlify.toml <<'TOML'
   publish = "."
 TOML
 printf '/*\n  X-Frame-Options: SAMEORIGIN\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n' > publicar/_headers
+
+if [ "${1:-}" = "--solo-armar" ]; then
+  echo "✓ armado en publicar/ (sin subir)"
+  exit 0
+fi
 
 echo "→ publicando"
 netlify deploy --dir=publicar --prod --site=811911b2-758b-450a-a621-8bbe4911fec7

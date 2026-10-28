@@ -39,5 +39,5 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 - Toda afirmación sobre el sistema (endpoint, regla, estado) se comprueba contra la API
   corriendo antes de escribirla. Leer el código no alcanza.
 - Diagramas: Mermaid embebido en los `.md`; MC, DER, DBD y DC también en `modelos/drawio/` (draw.io, uno por archivo).
-- Versiones del sitio: v1 congelada el 24/10/2026 (tag + rama `release/v1`), v2 en `develop`. Para sumar una: tag, entrada en `sitio/versiones.json` (`congelada: true`) y `actual` con el título de la siguiente; el selector de la plantilla lee `/versiones.json`.
+- Versiones del sitio: v1 congelada el 24/10/2026 (tag + rama `release/v1`), v2 en `develop`. Para sumar una: tag, entrada en `sitio/versiones.json` (`congelada: true`) y `actual` con el título de la siguiente; el selector de la plantilla lee `/versiones.json` (publicado) o, si no está, `versiones.json` junto a la página (copia local).
 - El sitio es el artefacto; la entrega formal de la cátedra la arma nahue en Drive.
