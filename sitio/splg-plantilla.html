@@ -57,6 +57,10 @@ h1,h2,h3,h4,.head h2,.pagina h2,.pagina h3{font-family:var(--serif);font-weight:
 .navbar .marca-nav{display:flex;align-items:center;gap:11px;background:none;border:0;
   padding:0;cursor:pointer;color:var(--content);font:inherit}
 .navbar .marca-nav svg{width:30px;height:30px;display:block}
+.alternar-panel-nav{display:flex;align-items:center;justify-content:center;width:36px;height:36px;flex:none;
+  background:transparent;border:1px solid var(--outline);border-radius:var(--radio);color:var(--content);cursor:pointer}
+.alternar-panel-nav:hover{border-color:var(--primary);color:var(--primary)}
+.alternar-panel-nav:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 .navbar .marca-nav .txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05}
 .navbar .marca-nav .txt b{font-family:var(--serif);font-weight:600;font-size:18px;letter-spacing:0}
 .navbar .marca-nav .txt span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.14em}
@@ -731,6 +735,10 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
 <body>
 <header class="navbar">
+  <button type="button" class="alternar-panel-nav" id="alternarPanelNav" aria-controls="panel"
+          aria-expanded="true" aria-label="Mostrar u ocultar el menú lateral" title="Menú lateral (Ctrl/⌘ + B)">
+    <span class="rayas" aria-hidden="true"></span>
+  </button>
   <button class="marca-nav" id="alInicio" type="button">
     <svg viewBox="0 0 40 40" role="img" aria-label="SPLG">
       <rect x="1" y="1" width="38" height="38" rx="11" fill="var(--primary)"/>
@@ -1771,6 +1779,8 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   function panel(mostrar){
     app.classList.toggle("sin-panel", !mostrar);
     alternar.setAttribute("aria-expanded", String(mostrar));
+    var nav = document.getElementById("alternarPanelNav");
+    if (nav) nav.setAttribute("aria-expanded", String(mostrar));
     alternar.querySelector(".rotulo-btn").textContent =
       angosta.matches ? "MENÚ" : (mostrar ? "CASOS DE USO" : "VER CASOS");
     fondo.hidden = !(angosta.matches && mostrar);
@@ -1778,7 +1788,14 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     document.documentElement.style.overflow = (angosta.matches && mostrar) ? "hidden" : "";
     if (!angosta.matches) { try { localStorage.setItem("splg-panel", mostrar ? "1" : "0"); } catch (e) {} }
   }
+  var alternarNav = document.getElementById("alternarPanelNav");
   alternar.onclick = function(){ panel(app.classList.contains("sin-panel")); };
+  alternarNav.onclick = alternar.onclick;
+  document.addEventListener("keydown", function(ev){
+    if ((ev.ctrlKey || ev.metaKey) && !ev.altKey && (ev.key === "b" || ev.key === "B")) {
+      ev.preventDefault(); panel(app.classList.contains("sin-panel"));
+    }
+  });
   fondo.onclick = function(){ panel(false); };
 
   // En pantalla angosta el cajón arranca cerrado siempre; en ancha se respeta
