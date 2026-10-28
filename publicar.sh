@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 
 # Versiones congeladas: sitio/versiones.json lista cada una con su `ref` (el tag
 # de git de la documentacion, p. ej. v1.4.0). Cada una se publica en /<id>/ con
-# SU propio generador. SPLG_REF_<ID> (p. ej. SPLG_REF_V1=v1.4.0) pisa el `ref`
+# el CONTENIDO del tag y el generador/plantilla actuales (misma web). SPLG_REF_<ID> (p. ej. SPLG_REF_V1=v1.4.0) pisa el `ref`
 # del json sin tocar el archivo. Si algun ref no existe se corta antes de armar
 # nada: no se publica a medias.
 echo "→ resolviendo las versiones congeladas"
@@ -66,6 +66,13 @@ while read -r id ref; do
   echo "→ version $id ($ref)"
   mkdir -p "$TMP/$id" "publicar/$id"
   git archive "$ref" | tar -x -C "$TMP/$id"
+  # Misma web para todas las versiones (como los sitios de librerías): del tag
+  # sale SÓLO el contenido (documentos, diagramas, modelos, capturas); el
+  # generador, la plantilla y los estilos son los de hoy, así el diseño, el
+  # menú y el selector son idénticos y al cambiar de versión cambia el texto.
+  for f in generar-sitio.py splg-plantilla.html paginas.css visor.css visor.js index.html branching.html versionado.html; do
+    cp "sitio/$f" "$TMP/$id/sitio/$f"
+  done
   python3 "$TMP/$id/sitio/generar-sitio.py" >/dev/null
   validar_js "$TMP/$id/sitio/splg-documentacion.html"
   copiar_sitio "$TMP/$id/sitio" "publicar/$id"

@@ -15,7 +15,7 @@ https://splg-atlas.netlify.app. Mapa del sistema: `../AGENTS.md`.
 | Regenerar los HTML para Drive | `python3 herramientas/generar-html-drive.py` → `catedra/drive/` |
 | Documentos de la cátedra en Word | `python3 herramientas/generar-docx-catedra.py` → `catedra/entregables/catedra-docx/*.docx` (un archivo por documento; `SPLG_DOCX_LIMITE_MB=9.5` lo parte si se necesita un tope) y copia a `~/Desktop/SPLG-Documentacion-Catedra/` |
 | ¿Algún link roto? | `python3 herramientas/verificar-links.py` (los .md y los .html; sale 1 si alguna ruta local no existe) |
-| Publicar en Netlify | `./publicar.sh` — **solo con el ok de nahue**. Publica la raíz y cada versión congelada de `sitio/versiones.json` en `/<id>/`; falla antes de armar nada si un `ref` (tag) no existe. `SPLG_REF_V1=<tag>` pisa el `ref` de la v1 |
+| Publicar en Netlify | `./publicar.sh` — **solo con el ok de nahue**. Publica la raíz y cada versión congelada de `sitio/versiones.json` en `/<id>/` (contenido del tag, misma web: generador y plantilla actuales); `--solo-armar` arma sin subir; falla antes de armar nada si un `ref` (tag) no existe. `SPLG_REF_V1=<tag>` pisa el `ref` de la v1 |
 
 ## Estructura
 
