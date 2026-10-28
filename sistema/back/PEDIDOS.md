@@ -395,6 +395,37 @@ la vuelta del camión (`PATCH /truck-loads/:id/return`) la toma `FOR UPDATE`. Si
 una espera a la otra: o la aceptación termina antes (y la vuelta ve el pedido en curso y responde 409) o la vuelta termina antes (y la aceptación ve la carga `returned` y responde 400). Nunca queda
 un pedido aceptado sobre una carga devuelta. Orden de locks: pedido → chofer → carga (compartido).
 
+## Pedido de Mercado Pago sin pagar: no sale hasta que se apruebe el pago (F9)
+
+Una sola regla (`esperaPagoOnline`, en `src/order/domain/`): un pedido **espera el pago online** si
+es de Mercado Pago, su pago no está aprobado y no es una reserva con la seña paga (ahí el saldo se
+cobra al entregar y `paymentStatus` sigue `pending` a propósito). Mientras espera:
+
+- el despacho no lo ofrece (ni el común ni el express; tampoco el cron de pendientes ni el cambio
+  de dirección): se despacha cuando el webhook aprueba el pago;
+- no figura en `GET /orders/available`;
+- el chofer no lo acepta (`PATCH /orders/:id/status` → `accepted`: **409**);
+- el admin no lo asigna (`PATCH /orders/:id/assign/:deliveryId`: **409** «El pedido se paga con
+  Mercado Pago y todavía no está pago: se le asigna chofer cuando se apruebe el pago»), dentro de la
+  transacción y sin tocar nada. Un chofer de otra distribuidora sigue dando 404 antes, y un pedido
+  cerrado sigue dando la transición inválida.
+
+Antes de este cambio el despacho común sí ofrecía estos pedidos: en la base había pedidos de Mercado
+Pago impagos con ofertas a choferes. El panel apaga «Asignar chofer» con el mismo motivo en la
+ficha, el tablero de despacho, la vista rápida, el menú de la fila de Pedidos y el pool de
+Seguimiento. En la asignación en lote esos pedidos quedan afuera, con aviso. Lo lee de
+`paymentMethodDetail`, `paymentStatus` y `depositPaid` de la respuesta.
+
+Probado el 28/10/2026 contra la API con pedidos reales de Mercado Pago impagos:
+- no figuraron entre los disponibles;
+- asignar y aceptar dieron 409;
+- el pedido siguió pendiente, sin chofer y sin ofertas, y el intento quedó en la auditoría como
+  rechazado;
+- en el panel, el botón y el ítem del menú quedaron apagados con el motivo y no llegó ningún pedido
+  a `/assign`.
+
+Los pedidos de prueba quedaron cancelados.
+
 ## Un solo reloj
 
 `acceptedAt`, `onTheWayAt` y `deliveredAt` del pedido se toman con `clock_timestamp()` de la base
