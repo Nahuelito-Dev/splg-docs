@@ -11,6 +11,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 
 | Archivo | Tema |
 |---|---|
+| `back/ADJUNTOS.md` | Adjuntos: dueños, tipos (también Word, Excel y CSV) y panel (F6) |
 | `back/AUDITORIA.md` | Auditoría |
 | `back/CARRITO-Y-CONSUMO.md` | Carrito persistente y consumo declarado (C-12 y C-13) |
 | `back/CATALOGO.md` | Productos dados de baja y reactivación |

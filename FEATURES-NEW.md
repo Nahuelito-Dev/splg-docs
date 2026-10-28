@@ -27,7 +27,7 @@ documentación.
 | F3 | Importación masiva (garrafas, precios, stock y proveedores) con plantilla, vista previa y errores por fila | 🟢 Hecho y testeado | 100 % | Back y panel en `develop`; probado contra la API y en el panel. Los clientes no se importan: se registran solos. Ver `sistema/back/IMPORTACION.md` |
 | F4 | Comprobante de transferencia: el cliente lo sube, CBU/alias de la distribuidora y el admin lo ve | 🟢 Hecho y testeado | 100 % | Back, panel y app del cliente en `develop`; probado de punta a punta (panel, iPhone y API). Ver `sistema/back/TRANSFERENCIAS.md` |
 | F5 | Clientes de la empresa: alta, baja y reactivación | 🟢 Hecho y testeado | 100 % | Back y panel en `develop`; la baja es lógica y por distribuidora (el panel dejó de usar la baja de la cuenta entera); probado contra la API y la base. Ver `sistema/back/CLIENTES-DE-LA-EMPRESA.md` |
-| F6 | Adjuntos: arreglar los tres tipos rotos (rendición, movimiento de caja, cuenta corriente) y aceptar Word y Excel | ⚪ Pendiente | 0 % | |
+| F6 | Adjuntos: los tres tipos de dueño (rendición, movimiento de caja, cuenta corriente) y Word, Excel y CSV | 🟢 Hecho y testeado | 100 % | El back ya los soportaba (verificado contra la API); el panel acepta los tipos nuevos y suma adjuntos en rendición, caja y cuenta corriente. Ver `sistema/back/ADJUNTOS.md` |
 | F7 | Sockets: eventos que nadie escucha, revalidar la identidad y reconexión de la app del cliente | ⚪ Pendiente | 0 % | |
 | F8 | Fotos en proveedores, envases y cargas de camión; fotos reales en la demo | ⚪ Pendiente | 0 % | |
 | F9 | No permitir asignar a mano un chofer a un pedido de Mercado Pago impago | ⚪ Pendiente | 0 % | |
