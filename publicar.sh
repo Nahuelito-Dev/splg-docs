@@ -98,6 +98,12 @@ if faltan:
     sys.exit(1)
 print("  todas las referencias resuelven")
 PY
+# Quien abría el sitio servido desde el repo (/sitio/...) llega a la misma página.
+mkdir -p publicar/sitio
+for f in index.html splg-documentacion.html; do
+  printf '<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=/splg-documentacion.html"><link rel="canonical" href="/splg-documentacion.html">\n' > "publicar/sitio/$f"
+done
+
 # La direccion vieja quedo repartida en el Drive, en ClickUp y en Notion: se deja
 # una redireccion para que ningun enlace publicado se rompa por el renombre.
 cat > publicar/atlas-casos-de-uso.html <<'HTML'
