@@ -27,6 +27,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/PROCESOS-AUTOMATICOS.md` | Parámetros por distribuidora y zonas vencidas |
 | `back/S3.md` | Archivos: Amazon S3 |
 | `back/STOCK.md` | Stock físico |
+| `back/TRANSFERENCIAS.md` | Pago por transferencia con comprobante y datos bancarios (F4, API v2) |
 | `back/VALIDACIONES-BASE.md` | Validaciones en la base (tanda V1) |
 | `back/VIGENCIA-ENVASES.md` | Vigencia de envases (C-11) |
 

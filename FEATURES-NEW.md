@@ -25,7 +25,7 @@ documentación.
 | F1 | Exportes completos (todas las filas) en CSV y Excel desde el back | 🟢 Hecho y testeado | 100 % | Back y panel en `develop`; probado contra la API y en el panel (escritorio y 320 px). Ver `sistema/back/EXPORTES.md` |
 | F2 | PDF generados en el back: remito, recibo, rendición, liquidación, comisiones y cierre de caja | 🟢 Hecho y testeado | 100 % | Back, panel y apps (cliente: remito y recibo; chofer: rendición) en `develop`; probado contra la API, en el panel y en iPhone y Android. Ver `sistema/back/PDFS.md` |
 | F3 | Importación masiva (garrafas, precios, stock y proveedores) con plantilla, vista previa y errores por fila | 🟢 Hecho y testeado | 100 % | Back y panel en `develop`; probado contra la API y en el panel. Los clientes no se importan: se registran solos. Ver `sistema/back/IMPORTACION.md` |
-| F4 | Comprobante de transferencia: el cliente lo sube, CBU/alias de la distribuidora y el admin lo ve | 🟡 En desarrollo | 50 % | Back en `develop`; faltan el panel y la app del cliente |
+| F4 | Comprobante de transferencia: el cliente lo sube, CBU/alias de la distribuidora y el admin lo ve | 🟢 Hecho y testeado | 100 % | Back, panel y app del cliente en `develop`; probado de punta a punta (panel, iPhone y API). Ver `sistema/back/TRANSFERENCIAS.md` |
 | F5 | Clientes de la empresa: alta, baja y reactivación | 🟡 En desarrollo | 50 % | Back en `develop`; falta el panel |
 | F6 | Adjuntos: arreglar los tres tipos rotos (rendición, movimiento de caja, cuenta corriente) y aceptar Word y Excel | ⚪ Pendiente | 0 % | |
 | F7 | Sockets: eventos que nadie escucha, revalidar la identidad y reconexión de la app del cliente | ⚪ Pendiente | 0 % | |
