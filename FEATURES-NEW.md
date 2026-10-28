@@ -29,12 +29,12 @@ documentación.
 | F5 | Clientes de la empresa: alta, baja y reactivación | 🟢 Hecho y testeado | 100 % | Back y panel en `develop`; la baja es lógica y por distribuidora (el panel dejó de usar la baja de la cuenta entera); probado contra la API y la base. Ver `sistema/back/CLIENTES-DE-LA-EMPRESA.md` |
 | F6 | Adjuntos: los tres tipos de dueño (rendición, movimiento de caja, cuenta corriente) y Word, Excel y CSV | 🟢 Hecho y testeado | 100 % | El back ya los soportaba (verificado contra la API); el panel acepta los tipos nuevos y suma adjuntos en rendición, caja y cuenta corriente. Ver `sistema/back/ADJUNTOS.md` |
 | F7 | Sockets: eventos que nadie escucha, revalidar la identidad y reconexión de la app del cliente | 🟢 Hecho y testeado | 100 % | Back, panel y las dos apps: corte por token vencido y por bloqueo/baja, origen limitado, avisos de toda incidencia y de reclamos, sin el alias duplicado; el panel y la app del cliente reconectan, el chofer rehace la ruta si cambia la dirección. Ver `sistema/back/TIEMPO-REAL.md` |
-| F8 | Fotos en proveedores, envases y cargas de camión; fotos reales en la demo | ⚪ Pendiente | 0 % | |
+| F8 | Fotos en proveedores, envases y cargas de camión; fotos reales en la demo | 🟢 Hecho y testeado | 100 % | Back (v2) y panel en `develop`; probado contra la API (otra empresa 404, chofer 403/404, v1 sin la ruta) y en el panel. La demo quedó sin figuras generadas: fotos de Wikimedia con licencia libre y auditadas. Ver `sistema/back/S3.md` |
 | F9 | No permitir asignar a mano un chofer a un pedido de Mercado Pago impago | ⚪ Pendiente | 0 % | |
 | F10 | Bandeja de notificaciones del admin: campana en el panel, aviso en vivo y por correo | ⚪ Pendiente | 0 % | Base de F11, F14 y F15 |
 | F11 | Vencimientos de flota y personal por la bandeja: VTV 30 días antes con notificación y correo | ⚪ Pendiente | 0 % | Necesita F10 |
 | F12 | Lector de comprobantes y documentos con IA (Claude): lee PDF y fotos y el admin confirma los datos | 🟡 En desarrollo | 40 % | Lector hecho en el back; falta la clave de la API y la prueba con un comprobante real |
-| F13 | Documentos del vehículo: al subir el PDF se leen las fechas de vencimiento, la aseguradora y la póliza | ⚪ Pendiente | 0 % | Necesita F12 |
+| F13 | Documentos del vehículo: al subir el PDF se leen las fechas de vencimiento, la aseguradora y la póliza. Foto de la patente: se guarda aparte y se lee para avisar si no coincide con la cargada | ⚪ Pendiente | 0 % | Necesita F12. La patente hoy es sólo texto (validada y única por distribuidora) |
 | F14 | Seguros: aseguradoras, póliza por vehículo, cuotas mensuales, pago por el link de la aseguradora, comprobante, egreso en Caja y recibo en la ficha del vehículo. Avisos: cuota 5 días y póliza 30 días antes | ⚪ Pendiente | 0 % | Necesita F10 y F12 |
 | F15 | Multas: pago por link, comprobante leído, egreso en Caja y aviso en la bandeja | ⚪ Pendiente | 0 % | Necesita F10 y F12 |
 | F16 | M2 — Flota predictiva | ⚪ Pendiente | 0 % | |
@@ -44,6 +44,9 @@ documentación.
 | F20 | Documentación de la v2 y página «Novedades de la v2» | 🟡 En desarrollo | 30 % | |
 | F21 | Colección de Postman de la v2 | ⚪ Pendiente | 0 % | |
 | F22 | Capturas reales de las apps en la documentación | ⚪ Pendiente | 0 % | |
+| F23 | Telegram: avisos de seguridad para el dueño del sistema | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Falta definir qué avisos |
+| F24 | WhatsApp: ventas por WhatsApp (pedidos y avisos al cliente) | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Falta definir el circuito de venta y el número de WhatsApp Business |
+| F25 | Auditoría total: todo lo que pasa en el sistema queda registrado (fotos, perfil, títulos, cualquier dato), con quién, cuándo, valor anterior y nuevo | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Hoy hay dos capas (operaciones HTTP y cambios de datos); hay que barrer los caminos que no pasan por ellas y mostrarlo completo en el panel |
 
 ## Arreglos menores anotados
 
