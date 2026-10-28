@@ -573,6 +573,18 @@ datos["paginas"] = {
     "versionado": {"titulo": "Versionado automatico", "html": cuerpo_de("versionado.html")},
 }
 
+# Features nuevas de la v2: sólo existe desde la v2; las versiones congeladas
+# anteriores se arman sin la página ni su entrada en el menú.
+_features = D + "FEATURES-NEW.md"
+NAV_FEATURES_ARRIBA = NAV_FEATURES_LADO = ""
+if os.path.exists(_features):
+    datos["paginas"]["features"] = {"titulo": "Features nuevas de la v2",
+                                    "html": md2html(open(_features, encoding="utf-8").read())["html"]}
+    NAV_FEATURES_ARRIBA = '<a class="menu-link" href="#features" data-nav-hash="features">Features v2</a>'
+    NAV_FEATURES_LADO = ('<div class="grupo-menu"><p class="rotulo-grupo">Versión 2</p>'
+                         '<button type="button" class="seccion" data-pag="features">'
+                         '<span class="nombre">Features nuevas de la v2</span></button></div>')
+
 marcas = {a: marca_de(a) for a in ("visor.js", "visor.css")}
 
 payload = json.dumps(datos, ensure_ascii=False, separators=(",",":")).replace("</", "<\\/")
@@ -595,6 +607,8 @@ html = (open(SITIO+"splg-plantilla.html", encoding="utf-8").read()
         .replace("__DATOS__", payload)
         .replace("__VERSION__", version)
         .replace("__GENERADO__", generado)
+        .replace("__NAV_FEATURES_ARRIBA__", NAV_FEATURES_ARRIBA)
+        .replace("__NAV_FEATURES_LADO__", NAV_FEATURES_LADO)
         .replace("__N_MERMAID__", str(n_mermaid))
         .replace("__N_UML__", str(n_uml))
         .replace("__N_CASOS__", str(len(datos["cu"])))
