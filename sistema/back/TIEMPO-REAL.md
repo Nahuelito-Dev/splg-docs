@@ -42,6 +42,7 @@ y token nuevo, y se rinde al toque si antes llegó `server:access-revoked`.
 | `incident:created` | **Toda** incidencia nueva. El cobro impago tiene su aviso propio; el resto avisa con su tipo |
 | `claim:created` | Reclamo nuevo de un cliente, con su motivo |
 | `coverage:no-active-zones`, `cylinder:dispatch-blocked` | Sin zonas activas; despacho bloqueado por envases vencidos |
+| `admin:notification` | Un aviso nuevo de la bandeja (F10, ver `BANDEJA-ADMIN.md`): el panel refresca la campana |
 
 Desde la v2 ya no sale el alias `order:on_the_way` (nadie lo escuchaba y duplicaba el aviso).
 
