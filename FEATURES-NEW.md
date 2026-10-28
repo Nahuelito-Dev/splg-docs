@@ -28,7 +28,7 @@ documentación.
 | F4 | Comprobante de transferencia: el cliente lo sube, CBU/alias de la distribuidora y el admin lo ve | 🟢 Hecho y testeado | 100 % | Back, panel y app del cliente en `develop`; probado de punta a punta (panel, iPhone y API). Ver `sistema/back/TRANSFERENCIAS.md` |
 | F5 | Clientes de la empresa: alta, baja y reactivación | 🟢 Hecho y testeado | 100 % | Back y panel en `develop`; la baja es lógica y por distribuidora (el panel dejó de usar la baja de la cuenta entera); probado contra la API y la base. Ver `sistema/back/CLIENTES-DE-LA-EMPRESA.md` |
 | F6 | Adjuntos: los tres tipos de dueño (rendición, movimiento de caja, cuenta corriente) y Word, Excel y CSV | 🟢 Hecho y testeado | 100 % | El back ya los soportaba (verificado contra la API); el panel acepta los tipos nuevos y suma adjuntos en rendición, caja y cuenta corriente. Ver `sistema/back/ADJUNTOS.md` |
-| F7 | Sockets: eventos que nadie escucha, revalidar la identidad y reconexión de la app del cliente | ⚪ Pendiente | 0 % | |
+| F7 | Sockets: eventos que nadie escucha, revalidar la identidad y reconexión de la app del cliente | 🟢 Hecho y testeado | 100 % | Back, panel y las dos apps: corte por token vencido y por bloqueo/baja, origen limitado, avisos de toda incidencia y de reclamos, sin el alias duplicado; el panel y la app del cliente reconectan, el chofer rehace la ruta si cambia la dirección. Ver `sistema/back/TIEMPO-REAL.md` |
 | F8 | Fotos en proveedores, envases y cargas de camión; fotos reales en la demo | ⚪ Pendiente | 0 % | |
 | F9 | No permitir asignar a mano un chofer a un pedido de Mercado Pago impago | ⚪ Pendiente | 0 % | |
 | F10 | Bandeja de notificaciones del admin: campana en el panel, aviso en vivo y por correo | ⚪ Pendiente | 0 % | Base de F11, F14 y F15 |
