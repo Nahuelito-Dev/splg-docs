@@ -46,7 +46,7 @@ documentación.
 | F22 | Capturas reales de las apps en la documentación | ⚪ Pendiente | 0 % | |
 | F23 | Telegram: avisos de seguridad para el dueño del sistema | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Falta definir qué avisos |
 | F24 | WhatsApp: ventas por WhatsApp (pedidos y avisos al cliente) | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Falta definir el circuito de venta y el número de WhatsApp Business |
-| F25 | Auditoría total: todo lo que pasa en el sistema queda registrado (fotos, perfil, títulos, cualquier dato), con quién, cuándo, valor anterior y nuevo | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Hoy hay dos capas (operaciones HTTP y cambios de datos); hay que barrer los caminos que no pasan por ellas y mostrarlo completo en el panel |
+| F25 | Auditoría total en la base (pedido de la cátedra): triggers en cada tabla que registran toda alta, cambio y baja (quién, cuándo, desde dónde, valor anterior y nuevo), sesiones e intentos de ingreso, y consulta en el panel con filtros y exporte | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10: «todo, cada acción del sistema, ej. si un usuario pasa de chofer tipo A a chofer B». Hoy la auditoría de datos la hace la aplicación (subscriber), no la base |
 
 ## Arreglos menores anotados
 
