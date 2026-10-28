@@ -14,6 +14,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/AUDITORIA.md` | Auditoría |
 | `back/CARRITO-Y-CONSUMO.md` | Carrito persistente y consumo declarado (C-12 y C-13) |
 | `back/CATALOGO.md` | Productos dados de baja y reactivación |
+| `back/CLIENTES-DE-LA-EMPRESA.md` | Alta, baja lógica por distribuidora y reactivación de clientes (F5, API v2) |
 | `back/DEMO.md` | Demo limpia: purga completa y datos nuevos |
 | `back/EXPORTES.md` | Exportes completos en CSV y Excel (F1, API v2) |
 | `back/EXPRESS-REINTEGROS.md` | Compra express y reintegros (C-17) |
