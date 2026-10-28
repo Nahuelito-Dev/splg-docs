@@ -49,4 +49,14 @@ El PDF se abre en una pestaña nueva; si el navegador la bloquea, se descarga. S
 error, el panel muestra su mensaje. Para el superadmin sin «Ver como» las opciones quedan apagadas con
 el motivo. La impresión vieja del remito desde el navegador se reemplazó por el PDF del back.
 
-Las apps todavía no ofrecen bajar estos PDF (el back ya los da para el cliente y el chofer).
+## Apps
+
+| App | Dónde | Qué |
+|---|---|---|
+| Cliente | Detalle del pedido | «Remito (PDF)» siempre y «Recibo (PDF)» si el pedido está pagado y no cancelado |
+| Chofer | Mi rendición | «Rendición (PDF)» de la rendición que se está viendo |
+
+Las apps bajan el PDF de la v2 con la sesión del usuario, lo guardan en su carpeta temporal con el
+mismo nombre que el panel (`recibo-15550F8E.pdf`, `rendicion-20.pdf`) y abren la hoja nativa del
+sistema para verlo, guardarlo, imprimirlo o compartirlo (`share_plus`). Si el back responde un error,
+la app muestra su mensaje. Probado en iPhone (cliente) y Android (chofer) contra la API el 28/10/2026.
