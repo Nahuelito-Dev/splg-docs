@@ -14,6 +14,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/ADJUNTOS.md` | Adjuntos: dueños, tipos (también Word, Excel y CSV) y panel (F6) |
 | `back/TIEMPO-REAL.md` | Sockets: salas, sesión (vencida y acceso revocado), origen y eventos por namespace (F7) |
 | `back/BANDEJA-ADMIN.md` | Bandeja de notificaciones del admin: avisos guardados, en vivo y por mail; API v2 y panel (F10) |
+| `back/SEGUROS.md` | Seguros de los vehículos: aseguradoras, póliza y cuotas, pago con egreso en Caja, Flota y avisos (F14) |
 | `back/AUDITORIA.md` | Auditoría |
 | `back/CARRITO-Y-CONSUMO.md` | Carrito persistente y consumo declarado (C-12 y C-13) |
 | `back/CATALOGO.md` | Productos dados de baja y reactivación |
