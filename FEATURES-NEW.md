@@ -47,6 +47,7 @@ documentación.
 | F23 | Telegram: avisos de seguridad para el dueño del sistema | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Falta definir qué avisos |
 | F24 | WhatsApp: ventas por WhatsApp (pedidos y avisos al cliente) | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Falta definir el circuito de venta y el número de WhatsApp Business |
 | F25 | Auditoría total en la base (pedido de la cátedra): triggers en cada tabla que registran toda alta, cambio y baja (quién, cuándo, desde dónde, valor anterior y nuevo), sesiones e intentos de ingreso, y consulta en el panel con filtros y exporte | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10: «todo, cada acción del sistema, ej. si un usuario pasa de chofer tipo A a chofer B». Hoy la auditoría de datos la hace la aplicación (subscriber), no la base |
+| F26 | Foto de perfil en todo el panel: donde aparece una persona (clientes, choferes, legajos, usuarios, pedidos, reclamos, incidencias, «En uso por», campana, historial) se ve su foto y no sólo las iniciales | ⚪ Pendiente | 0 % | Pedido por nahue el 28/10. Las fotos ya están en S3; falta que cada listado las traiga y las muestre (iniciales sólo sin foto) |
 
 ## Arreglos menores anotados
 
