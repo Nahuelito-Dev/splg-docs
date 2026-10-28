@@ -22,7 +22,7 @@ documentación.
 
 | # | Feature | Estado | % | Detalle |
 |---|---|---|---|---|
-| F1 | Exportes completos (todas las filas) en CSV y Excel desde el back | 🟡 En desarrollo | 50 % | Back en `develop`; falta el panel |
+| F1 | Exportes completos (todas las filas) en CSV y Excel desde el back | 🟢 Hecho y testeado | 100 % | Back y panel en `develop`; probado contra la API y en el panel (escritorio y 320 px). Ver `sistema/back/EXPORTES.md` |
 | F2 | PDF generados en el back: remito, recibo, rendición, liquidación, comisiones y cierre de caja | 🟡 En desarrollo | 40 % | Back hecho con 5 observaciones de la revisión por corregir; falta el panel |
 | F3 | Importación masiva (productos, clientes, stock y precios) con vista previa y errores por fila | 🟡 En desarrollo | 35 % | Back hecho; falta revisión, migración y panel |
 | F4 | Comprobante de transferencia: el cliente lo sube, CBU/alias de la distribuidora y el admin lo ve | 🟡 En desarrollo | 50 % | Back en `develop`; faltan el panel y la app del cliente |
