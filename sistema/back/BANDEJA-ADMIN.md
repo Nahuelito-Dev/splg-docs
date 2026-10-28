@@ -31,8 +31,19 @@ el despacho).
 | `refund_failed` | Falló un reintegro (uno por intento: si el reintento vuelve a fallar, es un aviso nuevo) | el pedido | no |
 | `transfer_receipt_uploaded` | El cliente subió el comprobante de su transferencia | el pedido | no |
 | `cylinder_dispatch_blocked` | Se rechazó un despacho por envases con la revisión vencida | el pedido | no |
+| `fleet_document_due` | Un vencimiento de flota o de personal entró en su anticipación (la VTV, 30 días antes) | la tarea | el resumen diario |
+| `fleet_document_expired` | Ese vencimiento ya pasó (aunque se haya avisado antes como «por vencer») | la tarea | el resumen diario |
+| `employee_document_missing` | A un chofer activo le falta cargar un documento que bloquea el despacho (uno por documento y por mes mientras falte) | la pestaña Documentación del legajo | el resumen diario |
 
-Los avisos con mail llegan con F11 (vencimientos de flota: VTV 30 días antes), F14 (seguros) y F15
+Los vencimientos (F11) los arma el aviso diario de flota (`FleetAlertsCron`, a la hora que eligió
+cada distribuidora): además de su **mail resumen** de siempre, deja cada vencimiento y cada documento
+faltante en la bandeja, sin pedir otro mail para no mandarlo dos veces. La anticipación es la del plan
+(la VTV, 30 días). Un vencimiento avisa dos veces por fecha: al entrar en «por vencer» y al vencer.
+Si se reprograma la fecha, la nueva vuelve a avisar. Antes, una tarea avisada como «por vencer» no
+volvía a avisar cuando vencía. La marca de «avisado por mail» (`alertedAt`) se sigue escribiendo
+sólo en su columna (`update`). Con `save`, una tarea que el admin cerró mientras salía el mail
+volvería a los valores leídos antes. Esa marca técnica está fuera de la auditoría de datos a
+propósito. Los avisos con mail propio llegan con F14 (seguros) y F15
 (multas). Los movimientos comunes del pedido (creado, aceptado, en camino, entregado) siguen sólo en
 vivo: no se guardan, para no llenar la bandeja.
 
@@ -72,3 +83,9 @@ Probado el 28/10/2026 contra la API y en el panel:
 - se vio en escritorio y a 320 px.
 
 Los datos de prueba quedaron cerrados: el reclamo rechazado y la incidencia descartada.
+
+F11, probado el 28/10/2026 sobre la demo, corriendo sólo el paso de la bandeja (sin mail ni marca):
+- entraron 12 avisos: 2 por vencer (la renovación del carnet de un chofer y el service de la
+  camioneta AF218KT) y 10 documentos obligatorios sin cargar de 5 choferes;
+- en el panel se vieron con su ícono, y el click llevó a la tarea y a la pestaña Documentación del
+  legajo.
