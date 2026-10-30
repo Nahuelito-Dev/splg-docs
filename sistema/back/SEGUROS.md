@@ -1,4 +1,4 @@
-# Seguros de los vehículos (F14)
+# Seguros de los vehículos
 
 La distribuidora paga el seguro de cada vehículo mes a mes. El sistema guarda la aseguradora, la
 póliza y su plan de cuotas, avisa antes de cada vencimiento y registra cada pago como un egreso de
@@ -74,4 +74,4 @@ Probado el 28/10/2026 contra la API y en el panel, en escritorio y a 320 px:
 - el comprobante se subió y mostró «Escaneo no disponible»;
 - la cuota 1/6 quedó paga con un egreso de $29.958 por transferencia desde la cuenta «Banco Nación».
 
-El escaneo real queda para cuando la API de Claude tenga crédito (F12).
+El escaneo real queda para cuando la API de Claude tenga crédito.

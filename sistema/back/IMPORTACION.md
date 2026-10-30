@@ -1,4 +1,4 @@
-# Importación masiva (F3, API v2)
+# Importación masiva (API v2)
 
 Carga de datos desde un archivo CSV o Excel en tres pasos: bajar la plantilla, subir el archivo y ver
 la vista previa con los errores de cada fila, y confirmar. Nada se guarda hasta confirmar.

@@ -395,7 +395,7 @@ la vuelta del camión (`PATCH /truck-loads/:id/return`) la toma `FOR UPDATE`. Si
 una espera a la otra: o la aceptación termina antes (y la vuelta ve el pedido en curso y responde 409) o la vuelta termina antes (y la aceptación ve la carga `returned` y responde 400). Nunca queda
 un pedido aceptado sobre una carga devuelta. Orden de locks: pedido → chofer → carga (compartido).
 
-## Pedido de Mercado Pago sin pagar: no sale hasta que se apruebe el pago (F9)
+## Pedido de Mercado Pago sin pagar: no sale hasta que se apruebe el pago
 
 Una sola regla (`esperaPagoOnline`, en `src/order/domain/`): un pedido **espera el pago online** si
 es de Mercado Pago, su pago no está aprobado y no es una reserva con la seña paga (ahí el saldo se

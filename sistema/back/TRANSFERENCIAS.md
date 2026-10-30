@@ -1,4 +1,4 @@
-# Pago por transferencia con comprobante (F4, API v2)
+# Pago por transferencia con comprobante (API v2)
 
 Cuando un cliente elige pagar por transferencia, ve los datos bancarios de la distribuidora, transfiere
 y sube el comprobante desde la app. El admin lo ve en el pedido y recién ahí confirma que el pago

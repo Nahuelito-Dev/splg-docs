@@ -1,4 +1,4 @@
-# PDFs generados por el back (F2, API v2)
+# PDFs generados por el back (API v2)
 
 El back arma los documentos en PDF con el membrete de la distribuidora (logo, razón social, CUIT y
 contacto), con pie de página numerado. Sólo existen en la v2.

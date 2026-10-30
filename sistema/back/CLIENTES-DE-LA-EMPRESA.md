@@ -1,4 +1,4 @@
-# Clientes de la empresa: alta, baja y reactivación (F5, API v2)
+# Clientes de la empresa: alta, baja y reactivación (API v2)
 
 Un cliente es de la plataforma (su cuenta se crea una vez) y puede comprarle a más de una
 distribuidora. Cada distribuidora maneja **su vínculo** con el cliente: lo da de alta, lo da de baja o lo

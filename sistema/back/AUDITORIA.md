@@ -28,7 +28,7 @@ Tablas (nombres de la cátedra entre paréntesis):
   (campo, nombre de la propiedad de la entidad), `old_value` (valorAnterior),
   `new_value` (valorNuevo).
 
-### Cómo se captura (F25: triggers en la base)
+### Cómo se captura (triggers en la base)
 
 La auditoría de datos la escribe **la base de datos**, no la aplicación. Cada tabla de `public` (74, todas
 menos las de «Qué no se audita») tiene el trigger `TRG_auditoria` (`AFTER INSERT OR UPDATE OR DELETE FOR
@@ -52,7 +52,7 @@ la API, un cron, un script o alguien con SQL directo. Migración: `1793700000000
   envuelven en una transacción para que también lleven el actor. El valor es local a la transacción: no
   pasa de un request a otro por el pool de conexiones.
 - **Columnas nuevas de `audit`:** `source` (quién escribió el asiento: `db` = el trigger; `app` = asientos
-  de la aplicación, como las sesiones o los anteriores a F25), `table_name` (tabla física), `db_user`
+  de la aplicación, como las sesiones o los anteriores al 28/10/2026), `table_name` (tabla física), `db_user`
   (usuario de Postgres) y `app_name` (`application_name` de la conexión). Un cambio por SQL directo queda
   con `user_id` null y el usuario de la base que lo hizo.
 - **Valores en texto:** fechas ISO, números y decimales como texto, booleanos `true`/`false`, jsonb y
@@ -103,7 +103,7 @@ renglón `stock_adjustment_item`, que cubre la cabecera del ajuste), el carrito
 
 ### API (admin y super admin)
 
-**v2 (la que usa el panel desde F25):** `GET /api/v2/audit/entries`, `GET /api/v2/audit/entries/:id` y
+**v2 (la que usa el panel desde el 30/10/2026):** `GET /api/v2/audit/entries`, `GET /api/v2/audit/entries/:id` y
 `GET /api/v2/audit/action-types`. Mismos filtros y respuesta que la v1, más:
 
 - filtro `origin`: `user` (lo hizo un usuario), `system` (automático: crons, webhooks, ingresos fallidos, sin
@@ -138,4 +138,4 @@ El admin de empresa ve sólo su distribuidora. El super admin ve todo, o la que
 elige con `X-Distributor`. Los registros sin distribuidora (por ejemplo, roles)
 sólo los ve el super admin.
 
-La auditoría arranca con la migración `AuditoriaDeDatos`: no hay historia previa. Lo anterior a F25 (28/10/2026) lo escribió la aplicación (`source = app`).
+La auditoría arranca con la migración `AuditoriaDeDatos`: no hay historia previa. Lo anterior al 28/10/2026 lo escribió la aplicación (`source = app`).

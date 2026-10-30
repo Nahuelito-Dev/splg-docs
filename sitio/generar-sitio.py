@@ -573,17 +573,9 @@ datos["paginas"] = {
     "versionado": {"titulo": "Versionado automatico", "html": cuerpo_de("versionado.html")},
 }
 
-# Features nuevas de la v2: sólo existe desde la v2; las versiones congeladas
-# anteriores se arman sin la página ni su entrada en el menú.
-_features = D + "FEATURES-NEW.md"
+# FEATURES-NEW.md es el seguimiento interno del equipo (estado y avance de cada F): no va al sitio de la
+# cátedra. Las novedades de la v2 se cuentan en su propia página (F20).
 NAV_FEATURES_ARRIBA = NAV_FEATURES_LADO = ""
-if os.path.exists(_features):
-    datos["paginas"]["features"] = {"titulo": "Features nuevas de la v2",
-                                    "html": md2html(open(_features, encoding="utf-8").read())["html"]}
-    NAV_FEATURES_ARRIBA = '<a class="menu-link" href="#features" data-nav-hash="features">Features v2</a>'
-    NAV_FEATURES_LADO = ('<div class="grupo-menu"><p class="rotulo-grupo">Versión 2</p>'
-                         '<button type="button" class="seccion" data-pag="features">'
-                         '<span class="nombre">Features nuevas de la v2</span></button></div>')
 
 marcas = {a: marca_de(a) for a in ("visor.js", "visor.css")}
 

@@ -1,4 +1,4 @@
-# Exportes completos (F1, API v2)
+# Exportes completos (API v2)
 
 Cualquier listado del panel se puede bajar entero en CSV o en Excel: todas las filas que cumplen los
 filtros activos, no sólo la página que se ve.

@@ -1,4 +1,4 @@
-# Adjuntos (F6)
+# Adjuntos
 
 Adjuntos genéricos de cualquier registro del sistema: el archivo vive en S3 y se lee sólo con URL
 firmada que vence; en la base queda la referencia (dueño, etiqueta, nombre, tipo, tamaño y quién lo
