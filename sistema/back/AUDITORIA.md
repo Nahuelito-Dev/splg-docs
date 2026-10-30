@@ -13,6 +13,11 @@ trigger de la base rechaza `UPDATE` y `DELETE`).
 | Ve los rechazos     | Sí (`result = failure`)                             | No: sólo hay auditoría si el cambio se confirmó                                                        |
 | Fuera de un request | No (depende del request)                            | Sí, con usuario null: crons, scripts y también SQL escrito a mano                                      |
 
+En la bitácora de operaciones, `resource` es el primer segmento de la ruta después de `/api/` y de la
+versión (`/api/v2/insurance-policies/:id` → `insurance-policies`). Los asientos anteriores al 30/10/2026 de
+las rutas versionadas quedaron con `v1` o `v2` como recurso (la bitácora no se modifica); su `path` sí
+tiene la ruta completa.
+
 ## Auditoría de datos
 
 Tablas (nombres de la cátedra entre paréntesis):
