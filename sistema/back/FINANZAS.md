@@ -343,3 +343,31 @@ Diferencias que encuentra y qué asienta «Aplicar» (en la caja de Mercado Pago
   `development` o `test`) y `MP_REPORTS_FAKE_CSV`.
 - Migraciones `1794200000000`–`1794200000002` (corridas, diferencias, categorías y auditoría) y
   `1794300000000-ConciliacionMpRonda2`.
+
+## Ingresos y egresos (API v2)
+
+Con todo pasando por el libro de Caja (ventas, gastos, seguros, multas, flota, compras, comisiones, Mercado Pago), el
+estado de ingresos y egresos muestra cuánto entró, cuánto salió y en qué. En el panel: Finanzas → «Ingresos y egresos».
+
+`GET /api/v2/finance/income-statement?from&to&groupBy=day|week|month&cashBoxId?` (días argentinos, hasta 366) →
+`{ totals: { income, expense, net }, byCategory, byPeriod, byCashBox, initialLoad: { amount, count } }`. Exporte
+server-side `income-statement` (CSV y Excel) con las mismas reglas. Admin y super admin (`X-Distributor`); una caja de
+otra distribuidora, 404.
+
+Qué cuenta (las reglas viven en un solo lugar, `src/cash/application/income-statement-rules.ts`, que comparten el
+reporte, el exporte y el filtro de movimientos):
+
+- **Las transferencias entre cajas no son ingreso ni egreso** (ni sus dos patas ni sus anulaciones); tampoco los
+  retiros de la billetera de Mercado Pago al banco. Su comisión sí es un egreso.
+- **Sobrantes y faltantes de arqueo cuentan**, tanto el ajuste al abrir una sesión como el arqueo al cerrarla: una caja
+  que empieza y termina el período en el mismo saldo da neto 0.
+- **La carga inicial** de una caja (la apertura de su primera sesión, sin movimientos previos) no es ingreso: va aparte
+  en `initialLoad`.
+- **Un contraasiento** cuenta en su propio período con el signo opuesto, dentro de la categoría de su original: un mes
+  ya consultado no cambia y el neto del período es la variación de saldo de las cajas (más la carga inicial).
+- Las tres vistas (por categoría, por período, por caja) salen de la misma foto de la base (`REPEATABLE READ`) y suman
+  lo mismo. El primer período de una agrupación semanal o mensual empieza en `from`.
+
+`GET /api/v2/cash-movements?countsForResult=true` (y el exporte `movimientos-caja`) lista sólo los movimientos que
+cuentan para este estado: es lo que abre el panel desde cada categoría. El resultado es de **caja** (flujo de fondos),
+no una ganancia contable: el panel lo muestra como «Resultado de caja», con superávit o déficit.
