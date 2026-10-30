@@ -34,6 +34,11 @@ el despacho).
 | `fleet_document_due` | Un vencimiento de flota o de personal entró en su anticipación (la VTV, 30 días antes) | la tarea | el resumen diario |
 | `fleet_document_expired` | Ese vencimiento ya pasó (aunque se haya avisado antes como «por vencer») | la tarea | el resumen diario |
 | `employee_document_missing` | A un chofer activo le falta cargar un documento que bloquea el despacho (uno por documento y por mes mientras falte) | la pestaña Documentación del legajo | el resumen diario |
+| `insurance_installment_due` | Una cuota del seguro vence en 5 días o menos | el seguro del vehículo | sí |
+| `insurance_installment_overdue` | Una cuota del seguro pasó su gracia sin pagar | el seguro del vehículo | sí |
+| `insurance_policy_expiring` | La póliza vence en 30 días o menos y no hay otra que la reemplace | el seguro del vehículo | sí |
+| `traffic_fine_due` | Una multa pendiente vence en 5 días o menos | la multa | sí |
+| `traffic_fine_overdue` | Una multa pendiente venció sin pagar (hasta 30 días después) | la multa | sí |
 
 Los vencimientos los arma el aviso diario de flota (`FleetAlertsCron`, a la hora que eligió
 cada distribuidora): además de su **mail resumen** de siempre, deja cada vencimiento y cada documento
@@ -43,8 +48,8 @@ Si se reprograma la fecha, la nueva vuelve a avisar. Antes, una tarea avisada co
 volvía a avisar cuando vencía. La marca de «avisado por mail» (`alertedAt`) se sigue escribiendo
 sólo en su columna (`update`). Con `save`, una tarea que el admin cerró mientras salía el mail
 volvería a los valores leídos antes. Esa marca técnica está fuera de la auditoría de datos a
-propósito. Los avisos con mail propio llegan con los seguros y las multas
-(multas). Los movimientos comunes del pedido (creado, aceptado, en camino, entregado) siguen sólo en
+propósito. Los seguros (`SEGUROS.md`) y las multas (`FLOTA-AMPLIADA.md`) avisan por la bandeja
+con su propio mail, uno por aviso. Los movimientos comunes del pedido (creado, aceptado, en camino, entregado) siguen sólo en
 vivo: no se guardan, para no llenar la bandeja.
 
 ## API (v2)

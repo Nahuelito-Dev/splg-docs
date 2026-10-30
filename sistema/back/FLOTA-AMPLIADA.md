@@ -93,7 +93,7 @@ Cambios compartidos de `fleet`: las tareas ganan `validFrom` y se pueden crear y
 | `GET /fleet/fines?carId&employeeId&status&from&to` | Lista (por fecha de la infracción), con `total`       |
 | `GET /fleet/fines/:id`                           | Una multa                                               |
 | `PATCH /fleet/fines/:id`                         | Modifica; `appeal: true` la pasa a `appealed`           |
-| `PATCH /fleet/fines/:id/pay`                     | `paidAt` (no futura) y `paidAmount` > 0 → `paid`; con `paidInCash` y `cashBoxId` sale de una caja |
+| `PATCH /fleet/fines/:id/pay`                     | `paidAt` (no futura) y `paidAmount` > 0 → `paid`; con `paidInCash` y `cashBoxId` sale de una caja de efectivo. La v2 paga con comprobante y desde cualquier caja (abajo) |
 | `PATCH /fleet/fines/:id/charge-to-employee`      | Imputa al chofer (`chargedToEmployee`)                  |
 | `PATCH /fleet/fines/:id/void`                    | `reason` obligatorio → `voided`                         |
 
@@ -110,14 +110,39 @@ Ciclo: `pending` → `appealed` → `paid` o `voided`; pagada y anulada no vuelv
 - Dos pagos simultáneos: uno gana, el otro **409** (la transición toma el lock de la fila).
 - La copia del acta va con los adjuntos genéricos: `/attachments/traffic_fine/:id`.
 
-**Aviso de vencimiento (CU-326).** Todos los días a las 8 (hora argentina) `FineDueAlertsCron` junta
-las multas `pending` con `dueDate` en 7 días o menos (o vencidas) y sin `alertedAt`, manda un correo
-a los administradores de cada distribuidora y marca `alertedAt`. El envío es **por destinatario**
-(`allSettled`): uno que falla no frena a los demás y se registra; si salió al menos uno se marca, y
-si no salió ninguno no se marca y se reintenta al día siguiente. El texto cargado por personas
-(acta, jurisdicción, patente) se escapa en el correo. Cambiar `dueDate` limpia la marca. Una
-`appealed` no se avisa a propósito: el CUE habla de multas «pendientes» y una apelada está en
-discusión; si la apelación se rechaza, se corrige la fecha de vencimiento y vuelve a entrar.
+### Pago por enlace con comprobante (API v2)
+
+La distribuidora paga la multa afuera (portal del municipio, Mercado Pago o Pago Fácil) y registra el pago con el
+comprobante, igual que la cuota del seguro (`SEGUROS.md`). El pago es un **egreso de Caja** desde efectivo, banco o
+billetera.
+
+| Método y ruta (`/api/v2`)                    | Qué hace                                                                |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| `POST /traffic-fines`, `PATCH /traffic-fines/:id` | Alta y edición con, además, `paymentUrl` (https) y `paymentCode`   |
+| `GET /traffic-fines`, `GET /traffic-fines/:id` | Lo mismo que la v1 más `paymentUrl`, `paymentCode`, `operationNumber` y `receiptAttachmentId` |
+| `POST /traffic-fines/:id/receipt`            | Sube el comprobante (multipart `file`: PDF, JPG, PNG o WEBP, 10 MB) y lo escanea en el mismo pedido → `{ attachmentId, scan: { available, data } }` |
+| `POST /traffic-fines/:id/pay`                | `{ attachmentId, paidAt, amount, operationNumber?, cashBoxId }` con `Idempotency-Key` → la multa paga y el egreso |
+
+- **Comprobante:** es un adjunto de dueño propio (`traffic_fine_payment`), distinto de la copia del acta
+  (`traffic_fine`). Sólo se sube por `/receipt` y no se puede subir ni borrar por `/attachments`. El pago acepta sólo
+  un comprobante de **esa** multa: con la copia del acta, otro adjunto o uno de otra multa, **400**.
+- **Escaneo:** con el lector de comprobantes (`ReceiptReaderPort`); el importe esperado es el del pago voluntario si
+  todavía vale (sin vencimiento o no vencido) y si no el total. Un escaneo que falla no corta la subida
+  (`available: false`, los datos se cargan a mano).
+- **Pago:** en una transacción con el lock de la multa. Sólo `pending` o `appealed` (pagada o anulada, **409**).
+  `amount` no supera el importe de la multa; `paidAt` no puede ser futuro (**400**). La caja es obligatoria: efectivo
+  (con su sesión abierta y saldo), banco o billetera. El egreso va con la categoría «Multas» (`traffic_fine`) y la
+  descripción «Multa <acta> — <jurisdicción> (<patente>)». Otra distribuidora, **404**. La misma `Idempotency-Key`
+  no paga dos veces.
+- Las multas pagadas por la v1 (`PATCH /fleet/fines/:id/pay`) siguen siendo válidas sin comprobante.
+
+**Aviso de vencimiento (CU-326).** A la hora del aviso de flota de cada distribuidora, `FineDueAlertsCron` avisa por
+la **bandeja del admin, con mail** (`BANDEJA-ADMIN.md`): `traffic_fine_due` cuando una multa `pending` vence en 5 días
+o menos (con el importe del pago voluntario si todavía vale) y `traffic_fine_overdue` cuando ya venció sin pagar
+(hasta 30 días después de vencida). Cada aviso sale una vez por multa y vencimiento: si se corrige la fecha, se
+vuelve a avisar. Las multas que ya había avisado el correo anterior (`alertedAt`) no se repiten. Una `appealed` no se
+avisa: está en discusión; si la apelación se rechaza, se corrige el vencimiento y vuelve a entrar. El aviso abre la
+multa en el panel (`/fleet/fines?fine=<id>`), con **Pagar** (el enlace) y **Registrar pago**.
 
 ## Siniestros (CU-201, CU-202, CU-327, CU-328)
 

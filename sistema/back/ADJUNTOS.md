@@ -15,9 +15,13 @@ subió).
 
 ## Dueños
 
-`employee`, `fuel_load`, `traffic_fine`, `vehicle_accident`, `purchase_receipt`, `stock_adjustment`,
+`employee`, `fuel_load`, `traffic_fine` (copia del acta), `vehicle_accident`, `purchase_receipt`, `stock_adjustment`,
 `driver_settlement`, `cash_movement`, `customer_account_entry` y `order`. Cada dueño tiene su resolver
 que comprueba que el registro existe y es de la distribuidora (otra empresa responde 404).
+
+Los comprobantes de pago tienen dueño propio y **no** pasan por estos endpoints (ni se suben ni se borran por acá):
+`insurance_installment` (cuota del seguro, `SEGUROS.md`) y `traffic_fine_payment` (pago de una multa,
+`FLOTA-AMPLIADA.md`). Se suben por el `/receipt` de su módulo y quedan atados al pago.
 
 ## Tipos y tamaños
 

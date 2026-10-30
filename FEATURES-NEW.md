@@ -36,7 +36,7 @@ documentación.
 | F12 | Lector de comprobantes y documentos con IA (Claude): lee PDF y fotos y el admin confirma los datos | 🟡 En desarrollo | 40 % | Lector hecho en el back; falta la clave de la API y la prueba con un comprobante real |
 | F13 | Documentos del vehículo: al subir el PDF se leen las fechas de vencimiento, la aseguradora y la póliza. Foto de la patente: se guarda aparte y se lee para avisar si no coincide con la cargada | ⚪ Pendiente | 0 % | Necesita F12. La patente hoy es sólo texto (validada y única por distribuidora) |
 | F14 | Seguros: aseguradoras, póliza por vehículo, cuotas mensuales, pago por el link de la aseguradora, comprobante, egreso en Caja y recibo en la ficha del vehículo. Avisos: cuota 5 días y póliza 30 días antes | 🟢 Hecho y testeado | 95 % | Back y panel en `develop`, probado de punta a punta. El comprobante se escanea solo al subirlo; falta probar el escaneo real cuando la API tenga crédito (F12). Ver `sistema/back/SEGUROS.md` |
-| F15 | Multas: pago por link, comprobante leído, egreso en Caja y aviso en la bandeja | ⚪ Pendiente | 0 % | Necesita F10 y F12 |
+| F15 | Multas: pago por link, comprobante leído, egreso en Caja y aviso en la bandeja | 🟢 Hecho y testeado | 100 % | Back 4df559f (`/api/v2/traffic-fines`: enlace y código de pago, comprobante de dueño propio escaneado al subirlo, pago con egreso desde efectivo/banco/billetera, avisos por la bandeja con mail), panel 56daa82 (Pagar y Registrar pago en la multa y en la ficha del vehículo). Probado contra la API y en Chrome. Escaneo real pendiente del crédito de la API de Claude |
 | F16 | M2 — Flota predictiva | ⚪ Pendiente | 0 % | |
 | F17 | M3 — Recompra | ⚪ Pendiente | 0 % | |
 | F18 | M4 — Agrupación por recorrido | ⚪ Pendiente | 0 % | |
