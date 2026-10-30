@@ -266,3 +266,39 @@ Migraciones `1793900000000-GastosDeFlotaEnumsDeCaja`, `1793900000001-GastosDeFlo
 `maintenance_task`, `tire`, `vehicle_accident`, `fuel_load` y `purchase_receipt`, con FK compuestas con la distribuidora y
 CHECK de pago completo o ausente; las cuatro categorías de sistema nuevas, sembradas en todas las distribuidoras) y
 `1793900000002-AuditoriaDeGastosDeFlota` (mapa de auditoría).
+
+## Lo que se cobra por las ventas entra a su caja (API v2)
+
+Además del efectivo (rendición del chofer, cobro del admin) y la cuenta corriente, que ya entraban a caja, ahora entran
+los cobros de **Mercado Pago**, las **transferencias** y las **señas** de reservas.
+
+**Cajas de cobro** (por distribuidora): `GET/PATCH /api/v2/cash-settings` `{ mercadoPagoCashBoxId?, transferCashBoxId? }`.
+Mercado Pago entra a una caja `wallet` y las transferencias a una `bank`, de la distribuidora y activas (400 si la clase no
+corresponde o está inactiva, 404 si es de otra empresa; `null` la quita). Elegir una caja no asienta nada hacia atrás.
+Una caja configurada como caja de cobro no se puede desactivar (409: hay que cambiarla primero). En el panel:
+Finanzas → «Cajas de cobro».
+
+| Cobro | Cuándo | Movimiento |
+| --- | --- | --- |
+| Pago de Mercado Pago aprobado (también la seña de una reserva) | En la misma transacción en que el pago pasa a aprobado (webhook) | ingreso `order_payment` (método Mercado Pago) por lo que MP cobró, y egreso «Comisiones de Mercado Pago» (`mercadopago_fee`) por su comisión: el saldo de la billetera es el neto |
+| Devolución propia (`RefundsService`) | Al cerrarse con éxito | egreso «Devoluciones a clientes» (`customer_refund`) desde la caja donde entró el cobro, nunca más que lo ingresado |
+| Devolución desde la cuenta de Mercado Pago o contracargo | Cuando el webhook informa lo devuelto | egreso `customer_refund` por la diferencia con lo ya egresado («Contracargo» / «Devolución desde Mercado Pago») |
+| Transferencia confirmada (`confirmTransfer`) | Al confirmarla | ingreso `order_payment` (método transferencia) por el saldo (total menos la seña ya paga) |
+| Seña de reserva por transferencia o efectivo | Al confirmarla: `PATCH /api/v2/orders/:id/confirm-deposit { cashBoxId? }` | ingreso a la caja de transferencias, o a la caja de efectivo elegida (con su sesión) |
+
+- **Nunca se frena un cobro:** sin caja configurada, o si la caja lo rechaza (inactiva, efectivo sin sesión abierta), el
+  cobro se confirma igual y queda **«sin asentar»**, con un aviso a la bandeja (`sales_cash_unsettled`, uno por día).
+- **Cobros sin asentar:** `GET /api/v2/cash-settings/pending?from=` los cuenta (cobros, señas, devoluciones sin su
+  egreso) y `POST /api/v2/cash-settings/settle-pending { from }` los asienta, uno por transacción e idempotente (`from`
+  hasta 365 días atrás). Para un pago viejo sin el importe cobrado guardado, consulta el pago a Mercado Pago; si no
+  responde, lo asienta por el importe del pedido «(sin comisión informada)» y la comisión se asienta después, aparte. Si
+  la distribuidora ya cargaba esos cobros a mano, asentar hacia atrás los duplica: el panel lo advierte.
+- **Nada se cuenta dos veces:** cada asiento tiene referencia única (`UQ_cash_movement_cobro_de_venta` sobre `payment`,
+  `payment_fee`, `payment_refund`, `order_transfer`), los webhooks repetidos o simultáneos toman el lock del pago y el
+  efectivo sigue por su camino (rendición o cobro del admin).
+- **Autor:** las devoluciones quedan a nombre de quien las pidió; lo que asienta el sistema solo (webhook, cobro tardío)
+  queda sin usuario y el panel lo muestra como «Sistema» (un CHECK sólo lo permite en esos orígenes).
+- `GET /api/v2/orders/:id/cash-settlement` dice, por cobro del pedido, si entró y a qué caja; `GET /api/v2/cash-movements`
+  es el listado de movimientos con el pedido del que nace cada cobro (`orderId`). La v1 de movimientos no cambia.
+- Pendiente para la conciliación con Mercado Pago: si MP reintegra la comisión en una devolución total, hoy la comisión
+  queda como egreso.
