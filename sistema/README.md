@@ -15,6 +15,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/TIEMPO-REAL.md` | Sockets: salas, sesión (vencida y acceso revocado), origen y eventos por namespace |
 | `back/BANDEJA-ADMIN.md` | Bandeja de notificaciones del admin: avisos guardados, en vivo y por mail; API v2 y panel |
 | `back/SEGUROS.md` | Seguros de los vehículos: aseguradoras, póliza y cuotas, pago con egreso en Caja, Flota y avisos |
+| `back/PLANIFICADOR-FLOTA.md` | Planificador de taller (M2, CU-105): uso real, pronóstico, ventanas propuestas al chofer, cobertura de zona y escalamiento |
 | `back/AUDITORIA.md` | Auditoría |
 | `back/CARRITO-Y-CONSUMO.md` | Carrito persistente y consumo declarado (C-12 y C-13) |
 | `back/CATALOGO.md` | Productos dados de baja y reactivación |
