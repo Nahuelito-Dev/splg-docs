@@ -8,17 +8,18 @@ trigger de la base rechaza `UPDATE` y `DELETE`).
 | Caso de uso         | CU-152 / CU-153                                     | Modelo de la cátedra                                                                                   |
 | Qué registra        | Cada request HTTP de escritura, exitoso o rechazado | Cada registro de una entidad de negocio que se dio de alta, se modificó, se dio de baja o se reactivó  |
 | Granularidad        | Una fila por request, con el cuerpo en `changes`    | Una `audit` por registro afectado y un `audit_detail` por campo que cambió, con valor anterior y nuevo |
-| Quién la escribe    | `AuditInterceptor` (global)                         | `DataAuditSubscriber` (global, TypeORM), en la misma transacción del cambio                            |
+| Quién la escribe    | `AuditInterceptor` (global)                         | La base: trigger `TRG_auditoria` en cada tabla, en la misma transacción del cambio                     |
 | Consulta            | `GET /audit`                                        | `GET /audit/entries`, `GET /audit/entries/:id`, `GET /audit/action-types`                              |
 | Ve los rechazos     | Sí (`result = failure`)                             | No: sólo hay auditoría si el cambio se confirmó                                                        |
-| Fuera de un request | No (depende del request)                            | Sí, con usuario null (crons, seeds, webhooks sin usuario)                                              |
+| Fuera de un request | No (depende del request)                            | Sí, con usuario null: crons, scripts y también SQL escrito a mano                                      |
 
 ## Auditoría de datos
 
 Tablas (nombres de la cátedra entre paréntesis):
 
 - `audit_action_type` (TipoAccionAuditoria): `action_type_id`, `name`. Fija: 1 Alta,
-  2 Modificación, 3 Baja lógica, 4 Reactivación, 5 Baja física (`AuditActionTypeId`).
+  2 Modificación, 3 Baja lógica, 4 Reactivación, 5 Baja física, 6 Ingreso, 7 Ingreso fallido, 8 Salida
+  (`AuditActionTypeId`).
 - `audit` (Auditoria): `audit_id`, `action_type_id`, `user_id` (idUsuario, null =
   sistema), `distributor_id` (tenant), `entity` (entidadAfectada, nombre de la
   entidad de dominio: `Order`, `Car`...), `record_id` (idRegistro, también en
@@ -27,34 +28,62 @@ Tablas (nombres de la cátedra entre paréntesis):
   (campo, nombre de la propiedad de la entidad), `old_value` (valorAnterior),
   `new_value` (valorNuevo).
 
-### Cómo se captura
+### Cómo se captura (F25: triggers en la base)
 
-`DataAuditSubscriber` escucha `afterInsert`, `afterUpdate`, `afterSoftRemove` y
-`afterRecover` de todas las entidades y escribe con el `manager` del evento: si
-la transacción hace rollback, la auditoría también. Usuario, IP y distribuidora
-del request llegan por `AsyncLocalStorage` (`AuditContextInterceptor`, que corre
-después de los guards).
+La auditoría de datos la escribe **la base de datos**, no la aplicación. Cada tabla de `public` (74, todas
+menos las de «Qué no se audita») tiene el trigger `TRG_auditoria` (`AFTER INSERT OR UPDATE OR DELETE FOR
+EACH ROW`), que llama a la función plpgsql `auditoria_trigger()`. Así queda registrado todo cambio, lo haga
+la API, un cron, un script o alguien con SQL directo. Migración: `1793700000000-AuditoriaPorTriggers`.
 
-- Alta: un detalle por campo con valor (anterior null).
-- Modificación: un detalle por columna realmente cambiada. Si no cambió nada, no
-  se escribe nada.
-- Baja lógica y reactivación: detalle del campo `deletedAt`.
-- Valores en texto: fechas ISO, números y decimales como string, booleanos
-  `true`/`false`, jsonb y puntos como JSON, relaciones por su id.
-- Secretos (contraseñas, hashes, tokens FCM, claves, `deliveryCode`): el campo
-  se registra con `[oculto]`. DNI, CUIL y CBU sí se auditan.
-- `createdAt`/`updatedAt` no se registran (son de sistema).
-- Baja física (`afterRemove`): si algo se borra de verdad con `remove`, queda una
-  Auditoria tipo 5 con los valores que tenía (anterior = valor, nuevo = null).
-  La regla sigue siendo que nada se borra físicamente: esto es la red de
-  seguridad. Las promociones de una garrafa que salen de la lista se dan de baja
-  (`deletedAt`), no se borran.
-- Un insert/upsert por query builder que llega sin id no escribe una Auditoria
-  con `record_id` vacío: se loguea un warn y se omite.
-- Distribuidora de la auditoría: la columna propia del registro; las entidades de
-  una distribuidora sin columna (renglón de pedido, promoción...) toman la del
-  request; las de la persona o globales (User, Customer, UserAddress, Role)
-  quedan sin distribuidora y sólo las ve el super admin.
+- **INSERT** → Alta: un detalle por campo con valor (anterior null).
+- **UPDATE** → Modificación, con un detalle por columna que cambió de verdad (un UPDATE sin cambios no
+  escribe nada). Si la columna que cambió es la de baja lógica (`deletedAt` y equivalentes) es **Baja
+  lógica** o **Reactivación**. Ejemplo pedido por la cátedra: un chofer que pasa de un tipo a otro deja una
+  Modificación con el campo, el valor anterior y el nuevo.
+- **DELETE** → Baja física, con los valores que tenía (red de seguridad: la regla sigue siendo que nada se
+  borra físicamente).
+- **Nombres:** `entity` y `field` siguen siendo los del dominio (`Warehouse`, `deletedAt`), no los de la
+  tabla: el trigger los traduce con `audit_entity_map` (tabla → entidad) y `audit_field_map` (tabla +
+  columna → propiedad). Los mapas se generan de la metadata de TypeORM con `npm run auditoria:mapa`, y un
+  test falla si una entidad nueva no tiene trigger o falta en el mapa.
+- **Quién lo hizo:** la API le pasa a la base el usuario, la IP y la distribuidora del request con
+  `set_config('splg.user_id' | 'splg.ip' | 'splg.distributor_id', …, true)` al empezar cada transacción
+  (`src/audit/data/actor-en-la-base.ts`). Las escrituras sueltas (`update()`, `insert()`, query builders) se
+  envuelven en una transacción para que también lleven el actor. El valor es local a la transacción: no
+  pasa de un request a otro por el pool de conexiones.
+- **Columnas nuevas de `audit`:** `source` (quién escribió el asiento: `db` = el trigger; `app` = asientos
+  de la aplicación, como las sesiones o los anteriores a F25), `table_name` (tabla física), `db_user`
+  (usuario de Postgres) y `app_name` (`application_name` de la conexión). Un cambio por SQL directo queda
+  con `user_id` null y el usuario de la base que lo hizo.
+- **Valores en texto:** fechas ISO, números y decimales como texto, booleanos `true`/`false`, jsonb y
+  puntos como JSON, relaciones por su id. Secretos (contraseñas, hashes, tokens FCM, claves,
+  `deliveryCode`) se guardan como `[oculto]`. `createdAt`/`updatedAt` no se registran.
+- **Distribuidora del asiento:** la columna propia del registro; si no la tiene, la del request; las de la
+  persona o globales (User, Customer, UserAddress, Role) quedan sin distribuidora y sólo las ve el super
+  admin.
+- **Rendimiento:** ~0,3 ms extra por fila escrita.
+
+### Sesiones (Ingreso, Ingreso fallido, Salida)
+
+`audit_action_type` suma 6 Ingreso, 7 Ingreso fallido y 8 Salida, con entidad `Sesion`. Cada ingreso al
+panel o a las apps (`POST /auth/login`, `/auth/login/dashboard`), correcto o no, deja un asiento con el
+email, la IP, el canal y el origen (`X-Client-Source`); el fallido, además, el motivo. Nunca se guardan
+contraseñas ni tokens.
+
+### Inmutabilidad
+
+Los triggers `audit_inmutable` rechazan todo `UPDATE` o `DELETE` sobre `audit` y `audit_detail`, y otro
+`BEFORE TRUNCATE` rechaza vaciarlas (también en cascada): la auditoría no se corrige ni se borra, ni siquiera
+por SQL.
+
+### Mantenimiento: el seed de la demo
+
+Re-sembrar la demo borra y vuelve a crear miles de filas. Para no llenar la auditoría de asientos «sistema», el
+seed conecta con `splg.audit_off = on`. El trigger lo respeta **sólo** si el usuario de la base que escribe es
+miembro del rol `splg_mantenimiento` (un superusuario lo es); cualquier otra conexión que lo intente queda
+auditada igual. Por eso, en producción la API se conecta con un usuario de la base que **no** es superusuario
+ni miembro de ese rol. Cada proceso se identifica con su `application_name`: `splg-api`, `splg-script:<archivo>`
+o `splg-migraciones`.
 
 Los depósitos (`Warehouse`) quedan auditados con el resto: alta, edición (incluido el cambio del
 predeterminado, que son dos asientos) y baja lógica; `GET /audit/entries?entity=Warehouse&recordId=` devuelve
@@ -72,15 +101,19 @@ renglón `stock_adjustment_item`, que cubre la cabecera del ajuste), el carrito
 (`cart`, `cart_item`), la posición del chofer (`Delivery.location` y
 `actualLocation`) y la marca `MaintenanceTask.alertedAt`.
 
-### Lo que el subscriber no ve
-
-TypeORM no anuncia `update()`, `softDelete()`, `delete()` ni los query builders.
-Para una entidad de negocio se escribe con `save`/`softRemove` sobre la entidad
-cargada, o se llama a `AuditoriaDeDatos.registrar(manager, ...)` en la misma
-transacción. El borrado físico con `remove` sí queda (Baja física, tipo 5, vía
-`afterRemove`); `delete()` y los query builders no.
-
 ### API (admin y super admin)
+
+**v2 (la que usa el panel desde F25):** `GET /api/v2/audit/entries`, `GET /api/v2/audit/entries/:id` y
+`GET /api/v2/audit/action-types`. Mismos filtros y respuesta que la v1, más:
+
+- filtro `origin`: `user` (lo hizo un usuario), `system` (automático: crons, webhooks, ingresos fallidos, sin
+  usuario y desde la API) o `direct` (sin usuario y desde otra aplicación: SQL a mano o scripts);
+- en cada entrada, `origin`, `source`, `tableName`, `dbUser` y `appName`.
+
+El exporte (`GET /api/v2/exports/auditoria-datos?format=csv|xlsx`) acepta los mismos filtros, `origin`
+incluido, y suma las columnas Origen, Escrito por, Tabla, Usuario de la base y Aplicación.
+
+**v1 (congelada):**
 
 - `GET /audit/entries?entity&recordId&orderId&userId&actionType&from&to&page&limit` →
   `{ data, total }`. Cada entrada: `auditId`, `actionType {id, name}`,
@@ -105,4 +138,4 @@ El admin de empresa ve sólo su distribuidora. El super admin ve todo, o la que
 elige con `X-Distributor`. Los registros sin distribuidora (por ejemplo, roles)
 sólo los ve el super admin.
 
-La auditoría arranca con la migración `AuditoriaDeDatos`: no hay historia previa.
+La auditoría arranca con la migración `AuditoriaDeDatos`: no hay historia previa. Lo anterior a F25 (28/10/2026) lo escribió la aplicación (`source = app`).
