@@ -300,5 +300,46 @@ Finanzas → «Cajas de cobro».
   queda sin usuario y el panel lo muestra como «Sistema» (un CHECK sólo lo permite en esos orígenes).
 - `GET /api/v2/orders/:id/cash-settlement` dice, por cobro del pedido, si entró y a qué caja; `GET /api/v2/cash-movements`
   es el listado de movimientos con el pedido del que nace cada cobro (`orderId`). La v1 de movimientos no cambia.
-- Pendiente para la conciliación con Mercado Pago: si MP reintegra la comisión en una devolución total, hoy la comisión
-  queda como egreso.
+- Si Mercado Pago reintegra la comisión en una devolución total, lo detecta la conciliación (abajo) como «Reintegro de
+  Mercado Pago».
+
+## Conciliación de la caja de Mercado Pago (API v2)
+
+Mercado Pago no entrega un comprobante por pago, pero sí el **reporte de liberaciones** de la cuenta: cada movimiento con
+su bruto, comisión, impuestos, neto y los retiros. Con ese reporte se concilia la caja «Mercado Pago» contra la realidad,
+y el CSV queda guardado como comprobante de los egresos de Mercado Pago. En el panel: Finanzas → «Conciliación MP».
+
+| Endpoint (`/api/v2/mercadopago/reconciliations`) | Qué hace |
+| --- | --- |
+| `POST` `{ from, to }` (`Idempotency-Key`) | Crea la corrida (días argentinos, hasta 31, sin futuro) y le pide el reporte a Mercado Pago. 409 si ya hay una corrida pendiente para ese rango |
+| `GET`, `GET /:id` | Lista y detalle con las diferencias. Una corrida `requested` se vuelve a consultar sola (cron cada 2 minutos) y su `statusNote` dice en qué está («Mercado Pago todavía no generó el reporte…»); a las 24 h sin reporte queda `failed` con el motivo |
+| `POST /:id/apply` `{ items: [{ itemId, cashBoxId? }], distributorId? }` (`Idempotency-Key`) | Asienta los ajustes elegidos, cada uno una sola vez. **Nada se asienta solo** |
+| `GET /:id/report` | Enlace firmado al CSV: la distribuidora baja el filtrado a sus cobros; el super admin, el completo |
+
+Diferencias que encuentra y qué asienta «Aplicar» (en la caja de Mercado Pago):
+
+| Diferencia | Asienta |
+| --- | --- |
+| Cobro de MP que no entró a la caja | el ingreso y su comisión, con el bruto y la comisión del reporte |
+| Comisión pendiente («sin comisión informada») o distinta de la asentada | egreso «Comisiones de Mercado Pago» o ingreso «Reintegros de Mercado Pago» por la diferencia; si comisión e impuestos difieren a la vez, es una sola diferencia |
+| Impuestos y retenciones de un cobro | egreso «Impuestos y retenciones» (`taxes_withholdings`) |
+| Devolución o contracargo sin egreso | egreso por el **bruto**, sin pasar de lo ingresado y descontando lo ya comprometido (devoluciones propias en curso); la comisión y los impuestos devueltos entran aparte como «Reintegros de Mercado Pago» |
+| Retiro de la billetera a un banco (de la cuenta) | transferencia billetera → la caja de banco que elija el admin, más la comisión del retiro |
+| Impuesto suelto de la cuenta | egreso «Impuestos y retenciones» (o ingreso si es una devolución del impuesto) |
+| Importe distinto, ingreso que el reporte no trae, cobro desconocido, otros movimientos | informativos (el libro es de sólo agregar: se corrigen a mano) |
+
+- **Una cuenta para todo el sistema:** las credenciales de Mercado Pago son globales. Cada corrida compara sólo con los
+  pagos de su distribuidora; lo que no es de ninguna (retiros, impuestos sueltos, cobros desconocidos) lo ve y lo asienta
+  sólo el super admin, **una sola vez en todo el sistema**, indicando la distribuidora (`distributorId`). El admin no ve
+  ni los importes ni los conteos de la cuenta global.
+- **Sin repeticiones:** cada diferencia tiene una clave estable (`row_key`, por día argentino e importes) y un índice
+  único: una fila ya aplicada no se vuelve a asentar aunque otra corrida pise el rango. Varias filas de liberación del
+  mismo cobro se suman antes de comparar.
+- **El pedido a Mercado Pago** va con fechas sin milisegundos (`AAAA-MM-DDT03:00:00Z` es el comienzo del día argentino;
+  con milisegundos Mercado Pago responde 400). El reporte de la cuenta usa `;` y las columnas `DATE`, `SOURCE_ID`,
+  `DESCRIPTION`, `NET_CREDIT_AMOUNT`, `NET_DEBIT_AMOUNT`, `GROSS_AMOUNT`, `MP_FEE_AMOUNT`, `TAXES_AMOUNT`,
+  `BALANCE_AMOUNT`…; las demás son opcionales. Las llamadas a Mercado Pago y a S3 se hacen fuera de la transacción.
+- Variables opcionales: `MP_REPORTS_DRIVER` (`real` por omisión; `fake` sirve un CSV de ejemplo, sólo con `NODE_ENV`
+  `development` o `test`) y `MP_REPORTS_FAKE_CSV`.
+- Migraciones `1794200000000`–`1794200000002` (corridas, diferencias, categorías y auditoría) y
+  `1794300000000-ConciliacionMpRonda2`.
