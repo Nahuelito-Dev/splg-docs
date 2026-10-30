@@ -222,3 +222,47 @@ una carga del chofer no cambia entre `driver_cash` y `cash_box` (409). Las `cash
 
 Migración `1792600000000-EgresosDeEfectivoACaja`: `cash_movement_id` en `traffic_fine` y `fuel_load`, más
 `registered_by_driver` y `cash_payment_legacy` en `fuel_load`.
+
+## Gastos de la flota y compras desde cualquier caja (API v2)
+
+Todo gasto de la flota es un egreso de Caja y el reintegro del seguro de un siniestro es un ingreso. En la v2 cada gasto
+se paga **una sola vez** desde una caja de **efectivo, banco o billetera** (caja obligatoria; el medio sale de la clase de
+la caja: banco → transferencia, billetera → Mercado Pago), con `Idempotency-Key`, en una transacción con el lock del
+documento. Cuerpo común: `{ cashBoxId, paidAt }` (`paidAt` no futuro ni anterior al gasto).
+
+| Gasto | Endpoint (`/api/v2`) | Movimiento |
+| --- | --- | --- |
+| Tarea de flota hecha con costo (service, VTV, frenos…) | `POST /fleet/tasks/:id/pay` `{ cashBoxId, paidAt, amount? }`, o al cerrarla: `POST /fleet/tasks/:id/close` con `payment: { cashBoxId, paidAt? }` | egreso «Mantenimiento de flota» (`fleet_maintenance`), «<plan> — <patente o chofer>» |
+| Neumático (la compra) | `POST /fleet/tires/:id/pay` | egreso «Neumáticos» (`tires`) por su costo |
+| Siniestro: lo que pagó la empresa | `POST /fleet/accidents/:id/pay` `{ cashBoxId, paidAt, amount }` | egreso «Siniestros» (`vehicle_accident`) |
+| Siniestro: reintegro del seguro | `POST /fleet/accidents/:id/reimbursement` `{ cashBoxId, receivedAt, amount }` | **ingreso** «Reintegros de seguros» (`insurance_reimbursement`) |
+| Carga de combustible con tarjeta, cuenta de combustible o `cash_box` sin asentar | `POST /fleet/fuel-loads/:id/pay` | egreso `fuel` |
+| Recepción de compra | `POST /purchase-receipts/:id/pay` | egreso `purchase` |
+
+Los `GET` v2 de tareas, neumáticos, siniestros, cargas y recepciones dicen si el gasto está pago (`isPaid`, `paidAt`,
+`cashMovementId`; las tareas, además, `payable` y `notPayableReason`).
+
+Reglas:
+
+- **El seguro se paga por sus cuotas** (`SEGUROS.md`): una tarea del plan de seguro no se paga por acá (409 «El seguro se
+  paga por sus cuotas»); si no, la misma prima saldría dos veces. Cancelar una póliza no reabre una tarea que ya tiene un
+  pago registrado: la saltea con una nota.
+- Un gasto ya pago, **409**. Un pago parcial (`amount` menor que el costo) deja el resto sin pagar y el gasto figura pago.
+- Importe: la tarea no supera su costo; el siniestro cerrado no supera el mayor entre reparación y franquicia, y el
+  reintegro no supera el que se cargó al cerrar (409 si se cerró sin reintegro); con el siniestro abierto no hay tope.
+  Cerrar un siniestro (`PATCH /fleet/accidents/:id/close`) con importes menores que un pago o reintegro ya registrado,
+  **409**.
+- Una carga del chofer (`driver_cash`) no se paga acá: la rinde en su rendición (409 con el motivo). Las cargas
+  `cash_payment_legacy`, anuladas o ya pagas, 409.
+- Caja de efectivo sin sesión abierta o sin saldo, **409**; caja de otra distribuidora o inexistente, **404**; clase no
+  admitida, **400**.
+- Corrección: anular una carga y volver impaga una recepción asientan el contraasiento (también de un pago v2). Una tarea,
+  un neumático o un siniestro pago no se reabre: su movimiento no se anula con `POST /cash-movements/:id/reverse` (400 con
+  el motivo) y se corrige con un movimiento manual.
+- En la v1, sin cambio de contrato: `PATCH /purchase-receipts/:id/payment-status` guarda la fecha del pago, y
+  `PATCH /fleet/fuel-loads/:id` deja editar una carga de tarjeta ya paga.
+
+Migraciones `1793900000000-GastosDeFlotaEnumsDeCaja`, `1793900000001-GastosDeFlotaPago` (columnas de pago en
+`maintenance_task`, `tire`, `vehicle_accident`, `fuel_load` y `purchase_receipt`, con FK compuestas con la distribuidora y
+CHECK de pago completo o ausente; las cuatro categorías de sistema nuevas, sembradas en todas las distribuidoras) y
+`1793900000002-AuditoriaDeGastosDeFlota` (mapa de auditoría).
