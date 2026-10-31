@@ -54,7 +54,7 @@ abiertos. El seguro no pasa por taller: se paga por sus cuotas (`SEGUROS.md`).
 `POST .../cases/:id/confirm|cancel`, `POST .../tasks/:taskId/force-window|replan`. Un caso escalado por cobertura se
 puede confirmar igual con `ignoreCoverage: true`.
 
-**Chofer:** `GET /driver/maintenance-proposals` (la vigente primero), `GET .../maintenance-proposals/:id`,
+**Chofer** (app del chofer: aviso de propuesta nueva y pantalla «Taller» en el menú): `GET /driver/maintenance-proposals` (la vigente primero; cada una con `caseStatus`, `urgent`, `projectedDueAt` y la ventana que confirmó el administrador, `confirmedStart`/`confirmedEnd`), `GET .../maintenance-proposals/:id`,
 `GET .../maintenance-proposals/settings` (horario, días, feriados, aviso mínimo, horizonte),
 `POST .../:id/accept`, `POST .../:id/reject { reason, alternative?: { start, end } }`. Eventos de socket:
 `maintenance:proposal`, `maintenance:proposal-closed`, `maintenance:window-confirmed` (con `source`) y
