@@ -174,9 +174,6 @@ UMLSIS = {
   "subsistemas": ("CU_Sistema_Subsistemas",
                "Subsistemas del proyecto",
                "Los 21 subsistemas, su agrupamiento y de quién depende cada uno"),
-  "despliegue": ("SPLG_Arquitectura",
-               "Despliegue y entornos",
-               "Dónde corre cada pieza y cómo llega el código a producción"),
   "actores":  ("CU_Sistema_Actores",
                "Actores del sistema",
                "Los actores, el canal por el que operan y los sistemas externos"),
@@ -400,23 +397,6 @@ if faltan:
 def marca_de(archivo):
     return hashlib.sha1(open(SITIO + archivo, "rb").read()).hexdigest()[:8]
 
-# ---------- las paginas hermanas, embebidas ----------
-# Ramas, versionado y agentes son secciones del mismo sitio, no destinos
-# aparte: el menu las muestra en la misma vista. Se toma el cuerpo de cada
-# archivo —de la introduccion hasta el pie— y se guarda con los datos, asi la
-# pagina sigue existiendo por separado para enlazarla directo.
-def cuerpo_de(archivo):
-    txt = open(SITIO + archivo, encoding="utf-8").read()
-    desde = txt.index('<div class="intro">')
-    hasta = txt.rindex('<div class="pie">')
-    cuerpo = txt[desde:hasta].strip()
-    # La pagina de asistentes define sus iconos en un <svg> con <defs> antes del
-    # contenido: sin el, los <use> de la version embebida no dibujan nada.
-    if '<svg class="sprite"' in txt:
-        i = txt.index('<svg class="sprite"')
-        cuerpo = txt[i:txt.index("</svg>", i) + 6] + "\n" + cuerpo
-    return cuerpo
-
 # La arquitectura y el despliegue vivían solo en el documento de Diseño: el sitio no
 # mostraba la sección 2 en ningún lado, así que el diagrama de entornos y los criterios
 # de la API no se veían. Entra como sección propia del menú.
@@ -471,7 +451,7 @@ def _drawio():
     intro = ('<div class="intro"><h1>Modelos en draw.io</h1>'
              '<p>Los cuatro modelos como archivos de draw.io, cada uno en una sola página y con cada relación '
              'dibujada como una arista conectada a sus dos elementos. Se abren con draw.io de escritorio o en '
-             'app.diagrams.net. Se generan con <code>generar-drawio.py</code>.</p></div>')
+             'app.diagrams.net.</p></div>')
     return {"titulo": "Modelos en draw.io", "html": intro + "".join(secc), "mermaid": []}
 
 # ---------- catálogo de todos los diagramas ----------
@@ -567,12 +547,17 @@ def _novedades():
         cuerpo = "\n".join(lineas[1:]).strip()
     else:
         cuerpo = txt
-    txt_web = re.sub(r'\[([^\]]+)\]\((back/[^)]+)\)', r'<code>\2</code>', cuerpo)
-    res = md2html(txt_web)
+    # El archivo es del equipo y apunta a su documentación técnica del código (sistema/back/*.md), al
+    # prefijo de la API y a las rutas del panel. En el sitio de la cátedra queda sólo la descripción
+    # funcional: qué hace de nuevo el sistema y dónde se ve.
+    cuerpo = re.sub(r'^\s*[-*]\s+\*\*Documentación técnica:\*\*.*\n?', '', cuerpo, flags=re.M)
+    cuerpo = re.sub(r'\s*\(`/[^`]*`\)', '', cuerpo)
+    cuerpo = re.sub(r'Todas las incorporaciones se estructuraron bajo el prefijo `/api/v2` de la interfaz HTTP y en',
+                    'Todas las incorporaciones se reflejan en', cuerpo)
+    res = md2html(cuerpo)
     intro = ('<div class="intro"><h1>Novedades de la versión 2</h1>'
-             '<p>Funcionalidades incorporadas al sistema con posterioridad a la versión 1 congelada el 24/10/2026. '
-             'Todas las nuevas capacidades se implementaron en la API v2 (<code>/api/v2</code>) '
-             'preservando compatibilidad plena.</p></div>')
+             '<p>Funcionalidades incorporadas al sistema con posterioridad a la versión 1 congelada el 24/10/2026, '
+             'sin alterar lo que la versión 1 ya hacía.</p></div>')
     return {"titulo": "Novedades de la versión 2", "html": intro + res["html"], "mermaid": res.get("mermaid", [])}
 
 datos["paginas"] = {
@@ -584,8 +569,6 @@ datos["paginas"] = {
                              '<p>Cómo está armado el sistema, dónde corre cada pieza y con qué '
                              'criterios está diseñada su interfaz HTTP. Documento 3 · §2.</p></div>'
                              + _arq_html},
-    "ramas":      {"titulo": "Ramas y commits",     "html": cuerpo_de("branching.html")},
-    "versionado": {"titulo": "Versionado automatico", "html": cuerpo_de("versionado.html")},
 }
 
 # FEATURES-NEW.md es el seguimiento interno del equipo (estado y avance de cada F): no va al sitio de la

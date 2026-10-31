@@ -12,9 +12,8 @@
 <script src="visor.js" defer></script>
 <style>
 /* ---- Paleta de lectura ----
-   Documento impreso: tinta oscura sobre papel. Los valores salen medidos del
-   centro de ayuda de Claude, que es la referencia que pidió la cátedra para
-   este sitio: fondo crema #FAF9F5, tinta #1A1A1A, gris de apoyo #595959,
+   Documento impreso: tinta oscura sobre papel. Los valores salen de la referencia
+   que pidió la cátedra para este sitio: fondo crema #FAF9F5, tinta #1A1A1A, gris de apoyo #595959,
    bordes de 1px muy tenues y nada de sombras. Una sola paleta, sin tema
    oscuro ni conmutador.
 
@@ -375,7 +374,7 @@ footer.pie .cierre{margin-top:16px;padding-top:14px;border-top:1px solid var(--o
 @media(min-width:881px){.fondo-cajon{display:none}}
 
 /* ---------- menús de la barra superior ----------
-   Documentación y Proceso despliegan un panel con destinos que ya existen en
+   Documentación despliega un panel con destinos que ya existen en
    el sitio: no se inventa contenido nuevo, cada ítem abre una vista que ya se
    genera desde los .md. `<details>` da el desplegable sin escribir el manejo
    de abrir/cerrar; sólo hace falta cerrarlo al elegir un ítem, porque acá no
@@ -587,14 +586,12 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 .portada .pista{color:var(--muted);font-size:.95rem;margin:0}
 
 /* ---------- páginas embebidas ----------
-   Ramas, versionado y agentes se muestran en esta misma vista. Sus estilos son
-   los de `paginas.css`, acotados a `.pagina` para que no toquen el resto: la
-   tabla de un caso de uso y la de esas páginas no se pisan. */
+   Diagramas, Modelos, Datos, Arquitectura y Novedades se muestran en esta misma
+   vista, acotadas a `.pagina` para que no toquen el resto: la tabla de un caso
+   de uso y la de esas páginas no se pisan. */
 .pagina{display:flex;flex-direction:column;gap:3rem;padding-bottom:1rem}
 .pagina .intro h2{font-family:"Newsreader",Georgia,serif;font-weight:600; font-size:clamp(1.9rem,4.5vw,2.6rem);line-height:1.12;margin:0 0 .6rem;text-wrap:balance}
 .pagina .intro p{margin:0;max-width:60ch;color:var(--muted);font-size:1.05rem}
-.pagina section{display:flex;flex-direction:column;gap:1.05rem}
-.pagina h3{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:1.5rem; margin:0;text-wrap:balance}
 .pagina h4{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em; text-transform:uppercase;color:var(--muted);margin:.4rem 0 0;font-weight:500}
 .pagina p{margin:0;max-width:68ch}
 .pagina code{font-family:"IBM Plex Mono",monospace;font-size:.87em; background:var(--tint);padding:.12em .38em;border-radius:4px}
@@ -611,88 +608,13 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   letter-spacing:.04em;color:var(--muted)}
 .pagina h2{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:1.75rem;
   margin:1.4rem 0 0;text-wrap:balance}
-.pagina figure{margin:0;display:flex;flex-direction:column;gap:.85rem}
-.pagina .lienzo{background:var(--surface);border:1px solid var(--outline);border-radius:12px; padding:1.4rem 1rem;box-shadow:var(--shadow);overflow-x:auto;cursor:zoom-in}
-.pagina .lienzo:hover{border-color:var(--primary)}
-.pagina .lienzo svg{display:block;width:100%;min-width:640px;height:auto}
-.pagina figcaption{color:var(--muted);font-size:.95rem;max-width:68ch}
-.carril{stroke:var(--outline);stroke-width:1.5}
-.nodo{fill:var(--surface);stroke-width:2}
-.n-trabajo{stroke:var(--syncing)}
-.n-develop{stroke:var(--success)}
-.n-main{stroke:var(--primary)}
-.a-trabajo{fill:none;stroke:var(--syncing);stroke-width:2}
-.a-develop{fill:none;stroke:var(--success);stroke-width:2}
-.a-main{fill:none;stroke:var(--primary);stroke-width:2}
-.a-vuelta{fill:none;stroke:var(--primary);stroke-width:1.5;stroke-dasharray:5 4;opacity:.7}
-.caja{fill:var(--variant);stroke:var(--primary);stroke-width:1.5}
-.panel-svg{fill:var(--variant);stroke:var(--outline);stroke-width:1}
-.t-carril{font-family:"IBM Plex Mono",monospace;font-size:12px;fill:var(--muted)}
-.t-arco{font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;fill:var(--muted)}
-.t-caja{font-family:"Newsreader",Georgia,serif;font-size:14px;font-weight:600;fill:var(--primary)}
-.t-sub{font-family:"IBM Plex Mono",monospace;font-size:11.5px;fill:var(--content)}
-.t-tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;fill:var(--primary)}
-.t-commit{font-family:"IBM Plex Mono",monospace;font-size:12.5px;fill:var(--content)}
-.t-commit.apagado{fill:var(--muted);opacity:.6}
-.t-ver{font-family:"IBM Plex Mono",monospace;font-size:26px;fill:var(--muted)}
-.t-ver-nueva{font-family:"IBM Plex Mono",monospace;font-size:26px;fill:var(--content)}
-.t-ver-nueva tspan{fill:var(--primary);font-weight:500}
-.t-salida{font-family:"IBM Plex Mono",monospace;font-size:12.5px;fill:var(--content)}
-.pagina .marco{overflow-x:auto;border:1px solid var(--outline);border-radius:12px; background:var(--surface);box-shadow:var(--shadow)}
 .pagina table{border-collapse:collapse;width:100%;font-size:.93rem}
 .pagina th{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:10.5px; letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:left; padding:.85rem 1rem;border-bottom:1px solid var(--outline);white-space:nowrap}
 .pagina td{padding:.75rem 1rem;border-bottom:1px solid var(--outline);vertical-align:top}
 .pagina tbody tr:last-child td{border-bottom:none}
-.pagina .mono{font-family:"IBM Plex Mono",monospace;font-size:.85rem;white-space:nowrap}
-.pagina .muted{color:var(--muted)}
-.pagina .pares{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:1rem}
-.pagina .par{background:var(--surface);border:1px solid var(--outline);border-radius:12px; padding:1.1rem 1.25rem;display:flex;flex-direction:column;gap:.55rem;box-shadow:var(--shadow)}
-.pagina .par.si{border-left:3px solid var(--success)}
-.pagina .par.no{border-left:3px solid var(--danger)}
-.pagina .par h4{margin:0}
-.pagina .par.si h4{color:var(--success)}
-.pagina .par.no h4{color:var(--danger)}
-.pagina .par ul{margin:0;padding-left:1.05rem;display:flex;flex-direction:column;gap:.4rem}
-.pagina .par li{font-family:"IBM Plex Mono",monospace;font-size:.82rem;line-height:1.5}
-.pagina .par .por{font-family:"IBM Plex Sans",sans-serif;font-size:.88rem;color:var(--muted)}
-.pagina .reglas{margin:0;padding:0;list-style:none;display:flex;flex-direction:column}
-.pagina .reglas li{position:relative;padding:.8rem 0 .8rem 1.9rem; border-bottom:1px solid var(--outline);max-width:68ch}
-.pagina .reglas li:last-child{border-bottom:none}
-.pagina .reglas li::before{content:"—";position:absolute;left:0;top:.8rem; color:var(--primary);font-family:"IBM Plex Mono",monospace}
-.pagina ol.pasos{margin:0;padding:0;list-style:none;counter-reset:paso; display:flex;flex-direction:column}
-.pagina ol.pasos li{counter-increment:paso;position:relative; padding:.8rem 0 .8rem 2.6rem;border-bottom:1px solid var(--outline);max-width:68ch}
-.pagina ol.pasos li:last-child{border-bottom:none}
-.pagina ol.pasos li::before{content:counter(paso,decimal-leading-zero);position:absolute; left:0;top:.85rem;font-family:"IBM Plex Mono",monospace;font-size:11px; color:var(--primary)}
-.pagina .aviso{background:var(--variant);border-left:3px solid var(--secondary); border-radius:0 10px 10px 0;padding:1.1rem 1.3rem;font-size:.97rem;max-width:68ch}
-.pagina .aviso strong{color:var(--secondary)}
-/* El diagrama de tubería del versionado. Estas reglas habían quedado adentro de
-   una consulta de ancho máximo al acotar los estilos de las páginas: en una
-   pantalla normal no se aplicaban y cada caja del proceso salía en negro, que
-   es el relleno que trae un SVG sin estilo. */
-.paso-caja{fill:var(--surface);stroke:var(--outline);stroke-width:1.5}
-.paso-caja.disparador{fill:var(--variant);stroke:var(--primary);stroke-width:2}
-.paso-caja.decision{fill:var(--variant);stroke:var(--secondary);stroke-width:2}
-.paso-caja.salida{fill:none;stroke:var(--outline);stroke-width:1.5;stroke-dasharray:5 4}
-.t-paso{font-family:"IBM Plex Sans",sans-serif;font-size:13px;fill:var(--content)}
-.t-paso-num{font-family:"IBM Plex Mono",monospace;font-size:10.5px;fill:var(--primary)}
-.t-nota{font-family:"IBM Plex Sans",sans-serif;font-size:11.5px;fill:var(--muted)}
-.t-nota-mono{font-family:"IBM Plex Mono",monospace;font-size:11.5px;fill:var(--content)}
-.conector{stroke:var(--outline);stroke-width:1;stroke-dasharray:3 3}
-.paso-icono{fill:none;stroke:var(--primary);stroke-width:1.6;
-  stroke-linecap:round;stroke-linejoin:round;opacity:.85}
-.paso-icono-lleno{fill:var(--content);stroke:none;opacity:.8}
 
 .pagina body,.pagina{font-size:inherit}
 @media (max-width:34rem){.pagina{font-size:14.5px}}
-
-.pagina .con-placa,.pagina .con-icono{display:flex;align-items:center;gap:9px;white-space:nowrap}
-.pagina .placa{display:inline-flex;align-items:center;justify-content:center;
-  width:24px;height:24px;border-radius:7px;flex:none;background:var(--placa);color:#FFFDF7;
-  font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500;line-height:1}
-.pagina .placa-marca{background:var(--surface);border:1px solid var(--outline)}
-.pagina .placa-marca svg{width:15px;height:15px;display:block}
-.pagina .icono{width:22px;height:22px;flex:none;fill:none;stroke:var(--primary);
-  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
 /* ---------- recorrer y citar ---------- */
 .paso{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;
@@ -770,16 +692,6 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     <a class="menu-link" href="#datos" data-nav-hash="datos">Datos</a>
     <a class="menu-link" href="#arquitectura" data-nav-hash="arquitectura">Arquitectura</a>
     __NAV_FEATURES_ARRIBA__
-    <details class="menu-nav" id="menuProceso">
-      <summary>Proceso
-        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </summary>
-      <div class="menu-nav-panel">
-        <a href="#ramas" data-nav-hash="ramas">Ramas y commits</a>
-        <a href="#versionado" data-nav-hash="versionado">Versionado automático</a>
-      </div>
-    </details>
   </nav>
   <div class="espacio"></div>
   <details class="menu-nav selector-version" id="selectorVersion" hidden>
@@ -841,11 +753,6 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
           <span class="flecha" aria-hidden="true">›</span>Sistema UML
         </button>
         <div class="list" id="listaSistemaUml" hidden></div>
-      </div>
-      <div class="grupo-menu">
-        <p class="rotulo-grupo">Proceso</p>
-        <button type="button" class="seccion" data-pag="ramas"><span class="nombre">Ramas y commits</span></button>
-        <button type="button" class="seccion" data-pag="versionado"><span class="nombre">Versionado automático</span></button>
       </div>
     </nav>
     <div id="drill" hidden>
@@ -1058,7 +965,6 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         '<button class="item" data-uml="mapa"><span class="cod">A4</span><span class="nm">Mapa de navegación, no UML (una página)</span></button>' +
         '<button class="item" data-uml="completo"><span class="cod">ALL</span><span class="nm">Diagrama completo de los __N_CASOS__ casos</span></button>' +
         '<button class="item" data-uml="subsistemas"><span class="cod">MAP</span><span class="nm">Mapa de subsistemas</span></button>' +
-        '<button class="item" data-uml="despliegue"><span class="cod">DEP</span><span class="nm">Despliegue y entornos</span></button>' +
         '<div class="grp">Casos de uso por subsistema · notación UML</div>' +
         Object.keys(SS).sort().filter(function(k){return SS[k].uml;}).map(function(k){
           return '<button class="item" data-uml="'+k+'"><span class="cod marca-ss" data-ss="'+k+'">'+k+'</span><span class="nm">'+esc(SS[k].nombre)+"</span></button>";
@@ -1357,8 +1263,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       modelos: '<rect x="3.5" y="3.5" width="12" height="9" rx="1.4"/><rect x="8.5" y="11.5" width="12" height="9" rx="1.4"/>',
       arquitectura: '<rect x="3.5" y="14" width="6" height="6.5" rx="1"/><rect x="9" y="8.5" width="6" height="12" rx="1"/><rect x="14.5" y="3.5" width="6" height="17" rx="1"/>',
       modulos: '<circle cx="12" cy="12" r="3.4"/><path d="M12 3.5v2.4M12 18.1v2.4M3.5 12h2.4M18.1 12h2.4M6 6l1.7 1.7M16.3 16.3 18 18M18 6l-1.7 1.7M7.7 16.3 6 18"/>',
-      sistema: '<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M12 7.2 6.4 16M12 7.2 17.6 16M7.2 18h9.6"/>',
-      proceso: '<circle cx="6" cy="6" r="2.3"/><circle cx="6" cy="18" r="2.3"/><circle cx="18" cy="6" r="2.3"/><path d="M6 8.3V15.7M8.3 6H15.7a2.3 2.3 0 0 1 2.3 2.3v0"/>'
+      sistema: '<circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M12 7.2 6.4 16M12 7.2 17.6 16M7.2 18h9.6"/>'
     };
     return '<svg class="icono-tarjeta" viewBox="0 0 24 24" aria-hidden="true">' + (trazos[tipo] || trazos.casos) + "</svg>";
   }
@@ -1383,26 +1288,18 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       tarjeta("", "abre", "mod", "modulos", "Módulos inteligentes",
         Object.keys(MODS).length + " procesos que automatizan decisiones del sistema.") +
       tarjeta("", "abre", "sis", "sistema", "Sistema UML",
-        "Actores, diagrama de contexto y casos de uso en notación UML clásica.") +
-      '<a class="tarjeta" href="#ramas">' +
-        iconoTarjeta("proceso") + "<b>Proceso</b><p>Convenciones de ramas y commits, y versionado automático.</p></a>";
+        "Actores, diagrama de contexto y casos de uso en notación UML clásica.");
   }
 
-  /* Ramas, versionado y agentes se muestran acá mismo. El archivo suelto sigue
-     existiendo para enlazarlo directo, pero desde el menú no se sale de la
-     vista: es el mismo sitio. */
+  /* Diagramas, Modelos, Datos, Arquitectura y Novedades se muestran acá mismo:
+     desde el menú no se sale de la vista, es el mismo sitio. */
   var PAGS = D.paginas || {};
   function verPagina(k){
     var pag = PAGS[k];
     if (!pag) return false;
     sel = null;
     location.hash = k;
-    // Los enlaces entre estas páginas también se quedan en la vista: si no, un
-    // "ver Versionado" en el medio del texto sacaba al lector del sitio.
-    var html = pag.html
-      .replace(/href="branching\.html"/g, 'href="#ramas" data-pag-en-vista="ramas"')
-      .replace(/href="versionado\.html"/g, 'href="#versionado" data-pag-en-vista="versionado"')
-      .replace(/href="asistentes\.html"/g, 'href="#agentes" data-pag-en-vista="agentes"');
+    var html = pag.html;
     document.getElementById("detalle").innerHTML = '<div class="pagina">' + html + "</div>";
     /* Las páginas también pueden traer diagramas propios: la de Modelos son
        cuatro. Sin esto quedaban como huecos vacíos. */
@@ -1411,9 +1308,6 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       if (n) dibujar(n, src);
     });
     if (window.marcarFigurasAmpliables) window.marcarFigurasAmpliables();
-    document.querySelectorAll("[data-pag-en-vista]").forEach(function(a){
-      a.onclick = function(ev){ ev.preventDefault(); verPagina(a.dataset.pagEnVista); };
-    });
     document.getElementById("main").scrollTop = 0;
     document.querySelectorAll(".seccion[data-pag]").forEach(function(b){
       b.setAttribute("aria-current", String(b.dataset.pag === k)); });
@@ -1575,7 +1469,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     var uml = [["actores","ACT","Actores del sistema"],["contexto","SIS","Diagrama de contexto"],
                ["mapa","A4","Mapa de navegación, no UML (una página)"],
                ["completo","ALL","Diagrama completo de los __N_CASOS__ casos"],
-               ["subsistemas","MAP","Mapa de subsistemas"],["despliegue","DEP","Despliegue y entornos"]];
+               ["subsistemas","MAP","Mapa de subsistemas"]];
     document.getElementById("listaSistemaUml").innerHTML =
       '<div class="grp suelto">Vista general</div>' +
       gen.filter(function(g){ return SIS[g[0]]; }).map(function(g){

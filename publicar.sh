@@ -48,8 +48,9 @@ validar_js sitio/splg-documentacion.html
 
 # Todo lo que el sitio referencia. Estaba escrito a mano y se quedo corto: al
 # sumar el visor, publicar habria dejado la pagina sin visor.css ni visor.js
-# —404 en silencio—.
-ARCHIVOS="splg-documentacion.html index.html branching.html versionado.html paginas.css visor.css visor.js"
+# —404 en silencio—. Sólo lo que es para la cátedra: branching.html,
+# versionado.html y paginas.css son del equipo y se quedan en el repo sin publicarse.
+ARCHIVOS="splg-documentacion.html index.html visor.css visor.js"
 copiar_sitio() {  # origen destino
   for f in $ARCHIVOS; do cp "$1/$f" "$2/"; done
 }
@@ -70,7 +71,7 @@ while read -r id ref; do
   # sale SÓLO el contenido (documentos, diagramas, modelos, capturas); el
   # generador, la plantilla y los estilos son los de hoy, así el diseño, el
   # menú y el selector son idénticos y al cambiar de versión cambia el texto.
-  for f in generar-sitio.py splg-plantilla.html paginas.css visor.css visor.js index.html branching.html versionado.html; do
+  for f in generar-sitio.py splg-plantilla.html visor.css visor.js index.html; do
     cp "sitio/$f" "$TMP/$id/sitio/$f"
   done
   python3 "$TMP/$id/sitio/generar-sitio.py" >/dev/null
