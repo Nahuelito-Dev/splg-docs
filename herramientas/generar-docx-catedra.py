@@ -12,7 +12,7 @@ PNG, o renderizado con mermaid-cli si no tiene) y lo convierte con pandoc usando
 reference-doc con la página y la tipografía de la plantilla (`catedra/.catedra-ref/*.doc`, que se
 convierte con `textutil`). Requiere pandoc, textutil (macOS) y mermaid-cli (npx cache).
 """
-import glob, hashlib, json, os, re, shutil, struct, subprocess, sys, tempfile, zipfile
+import datetime, glob, hashlib, json, os, re, shutil, struct, subprocess, sys, tempfile, zipfile
 from imagenes_cu import desplegar
 
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
@@ -28,8 +28,10 @@ FACULTAD = "Facultad de Ciencias Exactas, Químicas y Naturales"
 CARRERA = "Licenciatura en Sistemas de Información – Analista en Sistemas de Computación"
 MATERIA = "Proyecto Software (LSI) | Trabajo Final (ASC)"
 AUTOR = "Nahuel Wagner"
-FECHA_ISO, FECHA = "2026-10-19", "19/10/2026"
-CAMBIO = "Actualización al estado de la Construcción, C-19"
+# fecha de la entrega (portada, nombre del archivo y fila nueva de la Lista de Cambios): hoy, o SPLG_DOCX_FECHA=AAAA-MM-DD
+FECHA_ISO = os.environ.get("SPLG_DOCX_FECHA") or datetime.date.today().isoformat()
+FECHA = "/".join(reversed(FECHA_ISO.split("-")))
+CAMBIO = os.environ.get("SPLG_DOCX_CAMBIO", "Actualización al estado de la Construcción, C-19")
 
 # (clave, md, plantilla, nombre de salida)
 DOCS = [
@@ -136,6 +138,16 @@ def img(ruta, ancho, alto):
     return "![SPLGSZ:%.3fx%.3f](%s){width=%.2fcm height=%.2fcm}" % (ancho, alto, ruta, ancho, alto)
 
 
+def franjas(alto, franja):
+    """Cantidad de franjas de `franja` px para cubrir `alto`; si la última sería una tira de menos del 6 %,
+    se reparte entre las demás (cada una crece a lo sumo un 6 %, todavía entra en la página)."""
+    n = -(-alto // franja)
+    if n > 1 and alto - (n - 1) * franja < 0.06 * franja:
+        n -= 1
+        franja = -(-alto // n)
+    return franja, n
+
+
 def imagen_md(ruta):
     """Markdown de un diagrama. Si en página vertical el texto quedaría menor que MIN_PT, va solo en una
     sección horizontal; si es muy alto, se parte en franjas con «(continúa)»."""
@@ -156,8 +168,7 @@ def imagen_md(ruta):
         px = min(int(ancho / 2.54 * DPI_MAX), w)
         base = optimizar(ruta, px, "v")
         wb, hb = tam_png(base)
-        franja = int(PORT_H / ancho * wb)
-        n = -(-hb // franja)
+        franja, n = franjas(hb, int(PORT_H / ancho * wb))
         return CONTINUA.join(img(f, ancho, ancho * tam_png(f)[1] / wb) for f in cortar_png(base, franja, n))
     # horizontal
     dl = min(LAND_W, LAND_H * w / h)
@@ -166,8 +177,7 @@ def imagen_md(ruta):
         px = min(int(dl / 2.54 * DPI_HOR), w)
         base = optimizar(ruta, px, "h")
         wb, hb = tam_png(base)
-        franja = int(LAND_H / dl * wb)
-        n = -(-hb // franja)
+        franja, n = franjas(hb, int(LAND_H / dl * wb))
         cuerpo = CONTINUA.join(img(f, dl, dl * tam_png(f)[1] / wb) for f in cortar_png(base, franja, n))
     else:
         px = min(int(dl / 2.54 * DPI_HOR), w)
@@ -538,7 +548,10 @@ def preparar_md(clave, nombre_md, parte=1, total=1):
         tabla = m.group(1)
         resto = resto[:m.start()] + resto[m.end():]
         filas = re.findall(r"^\| (\d+) \|", tabla, re.M)
-        tabla = tabla.rstrip("\n") + f"\n| {int(filas[-1]) + 1} | {FECHA_ISO} | {CAMBIO} | {AUTOR} |\n\n"
+        # la fila nueva va pegada a la última fila de la tabla (después suele venir un «---»)
+        ult = [k for k in re.finditer(r"^\|.*\|[ \t]*$", tabla, re.M)][-1]
+        tabla = (tabla[:ult.end()] + f"\n| {int(filas[-1]) + 1} | {FECHA_ISO} | {CAMBIO} | {AUTOR} |"
+                 + re.sub(r"^\s*-{3,}\s*$", "", tabla[ult.end():], flags=re.M).rstrip() + "\n\n")
         if clave in CON_LISTA_COMO_TITULO:
             cambios = "# Lista de Cambios\n" + tabla
         else:
@@ -570,7 +583,16 @@ def preparar_md(clave, nombre_md, parte=1, total=1):
         return imagen_md(DOC + ruta)
 
     resto = re.sub(r"!\[([^\]]*)\]\(([^)\s]+)\)(?!\{)", imagen, resto)
+    # <br> dentro de una celda: pandoc descarta el HTML y pega los renglones; va como salto de línea de Word
+    resto = re.sub(r"^\|.*$", lambda m: re.sub(r"<br\s*/?>", "`<w:r><w:br/></w:r>`{=openxml}", m.group(0)),
+                   resto, flags=re.M)
     resto = re.sub(r"@@FIN@@\s*(\*\*Figura \d+ — [^\n]*\*\*)", r"\1\n\n@@FIN@@", resto)
+    # el título de la figura (y su línea de actor/operaciones) pasa a la página horizontal con ella: si no, queda
+    # solo en una página vertical casi vacía
+    resto = re.sub(r"(^#{1,6} [^\n]*\n(?:[ \t]*\n|(?![#|!`@<])[^\n]*\n){0,8}?)[ \t\n]*@@INI@@",
+                   lambda m: "@@INI@@\n\n" + m.group(1), resto, flags=re.M)
+    # dos figuras horizontales seguidas comparten la sección: si no, queda una página vertical en blanco entre ellas
+    resto = re.sub(r"@@FIN@@(?:\s|<!--(?:(?!-->).)*-->)*@@INI@@", "\n\n", resto, flags=re.S)
     resto = resto.replace("@@INI@@", MARCA_INI.strip()).replace("@@FIN@@", MARCA_FIN.strip())
     raiz = parsear(resto)
     secciones, anexos = armar(clave, raiz)
@@ -586,12 +608,16 @@ def preparar_md(clave, nombre_md, parte=1, total=1):
         emitir(an, 1, salida)
     resto = "\n".join(salida)
     resto = cortar(resto, parte, total)
+    final_horizontal = False
+    sin_cola = re.sub(r"(?:\s|^-{3,}[ \t]*$|<!--(?:(?!-->).)*-->)*\Z", "", resto, flags=re.S | re.M)
+    if sin_cola.endswith(MARCA_FIN.strip()):
+        resto, final_horizontal = sin_cola[:-len(MARCA_FIN.strip())], True
     if total > 1:
         titulo += f" (Parte {parte} de {total})"
     cuerpo = (portada(titulo, campos) + "\n" + cambios + "\n"
               + "```{=openxml}\n" + salto_pagina() + p_xml("Índice", 32, True, centrado=False, despues=200) + "<w:p><w:r><w:t>@@TOC@@</w:t></w:r></w:p>\n```\n\n"
               + resto)
-    return cuerpo, contador, dict(campos).get("Versión", "")
+    return cuerpo, contador, dict(campos).get("Versión", ""), final_horizontal
 
 
 # ---------- reference-doc ----------
@@ -616,6 +642,8 @@ def reference(plantilla_doc, destino):
                 data = s.encode("utf8")
             elif it.filename == "word/styles.xml":
                 s = data.decode("utf8")
+                # castellano: si no, Word marca todo el texto como error de ortografía en inglés
+                s = re.sub(r'(<w:lang w:val=")[^"]*', r"\1es-AR", s)
                 s = re.sub(r'(<w:rFonts)[^>]*/>', r'\1 w:ascii="Verdana" w:hAnsi="Verdana" w:cs="Verdana" w:eastAsia="Verdana"/>', s)
                 s = re.sub(r'(<w:style w:type="paragraph" w:styleId="(?:BodyText|FirstParagraph|Compact)">.*?<w:name[^>]*/>)',
                            r'\1', s, flags=re.S)
@@ -719,7 +747,7 @@ def pie_xml(version):
             + _run("Versión: " + version) + '<w:r><w:tab/></w:r>' + _run("Página ") + campo + '</w:p></w:ftr>')
 
 
-def con_encabezado(zin, doc2, version):
+def con_encabezado(zin, doc2, version, titulo):
     """Devuelve {nombre: bytes} con encabezado y pie agregados a la sección final del documento."""
     ct = zin.read("[Content_Types].xml").decode("utf8")
     ct = ct.replace("</Types>",
@@ -731,9 +759,26 @@ def con_encabezado(zin, doc2, version):
                         '<Relationship Id="rIdSplgF" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/></Relationships>')
     refs = '<w:headerReference w:type="default" r:id="rIdSplgH"/><w:footerReference w:type="default" r:id="rIdSplgF"/>'
     doc2 = re.sub(r"(<w:sectPr[^>]*>)", r"\1" + refs, doc2)
+    # la portada (primera página de la primera sección) va sin encabezado ni pie
+    m = re.search(r"<w:sectPr[^>]*>.*?</w:sectPr>", doc2, re.S)
+    sp = m.group(0)
+    sp2 = re.sub(r"(<w:docGrid|</w:sectPr>)", r"<w:titlePg/>\1", sp, count=1)
+    doc2 = doc2[:m.start()] + sp2 + doc2[m.end():]
     if 'xmlns:r=' not in doc2[:2000]:
         doc2 = doc2.replace("<w:document ", '<w:document xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ', 1)
+    ajustes = zin.read("word/settings.xml").decode("utf8")
+    if "<w:updateFields" not in ajustes:
+        # el esquema pide updateFields antes de hdrShapeDefaults/footnotePr/compat/rsids
+        ajustes = re.sub(r"(<w:(?:hdrShapeDefaults|footnotePr|endnotePr|compat|docVars|rsids)[ />]|</w:settings>)",
+                         r'<w:updateFields w:val="true"/>\1', ajustes, count=1)
+    ajustes = re.sub(r'(<w:themeFontLang w:val=")[^"]*', r"\1es-AR", ajustes)
+    core = zin.read("docProps/core.xml").decode("utf8")
+    titulo = titulo.replace("Analisis", "Análisis").replace("Planificacion", "Planificación")   # el nombre de archivo va sin tilde
+    esc = titulo.replace("&", "&amp;").replace("<", "&lt;")
+    core = core.replace("<dc:title></dc:title>", f"<dc:title>SPLG – {esc}</dc:title>").replace(
+        "<dc:creator></dc:creator>", f"<dc:creator>{AUTOR}</dc:creator>")
     return {"[Content_Types].xml": ct.encode("utf8"), "word/_rels/document.xml.rels": rels.encode("utf8"),
+            "word/settings.xml": ajustes.encode("utf8"), "docProps/core.xml": core.encode("utf8"),
             "word/document.xml": doc2.encode("utf8"), "word/header1.xml": encabezado_xml().encode("utf8"),
             "word/footer1.xml": pie_xml(version).encode("utf8")}
 
@@ -778,10 +823,19 @@ def indice_estatico(doc):
             f'<w:hyperlink w:anchor="{nombre}"><w:r><w:rPr><w:rFonts w:ascii="Verdana" w:hAnsi="Verdana"/>'
             f'{"<w:b/>" if nivel == 1 else ""}<w:color w:val="1F3864"/><w:sz w:val="{20 if nivel == 1 else 18 if nivel == 2 else 16}"/></w:rPr>'
             f'<w:t xml:space="preserve">{t}</w:t></w:r></w:hyperlink></w:p>')
+    # las entradas van dentro de un campo TOC: Word lo actualiza al abrir (updateFields) y pone los números de página
+    inicio = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> TOC \\o "1-3" \\h \\z \\u </w:instrText></w:r>'
+              '<w:r><w:fldChar w:fldCharType="separate"/></w:r>')
+    if filas:
+        filas[0] = filas[0].replace("</w:pPr>", "</w:pPr>" + inicio, 1)
+        filas[-1] = filas[-1][:-len("</w:p>")] + '<w:r><w:fldChar w:fldCharType="end"/></w:r></w:p>'
     marca = re.search(r"<w:p>(?:(?!</w:p>).)*?@@TOC@@.*?</w:p>", doc, re.S)
     if not marca:
         sys.exit("no encuentro la marca del índice")
-    return doc[:marca.start()] + "".join(filas) + salto_pagina() + doc[marca.end():]
+    if filas:
+        filas[-1] = filas[-1][:-len("</w:p>")] + '<w:r><w:br w:type="page"/></w:r></w:p>'
+        return doc[:marca.start()] + "".join(filas) + doc[marca.end():]
+    return doc[:marca.start()] + salto_pagina() + doc[marca.end():]
 
 
 def encabezados_de_tabla(doc):
@@ -798,7 +852,7 @@ def encabezados_de_tabla(doc):
 
 def generar(clave, nombre_md, plantilla, titulo, parte=1, total=1):
     os.makedirs(CACHE, exist_ok=True)
-    cuerpo, cont, version = preparar_md(clave, nombre_md, parte, total)
+    cuerpo, cont, version, final_horizontal = preparar_md(clave, nombre_md, parte, total)
     mdi = CACHE + f"doc-{clave}.md"
     open(mdi, "w", encoding="utf-8").write(cuerpo)
     ref = CACHE + f"ref-{clave}.docx"
@@ -812,15 +866,25 @@ def generar(clave, nombre_md, plantilla, titulo, parte=1, total=1):
     sh(["pandoc", mdi, "-f", "gfm+attributes+raw_attribute", "-t", "docx", "-o", crudo,
         "--reference-doc", ref,
         "--lua-filter", filtro, "--resource-path", DOC, "--columns=100"], cwd=DOC)
+    if not os.environ.get("SPLG_DOCX_DEBUG"):
+        # el .md intermedio lleva rutas absolutas a la caché: si queda, verificar-links.py lo cuenta como roto
+        os.unlink(mdi)
     zin = zipfile.ZipFile(crudo)
     doc2 = zin.read("word/document.xml").decode("utf8")
     doc2 = tamanos_de_imagen(doc2)
     doc2 = indice_estatico(doc2)
     doc2 = encabezados_de_tabla(doc2)
+    if final_horizontal:
+        # la última sección (la del cuerpo) toma la página horizontal de la figura con la que termina el documento
+        i = doc2.rfind("<w:sectPr")
+        ult = doc2[i:]
+        ult = re.sub(r"<w:pgSz[^>]*/>", re.search(r"<w:pgSz[^>]*/>", SECT_H).group(0), ult, count=1)
+        ult = re.sub(r"<w:pgMar[^>]*/>", re.search(r"<w:pgMar[^>]*/>", SECT_H).group(0), ult, count=1)
+        doc2 = doc2[:i] + ult
     # las tablas ocupan el ancho de la página (pandoc las deja al ancho del contenido)
     doc2 = re.sub(r"<w:tblW [^>]*/>", '<w:tblW w:type="pct" w:w="5000"/>', doc2)
     doc2 = re.sub(r"<w:tbl>.*?</w:tbl>", columnas_al_ancho, doc2, flags=re.S)
-    nuevos = con_encabezado(zin, doc2, version)
+    nuevos = con_encabezado(zin, doc2, version, titulo)
     with zipfile.ZipFile(salida, "w", zipfile.ZIP_DEFLATED) as zout:
         for nombre_p, data in nuevos.items():
             if nombre_p.startswith("word/header") or nombre_p.startswith("word/footer"):
