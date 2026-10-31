@@ -20,7 +20,7 @@ opera sobre su distribuidora y el super admin elige con `X-Distributor` (sin él
 Las rutas fijas `dispatch`, `scheduled_tasks` y `express_dispatch` se resuelven primero. Los parámetros de la compra express
 (recargo, radio, horario, tiempos) son de `/module-config/express_dispatch` y están en `EXPRESS-REINTEGROS.md`.
 
-`PUT` **reemplaza**: se guarda sólo lo que viene, lo que falta se lee con su valor por omisión y `{}` restablece todo (la misma convención que el despacho, CU-171, y el panel). Los valores los leen los módulos M2 a M5 cuando se construyan: hoy sólo se guardan y validan.
+`PUT` **reemplaza**: se guarda sólo lo que viene, lo que falta se lee con su valor por omisión y `{}` restablece todo (la misma convención que el despacho, CU-171, y el panel). Los leen los módulos inteligentes ya construidos: M2 ([PLANIFICADOR-FLOTA.md](PLANIFICADOR-FLOTA.md)), M3 ([RECOMPRA.md](RECOMPRA.md)) y M5 ([RECUPERO-ENVASES.md](RECUPERO-ENVASES.md)); cada página lista sus parámetros con rango y valor por omisión. M3 y M5 vienen apagados por omisión (`enabled` en 0) y no hacen nada hasta que la distribuidora los enciende.
 Se valida con el esquema del proceso (`src/distributor/process-config.ts`); un campo desconocido, de otro tipo, decimal en un entero,
 fuera de rango o una regla cruzada incumplida responde **400** con el campo
 (`anticipationDays: tiene que ser un entero entre 1 y 30`, `property invento should not exist`).

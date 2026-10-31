@@ -22,6 +22,8 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/BANDEJA-ADMIN.md` | Bandeja de notificaciones del admin: avisos guardados, en vivo y por mail; API v2 y panel |
 | `back/SEGUROS.md` | Seguros de los vehículos: aseguradoras, póliza y cuotas, pago con egreso en Caja, Flota y avisos |
 | `back/PLANIFICADOR-FLOTA.md` | Planificador de taller (M2, CU-105): uso real, pronóstico, ventanas propuestas al chofer, cobertura de zona y escalamiento |
+| `back/RECOMPRA.md` | Recompra anticipada (M3, CU-106, CU-145 y CU-146): fecha estimada por cliente, invitación con el pedido armado, aceptar o descartar, estadísticas y parámetros |
+| `back/RECUPERO-ENVASES.md` | Recupero de envases no devueltos (M5, CU-108): casos, escalones de aviso, retiro en la próxima entrega, escalamiento y decisión del administrador |
 | `back/AUDITORIA.md` | Auditoría |
 | `back/CARRITO-Y-CONSUMO.md` | Carrito persistente y consumo declarado (C-12 y C-13) |
 | `back/CATALOGO.md` | Productos dados de baja y reactivación |
