@@ -41,6 +41,8 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 | `back/STOCK.md` | Stock físico |
 | `back/TRANSFERENCIAS.md` | Pago por transferencia con comprobante y datos bancarios (API v2) |
 | `back/VALIDACIONES-BASE.md` | Validaciones en la base (tanda V1) |
+| `back/TRANSACCIONES.md` | Transacciones, triggers y procedimientos en la base |
+| `back/MERCADOPAGO-CUENTAS.md` | Cuenta de Mercado Pago por distribuidora (API v2) |
 | `back/VIGENCIA-ENVASES.md` | Vigencia de envases (C-11) |
 
 ## Backend: convenciones, tests y scripts
