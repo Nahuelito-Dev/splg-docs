@@ -5,6 +5,12 @@ documentación, y no en los repositorios de código. Los `AGENTS.md`, `CLAUDE.md
 `CONVENCIONES.md` y `README.md` de cada repo de código, el `legal/` de las apps, `test/README.md`
 y los `scripts/**/LEEME.md` se quedan en su repo.
 
+## Novedades de la versión 2
+
+| Archivo | Tema |
+|---|---|
+| `NOVEDADES-V2.md` | Novedades de la versión 2 para la cátedra, organizadas por área funcional |
+
 ## Backend (`back/`)
 
 Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10/2026). Desde entonces se mantienen acá: el back ya no tiene carpeta `docs/`.

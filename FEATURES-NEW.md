@@ -41,7 +41,7 @@ documentación.
 | F17 | M3 — Recompra | ⚪ Pendiente | 0 % | |
 | F18 | M4 — Agrupación por recorrido | ⚪ Pendiente | 0 % | |
 | F19 | M5 — Recupero de envases | ⚪ Pendiente | 0 % | |
-| F20 | Documentación de la v2 y página «Novedades de la v2» | 🟡 En desarrollo | 30 % | |
+| F20 | Documentación de la v2 y página «Novedades de la v2» | 🟢 Hecho y testeado | 100 % | Página «Novedades de la versión 2» para la cátedra (`sistema/NOVEDADES-V2.md`, menú «Novedades v2» del sitio; sólo en las versiones que la tienen) + la doc técnica de cada novedad en `sistema/back/`. Redactada con Gemini y corregida por Claude contra el panel real |
 | F21 | Colección de Postman de la v2 | ⚪ Pendiente | 0 % | |
 | F22 | Capturas reales de las apps en la documentación | ⚪ Pendiente | 0 % | |
 | F23 | Telegram: avisos de seguridad para el dueño del sistema | ⚪ Pendiente | 0 % | Definido por nahue el 30/10: avisos de seguridad para el dueño del sistema por Telegram — accesos (ingresos, ingresos fallidos, quién accedió), registros de la auditoría, compras, pagos, ingresos y egresos de caja |

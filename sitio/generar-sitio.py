@@ -560,6 +560,21 @@ def _modelo_de_datos():
     return {"titulo": "Modelo de datos", "html": intro + a["html"] + '<h2 class="sec">Diccionario de datos</h2>' + html_b,
             "mermaid": a["mermaid"] + b["mermaid"]}
 
+def _novedades():
+    txt = open(D + "sistema/NOVEDADES-V2.md", encoding="utf-8").read()
+    lineas = txt.split("\n")
+    if lineas and lineas[0].startswith("# "):
+        cuerpo = "\n".join(lineas[1:]).strip()
+    else:
+        cuerpo = txt
+    txt_web = re.sub(r'\[([^\]]+)\]\((back/[^)]+)\)', r'<code>\2</code>', cuerpo)
+    res = md2html(txt_web)
+    intro = ('<div class="intro"><h1>Novedades de la versión 2</h1>'
+             '<p>Funcionalidades incorporadas al sistema con posterioridad a la versión 1 congelada el 24/10/2026. '
+             'Todas las nuevas capacidades se implementaron en la API v2 (<code>/api/v2</code>) '
+             'preservando compatibilidad plena.</p></div>')
+    return {"titulo": "Novedades de la versión 2", "html": intro + res["html"], "mermaid": res.get("mermaid", [])}
+
 datos["paginas"] = {
     "datos": _modelo_de_datos(),
     "diagramas": _diagramas(),
@@ -574,8 +589,18 @@ datos["paginas"] = {
 }
 
 # FEATURES-NEW.md es el seguimiento interno del equipo (estado y avance de cada F): no va al sitio de la
-# cátedra. Las novedades de la v2 se cuentan en su propia página (F20).
+# cátedra. Las novedades de la v2 se cuentan en su propia página.
+# Sólo las versiones que tienen la página (la v1 congelada se arma sin ella ni su entrada en el menú).
 NAV_FEATURES_ARRIBA = NAV_FEATURES_LADO = ""
+if os.path.exists(D + "sistema/NOVEDADES-V2.md"):
+    datos["paginas"]["novedades"] = _novedades()
+    NAV_FEATURES_ARRIBA = '<a class="menu-link" href="#novedades" data-nav-hash="novedades">Novedades v2</a>'
+    NAV_FEATURES_LADO = (
+        '<div class="grupo-menu">'
+        '<p class="rotulo-grupo">Versión 2</p>'
+        '<button type="button" class="seccion" data-pag="novedades"><span class="nombre">Novedades de la v2</span></button>'
+        '</div>'
+    )
 
 marcas = {a: marca_de(a) for a in ("visor.js", "visor.css")}
 
