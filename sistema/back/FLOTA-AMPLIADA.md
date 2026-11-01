@@ -186,6 +186,7 @@ chofer (**409**) hasta reactivarlo.
 | ------------------------------------- | ------------------------------------------------------------------ |
 | `GET /cars/:carId/costs?from&to`      | Costo de un vehículo: rubros, km, costo por km y evolución mensual |
 | `GET /fleet/costs?from&to`            | Un renglón por vehículo, de mayor a menor costo por km             |
+| `GET /api/v2/fleet/costs?from&to`     | Igual, más los totales de la flota (`summary`)                     |
 
 `from` y `to` son obligatorios y el rango no pasa de 5 años (**400**). Los cinco rubros, sin
 datos propios (se calculan en cada consulta):
@@ -202,6 +203,16 @@ datos propios (se calculan en cada consulta):
 kilometraje entre las cargas del rango (`kmSource`: `usage_log`, `odometer` o `none`).
 `costPerKm` es `null` sin km. El tablero toma los vehículos no dados de baja de la distribuidora y
 ordena por `costPerKm` descendente, los de `null` al final (por `total`).
+
+### Totales del tablero (API v2)
+
+`GET /api/v2/fleet/costs?from&to` devuelve `{ from, to, summary, vehicles }`: `vehicles` son los mismos renglones de la v1 y
+`summary` los totales que antes sumaba el panel (`resumirTablero`, en `domain/vehicle-cost.ts`): `vehicles` (cantidad),
+`maintenance`, `insurance`, `fuel`, `fines`, `accidents` y `total` (suma de los vehículos, con o sin km), `km` (suma de los
+vehículos que tienen km), `costPerKm` y `withoutKm`. **El costo por km de la flota sólo cuenta los vehículos con km**
+(costo de esos vehículos ÷ sus km, a 2 decimales; `null` si ninguno tiene km): sumar el costo de uno sin km y dividirlo
+por los km de los demás inflaría el promedio, y `withoutKm` los informa aparte. La v1 sigue devolviendo la lista sola
+(congelada); el panel usa la v2. Mismos límites de rango (400).
 
 ## Neumáticos (CU-205, CU-206; opcional)
 

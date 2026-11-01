@@ -119,6 +119,7 @@ deadlocks (`withTransactionRetry` no tiene que haber reintentado).
 | POST / GET                                | `/cash-boxes/:id/sessions`                                       | 226                                                                     | 409 ya abierta · 400 no exige sesión o monto negativo                                                                     |
 | GET                                       | `/cash-sessions/:id`                                             | 227                                                                     | 404                                                                                                                       |
 | PATCH                                     | `/cash-sessions/:id/close`                                       | 227                                                                     | 409 ya cerrada · 400 contado negativo                                                                                     |
+| POST                                      | `/api/v2/cash-sessions/:id/close-preview`                        | 227                                                                     | 409 ya cerrada · 404 · 400 contado negativo o con más de 2 decimales                                                      |
 | GET / POST                                | `/cash-movements`                                                | 340 / 228, 309                                                          | 409 sin sesión o saldo insuficiente · 400 categoría de otro sentido o importe ≤ 0 · 422 clave de idempotencia reutilizada |
 | POST                                      | `/cash-movements/transfer`                                       | 310                                                                     | 400 mismo origen y destino · 409 saldo/sesión                                                                             |
 | POST                                      | `/cash-movements/:id/reverse`                                    | 229                                                                     | 409 ya anulado, es anulación o deja efectivo negativo · 400 sin motivo o no es manual                                     |
@@ -315,6 +316,16 @@ Finanzas → «Cajas de cobro».
 - Si Mercado Pago reintegra la comisión en una devolución total, lo detecta la conciliación (abajo) como «Reintegro de
   Mercado Pago».
 
+## Diferencia del cierre de caja: la calcula el back (API v2)
+
+`POST /api/v2/cash-sessions/:id/close-preview` con `{ countedAmount }` (0 o más, hasta 2 decimales; admin o super admin) devuelve
+`{ openingAmount, totalIn, totalOut, expectedAmount, countedAmount, difference }`. Es la misma cuenta que guarda
+`PATCH /cash-sessions/:id/close` (`CashSessionService.arqueoDe`: esperado = apertura + entradas − salidas de la sesión, sin el
+ajuste de apertura; diferencia = contado − esperado, negativa es faltante) y no escribe nada ni bloquea la caja. 409 si la
+sesión ya está cerrada, 404 si no existe o es de otra distribuidora. El panel (cerrar caja) la pide con debounce y descarta
+las respuestas de un importe viejo; si la consulta falla o el importe es ilegible no muestra diferencia, y el cierre sigue
+funcionando porque el back la vuelve a calcular al guardar.
+
 ## Conciliación de la caja de Mercado Pago (API v2)
 
 Mercado Pago no entrega un comprobante por pago, pero sí el **reporte de liberaciones** de la cuenta: cada movimiento con
@@ -340,6 +351,9 @@ Diferencias que encuentra y qué asienta «Aplicar» (en la caja de Mercado Pago
 | Impuesto suelto de la cuenta | egreso «Impuestos y retenciones» (o ingreso si es una devolución del impuesto) |
 | Importe distinto, ingreso que el reporte no trae, cobro desconocido, otros movimientos | informativos (el libro es de sólo agregar: se corrigen a mano) |
 
+- **Totales del resumen (`summary`):** además de las cantidades por tipo (`differences`), el back manda `differenceCount`
+  (el total de diferencias) y `netGap` (neto de Mercado Pago − neto de la caja del rango; negativo: la caja tiene más), para
+  que el panel no sume nada. Son campos nuevos de una respuesta que ya era v2: los clientes que no los leen no se enteran.
 - **Una cuenta para todo el sistema:** las credenciales de Mercado Pago son globales. Cada corrida compara sólo con los
   pagos de su distribuidora; lo que no es de ninguna (retiros, impuestos sueltos, cobros desconocidos) lo ve y lo asienta
   sólo el super admin, **una sola vez en todo el sistema**, indicando la distribuidora (`distributorId`). El admin no ve
