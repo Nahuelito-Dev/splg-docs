@@ -301,7 +301,8 @@ No escribe nada.
       "title": "Garrafa 10kg",
       "quantity": 3,
       "unitPrice": 8500,
-      "subtotal": 25500
+      "subtotal": 25500,
+      "discountPercentage": 5
     }
   ],
   "subtotal": 25500,
@@ -320,6 +321,9 @@ No escribe nada.
   "balance": 28050
 }
 ```
+
+`discountPercentage` es el porcentaje de la promoción por volumen que se aplicó al renglón (`null` si se cotizó a precio de
+lista). Las apps lo muestran como insignia; no lo usan para calcular nada.
 
 `paymentSurcharge` es el +10% de `mercadopago` y `transfer` sobre **subtotal + recargo de zona**
 (0 en `cash`). `total` es el del pedido que se crea con el mismo cuerpo; `balance = total −

@@ -22,3 +22,12 @@ Es una operación propia: enviar `isActive` en `PATCH /gascylinder/:id` se recha
 
 El `type` es único por distribuidora **incluyendo los inactivos**, así que un producto dado de baja no puede quedar duplicado por uno
 activo nuevo y reactivar nunca choca con la unicidad.
+
+
+## Precio de cada promoción (`unitPrice`)
+
+Cada promoción del catálogo trae su precio unitario ya calculado: `GET /gascylinder` (`promotions[]` de cada producto) y el
+catálogo público (`GET /public/distributors/:slug/catalog`) devuelven `{ quantity, discountPercentage, unitPrice }`. El `unitPrice`
+sale de `OrderPricingService.priceItem` con la cantidad umbral de la promoción: es el mismo precio unitario que cobra
+`POST /orders/quote` y `POST /orders` para esa cantidad (precio de lista menos el porcentaje, redondeado a centavos, mitad hacia
+arriba). Las apps y el panel lo muestran tal cual; no calculan precios. Es un campo agregado: no rompe a los clientes de la v1.
