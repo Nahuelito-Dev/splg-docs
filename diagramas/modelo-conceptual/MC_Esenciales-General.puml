@@ -1,0 +1,160 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam packageStyle rectangle
+hide circle
+hide methods
+hide empty members
+
+skinparam nodesep 18
+skinparam ranksep 35
+class Distribuidora
+class Usuario
+class Rol
+class Administrador
+class ConfiguracionModulo
+class AsientoAuditoria
+class Auditoria
+class DetalleAuditoria
+class TipoAccionAuditoria
+class Cliente
+class DireccionEntrega
+class InvitacionRecompra
+class ItemSugerido
+class Producto
+class Promocion
+class Envase
+class MovimientoEnvase
+class CasoRecupero
+class AvisoRecupero
+class Carrito
+class ItemCarrito
+class Pedido
+class ItemPedido
+class CambioEstadoPedido
+class ZonaCobertura
+class FranjaHoraria
+class Pago
+class ReintegroDePago
+abstract class PropuestaConVigencia
+class OfertaDespacho
+class LoteRecorrido
+class ParadaLote
+class OfertaLote
+class Chofer
+class Vehiculo
+class AsignacionVehiculo
+class PlanMantenimiento
+class TareaMantenimiento
+class PropuestaVentanaTaller
+class UbicacionGPS
+class RegistroUsoVehiculo
+class Reclamo
+class Empleado
+class Deposito
+class UbicacionDeStock
+class SaldoDeStock
+class MovimientoDeStock
+class CargaDeCamion
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Usuario <|-- Chofer
+Usuario <|-- Administrador
+PropuestaConVigencia <|-- OfertaDespacho : {disjoint, complete}
+PropuestaConVigencia <|-- OfertaLote
+PropuestaConVigencia <|-- PropuestaVentanaTaller
+PropuestaConVigencia <|-- InvitacionRecompra
+PropuestaConVigencia <|-- AvisoRecupero
+
+Usuario "0..*" -- "0..1" Rol : tiene asignado >
+Distribuidora "1" -- "0..*" Chofer : emplea >
+Distribuidora "0..1" -- "0..*" Administrador : emplea >
+Distribuidora "1" -- "0..*" Empleado : emplea >
+Distribuidora "1" -- "0..*" Producto : comercializa >
+Distribuidora "1" -- "0..*" Envase : posee >
+Distribuidora "1" -- "0..*" Pedido : gestiona >
+Distribuidora "1" *-- "0..*" ZonaCobertura : define >
+Distribuidora "1" *-- "0..*" FranjaHoraria : define >
+Distribuidora "1" *-- "0..*" ConfiguracionModulo : parametriza >
+Usuario "0..1" -- "0..*" AsientoAuditoria : origina >
+Distribuidora "0..1" -- "0..*" Auditoria : delimita >
+Auditoria "1" *-- "0..*" DetalleAuditoria : detalla con >
+TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica >
+Cliente "1" *-- "0..*" DireccionEntrega : registra >
+Cliente "1" -- "0..*" Pedido : realiza >
+Cliente "1" *-- "0..*" Carrito : arma >
+Cliente "1" -- "0..*" InvitacionRecompra : recibe >
+Cliente "0..*" -- "0..1" Producto : usa habitualmente >
+InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en >
+InvitacionRecompra "1" *-- "1..*" ItemSugerido : sugiere >
+InvitacionRecompra "0..*" -- "0..1" DireccionEntrega : sugiere entregar en >
+ItemSugerido "0..*" -- "1" Producto : corresponde a >
+Carrito "1" *-- "0..*" ItemCarrito : contiene >
+ItemCarrito "0..*" -- "1" Producto : corresponde a >
+Pedido "1" *-- "1..*" ItemPedido : contiene >
+ItemPedido "0..*" -- "1" Producto : corresponde a >
+Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
+Pedido "0..*" -- "0..1" FranjaHoraria : se programa en >
+Pedido "0..*" -- "0..1" ZonaCobertura : aplica el recargo de >
+Pedido "0..*" -- "0..1" Vehiculo : se entrega con >
+Pedido "1" *-- "0..*" CambioEstadoPedido : registra >
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de >
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de >
+Chofer "0..1" -- "0..*" Pedido : entrega >
+Pedido "1" -- "0..*" Pago : se salda con >
+Pago "1" -- "0..*" ReintegroDePago : se devuelve con >
+ReintegroDePago "0..*" -- "1" Pedido : devuelve el cobro de >
+Pedido "1" *-- "0..*" OfertaDespacho : genera >
+OfertaDespacho "0..*" -- "1" Chofer : se dirige a >
+LoteRecorrido "1" *-- "1..*" ParadaLote : se compone de >
+ParadaLote "0..*" -- "1" Pedido : atiende >
+LoteRecorrido "1" *-- "0..*" OfertaLote : genera >
+OfertaLote "0..*" -- "1" Chofer : se dirige a >
+Chofer "0..1" -- "0..*" LoteRecorrido : acepta >
+Chofer "1" -- "0..*" Vehiculo : tiene registrado >
+Chofer "0..*" -- "0..*" Vehiculo : usa >
+Chofer "1" -- "0..1" UbicacionGPS : se ubica en >
+PlanMantenimiento "1" -- "0..*" TareaMantenimiento : genera >
+TareaMantenimiento "0..*" -- "0..1" Vehiculo : habilita >
+TareaMantenimiento "0..*" -- "0..1" Chofer : habilita >
+TareaMantenimiento "1" *-- "0..*" PropuestaVentanaTaller : origina >
+PropuestaVentanaTaller "0..*" -- "1" Chofer : se dirige a >
+Vehiculo "1" *-- "0..*" RegistroUsoVehiculo : acumula >
+Producto "1" *-- "0..*" Promocion : ofrece >
+Producto "0..1" -- "0..*" Envase : describe >
+Envase "1" *-- "0..*" MovimientoEnvase : registra >
+Pedido "0..1" -- "0..*" MovimientoEnvase : origina >
+Cliente "0..1" -- "0..*" Envase : tiene en su poder >
+Pedido "0..1" -- "0..*" Envase : despacha >
+Envase "1" -- "0..*" CasoRecupero : motiva >
+CasoRecupero "0..*" -- "1" Cliente : se abre contra >
+CasoRecupero "1" *-- "0..*" AvisoRecupero : emite >
+Empleado "0..1" -- "0..1" Usuario : accede con >
+TareaMantenimiento "0..*" -- "0..1" Empleado : habilita >
+Pedido "1" -- "0..*" Reclamo : origina >
+Cliente "1" -- "0..*" Reclamo : presenta >
+Distribuidora "1" -- "0..*" Deposito : dispone de >
+Deposito "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+Vehiculo "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+UbicacionDeStock "1" *-- "0..*" SaldoDeStock : acumula >
+SaldoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en >
+MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock : corrige a >
+Vehiculo "1" -- "0..*" CargaDeCamion : transporta >
+Chofer "1" -- "0..*" CargaDeCamion : reparte con >
+CargaDeCamion "0..*" -- "1" UbicacionDeStock : parte de >
+Usuario "1" -- "0..*" CargaDeCamion : abre >
+Usuario "0..1" -- "0..*" CargaDeCamion : cierra >
+Empleado "0..1" -- "0..*" CargaDeCamion : ayuda en >
+Empleado "0..1" -- "0..1" Chofer : actúa como >
+(Chofer, Vehiculo) .. AsignacionVehiculo
+
+legend bottom right
+  Vista de conjunto: sin atributos (están en la vista de cada área). Se omiten las
+  asociaciones de Usuario que solo registran la autoría de un hecho;
+  figuran en la vista de su área.
+endlegend
+@enduml

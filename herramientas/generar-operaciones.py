@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""Rehace el catálogo de operaciones del Documento 2 (§2.2) y la sección de Operaciones del
-documento de Diseño (§4.24).
+"""Rehace la sección de Operaciones del documento de Diseño (§4.24).
 
     python3 herramientas/generar-operaciones.py
 
 La plantilla de la cátedra pide, junto al diagrama de interacción, la lista de
 operaciones del sistema con su firma. La fuente es el catálogo canónico de
-`catedra/material-de-trabajo/operaciones-sistema.json`, el mismo que el Documento 2 §2.2
-publica y que `verificar-conformidad.py` cruza contra los diagramas de secuencia y
+`catedra/material-de-trabajo/operaciones-sistema.json`, que `verificar-conformidad.py` cruza contra los diagramas de secuencia y
 los contratos: no se escribe a mano.
 """
 import re, glob, os, json
@@ -52,20 +50,3 @@ ini = d.index("### 4.24 Operaciones del sistema")
 fin = min(x for x in (d.find("\n### ", ini + 5), d.find("\n## ", ini + 5), d.find("\n<!-- ", ini + 5)) if x != -1)
 open(DOC + "3-Diseño.md", "w", encoding="utf-8").write(d[:ini] + texto + d[fin:])
 print(f"§4.24: {len(filas)} operaciones | {c_dsd} con diagrama | {c_con} con contrato")
-
-# Documento 2 §2.2: el catálogo, con el recuento de operaciones y de contratos
-c_con2 = sum(1 for o in ops if o["cambiaEstado"])
-a2 = open(DOC + "2-Analisis.md", encoding="utf-8").read()
-ini2 = a2.index("#### Catálogo de operaciones del sistema")
-frase = re.compile(r"Son \*\*\d+ operaciones\*\*\. \*\*\d+\*\* modifican el modelo conceptual y tienen contrato; las \*\*\d+\*\* restantes")
-m = frase.search(a2, ini2)
-tabla_ini = a2.index("| Operación | Casos de uso | Actor iniciador | Cambia estado |", ini2)
-tabla_fin = a2.index("\n\n", tabla_ini)
-filas2 = ["| Operación | Casos de uso | Actor iniciador | Cambia estado |", "|---|---|---|---|"]
-filas2 += [f"| `{o['firmaConTipos']}` | {', '.join(o['casosDeUso'])} | {quien(o)} | "
-           f"{'Sí' if o['cambiaEstado'] else 'No'} |" for o, _ in filas]
-nueva = (f"Son **{len(ops)} operaciones**. **{c_con2}** modifican el modelo conceptual y tienen contrato; "
-         f"las **{len(ops) - c_con2}** restantes")
-a2 = a2[:m.start()] + nueva + a2[m.end():tabla_ini] + "\n".join(filas2) + a2[tabla_fin:]
-open(DOC + "2-Analisis.md", "w", encoding="utf-8").write(a2)
-print(f"Doc 2 §2.2: {len(ops)} operaciones | {c_con2} con contrato")

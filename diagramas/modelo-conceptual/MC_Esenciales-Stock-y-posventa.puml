@@ -1,0 +1,111 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam packageStyle rectangle
+hide circle
+hide methods
+hide empty members
+
+class Empleado {
+  legajo
+  nombre
+  apellido
+  documento
+  CUIL
+  fecha de nacimiento
+  domicilio
+  teléfono
+  contacto de emergencia
+  fecha de ingreso
+  fecha de egreso
+  motivo de egreso
+  modalidad de contratación
+  estado
+}
+class Reclamo {
+  motivo
+  descripción
+  estado
+  resolución
+  fotografía
+}
+class Deposito {
+  nombre
+  código
+  tipo
+  dirección
+  predeterminado
+  activo
+}
+class UbicacionDeStock {
+  tipo
+}
+class SaldoDeStock {
+  condición
+  cantidad
+}
+class MovimientoDeStock {
+  cantidad
+  condición de origen
+  condición de destino
+  motivo
+  documento de origen
+  observación
+  fecha
+}
+class CargaDeCamion {
+  número
+  día
+  estado
+  abierta el
+  salió el
+  regresó el
+  cerrada el
+  nota de diferencia
+  motivo de cancelación
+  notas
+}
+class Distribuidora #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+class TareaMantenimiento #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+class Pedido #F1F1F1;line:8A97A3;text:55616C
+class Cliente #F1F1F1;line:8A97A3;text:55616C
+class Producto #F1F1F1;line:8A97A3;text:55616C
+class Vehiculo #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+class Distribuidora #F1F1F1;line:8A97A3;text:55616C
+class Vehiculo #F1F1F1;line:8A97A3;text:55616C
+class Chofer #F1F1F1;line:8A97A3;text:55616C
+class Producto #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+
+
+Distribuidora "1" -- "0..*" Empleado : emplea >
+Empleado "0..1" -- "0..1" Usuario : accede con >
+TareaMantenimiento "0..*" -- "0..1" Empleado : habilita >
+Pedido "1" -- "0..*" Reclamo : origina >
+Cliente "1" -- "0..*" Reclamo : presenta >
+Distribuidora "1" -- "0..*" Deposito : dispone de >
+Deposito "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+Vehiculo "1" -- "0..1" UbicacionDeStock : se registra como {xor} >
+UbicacionDeStock "1" *-- "0..*" SaldoDeStock : acumula >
+SaldoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "1" Producto : corresponde a >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : sale de >
+MovimientoDeStock "0..*" -- "0..1" UbicacionDeStock : entra en >
+Usuario "0..1" -- "0..*" MovimientoDeStock : ejecuta >
+MovimientoDeStock "0..1" -- "0..1" MovimientoDeStock : corrige a >
+Vehiculo "1" -- "0..*" CargaDeCamion : transporta >
+Chofer "1" -- "0..*" CargaDeCamion : reparte con >
+CargaDeCamion "0..*" -- "1" UbicacionDeStock : parte de >
+Usuario "1" -- "0..*" CargaDeCamion : abre >
+Usuario "0..1" -- "0..*" CargaDeCamion : cierra >
+Empleado "0..1" -- "0..*" CargaDeCamion : ayuda en >
+Empleado "0..1" -- "0..1" Chofer : actúa como >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

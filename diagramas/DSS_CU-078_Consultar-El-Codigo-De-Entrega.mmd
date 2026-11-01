@@ -6,13 +6,18 @@ sequenceDiagram
 
     CHO->>SIS: obtenerCodigoDeEntrega(pedidoId)
     activate SIS
-    alt el pedido está asignado a este chofer y ya fue aceptado
+    alt El pedido está asignado a este chofer y ya fue aceptado
         SIS-->>CHO: código de entrega (para mostrarlo como QR al cliente)
-    else el pedido no está asignado a este chofer
-        SIS-->>CHO: acceso denegado
-    else el pedido todavía no fue aceptado
-        SIS-->>CHO: error de solicitud (el pedido aún no tiene código)
-    else el pedido no existe o es de otra distribuidora
+    else El identificador del pedido no es válido
+        SIS-->>CHO: error de solicitud
+    else El pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else El pedido no está asignado a este chofer
+        SIS-->>CHO: acceso denegado (el pedido no está asignado a este usuario)
+    else El pedido todavía no fue aceptado
+        SIS-->>CHO: error de solicitud (el pedido aún no tiene código de entrega)
+    else Quien consulta es un cliente
+        SIS-->>CHO: acceso denegado (el cliente nunca conoce el código por el sistema)
     end
     deactivate SIS
+    Note over CHO,SIS: También lo inicia el Administrador (ACT-03). El código no se regenera:<br/>es siempre el mismo mientras el pedido no cambie de chofer

@@ -121,9 +121,25 @@ def escribir(nombre, texto):
     open(SAL + nombre + ".puml", "w", encoding="utf-8").write(texto + "\n")
 
 # ------------------------------------------------------------------ las vistas
+from cu_esenciales import CONCEPTOS_ESENCIALES
+ESEN = set(CONCEPTOS_ESENCIALES)
 todas = list(CLASES)
 escribir("MC_General", vista("Modelo conceptual", todas, [], detalle=False, paquetes=True))
 for titulo, archivo, foco, ref in VISTAS:
+    escribir(archivo, vista(titulo, foco, ref))
+
+# Documento 2: el mismo modelo recortado a los conceptos de los casos de uso esenciales
+AREAS_ESEN = [("Usuarios y cuentas", "MC_Esenciales-Usuarios-y-cuentas", ["Usuarios y cuentas"]),
+              ("Pedidos y pagos", "MC_Esenciales-Pedidos", ["Pedidos y pagos"]),
+              ("Despacho y propuestas con vigencia", "MC_Esenciales-Despacho", ["Despacho y propuestas con vigencia"]),
+              ("Flota y choferes", "MC_Esenciales-Flota", ["Flota y choferes"]),
+              ("Envases y catálogo", "MC_Esenciales-Envases", ["Envases y catálogo"]),
+              ("Stock, carga del camión y posventa", "MC_Esenciales-Stock-y-posventa",
+               ["Stock físico", "Carga del camión", "Posventa", "Personal"])]
+escribir("MC_Esenciales-General", vista("Modelo conceptual", [c for c in CLASES if c in ESEN], [], detalle=False, paquetes=True))
+for titulo, archivo, origen in AREAS_ESEN:
+    foco = [c for v in VISTAS if v[0] in origen for c in v[2] if c in ESEN]
+    ref = [c for v in VISTAS if v[0] in origen for c in v[3] if c in ESEN and c not in foco]
     escribir(archivo, vista(titulo, foco, ref))
 
 # ----------------------------------------------------- tabla de relaciones (Doc 2)
@@ -148,7 +164,7 @@ print(f"  ✓ {len(CLASES)} conceptos, {len(ASOCIACIONES)} asociaciones, {n_gen}
 
 # ------------------------------------------------------------------- render
 entorno = dict(os.environ, PLANTUML_LIMIT_SIZE="32768")
-nombres = ["MC_General"] + [v[1] for v in VISTAS]
+nombres = ["MC_General"] + [v[1] for v in VISTAS] + ["MC_Esenciales-General"] + [a[1] for a in AREAS_ESEN]
 for n in nombres:
     for fmt in ("png", "svg"):
         r = subprocess.run(["plantuml", "-t" + fmt, "-charset", "UTF-8", SAL + n + ".puml"],

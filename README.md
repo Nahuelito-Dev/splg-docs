@@ -50,7 +50,7 @@ Los links de `documentos/*.md` a las imágenes son relativos a esa carpeta (`../
 | **0** | `0-Plan_Del_Proyecto.md` | Fases, hitos, cronograma, actores y los 338 casos de uso de alto nivel |
 | **0.1** | `0.1-Planificacion_Iteraciones.md` | Qué se hace en cada iteración |
 | **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 338 casos de uso expandidos |
-| **2** | `2-Analisis.md` | Modelo conceptual, los 338 diagramas de secuencia, el catálogo de operaciones y sus contratos |
+| **2** | `2-Analisis.md` | Modelo conceptual de los 21 casos esenciales, diagramas de secuencia de los diez casos con interacción del actor, contratos de sus operaciones y glosario |
 | **3** | `3-Diseño.md` | Arquitectura, casos de uso reales, los diagramas de interacción y los módulos inteligentes |
 
 ## El documento de consulta

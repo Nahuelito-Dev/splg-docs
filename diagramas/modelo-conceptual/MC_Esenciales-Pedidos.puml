@@ -1,0 +1,119 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam packageStyle rectangle
+hide circle
+hide methods
+hide empty members
+
+class Pedido {
+  estado
+  /total
+  modalidad de entrega
+  fecha agendada
+  método de pago
+  seña
+  código de entrega
+  nombre de quien recibe
+  documento de quien recibe
+  vínculo con quien recibe
+  estado del cobro
+  cobro confirmado el
+  cobro resuelto el
+  nota de resolución del cobro
+  subtotal de ítems
+  recargo de zona
+  recargo por medio de pago
+  recargo express
+  seña pagada
+  aceptado el
+  nombre de la zona aplicada
+  patente del vehículo
+  marca del vehículo
+  modelo del vehículo
+}
+class ItemPedido {
+  cantidad
+  precio unitario
+  /subtotal
+}
+class Carrito {
+  última modificación
+}
+class ItemCarrito {
+  cantidad
+  precio unitario
+}
+class CambioEstadoPedido {
+  desde
+  hacia
+  motivo
+  fecha
+}
+class ZonaCobertura {
+  nombre
+  área
+  recargo
+  tipo de recargo
+  prioridad
+  vigente desde
+  vigente hasta
+  activa
+}
+class FranjaHoraria {
+  desde
+  hasta
+  cupo
+  activa
+}
+class Pago {
+  importe
+  pasarela
+  estado
+  es seña
+  fecha
+}
+class ReintegroDePago {
+  tipo
+  importe
+  estado
+  intentos
+  reintegrado el
+  referencia en la pasarela
+  mensaje de error
+  devuelto antes del intento
+}
+class Cliente #F1F1F1;line:8A97A3;text:55616C
+class Chofer #F1F1F1;line:8A97A3;text:55616C
+class Producto #F1F1F1;line:8A97A3;text:55616C
+class DireccionEntrega #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+class Distribuidora #F1F1F1;line:8A97A3;text:55616C
+
+
+Distribuidora "1" -- "0..*" Pedido : gestiona >
+Distribuidora "1" *-- "0..*" ZonaCobertura : define >
+Distribuidora "1" *-- "0..*" FranjaHoraria : define >
+Cliente "1" -- "0..*" Pedido : realiza >
+Cliente "1" *-- "0..*" Carrito : arma >
+Carrito "1" *-- "0..*" ItemCarrito : contiene >
+ItemCarrito "0..*" -- "1" Producto : corresponde a >
+Pedido "1" *-- "1..*" ItemPedido : contiene >
+ItemPedido "0..*" -- "1" Producto : corresponde a >
+Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
+Pedido "0..*" -- "0..1" FranjaHoraria : se programa en >
+Pedido "0..*" -- "0..1" ZonaCobertura : aplica el recargo de >
+Pedido "1" *-- "0..*" CambioEstadoPedido : registra >
+Usuario "0..1" -- "0..*" CambioEstadoPedido : efectúa >
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de >
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de >
+Chofer "0..1" -- "0..*" Pedido : entrega >
+Pedido "1" -- "0..*" Pago : se salda con >
+Pago "1" -- "0..*" ReintegroDePago : se devuelve con >
+ReintegroDePago "0..*" -- "1" Pedido : devuelve el cobro de >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

@@ -6,22 +6,29 @@ sequenceDiagram
     actor CLI as Cliente (ACT-01)
     actor CHO as Chofer (ACT-02)
 
-    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
-
+    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido y el cliente paga<br/>en el sitio de la pasarela, fuera del límite del sistema.<br/>El sistema consulta el estado real del pago y nunca confía en el contenido del aviso
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
-    alt La firma no es válida
+    alt La firma no es auténtica o falta la clave configurada
         SIS-->>MP: notificación recibida (se descarta sin procesar)
-    else Pago aprobado de un pedido pendiente
+    else El tipo no es de pago, falta el identificador, o el pago no trae referencia a un pedido
+        SIS-->>MP: notificación recibida (se ignora)
+    else La consulta del pago a la pasarela falla o supera el tiempo de espera
+        SIS-->>MP: notificación recibida (no se toca el pedido)
+    else Pago aprobado de un pedido pendiente por el importe esperado
         SIS-->>MP: notificación recibida
         SIS-)CLI: notificarPagoAcreditado(pedido)
         SIS-)CHO: notificarOferta(pedido)
+    else Pago aprobado que repite un aviso ya procesado
+        SIS-->>MP: notificación recibida (sin efectos nuevos ni nuevos avisos)
     else Pago aprobado de la seña de una reserva
         SIS-->>MP: notificación recibida (la seña queda paga, la reserva no se despacha)
         SIS-)CLI: notificarPagoAcreditado(pedido)
     else Pago aprobado de un pedido ya cancelado o entregado
         SIS-->>MP: notificación recibida (se registra el pago, sin reactivar el pedido)
-    else Pago rechazado o cancelado
-        SIS-->>MP: notificación recibida (el pedido queda a la espera y el Cliente no recibe aviso)
+    else Pago aprobado por un importe distinto del esperado
+        SIS-->>MP: notificación recibida (el pago queda marcado, con alerta, el pedido no se da por pagado)
+    else Pago rechazado o cancelado, o en un estado no definitivo
+        SIS-->>MP: notificación recibida (se registra, el pedido queda a la espera y el cliente no recibe aviso)
     end
     deactivate SIS

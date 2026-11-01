@@ -19185,12 +19185,21 @@ sequenceDiagram
     actor USR as Cliente (ACT-01)
     participant SIS as :Sistema
 
+    Note over USR,SIS: El proveedor de identidad verifica el correo y la contraseña,<br/>el sistema no guarda contraseñas ni emite credenciales propias
     USR->>SIS: iniciarSesion(correo, contrasena)
     activate SIS
-    alt Credenciales validas
-        SIS-->>USR: sesion iniciada (credencial con token de acceso)
-    else Credenciales incorrectas
-        SIS-->>USR: error de solicitud (credenciales invalidas)
+    alt Credenciales correctas, cuenta habilitada y rol propio de la aplicación
+        SIS-->>USR: usuario identificado (datos del usuario y su rol)
+    else Correo o contraseña incorrectos, o el usuario no existe
+        SIS-->>USR: ingreso rechazado (credenciales inválidas)
+    else Error de red
+        SIS-->>USR: error (sin conexión a internet)
+    else La cuenta está bloqueada
+        SIS-->>USR: acceso denegado (la cuenta está bloqueada)
+    else El usuario no existe en el sistema o su rol no corresponde a la aplicación
+        SIS-->>USR: acceso denegado
+    else La constancia de identidad venció o fue revocada
+        SIS-->>USR: acceso denegado (se vuelve a pedir el ingreso)
     end
     deactivate SIS
     Note over USR,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)
@@ -19216,14 +19225,17 @@ sequenceDiagram
 
     CLI->>SIS: registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
     activate SIS
-    alt datos válidos y correo y teléfono libres
-        SIS-->>CLI: cuenta creada (usuarioId, perfil de cliente, rol CLIENTE)
-    else correo o teléfono ya registrados
-        SIS-->>CLI: conflicto (el correo o el teléfono ya están en uso)
-    else datos incompletos o con formato inválido
+    alt Datos válidos, y correo y teléfono libres
+        SIS-->>CLI: cuenta creada (usuarioId, perfil de cliente, rol CLIENTE, no abre la sesión)
+        SIS-)CLI: notificarBienvenida(usuario)
+    else Demasiados registros seguidos desde el mismo origen
+        SIS-->>CLI: demasiadas solicitudes (reintentar más tarde)
+    else Datos incompletos, con formato inválido o con campos que no corresponden a un cliente
         SIS-->>CLI: error de validación indicando el campo
-    else demasiadas altas seguidas desde el mismo origen
-        SIS-->>CLI: demasiadas solicitudes (reintentar en un minuto)
+    else El correo o el teléfono ya están registrados
+        SIS-->>CLI: conflicto (email o teléfono ya en uso)
+    else El proveedor de identidad rechaza la cuenta
+        SIS-->>CLI: error de solicitud (motivo del rechazo, no se crea nada)
     end
     deactivate SIS
 ```
@@ -19557,32 +19569,38 @@ sequenceDiagram
     actor MPA as MercadoPago (ACT-06)
     actor FIR as Firebase (ACT-07)
 
-    Note over CLI,SIS: Antes de confirmar, la aplicación cotiza el pedido (ref CU-302)
+    Note over CLI,SIS: Antes de confirmar, la aplicación pide al sistema la cotización del pedido,<br/>que calcula el total con promociones y recargos
     Note over ADM,SIS: El administrador invoca la misma operación a nombre de un cliente (pedido telefónico)
     CLI->>SIS: crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)
     activate SIS
     Note over SIS: Los rechazos se evalúan en este orden: gana el primero que corresponda
-    alt pedido válido
-        opt el pago es por MercadoPago
+    alt Pedido válido
+        opt El pago es por MercadoPago
             SIS-)MPA: notificarSolicitudDeCobro(pedido)
         end
         SIS-)FIR: notificarConfirmacionDePedido(pedido)
         SIS-->>CLI: pedido creado (número, total, estado pendiente y, si el pago es por MercadoPago, enlace de pago)
-        Note over CLI,SIS: El total incluye promociones por volumen,<br/>recargo por medio de pago y recargo de zona
-    else pedido inválido: cliente ajeno, sin ítems, ítems repetidos, fecha pasada o clave reutilizada con otros datos
+        Note over CLI,SIS: El total incluye promociones por volumen, recargo de zona y recargo por pago en línea.<br/>Salvo con MercadoPago, el sistema ofrece el pedido al chofer más cercano
+    else Pedido inválido: sin ítems, ítems repetidos, ítems junto con el carrito, fecha pasada, express con franja o clave reutilizada con otros datos
         SIS-->>CLI: rechazo (solicitud no válida)
-    else pedido inválido: el cliente o la dirección no existen
+    else Cliente ajeno: el cliente pide un pedido a nombre de otro o el administrador no es quien arma el carrito
+        SIS-->>CLI: acceso denegado
+    else El cliente o la dirección no existen
         SIS-->>CLI: rechazo (cliente o dirección no encontrados)
-    else pedido inválido: la dirección está fuera de la zona de cobertura
+    else La dirección está fuera de todas las zonas de cobertura
         SIS-->>CLI: rechazo (domicilio no cubierto)
-    else pedido inválido: la franja no existe, está completa o ya terminó
+    else La modalidad express ya no está disponible para la dirección
+        SIS-->>CLI: rechazo (express no disponible, con el motivo)
+    else La franja no existe, está inactiva, no tiene cupo o ya terminó
         SIS-->>CLI: rechazo (franja no disponible para esa fecha)
-    else pedido inválido: un producto del pedido no existe
+    else Un producto del pedido no existe
         SIS-->>CLI: rechazo (producto no encontrado)
-    else pedido inválido: un producto es de otra distribuidora
+    else Un producto es de otra distribuidora
         SIS-->>CLI: rechazo (producto de otra distribuidora)
-    else pedido inválido: no hay stock suficiente
-        SIS-->>CLI: rechazo (stock insuficiente para el producto)
+    else No hay stock suficiente
+        SIS-->>CLI: rechazo (stock insuficiente para el producto, nada se reserva)
+    else Dos pedidos compiten por el mismo stock y se agotan los reintentos
+        SIS-->>CLI: conflicto (el pedido no se crea)
     end
     deactivate SIS
 ```
@@ -19666,23 +19684,32 @@ sequenceDiagram
     participant SIS as :Sistema
     actor CHO as Chofer (ACT-02)
     actor ADM as Administrador (ACT-03)
+    actor MPA as MercadoPago (ACT-06)
 
     CLI->>SIS: cancelarMiPedido(pedidoId, motivo)
     activate SIS
-    alt El pedido es del cliente y todavía no salió en camino
-        SIS-->>CLI: pedido cancelado (estado CANCELADO, stock restituido)
+    alt El pedido es del cliente, todavía no salió en camino y el motivo es válido
+        SIS-->>CLI: pedido cancelado (estado CANCELADO, stock restituido, motivo registrado)
         opt El pedido ya tenía chofer asignado
             SIS-)CHO: notificarPedidoCancelado(pedido)
         end
+        opt El pedido tenía un pago aprobado por la pasarela
+            SIS-)MPA: notificarSolicitudDeReintegro(pago)
+        end
         SIS-)ADM: notificarPedidoCancelado(pedido)
-    else El pedido es de otro cliente o de otra distribuidora
+    else El pedido no existe, es de otro cliente o de otra distribuidora
         SIS-->>CLI: recurso no encontrado
     else El pedido ya está entregado o cancelado
         SIS-->>CLI: error de solicitud (no se puede cancelar un pedido finalizado)
     else El pedido ya está en camino
         SIS-->>CLI: error de solicitud (contactar al soporte)
+    else El motivo falta, está en blanco o supera los 500 caracteres
+        SIS-->>CLI: error de solicitud (hay que indicar el motivo)
+    else Se repite la misma solicitud con datos distintos
+        SIS-->>CLI: error de validación (la solicitud no se ejecuta)
     end
     deactivate SIS
+    Note over SIS: La identidad y el rol de quien cancela salen siempre de la sesión,<br/>nunca de los datos enviados
 ```
 
 </details>
@@ -20786,24 +20813,32 @@ sequenceDiagram
     actor CHO as Chofer (ACT-02)
     participant SIS as :Sistema
     actor CLI as Cliente (ACT-01)
+    actor ADM as Administrador (ACT-03)
 
     CHO->>SIS: aceptarPedido(pedidoId)
     activate SIS
-    alt La transición de estado es válida y el chofer está activo
+    alt El pedido está pendiente y el chofer puede recibirlo
         SIS-->>CHO: pedido asignado (datos de entrega y código de entrega)
         SIS-)CLI: notificarPedidoAceptado(pedido)
-    else El pedido es de otra distribuidora
+        SIS-)ADM: notificarPedidoAceptado(pedido)
+        Note over SIS: Las ofertas abiertas a los demás choferes se retiran y se les avisa
+    else El pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
     else El pedido ya tiene asignado a otro chofer
         SIS-->>CHO: acceso denegado (el pedido no está asignado a este chofer)
     else El pedido ya está entregado o cancelado
         SIS-->>CHO: error de solicitud (transición no permitida)
+    else Quien acepta no tiene perfil de repartidor o es de otra distribuidora
+        SIS-->>CHO: error de solicitud (repartidor no encontrado)
+    else El chofer está deshabilitado o sin validar
+        SIS-->>CHO: error de solicitud (repartidor deshabilitado o no validado)
+    else El chofer no tiene vehículo en uso, o su licencia o el vehículo tienen documentación vencida
+        SIS-->>CHO: error de solicitud (no se puede asignar, con el motivo)
     else El chofer no puede recibir pedidos por su carga de camión
-        SIS-->>CHO: error de solicitud, con el motivo
-    else El chofer no existe o está dado de baja
-        SIS-->>CHO: error de solicitud (repartidor no encontrado o inactivo)
+        SIS-->>CHO: error de solicitud (con el motivo)
     end
     deactivate SIS
+    Note over CHO,SIS: Si el mismo chofer repite la aceptación, no cambia nada y conserva su código de entrega
 ```
 
 </details>
@@ -21135,16 +21170,21 @@ sequenceDiagram
 
     CHO->>SIS: obtenerCodigoDeEntrega(pedidoId)
     activate SIS
-    alt el pedido está asignado a este chofer y ya fue aceptado
+    alt El pedido está asignado a este chofer y ya fue aceptado
         SIS-->>CHO: código de entrega (para mostrarlo como QR al cliente)
-    else el pedido no está asignado a este chofer
-        SIS-->>CHO: acceso denegado
-    else el pedido todavía no fue aceptado
-        SIS-->>CHO: error de solicitud (el pedido aún no tiene código)
-    else el pedido no existe o es de otra distribuidora
+    else El identificador del pedido no es válido
+        SIS-->>CHO: error de solicitud
+    else El pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
+    else El pedido no está asignado a este chofer
+        SIS-->>CHO: acceso denegado (el pedido no está asignado a este usuario)
+    else El pedido todavía no fue aceptado
+        SIS-->>CHO: error de solicitud (el pedido aún no tiene código de entrega)
+    else Quien consulta es un cliente
+        SIS-->>CHO: acceso denegado (el cliente nunca conoce el código por el sistema)
     end
     deactivate SIS
+    Note over CHO,SIS: También lo inicia el Administrador (ACT-03). El código no se regenera:<br/>es siempre el mismo mientras el pedido no cambie de chofer
 ```
 
 </details>
@@ -21164,20 +21204,31 @@ sequenceDiagram
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
 
     CLI->>SIS: confirmarEntregaConCodigo(pedidoId, codigo, motivo)
     activate SIS
-    alt el código coincide y el pedido está en camino
+    alt El código coincide y el pedido está en camino
         SIS-->>CLI: entrega confirmada (estado ENTREGADO)
-    else el código no coincide
-        SIS-->>CLI: error de solicitud (código inválido)
-    else el pedido no está en camino
+        SIS-)ADM: notificarEntregaConfirmada(pedido)
+        Note over CLI,SIS: Si el pago es en efectivo, sigue pendiente de cobro.<br/>El stock físico y los envases se actualizan sin que un fallo revierta la entrega
+    else El código falta o viene vacío, o se repite el envío con datos distintos
+        SIS-->>CLI: error de validación
+    else El pedido no existe o es de otra distribuidora
+        SIS-->>CLI: recurso no encontrado
+    else El pedido es de otro cliente
+        SIS-->>CLI: acceso denegado (no autorizado a confirmar la entrega de otro cliente)
+    else El pedido ya está entregado
+        SIS-->>CLI: pedido tal cual está (no se reprocesa ni se vuelve a exigir el código)
+    else El pedido está en otro estado distinto de en camino
         SIS-->>CLI: error de solicitud (el pedido no está en camino)
-    else el pedido es de otro cliente
-        SIS-->>CLI: acceso denegado
+    else El código no coincide, o el pedido no tiene código
+        SIS-->>CLI: error de solicitud (código de entrega inválido)
+    else Confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres
+        SIS-->>CLI: error de solicitud (motivo inválido)
     end
     deactivate SIS
-    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda)
+    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda). El Administrador General<br/>indica además la distribuidora
 ```
 
 </details>
@@ -21332,14 +21383,19 @@ sequenceDiagram
 
     ADM->>SIS: resolverReclamo(reclamoId, resolucion, estadoFinal)
     activate SIS
-    alt el reclamo existe y la transición es válida
-        SIS-->>ADM: reclamo resuelto (estado y resolución registrados)
-    else el reclamo no existe
+    alt El reclamo está pendiente o en proceso, el estado final es válido y la nota no está vacía
+        SIS-->>ADM: reclamo resuelto (estado final y nota de resolución registrados)
+    else La nota de resolución falta, está vacía o tiene sólo espacios
+        SIS-->>ADM: error de solicitud (dato obligatorio)
+    else El estado final no es resuelto ni rechazado
+        SIS-->>ADM: error de solicitud (estado final inválido)
+    else El reclamo no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
-    else la transición no es válida (resuelto/rechazado sin reabrir antes)
-        SIS-->>ADM: transición de reclamo inválida
+    else El reclamo ya está resuelto o rechazado, o se repite el estado actual
+        SIS-->>ADM: error de solicitud (transición de reclamo inválida, la nota anterior no se pisa)
     end
     deactivate SIS
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05), que indica la distribuidora.<br/>Un reclamo resuelto o rechazado sólo se modifica reabriéndolo antes
 ```
 
 </details>
@@ -25938,23 +25994,30 @@ sequenceDiagram
     actor CLI as Cliente (ACT-01)
     actor CHO as Chofer (ACT-02)
 
-    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido o de la reserva,<br/>y el cliente paga en el sitio de la pasarela, fuera del límite del sistema
-
+    Note over MP,SIS: El enlace de pago ya lo generó la creación del pedido y el cliente paga<br/>en el sitio de la pasarela, fuera del límite del sistema.<br/>El sistema consulta el estado real del pago y nunca confía en el contenido del aviso
     MP->>SIS: notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)
     activate SIS
-    alt La firma no es válida
+    alt La firma no es auténtica o falta la clave configurada
         SIS-->>MP: notificación recibida (se descarta sin procesar)
-    else Pago aprobado de un pedido pendiente
+    else El tipo no es de pago, falta el identificador, o el pago no trae referencia a un pedido
+        SIS-->>MP: notificación recibida (se ignora)
+    else La consulta del pago a la pasarela falla o supera el tiempo de espera
+        SIS-->>MP: notificación recibida (no se toca el pedido)
+    else Pago aprobado de un pedido pendiente por el importe esperado
         SIS-->>MP: notificación recibida
         SIS-)CLI: notificarPagoAcreditado(pedido)
         SIS-)CHO: notificarOferta(pedido)
+    else Pago aprobado que repite un aviso ya procesado
+        SIS-->>MP: notificación recibida (sin efectos nuevos ni nuevos avisos)
     else Pago aprobado de la seña de una reserva
         SIS-->>MP: notificación recibida (la seña queda paga, la reserva no se despacha)
         SIS-)CLI: notificarPagoAcreditado(pedido)
     else Pago aprobado de un pedido ya cancelado o entregado
         SIS-->>MP: notificación recibida (se registra el pago, sin reactivar el pedido)
-    else Pago rechazado o cancelado
-        SIS-->>MP: notificación recibida (el pedido queda a la espera y el Cliente no recibe aviso)
+    else Pago aprobado por un importe distinto del esperado
+        SIS-->>MP: notificación recibida (el pago queda marcado, con alerta, el pedido no se da por pagado)
+    else Pago rechazado o cancelado, o en un estado no definitivo
+        SIS-->>MP: notificación recibida (se registra, el pedido queda a la espera y el cliente no recibe aviso)
     end
     deactivate SIS
 ```
@@ -26182,17 +26245,21 @@ sequenceDiagram
 
     ADM->>SIS: confirmarTransferencia(pedidoId, recibida, motivo)
     activate SIS
-    alt la decisión es válida para el estado del pago y del pedido
-        SIS-->>ADM: transferencia resuelta (pagada o fallida)
-    else el pedido es de otra distribuidora
+    alt La decisión es válida para el estado del pago y del pedido
+        SIS-->>ADM: transferencia resuelta (pagada o fallida, con quién, cuándo y por qué)
+    else El pedido no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el pedido no es una transferencia, está cancelado, o el motivo es inválido
+    else No se indica si llegó o no, el motivo falta o no tiene entre 10 y 500 caracteres, o falta la distribuidora
         SIS-->>ADM: error de solicitud
-    else la transferencia ya se resolvió con la decisión contraria, o se la marca no recibida sin entregar
-        SIS-->>ADM: conflicto
+    else El pedido no se paga por transferencia o está cancelado
+        SIS-->>ADM: error de solicitud
+    else El pago ya estaba en lo que se pide
+        SIS-->>ADM: pedido tal cual está (no cambia nada)
+    else La transferencia ya estaba pagada, o se la marca no recibida sin haber entregado el pedido
+        SIS-->>ADM: conflicto (la transferencia ya se confirmó: no se cambia)
     end
     deactivate SIS
-    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05), que indica la distribuidora
 ```
 
 </details>

@@ -525,8 +525,8 @@ def armar(clave, raiz):
         glos = renombrar(sacar(raiz, "Glosario de Términos"), "Glosario de Términos")
         return [figuras, pres, itera, req, matriz, glos], anexos
     if clave == "2":
-        anexo("Índice de Figuras"); anexo("Leyenda"); anexo("Módulos Inteligentes del Sistema")
-        mc = renombrar(sacar(raiz, "Modelo Conceptual (Modelo de Dominio)"), "Modelo Conceptual")
+        anexo("Índice de Figuras")
+        mc = renombrar(sacar(raiz, "Modelo Conceptual"), "Modelo Conceptual")
         for viejo, nuevo_t in (("Lista de Conceptos Candidatos", "Lista de Concepto Candidatos"),
                                ("Relaciones entre los Conceptos", "Relaciones entre los conceptos")):
             renombrar(buscar(mc, viejo), nuevo_t)
@@ -826,12 +826,12 @@ def _run(t, tam=16):
 
 
 def encabezado_xml():
-    """Como el pie de la plantilla: proyecto, iteración y equipo."""
+    """Como el pie de la plantilla: proyecto y equipo (sin iteración, por decisión de nahue del 01/11/2026)."""
     tab = '<w:r><w:tab/></w:r>'
     return (f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:hdr {NS}><w:p><w:pPr>'
             '<w:pBdr><w:bottom w:val="single" w:sz="4" w:space="1" w:color="808080"/></w:pBdr>'
             '<w:tabs><w:tab w:val="center" w:pos="4500"/><w:tab w:val="right" w:pos="9000"/></w:tabs></w:pPr>'
-            + _run("SPLG – Sistema de Pedidos y Logística de Garrafas de Gas") + tab + _run("Iteración C-19") + tab
+            + _run("SPLG – Sistema de Pedidos y Logística de Garrafas de Gas") + tab + tab
             + _run("Equipo: " + AUTOR) + '</w:p></w:hdr>')
 
 

@@ -24,7 +24,7 @@ import re, os, glob, sys
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 sys.path.insert(0, D + "herramientas")
-from cu_esenciales import ESENCIALES
+from cu_esenciales import ESENCIALES, CON_DSS
 
 
 def leer(f):
@@ -136,12 +136,14 @@ for cu in codigos:
     # 4. DSS: un caso incluido también tiene su diagrama (el actor es el de su caso base principal) y lleva además la nota
     #    que remite a los casos que lo incluyen
     incluido = es_incluido(cu)
-    if not tiene_dia(DSS_ANA, "DSS", cu):
+    if cu in CON_DSS and not tiene_dia(DSS_ANA, "DSS", cu):
         falta(cu, "sin DSS en el Documento 2")
+    if cu not in CON_DSS and tiene_dia(DSS_ANA, "DSS", cu):
+        falta(cu, "tiene DSS en el Documento 2 y no es un caso con interacción del actor")
     if not tiene_dia(DSS_CAS, "DSS", cu):
         falta(cu, "sin DSS en Casos-de-Uso.md")
     if incluido:
-        for _doc, _dn in ((DSS_ANA, "el Documento 2"), (DSS_CAS, "Casos-de-Uso.md")):
+        for _doc, _dn in (((DSS_ANA, "el Documento 2"),) if cu in CON_DSS else ()) + ((DSS_CAS, "Casos-de-Uso.md"),):
             _h = re.search(rf'^#{{3,5}}\s+[^\n]*DSS\s+—\s+{cu}:[^\n]*\n', _doc, re.M)
             _fin = re.search(r'^#{3,5}\s', _doc[_h.end():], re.M) if _h else None
             _cuerpo = _doc[_h.end(): _h.end() + _fin.start()] if _h and _fin else (_doc[_h.end():] if _h else "")

@@ -3,17 +3,28 @@ sequenceDiagram
     autonumber
     actor CLI as Cliente (ACT-01)
     participant SIS as :Sistema
+    actor ADM as Administrador (ACT-03)
 
     CLI->>SIS: confirmarEntregaConCodigo(pedidoId, codigo, motivo)
     activate SIS
-    alt el código coincide y el pedido está en camino
+    alt El código coincide y el pedido está en camino
         SIS-->>CLI: entrega confirmada (estado ENTREGADO)
-    else el código no coincide
-        SIS-->>CLI: error de solicitud (código inválido)
-    else el pedido no está en camino
+        SIS-)ADM: notificarEntregaConfirmada(pedido)
+        Note over CLI,SIS: Si el pago es en efectivo, sigue pendiente de cobro.<br/>El stock físico y los envases se actualizan sin que un fallo revierta la entrega
+    else El código falta o viene vacío, o se repite el envío con datos distintos
+        SIS-->>CLI: error de validación
+    else El pedido no existe o es de otra distribuidora
+        SIS-->>CLI: recurso no encontrado
+    else El pedido es de otro cliente
+        SIS-->>CLI: acceso denegado (no autorizado a confirmar la entrega de otro cliente)
+    else El pedido ya está entregado
+        SIS-->>CLI: pedido tal cual está (no se reprocesa ni se vuelve a exigir el código)
+    else El pedido está en otro estado distinto de en camino
         SIS-->>CLI: error de solicitud (el pedido no está en camino)
-    else el pedido es de otro cliente
-        SIS-->>CLI: acceso denegado
+    else El código no coincide, o el pedido no tiene código
+        SIS-->>CLI: error de solicitud (código de entrega inválido)
+    else Confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres
+        SIS-->>CLI: error de solicitud (motivo inválido)
     end
     deactivate SIS
-    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda)
+    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda). El Administrador General<br/>indica además la distribuidora

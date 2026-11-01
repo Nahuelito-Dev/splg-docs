@@ -5,20 +5,29 @@ sequenceDiagram
     participant SIS as :Sistema
     actor CHO as Chofer (ACT-02)
     actor ADM as Administrador (ACT-03)
+    actor MPA as MercadoPago (ACT-06)
 
     CLI->>SIS: cancelarMiPedido(pedidoId, motivo)
     activate SIS
-    alt El pedido es del cliente y todavía no salió en camino
-        SIS-->>CLI: pedido cancelado (estado CANCELADO, stock restituido)
+    alt El pedido es del cliente, todavía no salió en camino y el motivo es válido
+        SIS-->>CLI: pedido cancelado (estado CANCELADO, stock restituido, motivo registrado)
         opt El pedido ya tenía chofer asignado
             SIS-)CHO: notificarPedidoCancelado(pedido)
         end
+        opt El pedido tenía un pago aprobado por la pasarela
+            SIS-)MPA: notificarSolicitudDeReintegro(pago)
+        end
         SIS-)ADM: notificarPedidoCancelado(pedido)
-    else El pedido es de otro cliente o de otra distribuidora
+    else El pedido no existe, es de otro cliente o de otra distribuidora
         SIS-->>CLI: recurso no encontrado
     else El pedido ya está entregado o cancelado
         SIS-->>CLI: error de solicitud (no se puede cancelar un pedido finalizado)
     else El pedido ya está en camino
         SIS-->>CLI: error de solicitud (contactar al soporte)
+    else El motivo falta, está en blanco o supera los 500 caracteres
+        SIS-->>CLI: error de solicitud (hay que indicar el motivo)
+    else Se repite la misma solicitud con datos distintos
+        SIS-->>CLI: error de validación (la solicitud no se ejecuta)
     end
     deactivate SIS
+    Note over SIS: La identidad y el rol de quien cancela salen siempre de la sesión,<br/>nunca de los datos enviados

@@ -1,0 +1,69 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam packageStyle rectangle
+hide circle
+hide methods
+hide empty members
+
+class Producto {
+  tipo
+  peso en kilos
+  precio
+  stock
+  activo
+  costo promedio
+  déficit de reservas
+}
+class Promocion {
+  cantidad
+  descuento
+}
+class Envase {
+  número de serie
+  estado
+  monto del depósito
+  /vencimiento
+}
+class MovimientoEnvase {
+  desde
+  hacia
+  fecha
+}
+class CasoRecupero {
+  escalón
+  depósito comprometido
+  estado
+  resolución
+}
+class AvisoRecupero {
+  escalón
+  tipo
+  vence
+}
+class Cliente #F1F1F1;line:8A97A3;text:55616C
+class Pedido #F1F1F1;line:8A97A3;text:55616C
+class Usuario #F1F1F1;line:8A97A3;text:55616C
+class Distribuidora #F1F1F1;line:8A97A3;text:55616C
+
+
+Distribuidora "1" -- "0..*" Producto : comercializa >
+Distribuidora "1" -- "0..*" Envase : posee >
+Cliente "0..*" -- "0..1" Producto : usa habitualmente >
+Producto "1" *-- "0..*" Promocion : ofrece >
+Producto "0..1" -- "0..*" Envase : describe >
+Envase "1" *-- "0..*" MovimientoEnvase : registra >
+Pedido "0..1" -- "0..*" MovimientoEnvase : origina >
+Usuario "0..1" -- "0..*" MovimientoEnvase : ejecuta >
+Cliente "0..1" -- "0..*" Envase : tiene en su poder >
+Pedido "0..1" -- "0..*" Envase : despacha >
+Envase "1" -- "0..*" CasoRecupero : motiva >
+CasoRecupero "0..*" -- "1" Cliente : se abre contra >
+Usuario "0..1" -- "0..*" CasoRecupero : resuelve >
+CasoRecupero "1" *-- "0..*" AvisoRecupero : emite >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

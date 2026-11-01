@@ -4,21 +4,29 @@ sequenceDiagram
     actor CHO as Chofer (ACT-02)
     participant SIS as :Sistema
     actor CLI as Cliente (ACT-01)
+    actor ADM as Administrador (ACT-03)
 
     CHO->>SIS: aceptarPedido(pedidoId)
     activate SIS
-    alt La transición de estado es válida y el chofer está activo
+    alt El pedido está pendiente y el chofer puede recibirlo
         SIS-->>CHO: pedido asignado (datos de entrega y código de entrega)
         SIS-)CLI: notificarPedidoAceptado(pedido)
-    else El pedido es de otra distribuidora
+        SIS-)ADM: notificarPedidoAceptado(pedido)
+        Note over SIS: Las ofertas abiertas a los demás choferes se retiran y se les avisa
+    else El pedido no existe o es de otra distribuidora
         SIS-->>CHO: recurso no encontrado
     else El pedido ya tiene asignado a otro chofer
         SIS-->>CHO: acceso denegado (el pedido no está asignado a este chofer)
     else El pedido ya está entregado o cancelado
         SIS-->>CHO: error de solicitud (transición no permitida)
+    else Quien acepta no tiene perfil de repartidor o es de otra distribuidora
+        SIS-->>CHO: error de solicitud (repartidor no encontrado)
+    else El chofer está deshabilitado o sin validar
+        SIS-->>CHO: error de solicitud (repartidor deshabilitado o no validado)
+    else El chofer no tiene vehículo en uso, o su licencia o el vehículo tienen documentación vencida
+        SIS-->>CHO: error de solicitud (no se puede asignar, con el motivo)
     else El chofer no puede recibir pedidos por su carga de camión
-        SIS-->>CHO: error de solicitud, con el motivo
-    else El chofer no existe o está dado de baja
-        SIS-->>CHO: error de solicitud (repartidor no encontrado o inactivo)
+        SIS-->>CHO: error de solicitud (con el motivo)
     end
     deactivate SIS
+    Note over CHO,SIS: Si el mismo chofer repite la aceptación, no cambia nada y conserva su código de entrega

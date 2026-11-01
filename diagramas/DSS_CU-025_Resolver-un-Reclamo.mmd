@@ -6,11 +6,16 @@ sequenceDiagram
 
     ADM->>SIS: resolverReclamo(reclamoId, resolucion, estadoFinal)
     activate SIS
-    alt el reclamo existe y la transición es válida
-        SIS-->>ADM: reclamo resuelto (estado y resolución registrados)
-    else el reclamo no existe
+    alt El reclamo está pendiente o en proceso, el estado final es válido y la nota no está vacía
+        SIS-->>ADM: reclamo resuelto (estado final y nota de resolución registrados)
+    else La nota de resolución falta, está vacía o tiene sólo espacios
+        SIS-->>ADM: error de solicitud (dato obligatorio)
+    else El estado final no es resuelto ni rechazado
+        SIS-->>ADM: error de solicitud (estado final inválido)
+    else El reclamo no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
-    else la transición no es válida (resuelto/rechazado sin reabrir antes)
-        SIS-->>ADM: transición de reclamo inválida
+    else El reclamo ya está resuelto o rechazado, o se repite el estado actual
+        SIS-->>ADM: error de solicitud (transición de reclamo inválida, la nota anterior no se pisa)
     end
     deactivate SIS
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05), que indica la distribuidora.<br/>Un reclamo resuelto o rechazado sólo se modifica reabriéndolo antes

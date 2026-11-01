@@ -98,10 +98,12 @@ for m in re.finditer(r'CREATE TABLE "(\w+)" \((.*?)\n\);', sql, re.S):
 analisis = leer("2-Analisis.md")
 sec = analisis[analisis.index("### 1.2 Lista de Conceptos Idóneos"):analisis.index("### 1.3 Relaciones entre los Conceptos")]
 en_doc = set(re.findall(r'^\|\s*\d+\s*\|\s*\*\*(\w+)\*\*', sec, re.M))
-check("Conceptos: Documento 2 §1.2 = modelo conceptual (%d)" % len(MC.CLASES),
-      en_doc == set(MC.CLASES),
-      [f"solo en el documento: {sorted(en_doc - set(MC.CLASES))}",
-       f"solo en el modelo: {sorted(set(MC.CLASES) - en_doc)}"])
+# el Documento 2 modela sólo los conceptos de los casos de uso esenciales
+from cu_esenciales import CONCEPTOS_ESENCIALES
+check("Conceptos: Documento 2 §1.2 = los conceptos de los casos esenciales (%d, todos del modelo conceptual)" % len(CONCEPTOS_ESENCIALES),
+      en_doc == set(CONCEPTOS_ESENCIALES) and en_doc <= set(MC.CLASES),
+      [f"solo en el documento: {sorted(en_doc - set(CONCEPTOS_ESENCIALES))}",
+       f"solo en la lista de esenciales: {sorted(set(CONCEPTOS_ESENCIALES) - en_doc)}"])
 
 con_tabla = {c for c, t in MC.TABLA.items() if t}
 con_tabla_todos = con_tabla
@@ -189,7 +191,10 @@ malas = [l for l in conc.split("\n") if re.match(r'(Administrador|Cliente|Chofer
 check("Cardinalidad: el DER conceptual dibuja los tres perfiles como 0..1", not malas, malas)
 
 # ------------------------------------------------- tabla del Documento 2 §1.3
-gen = leer("diagramas/modelo-conceptual/relaciones.md").strip()
+_todas = leer("diagramas/modelo-conceptual/relaciones.md").strip().split("\n")
+_celdas = lambda l: [x.strip() for x in l.strip("|").split("|")]
+# el Documento 2 lleva las relaciones entre los conceptos de los casos esenciales
+gen = "\n".join(_todas[:2] + [l for l in _todas[2:] if _celdas(l)[1] in CONCEPTOS_ESENCIALES and _celdas(l)[2] in CONCEPTOS_ESENCIALES]).strip()
 i = analisis.index("| Relación | Concepto A")
 j = analisis.index("**Nota sobre Producto y Envase")
 check("Relaciones: la tabla del Documento 2 §1.3 es la que sale del modelo",

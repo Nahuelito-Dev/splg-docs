@@ -1,0 +1,46 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam packageStyle rectangle
+hide circle
+hide methods
+hide empty members
+
+abstract class PropuestaConVigencia {
+  estado
+  vence
+}
+class OfertaDespacho
+class OfertaLote
+class LoteRecorrido {
+  estado
+  /peso total
+}
+class ParadaLote {
+  orden
+}
+class PropuestaVentanaTaller #F1F1F1;line:8A97A3;text:55616C
+class InvitacionRecompra #F1F1F1;line:8A97A3;text:55616C
+class AvisoRecupero #F1F1F1;line:8A97A3;text:55616C
+class Pedido #F1F1F1;line:8A97A3;text:55616C
+class Chofer #F1F1F1;line:8A97A3;text:55616C
+
+PropuestaConVigencia <|-- OfertaDespacho : {disjoint, complete}
+PropuestaConVigencia <|-- OfertaLote
+PropuestaConVigencia <|-- PropuestaVentanaTaller
+PropuestaConVigencia <|-- InvitacionRecompra
+PropuestaConVigencia <|-- AvisoRecupero
+
+Pedido "1" *-- "0..*" OfertaDespacho : genera >
+OfertaDespacho "0..*" -- "1" Chofer : se dirige a >
+LoteRecorrido "1" *-- "1..*" ParadaLote : se compone de >
+ParadaLote "0..*" -- "1" Pedido : atiende >
+LoteRecorrido "1" *-- "0..*" OfertaLote : genera >
+OfertaLote "0..*" -- "1" Chofer : se dirige a >
+Chofer "0..1" -- "0..*" LoteRecorrido : acepta >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

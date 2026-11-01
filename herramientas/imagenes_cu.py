@@ -15,6 +15,9 @@ import glob, hashlib, json, os, re
 
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
+import sys
+sys.path.insert(0, D + "herramientas")
+from cu_esenciales import CON_DSS
 DOCS_CU = ("Casos-de-Uso.md", "2-Analisis.md", "3-Diseño.md")
 DOCS_TODOS = ("0-Plan_Del_Proyecto.md", "0.1-Planificacion_Iteraciones.md", "1-Requisitos.md", "2-Analisis.md",
               "3-Diseño.md", "Casos-de-Uso.md")
@@ -128,6 +131,7 @@ def verificar():
         if not dsd: err.append(f"{cu}: no hay .mmd del DSD")
         for s in dss:
             for d in ("Casos-de-Uso.md", "2-Analisis.md"):
+                if d == "2-Analisis.md" and cu not in CON_DSS: continue    # el Documento 2 sólo lleva los DSS de los casos con interacción del actor
                 if s not in imgs[d]: err.append(f"{cu}: {d} no muestra la imagen de {s}")
         for s in dsd:
             for d in ("Casos-de-Uso.md", "3-Diseño.md"):

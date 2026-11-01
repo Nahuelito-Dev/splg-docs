@@ -6,14 +6,18 @@ sequenceDiagram
 
     ADM->>SIS: confirmarTransferencia(pedidoId, recibida, motivo)
     activate SIS
-    alt la decisión es válida para el estado del pago y del pedido
-        SIS-->>ADM: transferencia resuelta (pagada o fallida)
-    else el pedido es de otra distribuidora
+    alt La decisión es válida para el estado del pago y del pedido
+        SIS-->>ADM: transferencia resuelta (pagada o fallida, con quién, cuándo y por qué)
+    else El pedido no existe o es de otra distribuidora
         SIS-->>ADM: recurso no encontrado
-    else el pedido no es una transferencia, está cancelado, o el motivo es inválido
+    else No se indica si llegó o no, el motivo falta o no tiene entre 10 y 500 caracteres, o falta la distribuidora
         SIS-->>ADM: error de solicitud
-    else la transferencia ya se resolvió con la decisión contraria, o se la marca no recibida sin entregar
-        SIS-->>ADM: conflicto
+    else El pedido no se paga por transferencia o está cancelado
+        SIS-->>ADM: error de solicitud
+    else El pago ya estaba en lo que se pide
+        SIS-->>ADM: pedido tal cual está (no cambia nada)
+    else La transferencia ya estaba pagada, o se la marca no recibida sin haber entregado el pedido
+        SIS-->>ADM: conflicto (la transferencia ya se confirmó: no se cambia)
     end
     deactivate SIS
-    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05)
+    Note over ADM,SIS: También lo inicia el Administrador General (ACT-05), que indica la distribuidora

@@ -8,7 +8,7 @@ D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 FALLAS = []
 sys.path.insert(0, D + "herramientas")
-from cu_esenciales import ESENCIALES, RETIRADOS_ALCANCE   # el Documento 1 expande sólo estos casos
+from cu_esenciales import ESENCIALES, RETIRADOS_ALCANCE, CON_DSS, SIN_DSS, CONCEPTOS_ESENCIALES, CONSULTAS_SIN_CONTRATO   # el Documento 1 expande sólo estos casos
 
 def ruta_doc(n):
     """README y AGENTS viven en la raíz; los documentos, en documentos/."""
@@ -94,8 +94,25 @@ def _modelo_conceptual():
         if not any(set(cab) <= fila for fila in celdas):
             falt.append("encabezado de tabla: " + " | ".join(cab))
     d15 = sec[sec.index("### 1.5 Diagrama Conceptual"):]
-    if not re.search(r'!\[[^\]]*\]\(\.\./diagramas/modelo-conceptual/MC_General\.png\)', d15):
+    if not re.search(r'!\[[^\]]*\]\(\.\./diagramas/modelo-conceptual/MC_Esenciales-General\.png\)', d15):
         falt.append("1.5 no embebe la vista general del diagrama conceptual")
+    # los conceptos del modelo son los de los 21 casos esenciales, ni uno más ni uno menos
+    idon = sec[sec.index("### 1.2 Lista de Conceptos Idóneos"):sec.index("### 1.3 Relaciones")]
+    en_doc = set(re.findall(r'^\|\s*\d+\s*\|\s*\*\*(\w+)\*\*', idon, re.M))
+    if en_doc != set(CONCEPTOS_ESENCIALES):
+        falt.append(f"conceptos idóneos: de más {sorted(en_doc - set(CONCEPTOS_ESENCIALES))} / de menos {sorted(set(CONCEPTOS_ESENCIALES) - en_doc)}")
+    atr = sec[sec.index("### 1.4 Descripción"):sec.index("### 1.5 Diagrama")]
+    con_atr = set(re.findall(r'^\|\s*\*\*(\w+)\*\*\s*\|', atr, re.M))
+    if not con_atr <= set(CONCEPTOS_ESENCIALES):
+        falt.append(f"atributos de conceptos que no son idóneos: {sorted(con_atr - set(CONCEPTOS_ESENCIALES))}")
+    # comportamiento del sistema y glosario, en el orden de la plantilla
+    txt2 = txt[fin:]
+    ordenc = ["### 2.1 Diagramas de Secuencia a Nivel de Sistema", "#### Casos de uso sin DSS", "### 2.2 Contratos", "## 3. Glosario"]
+    ps = [txt2.find(o) for o in ordenc]
+    if -1 in ps or ps != sorted(ps): falt.append("comportamiento del sistema y glosario fuera del orden de la plantilla")
+    sin_tabla = txt2[ps[1]:ps[2]] if -1 not in ps else ""
+    for cu_ in SIN_DSS:
+        if not re.search(rf'^\| {cu_} ', sin_tabla, re.M): falt.append(f"{cu_} falta en la tabla de casos de uso sin DSS")
     if falt: FALLAS.append("Modelo conceptual")
     print(f"[{'OK' if not falt else 'FALLA':5}] Modelo conceptual — 2-Analisis.md §1: estructura de la plantilla"
           + (f" | {falt}" if falt else ""))
@@ -172,7 +189,8 @@ cobertura = {
   "DSD (doc 3)": codigos("3-Diseño.md",            r'^## 3\. ', r'^## 5\. ', r'^#{3,4}.*CU-\d+'),
 }
 # el Documento 1 expande sólo los casos esenciales (decisión del 31/10/2026); los demás documentos, todos
-_meta = {k: (set(ESENCIALES) if k == "CUE (doc 1)" else TODOS) for k in cobertura}
+# y el Documento 2 sólo modela con DSS los diez casos con interacción del actor
+_meta = {k: (set(ESENCIALES) if k == "CUE (doc 1)" else set(CON_DSS) if k == "DSS (doc 2)" else TODOS) for k in cobertura}
 inc = {k: {"faltan": sorted(_meta[k]-v), "sobran": sorted(v-_meta[k])} for k,v in cobertura.items() if v != _meta[k]}
 if inc: FALLAS.append("cobertura de artefactos por caso de uso")
 print(f"[{'OK' if not inc else 'FALLA':5}] Los 4 artefactos para los {len(TODOS)} casos de uso (CUE del Documento 1: los {len(ESENCIALES)} esenciales)"
@@ -558,7 +576,7 @@ print(f"[{'OK' if not _errs else 'FALLA':5}] Secciones de la plantilla (Doc 0, 0
 # catálogo de actores (ACT-01 a ACT-10), no tener mensajes del sistema a sí mismo, usar un
 # mensaje asíncrono con nombre (notificar...) para lo que el sistema le manda a un actor
 # sin que lo haya pedido, y llamar a cada operación con la misma firma que el catálogo.
-# Cada operación que cambia estado tiene su contrato, con los campos de la plantilla de la
+# Cada operación de los casos con DSS (Documento 2) tiene su contrato, con los campos de la plantilla de la
 # cátedra en su orden.
 import json
 CAMPOS_CONTRATO = ["Nombre","Responsabilidades","Tipo","Referencias cruzadas","Notas",
@@ -636,11 +654,17 @@ def verificar_operaciones():
     s2 = next(i for i,x in enumerate(l2) if re.match(r'^## 2\. ', x))
     e2 = next(i for i,x in enumerate(l2) if re.match(r'^## 3\. ', x))
     contratos = bloques(l2, r'^## 2\. ', r'^## 3\. ', r'^#{4} .*Contrato: `(.+?)\(')
+    # el Documento 2 lleva contrato para cada operación que cambia el estado en los casos con diagrama de
+    # secuencia, y sólo de ésas; las consultas (CONSULTAS_SIN_CONTRATO) no lo llevan
     for nom, o in ops.items():
-        if o["cambiaEstado"] and nom not in contratos:
-            errores.append(f"contratos: {nom} cambia estado y no tiene contrato")
-        if not o["cambiaEstado"] and nom in contratos:
-            errores.append(f"contratos: {nom} no cambia estado y tiene contrato")
+        if nom in CONSULTAS_SIN_CONTRATO:
+            if nom in contratos:
+                errores.append(f"contratos: {nom} es una consulta y no lleva contrato")
+            continue
+        if set(o["casosDeUso"]) & set(CON_DSS) and nom not in contratos:
+            errores.append(f"contratos: {nom} es de un caso con DSS y no tiene contrato")
+        if not set(o["casosDeUso"]) & set(CON_DSS) and nom in contratos:
+            errores.append(f"contratos: {nom} no es de un caso con DSS y tiene contrato")
     for nom, cuerpo in contratos.items():
         if nom not in ops:
             errores.append(f"contratos: {nom} no está en el catálogo")
@@ -675,7 +699,7 @@ def verificar_tabla_operaciones_doc3():
 
 _errs_op = verificar_operaciones() + verificar_tabla_operaciones_doc3()
 if _errs_op: FALLAS.append("operaciones del sistema (DSS, catálogo y contratos)")
-print(f"[{'OK' if not _errs_op else 'FALLA':5}] Operaciones del sistema: DSS con :Sistema, iniciador del catálogo y sin auto-mensajes; una firma por operación; contrato de cada una que cambia estado"
+print(f"[{'OK' if not _errs_op else 'FALLA':5}] Operaciones del sistema: DSS con :Sistema, iniciador del catálogo y sin auto-mensajes; una firma por operación; contrato de cada operación de los casos con DSS"
       + (f" | {len(_errs_op)} errores: {_errs_op[:6]}" if _errs_op else ""))
 
 # --- DSD en estilo Larman (catedra/material-de-trabajo/GUIA-DSD-LARMAN.md) ---
@@ -857,6 +881,9 @@ for _cu, _n in sorted(_nombres4.items()):
             _err_4.append(f"{_cu}: falta el {_k.upper()} en su documento")
     for _k, _t4 in (("dss", r'title DSS — %s\b'), ("dsd", r'title DSD — [^\n]*(?<![\d-])%s(?![\d])')):
         for _doc in (_k, "casos"):
+            if _doc == "dss" and _cu not in CON_DSS:
+                if re.search(_t4 % _cu, _docs4[_doc]): _err_4.append(f"{_cu}: tiene DSS en el Documento 2 y no es un caso con interacción del actor")
+                continue
             if not re.search(_t4 % _cu, _docs4[_doc]):
                 _err_4.append(f"{_cu}: no hay diagrama {_k.upper()} en {'Casos-de-Uso.md' if _doc == 'casos' else 'su documento'}")
     _dss_f = [x for x in _mmd if x.startswith(f"DSS_{_cu}_") and x.endswith(".mmd")]

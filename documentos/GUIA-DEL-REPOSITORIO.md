@@ -74,7 +74,7 @@ para poder consultarlos sin saltar entre cuatro archivos.
 | 0 | `0-Plan_Del_Proyecto.md` | Fases e iteraciones, hitos, cronograma, actores, los 338 casos de uso de alto nivel y su calificación. |
 | 0.1 | `0.1-Planificacion_Iteraciones.md` | Metas, artefactos y problemas a resolver de cada iteración. |
 | 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 338 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
-| 2 | `2-Analisis.md` | Modelo conceptual, los 338 diagramas de secuencia del sistema, el catálogo de las 367 operaciones del sistema, los 230 contratos de operación y los módulos inteligentes. |
+| 2 | `2-Analisis.md` | Modelo conceptual de los 21 casos de uso esenciales, diez diagramas de secuencia del sistema (los casos con interacción del actor), los 8 contratos de las operaciones que cambian el estado y el glosario. |
 | 3 | `3-Diseño.md` | Arquitectura, casos de uso reales, diagramas de interacción, diagrama de clases, especificación de los módulos inteligentes, wireframes y diagrama entidad-relación. |
 
 `Casos-de-Uso.md` reúne los cuatro artefactos de los 338 casos en un solo archivo. Es el

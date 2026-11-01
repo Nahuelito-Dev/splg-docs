@@ -4,12 +4,21 @@ sequenceDiagram
     actor USR as Cliente (ACT-01)
     participant SIS as :Sistema
 
+    Note over USR,SIS: El proveedor de identidad verifica el correo y la contraseña,<br/>el sistema no guarda contraseñas ni emite credenciales propias
     USR->>SIS: iniciarSesion(correo, contrasena)
     activate SIS
-    alt Credenciales validas
-        SIS-->>USR: sesion iniciada (credencial con token de acceso)
-    else Credenciales incorrectas
-        SIS-->>USR: error de solicitud (credenciales invalidas)
+    alt Credenciales correctas, cuenta habilitada y rol propio de la aplicación
+        SIS-->>USR: usuario identificado (datos del usuario y su rol)
+    else Correo o contraseña incorrectos, o el usuario no existe
+        SIS-->>USR: ingreso rechazado (credenciales inválidas)
+    else Error de red
+        SIS-->>USR: error (sin conexión a internet)
+    else La cuenta está bloqueada
+        SIS-->>USR: acceso denegado (la cuenta está bloqueada)
+    else El usuario no existe en el sistema o su rol no corresponde a la aplicación
+        SIS-->>USR: acceso denegado
+    else La constancia de identidad venció o fue revocada
+        SIS-->>USR: acceso denegado (se vuelve a pedir el ingreso)
     end
     deactivate SIS
     Note over USR,SIS: También lo inician el Chofer (ACT-02) y el<br/>Administrador (ACT-03)

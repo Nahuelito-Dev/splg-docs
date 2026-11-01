@@ -6,13 +6,16 @@ sequenceDiagram
 
     CLI->>SIS: registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)
     activate SIS
-    alt datos válidos y correo y teléfono libres
-        SIS-->>CLI: cuenta creada (usuarioId, perfil de cliente, rol CLIENTE)
-    else correo o teléfono ya registrados
-        SIS-->>CLI: conflicto (el correo o el teléfono ya están en uso)
-    else datos incompletos o con formato inválido
+    alt Datos válidos, y correo y teléfono libres
+        SIS-->>CLI: cuenta creada (usuarioId, perfil de cliente, rol CLIENTE, no abre la sesión)
+        SIS-)CLI: notificarBienvenida(usuario)
+    else Demasiados registros seguidos desde el mismo origen
+        SIS-->>CLI: demasiadas solicitudes (reintentar más tarde)
+    else Datos incompletos, con formato inválido o con campos que no corresponden a un cliente
         SIS-->>CLI: error de validación indicando el campo
-    else demasiadas altas seguidas desde el mismo origen
-        SIS-->>CLI: demasiadas solicitudes (reintentar en un minuto)
+    else El correo o el teléfono ya están registrados
+        SIS-->>CLI: conflicto (email o teléfono ya en uso)
+    else El proveedor de identidad rechaza la cuenta
+        SIS-->>CLI: error de solicitud (motivo del rechazo, no se crea nada)
     end
     deactivate SIS

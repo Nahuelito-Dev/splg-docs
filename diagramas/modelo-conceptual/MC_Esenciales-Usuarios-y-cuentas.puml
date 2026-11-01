@@ -1,0 +1,102 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam packageStyle rectangle
+hide circle
+hide methods
+hide empty members
+
+class Distribuidora {
+  nombre
+  razón social
+  CUIT
+  estado
+}
+class Usuario {
+  nombre
+  correo
+  teléfono
+  bloqueado
+}
+class Rol {
+  tipo
+}
+class Administrador
+class ConfiguracionModulo {
+  módulo
+  parámetros
+  exigir carga de camión abierta
+}
+class AsientoAuditoria {
+  operación
+  recurso
+  aplicación
+  resultado
+  cambios
+  fecha
+}
+class Auditoria {
+  entidad afectada
+  fecha y hora
+}
+class DetalleAuditoria {
+  campo
+  valor anterior
+  valor nuevo
+}
+class TipoAccionAuditoria {
+  nombre
+}
+class Cliente {
+  consumo mensual declarado
+  días de aviso
+}
+class DireccionEntrega {
+  calle y altura
+  piso y departamento
+  punto
+  precisión
+  predeterminada
+}
+class InvitacionRecompra {
+  agotamiento estimado
+}
+class ItemSugerido {
+  cantidad
+}
+class Chofer #F1F1F1;line:8A97A3;text:55616C
+class Producto #F1F1F1;line:8A97A3;text:55616C
+class Pedido #F1F1F1;line:8A97A3;text:55616C
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Usuario <|-- Chofer
+Usuario <|-- Administrador
+
+Usuario "0..*" -- "0..1" Rol : tiene asignado >
+Distribuidora "1" -- "0..*" Chofer : emplea >
+Distribuidora "0..1" -- "0..*" Administrador : emplea >
+Distribuidora "1" -- "0..*" Producto : comercializa >
+Distribuidora "1" -- "0..*" Pedido : gestiona >
+Distribuidora "1" *-- "0..*" ConfiguracionModulo : parametriza >
+Usuario "0..1" -- "0..*" AsientoAuditoria : origina >
+Usuario "0..1" -- "0..*" Auditoria : realiza >
+Distribuidora "0..1" -- "0..*" Auditoria : delimita >
+Auditoria "1" *-- "0..*" DetalleAuditoria : detalla con >
+TipoAccionAuditoria "1" -- "0..*" Auditoria : clasifica >
+Cliente "1" *-- "0..*" DireccionEntrega : registra >
+Cliente "1" -- "0..*" Pedido : realiza >
+Cliente "1" -- "0..*" InvitacionRecompra : recibe >
+Cliente "0..*" -- "0..1" Producto : usa habitualmente >
+InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en >
+InvitacionRecompra "1" *-- "1..*" ItemSugerido : sugiere >
+InvitacionRecompra "0..*" -- "0..1" DireccionEntrega : sugiere entregar en >
+ItemSugerido "0..*" -- "1" Producto : corresponde a >
+Pedido "0..*" -- "1" DireccionEntrega : se entrega en >
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de >
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de >
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml

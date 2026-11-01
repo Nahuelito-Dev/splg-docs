@@ -64,7 +64,7 @@ def del_doc(ruta, patron):
 DOC_TABLAS = del_doc("3-Diseño.md", r'Modelo de datos de las \*\*(\d+) tablas\*\*')
 DOC_FK = del_doc("3-Diseño.md", r'\*\*(\d+) claves foráneas, todas declaradas')
 DOC_ENUM = del_doc("3-Diseño.md", r'\*\*(\d+) tipos enumerados\*\*')
-DOC_CONCEPTOS = del_doc("2-Analisis.md", r'El modelo tiene (\d+) conceptos')
+DOC_CONCEPTOS = n_conceptos_conceptual   # el Documento 2 modela sólo los esenciales: sus cifras las controla verificar-mc-der.py
 DOC_ENTIDADES_DISENO = del_doc("3-Diseño.md", r'(\d+) clases de dominio \(todas las del modelo conceptual\)')
 
 check("Tablas de dominio", DOC_TABLAS, n_tablas)
