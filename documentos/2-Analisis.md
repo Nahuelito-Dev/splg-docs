@@ -75,6 +75,8 @@ La lista de categorías es la de Larman (*UML y Patrones*). Cada categoría trae
 
 ### 1.2 Lista de Conceptos Idóneos
 
+*Es la lista de conceptos obtenidos de la lista de categoría de conceptos adecuados para incluirlos en la aplicación, la misma esta sujeta a la restricción de los requerimientos.*
+
 El sistema opera para varias distribuidoras a la vez, con los datos de cada una aislados de las demás: el concepto **Distribuidora** encabeza el modelo. Es la lista de conceptos adecuados para incluir en la aplicación, sujeta a los requisitos. El Símbolo repite siempre el nombre del Concepto.
 
 | # | Descripción del Concepto | Símbolo | Intención | Extensión |

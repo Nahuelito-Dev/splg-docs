@@ -623,12 +623,15 @@ DESCRIPCIONES_DOC1 = [("## 1. Presentación General", "Presentación General"),
                       ("## 7. Requisitos de Información", "Requisitos de Información"),
                       ("## 8. Requisitos Funcionales", "Requisitos de Funcionales")]
 
-def verificar_descripciones_doc1():
+DESCRIPCIONES_DOC2 = [("### 1.2 Lista de Conceptos Idóneos", "Lista de conceptos idóneos")]
+
+def verificar_descripciones(plantilla_txt, documento, secciones):
     errores = []
-    plantilla = [l.replace("\f", "").strip() for l in open(D + "catedra/.catedra-ref/1-Requisitos.txt", encoding="utf-8").read().split("\n")]
-    d1 = leer("1-Requisitos.md")
-    for titulo, en_plantilla in DESCRIPCIONES_DOC1:
-        i = next((k for k, l in enumerate(plantilla) if l in (en_plantilla, "Índice de Figuras" + en_plantilla)), None)
+    plantilla = [l.replace("\f", "").strip() for l in open(D + "catedra/.catedra-ref/" + plantilla_txt, encoding="utf-8").read().split("\n")]
+    d1 = leer(documento)
+    for titulo, en_plantilla in secciones:
+        # la última aparición es la del cuerpo; las anteriores son las del índice del .txt
+        i = next((k for k, l in reversed(list(enumerate(plantilla))) if l in (en_plantilla, "Índice de Figuras" + en_plantilla)), None)
         if i is None:   # en el .txt el título de la primera sección queda pegado al índice de figuras
             errores.append(f"la plantilla no tiene la sección «{en_plantilla}»"); continue
         desc = next((l for l in plantilla[i + 1:] if l), "")
@@ -640,9 +643,15 @@ def verificar_descripciones_doc1():
             errores.append(f"«{titulo.lstrip('# ')}» no arranca con la descripción de la cátedra")
     return errores
 
-_errs = verificar_descripciones_doc1()
+_errs = verificar_descripciones("1-Requisitos.txt", "1-Requisitos.md", DESCRIPCIONES_DOC1)
 if _errs: FALLAS.append("descripciones de la cátedra en el Documento 1")
 print(f"[{'OK' if not _errs else 'FALLA':5}] Documento 1: cada sección arranca con la descripción de la plantilla de la cátedra ({len(DESCRIPCIONES_DOC1)} secciones)"
+      + (f" | {_errs}" if _errs else ""))
+
+# --- Doc 2: la descripción de la cátedra (la plantilla trae una sola, en la lista de conceptos idóneos) ---
+_errs = verificar_descripciones("2.-Análisis.txt", "2-Analisis.md", DESCRIPCIONES_DOC2)
+if _errs: FALLAS.append("descripciones de la cátedra en el Documento 2")
+print(f"[{'OK' if not _errs else 'FALLA':5}] Documento 2: cada sección arranca con la descripción de la plantilla de la cátedra ({len(DESCRIPCIONES_DOC2)} sección)"
       + (f" | {_errs}" if _errs else ""))
 
 # --- Operaciones del sistema: diagramas de secuencia, catálogo y contratos ---
