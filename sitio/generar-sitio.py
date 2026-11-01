@@ -587,6 +587,14 @@ if os.path.exists(D + "sistema/NOVEDADES-V2.md"):
         '</div>'
     )
 
+# Casos de uso destacados: los que se recorren en la presentación, a un clic desde el menú, cada uno con
+# sus artefactos completos (alto nivel, expandido, real, DSS y DSD) en su propia vista.
+CASOS_DESTACADOS = ["CU-001", "CU-005", "CU-015", "CU-079"]
+NAV_DESTACADOS = '<div class="grupo-menu"><p class="rotulo-grupo">Casos de uso destacados</p>' + "".join(
+    '<a class="seccion" href="#%s" data-nav-hash="%s"><span class="nombre">%s · %s</span></a>'
+    % (c, c, c, (datos["cu"][c]["cua"].get("nombre") or "").replace("<", "&lt;"))
+    for c in CASOS_DESTACADOS if c in datos["cu"]) + "</div>"
+
 marcas = {a: marca_de(a) for a in ("visor.js", "visor.css")}
 
 payload = json.dumps(datos, ensure_ascii=False, separators=(",",":")).replace("</", "<\\/")
@@ -611,6 +619,7 @@ html = (open(SITIO+"splg-plantilla.html", encoding="utf-8").read()
         .replace("__GENERADO__", generado)
         .replace("__NAV_FEATURES_ARRIBA__", NAV_FEATURES_ARRIBA)
         .replace("__NAV_FEATURES_LADO__", NAV_FEATURES_LADO)
+        .replace("__NAV_DESTACADOS__", NAV_DESTACADOS)
         .replace("__N_MERMAID__", str(n_mermaid))
         .replace("__N_UML__", str(n_uml))
         .replace("__N_CASOS__", str(len(datos["cu"])))
