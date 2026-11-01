@@ -14,7 +14,7 @@ Sistema de Pedidos y Logística de Garrafas de Gas · Proceso Unificado · FCEQy
 | **Abrir los modelos en draw.io** (conceptual, DER, base de datos y clases) | `modelos/drawio/` — ver `modelos/drawio/LEEME.md` |
 | **Ver la base de datos** (SQL, diccionario, DER por módulo) | `modelos/base-de-datos/` — ver su `LEEME.md` |
 | **Poner una imagen en un documento** | `documentos/INDICE-IMAGENES.md` te dice cuál va dónde |
-| **Saber qué le falta al sistema** | `documentos/3-Diseño.md` §10 (pendientes de implementación) |
+| **Saber qué le falta al sistema** | `sistema/DISENO-PENDIENTES.md` (pendientes de implementación) |
 | **Seguimiento interno de las features nuevas (F1…FN, estado y % de avance; no va al sitio de la cátedra)** | **`FEATURES-NEW.md`** |
 | **Entender cómo está hecho el código** (backend, Postman, setup) | `sistema/` — ver `sistema/README.md` |
 | **Ver las pantallas reales** del panel y de las apps | `capturas/` |
@@ -51,7 +51,7 @@ Los links de `documentos/*.md` a las imágenes son relativos a esa carpeta (`../
 | **0.1** | `0.1-Planificacion_Iteraciones.md` | Qué se hace en cada iteración |
 | **1** | `1-Requisitos.md` | Objetivos, subsistemas y los 338 casos de uso expandidos |
 | **2** | `2-Analisis.md` | Modelo conceptual de los 21 casos esenciales, diagramas de secuencia de los diez casos con interacción del actor, contratos de sus operaciones y glosario |
-| **3** | `3-Diseño.md` | Arquitectura, casos de uso reales, los diagramas de interacción y los módulos inteligentes |
+| **3** | `3-Diseño.md` | Casos de uso reales de los diez casos con interacción del actor, un diagrama de interacción por operación de los veinte casos dinámicos y el diagrama de clase derivado de ellos |
 
 ## El documento de consulta
 
@@ -68,7 +68,6 @@ la cátedra exige su artefacto ahí**. Este archivo los reúne para no saltar en
 python3 herramientas/verificar-conformidad.py   # ¿cumple las plantillas? (33 chequeos)
 python3 herramientas/verificar-links.py         # ¿algún link roto en los .md y los .html?
 python3 herramientas/incrustar-imagenes-cu.py --aplicar  # cada DSS/DSD de los .md como imagen (PNG) con su Mermaid plegado debajo
-python3 herramientas/generar-tabla-implementacion.py  # copia la tabla de implementación (Casos §8) al Documento 3 §4.25
 python3 herramientas/generar-html-drive.py      # regenera catedra/drive/*.html
 python3 herramientas/generar-docx-catedra.py    # Documentos de la cátedra en Word (.docx) -> catedra/entregables/catedra-docx/ y ~/Desktop/SPLG-Documentacion-Catedra/
 python3 sitio/generar-sitio.py                  # regenera sitio/splg-documentacion.html

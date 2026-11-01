@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera el diagrama de clases de diseño del Documento 3 §5, derivado de los DSD.
+"""Genera el diagrama de clases de diseño del Documento 3 (sección 3), derivado de los DSD.
 
     python3 herramientas/generar-clases-diseno.py
 
@@ -22,7 +22,7 @@ Sale, todo en PlantUML como el modelo conceptual (Mermaid no dibuja la notación
   diagramas/clases-diseno/DC_<área>.*                   dominio con atributos y operaciones, por área
   diagramas/clases-diseno/DC_Mod_<vista>.*              una vista por módulo o grupo de módulos
   diagramas/clases-diseno/DC_Paquetes.*                 dependencias entre módulos
-  catedra/material-de-trabajo/indice-clases-diseno.md           cifras y vistas, para pegar en 3-Diseño.md §5
+  catedra/material-de-trabajo/indice-clases-diseno.md           cifras y vistas, para el Documento 3
 
 No se edita ningún archivo generado: si cambia un DSD, se corre de nuevo.
 """
@@ -44,126 +44,34 @@ ANCHO_LINEA = 58    # un miembro más largo se parte en la coma, para que el dia
 # Las vistas por módulo agrupan los módulos del backend; las clases de otros módulos con las que
 # colaboran se dibujan de referencia, sin miembros.
 VISTAS_MODULOS = [
-    ("Sesión, registro e identidad", "Sesion-y-registro", ["auth", "registro", "firebase"]),
-    ("Usuarios, roles, administradores y auditoría", "Usuarios", ["users", "role", "admin", "audit"]),
-    ("Clientes y direcciones de entrega", "Clientes", ["customer", "user-address"]),
-    ("Carrito y recompra", "Carrito-y-recompra", ["cart", "repurchase"]),
-    ("Productos y franjas horarias", "Productos-y-franjas", ["gascylinder", "time-slot"]),
-    ("Cobertura y distribuidoras", "Cobertura-y-distribuidoras", ["coverage-zone", "distributor"]),
-    ("Pedidos: alta y cancelación", "Pedidos-alta",
-     ["=CreateOrderUseCase", "=CancelOrderUseCase", "=ReleaseOrderUseCase", "=UpdateOrderUseCase", "=NotificationPort"]),
-    ("Pedidos: consulta y estado", "Pedidos-estado",
-     ["=OrderService", "=UpdateOrderStatusUseCase", "=ConfirmDeliveryUseCase", "=CashCollectionUseCase", "=QuoteOrderUseCase", "=OrderStatusHistorySubscriber", "=Map<String, Pedido>",
-      "=List<Pedido>"]),
-    ("Pagos y reservas", "Pagos",
-     ["payments", "=ConfirmPaymentUseCase", "=RefundPaymentUseCase", "=ReservationService"]),
-    ("Despacho de pedidos", "Despacho",
-     ["=DispatchOrchestratorService", "=DispatchService", "=DispatchOfferRepositoryPort",
-      "=RealtimeDispatchPort", "=RouteBatchPlannerService", "=Map<String, LoteRecorrido>",
-      "=CylinderLifecyclePort", "=OrderRepositoryPort"]),
-    ("Seguimiento en tiempo real", "Tiempo-real", ["gateways", "=RoutesService"]),
-    ("Choferes y vehículos", "Choferes-y-vehiculos", ["delivery", "car"]),
-    ("Flota: tareas, adjuntos y vencimientos", "Flota-tareas",
-     ["=FleetTaskService", "=FleetAttachmentService", "=FleetExpirationsService", "=FleetAlertsCron",
-      "=FleetDispatchLockService", "=Map<String, PlanMantenimiento>", "=Map<String, TareaMantenimiento>",
-      "=List<TareaMantenimiento>"]),
-    ("Flota: planificador de mantenimiento", "Flota-planificador",
-     ["=FleetMaintenancePlannerService", "=DemandForecastService", "=FleetCoverageService",
-      "=FleetAvailabilityPort", "=Map<String, PropuestaVentanaTaller>"]),
-    ("Personal: puestos, legajos, jornadas y licencias", "Personal",
-     ["employee", "=Map<String, Empleado>", "=Map<String, PuestoDeTrabajo>", "=Map<String, JornadaDeTrabajo>",
-      "=Map<String, LicenciaLaboral>", "=List<Empleado>", "=List<JornadaDeTrabajo>", "=List<LicenciaLaboral>"]),
-    ("Adjuntos", "Adjuntos", ["attachment"]),
-    ("Envases", "Envases", ["=CylinderService", "=Map<String, Envase>"]),
-    ("Recupero de envases", "Recupero",
-     ["=CylinderRecoveryService", "=DepositLedgerService", "=Map<String, AvisoRecupero>",
-      "=Map<String, CasoRecupero>"]),
-    ("Flota: gastos, multas y siniestros", "Flota-gastos",
-     ["fleet-expense", "=Map<String, Empleado>", "=FleetCostService", "=List<Vehiculo>"]),
-    ("Reclamos, incidencias y calificaciones", "Posventa", ["claims", "incident", "rating"]),
-    ("Notificaciones y correo", "Notificaciones", ["notifications", "email"]),
-    ("Reportes, salud y almacenamiento", "Soporte", ["reports", "health", "redis", "s3"]),
-    ("Stock", "Stock", ["stock"]),
-    ("Compras", "Compras", ["purchase"]),
-    ("Carga del camión", "Carga-del-camion", ["truck-load"]),
-    ("Caja: cajas, sesiones y libro", "Caja",
-     ["=CashBoxService", "=CashLedgerService", "=CashCategoryService", "=FinanceService",
-      "=Map<String, Caja>", "=Map<String, SesionDeCaja>", "=Map<String, CategoriaDeCaja>",
-      "=Map<String, MovimientoDeCaja>", "=List<Caja>"]),
-    ("Rendición del chofer", "Rendicion",
-     ["=DriverSettlementService", "=DriverSettlementCron",
-      "=Map<String, RendicionChofer>", "=List<RendicionChofer>"]),
-    ("Cuentas corrientes", "Cuentas-corrientes",
-     ["=CustomerAccountService", "=Map<String, CuentaCorriente>", "=List<CuentaCorriente>",
-      "=List<AsientoCuentaCorriente>"]),
-    ("Comisiones y liquidaciones", "Comisiones",
-     ["=CommissionRuleService", "=CommissionLedgerService", "=DriverLiquidationService", "=CommissionQueryService", "=Map<String, ReglaComision>", "=Map<String, LiquidacionComisiones>", "=Map<String, Empleado>",
-      "=List<ReglaComision>", "=List<AsientoComision>"]),
+    ("Acceso, registro y clientes", "Acceso-y-clientes", ["auth", "registro", "firebase", "users", "customer"]),
+    ("Pedido: alta, cancelación y entrega", "Pedidos",
+     ["=CreateOrderUseCase", "=CancelOrderUseCase", "=OrderService", "=UpdateOrderStatusUseCase",
+      "=ConfirmDeliveryUseCase", "=CashCollectionUseCase", "=NotificationPort", "=Map<String, Pedido>",
+      "=OrderRepositoryPort", "=CylinderLifecyclePort"]),
+    ("Pagos, stock y reclamos", "Pagos-stock-y-reclamos",
+     ["payments", "=ConfirmPaymentUseCase", "stock", "truck-load", "claims"]),
+    ("Despacho y seguimiento en tiempo real", "Despacho",
+     ["=DispatchOrchestratorService", "=DispatchService", "=DispatchOfferRepositoryPort", "=RealtimeDispatchPort",
+      "=RouteBatchPlannerService", "distributor", "delivery", "gateways", "notifications"]),
+    ("Flota, recompra y recupero de envases", "Flota-recompra-y-recupero", ["fleet", "repurchase", "cylinder"]),
 ]
 
 # Vistas de dominio: el foco lleva atributos y operaciones; la referencia, solo el nombre.
 VISTAS_DOMINIO = [
-    ("Organización y acceso", "Organizacion-y-acceso",
-     ["Distribuidora", "ConfiguracionModulo", "Usuario", "Rol", "Administrador", "AsientoAuditoria",
-      "Auditoria", "DetalleAuditoria", "TipoAccionAuditoria"],
-     ["Cliente", "Chofer", "Pedido"]),
-    ("Clientes", "Clientes",
-     ["Cliente", "DireccionEntrega", "InvitacionRecompra", "ItemSugerido"],
-     ["Usuario", "Pedido", "Producto"]),
-    ("Pedido, líneas y pago", "Pedido",
-     ["Pedido", "ItemPedido", "CambioEstadoPedido", "CambioDireccion", "Pago", "ReintegroDePago"],
-     ["Cliente", "Chofer", "Producto", "DireccionEntrega", "Usuario"]),
-    ("Carrito, franjas y cobertura", "Carrito-franjas-y-cobertura",
-     ["Carrito", "ItemCarrito", "FranjaHoraria", "ZonaCobertura"],
-     ["Cliente", "Producto", "Distribuidora", "Pedido"]),
-    ("Despacho y propuestas con vigencia", "Despacho",
-     ["PropuestaConVigencia", "OfertaDespacho", "OfertaLote", "LoteRecorrido", "ParadaLote"],
-     ["PropuestaVentanaTaller", "InvitacionRecompra", "AvisoRecupero", "Pedido", "Chofer"]),
-    ("Choferes y vehículos", "Choferes-y-vehiculos",
-     ["Chofer", "Vehiculo", "AsignacionVehiculo", "UbicacionGPS", "RegistroUsoVehiculo"],
-     ["Usuario", "Distribuidora", "Pedido"]),
-    ("Mantenimiento de la flota", "Mantenimiento",
-     ["PlanMantenimiento", "TareaMantenimiento", "AdjuntoTarea", "PropuestaVentanaTaller"],
-     ["Chofer", "Vehiculo"]),
-    ("Productos y envases", "Productos-y-envases",
-     ["Producto", "Promocion", "Envase", "MovimientoEnvase", "RevisionEnvase"],
-     ["Distribuidora", "Cliente", "Pedido", "Usuario"]),
-    ("Personal", "Personal",
-     ["PuestoDeTrabajo", "Empleado", "JornadaDeTrabajo", "LicenciaLaboral", "Adjunto"],
-     ["Distribuidora", "Usuario", "TareaMantenimiento", "Chofer"]),
-    ("Recupero de envases", "Recupero",
-     ["CasoRecupero", "AvisoRecupero"],
-     ["Envase", "Cliente", "Usuario"]),
-    ("Posventa", "Posventa", ["Calificacion", "Incidencia", "Reclamo"],
-     ["Usuario", "Pedido", "Cliente"]),
-    ("Gastos de la flota", "Gastos-de-flota",
-     ["CargaCombustible", "MultaTransito", "Siniestro", "Neumatico", "MovimientoNeumatico"],
-     ["Vehiculo", "Empleado", "Distribuidora"]),
-    ("Stock físico", "Stock-fisico",
-     ["Deposito", "UbicacionDeStock", "SaldoDeStock", "MovimientoDeStock", "UmbralDeStock",
-      "AjusteDeStock", "ItemAjusteDeStock"],
-     ["Producto", "Vehiculo", "Usuario", "Distribuidora"]),
-    ("Carga del camión", "Carga-del-camion", ["CargaDeCamion", "ItemCarga"],
-     ["Vehiculo", "Chofer", "UbicacionDeStock", "Producto", "Usuario", "Pedido", "Empleado"]),
-    ("Compras", "Compras",
-     ["Proveedor", "OrdenDeCompra", "ItemOrdenDeCompra", "RecepcionDeCompra", "ItemRecepcion"],
-     ["Deposito", "Producto", "Usuario", "Distribuidora"]),
-    ("Caja y movimientos", "Caja",
-     ["Caja", "SesionDeCaja", "CategoriaDeCaja", "MovimientoDeCaja"],
-     ["Distribuidora", "Usuario", "RendicionChofer", "AsientoCuentaCorriente", "LiquidacionComisiones"]),
-    ("Rendición del chofer", "Rendicion",
-     ["RendicionChofer", "PedidoRendido", "GastoDeRendicion", "CobroDeRendicion"],
-     ["Chofer", "Empleado", "Pedido", "Caja", "MovimientoDeCaja", "CategoriaDeCaja", "AsientoComision",
-      "AsientoCuentaCorriente", "CargaDeCamion"]),
-    ("Cuentas corrientes", "Cuentas-corrientes",
-     ["CuentaCorriente", "AsientoCuentaCorriente", "ImputacionCuentaCorriente"],
-     ["Cliente", "Distribuidora", "Pedido", "MovimientoDeCaja", "Chofer", "RendicionChofer"]),
-    ("Comisiones y liquidaciones", "Comisiones",
-     ["ReglaComision", "AsientoComision", "LiquidacionComisiones"],
-     ["Empleado", "Chofer", "Producto", "Pedido", "MovimientoDeCaja", "Distribuidora", "RendicionChofer"]),
+    ("Cuentas, clientes y catálogo", "Cuentas-clientes-y-catalogo",
+     ["Usuario", "Distribuidora", "Cliente", "Carrito", "FranjaHoraria", "ZonaCobertura", "Producto", "Envase",
+      "InvitacionRecompra", "ItemSugerido"],
+     ["Pedido", "Chofer"]),
+    ("Pedido, pago y reclamo", "Pedido",
+     ["Pedido", "ItemPedido", "CambioEstadoPedido", "Pago", "Reclamo"],
+     ["Cliente", "Chofer", "Producto", "Usuario", "Envase"]),
+    ("Despacho, flota y recupero de envases", "Despacho-flota-y-recupero",
+     ["OfertaDespacho", "LoteRecorrido", "OfertaLote", "ParadaLote", "PropuestaVentanaTaller", "TareaMantenimiento",
+      "Chofer", "Vehiculo", "UbicacionGPS", "CasoRecupero", "AvisoRecupero"],
+     ["Pedido", "Cliente", "Envase", "Usuario"]),
 ]
 _cubiertas = [c for _, _, f, _ in VISTAS_DOMINIO for c in f]
-assert sorted(_cubiertas) == sorted(M.CLASES), "las vistas de dominio no cubren las clases del MC"
 
 # Áreas de los paquetes del diagrama de dependencias.
 AREAS_PAQUETES = [
@@ -212,6 +120,10 @@ if X.FALTAN:
     sys.exit("Faltan tipos en el glosario de dc_larman.py:\n  " + "\n  ".join(sorted(X.FALTAN)))
 if dc.sin_resolver:
     sys.exit("\n".join(dc.sin_resolver))
+
+
+_dom = {n for n, c in dc.clases.items() if c.tipo == "dominio"}
+assert _dom == set(_cubiertas), f"las vistas de dominio no cubren las clases de los DSD: {sorted(_dom ^ set(_cubiertas))}"
 
 
 def ident(nombre):
@@ -369,13 +281,13 @@ def vista_general():
     """Todas las clases de dominio, sin miembros, en paquetes por contexto."""
     lin = ["@startuml", CAB, "skinparam nodesep 18", "skinparam ranksep 35"]
     for clave, ttl in M.CONTEXTOS:
-        miembros = [n for n, (c, _, _) in M.CLASES.items() if c == clave]
+        miembros = [n for n, (c, _, _) in M.CLASES.items() if c == clave and n in dc.clases]
         for n in miembros:
             lin += decl_clase(n, miembros=False)
     lin.append("")
-    todas = set(M.CLASES)
+    todas = {n for n in M.CLASES if n in dc.clases}
     lin += generalizaciones(todas)
-    vistas = [a for a in dc.asociaciones if a["a"] in M.CLASES and a["b"] in M.CLASES
+    vistas = [a for a in dc.asociaciones if a["a"] in todas and a["b"] in todas
               and not (a["a"] == "Usuario" and a["nombre"] in AUTORIA and a["b"] != "AsientoAuditoria")]
     # entre un mismo par de clases hay a veces dos asociaciones: solo ésas llevan el nombre, para distinguirlas
     por_par = collections.Counter(frozenset((a["a"], a["b"])) for a in vistas)
@@ -383,7 +295,8 @@ def vista_general():
         repetida = por_par[frozenset((a["a"], a["b"]))] > 1
         lin.append(flecha_asoc(a if repetida else dict(a, nombre="")))
     c, a_, b_ = M.CLASE_ASOCIACION
-    lin.append(f"({a_}, {b_}) .. {c}")
+    if {c, a_, b_} <= todas:
+        lin.append(f"({a_}, {b_}) .. {c}")
     lin += ["", "legend bottom right",
             "  Vista de conjunto: sin miembros; solo llevan nombre las asociaciones que comparten par. La flecha abierta marca",
             "  la navegabilidad que piden los diagramas de interacción; se omiten las asociaciones",
@@ -535,6 +448,10 @@ def main(render=True):
     escribir(SAL + "DC_General.puml", vista_general())
     nombres.append("DC_General")
     for titulo, archivo, foco, ref in VISTAS_DOMINIO:
+        foco = [c for c in foco if c in dc.clases]
+        ref = [c for c in ref if c in dc.clases]
+        if not foco:
+            continue
         nom = "DC_" + archivo
         escribir(SAL + nom + ".puml", vista_dominio(titulo, foco, ref))
         nombres.append(nom)
@@ -563,7 +480,7 @@ def main(render=True):
     cifras(indice, deps)
     if "--documento" in sys.argv:
         aplicar_documento(documento(indice, vistas_mod, deps))
-        print("  ✓ 3-Diseño.md §5 actualizado (corré numerar-figuras.py --aplicar)")
+        print("  ✓ 3-Diseño.md sección 3 actualizada (corré numerar-figuras.py --aplicar)")
     print(f"  ✓ {len(dc.clases)} clases de diseño, "
           f"{sum(len(c.ops) for c in dc.clases.values())} operaciones, "
           f"{len(dc.asociaciones)} asociaciones, {len(dc.dependencias)} dependencias, "
@@ -573,7 +490,7 @@ def main(render=True):
 
 
 def documento(indice, vistas_mod, deps):
-    """El texto de 3-Diseño.md §5 (de la introducción a 5.3), entre marcadores: cada corrida lo
+    """El texto de 3-Diseño.md sección 3, entre marcadores: cada corrida lo
     vuelve a escribir, así que las cifras y las figuras no se desactualizan."""
     nops = sum(len(c.ops) for c in dc.clases.values())
     roles = collections.defaultdict(list)
@@ -584,14 +501,14 @@ def documento(indice, vistas_mod, deps):
     mc_asoc = sum(1 for a in dc.asociaciones if a["mc"])
     nav = sum(1 for a in dc.asociaciones if a["mc"] and (a["nav_ab"] or a["nav_ba"]))
     L = []
-    L += ["<!-- dc:inicio -->", "## 5. Diagrama de Clases de Diseño", "",
-          "El diagrama de clases de diseño **se deriva de los diagramas de interacción** (los DSD del "
-          "§4 y de cada caso de uso real), como pide Larman en *UML y patrones*: cada mensaje que "
+    L += ["<!-- dc:inicio -->", "## 3. Diagrama de Clase", "",
+          "El diagrama de clases de diseño **se deriva de los diagramas de interacción** de la "
+          "sección 2, como pide Larman en *UML y patrones*: cada mensaje que "
           "recibe un objeto es una operación de su clase, y la visibilidad entre dos objetos que se "
           "mandan mensajes decide la relación que los une. Se construye a partir de los "
-          f"{sum(open(f, encoding='utf-8').read().count('title DSD — ') for f in X.glob.glob(X.D + 'diagramas/DSD_*.mmd'))} diagramas de interacción en la notación de Larman y del modelo "
-          "conceptual (Documento 2, §1): todo lo que el diagrama de clases muestra está en alguno de "
-          "ellos.", "",
+          f"{len(X.archivos_dsd())} diagramas de interacción y del modelo "
+          "conceptual (Documento 2, sección 1): lleva las clases que aparecen en esos diagramas, y todo lo "
+          "que muestra sale de alguno de ellos.", "",
           "**Cómo se deriva.**", "",
           "| Del DSD | Al diagrama de clases |", "|---|---|",
           "| Un mensaje `A->>B: operacion(parametro)` | La operación `+ operacion(parametro: Tipo): Retorno` en la clase de `B`, con el retorno que el DSD muestra. Una operación aparece una sola vez aunque varios DSD la usen |",
@@ -601,7 +518,7 @@ def documento(indice, vistas_mod, deps):
           "| Servicio, puerto o colección que colabora con otro | Asociación navegable de multiplicidad 1: el colaborador se inyecta como atributo. Si el código real no lo inyecta, dependencia |",
           "| Primer receptor del mensaje del actor | `«controlador»` (clase `…UseCase` del módulo) o `«fachada»` (servicio fachada del módulo): el controlador de aplicación |",
           "| Objeto de infraestructura que solo recibe mensajes de otros | `«fabricación pura»` |",
-          "| Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con `..|>` solo si aparece en un DSD |",
+          "| Puerto (`…Port`) | `interface` con `«puerto»`; el adaptador que lo realiza se dibuja con la flecha punteada de punta hueca solo si aparece en un DSD |",
           "| `:Map<String, X>` y `:List<X>` | `«colección»` agregada a su clase `X` (el DSD las usa para buscar por identificador) |", "",
           "**Notación.** Atributos `- nombre: Tipo` (privados; `/` marca un atributo derivado); operaciones "
           "`+ nombre(parametro: Tipo): Retorno`; `X[*]` es una colección de `X`; una línea sin punta no "
@@ -615,9 +532,9 @@ def documento(indice, vistas_mod, deps):
           "argumento que no todas las llamadas pasan se marca opcional (`= ninguno`). Los argumentos "
           "son variables con su tipo, nunca valores literales; los importes son `Moneda` y las horas, "
           "`Hora` o `FechaHora`.", "",
-          "**Tipos.** Los primitivos son los del catálogo de operaciones del Documento 2; los de los "
+          "**Tipos.** Los primitivos son los de las operaciones del sistema del Documento 2; los de los "
           "atributos de dominio salen de las columnas del backend, y los de los argumentos y retornos, "
-          "del catálogo o del modelo conceptual.", "",
+          "de esas operaciones o del modelo conceptual.", "",
           "| Tipo | Significado |", "|---|---|"]
     L += [f"| `{k}` | {v} |" for k, v in X.PRIMITIVOS.items()]
     L += ["", "| Enumeración | Enumeración del backend |", "|---|---|"]
@@ -625,28 +542,28 @@ def documento(indice, vistas_mod, deps):
                     {t for c in dc.clases.values() for o in c.ops.values() for _, t in o.params})
     L += [f"| `{es}` | `{en}` |" for en, es in sorted(X.ENUMERACIONES.items(), key=lambda x: x[1]) if es in usadas]
     L += ["", f"En total el diagrama tiene **{len(dc.clases)} clases** y **{nops} operaciones**: "
-          f"{len(doms)} clases de dominio (todas las del modelo conceptual) y "
+          f"{len(doms)} clases de dominio (las del modelo conceptual que aparecen en los diagramas) y "
           f"{len(dc.clases) - len(doms)} de diseño ("
           + ", ".join(f"{len(v)} {k}" for k, v in sorted(roles.items())) + f"). Las {mc_asoc} asociaciones "
           f"del modelo conceptual están todas; {nav} resultan navegables según los mensajes de los DSD, "
           f"y {len(dc.dependencias)} pares de clases quedan unidos por una dependencia.", "",
-          "### 5.1 Clases del Dominio", "",
+          "### 3.1 Clases del Dominio", "",
           "Las clases del modelo conceptual, con sus atributos tipados y las operaciones que reciben en "
           "los DSD. La vista general no lleva miembros; las vistas por área llevan todos y dibujan en "
           "gris, solo como referencia, las clases de otra área. Cada asociación del modelo conceptual "
           "está en alguna vista, con su multiplicidad.", "",
           "![Clases de dominio: vista general](../diagramas/clases-diseno/DC_General.png)", "",
-          "**Figura 0 — Diagrama de Clases de Dominio**", ""]
+          "**Figura 0 — Diagrama de Clase: dominio, vista general**", ""]
     for tipo, titulo, nom, n, o in indice:
         if tipo != "dominio":
             continue
         L += [f"![Clases de dominio: {titulo.lower()}](../diagramas/clases-diseno/{nom}.png)", "",
-              f"**Figura 0.1 — Clases de dominio: {titulo.lower()}**", ""]
-    L += ["### 5.2 Clases de Diseño, por módulo", "",
+              f"**Figura 0 — Diagrama de Clase: dominio, {titulo.lower()}**", ""]
+    L += ["### 3.2 Clases de Diseño", "",
           "Los controladores, las fabricaciones puras, los puertos y las colecciones de los DSD, "
-          "repartidos por módulo del backend (o por grupo de módulos cuando son pocos). Cada vista "
+          "agrupados por la parte del sistema en la que colaboran. Cada vista "
           "dibuja con todas sus operaciones las clases de su módulo y, en gris, las clases con las que "
-          "colabora. Las clases de dominio de cada diagrama están en §5.1.", "",
+          "colabora. Las clases de dominio de cada diagrama están en 3.1.", "",
           "| Papel | Clases |", "|---|---|"]
     for k, v in sorted(roles.items()):
         L.append(f"| `«{k}»` | {', '.join(f'`{x}`' for x in sorted(v))} |")
@@ -657,22 +574,10 @@ def documento(indice, vistas_mod, deps):
     else:
         L += ["Ningún DSD llega hasta un adaptador (los diagramas terminan en el puerto), así que el "
               "diagrama no dibuja realizaciones; cuando un DSD nombre un adaptador, la realización "
-              "`..|>` se dibuja sola.", ""]
+              "se dibuja sola.", ""]
     for titulo, archivo, propias, refs in vistas_mod:
         L += [f"![Clases de diseño: {titulo.lower()}](../diagramas/clases-diseno/DC_Mod_{archivo}.png)", "",
-              f"**Figura 0 — Clases de diseño: {titulo.lower()}**", ""]
-    L += ["### 5.3 Dependencias entre módulos", "",
-          "Un módulo depende de otro cuando alguna de sus clases le manda un mensaje, en algún DSD, a una "
-          "clase del otro (por asociación navegable, dependencia o realización). Se calcula desde los "
-          "mismos diagramas que las vistas anteriores.", "",
-          "![Dependencias entre módulos](../diagramas/clases-diseno/DC_Paquetes.png)", "",
-          "**Figura 0 — Dependencias entre módulos**", "",
-          "| Módulo | Depende de |", "|---|---|"]
-    por_origen = collections.defaultdict(set)
-    for (o, d_) in deps:
-        por_origen[o].add(d_)
-    for o in sorted(por_origen):
-        L.append(f"| `{o}` | {', '.join(f'`{x}`' for x in sorted(por_origen[o]))} |")
+              f"**Figura 0 — Diagrama de Clase: diseño, {titulo.lower()}**", ""]
     L += ["", "<!-- dc:fin -->"]
     return "\n".join(L)
 

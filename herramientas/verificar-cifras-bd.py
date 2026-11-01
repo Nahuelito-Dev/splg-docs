@@ -53,7 +53,7 @@ def check(nombre, esperado, real):
     print(f"[{'OK' if ok else 'FALLA':5}] {nombre}: documento dice {esperado}, la base/el código tiene {real}")
     if not ok: fallas.append(nombre)
 
-# Lo que dicen los documentos: se leen del texto (3-Diseño.md §7.4 y 2-Analisis.md §1.5), no se
+# Lo que dicen los documentos: se leen del texto (sistema/DISENO-MODELO-DE-DATOS.md y 2-Analisis.md §1.5), no se
 # transcriben, así que un número viejo en la prosa hace fallar la verificación.
 def del_doc(ruta, patron):
     m = re.search(patron, open(DOC + ruta, encoding="utf-8").read())
@@ -61,16 +61,14 @@ def del_doc(ruta, patron):
         sys.exit(f"{ruta}: no encuentro la afirmación {patron!r}")
     return int(m.group(1))
 
-DOC_TABLAS = del_doc("3-Diseño.md", r'Modelo de datos de las \*\*(\d+) tablas\*\*')
-DOC_FK = del_doc("3-Diseño.md", r'\*\*(\d+) claves foráneas, todas declaradas')
-DOC_ENUM = del_doc("3-Diseño.md", r'\*\*(\d+) tipos enumerados\*\*')
+DOC_TABLAS = del_doc("../sistema/DISENO-MODELO-DE-DATOS.md", r'Modelo de datos de las \*\*(\d+) tablas\*\*')
+DOC_FK = del_doc("../sistema/DISENO-MODELO-DE-DATOS.md", r'\*\*(\d+) claves foráneas, todas declaradas')
+DOC_ENUM = del_doc("../sistema/DISENO-MODELO-DE-DATOS.md", r'\*\*(\d+) tipos enumerados\*\*')
 DOC_CONCEPTOS = n_conceptos_conceptual   # el Documento 2 modela sólo los esenciales: sus cifras las controla verificar-mc-der.py
-DOC_ENTIDADES_DISENO = del_doc("3-Diseño.md", r'(\d+) clases de dominio \(todas las del modelo conceptual\)')
 
 check("Tablas de dominio", DOC_TABLAS, n_tablas)
 check("Claves foráneas", DOC_FK, n_fk)
 check("Tipos enumerados", DOC_ENUM, n_enum)
 check("Conceptos del modelo conceptual (§1.2/§1.5 Doc 2)", DOC_CONCEPTOS, n_conceptos_conceptual)
-check("Clases del diagrama de clases de dominio (§5.1 Doc 3)", DOC_ENTIDADES_DISENO, n_entidades_diseno)
 
 sys.exit(1 if fallas else 0)

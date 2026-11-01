@@ -21,6 +21,8 @@ sequenceDiagram
     FLK-->>-UCS: vehiculo
     UCS->>+PED: aceptar(chofer, vehiculo)
     PED->>PED: transicionar(aceptado)
+    create participant CAM as :CambioEstadoPedido
+    PED->>CAM: «create»(aceptado)
     opt El pedido no estaba aceptado por este chofer
         PED->>PED: generarCodigoDeEntrega()
         PED->>OFE: aceptar()

@@ -5,6 +5,8 @@ sequenceDiagram
     participant CDU as :ConfirmDeliveryUseCase
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
+    participant ENV as envase:Envase
+    participant ENT as :StockDeliveryService
     participant RT as :RealtimeDispatchPort
     participant NOT as :NotificationPort
 
@@ -18,7 +20,13 @@ sequenceDiagram
     create participant CAM as :CambioEstadoPedido
     PED->>CAM: «create»(entregado, motivo)
     deactivate PED
-    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento,<br/>entrega los envases y descuenta el stock (CU-220). El pago en efectivo sigue pendiente
+    CDU->>+PED: getEnvases()
+    PED-->>-CDU: envases
+    loop Por cada envase despachado en el pedido
+        CDU->>ENV: entregarAlCliente(pedido)
+    end
+    Note over CDU,ENT: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220).<br/>Crea los MovimientoDeStock de la entrega y deja el pago en efectivo pendiente de cobro
+    CDU->>ENT: registrarEntrega(entrega)
     CDU-)RT: notifyAdmins(pedido)
     CDU-)NOT: sendOrderConfirmation(cliente, pedido)
     CDU-->>-CLI: pedido

@@ -431,8 +431,6 @@ Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras,
 | `diagramas/modelo-conceptual/MC_Personal.png` | Modelo conceptual: personal |
 | `modelos/base-de-datos/fisico/SPLG-fisico-09-personal.png` | Modelo físico — Personal |
 | `modelos/base-de-datos/conceptual/SPLG-der-06-personal.png` | Modelo entidad-relación conceptual — Personal |
-| `diagramas/clases-diseno/DC_Personal.png` | Clases de dominio: personal |
-| `diagramas/clases-diseno/DC_Mod_Personal.png` | Clases de diseño: módulo personal |
 | `diagramas/uml/UML_Estados_Empleado.png` | Diagrama de estados — Empleado (egreso y reingreso construidos; «de licencia» planificado, C-08) |
 | `diagramas/uml/UML_Estados_Licencia.png` | Diagrama de estados — Licencia laboral (planificado, C-08) |
 | `diagramas/uml/UML_Estados_Jornada.png` | Diagrama de estados — Jornada de trabajo (planificado, C-08) |
@@ -444,8 +442,6 @@ Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras,
 | `diagramas/modelo-conceptual/MC_Gastos-de-flota.png` | Modelo conceptual: gastos de flota |
 | `modelos/base-de-datos/fisico/SPLG-fisico-10-gastos-de-la-flota.png` | Modelo físico — Gastos de la flota |
 | `modelos/base-de-datos/conceptual/SPLG-der-08-gastos-de-la-flota.png` | Modelo entidad-relación conceptual — Gastos de la flota |
-| `diagramas/clases-diseno/DC_Gastos-de-flota.png` | Clases de dominio: gastos de flota |
-| `diagramas/clases-diseno/DC_Mod_Flota-gastos.png` | Clases de diseño: módulo flota gastos |
 | `diagramas/uml/UML_Estados_CargaCombustible.png` | Diagrama de estados — Carga de combustible (planificado, C-18) |
 | `diagramas/uml/UML_Estados_MultaTransito.png` | Diagrama de estados — Multa de tránsito (planificado, C-18) |
 | `diagramas/uml/UML_Estados_Siniestro.png` | Diagrama de estados — Siniestro (planificado, C-18) |
@@ -464,12 +460,6 @@ Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras,
 | `modelos/base-de-datos/conceptual/SPLG-der-09-stock-fisico.png` | Modelo entidad-relación conceptual — Stock físico |
 | `modelos/base-de-datos/conceptual/SPLG-der-10-carga-del-camion.png` | Modelo entidad-relación conceptual — Carga del camión |
 | `modelos/base-de-datos/conceptual/SPLG-der-11-compras.png` | Modelo entidad-relación conceptual — Compras |
-| `diagramas/clases-diseno/DC_Stock-fisico.png` | Clases de dominio: stock físico |
-| `diagramas/clases-diseno/DC_Carga-del-camion.png` | Clases de dominio: carga del camión |
-| `diagramas/clases-diseno/DC_Compras.png` | Clases de dominio: compras |
-| `diagramas/clases-diseno/DC_Mod_Stock.png` | Clases de diseño: módulo stock |
-| `diagramas/clases-diseno/DC_Mod_Compras.png` | Clases de diseño: módulo compras |
-| `diagramas/clases-diseno/DC_Mod_Carga-del-camion.png` | Clases de diseño: módulo carga del camión |
 | `diagramas/uml/UML_Estados_OrdenDeCompra.png` | Diagrama de estados — Orden de compra |
 | `diagramas/uml/UML_Estados_RecepcionDeCompra.png` | Diagrama de estados — Recepción de compra |
 | `diagramas/uml/UML_Estados_CargaDeCamion.png` | Diagrama de estados — Carga de camión |
@@ -487,13 +477,6 @@ Las imágenes de los cuatro módulos (personal, flota ampliada, stock y compras,
 | `modelos/base-de-datos/conceptual/SPLG-der-13-rendiciones-de-choferes.png` | Modelo entidad-relación conceptual — Rendiciones de choferes |
 | `modelos/base-de-datos/conceptual/SPLG-der-14-cuentas-corrientes.png` | Modelo entidad-relación conceptual — Cuentas corrientes |
 | `modelos/base-de-datos/conceptual/SPLG-der-15-comisiones-y-liquidaciones.png` | Modelo entidad-relación conceptual — Comisiones y liquidaciones |
-| `diagramas/clases-diseno/DC_Caja.png` | Clases de dominio: caja |
-| `diagramas/clases-diseno/DC_Cuentas-corrientes.png` | Clases de dominio: cuentas corrientes |
-| `diagramas/clases-diseno/DC_Comisiones.png` | Clases de dominio: comisiones |
-| `diagramas/clases-diseno/DC_Mod_Caja.png` | Clases de diseño: módulo caja |
-| `diagramas/clases-diseno/DC_Mod_Rendicion.png` | Clases de diseño: módulo rendición |
-| `diagramas/clases-diseno/DC_Mod_Cuentas-corrientes.png` | Clases de diseño: módulo cuentas corrientes |
-| `diagramas/clases-diseno/DC_Mod_Comisiones.png` | Clases de diseño: módulo comisiones |
 | `diagramas/uml/UML_Estados_SesionDeCaja.png` | Diagrama de estados — Sesión de caja |
 | `diagramas/uml/UML_Estados_RendicionChofer.png` | Diagrama de estados — Rendición del chofer |
 | `diagramas/uml/UML_Estados_LiquidacionComisiones.png` | Diagrama de estados — Liquidación de comisiones |

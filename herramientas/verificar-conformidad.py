@@ -2,13 +2,13 @@
 """Verifica los artefactos UP contra las plantillas de la cátedra (catedra/.catedra-ref/*.txt).
 Uso:  python3 docs/verificar-conformidad.py
 Devuelve 0 si todo cumple, 1 si hay incumplimientos."""
-import re, sys, os, collections
+import re, sys, os, collections, json
 
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 FALLAS = []
 sys.path.insert(0, D + "herramientas")
-from cu_esenciales import ESENCIALES, RETIRADOS_ALCANCE, CON_DSS, SIN_DSS, CONCEPTOS_ESENCIALES, CONSULTAS_SIN_CONTRATO   # el Documento 1 expande sólo estos casos
+from cu_esenciales import ESENCIALES, RETIRADOS_ALCANCE, CON_DSS, SIN_DSS, CONCEPTOS_ESENCIALES, CONSULTAS_SIN_CONTRATO, CU_REALES, CON_DSD, SIN_DSD, OPERACIONES_DSD, ARCHIVOS_DSD, SIN_CAPTURA   # el Documento 1 expande sólo estos casos
 
 def ruta_doc(n):
     """README y AGENTS viven en la raíz; los documentos, en documentos/."""
@@ -120,8 +120,75 @@ _modelo_conceptual()
 
 # --- CU reales (plantilla 3.-Diseño.txt) ---
 revisar("CU reales — 3-Diseño.md",
-        bloques(leer("3-Diseño.md"), r'^## 3\. ', r'^## 4\. ', r'^### 3\.\d+ (CU-\d+)'),
+        bloques(leer("3-Diseño.md"), r'^## 1\. ', r'^## 2\. ', r'^### 1\.\d+ (CU-\d+)'),
         [c if c != "Secuencia Normal" else "Secuencia normal" for c in CUE])
+
+# --- Documento 3: las tres secciones de la plantilla, los 10 CU reales con su interfaz, un DSD por operación y el diagrama de clase ---
+def _doc3():
+    falt = []
+    t3 = "\n".join(leer("3-Diseño.md"))
+    orden = ["## Índice de Figuras", "## Lista de Cambios", "## 1. Casos de Uso Reales", "## 2. Diagrama de Interacción",
+             "### 2.1 Operaciones", "### 2.2 Casos sin diagrama de interacción", "## 3. Diagrama de Clase"]
+    ps = [t3.find(o) for o in orden]
+    if -1 in ps or ps != sorted(ps):
+        return [f"las secciones no están en el orden de la plantilla (faltan {[o for o, p in zip(orden, ps) if p < 0]})"]
+    if len(re.findall(r'^## ', t3, re.M)) != 5:   # índice, lista de cambios y las tres secciones de la plantilla
+        falt.append("el documento tiene secciones de nivel 2 que la plantilla no pide")
+    # casos de uso reales: los diez con interacción del actor, cada uno con su interfaz
+    s1 = t3[ps[2]:ps[3]]
+    reales = bloques(s1.split("\n"), r'^## 1\. ', r'^\Z', r'^### 1\.\d+ (CU-\d+)') if False else {}
+    for m in re.finditer(r'^### 1\.\d+ (CU-\d+)[^\n]*\n(.*?)(?=^### 1\.\d+ |\Z)', s1, re.M | re.S):
+        reales[m.group(1)] = m.group(2)
+    if set(reales) != set(CU_REALES):
+        falt.append(f"casos de uso reales: de más {sorted(set(reales) - set(CU_REALES))} / de menos {sorted(set(CU_REALES) - set(reales))}")
+    for cu_, cuerpo in reales.items():
+        gr = re.search(r'#### Interfaz Gráfica\n(.*?)#### Especificación', cuerpo, re.S)
+        if not gr: falt.append(f"{cu_}: falta la Interfaz Gráfica"); continue
+        if cu_ not in SIN_CAPTURA:
+            im = re.search(r'!\[[^\]]*\]\((\.\./[^)]+)\)', gr.group(1))
+            if not im: falt.append(f"{cu_}: la Interfaz Gráfica no tiene imagen")
+            elif not os.path.exists(DOC + im.group(1)): falt.append(f"{cu_}: no existe {im.group(1)}")
+        if "#### Diagrama de Interacción" in cuerpo or "#### Clases de Diseño" in cuerpo:
+            falt.append(f"{cu_}: el diagrama de interacción va en la sección 2, no en el caso de uso real")
+    # diagramas de interacción: uno por operación de los casos dinámicos, con el nombre «Operación: firma»
+    s2 = t3[ps[3]:ps[6]]
+    ops_ = {o["nombre"]: o for o in json.load(open(D + "catedra/material-de-trabajo/operaciones-sistema.json", encoding="utf-8"))["operaciones"]}
+    heads = re.findall(r'^#### Operación: (.+)$', s2, re.M)
+    esperadas = [ops_[o]["firma"] for cu_ in CON_DSD for o in OPERACIONES_DSD[cu_]]
+    if sorted(heads) != sorted(esperadas):
+        falt.append(f"operaciones: de más {sorted(set(heads) - set(esperadas))} / de menos {sorted(set(esperadas) - set(heads))} / repetidas {sorted({h for h in heads if heads.count(h) > 1})}")
+    for cu_ in CON_DSD:
+        for o in OPERACIONES_DSD[cu_]:
+            m_ = re.search(r'^#### Operación: %s\n(.*?)(?=^#### Operación: |^### |\Z)' % re.escape(ops_[o]["firma"]), s2, re.M | re.S)
+            if not m_: continue
+            if not re.search(r'title DSD — [^\n]*(?<![\d-])%s(?![\d])[^\n]* · %s$' % (cu_, o), m_.group(1), re.M):
+                falt.append(f"{cu_}: el diagrama de {o} no es el de su operación")
+            if not re.search(r'^\*\*Caso de uso:\*\* %s ' % cu_, m_.group(1), re.M):
+                falt.append(f"{cu_}: la operación {o} no dice su caso de uso")
+    if len(re.findall(r'title DSD — ', s2)) != len(esperadas):
+        falt.append("hay diagramas de interacción de más o de menos")
+    # tabla de casos sin diagrama de interacción
+    sin = t3[ps[5]:ps[6]]
+    for cu_ in SIN_DSD:
+        if not re.search(rf'^\| {cu_} ', sin, re.M): falt.append(f"{cu_} falta en la tabla de casos sin diagrama de interacción")
+    if len(re.findall(r'^\| CU-\d+ ', sin, re.M)) != len(SIN_DSD):
+        falt.append("la tabla de casos sin diagrama de interacción lleva casos de más")
+    if set(CON_DSD) | set(SIN_DSD) != set(ESENCIALES):
+        falt.append("los casos con y sin diagrama de interacción no son los 21 esenciales")
+    # diagrama de clase: sus figuras existen
+    s3_ = t3[ps[6]:]
+    if not re.search(r'!\[[^\]]*\]\(\.\./diagramas/clases-diseno/DC_General\.png\)', s3_):
+        falt.append("sección 3: falta la vista general del diagrama de clase")
+    # nada de lo que la plantilla no pide
+    for malo in ("Arquitectura del Sistema", "Introducción", "Leyenda de Prioridad", "Tabla de implementación por caso de uso",
+                 "Módulos Inteligentes — Especificación"):
+        if malo in t3: falt.append(f"el documento todavía nombra «{malo}»")
+    return falt
+
+_f3 = _doc3()
+if _f3: FALLAS.append("Documento 3")
+print(f"[{'OK' if not _f3 else 'FALLA':5}] Documento 3 — plantilla: {len(CU_REALES)} CU reales con interfaz, un DSD por operación de los {len(CON_DSD)} casos dinámicos, tabla de casos sin DSD y diagrama de clase"
+      + (f" | {_f3}" if _f3 else ""))
 
 # --- Requisitos no funcionales (plantilla 1-Requisitos.txt) ---
 revisar("Requisitos no funcionales — 1-Requisitos.md",
@@ -149,26 +216,6 @@ if resid: FALLAS.append("afirmaciones contradictorias con el código")
 print(f"[{'OK' if not resid else 'FALLA':5}] Sin afirmaciones refutadas por la auditoría"
       + (f" | {resid}" if resid else ""))
 
-# --- Módulos inteligentes (criterios de la cátedra) ---
-revisar_mod = ["Casos de uso","Descripción","Entradas","Salidas","Parámetros",
-               "Por qué no es una consulta","Decisión humana","Precondiciones",
-               "Postcondiciones","Diagrama de secuencia"]
-l3 = leer("3-Diseño.md")
-s3 = next(i for i,x in enumerate(l3) if re.match(r'^## 6\. Módulos', x))
-e3 = next(i for i,x in enumerate(l3) if re.match(r'^## 7\. ', x))
-mods = [(i,m) for i in range(s3,e3) if (m:=re.match(r'^### 6\.\d+ Módulo (M\d)', l3[i]))]
-faltan_mod = {}
-for n,(i,m) in enumerate(mods):
-    fin = mods[n+1][0] if n+1 < len(mods) else e3
-    cuerpo = "\n".join(l3[i:fin]).lower()
-    f = [c for c in revisar_mod if c.lower() not in cuerpo]
-    if "#### algoritmo" not in cuerpo and "#### proceso" not in cuerpo:
-        f.append("Algoritmo o Proceso")
-    if f: faltan_mod[m.group(1)] = f
-if faltan_mod: FALLAS.append("módulos inteligentes")
-print(f"[{'OK' if not faltan_mod else 'FALLA':5}] Módulos inteligentes: {len(mods)} artefactos"
-      + (f" | {faltan_mod}" if faltan_mod else ""))
-
 # --- Cobertura de los cuatro artefactos ---
 # El total sale del catalogo y no de un numero escrito aca: al pasar de 108 a 149
 # casos hubo que tocar este archivo a mano y los documentos siguieron diciendo 108.
@@ -186,11 +233,12 @@ cobertura = {
   "CUA (doc 0)": codigos("0-Plan_Del_Proyecto.md", r'^## 7\. ', r'^## 8\. ', r'\*\*Código:\*\*'),
   "CUE (doc 1)": codigos("1-Requisitos.md",        r'^## 8\. ', r'^## 9\. ', r'^#{4}\s+.*CU-\d+'),
   "DSS (doc 2)": codigos("2-Analisis.md",          r'^## 2\. ', r'^## 3\. ', r'^#{3,5}.*CU-\d+'),
-  "DSD (doc 3)": codigos("3-Diseño.md",            r'^## 3\. ', r'^## 5\. ', r'^#{3,4}.*CU-\d+'),
+  "DSD (doc 3)": codigos("3-Diseño.md",            r'^## 2\. ', r'^## 3\. ', r'^\*\*Caso de uso:\*\* CU-\d+'),
 }
 # el Documento 1 expande sólo los casos esenciales (decisión del 31/10/2026); los demás documentos, todos
 # y el Documento 2 sólo modela con DSS los diez casos con interacción del actor
-_meta = {k: (set(ESENCIALES) if k == "CUE (doc 1)" else set(CON_DSS) if k == "DSS (doc 2)" else TODOS) for k in cobertura}
+# y el Documento 3 sólo diagrama la interacción de los 20 casos dinámicos
+_meta = {k: (set(ESENCIALES) if k == "CUE (doc 1)" else set(CON_DSS) if k == "DSS (doc 2)" else set(CON_DSD) if k == "DSD (doc 3)" else TODOS) for k in cobertura}
 inc = {k: {"faltan": sorted(_meta[k]-v), "sobran": sorted(v-_meta[k])} for k,v in cobertura.items() if v != _meta[k]}
 if inc: FALLAS.append("cobertura de artefactos por caso de uso")
 print(f"[{'OK' if not inc else 'FALLA':5}] Los 4 artefactos para los {len(TODOS)} casos de uso (CUE del Documento 1: los {len(ESENCIALES)} esenciales)"
@@ -557,12 +605,6 @@ def verificar_plantillas():
             if not os.path.exists(DOC + m.group(1)): errores.append(f"{doc}: no existe {m.group(1)}")
             vec = [x for x in ls[max(0, i - 3):i + 4] if re.match(r'^\*\*Figura \d+ — ', x)]
             if not vec: errores.append(f"{doc}: la imagen {m.group(1)} no tiene epígrafe numerado")
-    d3 = "\n".join(leer("3-Diseño.md"))
-    for img in ("UML_Componentes", "UML_Despliegue", "UML_Estados_Pedido", "UML_Estados_Reclamo", "UML_Estados_Envase",
-                "UML_Estados_Reserva", "UML_Estados_TareaFlota", "UML_Estados_OfertaDespacho",
-                "UML_Estados_Empleado", "UML_Estados_Licencia", "UML_Estados_Jornada",
-                "UML_Actividad_Despacho", "UML_Actividad_CicloPedido"):
-        if f"diagramas/uml/{img}.png" not in d3: errores.append(f"Doc 3: falta el diagrama {img}")
     return errores
 
 _errs = verificar_plantillas()
@@ -686,18 +728,7 @@ def verificar_operaciones():
             errores.append(f"contratos: el nombre de {nom} no es la firma del catálogo ({ops[nom]['firmaConTipos']})")
     return errores
 
-def verificar_tabla_operaciones_doc3():
-    """La tabla de operaciones del Documento 3 (§4.24) la genera generar-operaciones.py: sus cifras son las del catálogo."""
-    cat = json.load(open(D + "catedra/material-de-trabajo/operaciones-sistema.json", encoding="utf-8"))["operaciones"]
-    d3 = "\n".join(leer("3-Diseño.md"))
-    m = re.search(r'Son \*\*(\d+) operaciones\*\*\. \*\*(\d+)\*\* tienen su diagrama de interacción y\s+\*\*(\d+)\*\* tienen contrato', d3)
-    if not m: return ["no está la tabla de operaciones del sistema (generar-operaciones.py)"]
-    esperado = (len(cat), len(cat), sum(1 for o in cat if o["cambiaEstado"]))
-    if tuple(map(int, m.groups())) != esperado:
-        return [f"la tabla dice {m.groups()} y el catálogo {esperado}: correr generar-operaciones.py"]
-    return []
-
-_errs_op = verificar_operaciones() + verificar_tabla_operaciones_doc3()
+_errs_op = verificar_operaciones()
 if _errs_op: FALLAS.append("operaciones del sistema (DSS, catálogo y contratos)")
 print(f"[{'OK' if not _errs_op else 'FALLA':5}] Operaciones del sistema: DSS con :Sistema, iniciador del catálogo y sin auto-mensajes; una firma por operación; contrato de cada operación de los casos con DSS"
       + (f" | {len(_errs_op)} errores: {_errs_op[:6]}" if _errs_op else ""))
@@ -773,8 +804,7 @@ _esperado = [
     ("AGENTS.md", r'reúne los (\d+) CU', _n_cu),
     ("Casos-de-Uso.md", r'Se incluyen (\d+) diagramas, uno por caso', _n_dss),
     ("Casos-de-Uso.md", r'Este documento reúne, para los \*\*(\d+) casos de uso', _n_cu),
-    ("3-Diseño.md", r'Los (\d+) diagramas de interacción en la notación', _n_dsd),
-    ("3-Diseño.md", r'a partir de los (\d+) diagramas de interacción', _n_dsd),
+    ("3-Diseño.md", r'a partir de los (\d+) diagramas de interacción', len(ARCHIVOS_DSD)),
 ]
 for _f, _pat, _val in _esperado:
     _tx = open(ruta_doc(_f), encoding="utf-8").read()
@@ -884,6 +914,9 @@ for _cu, _n in sorted(_nombres4.items()):
             if _doc == "dss" and _cu not in CON_DSS:
                 if re.search(_t4 % _cu, _docs4[_doc]): _err_4.append(f"{_cu}: tiene DSS en el Documento 2 y no es un caso con interacción del actor")
                 continue
+            if _doc == "dsd" and _cu not in CON_DSD:
+                if re.search(_t4 % _cu, _docs4[_doc]): _err_4.append(f"{_cu}: tiene DSD en el Documento 3 y no es un caso dinámico")
+                continue
             if not re.search(_t4 % _cu, _docs4[_doc]):
                 _err_4.append(f"{_cu}: no hay diagrama {_k.upper()} en {'Casos-de-Uso.md' if _doc == 'casos' else 'su documento'}")
     _dss_f = [x for x in _mmd if x.startswith(f"DSS_{_cu}_") and x.endswith(".mmd")]
@@ -974,7 +1007,7 @@ print(f"[{'OK' if not _err_act else 'FALLA':5}] Tablas de actores idénticas (10
 
 # ---------- tabla de implementación, catálogo vs CUA, cifras derivadas, pasos del CUE y CU reales ----------
 # La «Tabla de implementación por caso de uso» (Casos-de-Uso.md §8) es la fuente de lo técnico de cada caso; el
-# Documento 3 §4.25 es su copia. Sus pasos existen en el CUE; el catálogo (§3) y el CUA dicen los mismos actores; las cifras
+# Sus pasos existen en el CUE; el catálogo (§3) y el CUA dicen los mismos actores; las cifras
 # de los textos (retirados, casos por actor) salen del catálogo y de retirados.py; los CU reales llevan el nombre del
 # catálogo; ningún DSD queda suelto después de la Trazabilidad de Casos-de-Uso.md.
 def verificar_tabla_implementacion():
@@ -988,15 +1021,6 @@ def verificar_tabla_implementacion():
         return ["Casos-de-Uso.md: falta la «Tabla de implementación por caso de uso» (§8)"]
     t8 = cas[i8:]
     filas8 = {m.group(1): m.group(0) for m in re.finditer(r'^\| (CU-\d{3})(?: \(retirado\))? [^\n]*$', t8, re.M)}
-    # --- B1: existe en el Documento 3 (§4.25), con los mismos renglones que Casos-de-Uso.md §8
-    j = dis.find("### 4.25 Tabla de implementación por caso de uso")
-    if j < 0:
-        errores.append("3-Diseño.md: falta la «Tabla de implementación por caso de uso» (§4.25)")
-    else:
-        k = min(x for x in (dis.find("\n### ", j + 5), dis.find("\n## ", j + 5), dis.find("\n<!-- ", j + 5)) if x != -1)
-        filas3 = {m.group(1): m.group(0) for m in re.finditer(r'^\| (CU-\d{3})(?: \(retirado\))? [^\n]*$', dis[j:k], re.M)}
-        if filas3 != filas8:
-            errores.append(f"3-Diseño.md §4.25 no es copia de Casos-de-Uso.md §8 ({len(filas3)} y {len(filas8)} renglones): correr generar-tabla-implementacion.py")
     catalogo = {m.group(1): set(re.findall(r'ACT-\d\d', m.group(2)))
                 for m in re.finditer(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \| ([^|]*)\|', cas[cas.index("## 3. Cat"):cas.index("## 4. Casos")], re.M)}
     faltan = sorted(set(catalogo) - set(filas8))
@@ -1069,13 +1093,13 @@ def verificar_tabla_implementacion():
                 errores.append(f"{nombre}: la tabla de actores dice {m.group(1) if m else '?'} casos para ACT-{k} y el catálogo {n}")
     # --- I7: CU reales con el nombre del catálogo
     nombres = {m.group(1): m.group(2).strip() for m in re.finditer(r'^\| (CU-\d{3}) ([^|]+?) \| SS-\d\d \|', cas, re.M)}
-    s3 = dis[dis.index("## 3. Casos de Uso Reales"):dis.index("## 4. Diagramas de Interacción")]
-    for m in re.finditer(r'^### 3\.\d+ (CU-\d+)[^—\n]*— ([^\n]*)$', s3, re.M):
+    s3 = dis[dis.index("## 1. Casos de Uso Reales"):dis.index("## 2. Diagrama de Interacción")]
+    for m in re.finditer(r'^### 1\.\d+ (CU-\d+)[^—\n]*— ([^\n]*)$', s3, re.M):
         if nombres.get(m.group(1)) != m.group(2):
-            errores.append(f"Documento 3 §3: el encabezado de {m.group(1)} dice «{m.group(2)}» y el catálogo «{nombres.get(m.group(1))}»")
+            errores.append(f"Documento 3 sección 1: el encabezado de {m.group(1)} dice «{m.group(2)}» y el catálogo «{nombres.get(m.group(1))}»")
     for m in re.finditer(r'\| \*\*Código\*\* \| (CU-\d+) \|\n\| \*\*Caso de Uso\*\* \| ([^|\n]*?) \|', s3):
         if nombres.get(m.group(1)) != m.group(2):
-            errores.append(f"Documento 3 §3: el campo «Caso de Uso» de {m.group(1)} dice «{m.group(2)}» y el catálogo «{nombres.get(m.group(1))}»")
+            errores.append(f"Documento 3 sección 1: el campo «Caso de Uso» de {m.group(1)} dice «{m.group(2)}» y el catálogo «{nombres.get(m.group(1))}»")
     # --- M11: ningún DSD suelto después de la Trazabilidad y todos con el nombre del catálogo
     z = cas.index("\n## Trazabilidad")
     if re.search(r'^#{3,5} [^\n]*DSD — CU-', cas[z:cas.index("\n## 8. Tabla")], re.M):
@@ -1087,7 +1111,7 @@ def verificar_tabla_implementacion():
 
 _err_ti = verificar_tabla_implementacion()
 if _err_ti: FALLAS.append("Tabla de implementación, catálogo, cifras y CU reales")
-print(f"[{'OK' if not _err_ti else 'FALLA':5}] Tabla de implementación en Casos §8 y Documento 3 §4.25 (pasos que existen en el CUE), catálogo = CUA, cifras desde retirados.py y el catálogo, CU reales con el nombre del catálogo"
+print(f"[{'OK' if not _err_ti else 'FALLA':5}] Tabla de implementación en Casos §8 (pasos que existen en el CUE), catálogo = CUA, cifras desde retirados.py y el catálogo, CU reales con el nombre del catálogo"
       + (f" | {len(_err_ti)} errores: {_err_ti[:6]}" if _err_ti else ""))
 
 # ---------- verificadores de herramientas/: se corren y se exige que hayan leído algo ----------
@@ -1119,7 +1143,7 @@ def _celdas(linea):
 def verificar_celdas_por_fila():
     """Una fila con una celda de más (un `|` suelto o un texto pegado después del cierre) deja vacío el campo
     en el sitio: se compara cada fila de las tablas de los CUE (Casos y Documento 1), de la tabla de
-    implementación (Casos §8 y Documento 3 §4.25) y de los contratos (Documento 2) con su encabezado."""
+    implementación (Casos §8) y de los contratos (Documento 2) con su encabezado."""
     malas = []
     for f in ("Casos-de-Uso.md", "1-Requisitos.md", "2-Analisis.md", "3-Diseño.md"):
         ancho, previa = 0, ""

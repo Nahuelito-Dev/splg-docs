@@ -39,13 +39,7 @@ package "Acceso" as area_Acceso #EEF3F8 {
   }
   package "users" as users {
   }
-  package "role" as role {
-  }
-  package "admin" as admin {
-  }
   package "firebase" as firebase {
-  }
-  package "audit" as audit {
   }
 }
 package "Negocio" as area_Negocio #F7F3E8 {
@@ -57,17 +51,9 @@ package "Negocio" as area_Negocio #F7F3E8 {
   }
   package "customer" as customer {
   }
-  package "user-address" as user_address {
-  }
   package "repurchase" as repurchase {
   }
   package "claims" as claims {
-  }
-  package "incident" as incident {
-  }
-  package "rating" as rating {
-  }
-  package "reports" as reports {
   }
   package "time-slot" as time_slot {
   }
@@ -87,174 +73,50 @@ package "Flota y despacho" as area_Flota_y_despacho #EEF5EF {
   }
   package "fleet" as fleet {
   }
-  package "fleet-expense" as fleet_expense {
-  }
   package "gateways" as gateways {
   }
 }
 package "Personal" as area_Personal #F5EEF3 {
-  package "employee" as employee {
-  }
-  package "attachment" as attachment {
-  }
 }
 package "Soporte" as area_Soporte #F2F2F2 {
   package "notifications" as notifications {
-  }
-  package "email" as email {
-  }
-  package "redis" as redis {
-  }
-  package "s3" as s3 {
-  }
-  package "health" as health {
   }
 }
 package "Stock y compras" as area_Stock_y_compras #F4EEF7 {
   package "stock" as stock {
   }
-  package "purchase" as purchase {
-  }
   package "truck-load" as truck_load {
   }
 }
-admin ..> users
-attachment ..> employee
-attachment ..> s3
 auth ..> firebase
 auth ..> users
-car ..> delivery
 car ..> fleet
-car ..> fleet_expense
-cart ..> customer
-cart ..> gascylinder
-cash ..> distributor
 claims ..> customer
 claims ..> order
-claims ..> s3
-commission ..> cash
-commission ..> delivery
-commission ..> distributor
-commission ..> employee
-commission ..> gascylinder
-commission ..> order
-coverage_zone ..> distributor
-customer ..> cart
 customer ..> claims
-customer ..> user_address
-customer_account ..> cash
-customer_account ..> customer
-customer_account ..> distributor
-customer_account ..> driver_settlement
-customer_account ..> order
-cylinder ..> distributor
 cylinder ..> notifications
 cylinder ..> order
-delivery ..> car
-delivery ..> distributor
-delivery ..> driver_settlement
-delivery ..> users
-distributor ..> cash
-distributor ..> commission
-distributor ..> coverage_zone
-distributor ..> customer_account
-distributor ..> cylinder
-distributor ..> delivery
-distributor ..> employee
-distributor ..> fleet_expense
-distributor ..> purchase
-distributor ..> redis
-distributor ..> stock
-distributor ..> time_slot
-driver_settlement ..> cash
-driver_settlement ..> customer_account
-driver_settlement ..> delivery
-driver_settlement ..> distributor
-driver_settlement ..> email
-driver_settlement ..> employee
-email ..> firebase
-email ..> users
-employee ..> attachment
-employee ..> attendance
-employee ..> commission
-employee ..> delivery
-employee ..> distributor
-employee ..> fleet
-employee ..> leave
-employee ..> registro
-employee ..> users
-finance ..> cash
-finance ..> commission
-finance ..> customer_account
-finance ..> driver_settlement
 fleet ..> car
-fleet ..> delivery
-fleet ..> distributor
-fleet ..> email
-fleet ..> employee
 fleet ..> notifications
-fleet ..> s3
-fleet_expense ..> car
-fleet_expense ..> distributor
-fleet_expense ..> email
-fleet_expense ..> employee
-gascylinder ..> distributor
 gateways ..> delivery
-health ..> redis
-incident ..> gateways
-incident ..> order
-notifications ..> customer
-notifications ..> firebase
-order ..> car
 order ..> cart
-order ..> cash
 order ..> coverage_zone
 order ..> customer
-order ..> customer_account
 order ..> cylinder
 order ..> delivery
 order ..> distributor
 order ..> fleet
 order ..> gascylinder
-order ..> incident
 order ..> notifications
 order ..> payments
 order ..> stock
 order ..> time_slot
 order ..> truck_load
-order ..> user_address
-payments ..> order
-purchase ..> distributor
-purchase ..> gascylinder
-purchase ..> stock
-rating ..> delivery
-rating ..> order
-rating ..> users
-registro ..> admin
 registro ..> customer
-registro ..> delivery
-registro ..> employee
 registro ..> firebase
 registro ..> users
-reports ..> order
 repurchase ..> customer
 repurchase ..> notifications
-repurchase ..> order
-routes ..> delivery
-routes ..> order
-stock ..> car
-stock ..> distributor
-stock ..> gascylinder
-stock ..> order
-time_slot ..> distributor
-truck_load ..> car
-truck_load ..> delivery
-truck_load ..> distributor
-truck_load ..> stock
-user_address ..> customer
-users ..> delivery
-users ..> firebase
-users ..> rating
 
 legend bottom right
   Cada flecha punteada es una dependencia entre módulos: alguna clase del origen le manda

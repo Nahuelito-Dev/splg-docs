@@ -30096,6 +30096,8 @@ sequenceDiagram
     FLK-->>-UCS: vehiculo
     UCS->>+PED: aceptar(chofer, vehiculo)
     PED->>PED: transicionar(aceptado)
+    create participant CAM as :CambioEstadoPedido
+    PED->>CAM: «create»(aceptado)
     opt El pedido no estaba aceptado por este chofer
         PED->>PED: generarCodigoDeEntrega()
         PED->>OFE: aceptar()
@@ -30108,9 +30110,9 @@ sequenceDiagram
 
 </details>
 
-**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer` y `OfertaDespacho`, `FleetDispatchLockService` (fabricación pura: reúne la documentación vencida de la flota) y `NotificationPort` (fabricación pura: el aviso al cliente).
+**Clases participantes:** `UpdateOrderStatusUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Chofer`, `OfertaDespacho` y `CambioEstadoPedido`, `FleetDispatchLockService` (fabricación pura: reúne la documentación vencida de la flota) y `NotificationPort` (fabricación pura: el aviso al cliente).
 
-**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación y coordina. *Experto*: `Chofer` sabe si está habilitado y validado; `Pedido` conoce su estado y es quien se asigna el chofer, guarda la copia del vehículo, pasa a «aceptado», genera su código de entrega, cierra la oferta que el chofer tenía y retira las que estaban abiertas a otros choferes. El controlador no le asigna atributos. *Alta Cohesión*: `FleetDispatchLockService` es el único lugar que conoce las reglas de la flota (Bajo Acoplamiento con el despacho). La aceptación es idempotente: si el mismo chofer ya había aceptado, el `Pedido` no regenera el código ni cierra otra oferta.
+**GRASP.** *Controlador*: `UpdateOrderStatusUseCase` recibe la operación y coordina. *Experto*: `Chofer` sabe si está habilitado y validado; `Pedido` conoce su estado y es quien se asigna el chofer, guarda la copia del vehículo, pasa a «aceptado», genera su código de entrega, crea el `CambioEstadoPedido` que asienta la transición en el historial de estados, cierra la oferta que el chofer tenía y retira las que estaban abiertas a otros choferes. El controlador no le asigna atributos. *Alta Cohesión*: `FleetDispatchLockService` es el único lugar que conoce las reglas de la flota (Bajo Acoplamiento con el despacho). La aceptación es idempotente: si el mismo chofer ya había aceptado, el `Pedido` no regenera el código ni cierra otra oferta.
 
 **No se dibuja:** la transacción con el bloqueo del pedido y del chofer, el guardado, la verificación de que el pedido sea de la distribuidora del chofer y, si ya tiene otro chofer, el rechazo con acceso denegado, el aviso a los choferes cuya oferta se retiró, el aviso en vivo al cliente y al panel (`notifyCustomer`, `notifyAdmins`) y la obtención del chofer a partir del usuario autenticado (`DeliveryService.buscarPorIdOUsuario`).
 
@@ -30125,6 +30127,7 @@ sequenceDiagram
 | `OfertaDespacho.aceptar()` | `DispatchOrchestratorService.onDriverAccepted`: llama a `DispatchOfferRepositoryPort.closeActiveOffer` con el estado `ACCEPTED` |
 | `Pedido.retirarOtrasOfertas(...)` | `DispatchOfferRepositoryPort.withdrawOtherActiveOffers`: pasa a `superseded`, dentro de la transacción de la aceptación, las ofertas abiertas de los demás choferes; el aviso a esos choferes (`notifyDriverOrderCancelled`) sale después del commit |
 | `TruckLoadGateService.assertPuedeAceptar(...)` | `UpdateOrderStatusUseCase.execute` llama a `TruckLoadGatePort.assertPuedeAceptar`, que implementa `TruckLoadGateService.assertPuedeAceptar` (CU-248): responde 400 con el motivo si el chofer no puede recibir pedidos según su carga; no se vuelve a controlar si el chofer ya tenía aceptado el pedido |
+| `CambioEstadoPedido.«create»` | `OrderStatusHistorySubscriber.asentar`: inserta el `OrderStatusHistory` de la transición a aceptado, con el estado de origen, el de destino y el usuario |
 
 ##### Operación: rechazarOferta(pedidoId)
 
@@ -30497,6 +30500,8 @@ sequenceDiagram
     participant CDU as :ConfirmDeliveryUseCase
     participant PEDS as :Map#lt;String, Pedido#gt;
     participant PED as pedido:Pedido
+    participant ENV as envase:Envase
+    participant ENT as :StockDeliveryService
     participant RT as :RealtimeDispatchPort
     participant NOT as :NotificationPort
 
@@ -30510,7 +30515,13 @@ sequenceDiagram
     create participant CAM as :CambioEstadoPedido
     PED->>CAM: «create»(entregado, motivo)
     deactivate PED
-    Note over CDU,PED: Cierre: ver DSD de confirmarEntrega (CU-020). Cierra el seguimiento,<br/>entrega los envases y descuenta el stock (CU-220). El pago en efectivo sigue pendiente
+    CDU->>+PED: getEnvases()
+    PED-->>-CDU: envases
+    loop Por cada envase despachado en el pedido
+        CDU->>ENV: entregarAlCliente(pedido)
+    end
+    Note over CDU,ENT: Descuento: ver DSD de descontarStockDeLaEntrega (CU-220).<br/>Crea los MovimientoDeStock de la entrega y deja el pago en efectivo pendiente de cobro
+    CDU->>ENT: registrarEntrega(entrega)
     CDU-)RT: notifyAdmins(pedido)
     CDU-)NOT: sendOrderConfirmation(cliente, pedido)
     CDU-->>-CLI: pedido
@@ -30518,13 +30529,13 @@ sequenceDiagram
 
 </details>
 
-**Clases participantes:** `ConfirmDeliveryUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido` y `CambioEstadoPedido`, `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: los avisos).
+**Clases participantes:** `ConfirmDeliveryUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Envase` y `CambioEstadoPedido`, `StockDeliveryService` (fabricación pura: el descuento del stock físico de lo entregado), `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: los avisos).
 
 **GRASP.** *Controlador*: `ConfirmDeliveryUseCase` recibe la operación. *Experto*: `Pedido` conoce su código de entrega y es quien lo compara con el que escaneó el cliente y pasa a «entregado». La comparación se hace en tiempo constante y la operación es idempotente: un pedido ya entregado se devuelve sin reprocesar. *Creador*: `Pedido` crea el `CambioEstadoPedido` de la transición a «entregado», siempre; solo el motivo depende de quién confirma: lo trae el administrador y el cliente no lo manda (CU-020). El pago no se toca: un pedido en efectivo sigue pendiente de cobro (CU-292).
 
-**Referencias.** El cierre del seguimiento del chofer, el paso de los envases a poder del cliente y el descuento del stock (CU-220) son los mismos de la operación `confirmarEntrega` (CU-020), que tiene su propio diagrama.
+**Referencias.** Los envases despachados pasan a poder del cliente y se descuenta el stock físico de lo entregado con la misma colaboración de la operación `confirmarEntrega` (CU-020); el descuento (CU-220) tiene su propio diagrama y acá sólo se muestra el llamado.
 
-**No se dibuja:** la verificación de que el pedido sea del cliente que lo confirma, el rechazo si el pedido no está en camino o el código no coincide, la exigencia del motivo al administrador (de 10 a 500 caracteres, posterior a la del código) y la transacción con el bloqueo del pedido que resuelve `UpdateOrderStatusUseCase.execute`.
+**No se dibuja:** el cierre del seguimiento en vivo del chofer que entregó, la verificación de que el pedido sea del cliente que lo confirma, el rechazo si el pedido no está en camino o el código no coincide, la exigencia del motivo al administrador (de 10 a 500 caracteres, posterior a la del código) y la transacción con el bloqueo del pedido que resuelve `UpdateOrderStatusUseCase.execute`.
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -30535,6 +30546,8 @@ sequenceDiagram
 | `Pedido.transicionar(...)` | `transitionOrder()` |
 | `CambioEstadoPedido.«create»` | `OrderStatusHistorySubscriber.asentar`: inserta el `OrderStatusHistory` de la transición, con el motivo si lo hay (el del administrador; el cliente no manda motivo) |
 | `RealtimeDispatchPort.notifyAdmins(...)` | `UpdateOrderStatusUseCase.execute`: avisa a los administradores de la distribuidora |
+| `Pedido.getEnvases()` | `CylinderLifecyclePort.onOrderDelivered`: busca por `Order.orderId` los envases despachados en el pedido |
+| `Envase.entregarAlCliente(...)` | `CylinderLifecyclePort.onOrderDelivered`: pasa los envases del pedido a «en poder del cliente» |
 
 **Observaciones de diseño**
 
@@ -32417,6 +32430,7 @@ sequenceDiagram
     participant ITM as item:ItemPedido
     participant PRO as producto:Producto
     participant RT as :RealtimeDispatchPort
+    participant REF as :RefundsService
 
     CLI->>+CAN: cancelarMiPedido(pedidoId, motivo)
     CAN->>+COL: get(pedidoId)
@@ -32425,12 +32439,18 @@ sequenceDiagram
     PED-->>-CAN: choferAnterior
     CAN->>+PED: cancelar(motivo)
     PED->>PED: validarTransicion(cancelado)
+    create participant CAM as :CambioEstadoPedido
+    PED->>CAM: «create»(cancelado, motivo)
     loop Por cada item del Pedido
         PED->>+ITM: restituirStock()
         ITM->>PRO: restituir(cantidad)
         deactivate ITM
     end
     deactivate PED
+    opt El pedido tenía un pago aprobado por una pasarela
+        CAN->>REF: reintegrarPorCancelacion(pedido)
+        Note over CAN,REF: Extiende CU-168 (PE-04): ver DSD de reintegrarPagoDelPedido.<br/>Crea el ReintegroDePago y no deshace la cancelación si la pasarela falla
+    end
     CAN-)RT: notifyCustomer(cliente, pedido)
     opt Había un chofer asignado
         CAN-)RT: stopTracking(choferAnterior)
@@ -32443,9 +32463,9 @@ sequenceDiagram
 </details>
 
 
-**Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido` y `Producto`, y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo). El actor sale siempre del token y nunca del cuerpo de la solicitud. El administrador cancela con CU-010, que sigue la misma colaboración.
+**Clases participantes:** `CancelOrderUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `ItemPedido`, `Producto` y `CambioEstadoPedido`, `RefundsService` (fabricación pura: el pedido de devolución del pago) y `RealtimeDispatchPort` (fabricación pura: los avisos en vivo). El actor sale siempre del token y nunca del cuerpo de la solicitud. El administrador cancela con CU-010, que sigue la misma colaboración.
 
-**GRASP.** *Controlador*: `CancelOrderUseCase` recibe la operación y coordina. *Experto*: `Pedido` sabe en qué estado está y quién es su chofer, valida la transición a «cancelado» y registra el motivo; no se le asigna el estado desde afuera. El stock vuelve a su dueño por navegación: el `Pedido` le pide a cada `ItemPedido` que restituya, y el `ItemPedido` conoce su `Producto` y su cantidad.
+**GRASP.** *Controlador*: `CancelOrderUseCase` recibe la operación y coordina. *Experto*: `Pedido` sabe en qué estado está y quién es su chofer, valida la transición a «cancelado» y registra el motivo; no se le asigna el estado desde afuera. *Creador*: `Pedido` crea el `CambioEstadoPedido` que asienta la transición en el historial de estados. La devolución del pago es una extensión (CU-168): una vez confirmada la cancelación, si el pedido tenía un pago aprobado por una pasarela, el controlador le pide el reintegro a `RefundsService`, que no deshace la cancelación si la pasarela falla. *Creador*: `Pedido` crea el `CambioEstadoPedido` que asienta la transición en el historial de estados. La devolución del pago es una extensión (CU-168): una vez confirmada la cancelación, si el pedido tenía un pago aprobado por una pasarela, el controlador le pide el reintegro a `RefundsService`, que no deshace la cancelación si la pasarela falla. El stock vuelve a su dueño por navegación: el `Pedido` le pide a cada `ItemPedido` que restituya, y el `ItemPedido` conoce su `Producto` y su cantidad.
 
 **No se dibuja:** la transacción con bloqueo pesimista de la fila, que cubre la lectura, el cambio de estado, la restitución del stock y el guardado, de modo que dos cancelaciones simultáneas no devuelven el stock dos veces; que un cliente solo encuentra sus pedidos y, si el pedido ya está en camino, recibe un rechazo que lo manda a contactar al soporte; que un chofer que pide cancelar no cancela sino que libera (`liberarPedido`, CU-009).
 
@@ -32458,6 +32478,8 @@ sequenceDiagram
 | `Pedido.validarTransicion(...)` | `transitionOrder()` |
 | `ItemPedido.restituirStock()` | `GasCylinderService.restituirStock`: recorre los `Order.items` |
 | `Producto.restituir(...)` | `GasCylinderService.restituirStock`: bloquea la fila y suma `OrderItem.quantity` a `GasCylinder.stock` |
+| `CambioEstadoPedido.«create»` | `OrderStatusHistorySubscriber.asentar`: inserta el `OrderStatusHistory` de la transición a cancelado, con el estado de origen, el de destino y el usuario, con el motivo de la cancelación |
+| `RefundsService.reintegrarPorCancelacion(...)` | `CancelOrderUseCase.reintegrarPago` → `RefundsService.reintegrarPorCancelacion`: después de confirmar la cancelación, si el pedido tenía un pago aprobado por una pasarela, pide la devolución; si la pasarela falla queda registrado para reintentarlo y la cancelación no se deshace (CU-168) |
 
 **Observaciones de diseño**
 
@@ -42220,7 +42242,7 @@ sequenceDiagram
 
 </details>
 
-**Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del proceso temporal), `DemandForecastService` y `FleetCoverageService` (fabricaciones puras: la demanda proyectada por franja y el mínimo de vehículos por zona), `NotificationsService` (existente: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`. Ninguna de las tres clases de servicio existe en el código: se construyen en la iteración C-14.
+**Clases participantes:** `FleetMaintenancePlannerService` (controlador del proceso temporal), `DemandForecastService` y `FleetCoverageService` (fabricaciones puras: la demanda proyectada por franja y el mínimo de vehículos por zona), `NotificationsService` (existente: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`. Los nombres son los del diseño: en el código, el planificador es `MaintenancePlannerService`, que se apoya en `MaintenanceForecastService` y en `PlannerContextService`.
 
 **GRASP.** *Controlador*: `FleetMaintenancePlannerService`, que el planificador del sistema dispara una vez por día. *Experto*: `Vehiculo` estima su consumo de kilómetros y proyecta el vencimiento de cada una de sus tareas. *Creador*: `TareaMantenimiento` crea las `PropuestaVentanaTaller` que origina (composición del modelo conceptual). *Alta Cohesión*: la demanda y la cobertura viven en fabricaciones puras, no en el vehículo ni en el planificador.
 
@@ -42369,7 +42391,7 @@ sequenceDiagram
 
 </details>
 
-**Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario, **colaboración propuesta**: no existe en el código), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), `NotificationsService` (fabricación pura: el aviso al cliente), las colecciones `List<InvitacionRecompra>` y `List<Cliente>`, y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
+**Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), `NotificationsService` (fabricación pura: el aviso al cliente), las colecciones `List<InvitacionRecompra>` y `List<Cliente>`, y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
 
 **GRASP.** *Controlador*: `RepurchaseForecastService` recibe la ejecución programada. *Creador*: el controlador crea la `InvitacionRecompra`, porque tiene los datos con que se inicializa, y la `InvitacionRecompra` crea sus `ItemSugerido` (los contiene, composición del modelo conceptual). *Experto*: la colección de invitaciones sabe cuáles vencieron y las pasa a «caducada»; el estimador calcula cuándo se le termina el gas al cliente. El cliente que no llega al mínimo de pedidos, o con una serie demasiado irregular, queda fuera de la corrida, y si no hay stock del producto sugerido no se emite la invitación.
 
@@ -42377,7 +42399,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- Los nombres `RepurchaseForecastService`, `ConsumptionEstimatorService` y `RepurchaseInvitationRepositoryPort` son **nombres propuestos**: no existen en el código y siguen la convención del proyecto. `NotificationsService` y `CreateOrderUseCase` sí existen y el módulo los consume tal como están: la aceptación de la invitación entra por el mismo camino que cualquier pedido creado desde la aplicación del cliente.
+- `ConsumptionEstimatorService` y `RepurchaseInvitationRepositoryPort` son nombres del diseño: en el código el estimador de la fecha es `RepurchaseEstimatorService`. `RepurchaseForecastService`, `NotificationsService` y `CreateOrderUseCase` existen tal como se nombran y el módulo los consume: la aceptación de la invitación entra por el mismo camino que cualquier pedido creado desde la aplicación del cliente.
 - La invitación se emite con el pedido ya armado: el cliente la acepta o la deja vencer, y no vuelve a elegir los productos.
 
 ---
@@ -42433,7 +42455,7 @@ sequenceDiagram
 
 </details>
 
-**Clases participantes:** `RouteBatchPlannerService` (controlador del proceso temporal; colaboración propuesta), `OrderRepositoryPort` (fabricación pura: la búsqueda de los pedidos programados atraviesa todos los pedidos), `NotificationsService` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido`, `ParadaLote`, `OfertaLote` y `Chofer`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; `OrderRepositoryPort` y `NotificationsService` sí. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
+**Clases participantes:** `RouteBatchPlannerService` (controlador del proceso temporal), `OrderRepositoryPort` (fabricación pura: la búsqueda de los pedidos programados atraviesa todos los pedidos), `NotificationsService` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido`, `ParadaLote`, `OfertaLote` y `Chofer`. **Colaboración:** `RouteBatchPlannerService` es el nombre del diseño; en el código la agrupación la realiza `RouteBatchService`, y `OrderRepositoryPort` y `NotificationsService` existen tal como se nombran. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
 
 **GRASP.** *Controlador*: `RouteBatchPlannerService` recibe la operación del proceso temporal. *Creador*: el controlador crea el `LoteRecorrido`, que es la raíz del agregado y se inicializa con los pedidos agrupados; el `LoteRecorrido` crea sus `ParadaLote` y sus `OfertaLote`, porque los contiene (composición). *Experto*: el `Chofer` conoce la capacidad de carga de su vehículo; el lote respeta el compromiso horario de cada pedido. El lote nunca se impone: ante el silencio o el rechazo generalizado, el `LoteRecorrido` se deshace y los pedidos siguen su camino individual.
 
@@ -42535,7 +42557,7 @@ sequenceDiagram
 
 </details>
 
-**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal; colaboración propuesta), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código, ni las consultas que el recupero le pide al puerto del ciclo de envase (`findHeldByCustomer`); el puerto sí existe, y es el mismo que registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
+**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración:** `CylinderRecoveryService` es la clase del código que corre el recupero; la consulta que el diseño le pide al puerto del ciclo de envase (`findHeldByCustomer`) es del diseño, porque en el código el servicio separa por su cuenta los envases retenidos; el puerto existe, y es el mismo que registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
 
 **GRASP.** *Controlador*: `CylinderRecoveryService` recibe la operación del proceso temporal. *Creador*: el `Envase` que motiva el caso crea el `CasoRecupero`, y el `CasoRecupero` crea sus `AvisoRecupero` por cada escalón ejecutado, porque los contiene (composición). *Experto*: el `Envase` sabe si volvió; el `CasoRecupero` conoce su escalón y es quien se cierra o se escala. El caso se reevalúa antes de cada paso, porque el envase puede haber vuelto, y el sistema nunca cobra un depósito por su cuenta: agotada la secuencia, el caso queda a resolución del administrador.
 

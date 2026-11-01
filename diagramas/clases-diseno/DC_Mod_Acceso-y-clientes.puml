@@ -1,0 +1,73 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam genericDisplay old
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #E4ECF6
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #D5E3F3
+}
+skinparam packageStyle rectangle
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class AuthService <<fachada>> {
+  + iniciarSesion(correo: Cadena, contrasena: Cadena): Usuario
+}
+class RegistroService <<fachada>> {
+  + registrarse(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, contrasena: Cadena,\n      datosDelCliente: Registro): Usuario
+}
+interface FirebaseAuthPort <<puerto>> {
+  + autenticar(correo: Cadena, contrasena: Cadena): Registro
+  + createUserSafe(correo: Cadena, contrasena: Cadena,\n      nombreCompleto: Cadena, telefono: Cadena): Registro
+  + deleteUserSafe(cuenta: Registro)
+  + verifyIdToken(credencial: Registro): Registro
+}
+class "Map<String, Usuario>" as Map_String_Usuario <<colección>> {
+  + get(clave: Cadena): Usuario
+  + verificarDisponibilidad(correo: Cadena,\n      telefono: Cadena): Booleano
+}
+class "List<InvitacionRecompra>" as List_InvitacionRecompra <<colección>> {
+  + caducarVencidas(hoy: Fecha)
+}
+class "List<Cliente>" as List_Cliente <<colección>> {
+  + buscarConHistorialSuficiente(): Cliente[*]
+}
+class Usuario <<referencia>>
+class InvitacionRecompra <<referencia>>
+class Cliente <<referencia>>
+
+Map_String_Usuario "1" o--> "0..*" Usuario
+List_InvitacionRecompra "1" o--> "0..*" InvitacionRecompra
+List_Cliente "1" o--> "0..*" Cliente
+AuthService --> "1" FirebaseAuthPort
+AuthService --> "1" Map_String_Usuario
+RegistroService --> "1" FirebaseAuthPort
+RegistroService --> "1" Map_String_Usuario
+AuthService ..> Usuario
+RegistroService ..> "<<create>>" Cliente
+RegistroService ..> "<<create>>" Usuario
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
+endlegend
+@enduml

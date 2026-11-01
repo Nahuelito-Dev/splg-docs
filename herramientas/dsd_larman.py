@@ -441,7 +441,8 @@ def verificar(estricto=False, solo=None):
                         e(f"la postcondición modifica {c} y ningún mensaje llega a un {c}")
 
         # copias en los documentos y tabla de implementación
-        for nom, md in (("3-Diseño.md", doc3), ("Casos-de-Uso.md", casos)):
+        import cu_esenciales
+        for nom, md in ((("3-Diseño.md", doc3),) if base in cu_esenciales.ARCHIVOS_DSD else ()) + (("Casos-de-Uso.md", casos),):
             tab = tabla_de_implementacion(md, src)
             if bloque_mermaid(md, src) is None:
                 e(f"el diagrama no está, idéntico, en {nom}")

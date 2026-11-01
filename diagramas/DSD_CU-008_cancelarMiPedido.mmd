@@ -8,6 +8,7 @@ sequenceDiagram
     participant ITM as item:ItemPedido
     participant PRO as producto:Producto
     participant RT as :RealtimeDispatchPort
+    participant REF as :RefundsService
 
     CLI->>+CAN: cancelarMiPedido(pedidoId, motivo)
     CAN->>+COL: get(pedidoId)
@@ -16,12 +17,18 @@ sequenceDiagram
     PED-->>-CAN: choferAnterior
     CAN->>+PED: cancelar(motivo)
     PED->>PED: validarTransicion(cancelado)
+    create participant CAM as :CambioEstadoPedido
+    PED->>CAM: «create»(cancelado, motivo)
     loop Por cada item del Pedido
         PED->>+ITM: restituirStock()
         ITM->>PRO: restituir(cantidad)
         deactivate ITM
     end
     deactivate PED
+    opt El pedido tenía un pago aprobado por una pasarela
+        CAN->>REF: reintegrarPorCancelacion(pedido)
+        Note over CAN,REF: Extiende CU-168 (PE-04): ver DSD de reintegrarPagoDelPedido.<br/>Crea el ReintegroDePago y no deshace la cancelación si la pasarela falla
+    end
     CAN-)RT: notifyCustomer(cliente, pedido)
     opt Había un chofer asignado
         CAN-)RT: stopTracking(choferAnterior)

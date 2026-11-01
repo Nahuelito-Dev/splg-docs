@@ -1,0 +1,117 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam genericDisplay old
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #E4ECF6
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #D5E3F3
+}
+skinparam packageStyle rectangle
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class CreateOrderUseCase <<controlador>> {
+  + crearPedido(items: Lista, direccionId: Identificador,\n      franjaId: Identificador, fechaAgendada: Fecha,\n      metodoDePago: Cadena)
+}
+class CancelOrderUseCase <<controlador>> {
+  + cancelarMiPedido(pedidoId: Identificador,\n      motivo: Cadena): Pedido
+}
+class OrderService <<fachada>> {
+  + distribuidorasConPedidosDisponibles(): Distribuidora[*]
+  + findAvailableOrders(distribuidora: Distribuidora): Pedido[*]
+  + obtenerCodigoDeEntrega(pedidoId: Identificador): Cadena
+}
+class UpdateOrderStatusUseCase <<controlador>> {
+  + aceptarPedido(pedidoId: Identificador): Pedido
+}
+class ConfirmDeliveryUseCase <<controlador>> {
+  + confirmarEntregaConCodigo(pedidoId: Identificador,\n      codigo: Cadena, motivo: Cadena): Pedido
+}
+class CashCollectionUseCase <<controlador>> {
+  + confirmarCobroEnEfectivo(pedidoId: Identificador): Pedido
+  + confirmarTransferencia(pedidoId: Identificador,\n      recibida: Booleano, motivo: Cadena): Pedido
+}
+interface NotificationPort <<puerto>> {
+  + sendOrderConfirmation(cliente: Cliente, pedido: Pedido)
+  + sendPaymentApprovedPush(cliente: Cliente, pedido: Pedido,\n      esSena: Booleano)
+}
+class "Map<String, Pedido>" as Map_String_Pedido <<colección>> {
+  + get(clave: Cadena): Pedido
+}
+interface OrderRepositoryPort <<puerto>> {
+  + findScheduled(distribuidora: Distribuidora): Pedido[*]
+}
+interface CylinderLifecyclePort <<puerto>> {
+  + findHeldByCustomer(plazoDeTolerancia: Entero): Envase[*]
+}
+class Pedido <<referencia>>
+class RealtimeDispatchPort <<referencia>>
+class RefundsService <<referencia>>
+class FleetDispatchLockService <<referencia>>
+class Envase <<referencia>>
+class StockDeliveryService <<referencia>>
+class Carrito <<referencia>>
+class Cliente <<referencia>>
+class Distribuidora <<referencia>>
+class FranjaHoraria <<referencia>>
+class Producto <<referencia>>
+class Chofer <<referencia>>
+class TruckLoadGateService <<referencia>>
+class RouteBatchPlannerService <<referencia>>
+class CylinderRecoveryService <<referencia>>
+
+Map_String_Pedido "1" o--> "0..*" Pedido
+CancelOrderUseCase --> "1" Map_String_Pedido
+CancelOrderUseCase --> "1" RealtimeDispatchPort
+CancelOrderUseCase --> "1" RefundsService
+CashCollectionUseCase --> "1" Map_String_Pedido
+ConfirmDeliveryUseCase --> "1" Map_String_Pedido
+CreateOrderUseCase --> "1" NotificationPort
+OrderService --> "1" Map_String_Pedido
+UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
+UpdateOrderStatusUseCase --> "1" Map_String_Pedido
+UpdateOrderStatusUseCase --> "1" NotificationPort
+CancelOrderUseCase ..> Pedido
+CashCollectionUseCase ..> Pedido
+ConfirmDeliveryUseCase ..> Envase
+ConfirmDeliveryUseCase ..> NotificationPort
+ConfirmDeliveryUseCase ..> Pedido
+ConfirmDeliveryUseCase ..> RealtimeDispatchPort
+ConfirmDeliveryUseCase ..> StockDeliveryService
+CreateOrderUseCase ..> Carrito
+CreateOrderUseCase ..> Cliente
+CreateOrderUseCase ..> Distribuidora
+CreateOrderUseCase ..> FranjaHoraria
+CreateOrderUseCase ..> "<<create>>" Pedido
+CreateOrderUseCase ..> Producto
+OrderService ..> Pedido
+UpdateOrderStatusUseCase ..> Chofer
+UpdateOrderStatusUseCase ..> Pedido
+UpdateOrderStatusUseCase ..> TruckLoadGateService
+RouteBatchPlannerService --> "1" OrderRepositoryPort
+CylinderRecoveryService --> "1" CylinderLifecyclePort
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
+endlegend
+@enduml

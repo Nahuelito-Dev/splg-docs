@@ -45,61 +45,78 @@ interface DispatchOfferRepositoryPort <<puerto>> {
 interface RealtimeDispatchPort <<puerto>> {
   + findNearbyDrivers(destino: Coordenada,\n      radioKm: Decimal): Chofer[*]
   + notifyAdmins(pedido: Pedido = ninguno,\n      evento: Registro = ninguno,\n      aviso: AvisoRecupero = ninguno)
-  + notifyCustomer(cliente: Cliente,\n      llegada: FechaHora = ninguno,\n      pedido: Pedido = ninguno, tipo: Cadena = ninguno)
+  + notifyCustomer(cliente: Cliente, pedido: Pedido,\n      tipo: Cadena)
   + notifyDriverNewOrder(chofer: Chofer, pedido: Pedido)
-  + notifyDriverOrderAddressChanged(chofer: Chofer,\n      cambio: CambioEstadoPedido)
   + notifyDriverOrderCancelled(choferAnterior: Chofer,\n      pedido: Pedido)
   + stopTracking(choferAnterior: Chofer)
 }
 class RouteBatchPlannerService <<fachada>> {
-  + aceptarRecorrido(recorridoId: Identificador = ninguno,\n      recorrido: LoteRecorrido = ninguno): Pedido[*]
+  + aceptarRecorrido(recorrido: LoteRecorrido)
   + agruparPedidosPorRecorrido()
   + agruparPorProximidad(pedidos: Pedido[*]): LoteRecorrido[*]
 }
-class "Map<String, LoteRecorrido>" as Map_String_LoteRecorrido <<colección>> {
-  + get(clave: Cadena): LoteRecorrido
+class DispatchSettingsService <<fabricación pura>> {
+  + obtener(distribuidora: Distribuidora): Registro
 }
-interface CylinderLifecyclePort <<puerto>> {
-  + findHeldByCustomer(plazoDeTolerancia: Entero): Envase[*]
+class ScheduledTasksSettingsService <<fabricación pura>> {
+  + distribuidorasQueCorren(tareaProgramada: Cadena,\n      distribuidoras: Distribuidora[*]): Distribuidora[*]
 }
-interface OrderRepositoryPort <<puerto>> {
-  + findScheduled(distribuidora: Distribuidora): Pedido[*]
+class DeliveryService <<fachada>> {
+  + activarDisponibilidad(usuario: Usuario): Registro
 }
-class LoteRecorrido <<referencia>>
-class DispatchSettingsService <<referencia>>
-class FleetDispatchLockService <<referencia>>
-class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
-class NotificationsService <<referencia>>
-class OrderService <<referencia>>
-class ScheduledTasksSettingsService <<referencia>>
+class "Map<String, Chofer>" as Map_String_Chofer <<colección>> {
+  + get(clave: Cadena): Chofer
+}
+class DriversGateway <<fachada>> {
+  + actualizarUbicacion(usuario: Usuario, latitud: Decimal,\n      longitud: Decimal)
+}
+class CustomersGateway <<fabricación pura>> {
+  + notifyCustomer(cliente: Cliente, evento: Registro,\n      posicion: UbicacionGPS)
+}
+class AdminGateway <<fabricación pura>> {
+  + notifyAdmins(evento: Registro, posicion: UbicacionGPS)
+}
+class NotificationsService <<fabricación pura>> {
+  + escalateToAdmin(caso: CasoRecupero)
+  + sendBatchOffer(chofer: Chofer, recorrido: LoteRecorrido)
+  + sendOfferPushToDriver(chofer: Chofer, pedido: Pedido)
+  + sendRecoveryStep(caso: CasoRecupero, escalon: Entero)
+  + sendRepurchaseInvitation(cliente: Cliente,\n      invitacion: InvitacionRecompra)
+  + sendWindowProposal(propuesta: PropuestaVentanaTaller)
+}
 class Chofer <<referencia>>
+class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
+class OrderService <<referencia>>
+class OrderRepositoryPort <<referencia>>
+class UbicacionGPS <<referencia>>
 class OfertaDespacho <<referencia>>
 class Pedido <<referencia>>
 class TruckLoadGateService <<referencia>>
-class OfertaLote <<referencia>>
-class CylinderRecoveryService <<referencia>>
+class LoteRecorrido <<referencia>>
 
-Map_String_LoteRecorrido "1" o--> "0..*" LoteRecorrido
+Map_String_Chofer "1" o--> "0..*" Chofer
+DeliveryService --> "1" Map_String_Chofer
 DispatchOrchestratorService --> "1" DispatchOfferRepositoryPort
 DispatchOrchestratorService --> "1" DispatchSettingsService
-DispatchOrchestratorService --> "1" FleetDispatchLockService
 DispatchOrchestratorService --> "1" Map_String_Pedido
 DispatchOrchestratorService --> "1" NotificationsService
 DispatchOrchestratorService --> "1" RealtimeDispatchPort
 DispatchService --> "1" DispatchOrchestratorService
 DispatchService --> "1" OrderService
 DispatchService --> "1" ScheduledTasksSettingsService
-RouteBatchPlannerService --> "1" Map_String_LoteRecorrido
+DriversGateway --> "1" AdminGateway
+DriversGateway --> "1" CustomersGateway
 RouteBatchPlannerService --> "1" NotificationsService
 RouteBatchPlannerService --> "1" OrderRepositoryPort
+DeliveryService ..> Chofer
+DeliveryService ..> UbicacionGPS
 DispatchOrchestratorService ..> Chofer
 DispatchOrchestratorService ..> OfertaDespacho
 DispatchOrchestratorService ..> Pedido
 DispatchOrchestratorService ..> TruckLoadGateService
+DriversGateway ..> Chofer
 RouteBatchPlannerService ..> Chofer
 RouteBatchPlannerService ..> "<<create>>" LoteRecorrido
-RouteBatchPlannerService ..> OfertaLote
-CylinderRecoveryService --> "1" CylinderLifecyclePort
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.

@@ -1,0 +1,89 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam genericDisplay old
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #E4ECF6
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #D5E3F3
+}
+skinparam packageStyle rectangle
+hide circle
+hide empty members
+
+left to right direction
+skinparam nodesep 25
+skinparam ranksep 90
+class RefundsService <<fabricación pura>> {
+  + reintegrarPorCancelacion(pedido: Pedido)
+}
+interface PaymentGatewayPort <<puerto>> {
+  + getPayment(identificadorDelPago: Identificador): Cadena
+  + verifyWebhookSignature(firma: Cadena,\n      identificadorDelPago: Identificador): Booleano
+}
+class ConfirmPaymentUseCase <<controlador>> {
+  + notificarResultadoDePago(tipoDeNotificacion: Cadena,\n      identificadorDelPago: Cadena, firma: Cadena)
+}
+class StockDeliveryService <<fabricación pura>> {
+  + registrarEntrega(entrega: MotivoDeMovimiento)
+}
+class TruckLoadGateService <<fabricación pura>> {
+  + assertPuedeAceptar(chofer: Chofer)
+  + choferesQuePuedenRecibir(choferes: Chofer[*])
+}
+class ClaimsService <<fachada>> {
+  + registrarReclamo(pedidoId: Identificador, motivo: Cadena,\n      evidencia: Archivo): Reclamo
+  + resolverReclamo(reclamoId: Identificador,\n      resolucion: Cadena, estadoFinal: Cadena): Reclamo
+}
+class "Map<String, Reclamo>" as Map_String_Reclamo <<colección>> {
+  + get(clave: Cadena): Reclamo
+}
+class Reclamo <<referencia>>
+class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
+class NotificationPort <<referencia>>
+class RealtimeDispatchPort <<referencia>>
+class Cliente <<referencia>>
+class Pedido <<referencia>>
+class Pago <<referencia>>
+class CancelOrderUseCase <<referencia>>
+class ConfirmDeliveryUseCase <<referencia>>
+class DispatchOrchestratorService <<referencia>>
+class UpdateOrderStatusUseCase <<referencia>>
+
+Map_String_Reclamo "1" o--> "0..*" Reclamo
+ClaimsService --> "1" Map_String_Pedido
+ClaimsService --> "1" Map_String_Reclamo
+ConfirmPaymentUseCase --> "1" Map_String_Pedido
+ConfirmPaymentUseCase --> "1" NotificationPort
+ConfirmPaymentUseCase --> "1" RealtimeDispatchPort
+ClaimsService ..> Cliente
+ClaimsService ..> Pedido
+ClaimsService ..> Reclamo
+ConfirmPaymentUseCase ..> Pago
+ConfirmPaymentUseCase ..> PaymentGatewayPort
+ConfirmPaymentUseCase ..> Pedido
+CancelOrderUseCase --> "1" RefundsService
+ConfirmDeliveryUseCase ..> StockDeliveryService
+DispatchOrchestratorService ..> TruckLoadGateService
+UpdateOrderStatusUseCase ..> TruckLoadGateService
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.
+endlegend
+@enduml

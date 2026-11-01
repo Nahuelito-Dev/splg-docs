@@ -1017,10 +1017,16 @@ def _tipo_de_retorno(texto, clase=None, op=None):
     return tipos[0], []
 
 
+def archivos_dsd():
+    """Los DSD del Documento 3, de los que se deriva el diagrama de clases: uno por operación de los casos dinámicos."""
+    import cu_esenciales
+    return [D + "diagramas/" + a for a in cu_esenciales.ARCHIVOS_DSD]
+
+
 def leer_dsd():
     """Los DSD en estilo Larman, con sus llamadas y el retorno de cada una."""
     out = []
-    for ruta in sorted(glob.glob(D + "diagramas/DSD_*.mmd")):
+    for ruta in sorted(archivos_dsd()):
         if not L.es_larman(open(ruta, encoding="utf-8").read()):
             continue
         d = L.leer(ruta)
@@ -1194,7 +1200,37 @@ def construir():
     _tipar_consultas(dc)
     _relaciones(dc, mensajes, creaciones, guardadas)
     _realizaciones(dc)
+    _recortar(dc, dsds)
     return dc
+
+
+def clases_de_dominio_de_los_dsd():
+    """Las clases del modelo conceptual que aparecen en los DSD del Documento 3, con sus ascendientes."""
+    usadas = set()
+    for d in leer_dsd():
+        for t in d["participantes"].values():
+            c = L.clase_de(t)
+            if c in M.CLASES:
+                usadas |= set(M._anc(c))
+    return usadas
+
+
+def _recortar(dc, dsds):
+    """El diagrama de clases de diseño lleva sólo las clases que aparecen en los DSD: de dominio, las que algún
+    DSD nombra (y sus ascendientes); las demás son las de los diagramas, siempre."""
+    usadas = set()
+    for d in dsds:
+        for t in d["participantes"].values():
+            c = L.clase_de(t)
+            if c in M.CLASES:
+                usadas |= set(M._anc(c))
+    for n in [n for n, c in dc.clases.items() if c.tipo == "dominio" and n not in usadas]:
+        del dc.clases[n]
+    dc.asociaciones = [a for a in dc.asociaciones if a["a"] in dc.clases and a["b"] in dc.clases]
+    dc.dependencias = {(o, d) for o, d in dc.dependencias if o in dc.clases and d in dc.clases}
+    dc.realizaciones = [(a, p) for a, p in dc.realizaciones if a in dc.clases and p in dc.clases]
+    dc.generalizaciones = [(p, h) for p, h in dc.generalizaciones if p in dc.clases and h in dc.clases]
+    dc.creaciones = {(o, d) for o, d in dc.creaciones if o in dc.clases and d in dc.clases}
 
 
 def _modulo_de_dominio(concepto):
@@ -1521,7 +1557,7 @@ def verificar_dc():
             errores.append(f"{os.path.basename(ruta)}: clases declaradas más de una vez {rep[:3]}")
     # 1 y 2: operaciones y clases de los DSD
     n_ops = 0
-    for ruta in sorted(glob.glob(D + "diagramas/DSD_*.mmd")):
+    for ruta in sorted(archivos_dsd()):
         if not L.es_larman(open(ruta, encoding="utf-8").read()):
             continue
         d = L.leer(ruta)
@@ -1542,7 +1578,7 @@ def verificar_dc():
                 errores.append(f"{base}: {c}.{op} no está entre las operaciones de {c} en el diagrama de clases")
     # 3: las clases de dominio del DC son las del MC
     dom = {c for c, v in clases.items() if v["dominio"]}
-    mc = set(M.CLASES)
+    mc = clases_de_dominio_de_los_dsd()      # las del modelo conceptual que aparecen en los DSD
     for c in sorted(mc - dom):
         errores.append(f"la clase del modelo conceptual {c} no está en las vistas de dominio del diagrama de clases")
     for c in sorted(dom - mc):
@@ -1559,13 +1595,15 @@ def verificar_dc():
         if r["dominio"] and r["a"] in mc and r["b"] in mc and r["sig"] in ("<-->", "*-->", "*--", "-->", "<--", "--"):
             por_par[(r["a"], r["b"], r["nombre"])].append(r)
     for a, ma, t, mb, b, n, _ in M.ASOCIACIONES:
+        if a not in mc or b not in mc:
+            continue
         rs = por_par.get((a, b, n), [])
         if not rs:
             errores.append(f"falta la asociación {a} {n} {b} del modelo conceptual")
         elif not any(r["ma"] == ma and r["mb"] == mb for r in rs):
             errores.append(f"la asociación {a} {n} {b} no tiene la multiplicidad {ma} / {mb} del modelo conceptual")
     sentidos = collections.defaultdict(set)      # (a, b, nombre) -> {"ab", "ba"}
-    for ruta in sorted(glob.glob(D + "diagramas/DSD_*.mmd")):
+    for ruta in sorted(archivos_dsd()):
         if not L.es_larman(open(ruta, encoding="utf-8").read()):
             continue
         d = L.leer(ruta)

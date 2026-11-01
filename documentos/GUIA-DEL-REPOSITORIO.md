@@ -75,7 +75,7 @@ para poder consultarlos sin saltar entre cuatro archivos.
 | 0.1 | `0.1-Planificacion_Iteraciones.md` | Metas, artefactos y problemas a resolver de cada iteración. |
 | 1 | `1-Requisitos.md` | Objetivos, subsistemas, requisitos de información, los 338 casos de uso expandidos, requisitos no funcionales, matriz de rastreabilidad y glosario. |
 | 2 | `2-Analisis.md` | Modelo conceptual de los 21 casos de uso esenciales, diez diagramas de secuencia del sistema (los casos con interacción del actor), los 8 contratos de las operaciones que cambian el estado y el glosario. |
-| 3 | `3-Diseño.md` | Arquitectura, casos de uso reales, diagramas de interacción, diagrama de clases, especificación de los módulos inteligentes, wireframes y diagrama entidad-relación. |
+| 3 | `3-Diseño.md` | Casos de uso reales de los diez casos con interacción del actor, diagramas de interacción de las operaciones de los veinte casos dinámicos y diagrama de clase de las clases que aparecen en ellos. |
 
 `Casos-de-Uso.md` reúne los cuatro artefactos de los 338 casos en un solo archivo. Es el
 documento de consulta; su contenido se corresponde con el de los documentos 0, 1 y 2, que
@@ -100,7 +100,6 @@ Los 338 casos tienen los cuatro.
 |--------|----------|
 | `verificar-conformidad.py` | Chequea los artefactos contra las plantillas de la cátedra. Devuelve error si algo no cumple. |
 | `generar-html-drive.py` | Regenera los seis documentos en HTML, listos para abrir con Documentos de Google. Salida en `catedra/drive/`. |
-| `generar-tabla-implementacion.py` | Copia la «Tabla de implementación por caso de uso» de `Casos-de-Uso.md` §8 (la fuente) al Documento 3 §4.25. Se corre después de `generar-operaciones.py`. |
 | `sitio/generar-sitio.py` | Genera el Atlas: una página con los cuatro artefactos de cada caso y su respaldo documental. No regenera `modelos/drawio/`: avisa si está desactualizado. |
 | `generar-drawio.py` | Genera en `modelos/drawio/` los modelos para draw.io: modelo conceptual, DER, base de datos físico y clases de diseño, cada uno en una página y con las relaciones como aristas conectadas. |
 | `verificar-drawio.py` | Cuenta las aristas sueltas y compara las relaciones de cada `.drawio` contra la base, el modelo conceptual y el diagrama de clases. |
@@ -139,7 +138,7 @@ gate avisa si alguno quedó viejo.
 | `diagramas/design/wireframes.html` | Los nueve wireframes renderizados, listos para capturar |
 | `diagramas/design/*.png` | Capturas de las aplicaciones en el simulador |
 | `capturas/` | Capturas reales del panel y de las apps, sin reducir (`customer/`, `driver/`, `panel/`, `referencias-figma/`) |
-| `diagramas/pantallas/CU-xxx-<pantalla>.png` | Capturas de las pantallas de cada CU Real (§3 de `3-Diseño.md`); las de las apps son reales, tomadas con la app corriendo contra la API |
+| `diagramas/pantallas/CU-xxx-<pantalla>.png` | Capturas de las pantallas de cada CU Real (sección 1 de `3-Diseño.md`); las de las apps son reales, tomadas con la app corriendo contra la API |
 
 ### Regenerar las capturas de las apps
 
@@ -156,7 +155,7 @@ Cada script corre `integration_test/capturas_cu_reales_test.dart` con `--dart-de
 
 La documentación se contrasta contra el sistema construido con los verificadores de
 `herramientas/` (artefactos, relaciones, cifras de la base, cruce DSD↔clases y MC↔DER)
-y el gate `verificar-conformidad.py`. Lo pendiente de implementación está en `3-Diseño.md` §10.
+y el gate `verificar-conformidad.py`. Lo pendiente de implementación está en `sistema/DISENO-PENDIENTES.md`.
 Los informes de auditoría anteriores están en el historial de git del repositorio (se retiraron el 24/10/2026, antes de congelar la v1).
 
 Lo anterior a esa revisión está en el historial de git y no forma parte de la entrega.

@@ -11,6 +11,15 @@ y los `scripts/**/LEEME.md` se quedan en su repo.
 |---|---|
 | `NOVEDADES-V2.md` | Novedades de la versión 2 para la cátedra, organizadas por área funcional |
 
+## Diseño del sistema
+
+| Archivo | Tema |
+|---|---|
+| `DISENO-ARQUITECTURA.md` | Capas, módulos, criterios de la API REST, componentes y despliegue |
+| `DISENO-MODULOS-INTELIGENTES.md` | Especificación de diseño de los módulos inteligentes M1 a M5 |
+| `DISENO-MODELO-DE-DATOS.md` | Modelo de datos: inventario, DER por contexto, enumerados y multi-tenant |
+| `DISENO-PENDIENTES.md` | Lo especificado y todavía no construido |
+
 ## Backend (`back/`)
 
 Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10/2026). Desde entonces se mantienen acá: el back ya no tiene carpeta `docs/`.

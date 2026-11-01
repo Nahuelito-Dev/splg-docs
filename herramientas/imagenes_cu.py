@@ -17,7 +17,7 @@ D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 import sys
 sys.path.insert(0, D + "herramientas")
-from cu_esenciales import CON_DSS
+from cu_esenciales import CON_DSS, ARCHIVOS_DSD
 DOCS_CU = ("Casos-de-Uso.md", "2-Analisis.md", "3-Diseño.md")
 DOCS_TODOS = ("0-Plan_Del_Proyecto.md", "0.1-Planificacion_Iteraciones.md", "1-Requisitos.md", "2-Analisis.md",
               "3-Diseño.md", "Casos-de-Uso.md")
@@ -135,6 +135,7 @@ def verificar():
                 if s not in imgs[d]: err.append(f"{cu}: {d} no muestra la imagen de {s}")
         for s in dsd:
             for d in ("Casos-de-Uso.md", "3-Diseño.md"):
+                if d == "3-Diseño.md" and s + ".mmd" not in ARCHIVOS_DSD: continue    # el Documento 3 sólo lleva los DSD de los casos dinámicos
                 if s not in imgs[d]: err.append(f"{cu}: {d} no muestra la imagen de {s}")
     # ningún bloque Mermaid de los documentos queda sin su imagen, ésta existe y encabeza el código de su propio .mmd
     por_clave = fuentes()

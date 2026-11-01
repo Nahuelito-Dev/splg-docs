@@ -279,23 +279,24 @@ def md2html(md):
 
 # ---------- casos de uso reales (documento 3, seccion 3) ----------
 _l3 = open(DOC + "3-Diseño.md", encoding="utf-8").read().split("\n")
-_s = next(i for i,x in enumerate(_l3) if re.match(r'^## 3\. Casos de Uso Reales', x))
-_e = next(i for i,x in enumerate(_l3) if re.match(r'^## 4\. ', x))
-_ix = [(i,m) for i in range(_s,_e) if (m:=re.match(r'^### 3\.(\d+) (CU-\d+)', _l3[i]))]
+_s = next(i for i,x in enumerate(_l3) if re.match(r'^## 1\. Casos de Uso Reales', x))
+_e = next(i for i,x in enumerate(_l3) if re.match(r'^## 2\. ', x))
+_ix = [(i,m) for i in range(_s,_e) if (m:=re.match(r'^### 1\.(\d+) (CU-\d+)', _l3[i]))]
 cur = {}
 for _n,(_i,_m) in enumerate(_ix):
     _f = _ix[_n+1][0] if _n+1 < len(_ix) else _e
-    cur[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])), sec="§3."+_m.group(1))
+    cur[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])), sec="§1."+_m.group(1))
 
-# ---------- modulos inteligentes (documento 3, seccion 6) ----------
-_s6 = next(i for i,x in enumerate(_l3) if re.match(r'^## 6\. Módulos', x))
-_e6 = next(i for i,x in enumerate(_l3) if re.match(r'^## 7\. ', x))
+# ---------- modulos inteligentes (sistema/DISENO-MODULOS-INTELIGENTES.md) ----------
+_l3 = open(D + "sistema/DISENO-MODULOS-INTELIGENTES.md", encoding="utf-8").read().split("\n")
+_s6 = next(i for i,x in enumerate(_l3) if re.match(r'^## Módulos', x))
+_e6 = len(_l3)
 _ix6 = [(i,m) for i in range(_s6,_e6) if (m:=re.match(r'^### 6\.(\d+) Módulo (M\d) — (.+)$', _l3[i]))]
 mods = {}
 for _n,(_i,_m) in enumerate(_ix6):
     _f = _ix6[_n+1][0] if _n+1 < len(_ix6) else _e6
     mods[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])),
-                             nombre=_m.group(3).strip(), sec="§6."+_m.group(1),
+                             nombre=_m.group(3).strip(), sec="Módulos inteligentes · "+_m.group(2),
                              usa=USA.get(_m.group(2), []))
 
 
@@ -356,9 +357,10 @@ for m in re.finditer(r'Contrato: `(\w+)\(', d2):
             add(c, "2 — Análisis", "§2.2 Contratos de Operaciones", f"Contrato `{m.group(1)}()`")
 
 d3 = open(DOC + "3-Diseño.md", encoding="utf-8").read()
-for m in re.finditer(r'^### 3\.(\d+) (CU-\d+)', d3, re.M):
-    add(m.group(2), "3 — Diseño", f"§3.{m.group(1)} Casos de Uso Reales", "Caso de uso real, con pantalla")
-for c in dsd: add(c, "3 — Diseño", "§4 Diagramas de Interacción", "Diagrama de interacción de diseño")
+for m in re.finditer(r'^### 1\.(\d+) (CU-\d+)', d3, re.M):
+    add(m.group(2), "3 — Diseño", f"§1.{m.group(1)} Casos de Uso Reales", "Caso de uso real, con pantalla")
+for c in dsd:
+    if re.search(r'^\*\*Caso de uso:\*\* %s ' % c, d3, re.M): add(c, "3 — Diseño", "§2.1 Operaciones", "Diagrama de interacción de diseño")
 
 MOD = {"M1":["CU-013","CU-014","CU-015","CU-016"], "M2":["CU-105"], "M3":["CU-106"],
        "M4":["CU-107"], "M5":["CU-108"]}
@@ -370,7 +372,7 @@ for mo,cs in MOD.items():
     for c in cs:
         modulo[c] = {"codigo":mo, "nombre":NOM[mo]}
         add(c, "2 — Análisis", "§3 Módulos Inteligentes", f"Proceso automatizado {mo}")
-        add(c, "3 — Diseño", "§6 Módulos Inteligentes", f"Especificación de {mo}")
+        add(c, "Diseño — anexo", "Módulos Inteligentes", f"Especificación de {mo}")
 
 # ---------- armado ----------
 datos = {"cu":{}, "subsistemas":ss, "contexto":contexto, "umlsis":umlsis,
@@ -400,7 +402,7 @@ def marca_de(archivo):
 # La arquitectura y el despliegue vivían solo en el documento de Diseño: el sitio no
 # mostraba la sección 2 en ningún lado, así que el diagrama de entornos y los criterios
 # de la API no se veían. Entra como sección propia del menú.
-_arq = _seccion("3-Diseño.md", r'^## 2\. Arquitectura', r'^## 3\. ')
+_arq = "\n".join(open(D + "sistema/DISENO-ARQUITECTURA.md", encoding="utf-8").read().split("\n")[4:])
 _arq_html = md2html(_arq)["html"]
 
 # ---------- los modelos en draw.io ----------
@@ -525,7 +527,7 @@ def _diagramas():
 # multi-tenant y DER conceptual) y el diccionario de datos completo, que vive aparte
 # en modelos/base-de-datos/SPLG-modelo-de-datos.md. El sitio no los mostraba.
 def _modelo_de_datos():
-    sec = _seccion("3-Diseño.md", r'^### 7\.4 ', r'^## 8\. ')
+    sec = "\n".join(open(D + "sistema/DISENO-MODELO-DE-DATOS.md", encoding="utf-8").read().split("\n")[4:])
     dic = open(D + "modelos/base-de-datos/SPLG-modelo-de-datos.md", encoding="utf-8").read()
     dic = dic[dic.index("## Diccionario de datos"):]
     a = md2html(sec)
@@ -536,7 +538,7 @@ def _modelo_de_datos():
     intro = ('<div class="intro"><h1>Modelo de datos</h1>'
              '<p>El modelo entidad-relación de la base (físico, por contexto de negocio, y conceptual, con '
              'el vocabulario del modelo conceptual) y el diccionario de datos de cada tabla. '
-             'Documento 3 · §7.4.</p></div>')
+             'Anexo de diseño.</p></div>')
     return {"titulo": "Modelo de datos", "html": intro + a["html"] + '<h2 class="sec">Diccionario de datos</h2>' + html_b,
             "mermaid": a["mermaid"] + b["mermaid"]}
 
@@ -567,7 +569,7 @@ datos["paginas"] = {
     "arquitectura": {"titulo": "Arquitectura y despliegue",
                      "html": '<div class="intro"><h1>Arquitectura y despliegue</h1>'
                              '<p>Cómo está armado el sistema, dónde corre cada pieza y con qué '
-                             'criterios está diseñada su interfaz HTTP. Documento 3 · §2.</p></div>'
+                             'criterios está diseñada su interfaz HTTP. Anexo de diseño.</p></div>'
                              + _arq_html},
 }
 

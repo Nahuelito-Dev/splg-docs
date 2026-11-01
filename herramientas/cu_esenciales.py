@@ -51,3 +51,28 @@ CONCEPTOS_ESENCIALES = (
     "RegistroUsoVehiculo", "Empleado", "Reclamo", "Deposito", "UbicacionDeStock", "SaldoDeStock", "MovimientoDeStock",
     "CargaDeCamion",
 )
+
+# Documento 3 (Diseño): los casos de uso reales son los diez con interacción del actor (CON_DSS); los diagramas de
+# interacción (DSD) son los de los casos dinámicos: los 21 esenciales menos la consulta de auditoría (CU-152), que
+# resuelve una sola clase. Un DSD por operación del sistema (decisión de nahue, 01/11/2026).
+CU_REALES = CON_DSS
+SIN_DSD = {
+    "CU-152": ("Estático", "es una consulta que no modifica nada: la resuelve una sola clase y no hay colaboración que diseñar."),
+}
+# caso de uso -> operaciones que dibuja su DSD (nombre del archivo DSD_<caso>_<operación>.mmd)
+OPERACIONES_DSD = {
+    "CU-001": ("iniciarSesion",), "CU-002": ("registrarse",), "CU-005": ("crearPedido",),
+    "CU-008": ("cancelarMiPedido",), "CU-015": ("aceptarPedido",), "CU-078": ("obtenerCodigoDeEntrega",),
+    "CU-079": ("confirmarEntregaConCodigo",), "CU-301": ("confirmarTransferencia",),
+    "CU-048": ("notificarResultadoDePago",), "CU-025": ("resolverReclamo",),
+    "CU-022": ("activarDisponibilidad",), "CU-292": ("confirmarCobroEnEfectivo",), "CU-023": ("registrarReclamo",),
+    "CU-013": ("ofrecerAlSiguienteChofer",), "CU-014": ("vencerOfertasExpiradas",), "CU-017": ("actualizarUbicacion",),
+    "CU-105": ("planificarMantenimientoDeFlota",), "CU-106": ("anticiparRecompras",),
+    "CU-107": ("agruparPedidosPorRecorrido",), "CU-108": ("gestionarEnvasesNoDevueltos",),
+}
+CON_DSD = tuple(OPERACIONES_DSD)
+ARCHIVOS_DSD = tuple(f"DSD_{cu}_{op}.mmd" for cu, ops in OPERACIONES_DSD.items() for op in ops)
+assert set(CON_DSD) | set(SIN_DSD) == set(ESENCIALES) and not set(CON_DSD) & set(SIN_DSD)
+
+# Casos de uso reales cuya interfaz todavía no tiene captura de la pantalla real (la ficha la describe con palabras).
+SIN_CAPTURA = ("CU-301",)

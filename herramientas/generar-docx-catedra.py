@@ -543,19 +543,14 @@ def armar(clave, raiz):
         glos = renombrar(sacar(raiz, "Glosario"), "Glosario")
         return [mc, comp, glos], anexos
     if clave == "3":
-        anexo("Índice de Figuras"); anexo("Leyenda de Prioridad"); anexo("Introducción")
-        anexo("Arquitectura del Sistema")
-        anexo("Observaciones transversales de diseño"); anexo("Operaciones del sistema")
-        anexo("Tabla de implementación por caso de uso")
-        for t in ("Módulos Inteligentes — Especificación Detallada", "Pantallas UI — Wireframes y Diagramas",
-                  "Decisiones de Diseño Relevantes", "Trazabilidad Diseño → Análisis → Requisitos",
-                  "Trabajo futuro", "Diagramas de Estados y de Actividad"):
-            anexo(t)
-        reales = renombrar(sacar(raiz, "Casos de Uso Reales (CU Real)"), "Casos de Usos Reales")
-        inter = renombrar(sacar(raiz, "Diagramas de Interacción (Nivel de Diseño)"), "Diagrama de Interacción")
-        grupos = list(inter.hijos)
-        inter.hijos = [nuevo("Operaciones", grupos)]
-        clases = renombrar(sacar(raiz, "Diagrama de Clases de Diseño"), "Diagrama de Clase")
+        anexo("Índice de Figuras")
+        reales = renombrar(sacar(raiz, "Casos de Uso Reales"), "Casos de Usos Reales")
+        inter = renombrar(sacar(raiz, "Diagrama de Interacción"), "Diagrama de Interacción")
+        sin_dsd = sacar(inter, "Casos sin diagrama de interacción")
+        ops = buscar(inter, "Operaciones")
+        ops.hijos = list(ops.hijos)
+        inter.hijos = [ops, sin_dsd]
+        clases = renombrar(sacar(raiz, "Diagrama de Clase"), "Diagrama de Clase")
         return [reales, inter, clases], anexos
     return None, anexos
 

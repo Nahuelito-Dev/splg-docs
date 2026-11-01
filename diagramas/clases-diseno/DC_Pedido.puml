@@ -52,84 +52,33 @@ class Pedido {
   - patenteDelVehiculo: Cadena
   - marcaDelVehiculo: Cadena
   - modeloDelVehiculo: Cadena
-  + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega,\n      metodoDePago: MetodoDePago,\n      franja: FranjaHoraria = ninguno,\n      zona: ZonaCobertura = ninguno,\n      fechaAgendada: Fecha = ninguno,\n      montoDeLaSenia: Moneda = ninguno,\n      express: Booleano = ninguno)
+  + «create» Pedido(cliente: Cliente,\n      direccion: DireccionEntrega, franja: FranjaHoraria,\n      zona: ZonaCobertura, fechaAgendada: Fecha,\n      metodoDePago: MetodoDePago)
   + aceptar(chofer: Chofer, vehiculo: Vehiculo)
-  + activar()
   + agregarItem(producto: Producto, cantidad: Entero,\n      precioUnitario: Moneda, subtotal: Moneda)
   + aplicarRecargoDePago()
-  + aplicarRecargoExpress()
-  + asignarChofer(chofer: Chofer, vehiculo: Vehiculo)
-  + calcularSaldo(): Moneda
   + calcularTotal(): Moneda
-  + cambiarDireccion(direccion: DireccionEntrega,\n      zona: ZonaCobertura, motivo: Cadena)
   + cancelar(motivo: Cadena)
   + confirmarCobro(chofer: Chofer)
   + confirmarSenia()
-  + descontarRecargoExpress()
   + entregar(motivo: Cadena)
-  + esDeLaDistribuidora(distribuidoraId: Identificador): Booleano
   + esDelChofer(chofer: Chofer): Booleano
   + esDelCliente(cliente: Cliente): Booleano
   + esReofertable(): Booleano
-  + estaDisponible(): Booleano
-  + estaEnCamino(): Booleano
-  + estaSinPagar(): Booleano
   + generarCodigoDeEntrega(): Cadena
-  + getCambiosDeEstado(): CambioEstadoPedido[*]
   + getChofer(): Chofer
-  + getCliente(): Cliente
   + getCodigoDeEntrega(): Cadena
-  + getDireccionDeEntrega(): Coordenada
   + getEnvases(): Envase[*]
   + getEstadoDeLasOfertas(ahora: FechaHora,\n      enfriamiento: Entero): Cadena
-  + getFechaDeCancelacion(): Fecha
-  + getFechaDeEntrega(): Fecha
-  + getImporteACobrar(esSenia: Booleano): Moneda
-  + getIncidenciaDeCobro(): Incidencia
-  + getIncidencias(): Incidencia[*]
-  + getItems(): Registro
-  + getItemsSinDescuento(): ItemPedido[*]
-  + getMetodoDePago(): MetodoDePago
-  + getOfertaVigente(chofer: Chofer): OfertaDespacho
   + getPago(identificadorDelPago: Identificador): Pago
-  + getPagosAprobados(): Pago[*]
   + getPuntoDeEntrega(): Coordenada
-  + getReceptorDeCalificacion(usuario: Usuario): Usuario
-  + getReintegros(): Registro
-  + getRenglones(): Registro
-  + getTotal(): Moneda
-  + incluirRetiro(envase: Envase)
-  + indicarQuienRecibe(nombre: Cadena, documento: Cadena,\n      relacion: Cadena)
-  + informarImpago(chofer: Chofer = ninguno,\n      nota: Cadena = ninguno,\n      administrador: Usuario = ninguno,\n      motivo: Cadena = ninguno): Incidencia
-  + liberar()
-  + marcarEnCamino()
   + marcarPagado(identificadorDelPago: Identificador)
-  + modificar(datos: Registro, cliente: Cliente = ninguno)
   + ofrecerA(chofer: Chofer, venceEn: Entero)
-  + pasarARepartoComun(): Moneda
-  + puedeCalificar(usuario: Usuario): Booleano
-  + quitarChofer()
-  + rechazarConstanciaAnterior(choferAnterior: Chofer)
-  + registrarCambio(estadoAnterior: Cadena,\n      estadoNuevo: Cadena, autor: Usuario, motivo: Cadena)
-  + registrarCobro(administrador: Usuario, motivo: Cadena)
-  + registrarConstancia(chofer: Chofer)
-  + registrarIncidencia(usuario: Usuario, tipo: Cadena,\n      descripcion: Cadena, foto: Archivo): Incidencia
-  + resolverImpago(administrador: Usuario,\n      resolucion: Cadena, nota: Cadena): Pedido
   + resolverTransferencia(administrador: Usuario,\n      recibida: Booleano, motivo: Cadena)
-  + retirarOtrasOfertas(chofer: Chofer): Chofer[*]
+  + retirarOtrasOfertas(chofer: Chofer)
   + tieneOfertaVigente(): Booleano
   + transicionar(estadoDestino: EstadoPedido)
   + validarCobroPendiente()
   + validarCodigo(codigo: Cadena): Booleano
-  + validarDocumento(documento: Cadena)
-  + validarEditable()
-  + validarEsDelCliente(cliente: Cliente)
-  + validarImpago()
-  + validarQueEsReservaPendiente()
-  + validarQueLaSeniaSeConfirmaAMano()
-  + validarQueNoFueEntregado()
-  + validarQueNoSalio()
-  + validarSenia(total: Moneda)
   + validarTransferencia(recibida: Booleano)
   + validarTransicion(estadoDestino: EstadoPedido)
 }
@@ -138,8 +87,6 @@ class ItemPedido {
   - precioUnitario: Moneda
   - /subtotal: Moneda
   + «create» ItemPedido(producto: Producto, cantidad: Entero,\n      precioUnitario: Moneda, subtotal: Moneda)
-  + getCantidad(): Entero
-  + getProducto(): Producto
   + getSubtotal(): Moneda
   + restituirStock()
 }
@@ -148,13 +95,7 @@ class CambioEstadoPedido {
   - hacia: EstadoPedido
   - motivo: Cadena
   - fecha: FechaHora
-  + «create» CambioEstadoPedido(entregado: EstadoPedido = ninguno,\n      motivo: Cadena = ninguno,\n      estadoAnterior: Cadena = ninguno,\n      estadoNuevo: Cadena = ninguno,\n      autor: Usuario = ninguno,\n      detalle: Registro = ninguno)
-  + getUltimoHaciaCancelado(): Fecha
-}
-class CambioDireccion {
-  - motivo: Cadena
-  - fecha: FechaHora
-  + «create» CambioDireccion(direccion: DireccionEntrega,\n      autor: Usuario, motivo: Cadena)
+  + «create» CambioEstadoPedido(estadoPedido: EstadoPedido = ninguno,\n      motivo: Cadena = ninguno,\n      aceptado: EstadoPedido = ninguno)
 }
 class Pago {
   - importe: Moneda
@@ -162,46 +103,38 @@ class Pago {
   - estado: EstadoDelCobroEnPasarela
   - esSenia: Booleano
   - fecha: FechaHora
-  + «create» Pago(pedido: Pedido,\n      distribuidora: Distribuidora, importe: Moneda,\n      esSenia: Booleano)
-  + asignarEnlace(enlaceDePago: Cadena)
   + registrarResultado(identificadorDelPago: Identificador,\n      estado: Cadena)
-  + reintegrar()
 }
-class ReintegroDePago {
-  - tipo: TipoDeReintegro
-  - importe: Moneda
-  - estado: EstadoDelReintegro
-  - intentos: Entero
-  - reintegradoEl: FechaHora
-  - referenciaEnLaPasarela: Cadena
-  - mensajeDeError: Cadena
-  - devueltoAntesDelIntento: Moneda
+class Reclamo {
+  - motivo: Cadena
+  - descripcion: Cadena
+  - estado: EstadoDelReclamo
+  - resolucion: Cadena
+  - fotografia: Cadena
+  + «create» Reclamo(pedido: Pedido, motivo: Cadena,\n      evidencia: Archivo)
+  + resolver(resolucion: Cadena,\n      estadoDestino: EstadoDelReclamo)
+  + validarTransicion(estadoDestino: EstadoDelReclamo)
 }
 class Cliente <<referencia>>
 class Chofer <<referencia>>
 class Producto <<referencia>>
-class DireccionEntrega <<referencia>>
 class Usuario <<referencia>>
+class Envase <<referencia>>
 
 Usuario <|-- Cliente : {overlapping, incomplete}
 Usuario <|-- Chofer
 Cliente "1" <-- "0..*" Pedido : realiza
 Pedido "1" *--> "1..*" ItemPedido : contiene
 ItemPedido "0..*" --> "1" Producto : corresponde a
-Pedido "0..*" --> "1" DireccionEntrega : se entrega en
 Pedido "1" *--> "0..*" CambioEstadoPedido : registra
 Usuario "0..1" -- "0..*" CambioEstadoPedido : efectúa
 Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de
 Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de
-Pedido "1" *--> "0..*" CambioDireccion : registra
-CambioDireccion "0..*" -- "1" DireccionEntrega : cambia desde
-CambioDireccion "0..*" -- "1" DireccionEntrega : cambia hacia
-Usuario "1" -- "0..*" CambioDireccion : realiza
-Chofer "0..1" <-- "0..*" Pedido : entrega
+Chofer "0..1" -- "0..*" Pedido : entrega
 Pedido "1" -- "0..*" Pago : se salda con
-Pago "1" -- "0..*" ReintegroDePago : se devuelve con
-ReintegroDePago "0..*" -- "1" Pedido : devuelve el cobro de
-Pedido ..> Producto
+Pedido "0..1" -- "0..*" Envase : despacha
+Pedido "1" -- "0..*" Reclamo : origina
+Cliente "1" --> "0..*" Reclamo : presenta
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran solo como referencia.

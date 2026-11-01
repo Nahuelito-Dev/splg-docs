@@ -24,7 +24,7 @@ import re, os, glob, sys
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 sys.path.insert(0, D + "herramientas")
-from cu_esenciales import ESENCIALES, CON_DSS
+from cu_esenciales import ESENCIALES, CON_DSS, CON_DSD
 
 
 def leer(f):
@@ -54,7 +54,7 @@ DSD_CAS = seccion(cas, r'^## 7\. ', None)
 CUA_PLAN = seccion(plan, r'^## 7\. ', r'^## 8\. ')
 CUE_REQ = seccion(req, r'^## 8\. ', r'^## 9\. ')
 DSS_ANA = seccion(ana, r'^## 2\. ', r'^## 3\. ')
-DSD_DIS = seccion(dis, r'^## 3\. ', r'^## 5\. ')
+DSD_DIS = seccion(dis, r'^## 2\. ', r'^## 3\. ')
 
 fallas = []
 
@@ -150,8 +150,10 @@ for cu in codigos:
             if "Caso incluido" not in _cuerpo:
                 falta(cu, f"caso incluido: su DSS no lleva la nota «Caso incluido» en {_dn}")
     # 5. DSD
-    if not tiene_dia(DSD_DIS, "DSD", cu):
+    if cu in CON_DSD and not tiene_dia(DSD_DIS, "DSD", cu):
         falta(cu, "sin DSD en el Documento 3")
+    if cu not in CON_DSD and tiene_dia(DSD_DIS, "DSD", cu):
+        falta(cu, "tiene DSD en el Documento 3 y no es un caso dinámico")
     if not tiene_dia(DSD_CAS, "DSD", cu):
         falta(cu, "sin DSD en Casos-de-Uso.md")
     for tipo in ("DSS", "DSD"):

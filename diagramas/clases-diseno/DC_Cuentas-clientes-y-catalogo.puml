@@ -1,0 +1,133 @@
+@startuml
+!include ../estilo-vp.iuml
+skinparam nodesep 40
+skinparam ranksep 55
+skinparam genericDisplay old
+skinparam class<<referencia>> {
+  BackgroundColor #F1F1F1
+  BorderColor #8A97A3
+  FontColor #55616C
+}
+skinparam class<<fachada>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<controlador>> {
+  HeaderBackgroundColor #B7CDE8
+}
+skinparam class<<fabricación pura>> {
+  HeaderBackgroundColor #E4ECF6
+}
+skinparam class<<colección>> {
+  HeaderBackgroundColor #E6E6E6
+}
+skinparam class<<adaptador>> {
+  HeaderBackgroundColor #D5E3F3
+}
+skinparam packageStyle rectangle
+hide circle
+hide empty members
+
+class Usuario {
+  - nombre: Cadena
+  - correo: Cadena
+  - telefono: Cadena
+  - bloqueado: Booleano
+  + «create» Usuario(nombreCompleto: Cadena, correo: Cadena,\n      telefono: Cadena, rolCliente: TipoDeRol,\n      cuenta: Registro)
+  + estaHabilitado(): Booleano
+}
+class Distribuidora {
+  - nombre: Cadena
+  - razonSocial: Cadena
+  - cuit: Cadena
+  - estado: EstadoDeDistribuidora
+  + zonaQueCubre(direccion: Cadena): ZonaCobertura
+}
+class Cliente {
+  - consumoMensualDeclarado: Decimal
+  - diasDeAviso: Entero
+  + «create» Cliente(usuario: Usuario,\n      datosDelCliente: Registro)
+  + getDireccion(direccionId: Identificador): DireccionEntrega
+  + presentarReclamo(pedido: Pedido, motivo: Cadena,\n      evidencia: Archivo): Reclamo
+}
+class Carrito {
+  - ultimaModificacion: FechaHora
+  + getItems(): Registro
+}
+class FranjaHoraria {
+  - desde: Hora
+  - hasta: Hora
+  - cupo: Entero
+  - activa: Booleano
+  + tieneCupo(fechaAgendada: Fecha): Booleano
+}
+class ZonaCobertura {
+  - nombre: Cadena
+  - area: Poligono
+  - recargo: Moneda
+  - tipoDeRecargo: TipoDeRecargo
+  - prioridad: Decimal
+  - vigenteDesde: FechaHora
+  - vigenteHasta: FechaHora
+  - activa: Booleano
+  + calcularRecargo(subtotalItems: Moneda): Moneda
+}
+class Producto {
+  - tipo: Cadena
+  - pesoEnKilos: Decimal
+  - precio: Moneda
+  - stock: Entero
+  - activo: Booleano
+  - costoPromedio: Moneda
+  - deficitDeReservas: Decimal
+  + esDeLaDistribuidora(distribuidora: Distribuidora): Booleano
+  + precioPara(cantidad: Entero): Moneda
+  + reservar(cantidad: Entero): Entero
+  + restituir(cantidad: Entero)
+}
+class Envase {
+  - numeroDeSerie: Cadena
+  - estado: EstadoDelEnvase
+  - montoDelDeposito: Moneda
+  - /vencimiento: Fecha
+  + abrirCaso()
+  + entregarAlCliente(pedido: Pedido)
+  + fueDevuelto(): Booleano
+}
+class InvitacionRecompra {
+  - agotamientoEstimado: FechaHora
+  + «create» InvitacionRecompra(cliente: Cliente,\n      fechaEstimada: Fecha, vigencia: FechaHora)
+}
+class ItemSugerido {
+  - cantidad: Entero
+  + «create» ItemSugerido(producto: Producto,\n      cantidad: Entero)
+}
+class Pedido <<referencia>>
+class Chofer <<referencia>>
+
+Usuario <|-- Cliente : {overlapping, incomplete}
+Usuario <|-- Chofer
+Distribuidora "1" -- "0..*" Chofer : emplea
+Distribuidora "1" -- "0..*" Producto : comercializa
+Distribuidora "1" -- "0..*" Envase : posee
+Distribuidora "1" -- "0..*" Pedido : gestiona
+Distribuidora "1" *-- "0..*" ZonaCobertura : define
+Distribuidora "1" *-- "0..*" FranjaHoraria : define
+Cliente "1" <-- "0..*" Pedido : realiza
+Cliente "1" *-- "0..*" Carrito : arma
+Cliente "1" -- "0..*" InvitacionRecompra : recibe
+Cliente "0..*" -- "0..1" Producto : usa habitualmente
+InvitacionRecompra "0..1" -- "0..1" Pedido : se convierte en
+InvitacionRecompra "1" *--> "1..*" ItemSugerido : sugiere
+ItemSugerido "0..*" -- "1" Producto : corresponde a
+Pedido "0..*" --> "0..1" FranjaHoraria : se programa en
+Pedido "0..*" --> "0..1" ZonaCobertura : aplica el recargo de
+Usuario "0..1" -- "0..*" Pedido : confirmó el cobro de
+Usuario "0..1" -- "0..*" Pedido : resolvió el cobro de
+Producto "0..1" -- "0..*" Envase : describe
+Cliente "0..1" -- "0..*" Envase : tiene en su poder
+Pedido "0..1" -- "0..*" Envase : despacha
+
+legend bottom right
+  Las clases en gris pertenecen a otra vista; se muestran solo como referencia.
+endlegend
+@enduml
