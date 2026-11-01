@@ -130,7 +130,10 @@ fallo de la pasarela no la revierte. Se dispara en:
 - cancelación del cliente o del administrador (`PATCH /orders/:id/cancel`, `DELETE /orders/:id`,
   `PATCH /orders/:id/status` con `cancelled`): **todo lo que falte devolver** de cada pago
   aprobado por una pasarela (seña incluida);
-- un pago aprobado que llega **después** de la cancelación (webhook tardío);
+- un pago aprobado que llega **después** de la cancelación (webhook tardío): si no se puede dejar registrada la devolución el webhook
+  responde `503` y Mercado Pago reintenta; si el aviso se perdió, el barrido de pedidos cancelados (cada 15 minutos, últimas 48 horas)
+  lo encuentra en Mercado Pago y lo devuelve;
+- un **segundo pago aprobado** del mismo checkout sobre un pedido ya pagado: se devuelve ese segundo pago (no el primero);
 - el pase de un express al reparto común: **sólo el recargo express**.
 
 Los pagos en efectivo o transferencia, y los que nunca se aprobaron, no hacen nada. El estado de

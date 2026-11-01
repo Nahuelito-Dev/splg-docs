@@ -39,6 +39,18 @@ el despacho).
 | `insurance_policy_expiring` | La póliza vence en 30 días o menos y no hay otra que la reemplace | el seguro del vehículo | sí |
 | `traffic_fine_due` | Una multa pendiente vence en 5 días o menos | la multa | sí |
 | `traffic_fine_overdue` | Una multa pendiente venció sin pagar (hasta 30 días después) | la multa | sí |
+| `payment_in_mediation` | El comprador abrió un reclamo sobre un pago de Mercado Pago (uno por pago) | el pedido | no |
+| `payment_chargeback_opened` | Mercado Pago informó un contracargo: plazo y comprobante de entrega a presentar (uno por contracargo y pago) | el pedido | no |
+| `payment_chargeback` | El pago pasó a contracargo y Mercado Pago lo devolvió (uno por pago) | el pedido | no |
+| `payment_refunded` | Un pago se devolvió desde el panel de Mercado Pago, no desde el sistema (uno por pago) | el pedido | no |
+| `payment_fraud_alert` | Alerta de fraude de Mercado Pago sobre un pago: no entregar el pedido, que se frenó si todavía no tenía chofer (uno por pago) | el pedido | sí |
+| `payment_chargeback_resolved` | Mercado Pago le devolvió al comercio el dinero de un contracargo (`reimbursed`); se asentó el ingreso (uno por pago) | el pedido | no |
+| `payment_alert_unprocessed` | Una alerta de Mercado Pago (fraude) no se pudo procesar tras 8 intentos: mirarla en Mercado Pago (uno por pago) | el pedido | sí |
+| `payment_chargeback_review` | Mercado Pago informa un contracargo `reimbursed` sin confirmar que el caso se resolvió a favor del comercio: conciliarlo a mano (uno por pago) | el pedido | no |
+| `payment_duplicate` | Un cliente pagó dos veces el mismo pedido: se devolvió el segundo pago (uno por pago) | el pedido | no |
+| `payment_needs_review` | Mercado Pago cobró un pago que el pedido no pudo tomar (importe o cuenta distintos): decide el admin (uno por pago) | el pedido | no |
+| `payment_lookup_failed` | Hace más de 2 horas que no se puede consultar a Mercado Pago el pago de un pedido (p. ej. credencial rechazada) (uno por pedido) | el pedido | no |
+| `payment_without_attempt` | Llegó un pago de Mercado Pago para un pedido sin intento de cobro registrado (uno por pago) | el pedido | no |
 
 Los vencimientos los arma el aviso diario de flota (`FleetAlertsCron`, a la hora que eligió
 cada distribuidora): además de su **mail resumen** de siempre, deja cada vencimiento y cada documento

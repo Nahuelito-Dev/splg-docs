@@ -500,8 +500,8 @@ por día) y `paymentUrl` (ver abajo).
 ## Enlace de pago de MercadoPago
 
 El enlace de Checkout Pro se guarda en el registro de cobros al crear el pedido (o la seña de una reserva). Además de la
-respuesta del alta, `GET /orders/:id` devuelve `payment_url` mientras el cobro siga pendiente (pedido de MercadoPago no
-cancelado ni pagado; no se le devuelve al chofer), y `GET /orders/reservations` devuelve `paymentUrl` de la seña mientras
+respuesta del alta, `GET /orders/:id` devuelve `payment_url` mientras el cobro siga pendiente o el último intento haya sido
+rechazado con el checkout sin vencer, para reintentar (pedido de MercadoPago no cancelado ni pagado; no se le devuelve al chofer), y `GET /orders/reservations` devuelve `paymentUrl` de la seña mientras
 esté pendiente (`null` en efectivo o transferencia, con la seña paga o si la pasarela no lo generó). Una seña en efectivo
 o por transferencia la confirma el admin con `PATCH /orders/:id/confirm-deposit`, sea cual sea el medio.
 
@@ -509,6 +509,9 @@ El checkout de MercadoPago cobra exactamente lo que queda en el registro de cobr
 (precio con promoción) más un renglón por cada recargo del total (`Recargo de zona`, `Recargo por pago online`, `Recargo
 express`; los que valen 0 no se mandan). En una reserva el checkout es un único renglón `Seña de reserva` por la seña.
 Si la pasarela aprobara otro importe, el webhook no da el pedido por pagado ni lo despacha.
+
+El estado del pago (los nueve de Mercado Pago, su motivo y el texto en castellano), el webhook, la conciliación y las alertas
+de la bandeja están en `MERCADOPAGO-CUENTAS.md` (API v2: `GET /api/v2/orders/:id/payment` y `GET /api/v2/orders/payments`).
 
 ## Recargo online guardado, motivo de cancelación y fecha agendada (tanda V1)
 
