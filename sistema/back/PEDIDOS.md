@@ -497,6 +497,35 @@ que no se confirma a mano. Con otros medios, omitirla equivale a 0. `depositAmou
 `GET /orders/reservations` agrega `timeSlot` (`name`, `startTime`, `endTime` en HH:MM, o `null` si la reserva es sólo
 por día) y `paymentUrl` (ver abajo).
 
+**Saldo a cobrar al entregar — `balanceDue`.** Cada reserva de `GET /orders/reservations` trae `balanceDue` = `total −
+depositAmount` con `Decimal` y 2 decimales (mitades hacia arriba): el mismo número que el `balance` de la cotización
+del alta (`POST /orders/quote`), porque las dos usan `saldoTrasLaSena`. Es un campo **aditivo** de la v1 (no cambia
+ni quita ninguna clave). A diferencia de `remainingBalance`, que sólo descuenta la seña **ya cobrada** (con la seña
+pendiente es el total entero), `balanceDue` no depende de que la seña esté paga. El panel lo muestra tal cual: no resta.
+
+## Estadísticas de compra del cliente — `GET /api/v2/orders/customer/:customerId/stats`
+
+Para la portada de la ficha del cliente en el panel. `customerId` es el `user_id` del cliente (igual que en
+`GET /orders/customer/:customerId`). Roles: admin y super admin; la distribuidora sale del contexto (`X-Distributor`,
+obligatoria; un admin queda en la suya). Lo calcula la base sobre **todos** los pedidos del cliente en esa
+distribuidora, no sobre una página:
+
+```json
+{
+  "totalPurchased": 720800,
+  "ordersCount": 175,
+  "deliveredCount": 20,
+  "averageTicket": 36040,
+  "lastDeliveredAt": "2026-10-31T21:36:35.324Z"
+}
+```
+
+`totalPurchased` suma el total de los pedidos `delivered` (los cancelados y los que siguen en curso no cuentan como
+compra); `ordersCount` cuenta los de cualquier estado; `averageTicket` es lo comprado dividido los entregados a 2
+decimales (`null` si no tiene ninguno); `lastDeliveredAt` es el `deliveredAt` más reciente (`null` si no tiene). Un
+cliente sin pedidos en esa distribuidora devuelve ceros y `null`: los pedidos de otra distribuidora no se suman. 400 si
+`customerId` no es un UUID o falta la distribuidora; 401 sin token. Va en v2 porque es un endpoint nuevo.
+
 ## Enlace de pago de MercadoPago
 
 El enlace de Checkout Pro se guarda en el registro de cobros al crear el pedido (o la seña de una reserva). Además de la

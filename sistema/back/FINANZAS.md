@@ -128,6 +128,7 @@ deadlocks (`withTransactionRetry` no tiene que haber reintentado).
 | GET                                       | `/driver-settlements/mine?date`                                  | 232 (`DELIVERY`)                                                        | abre la del día si no existe                                                                                              |
 | GET                                       | `/driver-settlements/:id`                                        | 232, 233                                                                | el chofer sólo ve las suyas                                                                                               |
 | POST                                      | `/driver-settlements/:id/submit`                                 | 232 (`DELIVERY` o admin)                                                | 409 no abierta · 400 negativos o gasto sin categoría de egreso                                                            |
+| POST                                      | `/api/v2/driver-settlements/:id/preview`                         | 232 (`DELIVERY` o admin)                                                | 409 no abierta · 404 · 400 negativos o con más de 2 decimales                                                             |
 | PATCH                                     | `/driver-settlements/:id/approve`                                | 233                                                                     | 409 no presentada, sin sesión o carga abierta · 400 diferencia sin resolver                                               |
 | PATCH                                     | `/driver-settlements/:id/reopen`                                 | 330                                                                     | 409 no presentada                                                                                                         |
 | GET / POST                                | `/customer-accounts`                                             | 235, 238                                                                | 409 ya hay cuenta · 400 CUIT/límite/plazo · 404 cliente                                                                   |
@@ -151,6 +152,17 @@ La app del chofer todavía no consume nada de esto. Lo que le toca, ya disponibl
 
 - **Mi rendición:** `GET /driver-settlements/mine?date` (abre la del día) y
   `POST /driver-settlements/:id/submit` con `{ declaredCash, expenses: [{ categoryId, amount, description? }], notes? }`.
+  **Vista previa de la diferencia:** mientras el chofer escribe, la app llama a
+  `POST /api/v2/driver-settlements/:id/preview` con `{ declaredCash, expenses?: [{ amount }] }` y muestra lo que
+  devuelve: `{ expectedCash, declaredCash, driverExpenses, difference }`, con `difference = declaredCash +
+  driverExpenses − expectedCash` sobre lo esperado en vivo. Es la misma cuenta que guarda `submit` (la función
+  `cuentasDeRendicion` del dominio la comparten los dos) y no escribe nada. Sólo sobre una rendición **abierta**
+  (409 si no) y propia (el chofer ve sólo las suyas; otra, o de otra distribuidora, es 404). La app la pide con
+  debounce y, si falla la red, no muestra diferencia: no la calcula ella. Muestra el `expectedCash` que devuelve la vista
+  previa (el más fresco) y la relee al refrescar la rendición. El panel usa el mismo endpoint en el modal «Declarar el
+  efectivo rendido» (admin presentando por el chofer). Un gasto con importe ilegible no se manda: se avisa y no hay
+  diferencia. Para la vista previa, el chofer es el dueño de la rendición con la misma regla que `submit` (la fila de
+  `delivery` tal cual está, con o sin baja lógica).
   Las categorías de gasto se piden a un administrador (el chofer no lista `/cash-categories`: la app debería
   recibir una lista fija, o se habilita una lectura para `DELIVERY`).
   Cada entrega de `orders` trae `customerName` y `deliveryAddress` (la dirección formateada, o calle, piso,
