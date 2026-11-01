@@ -1,0 +1,41 @@
+name: Checks
+
+# Gate de la documentación: conformidad con las plantillas de la cátedra y links locales.
+# La conformidad cruza los DSD contra el código del back (herramientas/cruzar-dsd-clases.py
+# espera ../splg-app-backend/src), por eso se trae splg-back como carpeta hermana.
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop]
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Traer splg-back (sólo src) como carpeta hermana
+        env:
+          GH_TOKEN: ${{ secrets.SPLG_REPOS_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Falta el secreto SPLG_REPOS_TOKEN (lectura de splg-back)"; exit 1
+          fi
+          gh repo clone Nahuelito-Dev/splg-back ../splg-app-backend -- --depth 1 --branch develop --filter=blob:none --sparse
+          git -C ../splg-app-backend sparse-checkout set src
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: python3 herramientas/verificar-conformidad.py
+      - run: python3 herramientas/verificar-links.py

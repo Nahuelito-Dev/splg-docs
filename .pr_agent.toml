@@ -1,0 +1,47 @@
+# Qodo Merge (pr-agent). Config del repo: se lee desde la rama por defecto.
+# Docs: https://github.com/qodo-ai/pr-agent/blob/main/docs/docs/usage-guide/configuration_options.md
+#       https://github.com/qodo-ai/pr-agent/blob/main/docs/docs/usage-guide/automations_and_usage.md
+#       https://github.com/qodo-ai/pr-agent/blob/main/pr_agent/settings/configuration.toml
+
+[config]
+response_language = "es-AR"
+# Lee AGENTS.md (y CLAUDE.md) del repo como contexto de la revisión.
+repo_context_files = ["AGENTS.md", "CLAUDE.md"]
+
+[github_app]
+handle_pr_actions = ["opened", "reopened", "ready_for_review"]
+feedback_on_draft_pr = false
+# Revisa también los commits nuevos de la rama del PR.
+handle_push_trigger = true
+push_commands = ["/review"]
+pr_commands = ["/describe", "/review", "/improve"]
+
+[pr_reviewer]
+require_tests_review = true
+require_security_review = true
+require_estimate_effort_to_review = true
+require_score_review = false
+extra_instructions = """\
+Respondé en castellano rioplatense, directo y concreto. Leé AGENTS.md del repo.
+Documentación de la tesis SPLG (Proceso Unificado, UML 2.5, Larman) y el sitio publicado.
+Marcá como BLOQUEANTE lo que impide el merge. Reglas del repo:
+- Los documentos numerados de la cátedra (documentos/) los edita nahue en Google Drive: un cambio ahí se marca para revisión humana.
+- Todo en UML 2.5 + metodología UP (Larman); un CU por operación de ABM; los diagramas se miran como imagen, no sólo como texto.
+- El sitio publicado sólo lleva CU/CUE/CUA/DSS/DSD + módulos inteligentes; sistema/back/*.md es interno. Los números de las F (FEATURES-NEW) no van al sitio ni a la doc que ve la cátedra.
+- Un cambio de contrato (endpoint, DTO, evento, esquema) del back se documenta acá en la misma tanda.
+- Afirmaciones técnicas nuevas deben estar probadas contra la API/código, no sólo leídas.
+- Links locales sin romper (herramientas/verificar-links.py) y conformidad con las plantillas (herramientas/verificar-conformidad.py).
+Un test nuevo que no fallaría sin el cambio es un hallazgo.
+"""
+
+[pr_code_suggestions]
+num_code_suggestions_per_chunk = 3
+extra_instructions = """\
+Sugerencias en castellano rioplatense. Respetá AGENTS.md y las convenciones del repo; no propongas
+cambios de estilo que el lint ya cubre ni refactors fuera del alcance del PR.
+"""
+
+[pr_description]
+extra_instructions = """\
+Descripción en castellano rioplatense. Commits y títulos en Conventional Commits.
+"""
