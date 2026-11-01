@@ -612,6 +612,39 @@ if _errs: FALLAS.append("secciones de la plantilla y figuras")
 print(f"[{'OK' if not _errs else 'FALLA':5}] Secciones de la plantilla (Doc 0, 0.1, Doc 1) y figuras de los diagramas UML"
       + (f" | {_errs}" if _errs else ""))
 
+# --- Doc 1: la descripción de la cátedra al principio de cada sección ---
+# La plantilla explica qué va en cada sección con una frase; el documento la conserva, textual, en cursiva
+# y como primer párrafo bajo el título. Se compara contra catedra/.catedra-ref/1-Requisitos.txt.
+DESCRIPCIONES_DOC1 = [("## 1. Presentación General", "Presentación General"),
+                      ("### Participantes del Proyecto", "Participantes del Proyecto"),
+                      ("## 2. Objetivos del Sistema", "Objetivos del sistema"),
+                      ("## 4. Casos de Uso: lista e importancia", "Casos de Usos"),
+                      ("## 6. Objetivos de la Iteración", "Objetivos de la Iteración"),
+                      ("## 7. Requisitos de Información", "Requisitos de Información"),
+                      ("## 8. Requisitos Funcionales", "Requisitos de Funcionales")]
+
+def verificar_descripciones_doc1():
+    errores = []
+    plantilla = [l.replace("\f", "").strip() for l in open(D + "catedra/.catedra-ref/1-Requisitos.txt", encoding="utf-8").read().split("\n")]
+    d1 = leer("1-Requisitos.md")
+    for titulo, en_plantilla in DESCRIPCIONES_DOC1:
+        i = next((k for k, l in enumerate(plantilla) if l in (en_plantilla, "Índice de Figuras" + en_plantilla)), None)
+        if i is None:   # en el .txt el título de la primera sección queda pegado al índice de figuras
+            errores.append(f"la plantilla no tiene la sección «{en_plantilla}»"); continue
+        desc = next((l for l in plantilla[i + 1:] if l), "")
+        j = next((k for k, l in enumerate(d1) if l.startswith(titulo)), None)
+        if j is None:
+            errores.append(f"falta la sección «{titulo}»"); continue
+        primero = next((l for l in d1[j + 1:] if l.strip()), "")
+        if primero.strip() != f"*{desc}*":
+            errores.append(f"«{titulo.lstrip('# ')}» no arranca con la descripción de la cátedra")
+    return errores
+
+_errs = verificar_descripciones_doc1()
+if _errs: FALLAS.append("descripciones de la cátedra en el Documento 1")
+print(f"[{'OK' if not _errs else 'FALLA':5}] Documento 1: cada sección arranca con la descripción de la plantilla de la cátedra ({len(DESCRIPCIONES_DOC1)} secciones)"
+      + (f" | {_errs}" if _errs else ""))
+
 # --- Operaciones del sistema: diagramas de secuencia, catálogo y contratos ---
 # El catálogo (catedra/material-de-trabajo/operaciones-sistema.json) es la única fuente de las
 # firmas. Los DSS tienen que dibujar al sistema como :Sistema, iniciar con un actor del

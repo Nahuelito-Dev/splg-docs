@@ -76,11 +76,15 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 
 ## 1. Presentación General
 
+*Descripción breve de las principales características del sistema de software que se va a desarrollar, la situación actual que generar la necesidad de un nuevo desarrollo, la problemática que se acomete, y cualquier otra consideración que sitúe al posible lector en el contexto oportuno para comprender el resto del documento*
+
 El proyecto SPLG surge de la necesidad de digitalizar la operación de un distribuidor de gas envasado que actualmente gestiona todos sus procesos de forma analógica: los clientes realizan pedidos por teléfono, los choferes reciben instrucciones verbales y el stock se registra manualmente en planillas. Esta situación genera demoras en la atención, errores en los pedidos, imposibilidad de rastrear entregas y reclamos sin evidencia objetiva.
 
 El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) para realizar pedidos y hacer seguimiento en tiempo real, una **App Chofer** (Flutter) para gestionar las entregas con GPS, un **Panel Administrativo** (React/Vite) para la gestión operativa completa, y un **Backend API** (NestJS) que centraliza toda la lógica de negocio, la base de datos PostgreSQL, el caché Redis y las notificaciones Firebase.
 
 ### Participantes del Proyecto
+
+*Debe contener una lista con todos los participantes en el proyecto:*
 
 | Rol | Nombre |
 |-----|--------|
@@ -91,6 +95,8 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 
 ---
 ## 2. Objetivos del Sistema
+
+*Se debe hacer una lista con los objetivos que se esperan alcanzar con el software a desarrollar.*
 
 | Código | Prioridad | Objetivo | Descripción | Estabilidad | Comentarios |
 |--------|:---------:|----------|-------------|:-----------:|-------------|
@@ -162,6 +168,8 @@ El sistema **no decide** por el chofer ni por el cliente: propone, registra y av
 acción sobre el mundo físico queda del lado de las personas.
 
 ## 4. Casos de Uso: lista e importancia
+
+*Lista de casos de usos y su importancia dentro del sistema para determinar cuáles son los casos de usos de incluir en cada una de las iteraciones*
 
 La tabla enumera todos los casos de uso identificados, con su subsistema, su actor principal, su
 importancia y su estado en el sistema construido. La importancia sigue la leyenda de prioridad de este
@@ -593,6 +601,8 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 
 ## 6. Objetivos de la Iteración
 
+*Se debe hacer una lista con los objetivos que se esperan alcanzar con el software a desarrollar.*
+
 La iteración en curso, de la Fase de Construcción, persigue los objetivos que siguen. Se derivan de los
 objetivos del sistema de la sección 2 y acotan qué parte de cada uno se especifica y se construye en
 esta vuelta.
@@ -608,6 +618,8 @@ esta vuelta.
 ---
 
 ## 7. Requisitos de Información
+
+*Debe tener una lista de requisitos de almacenamientos y de restricciones de información que se haya identificado.*
 
 ### IRQ-01 — Información sobre Usuarios
 
@@ -813,6 +825,8 @@ esta vuelta.
 ---
 
 ## 8. Requisitos Funcionales — Casos de Uso
+
+*Debe tener una lista de los requisitos funcionales, expresado en forma tradicional o mediante casos de usos*
 
 Los requisitos funcionales se expresan con casos de uso. La lista de todos los casos, con su
 importancia, está en la sección 4 y su descripción de alto nivel, en el Documento 0. Esta sección
