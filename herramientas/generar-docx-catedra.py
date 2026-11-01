@@ -291,6 +291,7 @@ def subir_version(v):
 class Nodo:
     def __init__(self, nivel, titulo, cuerpo=None):
         self.nivel, self.titulo, self.cuerpo, self.hijos, self.padre = nivel, titulo, cuerpo or [], [], None
+        self.ancla = None
 
 
 def parsear(texto):
@@ -382,10 +383,94 @@ H2_PLANTILLA = {
 }
 
 
+# ---------- anclas y enlaces internos ----------
+# Destinos: cada título que nombra un caso de uso, un IRQ o un NFR, y cada título numerado (para «sección 8.3» o
+# «§8.3»); y la fila de la tabla que define cada objetivo (OBJ-nn). Las referencias en el texto a uno de esos
+# destinos pasan a ser hipervínculos internos; las que apuntan a algo que no está en este documento (un caso sin
+# ficha, otro documento) quedan como texto.
+COD_DESTINO = re.compile(r"\b(CU-\d{3}|IRQ-\d{2}|NFR-\d{2})\b")
+REF = re.compile(r"(?<![\w#\[/-])(CU-\d{3}|IRQ-\d{2}|NFR-\d{2}|OBJ-\d{2})(?![\w-])"
+                 r"|(?<![\w])(secci[oó]n(?:es)? |§ ?)(\d+(?:\.\d+)*)(?![\d.]\d)")
+LINK_MD = re.compile(r"\[([^\]\n]*)\]\(([^)\s]+)\)(\{[^}\n]*\})?")
+
+
+def ancla_de(cod):
+    return cod.lower().replace("-", "_")
+
+
+def asignar_anclas(raiz):
+    """Pone un ancla en los títulos que son destino. Devuelve {alias de sección: ancla}."""
+    usadas, alias = set(), {}
+
+    def recorrer(n):
+        for h in n.hijos:
+            cod = COD_DESTINO.search(h.titulo)
+            num = re.match(r"^(\d+(?:\.\d+)*)\.?\s", h.titulo)
+            a = ancla_de(cod.group(1)) if cod else ("sec_" + num.group(1).replace(".", "_") if num else None)
+            if a and a not in usadas:
+                usadas.add(a)
+                h.ancla = a
+                if num:
+                    alias["sec_" + num.group(1).replace(".", "_")] = a
+            recorrer(h)
+    recorrer(raiz)
+    return alias
+
+
+def enlazar(texto, alias):
+    """Convierte las referencias a destinos de este texto en hipervínculos internos `[ref](#ancla)`."""
+    lineas = texto.split("\n")
+    # la fila que define cada objetivo lleva su ancla
+    definidas = set()
+    for i, l in enumerate(lineas):
+        m = re.match(r"^\| (\*\*)?(OBJ-\d{2})(\*\*)? \|", l)
+        if m and m.group(2) not in definidas:
+            definidas.add(m.group(2))
+            lineas[i] = l.replace(m.group(0), f"| {m.group(1) or ''}[{m.group(2)}]{{#{ancla_de(m.group(2))}}}{m.group(3) or ''} |", 1)
+    presentes = set(re.findall(r"\{#([\w-]+)\}", "\n".join(lineas)))
+    alias = {k: v for k, v in alias.items() if v in presentes}
+
+    def destino(m):
+        if m.group(1):
+            a = ancla_de(m.group(1))
+            return a if a in presentes else None
+        return alias.get("sec_" + m.group(3).replace(".", "_"))
+
+    def tramo(s):
+        def uno(m):
+            a = destino(m)
+            if not a:
+                return m.group(0)
+            # «Documento 2, sección 3» es de otro documento: queda como texto
+            if m.group(2) and re.search(r"Documento\s+[\d.]+\W{0,3}$", s[max(0, m.start() - 16):m.start()]):
+                return m.group(0)
+            return f"[{m.group(0)}](#{a})"
+        return REF.sub(uno, s)
+
+    fence = False
+    for i, l in enumerate(lineas):
+        if l.startswith("```"):
+            fence = not fence
+            continue
+        if fence or re.match(r"^(#{1,6} |!\[|\*\*Figura \d|- Figura \d|<)", l):
+            continue
+        partes, ult = [], 0
+        for m in LINK_MD.finditer(l):
+            partes.append(tramo(l[ult:m.start()]))
+            if m.group(3) or not m.group(2).startswith("#") or m.group(2)[1:] in presentes:
+                partes.append(m.group(0))
+            else:
+                partes.append(m.group(1))       # enlace a un ancla que no está en el documento: texto
+            ult = m.end()
+        partes.append(tramo(l[ult:]))
+        lineas[i] = "".join(partes)
+    return "\n".join(lineas)
+
+
 def emitir(n, nivel, out, permitidos=None):
     if permitidos is not None and nivel == 2 and sin_numero(n.titulo) not in permitidos:
         nivel = 3
-    out.append("#" * min(nivel, 6) + " " + titulo_final(n.titulo))
+    out.append("#" * min(nivel, 6) + " " + titulo_final(n.titulo) + (f" {{#{n.ancla}}}" if n.ancla else ""))
     out.extend(n.cuerpo)
     for h in n.hijos:
         emitir(h, nivel + 1, out, permitidos)
@@ -419,21 +504,21 @@ def armar(clave, raiz):
         anexo("Índice de Iteraciones")
         return list(raiz.hijos), anexos
     if clave == "1":
-        anexo("Leyenda de Prioridad"); anexo("Relaciones entre Casos de Uso", True)
+        anexo("Leyenda de Prioridad")
         figuras = sacar(raiz, "Índice de Figuras")
         pres = renombrar(sacar(raiz, "Presentación General"), "Presentación General")
         obj = renombrar(sacar(raiz, "Objetivos del Sistema"), "Objetivos del sistema")
         dcu = renombrar(sacar(raiz, "Diagrama de Casos de Uso del Sistema"), "Diagrama de Caso de Uso del Sistema")
         lista = renombrar(sacar(raiz, "Casos de Uso: lista e importancia"), "Casos de Usos")
         subs = renombrar(sacar(raiz, "Subsistemas del Proyecto"), "Subsistemas del Proyecto")
-        dsub = renombrar(sacar(subs, "Diagramas de Casos de Uso por Subsistema"), "Diagrama de Casos de Usos")
         pres.hijos += [obj, dcu, lista, subs]
         itera = renombrar(sacar(raiz, "Objetivos de la Iteración"), "Objetivos de la Iteración")
         info = renombrar(sacar(raiz, "Requisitos de Información"), "Requisitos de Información")
         func = renombrar(sacar(raiz, "Requisitos Funcionales — Casos de Uso"), "Requisitos de Funcionales")
+        dsub = renombrar(sacar(func, "Diagramas de Casos de Uso por Subsistema"), "Diagrama de Casos de Usos")
         actores = renombrar(sacar(func, "Definición de Actores"), "Definición de Actores")
-        cue = nuevo("Caso de Usos del Sistema", list(func.hijos))
-        func.hijos = [dsub, actores, cue]
+        cue = renombrar(sacar(func, "Casos de Uso del Sistema"), "Caso de Usos del Sistema")
+        func.hijos = [dsub, actores, cue] + list(func.hijos)
         nf = renombrar(sacar(raiz, "Requisitos No Funcionales"), "Requisitos No funcionales")
         req = nuevo("Requisitos del Sistema", [info, func, nf])
         matriz = renombrar(sacar(raiz, "Matriz de Rastreabilidad Objetivos / Requisitos"), "Matriz de Rastreabilidad Objetivo/Requisitos")
@@ -547,17 +632,26 @@ def preparar_md(clave, nombre_md, parte=1, total=1):
     if m:
         tabla = m.group(1)
         resto = resto[:m.start()] + resto[m.end():]
-        filas = re.findall(r"^\| (\d+) \|", tabla, re.M)
+        filas = re.findall(r"^\| (\d+) \| ([^|]+?) \|", tabla, re.M)
+        # si el .md ya trae la fila de la fecha de la entrega, no se agrega otra ni se sube la versión
+        ya_tiene = filas[-1][1].strip() in (FECHA, FECHA_ISO)
         # la fila nueva va pegada a la última fila de la tabla (después suele venir un «---»)
         ult = [k for k in re.finditer(r"^\|.*\|[ \t]*$", tabla, re.M)][-1]
-        tabla = (tabla[:ult.end()] + f"\n| {int(filas[-1]) + 1} | {FECHA_ISO} | {CAMBIO} | {AUTOR} |"
+        nueva = "" if ya_tiene else f"\n| {int(filas[-1][0]) + 1} | {FECHA_ISO} | {CAMBIO} | {AUTOR} |"
+        tabla = (tabla[:ult.end()] + nueva
                  + re.sub(r"^\s*-{3,}\s*$", "", tabla[ult.end():], flags=re.M).rstrip() + "\n\n")
         if clave in CON_LISTA_COMO_TITULO:
             cambios = "# Lista de Cambios\n" + tabla
         else:
             cambios = ("```{=openxml}\n" + p_xml("Lista de Cambios", 32, True, centrado=False, despues=200)
                        + "\n```\n" + tabla)
-    campos = [(k, subir_version(v) if k == "Versión" else FECHA if k == "Fecha" else v) for k, v in campos]
+    ya_tiene = m is not None and ya_tiene
+    campos = [(k, (v if ya_tiene else subir_version(v)) if k == "Versión" else FECHA if k == "Fecha" else v) for k, v in campos]
+    # la plantilla del Documento 1 repite la portada antes de la parte de la iteración: el bloque citado del .md
+    # («Documento de Requisitos del Sistema — Requisitos de la Iteración») pasa a ser una portada de página completa
+    resto = re.sub(r"^> \*\*Documento de Requisitos del Sistema — Requisitos de la Iteración\*\*[ \t]*\n(?:>[^\n]*\n)*",
+                   lambda _m: "```{=openxml}\n" + salto_pagina() + "\n```\n" + portada(titulo, campos) + "\n",
+                   resto, flags=re.M)
     mmds = mapa_mmd()
     contador = {"png": 0, "render": 0}
 
@@ -595,6 +689,7 @@ def preparar_md(clave, nombre_md, parte=1, total=1):
     resto = re.sub(r"@@FIN@@(?:\s|<!--(?:(?!-->).)*-->)*@@INI@@", "\n\n", resto, flags=re.S)
     resto = resto.replace("@@INI@@", MARCA_INI.strip()).replace("@@FIN@@", MARCA_FIN.strip())
     raiz = parsear(resto)
+    alias = asignar_anclas(raiz)
     secciones, anexos = armar(clave, raiz)
     # lo que quedó sin ubicar (texto suelto antes del primer título o secciones no previstas) falla fuerte
     sobrantes = [n.titulo for n in raiz.hijos if n not in secciones]
@@ -608,6 +703,7 @@ def preparar_md(clave, nombre_md, parte=1, total=1):
         emitir(an, 1, salida)
     resto = "\n".join(salida)
     resto = cortar(resto, parte, total)
+    resto = enlazar(resto, alias)
     final_horizontal = False
     sin_cola = re.sub(r"(?:\s|^-{3,}[ \t]*$|<!--(?:(?!-->).)*-->)*\Z", "", resto, flags=re.S | re.M)
     if sin_cola.endswith(MARCA_FIN.strip()):
@@ -767,10 +863,9 @@ def con_encabezado(zin, doc2, version, titulo):
     if 'xmlns:r=' not in doc2[:2000]:
         doc2 = doc2.replace("<w:document ", '<w:document xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ', 1)
     ajustes = zin.read("word/settings.xml").decode("utf8")
-    if "<w:updateFields" not in ajustes:
-        # el esquema pide updateFields antes de hdrShapeDefaults/footnotePr/compat/rsids
-        ajustes = re.sub(r"(<w:(?:hdrShapeDefaults|footnotePr|endnotePr|compat|docVars|rsids)[ />]|</w:settings>)",
-                         r'<w:updateFields w:val="true"/>\1', ajustes, count=1)
+    # sin updateFields: Word preguntaría al abrir si actualiza los campos. Los índices ya traen su resultado
+    # calculado (con número de página) y se actualizan con F9 si hace falta.
+    ajustes = re.sub(r"<w:updateFields[^>]*/>", "", ajustes)
     ajustes = re.sub(r'(<w:themeFontLang w:val=")[^"]*', r"\1es-AR", ajustes)
     core = zin.read("docProps/core.xml").decode("utf8")
     titulo = titulo.replace("Analisis", "Análisis").replace("Planificacion", "Planificación")   # el nombre de archivo va sin tilde
@@ -797,8 +892,43 @@ def tamanos_de_imagen(doc):
     return re.sub(r"<wp:inline.*?</wp:inline>", una, doc, flags=re.S)
 
 
+def _esc(s):
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _campo(instr, resultado_runs):
+    """Un campo de Word completo (begin, instrucción, separate, resultado guardado, end), en runs."""
+    return ('<w:r><w:fldChar w:fldCharType="begin"/></w:r>'
+            f'<w:r><w:instrText xml:space="preserve"> {instr} </w:instrText></w:r>'
+            '<w:r><w:fldChar w:fldCharType="separate"/></w:r>' + resultado_runs
+            + '<w:r><w:fldChar w:fldCharType="end"/></w:r>')
+
+
+def _entrada_indice(texto, ancla, sangria, rpr):
+    """Renglón de un índice como lo escribe Word: hipervínculo al marcador, tabulación con puntos y el número de
+    página en un campo PAGEREF. El número se guarda como @@PG:ancla@@ y lo completa `numerar_paginas`."""
+    pag = _campo(f"PAGEREF {ancla} \\h", f'<w:r><w:rPr>{rpr}</w:rPr><w:t>@@PG:{ancla}@@</w:t></w:r>')
+    return (f'<w:p><w:pPr><w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9000"/></w:tabs>'
+            f'<w:spacing w:before="0" w:after="20"/><w:ind w:left="{sangria}"/></w:pPr>'
+            f'<w:hyperlink w:anchor="{ancla}" w:history="1"><w:r><w:rPr>{rpr}</w:rPr><w:t xml:space="preserve">{_esc(texto)}</w:t></w:r>'
+            f'<w:r><w:rPr>{rpr}</w:rPr><w:tab/></w:r>{pag}</w:hyperlink></w:p>')
+
+
+def _envolver_en_campo(filas, instr):
+    """Pone los renglones dentro de un campo TOC (Word lo puede actualizar con F9 y conserva el formato)."""
+    if not filas:
+        return filas
+    inicio = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r>'
+              f'<w:r><w:instrText xml:space="preserve"> {instr} </w:instrText></w:r>'
+              '<w:r><w:fldChar w:fldCharType="separate"/></w:r>')
+    filas[0] = filas[0].replace("</w:pPr>", "</w:pPr>" + inicio, 1)
+    filas[-1] = filas[-1][:-len("</w:p>")] + '<w:r><w:fldChar w:fldCharType="end"/></w:r></w:p>'
+    return filas
+
+
 def indice_estatico(doc):
-    """Índice en texto con vínculo interno a cada título de nivel 1 a 3 (sirve en Word y en el visor de Drive)."""
+    """Índice general: un campo TOC con hipervínculo y número de página por cada título de nivel 1 a 3 (Título 1 a
+    3), cada uno con su marcador. El resultado del campo queda guardado, así Word lo muestra sin actualizar campos."""
     entradas, n = [], [0]
 
     def marcar(m):
@@ -809,6 +939,7 @@ def indice_estatico(doc):
         n[0] += 1
         nombre = f"splg_h{n[0]}"
         texto = re.sub(r"<[^>]+>", "", p).strip()
+        texto = texto.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
         entradas.append((int(est.group(1)), texto, nombre))
         p = re.sub(r"(</w:pPr>)", rf'\1<w:bookmarkStart w:id="{9000 + n[0]}" w:name="{nombre}"/>', p, count=1)
         return p.replace("</w:p>", f'<w:bookmarkEnd w:id="{9000 + n[0]}"/></w:p>')
@@ -816,19 +947,10 @@ def indice_estatico(doc):
     doc = re.sub(r"<w:p>(?:(?!</w:p>).)*?</w:p>", marcar, doc, flags=re.S)
     filas = []
     for nivel, texto, nombre in entradas:
-        t = texto.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        sang = {1: 0, 2: 400, 3: 800}[nivel]
-        filas.append(
-            f'<w:p><w:pPr><w:spacing w:before="{80 if nivel == 1 else 0}" w:after="20"/><w:ind w:left="{sang}"/></w:pPr>'
-            f'<w:hyperlink w:anchor="{nombre}"><w:r><w:rPr><w:rFonts w:ascii="Verdana" w:hAnsi="Verdana"/>'
-            f'{"<w:b/>" if nivel == 1 else ""}<w:color w:val="1F3864"/><w:sz w:val="{20 if nivel == 1 else 18 if nivel == 2 else 16}"/></w:rPr>'
-            f'<w:t xml:space="preserve">{t}</w:t></w:r></w:hyperlink></w:p>')
-    # las entradas van dentro de un campo TOC: Word lo actualiza al abrir (updateFields) y pone los números de página
-    inicio = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> TOC \\o "1-3" \\h \\z \\u </w:instrText></w:r>'
-              '<w:r><w:fldChar w:fldCharType="separate"/></w:r>')
-    if filas:
-        filas[0] = filas[0].replace("</w:pPr>", "</w:pPr>" + inicio, 1)
-        filas[-1] = filas[-1][:-len("</w:p>")] + '<w:r><w:fldChar w:fldCharType="end"/></w:r></w:p>'
+        rpr = ('<w:rFonts w:ascii="Verdana" w:hAnsi="Verdana"/>' + ("<w:b/>" if nivel == 1 else "")
+               + f'<w:color w:val="1F3864"/><w:sz w:val="{20 if nivel == 1 else 18 if nivel == 2 else 16}"/>')
+        filas.append(_entrada_indice(texto, nombre, {1: 0, 2: 400, 3: 800}[nivel], rpr))
+    filas = _envolver_en_campo(filas, 'TOC \\o "1-3" \\h \\z \\u')
     marca = re.search(r"<w:p>(?:(?!</w:p>).)*?@@TOC@@.*?</w:p>", doc, re.S)
     if not marca:
         sys.exit("no encuentro la marca del índice")
@@ -836,6 +958,98 @@ def indice_estatico(doc):
         filas[-1] = filas[-1][:-len("</w:p>")] + '<w:r><w:br w:type="page"/></w:r></w:p>'
         return doc[:marca.start()] + "".join(filas) + doc[marca.end():]
     return doc[:marca.start()] + salto_pagina() + doc[marca.end():]
+
+
+def figuras_e_indice(doc):
+    """Cada pie «Figura N — …» lleva un marcador (splg_fig_N) y su número en un campo SEQ Figura; el «Índice de
+    Figuras» pasa a ser un campo TOC \\c "Figura" con hipervínculo y número de página por figura."""
+    figs = []
+
+    def pie(m):
+        p = m.group(0)
+        if "<w:drawing" in p or "<w:numPr" in p:      # la imagen, o un renglón del índice escrito en el .md
+            return p
+        texto = re.sub(r"<[^>]+>", "", p)
+        mt = re.match(r"\s*Figura (\d+) — ", texto)
+        ts = re.findall(r"<w:t(?: [^>]*)?>([^<]*)</w:t>", p)
+        if not mt or not ts or not ts[0].startswith(f"Figura {mt.group(1)} — "):
+            return p
+        num = mt.group(1)
+        nombre = f"splg_fig_{num}"
+        figs.append((num, texto.strip().replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">"), nombre))
+        run = re.search(r"<w:r>(?:(?!</w:r>).)*?<w:t(?: [^>]*)?>Figura \d+ — ", p, re.S)
+        rpr = re.search(r"<w:rPr>.*?</w:rPr>", run.group(0), re.S) if run else None
+        rpr = rpr.group(0) if rpr else ""
+        primero = re.search(r"<w:t(?: [^>]*)?>(Figura \d+ — )", p)
+        # «Figura » + SEQ + « — …» (el resto del primer texto sigue en su run)
+        seq = (f'<w:r>{rpr}<w:t xml:space="preserve">Figura </w:t></w:r>'
+               + _campo("SEQ Figura \\* ARABIC", f'<w:r>{rpr}<w:t>{num}</w:t></w:r>'))
+        ini_run = run.start()
+        p = p[:ini_run] + seq + p[ini_run:primero.start(1)] + p[primero.start(1):].replace(f"Figura {num} — ", " — ", 1)
+        p = re.sub(r"(<w:pPr>.*?</w:pPr>|<w:p>)", lambda x: x.group(0) + f'<w:bookmarkStart w:id="{20000 + int(num)}" w:name="{nombre}"/>', p, count=1, flags=re.S)
+        return p.replace("</w:p>", f'<w:bookmarkEnd w:id="{20000 + int(num)}"/></w:p>')
+
+    doc = re.sub(r"<w:p>(?:(?!</w:p>).)*?</w:p>", pie, doc, flags=re.S)
+    # la sección «Índice de Figuras»: del título al título siguiente
+    tit = None
+    for m in re.finditer(r"<w:p>(?:(?!</w:p>).)*?</w:p>", doc, re.S):
+        if re.search(r'<w:pStyle w:val="Heading\d"', m.group(0)) and re.sub(r"<[^>]+>", "", m.group(0)).strip().endswith("Índice de Figuras"):
+            tit = m
+            break
+    if not tit or not figs:
+        return doc
+    sig = re.search(r'<w:p>(?:(?!</w:p>).)*?<w:pStyle w:val="Heading\d"', doc[tit.end():], re.S)
+    fin = tit.end() + (sig.start() if sig else 0)
+    rpr = '<w:rFonts w:ascii="Verdana" w:hAnsi="Verdana"/><w:sz w:val="18"/>'
+    filas = _envolver_en_campo([_entrada_indice(tx, nm, 0, rpr) for _, tx, nm in figs], 'TOC \\h \\z \\c "Figura"')
+    return doc[:tit.end()] + "".join(filas) + doc[fin:]
+
+
+def _paginas_pdf(pdf):
+    """{marcador: número de página} de los destinos con nombre que LibreOffice escribe en el PDF."""
+    d = open(pdf, "rb").read()
+    objs = {int(m.group(1)): m.group(2) for m in re.finditer(rb"\n(\d+) 0 obj\s*(.*?)endobj", d, re.S)}
+    raiz = int(re.search(rb"/Type\s*/Catalog[^>]*?/Pages (\d+) 0 R", d, re.S).group(1))
+    orden = []
+
+    def hojas(k):
+        o = objs[k]
+        kids = re.search(rb"/Kids\s*\[([^\]]*)\]", o)
+        if kids and b"/Type/Pages" in o.replace(b" ", b""):
+            for x in re.findall(rb"(\d+) 0 R", kids.group(1)):
+                hojas(int(x))
+        else:
+            orden.append(k)
+    hojas(raiz)
+    pagina = {k: i + 1 for i, k in enumerate(orden)}
+    dests = re.search(rb"/Dests (\d+) 0 R", d)
+    out = {}
+    if dests:
+        for m in re.finditer(rb"/([^\s/\[]+)\s*\[(\d+) 0 R", objs[int(dests.group(1))]):
+            nombre = re.sub(r"#([0-9A-Fa-f]{2})", lambda x: chr(int(x.group(1), 16)), m.group(1).decode("latin1"))
+            nombre = nombre.replace("5F", "_")
+            out[nombre] = pagina.get(int(m.group(2)))
+    return out
+
+
+def numerar_paginas(doc, armar_docx):
+    """Completa el número de página de cada renglón de los índices. Arma el .docx con un número provisorio, lo
+    pagina LibreOffice y se lee la página de cada marcador del PDF."""
+    marcas = sorted(set(re.findall(r"@@PG:([\w]+)@@", doc)))
+    if not marcas:
+        return doc
+    tmp = tempfile.mkdtemp()
+    prueba = os.path.join(tmp, "paginar.docx")
+    armar_docx(re.sub(r"@@PG:[\w]+@@", "000", doc), prueba)
+    filtro = 'pdf:writer_pdf_Export:{"ExportBookmarksToPDFDestination":{"type":"boolean","value":"true"}}'
+    subprocess.run(["soffice", "--headless", "--convert-to", filtro, "--outdir", tmp, prueba],
+                   check=True, capture_output=True)
+    pags = _paginas_pdf(os.path.join(tmp, "paginar.pdf"))
+    shutil.rmtree(tmp)
+    faltan = [m for m in marcas if not pags.get(m)]
+    if faltan:
+        print(f"  aviso: {len(faltan)} renglones de índice sin página (p. ej. {faltan[:3]})")
+    return re.sub(r"@@PG:([\w]+)@@", lambda m: str(pags.get(m.group(1)) or ""), doc)
 
 
 def encabezados_de_tabla(doc):
@@ -873,6 +1087,7 @@ def generar(clave, nombre_md, plantilla, titulo, parte=1, total=1):
     doc2 = zin.read("word/document.xml").decode("utf8")
     doc2 = tamanos_de_imagen(doc2)
     doc2 = indice_estatico(doc2)
+    doc2 = figuras_e_indice(doc2)
     doc2 = encabezados_de_tabla(doc2)
     if final_horizontal:
         # la última sección (la del cuerpo) toma la página horizontal de la figura con la que termina el documento
@@ -884,16 +1099,23 @@ def generar(clave, nombre_md, plantilla, titulo, parte=1, total=1):
     # las tablas ocupan el ancho de la página (pandoc las deja al ancho del contenido)
     doc2 = re.sub(r"<w:tblW [^>]*/>", '<w:tblW w:type="pct" w:w="5000"/>', doc2)
     doc2 = re.sub(r"<w:tbl>.*?</w:tbl>", columnas_al_ancho, doc2, flags=re.S)
-    nuevos = con_encabezado(zin, doc2, version, titulo)
-    with zipfile.ZipFile(salida, "w", zipfile.ZIP_DEFLATED) as zout:
-        for nombre_p, data in nuevos.items():
-            if nombre_p.startswith("word/header") or nombre_p.startswith("word/footer"):
-                zout.writestr(nombre_p, data)
-        for it in zin.infolist():
-            data = zin.read(it.filename)
-            if it.filename in nuevos:
-                data = nuevos[it.filename]
-            zout.writestr(it, data)
+    def armar_docx(doc_xml, destino):
+        # se reabre el crudo en cada armado: writestr(ZipInfo) altera los ZipInfo del archivo de origen
+        zin = zipfile.ZipFile(crudo)
+        nuevos = con_encabezado(zin, doc_xml, version, titulo)
+        with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as zout:
+            for nombre_p, data in nuevos.items():
+                if nombre_p.startswith("word/header") or nombre_p.startswith("word/footer"):
+                    zout.writestr(nombre_p, data)
+            for it in zin.infolist():
+                data = zin.read(it.filename)
+                if it.filename in nuevos:
+                    data = nuevos[it.filename]
+                zout.writestr(it, data)
+
+    # los índices llevan el número de página calculado: Word los muestra completos sin actualizar campos
+    doc2 = numerar_paginas(doc2, armar_docx)
+    armar_docx(doc2, salida)
     print(f"{os.path.basename(salida)}: {os.path.getsize(salida) / 1e6:.1f} MB · "
           f"{cont['png']} diagramas con PNG del repo, {cont['render']} renderizados")
     return salida

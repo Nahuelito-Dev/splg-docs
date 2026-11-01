@@ -5,10 +5,15 @@
     python3 herramientas/trazabilidad-cu-irq.py --aplicar   reescribe las listas de los IRQ y la matriz
 
 La fuente es el caso de uso expandido: su campo «Requisitos asociados» dice a qué requisitos de
-información (IRQ) responde y su campo «Objetivos asociados», qué objetivos (OBJ) alcanza. De ahí salen:
+información (IRQ) responde y su campo «Objetivos asociados», qué objetivos (OBJ) alcanza. El Documento 1
+expande sólo los casos esenciales (`cu_esenciales.py`); el expandido de los demás está en
+`Casos-de-Uso.md` §5. De ahí salen:
 
-  - el campo «Requisitos asociados» de cada IRQ (§6 del Documento 1): los casos que lo citan;
-  - las filas de los casos de uso de la matriz de rastreabilidad (§9): las marcas de sus objetivos.
+  - el campo «Requisitos asociados» de cada IRQ (§7 del Documento 1): todos los casos del catálogo que lo
+    citan —los esenciales según su expandido del Documento 1, el resto según Casos-de-Uso.md—, salvo los
+    retirados del alcance;
+  - las filas de los casos de uso de la matriz de rastreabilidad (§10): las de los casos expandidos en el
+    Documento 1, con las marcas de sus objetivos.
 
 Las dos direcciones tienen que cerrar: un IRQ que lista un caso que no lo cita, o un caso que cita un
 IRQ que no lo lista, es una diferencia. El gate (`verificar-conformidad.py`) la controla con `verificar()`.
@@ -17,15 +22,18 @@ import os, re, sys
 
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/1-Requisitos.md"
+CASOS = D + "documentos/Casos-de-Uso.md"
+sys.path.insert(0, D + "herramientas")
+from cu_esenciales import ESENCIALES, RETIRADOS_ALCANCE
 
 
 def _leer():
     return open(DOC, encoding="utf-8").read()
 
 
-def casos_expandidos(txt):
-    """{CU: (irqs, objs)} de los CUE de la sección 7."""
-    a = txt.index("\n## 7. "); b = txt.index("\n## 8. ")
+def casos_expandidos(txt, ini="\n## 8. ", fin="\n## 9. "):
+    """{CU: (irqs, objs)} de los CUE de la sección 8 del Documento 1 (o de la sección que se indique)."""
+    a = txt.index(ini); b = txt.index(fin)
     sec = txt[a:b]
     out = {}
     for m in re.finditer(r'^#### [^\n]*?(CU-\d+) — [^\n]*\n(.*?)(?=^#{1,4} |\Z)', sec, re.M | re.S):
@@ -38,8 +46,8 @@ def casos_expandidos(txt):
 
 
 def irqs_listados(txt):
-    """{IRQ: [CU...]} del campo «Requisitos asociados» de cada IRQ en la sección 6."""
-    a = txt.index("\n## 6. "); b = txt.index("\n## 7. ")
+    """{IRQ: [CU...]} del campo «Requisitos asociados» de cada IRQ en la sección 7."""
+    a = txt.index("\n## 7. "); b = txt.index("\n## 8. ")
     sec = txt[a:b]
     out = {}
     for m in re.finditer(r'^### (IRQ-\d+) — [^\n]*\n(.*?)(?=^### |\Z)', sec, re.M | re.S):
@@ -54,8 +62,13 @@ def num(c): return int(c.split("-")[1])
 def calcular(txt=None):
     txt = txt or _leer()
     cue = casos_expandidos(txt)
+    # los casos que el Documento 1 no expande citan sus IRQ en Casos-de-Uso.md
+    todos = casos_expandidos(open(CASOS, encoding="utf-8").read(), "\n## 5. ", "\n## 6. ")
+    todos.update(cue)
+    for c in RETIRADOS_ALCANCE:
+        todos.pop(c, None)
     listados = irqs_listados(txt)
-    esperado = {i: sorted({c for c, (irq, _) in cue.items() if i in irq}, key=num) for i in listados}
+    esperado = {i: sorted({c for c, (irq, _) in todos.items() if i in irq}, key=num) for i in listados}
     return cue, listados, esperado
 
 
@@ -63,6 +76,8 @@ def diferencias(txt=None):
     txt = txt or _leer()
     cue, listados, esperado = calcular(txt)
     errores = []
+    if set(cue) != set(ESENCIALES):
+        errores.append(f"el Documento 1 expande {sorted(set(cue) - set(ESENCIALES))} de más y le faltan {sorted(set(ESENCIALES) - set(cue))}")
     for i, lst in listados.items():
         falt = sorted(set(esperado[i]) - set(lst), key=num)
         sobr = sorted(set(lst) - set(esperado[i]), key=num)
@@ -93,7 +108,7 @@ def aplicar():
     txt = _leer()
     cue, listados, esperado = calcular(txt)
     # 1. lista de casos de cada IRQ
-    a = txt.index("\n## 6. "); b = txt.index("\n## 7. ")
+    a = txt.index("\n## 7. "); b = txt.index("\n## 8. ")
     sec = txt[a:b]
     for i, lst in esperado.items():
         sec = re.sub(r'(### %s — [^\n]*\n(?:(?!### ).*\n)*?\| \*\*Requisitos asociados\*\* \| )[^|]*?( \|)' % i,
@@ -102,7 +117,7 @@ def aplicar():
     # 2. filas de los casos en la matriz
     m = re.search(r'^\|\s*\| (OBJ-01 \|.*)$', txt, re.M)
     cols = re.findall(r'OBJ-\d+', m.group(0))
-    a = txt.index("\n## 9. "); b = txt.index("\n## 10. ")
+    a = txt.index("\n## 10. "); b = txt.index("\n## 11. ")
     sec = txt[a:b]
     filas = [l for l in sec.split("\n") if re.match(r'^\| \*\*CU-\d+\*\* \|', l)]
     nuevas = [f"| **{c}** | " + " | ".join(("●" if o in ob else "") for o in cols) + " |" for c, (_, ob) in sorted(cue.items(), key=lambda kv: num(kv[0]))]

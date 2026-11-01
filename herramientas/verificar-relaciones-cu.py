@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 """Chequeo de coherencia de las relaciones «include»/«extend» entre casos de uso.
 
-Compara cuatro fuentes y no da OK si alguna está vacía:
+Compara tres fuentes y no da OK si alguna está vacía:
 
   1. La fuente única, `relaciones_cu.py` (INCLUYE, INCLUYE_EXTERNO, EXTIENDE).
   2. Los diagramas por subsistema (`diagramas/uml/CU_SS-*.svg`): cada trazo lleva `data-tipo`,
      `data-desde` y `data-hasta`.
-  3. La tabla de relaciones del Documento 1 §7.7, con el identificador PE-n de cada «extend».
-  4. El texto de los casos de uso expandidos (Casos-de-Uso.md): el CUE del caso base dice «Incluye CU-xxx»
+  3. El texto de los casos de uso expandidos (Casos-de-Uso.md): el CUE del caso base dice «Incluye CU-xxx»
      y lleva en «Puntos de extensión» el PE-n de cada extensión; el de la extensión nombra al caso base y su PE-n.
 
-y compara que el bloque de cada CUE sea idéntico entre Casos-de-Uso.md y su copia en 1-Requisitos.md.
+El Documento 1 ya no lleva la tabla de relaciones (la plantilla no la pide: las relaciones se ven en el
+diagrama de cada subsistema) y expande sólo los casos esenciales (`cu_esenciales.py`), con los pasos que
+incluían un caso sin expandir reescritos dentro del caso. De él se controla que expanda exactamente esos
+casos y que ningún paso diga «Incluye» un caso que el documento no expande.
 
     python3 herramientas/verificar-relaciones-cu.py
 
@@ -42,20 +44,10 @@ for f in glob.glob(D + "diagramas/uml/CU_SS-*.svg"):
     for m in re.finditer(r'<path class="rel" data-tipo="(include|extend)" data-desde="(CU-\d+)" data-hasta="(CU-\d+)"', txt):
         (dib_include if m.group(1) == "include" else dib_extend).add((m.group(2), m.group(3)))
 
-# ---------- 3. tabla del Documento 1 §7.7 ----------
 req = leer("1-Requisitos.md")
-seccion = re.search(r'### 7\.7 Relaciones entre Casos de Uso.*?(?=\n\n---\n\n### 7\.8)', req, re.S)
-tabla_include, tabla_extend, tabla_pe = set(), set(), {}
-if seccion:
-    bloque = seccion.group(0)
-    corte = bloque.index("«extend»` (comportamiento")
-    for m in re.finditer(r'\|\s*(CU-\d+)[^|]*\|\s*→\s*\|\s*(CU-\d+)', bloque[:corte]):
-        tabla_include.add((m.group(1), m.group(2)))
-    for m in re.finditer(r'\|\s*(PE-\d+)\s*\|\s*(CU-\d+)[^|]*\|\s*→\s*\|\s*(CU-\d+)', bloque[corte:]):
-        tabla_extend.add((m.group(2), m.group(3)))
-        tabla_pe[(m.group(2), m.group(3))] = m.group(1)
+from cu_esenciales import ESENCIALES
 
-# ---------- 4. texto de los CUE ----------
+# ---------- 3. texto de los CUE ----------
 cu_texto = leer("Casos-de-Uso.md")
 
 
@@ -81,36 +73,29 @@ for ext, base in sorted(fuente_extend):
 
 # ---------- comparaciones ----------
 for nombre, a, b in (("diagramas contra relaciones_cu.py (include)", dib_include, fuente_include),
-                     ("diagramas contra relaciones_cu.py (extend)", dib_extend, fuente_extend),
-                     ("tabla §7.7 contra relaciones_cu.py (include)", tabla_include, fuente_include),
-                     ("tabla §7.7 contra relaciones_cu.py (extend)", tabla_extend, fuente_extend)):
+                     ("diagramas contra relaciones_cu.py (extend)", dib_extend, fuente_extend)):
     if a != b:
         errores.append(f"{nombre}: solo en la primera {sorted(a - b)}; solo en la segunda {sorted(b - a)}")
-for par, pe in tabla_pe.items():
-    if pe != R.pe_id(*par):
-        errores.append(f"la tabla §7.7 numera {par} como {pe} y relaciones_cu.py como {R.pe_id(*par)}")
 
-# ---------- copias idénticas entre documentos ----------
-diffs = []
-todos = sorted(set(re.findall(r'^#### [^\n]*?(CU-\d{3}) —', cu_texto, re.M)))
+# ---------- Documento 1: sólo los esenciales, y ningún «Incluye» a un caso sin expandir ----------
+todos = sorted(set(re.findall(r'^#### [^\n]*?(CU-\d{3}) —', req, re.M)))
+if set(todos) != set(ESENCIALES):
+    errores.append(f"el Documento 1 expande {sorted(set(todos) - set(ESENCIALES))} de más y le faltan {sorted(set(ESENCIALES) - set(todos))}")
 for cu in todos:
-    a, b = bloque_de(cu_texto, cu), bloque_de(req, cu)
-    if a != b:
-        diffs.append(cu)
-if diffs:
-    errores.append(f"el CUE de {len(diffs)} caso(s) difiere entre Casos-de-Uso.md y 1-Requisitos.md: {diffs[:8]}")
+    for inc in re.findall(r'^\| \d+ \|[^\n]*?Incluye (CU-\d{3})', bloque_de(req, cu), re.M):
+        if inc not in ESENCIALES:
+            errores.append(f"Documento 1, {cu}: un paso incluye {inc}, que el documento no expande (reescribir el paso dentro del caso)")
 
 # ---------- no se da OK sobre nada vacío ----------
 for nombre, n in (("include en la fuente", len(fuente_include)), ("extend en la fuente", len(fuente_extend)),
                   ("include dibujados", len(dib_include)), ("extend dibujados", len(dib_extend)),
-                  ("include en la tabla", len(tabla_include)), ("extend en la tabla", len(tabla_extend)),
-                  ("CUE comparados", len(todos))):
+                  ("CUE del Documento 1", len(todos))):
     if n == 0:
         errores.append(f"0 {nombre}: el chequeo no puede dar OK sobre una lectura vacía")
 
-print(f"«include»: {len(fuente_include)} en la fuente, {len(dib_include)} dibujados, {len(tabla_include)} en la tabla §7.7")
-print(f"«extend»: {len(fuente_extend)} en la fuente, {len(dib_extend)} dibujados, {len(tabla_extend)} en la tabla §7.7")
-print(f"CUE comparados entre Casos-de-Uso.md y 1-Requisitos.md: {len(todos)}")
+print(f"«include»: {len(fuente_include)} en la fuente, {len(dib_include)} dibujados")
+print(f"«extend»: {len(fuente_extend)} en la fuente, {len(dib_extend)} dibujados")
+print(f"CUE del Documento 1 (casos esenciales): {len(todos)}")
 if errores:
     print(f"\n{len(errores)} diferencia(s):")
     for e in errores:

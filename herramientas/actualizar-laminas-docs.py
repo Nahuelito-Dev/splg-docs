@@ -102,7 +102,8 @@ def reestructurar(t, numerada, f):
     return t
 
 
-for f, num in (("0-Plan_Del_Proyecto.md", True), ("1-Requisitos.md", True), ("Casos-de-Uso.md", False)):
+# el Documento 1 lleva sólo el diagrama por subsistemas (la plantilla pide un diagrama del sistema): sin láminas
+for f, num in (("0-Plan_Del_Proyecto.md", True), ("Casos-de-Uso.md", False)):
     t = open(DOC + f, encoding="utf-8").read()
     t = reestructurar(t, num, f)
     if INI in t:

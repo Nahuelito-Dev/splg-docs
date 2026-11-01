@@ -7,6 +7,8 @@ import re, sys, os, collections
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 FALLAS = []
+sys.path.insert(0, D + "herramientas")
+from cu_esenciales import ESENCIALES, RETIRADOS_ALCANCE   # el Documento 1 expande sólo estos casos
 
 def ruta_doc(n):
     """README y AGENTS viven en la raíz; los documentos, en documentos/."""
@@ -43,7 +45,7 @@ CUE = ["Objetivos asociados","Requisitos asociados","Descripción","Precondició
 
 # --- CU expandidos (plantilla 1-Requisitos.txt) ---
 for f, ini, fin in [("Casos-de-Uso.md", r'^## 5\. ', r'^## 6\. '),
-                    ("1-Requisitos.md",  r'^## 7\. ', r'^## 8\. ')]:
+                    ("1-Requisitos.md",  r'^## 8\. ', r'^## 9\. ')]:
     revisar(f"CU expandidos — {f}",
             bloques(leer(f), ini, fin, r'^#{4}\s+.*?(CU-\d+)\s*[—-]'), CUE)
 
@@ -106,7 +108,7 @@ revisar("CU reales — 3-Diseño.md",
 
 # --- Requisitos no funcionales (plantilla 1-Requisitos.txt) ---
 revisar("Requisitos no funcionales — 1-Requisitos.md",
-        bloques(leer("1-Requisitos.md"), r'^## 8\. ', r'^## 9\. ', r'^### .*?(NFR-\d+)'),
+        bloques(leer("1-Requisitos.md"), r'^## 9\. ', r'^## 10\. ', r'^### .*?(NFR-\d+)'),
         ["Objetivos asociados","Requisitos asociados","Descripción","Comentarios"])
 
 # --- Jerarquía de encabezados (para que el índice de Word/Docs salga bien) ---
@@ -165,13 +167,15 @@ def codigos(f, ini, fin, pat):
     return o & TODOS
 cobertura = {
   "CUA (doc 0)": codigos("0-Plan_Del_Proyecto.md", r'^## 7\. ', r'^## 8\. ', r'\*\*Código:\*\*'),
-  "CUE (doc 1)": codigos("1-Requisitos.md",        r'^## 7\. ', r'^## 8\. ', r'^#{4}\s+.*CU-\d+'),
+  "CUE (doc 1)": codigos("1-Requisitos.md",        r'^## 8\. ', r'^## 9\. ', r'^#{4}\s+.*CU-\d+'),
   "DSS (doc 2)": codigos("2-Analisis.md",          r'^## 2\. ', r'^## 3\. ', r'^#{3,5}.*CU-\d+'),
   "DSD (doc 3)": codigos("3-Diseño.md",            r'^## 3\. ', r'^## 5\. ', r'^#{3,4}.*CU-\d+'),
 }
-inc = {k: sorted(TODOS-v) for k,v in cobertura.items() if v != TODOS}
+# el Documento 1 expande sólo los casos esenciales (decisión del 31/10/2026); los demás documentos, todos
+_meta = {k: (set(ESENCIALES) if k == "CUE (doc 1)" else TODOS) for k in cobertura}
+inc = {k: {"faltan": sorted(_meta[k]-v), "sobran": sorted(v-_meta[k])} for k,v in cobertura.items() if v != _meta[k]}
 if inc: FALLAS.append("cobertura de artefactos por caso de uso")
-print(f"[{'OK' if not inc else 'FALLA':5}] Los 4 artefactos para los {len(TODOS)} casos de uso"
+print(f"[{'OK' if not inc else 'FALLA':5}] Los 4 artefactos para los {len(TODOS)} casos de uso (CUE del Documento 1: los {len(ESENCIALES)} esenciales)"
       + (f" | {inc}" if inc else ""))
 
 # --- Los conteos que los documentos dicen de si mismos ---
@@ -329,22 +333,15 @@ def verificar_diagrama_cu():
         dif = sorted(f"{c}: dibuja {sorted(con.get(c, set()))} y el catálogo dice {sorted(esperado[c])}" for c in TODOS if con.get(c, set()) != esperado.get(c, set()))
         if dif: errores.append(f"único: {len(dif)} casos con actores distintos del catálogo, p. ej. {dif[:3]}")
         for _c_ in geometria("único", du): errores.append(_c_)
-        d1 = leer(DOC + "1-Requisitos.md")
-        i77 = d1.index("### 7.7 Relaciones entre Casos de Uso")
-        j77 = d1.find("\n### 7.8", i77)
-        if j77 < 0: j77 = d1.index("\n## 8.", i77)
-        s77 = d1[i77:j77]
-        tabla = set()
-        modo = None
-        for l_ in s77.split("\n"):
-            if "Relaciones `«include»`" in l_: modo = "include"
-            elif "Relaciones `«extend»`" in l_: modo = "extend"
-            m_ = re.match(r'^\|(?: PE-\d+ \|)? (CU-\d{3}) [^|]+ \| → \| (CU-\d{3}) ', l_)
-            if m_ and modo: tabla.add((modo, m_.group(1), m_.group(2)))
+        # las relaciones salen de la fuente única (relaciones_cu.py): el Documento 1 ya no lleva la tabla
+        import relaciones_cu as _R
+        tabla = {("include", b_, i_) for v_ in _R.INCLUYE.values() for b_, i_ in v_}
+        tabla |= {("include", b_, i_) for b_, i_ in _R.INCLUYE_EXTERNO}
+        tabla |= {("extend", e_, b_) for e_, b_, _x in _R.extensiones()}
         dib_u = {(r["data-tipo"], r["data-desde"], r["data-hasta"]) for r in _elementos(du, "rel")}
         falt = sorted(tabla - dib_u); sob = sorted(dib_u - tabla)
-        if falt: errores.append(f"único: relaciones de §7.7 que no se dibujan o van al revés {falt[:5]}")
-        if sob: errores.append(f"único: relaciones dibujadas que no están en §7.7 {sob[:5]}")
+        if falt: errores.append(f"único: relaciones de relaciones_cu.py que no se dibujan o van al revés {falt[:5]}")
+        if sob: errores.append(f"único: relaciones dibujadas que no están en relaciones_cu.py {sob[:5]}")
     # diagramas por subsistema: los actores exactos de sus casos propios y ningún caso aislado
     for f_ in por_ss:
         d_ = leer(f_); ss_ = re.search(r'CU_(SS-\d\d)_', f_).group(1)
@@ -491,19 +488,46 @@ def verificar_plantillas():
             for p in ("entradas", "salidas", "contexto"):
                 if f"({p})" not in req: errores.append(f"0.1 {cod}: Requisitos de la Iteración sin el punto de vista «{p}»")
 
-    # Doc 1: Diagrama de Casos de Uso y Subsistemas del Proyecto
+    # Doc 1: el orden de la plantilla (parte general y parte de la iteración), el diagrama del sistema, la
+    # lista de casos de uso con su importancia, los subsistemas y el diagrama de casos de uso de cada uno
     d1 = "\n".join(leer("1-Requisitos.md"))
-    s3 = seccion(d1, "## 3. Diagrama de Casos de Uso del Sistema", "## 4. Subsistemas del Proyecto")
-    if not re.search(r'\*\*Figura \d+ — Diagrama de casos de uso, lámina', s3) or "CU_Sistema_Completo-Lamina-01_Cliente" not in s3:
+    orden1 = ["## Lista de Cambios", "## 1. Presentación General", "### Participantes del Proyecto", "## 2. Objetivos del Sistema",
+              "## 3. Diagrama de Casos de Uso del Sistema", "## 4. Casos de Uso: lista e importancia",
+              "## 5. Subsistemas del Proyecto", "## 6. Objetivos de la Iteración", "## 7. Requisitos de Información",
+              "## 8. Requisitos Funcionales", "### 8.1 Diagramas de Casos de Uso por Subsistema", "### 8.2 Definición de Actores",
+              "### 8.3 Casos de Uso del Sistema", "## 9. Requisitos No Funcionales",
+              "## 10. Matriz de Rastreabilidad", "## 11. Glosario de Términos"]
+    pos1 = [d1.find(x) for x in orden1]
+    if -1 in pos1 or pos1 != sorted(pos1):
+        errores.append(f"Doc 1: las secciones no están en el orden de la plantilla ({[x for x, p_ in zip(orden1, pos1) if p_ < 0]} faltan)")
+        return errores
+    s3 = seccion(d1, "## 3. Diagrama de Casos de Uso del Sistema", "## 4. Casos de Uso: lista e importancia")
+    if not re.search(r'\*\*Figura \d+ — Diagrama de casos de uso del sistema por subsistemas\*\*', s3) or "CU_Sistema_Diagrama-De-Subsistemas.png" not in s3:
         errores.append("Doc 1 §3: falta el Diagrama de Casos de Uso del Sistema como figura numerada")
-    s4 = seccion(d1, "## 4. Subsistemas del Proyecto", "## 5. Objetivos de la Iteración")
+    if "CU_Sistema_Completo-Lamina" in d1 or "CU_Sistema_Diagrama-Completo" in d1 or "CU_Sistema_Mapa" in d1:
+        errores.append("Doc 1: el diagrama completo, sus láminas y el mapa de navegación no van (la plantilla pide un diagrama del sistema)")
+    # lista de casos de uso: todos los del catálogo, una línea cada uno, con su importancia
+    s32 = seccion(d1, "## 4. Casos de Uso: lista e importancia", "## 5. Subsistemas del Proyecto")
+    cal_cat = {m_.group(1): m_.group(2) for m_ in re.finditer(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \|[^|]*\| (\w+) \|', _cat[_cat.index("## 3. Cat"):_cat.index("\n## 4. ")], re.M)}
+    lista1 = {}
+    for m_ in re.finditer(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \|[^|]*\| (\w+) \| ([^|]+?) \| ([^|]*?) \|$', s32, re.M):
+        if m_.group(1) in lista1: errores.append(f"Doc 1 §4: {m_.group(1)} figura dos veces")
+        lista1[m_.group(1)] = m_.groups()[1:]
+    if set(lista1) != set(cal_cat):
+        errores.append(f"Doc 1 §4: la lista no es el catálogo (faltan {sorted(set(cal_cat) - set(lista1))[:6]}, sobran {sorted(set(lista1) - set(cal_cat))[:6]})")
+    for c_, (imp_, est_, exp_) in lista1.items():
+        if imp_ != cal_cat.get(c_): errores.append(f"Doc 1 §4: {c_} dice {imp_} y el catálogo {cal_cat.get(c_)}")
+        if (exp_ == "Sí") != (c_ in ESENCIALES): errores.append(f"Doc 1 §4: la marca «Expandido» de {c_} no coincide con los casos esenciales")
+        if (c_ in RETIRADOS_ALCANCE) != est_.startswith("Retirado del alcance"): errores.append(f"Doc 1 §4: el estado de {c_} no dice si está retirado del alcance")
+    s4 = seccion(d1, "## 5. Subsistemas del Proyecto", "## 6. Objetivos de la Iteración")
     if not re.search(r'\*\*Figura \d+ — Diagrama de Subsistemas\*\*', s4) or "CU_Sistema_Subsistemas" not in s4:
-        errores.append("Doc 1 §4: falta el Diagrama de Subsistemas como figura numerada")
+        errores.append("Doc 1 §5: falta el Diagrama de Subsistemas como figura numerada")
     desc = set(re.findall(r'^\|\s*\*{0,2}(SS-\d\d)\*{0,2}\s*\|[^|]*\|\s*\S', s4, re.M))
     n_ss = len(set(re.findall(r'\*\*Subsistema:\*\*\s*(SS-\d\d)', _cat[_a:_b])))
-    if len(desc) != n_ss: errores.append(f"Doc 1 §4: describe {len(desc)} subsistemas de {n_ss}")
-    emb = set(re.findall(r'diagramas/uml/CU_(SS-\d\d)_[^)]*\.png\)', s4))
-    if len(emb) != n_ss: errores.append(f"Doc 1 §4.3: embebe {len(emb)} diagramas por subsistema de {n_ss}")
+    if len(desc) != n_ss: errores.append(f"Doc 1 §5: describe {len(desc)} subsistemas de {n_ss}")
+    s71 = seccion(d1, "### 8.1 Diagramas de Casos de Uso por Subsistema", "### 8.2 Definición de Actores")
+    emb = set(re.findall(r'diagramas/uml/CU_(SS-\d\d)_[^)]*\.png\)', s71))
+    if len(emb) != n_ss: errores.append(f"Doc 1 §8.1: embebe {len(emb)} diagramas por subsistema de {n_ss}")
     if "CU_Sistema_Diagrama-De-Contexto.png)" not in s3: errores.append("Doc 1 §3.1: falta el diagrama de contexto")
 
     # figuras: toda imagen existe y lleva su epígrafe numerado
@@ -826,6 +850,9 @@ _nombres4 = {m_.group(1): m_.group(2).strip() for m_ in re.finditer(r'^\| (CU-\d
 _mmd = os.listdir(D + "diagramas")
 for _cu, _n in sorted(_nombres4.items()):
     for _k in ("cua", "cue"):
+        if _k == "cue" and _cu not in ESENCIALES:
+            if re.search(_pat4[_k] % _cu, _docs4[_k], re.M): _err_4.append(f"{_cu}: tiene CUE en el Documento 1 y no es un caso esencial")
+            continue
         if not re.search(_pat4[_k] % _cu, _docs4[_k], re.M):
             _err_4.append(f"{_cu}: falta el {_k.upper()} en su documento")
     for _k, _t4 in (("dss", r'title DSS — %s\b'), ("dsd", r'title DSD — [^\n]*(?<![\d-])%s(?![\d])')):
@@ -840,7 +867,7 @@ for _cu, _n in sorted(_nombres4.items()):
         if not os.path.exists(D + "diagramas/png/" + _x[:-4] + ".png"):
             _err_4.append(f"{_x}: no está dibujado (png)")
 if _err_4: FALLAS.append("Cuatro artefactos por caso de uso")
-print(f"[{'OK' if not _err_4 else 'FALLA':5}] Cada CU del catálogo tiene CUA, CUE, DSS y DSD con su diagrama dibujado ({len(_nombres4)} casos)"
+print(f"[{'OK' if not _err_4 else 'FALLA':5}] Cada CU del catálogo tiene CUA, CUE (en el Documento 1, los {len(ESENCIALES)} esenciales), DSS y DSD con su diagrama dibujado ({len(_nombres4)} casos)"
       + (f" | {len(_err_4)} errores: {_err_4[:6]}" if _err_4 else ""))
 
 # ---------- los diagramas de los casos de uso se ven como imagen, con su PNG al día ----------
@@ -895,7 +922,7 @@ def _tabla_actores(f, ini):
     _m = re.search(r'\| Código \| Actor \| Tipo \| Descripción \|\n\|[-| :]+\|\n((?:\| ACT-\d+ \|.*\n)+)', _t[_a:])
     return _m.group(1).strip() if _m else ""
 _ta = {"Documento 0 §5": _tabla_actores("0-Plan_Del_Proyecto.md", "## 5. Actores del Sistema"),
-       "Documento 1 §7.1": _tabla_actores("1-Requisitos.md", "### 7.1 Definición de Actores"),
+       "Documento 1 §8.2": _tabla_actores("1-Requisitos.md", "### 8.2 Definición de Actores"),
        "Casos-de-Uso.md §1": _tabla_actores("Casos-de-Uso.md", "## 1. Actores del Sistema")}
 for _k, _v in _ta.items():
     if not _v: _err_act.append(f"{_k}: no encuentro la tabla de actores")
@@ -903,7 +930,10 @@ if len(set(_ta.values())) != 1: _err_act.append("las tablas de actores del Docum
 for _k, _v in _ta.items():
     if _v and (len(re.findall(r'^\| ACT-\d+ ', _v, re.M)) != 10 or "ACT-10" not in _v):
         _err_act.append(f"{_k}: la tabla no tiene los diez actores (con ACT-10 Operador Técnico)")
-for _f, _ini in (("0-Plan_Del_Proyecto.md", "## 6. Diagrama de Casos de Uso del Sistema"), ("1-Requisitos.md", "## 3. Diagrama de Casos de Uso del Sistema"),
+_t1 = open(ruta_doc("1-Requisitos.md"), encoding="utf-8").read()
+if _t1.find("CU_Sistema_Diagrama-De-Subsistemas.png", _t1.index("## 3. Diagrama de Casos de Uso del Sistema")) < 0:
+    _err_act.append("1-Requisitos.md: falta el diagrama por subsistemas como figura principal de §3")
+for _f, _ini in (("0-Plan_Del_Proyecto.md", "## 6. Diagrama de Casos de Uso del Sistema"),
                  ("Casos-de-Uso.md", "## 2. Diagrama de Casos de Uso del Sistema")):
     _t = open(ruta_doc(_f), encoding="utf-8").read()
     _a = _t.index(_ini)
@@ -1047,8 +1077,8 @@ def _correr(nombre, script, lee):
 
 _correr("Cinco artefactos por caso de uso, diagramas por subsistema y estado uniforme (verificar-artefactos-cu.py)",
         "verificar-artefactos-cu.py", r"Casos de uso en el catálogo: [1-9]\d*")
-_correr("Relaciones include/extend: fuente, diagramas, tabla §7.7 y CUE (verificar-relaciones-cu.py)",
-        "verificar-relaciones-cu.py", r"«include»: [1-9]\d* en la fuente, [1-9]\d* dibujados, [1-9]\d* en la tabla")
+_correr("Relaciones include/extend: fuente, diagramas y CUE; Documento 1 sin «Incluye» a casos sin expandir (verificar-relaciones-cu.py)",
+        "verificar-relaciones-cu.py", r"«include»: [1-9]\d* en la fuente, [1-9]\d* dibujados")
 _correr("Lenguaje esencial: ningún CUA ni CUE nombra rutas, códigos, clases ni infraestructura (verificar-lenguaje-esencial.py)",
         "verificar-lenguaje-esencial.py", r"Textos revisados: [1-9]\d*")
 

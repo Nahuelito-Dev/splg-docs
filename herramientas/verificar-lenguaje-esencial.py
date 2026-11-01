@@ -109,7 +109,7 @@ cas, plan, req = leer("Casos-de-Uso.md"), leer("0-Plan_Del_Proyecto.md"), leer("
 fuentes = [
     ("Documento 0 §7 (CUA)", cua(seccion(plan, r"^## 7\. ", r"^## 8\. "))),
     ("Casos-de-Uso.md §4 (CUA)", cua(seccion(cas, r"^## 4\. ", r"^## 5\. "))),
-    ("Documento 1 §7 (CUE)", cue(seccion(req, r"^## 7\. ", r"^## 8\. "))),
+    ("Documento 1 §8 (CUE)", cue(seccion(req, r"^## 8\. ", r"^## 9\. "))),
     ("Casos-de-Uso.md §5 (CUE)", cue(seccion(cas, r"^## 5\. ", r"^## 6\. "))),
 ]
 hallazgos = []

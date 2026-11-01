@@ -309,7 +309,7 @@ def _seccion(archivo, ini, fin):
 
 sistema = {
   "actores":  dict(md2html(_seccion("Casos-de-Uso.md", r'^## 1\. Actores', r'^## 2\. ')),
-                   titulo="Actores del sistema", sec="Doc 1 · §7.1"),
+                   titulo="Actores del sistema", sec="Doc 1 · §8.2"),
   "contexto": dict(md2html(_seccion("Casos-de-Uso.md", r'^## 2\. Diagrama', r'^## 3\. ')),
                    titulo="Diagrama de casos de uso del sistema", sec="Doc 0 · §6 · Doc 1 · §3"),
   "catalogo": dict(md2html(_seccion("Casos-de-Uso.md", r'^## 3\. Catálogo', r'^## 4\. ')),
@@ -317,10 +317,10 @@ sistema = {
 }
 # el diagrama de subsistemas vive en el documento 1
 _d1 = open(DOC + "1-Requisitos.md", encoding="utf-8").read().split("\n")
-_a = next(i for i,x in enumerate(_d1) if x.startswith("## 4. Subsistemas"))
-_b = next(i for i,x in enumerate(_d1) if x.startswith("## 5. "))
+_a = next(i for i,x in enumerate(_d1) if x.startswith("## 5. Subsistemas"))
+_b = next(i for i,x in enumerate(_d1) if x.startswith("## 6. "))
 sistema["subsistemas"] = dict(md2html("\n".join(_d1[_a+1:_b])),
-                              titulo="Subsistemas del proyecto", sec="Doc 1 · §4")
+                              titulo="Subsistemas del proyecto", sec="Doc 1 · §5")
 
 # ---------- respaldo documental ----------
 proc = {}
@@ -342,10 +342,10 @@ for linea in d01.split("\n"):
         if it: add(c, "0.1 — Planificación de Iteraciones", it, "Planificado en esta iteración")
 
 for c,v in cue.items():
-    add(c, "1 — Requisitos", "§7 Requisitos Funcionales", "Caso de uso expandido")
+    add(c, "1 — Requisitos", "§8 Requisitos Funcionales", "Caso de uso expandido")
     if v["objetivos"]: add(c, "1 — Requisitos", "§2 Objetivos del Sistema", f"Realiza {v['objetivos']}")
-    if v["requisitos"]: add(c, "1 — Requisitos", "§6 Requisitos de Información", f"Usa {v['requisitos']}")
-    add(c, "1 — Requisitos", "§9 Matriz de Rastreabilidad", "Fila de la matriz")
+    if v["requisitos"]: add(c, "1 — Requisitos", "§7 Requisitos de Información", f"Usa {v['requisitos']}")
+    add(c, "1 — Requisitos", "§10 Matriz de Rastreabilidad", "Fila de la matriz")
 
 for c in dss: add(c, "2 — Análisis", "§2.1 Diagramas de Secuencia del Sistema", "Diagrama de secuencia")
 d2 = open(DOC + "2-Analisis.md", encoding="utf-8").read()
