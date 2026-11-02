@@ -244,6 +244,71 @@ con cincuenta candidatos en `personal-documentacion.e2e-spec.ts`.
   opcional), `findByUserIds`, `findByUserId`, `findActivos`, `findByIds`,
   `contarActivosPorPuesto` y `distribuidorasConChoferesActivos`.
 
+## Egreso del chofer con una rendición pendiente (CU-181)
+
+El egreso de un chofer (`POST /employees/:id/termination`) y su baja de usuario
+(`DELETE /users/:id`, `DELETE /delivery/:id`; CU-085, CU-097) se rechazan con
+**409** si le falta rendir. La regla la registra el módulo de rendiciones
+(`driver-settlement/application/egreso-del-chofer.rule.ts`) en
+`EmployeeRulesRegistry.alEgresar`.
+
+**Qué cuenta como pendiente** (`pendienteDeRendir`, en este orden; la primera
+que se cumple decide el mensaje):
+
+1. Una rendición del chofer, **de cualquier día**, en un estado de
+   `ESTADOS_SIN_CERRAR` (`open` o `submitted`; está en `driver-settlement.enums.ts`).
+   El tablero financiero usa la misma constante para contar las rendiciones
+   vencidas (`resumenDelDia`). Una `approved` no impide nada.
+2. Si no tiene ninguna, efectivo que entregó y ninguna rendición tomó:
+   `pedidosSinRendir` con el día de hoy (pedidos `delivered`, pago en efectivo
+   `paid` o `pending`, sin `payment_resolved_by`, no incluidos en una
+   rendición). Es la regla que usa la propia rendición.
+
+El chofer se busca con `DeliveryService.findByUserIdEnTransaccion`, igual que el
+caso de uso del egreso, pero **con las bajas** (`conBajas`): la baja del usuario
+borra lógicamente el perfil de chofer antes de egresar el legajo.
+
+Corre dentro de la transacción, con el chofer ya bloqueado, después de validar el
+estado del legajo y los pedidos en curso y antes de tocar nada. La regla lanza el
+409 ella misma (en vez de sumar un motivo a la lista genérica, que lo envolvería
+en `No se puede registrar el egreso: …`) y la transacción se revierte. No se
+aplica a `DELETE /employees/:id` (alta errónea).
+
+Mensajes:
+
+- Rendición sin cerrar: `No se puede dar de baja al chofer mientras tenga una rendición pendiente (rendición N° 26, abierta, del 02/11/2026): cerrala antes` (`presentada` si está en `submitted`).
+- Sólo efectivo sin rendir: `No se puede dar de baja al chofer mientras tenga efectivo sin rendir (2 pedido(s) en efectivo por $ 7.500,50): generá y aprobá su rendición antes`.
+- Ningún chofer da de baja su propia cuenta: `DELETE /users/me` es sólo del cliente y a un chofer le responde 403, así que la regla la dispara siempre un administrador.
+
+### Matriz de `POST /employees/:id/termination`
+
+«API» = probado contra el back del worktree (PORT=3010, `splg_db`) con un chofer de
+prueba creado por `POST /users`. «Test» = sólo con test automático.
+
+| Caso | Código | Prueba |
+|---|---|---|
+| Egreso correcto (chofer sin nada pendiente, rendición aprobada) | 200 | API + e2e |
+| Reintento con la misma `Idempotency-Key` y el mismo body | 200, misma respuesta | API |
+| Motivo no admitido; fecha que no es real; egreso anterior al ingreso | 400 | API + e2e / use-case spec |
+| `:id` que no es UUID | 400 | API + e2e |
+| `Idempotency-Key` que no es un UUID v4 | 400 | API |
+| Sin token | 401 | API + e2e |
+| `X-Client-Source` ausente o de una app a la que el rol no entra (chofer en `panel-app`) | 401 | API + e2e |
+| Rol chofer en la app de reparto | 403 | API + e2e |
+| Empleado inexistente o de otra distribuidora | 404 | API + e2e |
+| Ya egresado | 409 | API + e2e |
+| Rendición abierta o presentada | 409 | API + e2e + integración del SQL |
+| Efectivo entregado sin rendir (sin rendición) | 409 | Test (unitario + integración del SQL): no se pudo armar por la API sin despachar un pedido real |
+| Pedidos en curso | 409 | Test (use-case spec + e2e) |
+| Carga de camión abierta | 409 | Test (`vehicle-assignment`) |
+| `Idempotency-Key` repetida mientras la primera sigue en curso | 409 | API (dos pedidos en paralelo) |
+| La cuenta del empleado cambió mientras se tomaban los locks | 409 | Test (use-case spec) |
+| `Idempotency-Key` reusada con otro body | 422 | API |
+
+`DELETE /users/:id` y `DELETE /delivery/:id` con una rendición abierta: 409 con el mismo
+mensaje, sin cambios (API); el e2e cubre `DELETE /users/:id`. Con la rendición aprobada,
+`DELETE /delivery/:id` responde 200 (API).
+
 ## Decisiones y desvíos del diseño original
 
 Ver la entrega de la tanda (`.orq/ENTREGA.md`). Resumen: el tablero está en

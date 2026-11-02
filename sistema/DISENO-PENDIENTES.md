@@ -18,7 +18,6 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 | Liberar el stock de un pago rechazado | Cuando Mercado Pago informa un pago rechazado o cancelado, el sistema lo registra con su motivo, le avisa al Cliente (`order:payment-rejected`) y le permite reintentar el pago mientras el pedido siga vivo; el stock queda reservado hasta que vence el plazo de pago. | CU-048 | — | Menor |
 | Estado de la documentación en el listado de empleados | El listado acepta el filtro por estado de la documentación y lo ignora: no calcula el peor vencimiento de cada persona. La ficha de documentación (CU-187) sí lo calcula. | CU-180 | — | Menor |
 | Choferes por terminar su entrega en la asignación automática | La asignación automática (M1) descarta a los choferes con un pedido en curso; todavía no admite como candidatos a los que están por terminar su entrega, de modo que un chofer que entrega la última garrafa no recibe el pedido siguiente hasta quedar libre. | CU-013 | — | Importante |
-| Egreso del chofer con una rendición pendiente | El egreso rechaza al chofer con pedidos en curso o con una carga de camión abierta, pero todavía no al que tiene una rendición sin aprobar: el módulo de rendiciones no registró su regla en `EmployeeRulesRegistry`. | CU-181 | — | Importante |
 
 ### 2 Parametrización pendiente
 
