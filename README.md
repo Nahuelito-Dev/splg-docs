@@ -22,6 +22,12 @@ Sistema de Pedidos y Logística de Garrafas de Gas · Proceso Unificado · FCEQy
 
 Todo lo demás está en `catedra/material-de-trabajo/` y no hace falta para entregar.
 
+## Herramientas de apoyo
+
+En el desarrollo y la documentación se usaron herramientas de apoyo basadas en inteligencia artificial
+(asistentes de programación y revisión automática de código). El análisis, el diseño, las decisiones y la
+validación del sistema son del autor.
+
 ## Cómo está organizado
 
 ```
