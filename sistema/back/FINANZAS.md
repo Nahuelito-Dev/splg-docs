@@ -84,7 +84,8 @@ pedidos en efectivo entregados y sin rendir + Σ cobros de cuenta corriente hech
   a cuenta no se edita. `paymentStatus` queda `pending`: no entra en "venta cobrada" de los reportes.
 - **Pago de cuenta corriente:** el administrador indica la caja (entrada por el libro de caja); el chofer en la
   calle no manda caja: el cobro queda atado a su rendición abierta y entra a la caja al aprobarla. Imputación FIFO
-  automática. Pagar de más deja saldo a favor.
+  automática. Un cobro que supera la deuda se rechaza con 409 («El cobro supera la deuda de la cuenta
+  corriente: registrá una nota de crédito por la diferencia»): la diferencia se registra como nota de crédito.
 - **Comisión por entrega:** al entregar (`pedido.entregado`) se resuelve la regla vigente el día de la entrega
   (empleado y producto > empleado > producto > general) renglón por renglón; el asiento guarda una copia de las
   reglas aplicadas (`rule_snapshot`), así que modificar una regla no recalcula nada. Único por pedido.
