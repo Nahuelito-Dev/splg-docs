@@ -99,3 +99,9 @@ su recargo ni su vigencia; sólo `isActive` pasa a `false`. Deja en el log cuál
   panel lo muestra en la campana y, en Zonas de cobertura, con un aviso mientras no haya una zona activa y vigente.
 - **Fecha de fin vencida:** crear una zona activa, o reactivarla / cambiarle `validUntil`, con `validUntil` ya pasado responde **400**
   (`validUntil ya pasó: una zona vencida no puede quedar activa`). Una zona creada inactiva sí puede tenerla.
+- **Fechas de vigencia en día argentino:** `validFrom` y `validUntil` (alta `POST /coverage-zones` y edición `PATCH /coverage-zones/:id`) aceptan un día
+  `YYYY-MM-DD` o un instante ISO con hora. Un día se interpreta en hora argentina: `validFrom` rige **desde las 00:00 ART** de ese día y
+  `validUntil` **incluye el día entero** (la zona vence a las **23:59:59.999 ART**; el barrido la desactiva recién después). Un instante con
+  hora se guarda tal cual. Desde y hasta el mismo día es una zona de un día; un hasta anterior al desde responde 400, y un día que no existe
+  (por ejemplo `2026-02-30`) también. En la edición, `null` quita ese límite (rige desde siempre / no vence) y omitir el campo no lo toca.
+  El panel muestra y edita el día argentino del instante guardado.
