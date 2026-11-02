@@ -1,0 +1,42 @@
+# CodeRabbit. Docs: https://docs.coderabbit.ai/reference/configuration
+# Esquema: https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
+# yaml-language-server: $schema=https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
+language: es-AR
+tone_instructions: 'Directo y concreto, en castellano rioplatense. Marcá BLOQUEANTE lo que impide el merge.'
+early_access: false
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: true
+  auto_review:
+    enabled: true
+    drafts: false
+    # Sólo PR contra develop y main (el resto de las ramas no se revisa).
+    base_branches:
+      - develop
+      - main
+  path_filters:
+    - '!**/node_modules/**'
+    - '!**/dist/**'
+    - '!**/*.lock'
+    - '!**/package-lock.json'
+    - '!**/*.g.dart'
+    - '!**/*.freezed.dart'
+  path_instructions:
+    - path: '**'
+      instructions: 'Proyecto: Documentación de la tesis SPLG (Proceso Unificado, UML 2.5, Larman) y el sitio publicado. Reglas clave: Los documentos numerados de la cátedra (documentos/) los edita nahue en Google Drive: un cambio ahí se marca para revisión humana. Todo en UML 2.5 + metodología UP (Larman); un CU por operación de ABM; los diagramas se miran como imagen, no sólo como texto. El sitio publicado sólo lleva CU/CUE/CUA/DSS/DSD + módulos inteligentes; sistema/back/*.md es interno. Los números de las F (FEATURES-NEW) no van al sitio ni a la doc que ve la cátedra.'
+    - path: 'documentos/**'
+      instructions: 'Documentos de la cátedra: notación UML 2.5/Larman, coherencia con el catálogo de CU y las cifras; cambios mínimos y marcados para revisión de nahue.'
+    - path: 'sistema/**'
+      instructions: 'Documentación técnica interna: debe coincidir con el código y los contratos actuales del back/panel.'
+    - path: 'diagramas/**'
+      instructions: 'UML 2.5 correcto (estereotipos, multiplicidades, direccionalidad); el PNG/SVG debe estar al día con el .mmd.'
+    - path: 'herramientas/**'
+      instructions: 'Scripts Python deterministas, sin dependencias nuevas pesadas, que no rompan el gate de conformidad.'
+    - path: '.github/**'
+      instructions: 'Workflows con permisos mínimos, sin secretos en claro.'
+chat:
+  auto_reply: true
