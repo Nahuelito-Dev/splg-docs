@@ -53,8 +53,8 @@ VISTAS_MODULOS = [
      ["payments", "=ConfirmPaymentUseCase", "stock", "truck-load", "claims"]),
     ("Despacho y seguimiento en tiempo real", "Despacho",
      ["=DispatchOrchestratorService", "=DispatchService", "=DispatchOfferRepositoryPort", "=RealtimeDispatchPort",
-      "=RouteBatchPlannerService", "distributor", "delivery", "gateways", "notifications"]),
-    ("Flota, recompra y recupero de envases", "Flota-recompra-y-recupero", ["fleet", "repurchase", "cylinder"]),
+      "route-batch", "distributor", "delivery", "gateways", "notifications"]),
+    ("Flota, recompra y recupero de envases", "Flota-recompra-y-recupero", ["fleet", "repurchase", "repurchase-forecast", "cylinder"]),
 ]
 
 # Vistas de dominio: el foco lleva atributos y operaciones; la referencia, solo el nombre.

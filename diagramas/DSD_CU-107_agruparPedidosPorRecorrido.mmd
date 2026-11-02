@@ -2,37 +2,30 @@ sequenceDiagram
     title DSD — CU-107 Agrupar Pedidos por Recorrido · agruparPedidosPorRecorrido
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant PLN as :RouteBatchPlannerService
-    participant ORD as :OrderRepositoryPort
+    participant RBS as :RouteBatchService
     participant CHO as chofer:Chofer
-    participant NOT as :NotificationsService
+    participant RBN as :RouteBatchNotifier
 
-    SIS->>+PLN: agruparPedidosPorRecorrido()
-    PLN->>+ORD: findScheduled(distribuidora)
-    ORD-->>-PLN: pedidos
-    PLN->>PLN: agruparPorProximidad(pedidos)
-    loop Por cada grupo de pedidos
-        create participant LOT as recorrido:LoteRecorrido
-        PLN->>LOT: «create»(pedidos)
-        loop Por cada pedido del grupo
-            create participant PRA as :ParadaLote
-            LOT->>PRA: «create»(pedido, orden)
-        end
-        loop Por cada chofer candidato
-            PLN->>+CHO: getCapacidadDeCarga()
-            CHO-->>-PLN: capacidad
-            PLN->>+LOT: ofrecerA(chofer, venceEn)
-            create participant OFL as :OfertaLote
-            LOT->>OFL: «create»(chofer, venceEn)
-            deactivate LOT
-            PLN-)NOT: sendBatchOffer(chofer, recorrido)
-        end
-        alt Un chofer acepta el recorrido
-            PLN->>PLN: aceptarRecorrido(recorrido)
-            Note over PLN,LOT: Aceptación: ver DSD de aceptarRecorrido (CU-107)
-        else Ningún chofer acepta
-            PLN->>LOT: deshacer()
-            Note over PLN,LOT: Los pedidos vuelven al circuito individual:<br/>ver DSD de ofrecerAlSiguienteChofer (CU-013)
+    SIS->>+RBS: agruparPedidosPorRecorrido()
+    RBS->>RBS: candidatos(distribuidoraId, ahora)
+    RBS->>RBS: distancias(pedidoIds)
+    loop Por cada pedido semilla que queda sin agrupar
+        RBS->>RBS: choferesCerca(distribuidoraId, latitud, longitud, ocupados)
+        loop Por cada chofer cercano hasta lograr un recorrido
+            RBS->>+CHO: getCapacidadDeCarga()
+            CHO-->>-RBS: capacidad
+            opt Hay al menos dos pedidos compatibles que caben en el vehículo
+                create participant LOT as recorrido:LoteRecorrido
+                RBS->>LOT: «create»(pedidos)
+                create participant PRA as :ParadaLote
+                LOT->>PRA: «create»(pedido, orden)
+                RBS->>+LOT: ofrecerA(chofer, venceEn)
+                create participant OFL as :OfertaLote
+                LOT->>OFL: «create»(chofer, venceEn)
+                deactivate LOT
+                RBS-)RBN: ofertaAlChofer(chofer, aviso)
+            end
         end
     end
-    deactivate PLN
+    Note over RBS,LOT: Respuesta del chofer: ver DSD de aceptarRecorrido (CU-107). Si nadie acepta, el recorrido se deshace y los pedidos vuelven a ofrecerse uno por uno: ver DSD de ofrecerAlSiguienteChofer (CU-013)
+    RBS-->>-SIS: resumen

@@ -24,7 +24,10 @@ import re, os, glob, sys
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 sys.path.insert(0, D + "herramientas")
-from cu_esenciales import ESENCIALES, CON_DSS, CON_DSD
+from cu_esenciales import ESENCIALES, CON_DSS, CON_DSD, RETIRADOS_ALCANCE
+
+# El Documento 0 queda con los estados que tenía (decisión de nahue, 01/11/2026): no se contrasta en estos casos.
+DOC0_SIN_ACTUALIZAR = RETIRADOS_ALCANCE + ("CU-105", "CU-106", "CU-107", "CU-108", "CU-145", "CU-146")
 
 
 def leer(f):
@@ -172,6 +175,8 @@ for cu in codigos:
     estado = mc.group(1) if mc else ""
     if estado == "Implementado" or estado.startswith("Implementado. Ver ") or estado.startswith("Implementado, con el adaptador"):
         cat = "Implementado"
+    elif estado.startswith("Retirado del alcance") or estado.startswith("Implementado en el sistema"):
+        cat = estado
     elif ESTADO_PLAN.match(estado):
         cat = f"Planificado ({ESTADO_PLAN.match(estado).group(1)})"
         n_plan += 1
@@ -186,6 +191,8 @@ for cu in codigos:
         fila = cat_doc.get(cu)
         if not fila:
             falta(cu, f"sin fila en el catálogo de {nombre}")
+        elif nombre == "Documento 0" and cu in DOC0_SIN_ACTUALIZAR:
+            continue
         elif fila.group(6).strip() != cat:
             falta(cu, f"el catálogo de {nombre} dice {fila.group(6).strip()!r} y el CUE {cat!r}")
 

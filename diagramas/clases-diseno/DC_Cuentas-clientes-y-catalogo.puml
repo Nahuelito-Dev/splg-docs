@@ -91,7 +91,6 @@ class Envase {
   - /vencimiento: Fecha
   + abrirCaso()
   + entregarAlCliente(pedido: Pedido)
-  + fueDevuelto(): Booleano
 }
 class InvitacionRecompra {
   - agotamientoEstimado: FechaHora

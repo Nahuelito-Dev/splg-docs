@@ -2,36 +2,35 @@ sequenceDiagram
     title DSD — CU-108 Recuperar Envases No Devueltos · gestionarEnvasesNoDevueltos
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant SRV as :CylinderRecoveryService
-    participant LIF as :CylinderLifecyclePort
+    participant CRS as :CylinderRecoveryService
     participant ENV as envase:Envase
-    participant NOT as :NotificationsService
+    participant CRN as :CylinderRecoveryNotifier
 
-    SIS->>+SRV: gestionarEnvasesNoDevueltos()
-    SRV->>+LIF: findHeldByCustomer(plazoDeTolerancia)
-    LIF-->>-SRV: envases
-    loop Por cada envase retenido
-        SRV->>+ENV: abrirCaso()
+    SIS->>+CRS: gestionarEnvasesNoDevueltos()
+    CRS->>CRS: parametros(distribuidoraId)
+    CRS->>CRS: envasesAfuera(distribuidoraId)
+    CRS->>CRS: clasificar(envasesAfuera, parametros, ahora)
+    loop Por cada envase retenido sin caso abierto
+        CRS->>+ENV: abrirCaso()
         create participant CAS as caso:CasoRecupero
         ENV->>CAS: «create»(cliente, deposito)
         deactivate ENV
-        loop Por cada escalón pendiente
-            SRV->>+ENV: fueDevuelto()
-            ENV-->>-SRV: devuelto
-            alt El envase ya fue devuelto
-                SRV->>CAS: cerrar(devuelto)
-            else El envase sigue retenido
-                SRV->>+CAS: avisar(escalon)
-                create participant AVI as :AvisoRecupero
-                CAS->>AVI: «create»(escalon)
-                deactivate CAS
-                SRV-)NOT: sendRecoveryStep(caso, escalon)
-                Note over SRV,CAS: Retiro en la entrega: ver DSD de aceptarRetiroEnLaEntrega (CU-108)
-            end
+    end
+    loop Por cada caso abierto
+        CRS->>CRS: procesarCaso(casoId, parametros, ahora)
+        alt El envase ya fue devuelto
+            CRS->>CAS: cerrar(devuelto)
+        else El envase sigue retenido
+            CRS->>+CAS: avisar(escalon)
+            create participant AVI as :AvisoRecupero
+            CAS->>AVI: «create»(escalon)
+            deactivate CAS
+            Note over CRS,CAS: Retiro en la entrega: ver DSD de aceptarRetiroEnLaEntrega (CU-108)
         end
-        opt Escalones agotados e importe sobre el umbral
-            SRV->>CAS: escalar()
-            SRV-)NOT: escalateToAdmin(caso)
+        opt Se agotaron los escalones
+            CRS->>CAS: escalar()
+            CRS-)CRN: escaladoAlAdmin(caso, contexto)
         end
     end
-    deactivate SRV
+    CRS-)CRN: alClienteAgrupado(usuarioId, avisos)
+    CRS-->>-SIS: resultado

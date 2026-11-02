@@ -1845,47 +1845,50 @@ sequenceDiagram
     title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · planificarMantenimientoDeFlota
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant PLN as :FleetMaintenancePlannerService
+    participant MPS as :MaintenancePlannerService
+    participant MFS as :MaintenanceForecastService
     participant VEH as vehiculo:Vehiculo
+    participant PCS as :PlannerContextService
     participant TAR as tarea:TareaMantenimiento
-    participant DEM as :DemandForecastService
-    participant COV as :FleetCoverageService
-    participant NOT as :NotificationsService
+    participant MPN as :MaintenancePlannerNotifier
 
-    SIS->>+PLN: planificarMantenimientoDeFlota()
-    loop Por cada vehículo de la flota activa
-        PLN->>+VEH: proyectarVencimientos()
-        VEH->>VEH: estimarKilometrajeDiario()
-        VEH->>TAR: proyectarVencimiento(kilometrajeDiario)
-        VEH-->>-PLN: tareas dentro de la anticipación
-        loop Por cada tarea dentro de la ventana de anticipación
-            PLN->>+DEM: demandaProyectada(ventanas)
-            DEM-->>-PLN: demanda por ventana
-            PLN->>+COV: ventanasFactibles(vehiculo, ventanas)
-            COV-->>-PLN: ventanas factibles
-            PLN->>+VEH: getChoferEnUso()
-            VEH-->>-PLN: chofer
-            PLN->>+TAR: proponerVentana(chofer, ventana)
-            create participant PRP as :PropuestaVentanaTaller
-            TAR->>PRP: «create»(chofer, ventana, vigencia)
-            TAR-->>-PLN: propuesta
-            PLN-)NOT: sendWindowProposal(propuesta)
-            Note over PLN,PRP: Respuesta del Chofer: ver DSD de aceptarVentanaDeMantenimiento (CU-105)
-        end
-        opt Hay una habilitación bloqueante vencida
-            PLN->>VEH: ponerFueraDeServicio()
-        end
+    SIS->>+MPS: planificarMantenimientoDeFlota()
+    MPS->>+MFS: consumos(distribuidoraId, vehiculos, parametros, ahora)
+    MFS-->>-MPS: consumos
+    loop Por cada tarea abierta de la flota
+        MPS->>+MFS: proyectar(tarea, vehiculo, consumo, ahora)
+        MFS-->>-MPS: proyeccion
     end
-    deactivate PLN
+    MPS->>MFS: guardarPredicciones(proyectadas)
+    opt Hay una habilitación bloqueante vencida
+        MPS->>VEH: ponerFueraDeServicio()
+    end
+    MPS->>+PCS: cargar(distribuidoraId, vehiculosActivos, parametros, ahora)
+    PCS-->>-MPS: contexto
+    loop Por cada tarea dentro de su anticipación
+        MPS->>+TAR: proponerVentana(chofer, ventana)
+        create participant PRP as :PropuestaVentanaTaller
+        TAR->>PRP: «create»(chofer, ventana, vigencia)
+        TAR-->>-MPS: propuesta
+        MPS-)MPN: propuestaAlChofer(chofer, propuesta, aviso, correo)
+    end
+    MPS-->>-SIS: resumen
 ```
 
 </details>
 
-**Clases participantes:** `FleetMaintenancePlannerService` (controlador del proceso temporal), `DemandForecastService` y `FleetCoverageService` (fabricaciones puras: la demanda proyectada por franja y el mínimo de vehículos por zona), `NotificationsService` (existente: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`. Los nombres son los del diseño: en el código, el planificador es `MaintenancePlannerService`, que se apoya en `MaintenanceForecastService` y en `PlannerContextService`.
+**Clases participantes:** `MaintenancePlannerService` (controlador del proceso temporal), `MaintenanceForecastService` y `PlannerContextService` (fabricaciones puras: la proyección de los vencimientos y el contexto de cobertura y demanda de la zona), `MaintenancePlannerNotifier` (fabricación pura: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`.
 
-**GRASP.** *Controlador*: `FleetMaintenancePlannerService`, que el planificador del sistema dispara una vez por día. *Experto*: `Vehiculo` estima su consumo de kilómetros y proyecta el vencimiento de cada una de sus tareas. *Creador*: `TareaMantenimiento` crea las `PropuestaVentanaTaller` que origina (composición del modelo conceptual). *Alta Cohesión*: la demanda y la cobertura viven en fabricaciones puras, no en el vehículo ni en el planificador.
+**GRASP.** *Controlador*: `MaintenancePlannerService`, que el planificador del sistema dispara una vez por día para cada distribuidora. *Experto*: `MaintenanceForecastService` estima el consumo de kilómetros de cada vehículo y proyecta el vencimiento de cada tarea; `PlannerContextService` conoce la demanda de la zona y cuántas unidades quedan disponibles cada día. *Creador*: `TareaMantenimiento` crea las `PropuestaVentanaTaller` que origina (composición del modelo conceptual). *Alta Cohesión*: la proyección y el contexto de cobertura viven en servicios propios, no en el planificador.
 
-**No se dibuja:** el historial de uso del vehículo y el promedio de la flota como respaldo, la negociación de las ventanas alternativas una por vez, el escalamiento al administrador cuando se agotan y el bloqueo de la agenda, que ocurre al confirmar (ver CU-105: `confirmarVentanaDeTaller`).
+**No se dibuja:** la actualización del uso de la flota antes de estimar (`VehicleUsageFeedService`), el historial de uso y el promedio de la flota como respaldo, la negociación de las ventanas alternativas una por vez, el escalamiento al administrador cuando no hay ventana, cobertura o chofer, y el bloqueo de la agenda, que ocurre al confirmar (ver CU-105: `confirmarVentanaDeTaller`).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `MaintenancePlannerService.planificarMantenimientoDeFlota(...)` | `MaintenancePlannerService.ejecutar`: lo dispara `MaintenancePlannerCron.planificar` una vez por día para cada distribuidora con tareas; es idempotente, porque una tarea con un caso abierto o con el taller ya programado no se vuelve a planificar |
+| `Vehiculo.ponerFueraDeServicio(...)` | `MaintenancePlannerService.apagarVencidos`: con una habilitación bloqueante vencida, por fecha o por kilometraje, pasa `Car.fleetStatus` de ACTIVE a GROUNDED con `CarService.cambiarEstadoDeFlota`, libera al chofer con `VehicleAssignmentService.liberarDelVehiculo` en la misma transacción y avisa al administrador con `MaintenancePlannerNotifier.alAdminVehiculoFueraDeServicio` |
+| `TareaMantenimiento.proponerVentana(...)` | `MaintenancePlannerService.planificar`: arma las ventanas candidatas con `enumerarVentanas()`, las evalúa contra la demanda y las unidades disponibles de la zona con `evaluarVentanas()`, abre el `MaintenancePlanningCase` y ofrece la primera con `MaintenancePlannerService.ofrecerSiguiente`; si no hay ventana, cobertura o chofer, el caso queda escalado al administrador |
+| `PropuestaVentanaTaller.«create»` | `MaintenancePlannerService.ofrecerSiguiente`: inserta la `MaintenanceWindowProposal` en estado PENDING, con la ventana (`MaintenanceWindowProposal.windowStart` y `MaintenanceWindowProposal.windowEnd`) y una vigencia (`MaintenanceWindowProposal.expiresAt`) que no pasa del inicio de la ventana |
 
 #### Operación: anticiparRecompras()
 
@@ -1904,41 +1907,53 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant RFS as :RepurchaseForecastService
-    participant INVS as :List#lt;InvitacionRecompra#gt;
-    participant CLIS as :List#lt;Cliente#gt;
-    participant EST as :ConsumptionEstimatorService
-    participant NOT as :NotificationsService
+    participant EST as :RepurchaseEstimatorService
+    participant INVS as :RepurchaseInvitationService
+    participant SUG as :RepurchaseSuggestionService
+    participant NOT as :RepurchaseNotifier
 
     SIS->>+RFS: anticiparRecompras()
-    RFS->>INVS: caducarVencidas(hoy)
-    RFS->>+CLIS: buscarConHistorialSuficiente()
-    CLIS-->>-RFS: clientes
-    loop Por cada cliente
-        RFS->>+EST: estimarProximaRecompra(cliente)
-        EST-->>-RFS: fechaEstimada
-        opt La recompra cae dentro de los días de aviso del cliente
-            create participant INV as :InvitacionRecompra
-            RFS->>INV: «create»(cliente, fechaEstimada, vigencia)
-            create participant ITS as :ItemSugerido
-            INV->>ITS: «create»(producto, cantidad)
-            RFS-)NOT: sendRepurchaseInvitation(cliente, invitacion)
+    RFS->>+EST: parametros(distribuidoraId)
+    EST-->>-RFS: parametros
+    RFS->>INVS: vencerVencidas(ahora, distribuidoraId)
+    RFS->>+EST: estimar(distribuidoraId, ahora, parametros)
+    EST-->>-RFS: clientes
+    loop Por cada cliente con fecha estimada
+        opt El aviso está activo, la recompra cae dentro de sus días de aviso y no tiene un pedido ni una invitación reciente
+            RFS->>+SUG: armar(distribuidoraId, usuarioId, habitos)
+            SUG-->>-RFS: sugerencia
+            opt Hay stock de algún producto sugerido
+                RFS->>+INVS: abrir(datos)
+                create participant INV as :InvitacionRecompra
+                INVS->>INV: «create»(cliente, fechaEstimada, vigencia)
+                create participant ITS as :ItemSugerido
+                INV->>ITS: «create»(producto, cantidad)
+                INVS-->>-RFS: invitacion
+                RFS-)NOT: invitar(invitacion)
+            end
         end
     end
-    deactivate RFS
+    RFS-->>-SIS: resultado
 ```
 
 </details>
 
-**Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), `NotificationsService` (fabricación pura: el aviso al cliente), las colecciones `List<InvitacionRecompra>` y `List<Cliente>`, y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
+**Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario), `RepurchaseEstimatorService` (fabricación pura: el cálculo de la fecha en que se le termina el gas a cada cliente), `RepurchaseInvitationService` (fabricación pura: vencimiento y alta de las invitaciones), `RepurchaseSuggestionService` (fabricación pura: el pedido sugerido según los hábitos del cliente), `RepurchaseNotifier` (fabricación pura: el aviso al cliente) y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
 
-**GRASP.** *Controlador*: `RepurchaseForecastService` recibe la ejecución programada. *Creador*: el controlador crea la `InvitacionRecompra`, porque tiene los datos con que se inicializa, y la `InvitacionRecompra` crea sus `ItemSugerido` (los contiene, composición del modelo conceptual). *Experto*: la colección de invitaciones sabe cuáles vencieron y las pasa a «caducada»; el estimador calcula cuándo se le termina el gas al cliente. El cliente que no llega al mínimo de pedidos, o con una serie demasiado irregular, queda fuera de la corrida, y si no hay stock del producto sugerido no se emite la invitación.
+**GRASP.** *Controlador*: `RepurchaseForecastService` recibe la ejecución programada. *Creador*: `RepurchaseInvitationService` abre la `InvitacionRecompra` con los datos que le pasa el controlador, y la `InvitacionRecompra` crea sus `ItemSugerido` (los contiene, composición del modelo conceptual). *Experto*: el estimador conoce el historial de compras y calcula cuándo se le termina el gas al cliente; el servicio de invitaciones sabe cuáles vencieron y las pasa a «vencida». El cliente que no llega al mínimo de pedidos, o con una serie demasiado irregular, queda fuera de la corrida, y si no hay stock del producto sugerido no se emite la invitación.
 
-**No se dibuja:** el ciclo diario de ejecución, la lectura del historial de pedidos entregados y el guardado.
+**No se dibuja:** el cierre de las invitaciones a las que el cliente se adelantó con un pedido propio, el motivo por el que se omite a cada cliente (aviso desactivado, recompra lejana, pedido reciente, intervalo mínimo o mismo ciclo de consumo), la simulación con `dryRun` y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RepurchaseForecastService.anticiparRecompras(...)` | `RepurchaseForecastService.ejecutar`: lo dispara `RepurchaseCron.anticipar` a la hora configurada para cada distribuidora; con `enabled` en 0 responde 409, porque el proceso viene apagado, y es idempotente, ya que no invita a quien tiene una invitación abierta ni a quien la tuvo hace menos del intervalo mínimo |
+| `InvitacionRecompra.«create»` | `RepurchaseInvitationService.abrir`: inserta la `RepurchaseInvitation` en estado PENDING, con la fecha proyectada (`RepurchaseInvitation.projectedDepletionAt`) y la vigencia (`RepurchaseInvitation.expiresAt`); devuelve nulo si otra corrida ya abrió una al cliente |
+| `ItemSugerido.«create»` | `RepurchaseSuggestionService.armar`: arma los ítems sugeridos (producto y cantidad de sus últimas compras, solo los que tienen stock) que la invitación guarda en `RepurchaseInvitation.suggestedItems` |
 
 **Observaciones de diseño**
 
-- `ConsumptionEstimatorService` y `RepurchaseInvitationRepositoryPort` son nombres del diseño: en el código el estimador de la fecha es `RepurchaseEstimatorService`. `RepurchaseForecastService`, `NotificationsService` y `CreateOrderUseCase` existen tal como se nombran y el módulo los consume: la aceptación de la invitación entra por el mismo camino que cualquier pedido creado desde la aplicación del cliente.
 - La invitación se emite con el pedido ya armado: el cliente la acepta o la deja vencer, y no vuelve a elegir los productos.
+- El proceso viene apagado: cada distribuidora lo habilita desde los parámetros de la recompra (`/module-config/repurchase`, `enabled`).
 
 #### Operación: agruparPedidosPorRecorrido()
 
@@ -1956,51 +1971,53 @@ sequenceDiagram
     title DSD — CU-107 Agrupar Pedidos por Recorrido · agruparPedidosPorRecorrido
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant PLN as :RouteBatchPlannerService
-    participant ORD as :OrderRepositoryPort
+    participant RBS as :RouteBatchService
     participant CHO as chofer:Chofer
-    participant NOT as :NotificationsService
+    participant RBN as :RouteBatchNotifier
 
-    SIS->>+PLN: agruparPedidosPorRecorrido()
-    PLN->>+ORD: findScheduled(distribuidora)
-    ORD-->>-PLN: pedidos
-    PLN->>PLN: agruparPorProximidad(pedidos)
-    loop Por cada grupo de pedidos
-        create participant LOT as recorrido:LoteRecorrido
-        PLN->>LOT: «create»(pedidos)
-        loop Por cada pedido del grupo
-            create participant PRA as :ParadaLote
-            LOT->>PRA: «create»(pedido, orden)
-        end
-        loop Por cada chofer candidato
-            PLN->>+CHO: getCapacidadDeCarga()
-            CHO-->>-PLN: capacidad
-            PLN->>+LOT: ofrecerA(chofer, venceEn)
-            create participant OFL as :OfertaLote
-            LOT->>OFL: «create»(chofer, venceEn)
-            deactivate LOT
-            PLN-)NOT: sendBatchOffer(chofer, recorrido)
-        end
-        alt Un chofer acepta el recorrido
-            PLN->>PLN: aceptarRecorrido(recorrido)
-            Note over PLN,LOT: Aceptación: ver DSD de aceptarRecorrido (CU-107)
-        else Ningún chofer acepta
-            PLN->>LOT: deshacer()
-            Note over PLN,LOT: Los pedidos vuelven al circuito individual:<br/>ver DSD de ofrecerAlSiguienteChofer (CU-013)
+    SIS->>+RBS: agruparPedidosPorRecorrido()
+    RBS->>RBS: candidatos(distribuidoraId, ahora)
+    RBS->>RBS: distancias(pedidoIds)
+    loop Por cada pedido semilla que queda sin agrupar
+        RBS->>RBS: choferesCerca(distribuidoraId, latitud, longitud, ocupados)
+        loop Por cada chofer cercano hasta lograr un recorrido
+            RBS->>+CHO: getCapacidadDeCarga()
+            CHO-->>-RBS: capacidad
+            opt Hay al menos dos pedidos compatibles que caben en el vehículo
+                create participant LOT as recorrido:LoteRecorrido
+                RBS->>LOT: «create»(pedidos)
+                create participant PRA as :ParadaLote
+                LOT->>PRA: «create»(pedido, orden)
+                RBS->>+LOT: ofrecerA(chofer, venceEn)
+                create participant OFL as :OfertaLote
+                LOT->>OFL: «create»(chofer, venceEn)
+                deactivate LOT
+                RBS-)RBN: ofertaAlChofer(chofer, aviso)
+            end
         end
     end
-    deactivate PLN
+    Note over RBS,LOT: Respuesta del chofer: ver DSD de aceptarRecorrido (CU-107). Si nadie acepta, el recorrido se deshace y los pedidos vuelven a ofrecerse uno por uno: ver DSD de ofrecerAlSiguienteChofer (CU-013)
+    RBS-->>-SIS: resumen
 ```
 
 </details>
 
-**Clases participantes:** `RouteBatchPlannerService` (controlador del proceso temporal), `OrderRepositoryPort` (fabricación pura: la búsqueda de los pedidos programados atraviesa todos los pedidos), `NotificationsService` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido`, `ParadaLote`, `OfertaLote` y `Chofer`. **Colaboración:** `RouteBatchPlannerService` es el nombre del diseño; en el código la agrupación la realiza `RouteBatchService`, y `OrderRepositoryPort` y `NotificationsService` existen tal como se nombran. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
+**Clases participantes:** `RouteBatchService` (controlador del proceso temporal), `RouteBatchNotifier` (fabricación pura: el aviso de la oferta al chofer) y los objetos de dominio `Chofer`, `LoteRecorrido`, `ParadaLote` y `OfertaLote`. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
 
-**GRASP.** *Controlador*: `RouteBatchPlannerService` recibe la operación del proceso temporal. *Creador*: el controlador crea el `LoteRecorrido`, que es la raíz del agregado y se inicializa con los pedidos agrupados; el `LoteRecorrido` crea sus `ParadaLote` y sus `OfertaLote`, porque los contiene (composición). *Experto*: el `Chofer` conoce la capacidad de carga de su vehículo; el lote respeta el compromiso horario de cada pedido. El lote nunca se impone: ante el silencio o el rechazo generalizado, el `LoteRecorrido` se deshace y los pedidos siguen su camino individual.
+**GRASP.** *Controlador*: `RouteBatchService` recibe la operación del proceso temporal. *Creador*: el controlador crea el `LoteRecorrido`, que es la raíz del agregado y se inicializa con los pedidos agrupados; el `LoteRecorrido` crea sus `ParadaLote` y sus `OfertaLote`, porque los contiene (composición). *Experto*: el `Chofer` conoce la capacidad de carga de su vehículo; el lote respeta el compromiso horario de cada pedido. El lote nunca se impone: ante el silencio o el rechazo generalizado, el lote se deshace y los pedidos siguen su camino individual.
 
 **Referencias.** La aceptación del recorrido por el chofer es la operación `aceptarRecorrido` (CU-107) y la vuelta de los pedidos al circuito individual es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
 
-**No se dibuja:** el orden de las paradas, el cálculo de la capacidad de carga, el recorte del lote si ningún vehículo tiene capacidad, el recálculo si un pedido se acepta o se cancela mientras corre la oferta y la persistencia.
+**No se dibuja:** la lectura de los pedidos programados y de las distancias entre ellos, el orden de las paradas, el recorte del lote según la capacidad, el cerrojo por pedido que comparte con el despacho individual, la transacción de alta y el recálculo si un pedido se cancela mientras corre la oferta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RouteBatchService.agruparPedidosPorRecorrido(...)` | `RouteBatchService.evaluar`: lo dispara `RouteBatchCron.armar` para cada distribuidora con pedidos programados, con un cerrojo de Redis por distribuidora; con `enabled` en 0 el proceso no corre y, si otra instancia tiene el cerrojo, no hace nada |
+| `Chofer.getCapacidadDeCarga(...)` | `RouteBatchService.capacidadDelChofer`: lee `Car.carCapacity` del vehículo que el chofer tiene en uso; sin vehículo o sin capacidad cargada no limita el peso |
+| `LoteRecorrido.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta el `RouteBatch` en estado OFFERED con `RouteBatch.totalWeightKg`, después de bloquear los pedidos con `FOR UPDATE` y comprobar que siguen pendientes y sin chofer |
+| `ParadaLote.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta una `RouteBatchStop` por pedido con `RouteBatchStop.sequence`, `RouteBatchStop.etaAt` y `RouteBatchStop.legDistanceKm`, en el orden que calcula `ordenarParadas()` |
+| `LoteRecorrido.ofrecerA(...)` | `RouteBatchService.crearOferta`: ofrece el recorrido al chofer que eligió `RouteBatchService.choferesCerca` entre los habilitados más cercanos al punto de partida que no están ocupados con otro lote |
+| `OfertaLote.«create»` | `RouteBatchService.crearOferta`: inserta la `RouteBatchOffer` pendiente, con `RouteBatchOffer.expiresAt` igual al momento actual más `offerTtlSeconds` |
 
 #### Operación: gestionarEnvasesNoDevueltos()
 
@@ -2018,50 +2035,59 @@ sequenceDiagram
     title DSD — CU-108 Recuperar Envases No Devueltos · gestionarEnvasesNoDevueltos
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant SRV as :CylinderRecoveryService
-    participant LIF as :CylinderLifecyclePort
+    participant CRS as :CylinderRecoveryService
     participant ENV as envase:Envase
-    participant NOT as :NotificationsService
+    participant CRN as :CylinderRecoveryNotifier
 
-    SIS->>+SRV: gestionarEnvasesNoDevueltos()
-    SRV->>+LIF: findHeldByCustomer(plazoDeTolerancia)
-    LIF-->>-SRV: envases
-    loop Por cada envase retenido
-        SRV->>+ENV: abrirCaso()
+    SIS->>+CRS: gestionarEnvasesNoDevueltos()
+    CRS->>CRS: parametros(distribuidoraId)
+    CRS->>CRS: envasesAfuera(distribuidoraId)
+    CRS->>CRS: clasificar(envasesAfuera, parametros, ahora)
+    loop Por cada envase retenido sin caso abierto
+        CRS->>+ENV: abrirCaso()
         create participant CAS as caso:CasoRecupero
         ENV->>CAS: «create»(cliente, deposito)
         deactivate ENV
-        loop Por cada escalón pendiente
-            SRV->>+ENV: fueDevuelto()
-            ENV-->>-SRV: devuelto
-            alt El envase ya fue devuelto
-                SRV->>CAS: cerrar(devuelto)
-            else El envase sigue retenido
-                SRV->>+CAS: avisar(escalon)
-                create participant AVI as :AvisoRecupero
-                CAS->>AVI: «create»(escalon)
-                deactivate CAS
-                SRV-)NOT: sendRecoveryStep(caso, escalon)
-                Note over SRV,CAS: Retiro en la entrega: ver DSD de aceptarRetiroEnLaEntrega (CU-108)
-            end
+    end
+    loop Por cada caso abierto
+        CRS->>CRS: procesarCaso(casoId, parametros, ahora)
+        alt El envase ya fue devuelto
+            CRS->>CAS: cerrar(devuelto)
+        else El envase sigue retenido
+            CRS->>+CAS: avisar(escalon)
+            create participant AVI as :AvisoRecupero
+            CAS->>AVI: «create»(escalon)
+            deactivate CAS
+            Note over CRS,CAS: Retiro en la entrega: ver DSD de aceptarRetiroEnLaEntrega (CU-108)
         end
-        opt Escalones agotados e importe sobre el umbral
-            SRV->>CAS: escalar()
-            SRV-)NOT: escalateToAdmin(caso)
+        opt Se agotaron los escalones
+            CRS->>CAS: escalar()
+            CRS-)CRN: escaladoAlAdmin(caso, contexto)
         end
     end
-    deactivate SRV
+    CRS-)CRN: alClienteAgrupado(usuarioId, avisos)
+    CRS-->>-SIS: resultado
 ```
 
 </details>
 
-**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración:** `CylinderRecoveryService` es la clase del código que corre el recupero; la consulta que el diseño le pide al puerto del ciclo de envase (`findHeldByCustomer`) es del diseño, porque en el código el servicio separa por su cuenta los envases retenidos; el puerto existe, y es el mismo que registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
+**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal), `CylinderRecoveryNotifier` (fabricación pura: los avisos al cliente y al administrador) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. La detección del envase retenido no necesita una fuente de datos nueva: sale del estado del envase y de sus movimientos de despacho y devolución.
 
 **GRASP.** *Controlador*: `CylinderRecoveryService` recibe la operación del proceso temporal. *Creador*: el `Envase` que motiva el caso crea el `CasoRecupero`, y el `CasoRecupero` crea sus `AvisoRecupero` por cada escalón ejecutado, porque los contiene (composición). *Experto*: el `Envase` sabe si volvió; el `CasoRecupero` conoce su escalón y es quien se cierra o se escala. El caso se reevalúa antes de cada paso, porque el envase puede haber vuelto, y el sistema nunca cobra un depósito por su cuenta: agotada la secuencia, el caso queda a resolución del administrador.
 
 **Referencias.** El retiro del envase en una entrega ya programada es la operación `aceptarRetiroEnLaEntrega` (CU-108) y la decisión final sobre el depósito o la baja es `resolverCasoDeRecupero` (CU-108): cada una tiene su propio diagrama.
 
-**No se dibuja:** los plazos de cada escalón, la entrega programada del cliente donde se ofrece el retiro, el marcado para revisión manual si el último movimiento del envase no permite saber en poder de quién está, el cierre del caso por importe bajo el umbral como envase perdido y la persistencia.
+**No se dibuja:** los plazos de cada escalón, la oferta de retiro en la entrega programada del cliente (`CylinderRecoveryService.ofrecerRetiro`), el marcado para revisión manual si el último movimiento del envase no permite saber en poder de quién está, el cierre del caso por importe bajo el umbral como envase perdido y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CylinderRecoveryService.gestionarEnvasesNoDevueltos(...)` | `CylinderRecoveryService.ejecutar`: lo dispara `CylinderRecoveryCron.recuperar` a la hora configurada para cada distribuidora; con `enabled` en 0 responde 409, porque el proceso viene apagado, y es idempotente, ya que hay un solo caso vivo por envase y un solo aviso por escalón |
+| `Envase.abrirCaso(...)` | `CylinderRecoveryService.abrirCaso`: lo hace para cada envase en poder de un cliente cuya antigüedad supera `toleranceDays`, según `CylinderRecoveryService.envasesAfuera` y `CylinderRecoveryService.clasificar` |
+| `CasoRecupero.«create»` | `CylinderRecoveryService.abrirCaso`: inserta el `CylinderRecoveryCase` en estado OPEN, en el escalón 1, con `CylinderRecoveryCase.depositAmount` y `CylinderRecoveryCase.deliveredAt`; el índice único evita un segundo caso vivo del mismo envase |
+| `CasoRecupero.cerrar(...)` | `CylinderRecoveryService.cerrar`: dentro de `CylinderRecoveryService.procesarCaso`, si el envase volvió o se dio de baja por otra vía, pasa `CylinderRecoveryCase.status` a RETURNED o CLOSED_NO_CHARGE y fija `CylinderRecoveryCase.closedAt` |
+| `CasoRecupero.avisar(...)` | `CylinderRecoveryService.procesarCaso`: sube `CylinderRecoveryCase.step` cuando venció el plazo del escalón y fija `CylinderRecoveryCase.stepDueAt` con el plazo del escalón siguiente |
+| `AvisoRecupero.«create»` | `CylinderRecoveryService.procesarCaso`: inserta el `CylinderRecoveryNotice` del escalón, con su tipo según `avisoDelEscalon()` |
+| `CasoRecupero.escalar(...)` | `CylinderRecoveryService.procesarCaso`: agotados los escalones, pasa `CylinderRecoveryCase.status` a ESCALATED o LOST según `destinoAlAgotarse()` y el umbral `escalationAmountThreshold` |
 
 ### 2.2 Casos sin diagrama de interacción
 
@@ -2131,7 +2157,7 @@ El diagrama de clases de diseño **se deriva de los diagramas de interacción** 
 | `TipoDeRecargo` | `CoverageZoneSurchargeType` |
 | `TipoDeRol` | `RoleType` |
 
-En total el diagrama tiene **69 clases** y **157 operaciones**: 26 clases de dominio (las del modelo conceptual que aparecen en los diagramas) y 43 de diseño (6 colección, 6 controlador, 12 fabricación pura, 12 fachada, 7 puerto). Las 47 asociaciones del modelo conceptual están todas; 16 resultan navegables según los mensajes de los DSD, y 40 pares de clases quedan unidos por una dependencia.
+En total el diagrama tiene **71 clases** y **158 operaciones**: 26 clases de dominio (las del modelo conceptual que aparecen en los diagramas) y 45 de diseño (4 colección, 6 controlador, 18 fabricación pura, 12 fachada, 5 puerto). Las 47 asociaciones del modelo conceptual están todas; 15 resultan navegables según los mensajes de los DSD, y 40 pares de clases quedan unidos por una dependencia.
 
 ### 3.1 Clases del Dominio
 
@@ -2159,11 +2185,11 @@ Los controladores, las fabricaciones puras, los puertos y las colecciones de los
 
 | Papel | Clases |
 |---|---|
-| `«colección»` | `List<Cliente>`, `List<InvitacionRecompra>`, `Map<String, Chofer>`, `Map<String, Pedido>`, `Map<String, Reclamo>`, `Map<String, Usuario>` |
+| `«colección»` | `Map<String, Chofer>`, `Map<String, Pedido>`, `Map<String, Reclamo>`, `Map<String, Usuario>` |
 | `«controlador»` | `CancelOrderUseCase`, `CashCollectionUseCase`, `ConfirmDeliveryUseCase`, `ConfirmPaymentUseCase`, `CreateOrderUseCase`, `UpdateOrderStatusUseCase` |
-| `«fabricación pura»` | `AdminGateway`, `ConsumptionEstimatorService`, `CustomersGateway`, `DemandForecastService`, `DispatchSettingsService`, `FleetCoverageService`, `FleetDispatchLockService`, `NotificationsService`, `RefundsService`, `ScheduledTasksSettingsService`, `StockDeliveryService`, `TruckLoadGateService` |
-| `«fachada»` | `AuthService`, `ClaimsService`, `CylinderRecoveryService`, `DeliveryService`, `DispatchOrchestratorService`, `DispatchService`, `DriversGateway`, `FleetMaintenancePlannerService`, `OrderService`, `RegistroService`, `RepurchaseForecastService`, `RouteBatchPlannerService` |
-| `«puerto»` | `CylinderLifecyclePort`, `DispatchOfferRepositoryPort`, `FirebaseAuthPort`, `NotificationPort`, `OrderRepositoryPort`, `PaymentGatewayPort`, `RealtimeDispatchPort` |
+| `«fabricación pura»` | `AdminGateway`, `CustomersGateway`, `CylinderRecoveryNotifier`, `DispatchSettingsService`, `FleetDispatchLockService`, `MaintenanceForecastService`, `MaintenancePlannerNotifier`, `NotificationsService`, `PlannerContextService`, `RefundsService`, `RepurchaseEstimatorService`, `RepurchaseInvitationService`, `RepurchaseNotifier`, `RepurchaseSuggestionService`, `RouteBatchNotifier`, `ScheduledTasksSettingsService`, `StockDeliveryService`, `TruckLoadGateService` |
+| `«fachada»` | `AuthService`, `ClaimsService`, `CylinderRecoveryService`, `DeliveryService`, `DispatchOrchestratorService`, `DispatchService`, `DriversGateway`, `MaintenancePlannerService`, `OrderService`, `RegistroService`, `RepurchaseForecastService`, `RouteBatchService` |
+| `«puerto»` | `DispatchOfferRepositoryPort`, `FirebaseAuthPort`, `NotificationPort`, `PaymentGatewayPort`, `RealtimeDispatchPort` |
 
 Ningún DSD llega hasta un adaptador (los diagramas terminan en el puerto), así que el diagrama no dibuja realizaciones; cuando un DSD nombre un adaptador, la realización se dibuja sola.
 

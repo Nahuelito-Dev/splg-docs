@@ -2,16 +2,20 @@ sequenceDiagram
     title DSD — CU-106 Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra
     autonumber
     actor CLI as Cliente (ACT-01)
-    participant RFS as :RepurchaseForecastService
-    participant COL as :Map#lt;String, InvitacionRecompra#gt;
+    participant RAS as :RepurchaseAcceptService
+    participant INVS as :RepurchaseInvitationService
     participant INV as invitacion:InvitacionRecompra
+    participant ORD as :OrderService
 
-    CLI->>+RFS: aceptarInvitacionDeRecompra(invitacionId)
-    RFS->>+COL: get(invitacionId)
-    COL-->>-RFS: invitacion
-    RFS->>+INV: aceptar()
-    INV->>INV: validarVigencia()
-    INV-->>-RFS: items
-    Note over RFS,INV: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con sus ItemPedido
-    Note over RFS,INV: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-    RFS-->>-CLI: pedido
+    CLI->>+RAS: aceptarInvitacionDeRecompra(invitacionId)
+    RAS->>+INVS: delCliente(invitacionId, usuarioId)
+    INVS-->>-RAS: invitacion
+    RAS->>INVS: exigirAbierta(invitacion)
+    RAS->>+ORD: create(pedidoSugerido, distribuidoraId)
+    Note over RAS,ORD: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con sus ItemPedido
+    Note over RAS,ORD: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    ORD-->>-RAS: pedido
+    RAS->>+INVS: aceptada(invitacionId, pedidoId, ahora)
+    INVS->>INV: aceptar(pedidoId)
+    INVS-->>-RAS: invitacion
+    RAS-->>-CLI: pedido

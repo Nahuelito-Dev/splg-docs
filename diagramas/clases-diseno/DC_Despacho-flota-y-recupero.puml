@@ -37,7 +37,6 @@ class LoteRecorrido {
   - estado: EstadoDelLote
   - /pesoTotal: Decimal
   + «create» LoteRecorrido(pedidos: Pedido[*])
-  + deshacer()
   + ofrecerA(chofer: Chofer, venceEn: Entero)
 }
 class OfertaLote {
@@ -62,7 +61,6 @@ class TareaMantenimiento {
   - vigenteDesde: Fecha
   - detalle: Registro
   + proponerVentana(chofer: Chofer,\n      ventana: PropuestaVentanaTaller): PropuestaVentanaTaller
-  + proyectarVencimiento(kilometrajeDiario: Entero): Fecha
 }
 class Chofer {
   - disponible: Booleano
@@ -86,10 +84,7 @@ class Vehiculo {
   - estadoEnLaFlota: EstadoEnLaFlota
   - tipoDeCombustible: TipoDeCombustible
   - capacidadDelTanque: Decimal
-  + estimarKilometrajeDiario(): Entero
-  + getChoferEnUso(): Chofer
   + ponerFueraDeServicio()
-  + proyectarVencimientos(): TareaMantenimiento[*]
 }
 class UbicacionGPS {
   - latitud: Decimal
@@ -133,7 +128,7 @@ Chofer "0..1" -- "0..*" LoteRecorrido : acepta
 Chofer "1" -- "0..*" Vehiculo : tiene registrado
 Chofer "0..*" -- "0..*" Vehiculo : usa
 Chofer "1" --> "0..1" UbicacionGPS : se ubica en
-TareaMantenimiento "0..*" <-- "0..1" Vehiculo : habilita
+TareaMantenimiento "0..*" -- "0..1" Vehiculo : habilita
 TareaMantenimiento "0..*" -- "0..1" Chofer : habilita
 TareaMantenimiento "1" *--> "0..*" PropuestaVentanaTaller : origina
 PropuestaVentanaTaller "0..*" -- "1" Chofer : se dirige a

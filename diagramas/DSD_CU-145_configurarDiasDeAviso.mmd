@@ -2,14 +2,12 @@ sequenceDiagram
     title DSD — CU-145 Configurar los Días de Aviso Previo a la Recompra · configurarDiasDeAviso
     autonumber
     actor CLI as Cliente (ACT-01)
-    participant SRV as :CustomersService
-    participant COL as :Map#lt;String, Cliente#gt;
+    participant RCS as :RepurchaseCustomerService
+    participant CUS as :CustomersService
     participant CLE as cliente:Cliente
 
-    CLI->>+SRV: configurarDiasDeAviso(dias)
-    SRV->>+COL: get(usuarioId)
-    COL-->>-SRV: cliente
-    SRV->>+CLE: configurarAviso(dias)
-    CLE->>CLE: validarRango(dias)
-    deactivate CLE
-    SRV-->>-CLI: cliente
+    CLI->>+RCS: configurarDiasDeAviso(dias)
+    RCS->>+CUS: guardarAvisoDeRecompra(usuarioId, cambios)
+    CUS->>CLE: configurarAviso(dias)
+    CUS-->>-RCS: aviso
+    RCS-->>-CLI: aviso

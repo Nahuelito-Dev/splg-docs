@@ -46,19 +46,10 @@ class "Map<String, Usuario>" as Map_String_Usuario <<colección>> {
   + get(clave: Cadena): Usuario
   + verificarDisponibilidad(correo: Cadena,\n      telefono: Cadena): Booleano
 }
-class "List<InvitacionRecompra>" as List_InvitacionRecompra <<colección>> {
-  + caducarVencidas(hoy: Fecha)
-}
-class "List<Cliente>" as List_Cliente <<colección>> {
-  + buscarConHistorialSuficiente(): Cliente[*]
-}
 class Usuario <<referencia>>
-class InvitacionRecompra <<referencia>>
 class Cliente <<referencia>>
 
 Map_String_Usuario "1" o--> "0..*" Usuario
-List_InvitacionRecompra "1" o--> "0..*" InvitacionRecompra
-List_Cliente "1" o--> "0..*" Cliente
 AuthService --> "1" FirebaseAuthPort
 AuthService --> "1" Map_String_Usuario
 RegistroService --> "1" FirebaseAuthPort

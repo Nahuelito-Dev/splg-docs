@@ -91,7 +91,7 @@ Chofer "0..1" -- "0..*" LoteRecorrido
 Chofer "1" -- "0..*" Vehiculo : tiene registrado
 Chofer "0..*" -- "0..*" Vehiculo : usa
 Chofer "1" --> "0..1" UbicacionGPS
-TareaMantenimiento "0..*" <-- "0..1" Vehiculo
+TareaMantenimiento "0..*" -- "0..1" Vehiculo
 TareaMantenimiento "0..*" -- "0..1" Chofer
 TareaMantenimiento "1" *--> "0..*" PropuestaVentanaTaller
 PropuestaVentanaTaller "0..*" -- "1" Chofer

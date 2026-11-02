@@ -2,24 +2,19 @@ sequenceDiagram
     title DSD — CU-107 Agrupar Pedidos por Recorrido · aceptarRecorrido
     autonumber
     actor CHF as Chofer (ACT-02)
-    participant SRV as :RouteBatchPlannerService
-    participant RECS as :Map#lt;String, LoteRecorrido#gt;
+    participant RBS as :RouteBatchService
+    participant ORD as :OrderService
     participant LOT as recorrido:LoteRecorrido
     participant OFL as oferta:OfertaLote
-    participant PRA as parada:ParadaLote
-    participant PED as pedido:Pedido
+    participant RBN as :RouteBatchNotifier
 
-    CHF->>+SRV: aceptarRecorrido(recorridoId)
-    SRV->>+RECS: get(recorridoId)
-    RECS-->>-SRV: recorrido
-    SRV->>+LOT: getOfertaVigente(chofer)
-    LOT-->>-SRV: oferta
-    SRV->>OFL: aceptar()
-    SRV->>+LOT: asignarChofer(chofer)
-    loop Por cada parada del recorrido
-        LOT->>+PRA: getPedido()
-        PRA-->>-LOT: pedido
-        LOT->>PED: aceptar(chofer)
+    CHF->>+RBS: aceptarRecorrido(recorridoId)
+    RBS->>RBS: ofertaViva(recorridoId, choferId)
+    loop Por cada parada del recorrido, en su orden
+        RBS->>ORD: assignDelivery(pedidoId, choferId, distribuidoraId, opciones)
     end
+    RBS->>+LOT: asignarChofer(chofer)
+    LOT->>OFL: aceptar()
     deactivate LOT
-    SRV-->>-CHF: pedidos
+    RBS-)RBN: loteAsignado(usuarioId, recorridoId, pedidoIds)
+    RBS-->>-CHF: resultado

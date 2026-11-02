@@ -90,14 +90,10 @@ package "Stock y compras" as area_Stock_y_compras #F4EEF7 {
 }
 auth ..> firebase
 auth ..> users
-car ..> fleet
 claims ..> customer
 claims ..> order
 customer ..> claims
-cylinder ..> notifications
-cylinder ..> order
 fleet ..> car
-fleet ..> notifications
 gateways ..> delivery
 order ..> cart
 order ..> coverage_zone
@@ -115,8 +111,10 @@ order ..> truck_load
 registro ..> customer
 registro ..> firebase
 registro ..> users
-repurchase ..> customer
-repurchase ..> notifications
+repurchase ..> repurchase_forecast
+repurchase_forecast ..> customer
+route_batch ..> delivery
+route_batch ..> order
 
 legend bottom right
   Cada flecha punteada es una dependencia entre módulos: alguna clase del origen le manda

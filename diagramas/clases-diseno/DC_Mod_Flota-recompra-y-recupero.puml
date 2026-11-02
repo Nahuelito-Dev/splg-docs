@@ -34,28 +34,48 @@ class FleetDispatchLockService <<fabricación pura>> {
   + assertChoferHabilitado(chofer: Chofer)
   + vehiculoEnUsoDelChofer(chofer: Chofer): Vehiculo
 }
-class FleetMaintenancePlannerService <<fachada>> {
-  + planificarMantenimientoDeFlota()
+class MaintenancePlannerService <<fachada>> {
+  + planificarMantenimientoDeFlota(): Registro
 }
-class DemandForecastService <<fabricación pura>> {
-  + demandaProyectada(ventanas: PropuestaVentanaTaller[*]): Registro
+class MaintenanceForecastService <<fabricación pura>> {
+  + consumos(distribuidoraId: Identificador,\n      vehiculos: Vehiculo[*], parametros: Registro,\n      ahora: FechaHora): Registro
+  + guardarPredicciones(proyectadas: Registro)
+  + proyectar(tarea: TareaMantenimiento, vehiculo: Vehiculo,\n      consumo: Registro, ahora: FechaHora): Registro
 }
-class FleetCoverageService <<fabricación pura>> {
-  + ventanasFactibles(vehiculo: Vehiculo,\n      ventanas: PropuestaVentanaTaller[*]): PropuestaVentanaTaller[*]
+class PlannerContextService <<fabricación pura>> {
+  + cargar(distribuidoraId: Identificador,\n      vehiculosActivos: Registro, parametros: Registro,\n      ahora: FechaHora): Registro
+}
+class MaintenancePlannerNotifier <<fabricación pura>> {
+  + propuestaAlChofer(chofer: Chofer,\n      propuesta: PropuestaVentanaTaller,\n      aviso: AvisoRecupero, correo: Cadena)
 }
 class RepurchaseForecastService <<fachada>> {
-  + anticiparRecompras()
+  + anticiparRecompras(): Cadena
 }
-class ConsumptionEstimatorService <<fabricación pura>> {
-  + estimarProximaRecompra(cliente: Cliente): Fecha
+class RepurchaseEstimatorService <<fabricación pura>> {
+  + estimar(distribuidoraId: Identificador, ahora: FechaHora,\n      parametros: Registro): Cliente[*]
+  + parametros(distribuidoraId: Identificador): Registro
+}
+class RepurchaseInvitationService <<fabricación pura>> {
+  + abrir(datos: Registro): InvitacionRecompra
+  + vencerVencidas(ahora: FechaHora,\n      distribuidoraId: Identificador)
+}
+class RepurchaseSuggestionService <<fabricación pura>> {
+  + armar(distribuidoraId: Identificador, usuario: Usuario,\n      habitos: Registro): Registro
+}
+class RepurchaseNotifier <<fabricación pura>> {
+  + invitar(invitacion: InvitacionRecompra)
 }
 class CylinderRecoveryService <<fachada>> {
-  + gestionarEnvasesNoDevueltos()
+  + clasificar(envasesAfuera: Registro, parametros: Registro,\n      ahora: FechaHora)
+  + envasesAfuera(distribuidoraId: Identificador)
+  + gestionarEnvasesNoDevueltos(): Cadena
+  + parametros(distribuidoraId: Identificador)
+  + procesarCaso(casoId: Identificador, parametros: Registro,\n      ahora: FechaHora)
 }
-class CylinderLifecyclePort <<referencia>>
-class NotificationsService <<referencia>>
-class "List<Cliente>" as List_Cliente <<referencia>>
-class "List<InvitacionRecompra>" as List_InvitacionRecompra <<referencia>>
+class CylinderRecoveryNotifier <<fabricación pura>> {
+  + alClienteAgrupado(usuario: Usuario, avisos: Registro)
+  + escaladoAlAdmin(caso: CasoRecupero, contexto: Registro)
+}
 class CasoRecupero <<referencia>>
 class Envase <<referencia>>
 class TareaMantenimiento <<referencia>>
@@ -63,20 +83,19 @@ class Vehiculo <<referencia>>
 class InvitacionRecompra <<referencia>>
 class UpdateOrderStatusUseCase <<referencia>>
 
-CylinderRecoveryService --> "1" CylinderLifecyclePort
-CylinderRecoveryService --> "1" NotificationsService
-FleetMaintenancePlannerService --> "1" DemandForecastService
-FleetMaintenancePlannerService --> "1" FleetCoverageService
-FleetMaintenancePlannerService --> "1" NotificationsService
-RepurchaseForecastService --> "1" ConsumptionEstimatorService
-RepurchaseForecastService --> "1" List_Cliente
-RepurchaseForecastService --> "1" List_InvitacionRecompra
-RepurchaseForecastService --> "1" NotificationsService
+CylinderRecoveryService --> "1" CylinderRecoveryNotifier
+MaintenancePlannerService --> "1" MaintenanceForecastService
+MaintenancePlannerService --> "1" MaintenancePlannerNotifier
+MaintenancePlannerService --> "1" PlannerContextService
+RepurchaseForecastService --> "1" RepurchaseEstimatorService
+RepurchaseForecastService --> "1" RepurchaseInvitationService
+RepurchaseForecastService --> "1" RepurchaseNotifier
+RepurchaseForecastService --> "1" RepurchaseSuggestionService
 CylinderRecoveryService ..> CasoRecupero
 CylinderRecoveryService ..> Envase
-FleetMaintenancePlannerService ..> TareaMantenimiento
-FleetMaintenancePlannerService ..> Vehiculo
-RepurchaseForecastService ..> "<<create>>" InvitacionRecompra
+MaintenancePlannerService ..> TareaMantenimiento
+MaintenancePlannerService ..> Vehiculo
+RepurchaseInvitationService ..> "<<create>>" InvitacionRecompra
 UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
 
 legend bottom right

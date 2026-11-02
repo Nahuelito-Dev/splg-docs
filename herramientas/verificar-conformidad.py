@@ -808,6 +808,8 @@ _err_cal = []
 for _doc in ("Casos-de-Uso.md", "0-Plan_Del_Proyecto.md"):
     _t = open(ruta_doc(_doc), encoding="utf-8").read()
     _filas = _re.findall(r'^\| (CU-\d{3}) [^|]+\| SS-\d\d \|[^|]*\| (\w+) \|', _t, _re.M)
+    if _doc == "Casos-de-Uso.md":
+        _filas = [(c, k) for c, k in _filas if c not in RETIRADOS_ALCANCE]
     _cods = [c for c, _ in _filas]
     _rep = sorted({c for c in _cods if _cods.count(c) > 1})
     if _rep: _err_cal.append(f"{_doc}: CU repetidos en el catálogo {_rep}")
@@ -845,7 +847,7 @@ _esperado = [
     ("GUIA-DEL-REPOSITORIO.md", r'las (\d+) operaciones del sistema', _n_ops), ("GUIA-DEL-REPOSITORIO.md", r'los (\d+) contratos', _n_contr),
     ("AGENTS.md", r'reúne los (\d+) CU', _n_cu),
     ("Casos-de-Uso.md", r'Se incluyen (\d+) diagramas, uno por caso', _n_dss),
-    ("Casos-de-Uso.md", r'Este documento reúne, para los \*\*(\d+) casos de uso', _n_cu),
+    ("Casos-de-Uso.md", r'Este documento reúne, para los \*\*(\d+) casos de uso', _n_cu - len(RETIRADOS_ALCANCE)),
     ("3-Diseño.md", r'a partir de los (\d+) diagramas de interacción', len(ARCHIVOS_DSD)),
 ]
 for _f, _pat, _val in _esperado:

@@ -1655,3 +1655,12 @@ def verificar_dc():
             if not re.match(r'^/?\w+: [\w\[\]*]+$', a):
                 errores.append(f"{c}: el atributo «{a}» no está en notación UML (- nombre: Tipo)")
     return errores, {"clases": len(clases), "operaciones": n_ops}
+
+# Módulos inteligentes M2 a M5 (implementados): argumentos y retornos de sus DSD.
+GLOSARIO.update({
+    "avisos": "Registro", "contexto": "Registro", "envasesAfuera": "Registro", "habitos": "Registro",
+    "ocupados": "Registro", "pedidoIds": "Identificador", "proyectadas": "Registro",
+    "vehiculosActivos": "Registro", "consumos": "Registro", "proyeccion": "Registro",
+    "sugerencia": "Registro",
+})
+_PLURALES |= {"avisos", "envasesAfuera", "pedidoIds", "proyectadas", "vehiculosActivos", "ocupados", "consumos"}

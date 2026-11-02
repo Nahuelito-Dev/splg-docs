@@ -2,14 +2,12 @@ sequenceDiagram
     title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · confirmarVentanaDeTaller
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant PLN as :FleetMaintenancePlannerService
-    participant COL as :Map#lt;String, TareaMantenimiento#gt;
+    participant MPS as :MaintenancePlannerService
     participant TAR as tarea:TareaMantenimiento
-    participant FIT as :FleetAvailabilityPort
+    participant MPN as :MaintenancePlannerNotifier
 
-    ADM->>+PLN: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
-    PLN->>+COL: get(tareaId)
-    COL-->>-PLN: tarea
-    PLN->>TAR: programar(ventanaElegida, gastoEstimado)
-    PLN->>FIT: blockVehicleWindow(tarea, ventanaElegida)
-    PLN-->>-ADM: tarea
+    ADM->>+MPS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
+    MPS->>MPS: verificarCobertura(distribuidoraId, vehiculoId, ventana, ahora)
+    MPS->>TAR: programar(ventanaElegida, gastoEstimado)
+    MPS-)MPN: ventanaConfirmada(chofer, caso, aviso)
+    MPS-->>-ADM: tarea

@@ -3,24 +3,30 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant RFS as :RepurchaseForecastService
-    participant INVS as :List#lt;InvitacionRecompra#gt;
-    participant CLIS as :List#lt;Cliente#gt;
-    participant EST as :ConsumptionEstimatorService
-    participant NOT as :NotificationsService
+    participant EST as :RepurchaseEstimatorService
+    participant INVS as :RepurchaseInvitationService
+    participant SUG as :RepurchaseSuggestionService
+    participant NOT as :RepurchaseNotifier
 
     SIS->>+RFS: anticiparRecompras()
-    RFS->>INVS: caducarVencidas(hoy)
-    RFS->>+CLIS: buscarConHistorialSuficiente()
-    CLIS-->>-RFS: clientes
-    loop Por cada cliente
-        RFS->>+EST: estimarProximaRecompra(cliente)
-        EST-->>-RFS: fechaEstimada
-        opt La recompra cae dentro de los días de aviso del cliente
-            create participant INV as :InvitacionRecompra
-            RFS->>INV: «create»(cliente, fechaEstimada, vigencia)
-            create participant ITS as :ItemSugerido
-            INV->>ITS: «create»(producto, cantidad)
-            RFS-)NOT: sendRepurchaseInvitation(cliente, invitacion)
+    RFS->>+EST: parametros(distribuidoraId)
+    EST-->>-RFS: parametros
+    RFS->>INVS: vencerVencidas(ahora, distribuidoraId)
+    RFS->>+EST: estimar(distribuidoraId, ahora, parametros)
+    EST-->>-RFS: clientes
+    loop Por cada cliente con fecha estimada
+        opt El aviso está activo, la recompra cae dentro de sus días de aviso y no tiene un pedido ni una invitación reciente
+            RFS->>+SUG: armar(distribuidoraId, usuarioId, habitos)
+            SUG-->>-RFS: sugerencia
+            opt Hay stock de algún producto sugerido
+                RFS->>+INVS: abrir(datos)
+                create participant INV as :InvitacionRecompra
+                INVS->>INV: «create»(cliente, fechaEstimada, vigencia)
+                create participant ITS as :ItemSugerido
+                INV->>ITS: «create»(producto, cantidad)
+                INVS-->>-RFS: invitacion
+                RFS-)NOT: invitar(invitacion)
+            end
         end
     end
-    deactivate RFS
+    RFS-->>-SIS: resultado

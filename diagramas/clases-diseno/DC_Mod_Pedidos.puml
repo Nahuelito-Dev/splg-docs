@@ -58,12 +58,6 @@ interface NotificationPort <<puerto>> {
 class "Map<String, Pedido>" as Map_String_Pedido <<colección>> {
   + get(clave: Cadena): Pedido
 }
-interface OrderRepositoryPort <<puerto>> {
-  + findScheduled(distribuidora: Distribuidora): Pedido[*]
-}
-interface CylinderLifecyclePort <<puerto>> {
-  + findHeldByCustomer(plazoDeTolerancia: Entero): Envase[*]
-}
 class Pedido <<referencia>>
 class RealtimeDispatchPort <<referencia>>
 class RefundsService <<referencia>>
@@ -77,8 +71,6 @@ class FranjaHoraria <<referencia>>
 class Producto <<referencia>>
 class Chofer <<referencia>>
 class TruckLoadGateService <<referencia>>
-class RouteBatchPlannerService <<referencia>>
-class CylinderRecoveryService <<referencia>>
 
 Map_String_Pedido "1" o--> "0..*" Pedido
 CancelOrderUseCase --> "1" Map_String_Pedido
@@ -108,8 +100,6 @@ OrderService ..> Pedido
 UpdateOrderStatusUseCase ..> Chofer
 UpdateOrderStatusUseCase ..> Pedido
 UpdateOrderStatusUseCase ..> TruckLoadGateService
-RouteBatchPlannerService --> "1" OrderRepositoryPort
-CylinderRecoveryService --> "1" CylinderLifecyclePort
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.

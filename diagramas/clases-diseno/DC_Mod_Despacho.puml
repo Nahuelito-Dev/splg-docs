@@ -50,10 +50,14 @@ interface RealtimeDispatchPort <<puerto>> {
   + notifyDriverOrderCancelled(choferAnterior: Chofer,\n      pedido: Pedido)
   + stopTracking(choferAnterior: Chofer)
 }
-class RouteBatchPlannerService <<fachada>> {
-  + aceptarRecorrido(recorrido: LoteRecorrido)
-  + agruparPedidosPorRecorrido()
-  + agruparPorProximidad(pedidos: Pedido[*]): LoteRecorrido[*]
+class RouteBatchService <<fachada>> {
+  + agruparPedidosPorRecorrido(): Registro
+  + candidatos(distribuidoraId: Identificador,\n      ahora: FechaHora)
+  + choferesCerca(distribuidoraId: Identificador,\n      latitud: Decimal, longitud: Decimal,\n      ocupados: Registro)
+  + distancias(pedidoIds: Identificador)
+}
+class RouteBatchNotifier <<fabricación pura>> {
+  + ofertaAlChofer(chofer: Chofer, aviso: AvisoRecupero)
 }
 class DispatchSettingsService <<fabricación pura>> {
   + obtener(distribuidora: Distribuidora): Registro
@@ -77,17 +81,11 @@ class AdminGateway <<fabricación pura>> {
   + notifyAdmins(evento: Registro, posicion: UbicacionGPS)
 }
 class NotificationsService <<fabricación pura>> {
-  + escalateToAdmin(caso: CasoRecupero)
-  + sendBatchOffer(chofer: Chofer, recorrido: LoteRecorrido)
   + sendOfferPushToDriver(chofer: Chofer, pedido: Pedido)
-  + sendRecoveryStep(caso: CasoRecupero, escalon: Entero)
-  + sendRepurchaseInvitation(cliente: Cliente,\n      invitacion: InvitacionRecompra)
-  + sendWindowProposal(propuesta: PropuestaVentanaTaller)
 }
 class Chofer <<referencia>>
 class "Map<String, Pedido>" as Map_String_Pedido <<referencia>>
 class OrderService <<referencia>>
-class OrderRepositoryPort <<referencia>>
 class UbicacionGPS <<referencia>>
 class OfertaDespacho <<referencia>>
 class Pedido <<referencia>>
@@ -106,8 +104,7 @@ DispatchService --> "1" OrderService
 DispatchService --> "1" ScheduledTasksSettingsService
 DriversGateway --> "1" AdminGateway
 DriversGateway --> "1" CustomersGateway
-RouteBatchPlannerService --> "1" NotificationsService
-RouteBatchPlannerService --> "1" OrderRepositoryPort
+RouteBatchService --> "1" RouteBatchNotifier
 DeliveryService ..> Chofer
 DeliveryService ..> UbicacionGPS
 DispatchOrchestratorService ..> Chofer
@@ -115,8 +112,8 @@ DispatchOrchestratorService ..> OfertaDespacho
 DispatchOrchestratorService ..> Pedido
 DispatchOrchestratorService ..> TruckLoadGateService
 DriversGateway ..> Chofer
-RouteBatchPlannerService ..> Chofer
-RouteBatchPlannerService ..> "<<create>>" LoteRecorrido
+RouteBatchService ..> Chofer
+RouteBatchService ..> "<<create>>" LoteRecorrido
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.

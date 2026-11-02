@@ -9,7 +9,7 @@
 
 ## Contenido
 
-Este documento reúne, para los **338 casos de uso**, los cuatro artefactos que exige la
+Este documento reúne, para los **328 casos de uso vigentes**, los cuatro artefactos que exige la
 cátedra, más los artefactos de contexto que los acompañan:
 
 1. **Actores del sistema** — quiénes interactúan con él.
@@ -22,7 +22,7 @@ cátedra, más los artefactos de contexto que los acompañan:
 7. **Diagramas de interacción de diseño** — qué clases participan y en qué orden.
 8. **Tabla de implementación** — lo técnico de cada caso (operación del sistema, ruta de la API, respuestas y códigos, notas), que los casos de uso esenciales no mencionan.
 
-Los casos **CU-001 a CU-051** corresponden al alcance relevado inicialmente. Los casos CU-052 a CU-104 se incorporaron al contrastar la documentación contra el sistema construido: son comportamientos que el sistema ya realiza y que el relevamiento original no había registrado. Los casos CU-105 a CU-108 son los cuatro módulos inteligentes (M2 a M5). Los casos CU-109 a CU-175 desglosan en casos propios los ABM de choferes, vehículos, clientes, direcciones y franjas horarias, y suman el carrito, el pedido en curso, la vigencia de los envases, la flota, el consumo declarado, la compra express, los reintegros, el registro de auditoría y la configuración de los procesos automáticos. Los casos CU-176 a CU-344 son los módulos de gestión de la distribuidora —personal y legajos, flota ampliada, stock físico y carga del camión, compras, caja, rendiciones, cuentas corrientes y comisiones— con sus ABM. El catálogo tiene 334 casos: de CU-001 a CU-344 faltan diez, retirados (§8).
+Los casos **CU-001 a CU-051** corresponden al alcance relevado inicialmente. Los casos CU-052 a CU-104 se incorporaron al contrastar la documentación contra el sistema construido: son comportamientos que el sistema ya realiza y que el relevamiento original no había registrado. Los casos CU-105 a CU-108 son los cuatro módulos inteligentes (M2 a M5). Los casos CU-109 a CU-175 desglosan en casos propios los ABM de choferes, vehículos, clientes, direcciones y franjas horarias, y suman el carrito, el pedido en curso, la vigencia de los envases, la flota, el consumo declarado, la compra express, los reintegros, el registro de auditoría y la configuración de los procesos automáticos. Los casos CU-176 a CU-348 son los módulos de gestión de la distribuidora —personal y legajos, flota ampliada, stock físico y carga del camión, compras, caja, rendiciones, cuentas corrientes y, hasta su retiro del alcance, comisiones— con sus ABM. El catálogo numera de CU-001 a CU-348, es decir, 348 números: 328 casos vigentes, 10 retirados del catálogo por no ser procesos de negocio elementales (§3, «Casos de uso retirados») y 10 retirados del alcance porque el chofer cobra un sueldo mensual y no gana comisiones por entrega —las ganancias del chofer (CU-049) y las comisiones con su liquidación (CU-240 a CU-244, CU-333 a CU-335 y CU-347)—, que se conservan en el documento con esa marca y no se cuentan entre los vigentes.
 
 ### Convención de prioridad
 
@@ -70,7 +70,7 @@ Los casos **CU-001 a CU-051** corresponden al alcance relevado inicialmente. Los
 
 ## 2. Diagrama de Casos de Uso del Sistema
 
-Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos niveles, ambos en notación UML. La figura principal es el **diagrama por subsistemas**: los 21 subsistemas dibujados como paquetes dentro del límite del sistema y los actores fuera de él, cada uno unido a los subsistemas en los que participa; el Administrador General especializa al Administrador. El detalle —los 334 casos de uso, uno por uno, con sus relaciones «include» y «extend»— está en el **diagrama completo** y en sus **láminas** (anexo `catedra/entregables/diagramas-cu/`), que siguen a esta figura. Después, el **mapa de navegación** (que no es un diagrama UML) resume los paquetes y los actores en una página, como ayuda para ubicarse.
+Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presenta en dos niveles, ambos en notación UML. La figura principal es el **diagrama por subsistemas**: los 21 subsistemas dibujados como paquetes dentro del límite del sistema y los actores fuera de él, cada uno unido a los subsistemas en los que participa; el Administrador General especializa al Administrador. El detalle —los casos de uso vigentes, uno por uno, con sus relaciones «include» y «extend»— está en el **diagrama completo** y en sus **láminas** (anexo `catedra/entregables/diagramas-cu/`), que siguen a esta figura. Después, el **mapa de navegación** (que no es un diagrama UML) resume los paquetes y los actores en una página, como ayuda para ubicarse.
 
 **Figura — Diagrama de casos de uso del sistema por subsistemas**
 
@@ -262,7 +262,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-046 Consultar las Direcciones de Entrega del Cliente | SS-02 | ACT-01 | Importante | Implementado |
 | CU-047 Recuperar la Contraseña | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
 | CU-048 Procesar el Pago con MercadoPago | SS-14 | ACT-06 | Crítico | Implementado |
-| CU-049 Consultar las Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante | Implementado |
+| CU-049 Consultar las Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-050 Bloquear un Usuario | SS-01 | ACT-03, ACT-05 | Secundario | Implementado |
 | CU-051 Consultar el Listado de Vehículos | SS-07 | ACT-03 | Importante | Implementado |
 | CU-052 Registrar una Distribuidora | SS-10 | ACT-05 | Crítico | Implementado |
@@ -311,10 +311,10 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-101 Reenviar la Notificación de Confirmación de Pedido | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-102 Probar el Servicio de Correo | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-104 Verificar la Salud del Sistema (vida y disponibilidad) | SS-18 | ACT-09 | Importante | Implementado |
-| CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | SS-07 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (C-14) |
-| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | ACT-01, ACT-04 | Importante | Planificado (C-16) |
-| CU-107 Agrupar Pedidos por Recorrido | SS-03 | ACT-02, ACT-04 | Importante | Planificado (C-19) |
-| CU-108 Recuperar Envases No Devueltos | SS-13 | ACT-01, ACT-03, ACT-04 | Importante | Planificado (C-15) |
+| CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | SS-07 | ACT-02, ACT-03, ACT-04 | Importante | Implementado |
+| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | ACT-01, ACT-04 | Importante | Implementado en el sistema y el panel; en curso en la aplicación del cliente |
+| CU-107 Agrupar Pedidos por Recorrido | SS-03 | ACT-02, ACT-04 | Importante | Implementado en el sistema y el panel; en curso en la aplicación del chofer |
+| CU-108 Recuperar Envases No Devueltos | SS-13 | ACT-01, ACT-03, ACT-04 | Importante | Implementado en el sistema y el panel; en curso en las aplicaciones |
 | CU-109 Consultar el Detalle del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-110 Buscar un Chofer por Usuario | SS-07 | ACT-03 | Importante | Implementado |
 | CU-111 Modificar un Vehículo | SS-07 | ACT-03 | Importante | Implementado |
@@ -351,8 +351,8 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante | Implementado |
 | CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | ACT-01 | Importante | Implementado |
 | CU-144 Modificar el Consumo Promedio Declarado | SS-02 | ACT-01 | Importante | Implementado |
-| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Planificado (C-13) |
-| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante | Planificado (C-13) |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Implementado en el sistema; en curso en la aplicación del cliente |
+| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante | Implementado |
 | CU-147 Realizar una Compra Express | SS-02 | ACT-01 | Crítico | Implementado |
 | CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | ACT-01 | Importante | Implementado |
 | CU-149 Despachar un Pedido Express a un Chofer en Moto | SS-03 | ACT-04 | Crítico | Implementado |
@@ -445,11 +445,11 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-237 Registrar un Pago de Cuenta Corriente | SS-21 | ACT-03, ACT-02 | Crítico | Implementado |
 | CU-238 Consultar el Estado de Cuenta de un Cliente | SS-21 | ACT-03 | Importante | Implementado |
 | CU-239 Consultar la Antigüedad de la Deuda | SS-21 | ACT-03 | Secundario | Implementado |
-| CU-240 Crear una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Implementado |
-| CU-241 Registrar la Comisión de una Entrega | SS-21 | ACT-04 | Importante | Implementado |
-| CU-242 Liquidar las Comisiones de un Chofer | SS-21 | ACT-03 | Importante | Implementado |
-| CU-243 Registrar el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Implementado |
-| CU-244 Consultar Mis Comisiones | SS-21 | ACT-02 | Secundario | Implementado |
+| CU-240 Crear una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-241 Registrar la Comisión de una Entrega | SS-21 | ACT-04 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-242 Liquidar las Comisiones de un Chofer | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-243 Registrar el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-244 Consultar Mis Comisiones | SS-21 | ACT-02 | Secundario | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-245 Consultar el Tablero Financiero | SS-21 | ACT-03 | Importante | Implementado |
 | CU-246 Verificar la Habilitación Laboral del Chofer | SS-19 | — | Importante | Implementado |
 | CU-247 Reactivar un Vehículo | SS-07 | ACT-03 | Importante | Implementado |
@@ -538,9 +538,9 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-330 Reabrir la Rendición del Chofer | SS-21 | ACT-03 | Importante | Implementado |
 | CU-331 Modificar la Cuenta Corriente de un Cliente | SS-21 | ACT-03 | Importante | Implementado |
 | CU-332 Asentar el Cargo de una Venta a Cuenta Corriente | SS-21 | ACT-04 | Crítico | Implementado |
-| CU-333 Modificar una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Implementado |
-| CU-334 Aprobar una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Implementado |
-| CU-335 Anular una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Implementado |
+| CU-333 Modificar una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-334 Aprobar una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-335 Anular una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-336 Cambiar el Correo del Usuario | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
 | CU-337 Ajustar el Saldo del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-338 Retomar el Pedido en Curso | SS-02 | ACT-02 | Importante | Implementado |
@@ -552,7 +552,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-344 Consultar el Catálogo de Productos (Administrador) | SS-08 | ACT-03 | Importante | Implementado |
 | CU-345 Modificar un Administrador | SS-16 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-346 Dar de Baja un Administrador | SS-16 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-347 Anular el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Implementado |
+| CU-347 Anular el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-348 Consultar el Reintegro de un Pedido | SS-14 | ACT-01 | Secundario | Implementado |
 
 ### Resumen
@@ -560,10 +560,10 @@ están en el documento 1 — Requisitos, §4.3.
 | Calificación | Cantidad | CU |
 |:------------:|:--------:|-----|
 | **Crítico** | 63 | CU-001, CU-002, CU-005, CU-006, CU-013, CU-014, CU-015, CU-017, CU-018, CU-020, CU-022, CU-031, CU-032, CU-036, CU-037, CU-038, CU-041, CU-048, CU-052, CU-053, CU-054, CU-058, CU-060, CU-064, CU-068, CU-070, CU-072, CU-074, CU-075, CU-078, CU-079, CU-080, CU-081, CU-132, CU-135, CU-136, CU-137, CU-138, CU-147, CU-149, CU-171, CU-177, CU-181, CU-183, CU-184, CU-197, CU-208, CU-217, CU-218, CU-220, CU-222, CU-227, CU-228, CU-232, CU-233, CU-236, CU-237, CU-250, CU-266, CU-271, CU-292, CU-309, CU-332 |
-| **Importante** | 218 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-049, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-085, CU-086, CU-087, CU-089, CU-092, CU-095, CU-096, CU-097, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-240, CU-241, CU-242, CU-243, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272, CU-273, CU-274, CU-275, CU-277, CU-278, CU-279, CU-280, CU-282, CU-283, CU-284, CU-285, CU-286, CU-288, CU-289, CU-290, CU-291, CU-293, CU-294, CU-295, CU-296, CU-299, CU-300, CU-301, CU-302, CU-303, CU-305, CU-307, CU-308, CU-310, CU-311, CU-312, CU-313, CU-314, CU-316, CU-317, CU-318, CU-319, CU-320, CU-321, CU-323, CU-324, CU-326, CU-327, CU-329, CU-330, CU-331, CU-333, CU-334, CU-335, CU-336, CU-337, CU-338, CU-339, CU-340, CU-341, CU-342, CU-343, CU-344, CU-345, CU-346, CU-347 |
-| **Secundario** | 55 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-094, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-244, CU-249, CU-265, CU-270, CU-276, CU-281, CU-287, CU-297, CU-298, CU-304, CU-306, CU-315, CU-322, CU-325, CU-328, CU-348 |
+| **Importante** | 209 | CU-004, CU-007, CU-008, CU-009, CU-010, CU-011, CU-016, CU-019, CU-023, CU-024, CU-025, CU-026, CU-027, CU-028, CU-033, CU-034, CU-035, CU-039, CU-040, CU-042, CU-043, CU-044, CU-045, CU-046, CU-047, CU-051, CU-055, CU-056, CU-061, CU-063, CU-067, CU-069, CU-071, CU-073, CU-076, CU-077, CU-082, CU-083, CU-085, CU-086, CU-087, CU-089, CU-092, CU-095, CU-096, CU-097, CU-104, CU-105, CU-106, CU-107, CU-108, CU-109, CU-110, CU-111, CU-112, CU-113, CU-114, CU-115, CU-116, CU-117, CU-118, CU-119, CU-120, CU-121, CU-122, CU-123, CU-124, CU-125, CU-127, CU-128, CU-129, CU-130, CU-131, CU-133, CU-134, CU-139, CU-140, CU-141, CU-142, CU-143, CU-144, CU-146, CU-148, CU-150, CU-151, CU-152, CU-154, CU-155, CU-159, CU-161, CU-166, CU-167, CU-168, CU-169, CU-172, CU-173, CU-174, CU-176, CU-178, CU-179, CU-180, CU-182, CU-185, CU-187, CU-188, CU-189, CU-191, CU-192, CU-195, CU-196, CU-198, CU-201, CU-203, CU-204, CU-207, CU-209, CU-211, CU-213, CU-214, CU-215, CU-219, CU-221, CU-224, CU-225, CU-226, CU-229, CU-231, CU-234, CU-235, CU-238, CU-245, CU-246, CU-247, CU-248, CU-251, CU-252, CU-253, CU-254, CU-255, CU-256, CU-257, CU-258, CU-259, CU-260, CU-261, CU-262, CU-263, CU-264, CU-267, CU-268, CU-269, CU-272, CU-273, CU-274, CU-275, CU-277, CU-278, CU-279, CU-280, CU-282, CU-283, CU-284, CU-285, CU-286, CU-288, CU-289, CU-290, CU-291, CU-293, CU-294, CU-295, CU-296, CU-299, CU-300, CU-301, CU-302, CU-303, CU-305, CU-307, CU-308, CU-310, CU-311, CU-312, CU-313, CU-314, CU-316, CU-317, CU-318, CU-319, CU-320, CU-321, CU-323, CU-324, CU-326, CU-327, CU-329, CU-330, CU-331, CU-336, CU-337, CU-338, CU-339, CU-340, CU-341, CU-342, CU-343, CU-344, CU-345, CU-346 |
+| **Secundario** | 54 | CU-012, CU-029, CU-030, CU-050, CU-057, CU-059, CU-062, CU-065, CU-066, CU-088, CU-094, CU-100, CU-101, CU-102, CU-156, CU-157, CU-158, CU-160, CU-162, CU-163, CU-164, CU-165, CU-170, CU-175, CU-186, CU-190, CU-193, CU-194, CU-199, CU-200, CU-202, CU-205, CU-206, CU-210, CU-212, CU-216, CU-223, CU-230, CU-239, CU-249, CU-265, CU-270, CU-276, CU-281, CU-287, CU-297, CU-298, CU-304, CU-306, CU-315, CU-322, CU-325, CU-328, CU-348 |
 | **Menor** | 2 | CU-126, CU-145 |
-| **Total** | **338** | CU-001 a CU-348, sin CU-003, CU-021, CU-084, CU-090, CU-091, CU-093, CU-098, CU-099, CU-103 ni CU-153 |
+| **Total** | **328** | CU-001 a CU-348, sin los 10 retirados del catálogo (CU-003, CU-021, CU-084, CU-090, CU-091, CU-093, CU-098, CU-099, CU-103 y CU-153) ni los 10 retirados del alcance (CU-049, CU-240 a CU-244, CU-333 a CU-335 y CU-347) |
 
 ### Casos de uso retirados
 
@@ -582,7 +582,7 @@ Los 10 casos de la tabla se retiraron del catálogo porque no son procesos de ne
 | CU-103 | Dar de Baja una Franja Horaria | 16/10/2026 | Duplicaba CU-343: ambos desactivan la franja (baja lógica), uno con el verbo «dar de baja» y el otro con «desactivar». | CU-343 Desactivar una Franja Horaria |
 | CU-153 | Registrar Toda Operación de Escritura | 15/10/2026 | Es un requisito transversal: el sistema deja constancia de cada escritura sin que ningún actor lo pida. | Documento 1, NFR-10 (Trazabilidad y auditoría); la consulta sigue en CU-152 |
 
-Los recuentos salen del catálogo de arriba y se verifican contra él: entre CU-001 y CU-348 hay 348 números, 338 de casos del catálogo y 10 retirados.
+Los recuentos salen del catálogo de arriba y se verifican contra él: entre CU-001 y CU-348 hay 348 números, 338 de casos del catálogo y 10 retirados. De los 338 casos del catálogo, 10 llevan el estado «Retirado del alcance: el chofer cobra un sueldo mensual» y no se cuentan: quedan 328 casos vigentes.
 
 ---
 
@@ -4713,7 +4713,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente elige con cuántos días de anticipación quiere el aviso de recompra, o lo desactiva. El sistema guarda la preferencia. |
 | **Precondición** | El cliente está identificado. |
-| **Estado** | Planificado (C-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado en el sistema; en curso en la aplicación del cliente |
 
 **Secuencia Normal**
 
@@ -4754,7 +4754,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-06 |
 | **Descripción** | El administrador elige una ventana de días y ve los clientes de su distribuidora cuya fecha estimada de recompra cae en ella, con su consumo declarado y su última compra, ordenados por fecha. |
 | **Precondición** | El administrador está identificado. |
-| **Estado** | Planificado (C-13). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -5962,7 +5962,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-01, IRQ-02, IRQ-04 |
 | **Descripción** | El sistema recorre los clientes con historial suficiente, estima para cada uno cuándo se le termina el gas y le acerca la reposición antes de que la necesite, con el pedido armado y una vigencia acotada. El destinatario de la oferta es el propio cliente y la decisión es suya: el sistema no crea ningún pedido hasta que acepta. La caducidad y el período de enfriamiento evitan que la invitación se vuelva insistencia. |
 | **Precondición** | El cliente tiene al menos la cantidad mínima configurada de pedidos entregados, no tiene un pedido activo y no recibió una invitación dentro del intervalo mínimo de reiteración. |
-| **Estado** | Planificado (C-16). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado en el sistema y el panel; en curso en la aplicación del cliente |
 
 **Secuencia Normal**
 
@@ -6004,7 +6004,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Frecuencia** | Automático, una vez por día. |
 | **Estabilidad** | Media |
-| **Comentarios** | Módulo planificado (C-16); su especificación completa está en el Documento 3, sección 6.3. Es el único de los cuatro módulos que no reserva ninguna decisión al administrador: el destinatario de la oferta es el cliente y la decisión de comprar es suya. El mínimo de pedidos para estimar, la anticipación, la vigencia, el intervalo mínimo de reiteración y los coeficientes de estacionalidad se leen de la configuración de la distribuidora (CU-172). Un cliente pertenece a una distribuidora desde su primera compra: la invitación se emite a nombre de la distribuidora de la última compra y un cliente sin compras no recibe invitación. |
+| **Comentarios** | Módulo inteligente M3, implementado en el sistema y en el panel de administración, donde el administrador ve a qué clientes se les acaba el gas, las invitaciones emitidas y cuántas terminan en pedido, ajusta los parámetros y puede simular una corrida; la etapa de la aplicación del cliente, donde el cliente recibe y acepta la invitación, está en curso. El proceso viene apagado: cada distribuidora lo habilita desde sus parámetros. Su especificación de diseño está en el Documento 3. Es el único de los cuatro módulos que no reserva ninguna decisión al administrador: el destinatario de la oferta es el cliente y la decisión de comprar es suya. El mínimo de pedidos para estimar, la anticipación, la vigencia, el intervalo mínimo de reiteración y los coeficientes de estacionalidad se leen de la configuración de la distribuidora (CU-172). Un cliente pertenece a una distribuidora desde su primera compra: la invitación se emite a nombre de la distribuidora de la última compra y un cliente sin compras no recibe invitación. |
 
 ---
 
@@ -6364,7 +6364,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-02, IRQ-03, IRQ-05 |
 | **Descripción** | El sistema arma lotes de pedidos que se pueden entregar en un mismo viaje sin incumplir el compromiso horario de ninguno ni exceder la capacidad del vehículo, y los negocia con los choferes de a uno por vez, igual que M1 negocia un pedido suelto. La diferencia es el objeto de la oferta: no un pedido, sino un recorrido con sus paradas ya ordenadas. El lote nunca se impone: ante el silencio o el rechazo generalizado, los pedidos siguen su camino individual y ninguno queda retenido. |
 | **Precondición** | Hay al menos dos pedidos programados con franja futura, de la misma distribuidora, dentro del radio de agrupación configurado y con franjas compatibles, y al menos un chofer activo con capacidad de carga disponible. |
-| **Estado** | Planificado (C-19). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado en el sistema y el panel; en curso en la aplicación del chofer |
 
 **Secuencia Normal**
 
@@ -6404,7 +6404,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Frecuencia** | Automático, con la periodicidad configurada por la distribuidora. |
 | **Estabilidad** | Media |
-| **Comentarios** | Módulo planificado (C-19); su especificación completa está en el Documento 3, sección 6.4. No reserva ninguna decisión al administrador: el destinatario de la oferta es el chofer, que acepta o rechaza el recorrido. Convive con M1 sin reemplazarlo: el lote que nadie toma se disuelve y sus pedidos vuelven a la asignación individual, de modo que la agrupación optimiza el costo por entrega pero nunca es condición para que un pedido salga. El tamaño máximo del lote, el radio de agrupación, la tolerancia de franja, la vigencia de la oferta y la frecuencia se leen de la configuración de la distribuidora. Decisión de diseño: se agrupan solo los pedidos programados con franja futura; los inmediatos quedan a cargo de M1. |
+| **Comentarios** | Módulo inteligente M4, implementado en el sistema y en el panel de administración, donde el administrador sigue los recorridos ofrecidos, asignados, completados y deshechos; la etapa de la aplicación del chofer está en curso. El proceso viene apagado: cada distribuidora lo habilita desde sus parámetros. Su especificación de diseño está en el Documento 3. No reserva ninguna decisión al administrador: el destinatario de la oferta es el chofer, que acepta o rechaza el recorrido. Convive con M1 sin reemplazarlo: el lote que nadie toma se disuelve y sus pedidos vuelven a la asignación individual, de modo que la agrupación optimiza el costo por entrega pero nunca es condición para que un pedido salga. El tamaño máximo del lote, el radio de agrupación, la tolerancia de franja, la vigencia de la oferta y la frecuencia se leen de la configuración de la distribuidora. Decisión de diseño: se agrupan solo los pedidos programados con franja futura; los inmediatos quedan a cargo de M1. |
 
 ---
 
@@ -7781,7 +7781,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-03 |
 | **Descripción** | El chofer consulta el saldo acumulado de sus ganancias; el administrador ve ese mismo saldo en el perfil de cada chofer de su distribuidora. El saldo se guarda en el perfil del chofer. |
 | **Precondición** | El chofer o el administrador está identificado. Existe un perfil de chofer asociado al usuario consultado. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -8462,7 +8462,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Frecuencia** | Media: semanal. |
 | **Estabilidad** | Alta |
-| **Comentarios** | La agrupación es la misma sobre la que trabajará el módulo inteligente M2 (CU-105), planificado (C-14). El listado de personal (CU-187) es el mismo cálculo con el empleado como dueño; la licencia de conducir, que cuelga del perfil de reparto del chofer, figura también en ese listado. |
+| **Comentarios** | La agrupación es la misma sobre la que trabaja el módulo inteligente M2 (CU-105). El listado de personal (CU-187) es el mismo cálculo con el empleado como dueño; la licencia de conducir, que cuelga del perfil de reparto del chofer, figura también en ese listado. |
 
 ---
 
@@ -10041,7 +10041,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Frecuencia** | Baja: una vez por cada vehículo que quedó fuera de servicio. |
 | **Estabilidad** | Media |
-| **Comentarios** | Comparte con CU-161 el control de documentación del vehículo: no hay dos reglas de habilitación. El vehículo puede quedar fuera de servicio por un siniestro (CU-201) o, planificado, por el planificador de flota (CU-105, todavía no construido); este caso es el camino de vuelta de los dos. Reactivar no asigna el vehículo a ningún chofer: eso es CU-161, y mientras el vehículo siga fuera de servicio no se puede asignar a un chofer. |
+| **Comentarios** | Comparte con CU-161 el control de documentación del vehículo: no hay dos reglas de habilitación. El vehículo puede quedar fuera de servicio por un siniestro (CU-201) o por el planificador de flota (CU-105); este caso es el camino de vuelta de los dos. Reactivar no asigna el vehículo a ningún chofer: eso es CU-161, y mientras el vehículo siga fuera de servicio no se puede asignar a un chofer. |
 
 ---
 
@@ -10060,7 +10060,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | El sistema proyecta el vencimiento de cada tarea de mantenimiento y de cada habilitación de la flota, y planifica la ventana de taller que menos perjudica a la operación. La ventana no se impone: se negocia con el chofer asignado, ofreciéndole una alternativa por vez con vigencia acotada. Cuando ninguna prospera, el caso queda a resolución del administrador con el cuadro completo a la vista. En paralelo, el vehículo con una habilitación bloqueante vencida deja de recibir ofertas de pedidos: el módulo alimenta al despacho automático de M1. |
 | **Precondición** | El vehículo existe y pertenece a una distribuidora activa. Tiene al menos una regla de mantenimiento o de habilitación aplicable. Hay historial de uso suficiente para estimar el consumo, o está disponible el promedio de la flota del mismo tipo de vehículo como respaldo. |
-| **Estado** | Planificado (C-14). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -10101,7 +10101,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Frecuencia** | Automático, una vez por día a la hora configurada. |
 | **Estabilidad** | Media |
-| **Comentarios** | Módulo planificado (C-14); su especificación completa está en el Documento 3, sección 6.2. Las reglas y las tareas de mantenimiento ya existen (CU-136 a CU-142), y el vehículo ya guarda su kilometraje y su estado de flota; faltan el proceso y las propuestas de ventana. Ningún proceso calcula hoy la distancia recorrida: la fuente de kilómetros es la distancia acumulada entre las posiciones que informa el chofer durante cada entrega, por vehículo en uso y por día. Es el único módulo que combina las tres partes: el sistema propone, el chofer negocia la ventana y el administrador confirma el gasto del taller; la contratación nunca la ejecuta el sistema. |
+| **Comentarios** | Módulo inteligente M2, implementado en el sistema, en el panel de administración (planificador de taller) y en la aplicación del chofer, que recibe la propuesta de ventana y la acepta o la rechaza. Su especificación de diseño está en el Documento 3. Las reglas y las tareas de mantenimiento son las de la gestión de la flota (CU-136 a CU-142). Los kilómetros de cada vehículo salen, por día, de la distancia entre las paradas entregadas; cuando hay lecturas del odómetro —en las cargas de combustible y en el cierre de las tareas—, la medición reemplaza a la estimación. Al cerrar la tarea, el gasto del taller sale de la caja. Es el único módulo que combina las tres partes: el sistema propone, el chofer negocia la ventana y el administrador confirma el gasto del taller; la contratación nunca la ejecuta el sistema. |
 
 ---
 
@@ -12199,7 +12199,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-01, IRQ-02 |
 | **Descripción** | Detectar el envase retenido es una consulta; lo que este caso especifica es la secuencia de gestión que se abre después. Cada escalón tiene su propio plazo, el caso se reevalúa antes de cada paso —el envase puede haber vuelto mientras tanto— y el sistema aprovecha cualquier entrega ya planificada al mismo cliente como oportunidad de recupero sin costo adicional. Agotada la secuencia, el legajo completo queda a resolución del administrador: el sistema nunca cobra un depósito por su cuenta. |
 | **Precondición** | Existe al menos un envase cuyo último movimiento lo deja en poder de un cliente, con antigüedad mayor al plazo de tolerancia de devolución configurado. |
-| **Estado** | Planificado (C-15). Registrado en el Documento 0, plan de construcción de los casos de uso planificados. |
+| **Estado** | Implementado en el sistema y el panel; en curso en las aplicaciones |
 
 **Secuencia Normal**
 
@@ -12240,7 +12240,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Frecuencia** | Automático, con la periodicidad configurada por la distribuidora. |
 | **Estabilidad** | Media |
-| **Comentarios** | Módulo planificado (C-15); su especificación completa está en el Documento 3, sección 6.5. El plazo de tolerancia de devolución, el plazo de cada escalón, el umbral de importe para escalar y la vigencia de la oferta de retiro se leen de la configuración de la distribuidora. La decisión que compromete dinero —cobrar el depósito o dar el envase de baja— la asume siempre el administrador: el sistema prepara el legajo, nunca ejecuta el cobro. |
+| **Comentarios** | Módulo inteligente M5, implementado en el sistema y en el panel de administración, donde el administrador sigue los casos por escalón y decide los escalados; la etapa de las aplicaciones del cliente y del chofer está en curso. El proceso viene apagado: cada distribuidora lo habilita desde sus parámetros. Su especificación de diseño está en el Documento 3. El plazo de tolerancia de devolución, el plazo de cada escalón, el umbral de importe para escalar y la vigencia de la oferta de retiro se leen de la configuración de la distribuidora. La decisión que compromete dinero —cobrar el depósito o dar el envase de baja— la asume siempre el administrador: el sistema prepara el legajo, nunca ejecuta el cobro. |
 
 ---
 
@@ -18726,7 +18726,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19, IRQ-03 |
 | **Descripción** | El administrador fija las reglas de comisión de su distribuidora. Cada entrega devenga la comisión de la regla más específica que rige en el momento de entregar. Cambiar una regla es CU-333. |
 | **Precondición** | El administrador está identificado. Si la regla es de un empleado o de un producto, ambos pertenecen a su distribuidora. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -18768,7 +18768,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19, IRQ-03 |
 | **Descripción** | El administrador cambia una regla de comisión: el valor, la vigencia o su alcance. Las comisiones ya devengadas no cambian. |
 | **Precondición** | El administrador está identificado. La regla existe y es de su distribuidora; si cambia el empleado o el producto, ambos pertenecen a su distribuidora. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -18811,7 +18811,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19, IRQ-02, IRQ-03 |
 | **Descripción** | Cada entrega le devenga una comisión al chofer. El sistema la calcula con la regla más específica vigente al entregar y la asienta en el libro de comisiones del chofer, con una copia de la regla. |
 | **Precondición** | Existe un pedido entregado por un chofer, con una regla de comisión aplicable a su fecha de entrega, que todavía no devengó comisión. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -18856,7 +18856,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19, IRQ-03 |
 | **Descripción** | El administrador cierra el período de un chofer: junta lo que ganó por sus entregas y lo que se le descuenta, y obtiene el neto a pagar. La liquidación nace en borrador, que se revisa antes de aprobarse (CU-334) o de anularse (CU-335). |
 | **Precondición** | El administrador está identificado. El empleado pertenece a su distribuidora y tiene asientos sin liquidar en el período. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -18899,7 +18899,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19, IRQ-03 |
 | **Descripción** | El administrador revisa una liquidación en borrador y la aprueba. Queda aprobada, con sus asientos congelados; si su neto es mayor que cero queda a pagar, y si es cero o negativo no hay nada que pagar. |
 | **Precondición** | El administrador está identificado. La liquidación existe, es de su distribuidora y está en borrador. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -18942,7 +18942,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19, IRQ-03 |
 | **Descripción** | El administrador anula una liquidación que está mal: sus asientos quedan libres para otra liquidación. Una liquidación pagada no se anula directo: primero se anula su pago. |
 | **Precondición** | El administrador está identificado. La liquidación existe, es de su distribuidora y no está pagada ni anulada. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -18984,7 +18984,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19 |
 | **Descripción** | El administrador le paga al chofer lo que le corresponde. El neto de la liquidación sale de una caja y queda asentado en el libro con la categoría «pago de comisiones». |
 | **Precondición** | El administrador está identificado. La liquidación pertenece a su distribuidora y está aprobada. La caja está activa y, si exige sesión, la tiene abierta. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -19028,7 +19028,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19 |
 | **Descripción** | El administrador deshace el pago de una liquidación de comisiones pagada: el dinero vuelve a la misma caja de la que salió y la liquidación queda aprobada, lista para pagarse de nuevo o para anularse. Exige el motivo. |
 | **Precondición** | El solicitante está identificado como administrador y la distribuidora está elegida. La liquidación es de esa distribuidora y está pagada. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -19078,7 +19078,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | **Requisitos asociados** | IRQ-19, IRQ-03 |
 | **Descripción** | El chofer ve cuánto ganó por sus entregas, qué se le descontó y cuánto tiene todavía sin liquidar, sin tener que preguntarle al administrador. |
 | **Precondición** | El chofer está identificado. |
-| **Estado** | Implementado |
+| **Estado** | Retirado del alcance: el chofer cobra un sueldo mensual |
 
 **Secuencia Normal**
 
@@ -19161,7 +19161,7 @@ lifeline `:Sistema`. No aparecen controladores, servicios ni base de datos, porq
 pertenece al diseño y no al análisis. Los mensajes son las **operaciones del sistema**, con
 sus parámetros.
 
-Se incluyen 338 diagramas, uno por caso de uso. Los ocho casos incluidos (CU-082, CU-159,
+Se incluyen 338 diagramas, uno por cada caso del documento: los 328 vigentes y los 10 retirados del alcance. Los ocho casos incluidos (CU-082, CU-159,
 CU-160, CU-169, CU-220, CU-246, CU-248 y CU-250) se dibujan con el actor de su caso base
 principal y una nota con los demás casos que los incluyen.
 
@@ -32211,32 +32211,35 @@ sequenceDiagram
     title DSD — CU-145 Configurar los Días de Aviso Previo a la Recompra · configurarDiasDeAviso
     autonumber
     actor CLI as Cliente (ACT-01)
-    participant SRV as :CustomersService
-    participant COL as :Map#lt;String, Cliente#gt;
+    participant RCS as :RepurchaseCustomerService
+    participant CUS as :CustomersService
     participant CLE as cliente:Cliente
 
-    CLI->>+SRV: configurarDiasDeAviso(dias)
-    SRV->>+COL: get(usuarioId)
-    COL-->>-SRV: cliente
-    SRV->>+CLE: configurarAviso(dias)
-    CLE->>CLE: validarRango(dias)
-    deactivate CLE
-    SRV-->>-CLI: cliente
+    CLI->>+RCS: configurarDiasDeAviso(dias)
+    RCS->>+CUS: guardarAvisoDeRecompra(usuarioId, cambios)
+    CUS->>CLE: configurarAviso(dias)
+    CUS-->>-RCS: aviso
+    RCS-->>-CLI: aviso
 ```
 
 </details>
 
-**Clases participantes:** `CustomersService` (controlador de fachada del módulo de clientes, con la operación `configurarAviso` como **colaboración propuesta**: no existe en el código), la colección `Map<String, Cliente>` y el objeto de dominio `Cliente`.
+**Clases participantes:** `RepurchaseCustomerService` (controlador de lo que el cliente decide sobre la recompra), `CustomersService` (fabricación pura: dueño de los campos de la ficha del cliente) y el objeto de dominio `Cliente`.
 
-**GRASP.** *Controlador*: `CustomersService`. *Experto*: `Cliente` es dueño de su preferencia de aviso: valida que los días estén en el rango permitido y toma el valor, o nulo si el aviso se desactiva. El servicio no le asigna atributos.
+**GRASP.** *Controlador*: `RepurchaseCustomerService`. *Experto*: `Cliente` es dueño de su preferencia de aviso: toma los días de anticipación (de 1 a 30), o nulo para usar los de la distribuidora, y el aviso activado o desactivado. La operación sale por la ruta de recompra del cliente, en la versión 2 de la API.
 
-**No se dibuja:** el guardado.
+**No se dibuja:** la validación del cuerpo (al menos un campo; días entre 1 y 30), la lectura posterior del aviso con el valor de la distribuidora y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RepurchaseCustomerService.configurarDiasDeAviso(...)` | `RepurchaseCustomerService.actualizarAviso`: responde 400 si el cuerpo no trae `enabled` ni `days`, y devuelve el aviso con `distributorDays`, el valor que rige si el cliente no eligió |
+| `Cliente.configurarAviso(...)` | `CustomersService.guardarAvisoDeRecompra`: guarda `Customer.repurchaseNoticeDays` y `Customer.repurchaseNoticeEnabled` |
 
 **Observaciones de diseño**
 
-- La preferencia va en la ficha del cliente y no en una tabla de configuración aparte: es un solo número y no justifica una entidad.
-- Desactivar el aviso se representa con el valor en cero, para no sumar una bandera más.
-- La columna admite nulo y tiene un valor por omisión de tres días: un valor nulo significa que el cliente no eligió y rige el de la distribuidora, que se guarda en la configuración del proceso de recompra (`module_config`, CU-172).
+- La preferencia va en la ficha del cliente y no en una tabla de configuración aparte: es un solo número y un indicador, y no justifican una entidad.
+- Desactivar el aviso no borra la estimación: el indicador `repurchaseNoticeEnabled` se apaga y el cliente deja de recibir invitaciones.
+- Un valor nulo en los días significa que el cliente no eligió y rige el de la distribuidora, que se guarda en la configuración del proceso de recompra (`module_config`, CU-172).
 
 ---
 
@@ -32253,35 +32256,37 @@ sequenceDiagram
     title DSD — CU-146 Consultar la Fecha Estimada de Recompra · consultarRecomprasEstimadas
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant EXP as :RepurchaseEstimatesService
-    participant CLIS as :List#lt;Cliente#gt;
+    participant RRS as :RepurchaseReportService
+    participant EST as :RepurchaseEstimatorService
     participant CLE as cliente:Cliente
-    participant PEDS as :List#lt;Pedido#gt;
+    participant INVS as :RepurchaseInvitationService
 
-    ADM->>+EXP: consultarRecomprasEstimadas(dias)
-    EXP->>+CLIS: buscarConRecompraEstimadaDentroDe(dias)
-    CLIS-->>-EXP: clientes
-    loop Por cada cliente de la ventana
-        EXP->>CLE: getFechaEstimadaDeRecompra()
-        EXP->>+PEDS: getUltimoEntregado(cliente, distribuidoraId)
-        PEDS-->>-EXP: ultimaCompra
-    end
-    EXP-->>-ADM: recompras
+    ADM->>+RRS: consultarRecomprasEstimadas(dias)
+    RRS->>+EST: estimar(distribuidoraId, ahora, parametros)
+    EST->>CLE: getFechaEstimadaDeRecompra()
+    EST-->>-RRS: clientes
+    RRS->>+INVS: abiertasDe(distribuidoraId, usuarioIds)
+    INVS-->>-RRS: invitacionesAbiertas
+    RRS-->>-ADM: recompras
 ```
 
 </details>
 
-**Clases participantes:** `RepurchaseEstimatesService` (controlador de fachada del listado, **colaboración propuesta**: no existe en el código), las colecciones `List<Cliente>` y `List<Pedido>` y el objeto de dominio `Cliente`.
+**Clases participantes:** `RepurchaseReportService` (controlador del listado administrativo), `RepurchaseEstimatorService` (fabricación pura: la estimación de cada cliente), `RepurchaseInvitationService` (fabricación pura: las invitaciones abiertas) y el objeto de dominio `Cliente`.
 
-**GRASP.** *Controlador*: `RepurchaseEstimatesService`. *Experto*: la colección de clientes sabe cuáles tienen la recompra estimada dentro de la ventana, el `Cliente` entrega su fecha estimada y la colección de pedidos la última compra a la distribuidora. Quien declaró consumo y nunca compró en la distribuidora no figura en el listado.
+**GRASP.** *Controlador*: `RepurchaseReportService`. *Experto*: el `Cliente` entrega su fecha estimada, que calcula el estimador a partir de sus compras entregadas o de su consumo declarado, y el servicio de invitaciones indica cuáles de ellos ya tienen una invitación abierta. Quien declaró consumo y nunca compró en la distribuidora no figura en el listado.
 
-**No se dibuja:** el alcance por la distribuidora del contexto y la conversión del listado a la respuesta.
+**No se dibuja:** el alcance por la distribuidora del contexto, el filtro por la ventana de días, la paginación y la conversión del listado a la respuesta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RepurchaseReportService.consultarRecomprasEstimadas(...)` | `RepurchaseReportService.proximas`: devuelve, del más próximo al más lejano, los clientes cuya fecha estimada cae dentro de `days` (14 por omisión), con paginación; los que ya se pasaron figuran con días negativos |
+| `Cliente.getFechaEstimadaDeRecompra(...)` | `RepurchaseEstimatorService.estimar`: arma la `RecompraEstimada` de cada cliente con la fecha estimada y su origen (sus compras o el consumo que declaró); deja afuera a los que no tienen con qué estimarlos |
 
 **Observaciones de diseño**
 
-- El listado es información comercial sobre personas: conviene que solo lo vea el administrador de la distribuidora del cliente, no el Administrador General sin distribuidora en contexto.
-- La fecha estimada tiene que estar indexada (índice `customer(next_repurchase_estimate_at)`), o la consulta recorre la tabla de clientes entera.
-- Un cliente pertenece a una distribuidora desde que le compró por primera vez (`common/tenancy/pertenencia.ts`): quien declaró consumo y nunca compró no figura en ninguna, y aparece desde su primera compra. Por eso el listado consulta la última compra a la distribuidora y descarta a quien no tiene ninguna.
+- El listado es información comercial sobre personas: lo ve solo el administrador de la distribuidora del cliente (`GET /v2/repurchase/forecast`), no el Administrador General sin distribuidora en contexto.
+- Un cliente pertenece a una distribuidora desde que le compró por primera vez (`common/tenancy/pertenencia.ts`): quien declaró consumo y nunca compró no figura en ninguna, y aparece desde su primera compra.
 
 ---
 
@@ -36655,7 +36660,7 @@ sequenceDiagram
 
 **Observaciones de diseño**
 
-- El listado alimenta el módulo inteligente M2 (CU-105), planificado (C-14), que proyecta el mantenimiento y las habilitaciones a partir de esta misma consulta.
+- El listado alimenta el módulo inteligente M2 (CU-105), que proyecta el mantenimiento y las habilitaciones a partir de esta misma consulta.
 - Las tareas sin `dueAt` (un service por kilometraje sin fecha estimada) quedan fuera del listado: no hay fecha con la cual compararlas contra la ventana.
 
 ---
@@ -42188,10 +42193,11 @@ una sola vez:
 ---
 
 
-#### Módulos inteligentes en diseño (CU-105 a CU-108)
+#### Módulos inteligentes (CU-105 a CU-108, CU-145 y CU-146)
 
-Colaboración propuesta para los módulos planificados. Las clases marcadas
-como propuestas no existen aún en el código.
+Colaboración de los módulos inteligentes M2 a M5 y de la preferencia de aviso de recompra. Las clases
+participantes son las del código; las operaciones que el diagrama atribuye a un objeto de dominio se
+corresponden con el código en la tabla que sigue a cada diagrama.
 
 #### DSD — CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota
 
@@ -42206,47 +42212,50 @@ sequenceDiagram
     title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · planificarMantenimientoDeFlota
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant PLN as :FleetMaintenancePlannerService
+    participant MPS as :MaintenancePlannerService
+    participant MFS as :MaintenanceForecastService
     participant VEH as vehiculo:Vehiculo
+    participant PCS as :PlannerContextService
     participant TAR as tarea:TareaMantenimiento
-    participant DEM as :DemandForecastService
-    participant COV as :FleetCoverageService
-    participant NOT as :NotificationsService
+    participant MPN as :MaintenancePlannerNotifier
 
-    SIS->>+PLN: planificarMantenimientoDeFlota()
-    loop Por cada vehículo de la flota activa
-        PLN->>+VEH: proyectarVencimientos()
-        VEH->>VEH: estimarKilometrajeDiario()
-        VEH->>TAR: proyectarVencimiento(kilometrajeDiario)
-        VEH-->>-PLN: tareas dentro de la anticipación
-        loop Por cada tarea dentro de la ventana de anticipación
-            PLN->>+DEM: demandaProyectada(ventanas)
-            DEM-->>-PLN: demanda por ventana
-            PLN->>+COV: ventanasFactibles(vehiculo, ventanas)
-            COV-->>-PLN: ventanas factibles
-            PLN->>+VEH: getChoferEnUso()
-            VEH-->>-PLN: chofer
-            PLN->>+TAR: proponerVentana(chofer, ventana)
-            create participant PRP as :PropuestaVentanaTaller
-            TAR->>PRP: «create»(chofer, ventana, vigencia)
-            TAR-->>-PLN: propuesta
-            PLN-)NOT: sendWindowProposal(propuesta)
-            Note over PLN,PRP: Respuesta del Chofer: ver DSD de aceptarVentanaDeMantenimiento (CU-105)
-        end
-        opt Hay una habilitación bloqueante vencida
-            PLN->>VEH: ponerFueraDeServicio()
-        end
+    SIS->>+MPS: planificarMantenimientoDeFlota()
+    MPS->>+MFS: consumos(distribuidoraId, vehiculos, parametros, ahora)
+    MFS-->>-MPS: consumos
+    loop Por cada tarea abierta de la flota
+        MPS->>+MFS: proyectar(tarea, vehiculo, consumo, ahora)
+        MFS-->>-MPS: proyeccion
     end
-    deactivate PLN
+    MPS->>MFS: guardarPredicciones(proyectadas)
+    opt Hay una habilitación bloqueante vencida
+        MPS->>VEH: ponerFueraDeServicio()
+    end
+    MPS->>+PCS: cargar(distribuidoraId, vehiculosActivos, parametros, ahora)
+    PCS-->>-MPS: contexto
+    loop Por cada tarea dentro de su anticipación
+        MPS->>+TAR: proponerVentana(chofer, ventana)
+        create participant PRP as :PropuestaVentanaTaller
+        TAR->>PRP: «create»(chofer, ventana, vigencia)
+        TAR-->>-MPS: propuesta
+        MPS-)MPN: propuestaAlChofer(chofer, propuesta, aviso, correo)
+    end
+    MPS-->>-SIS: resumen
 ```
 
 </details>
 
-**Clases participantes:** `FleetMaintenancePlannerService` (controlador del proceso temporal), `DemandForecastService` y `FleetCoverageService` (fabricaciones puras: la demanda proyectada por franja y el mínimo de vehículos por zona), `NotificationsService` (existente: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`. Los nombres son los del diseño: en el código, el planificador es `MaintenancePlannerService`, que se apoya en `MaintenanceForecastService` y en `PlannerContextService`.
+**Clases participantes:** `MaintenancePlannerService` (controlador del proceso temporal), `MaintenanceForecastService` y `PlannerContextService` (fabricaciones puras: la proyección de los vencimientos y el contexto de cobertura y demanda de la zona), `MaintenancePlannerNotifier` (fabricación pura: el aviso al chofer y al administrador) y los objetos de dominio `Vehiculo`, `TareaMantenimiento` y `PropuestaVentanaTaller`.
 
-**GRASP.** *Controlador*: `FleetMaintenancePlannerService`, que el planificador del sistema dispara una vez por día. *Experto*: `Vehiculo` estima su consumo de kilómetros y proyecta el vencimiento de cada una de sus tareas. *Creador*: `TareaMantenimiento` crea las `PropuestaVentanaTaller` que origina (composición del modelo conceptual). *Alta Cohesión*: la demanda y la cobertura viven en fabricaciones puras, no en el vehículo ni en el planificador.
+**GRASP.** *Controlador*: `MaintenancePlannerService`, que el planificador del sistema dispara una vez por día para cada distribuidora. *Experto*: `MaintenanceForecastService` estima el consumo de kilómetros de cada vehículo y proyecta el vencimiento de cada tarea; `PlannerContextService` conoce la demanda de la zona y cuántas unidades quedan disponibles cada día. *Creador*: `TareaMantenimiento` crea las `PropuestaVentanaTaller` que origina (composición del modelo conceptual). *Alta Cohesión*: la proyección y el contexto de cobertura viven en servicios propios, no en el planificador.
 
-**No se dibuja:** el historial de uso del vehículo y el promedio de la flota como respaldo, la negociación de las ventanas alternativas una por vez, el escalamiento al administrador cuando se agotan y el bloqueo de la agenda, que ocurre al confirmar (ver CU-105: `confirmarVentanaDeTaller`).
+**No se dibuja:** la actualización del uso de la flota antes de estimar (`VehicleUsageFeedService`), el historial de uso y el promedio de la flota como respaldo, la negociación de las ventanas alternativas una por vez, el escalamiento al administrador cuando no hay ventana, cobertura o chofer, y el bloqueo de la agenda, que ocurre al confirmar (ver CU-105: `confirmarVentanaDeTaller`).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `MaintenancePlannerService.planificarMantenimientoDeFlota(...)` | `MaintenancePlannerService.ejecutar`: lo dispara `MaintenancePlannerCron.planificar` una vez por día para cada distribuidora con tareas; es idempotente, porque una tarea con un caso abierto o con el taller ya programado no se vuelve a planificar |
+| `Vehiculo.ponerFueraDeServicio(...)` | `MaintenancePlannerService.apagarVencidos`: con una habilitación bloqueante vencida, por fecha o por kilometraje, pasa `Car.fleetStatus` de ACTIVE a GROUNDED con `CarService.cambiarEstadoDeFlota`, libera al chofer con `VehicleAssignmentService.liberarDelVehiculo` en la misma transacción y avisa al administrador con `MaintenancePlannerNotifier.alAdminVehiculoFueraDeServicio` |
+| `TareaMantenimiento.proponerVentana(...)` | `MaintenancePlannerService.planificar`: arma las ventanas candidatas con `enumerarVentanas()`, las evalúa contra la demanda y las unidades disponibles de la zona con `evaluarVentanas()`, abre el `MaintenancePlanningCase` y ofrece la primera con `MaintenancePlannerService.ofrecerSiguiente`; si no hay ventana, cobertura o chofer, el caso queda escalado al administrador |
+| `PropuestaVentanaTaller.«create»` | `MaintenancePlannerService.ofrecerSiguiente`: inserta la `MaintenanceWindowProposal` en estado PENDING, con la ventana (`MaintenanceWindowProposal.windowStart` y `MaintenanceWindowProposal.windowEnd`) y una vigencia (`MaintenanceWindowProposal.expiresAt`) que no pasa del inicio de la ventana |
 
 ###### Operación: aceptarVentanaDeMantenimiento(propuestaId)
 
@@ -42259,28 +42268,33 @@ sequenceDiagram
     title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · aceptarVentanaDeMantenimiento
     autonumber
     actor CHF as Chofer (ACT-02)
-    participant PLN as :FleetMaintenancePlannerService
-    participant COL as :Map#lt;String, PropuestaVentanaTaller#gt;
+    participant MPS as :MaintenancePlannerService
     participant PRP as propuesta:PropuestaVentanaTaller
     participant TAR as tarea:TareaMantenimiento
+    participant MPN as :MaintenancePlannerNotifier
 
-    CHF->>+PLN: aceptarVentanaDeMantenimiento(propuestaId)
-    PLN->>+COL: get(propuestaId)
-    COL-->>-PLN: propuesta
-    PLN->>+PRP: aceptar()
-    PRP->>PRP: assertVigente()
+    CHF->>+MPS: aceptarVentanaDeMantenimiento(propuestaId)
+    MPS->>MPS: verificarCobertura(distribuidoraId, vehiculoId, inicio, ahora)
+    MPS->>+PRP: aceptar()
     PRP->>TAR: quedarPendienteDeConfirmacion(ventana)
     deactivate PRP
-    PLN-->>-CHF: propuesta
+    MPS-)MPN: alAdminVentanaAcordada(caso, aviso, alternativa)
+    MPS-->>-CHF: propuesta
 ```
 
 </details>
 
-**Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, PropuestaVentanaTaller>` y los objetos de dominio `PropuestaVentanaTaller` y `TareaMantenimiento`.
+**Clases participantes:** `MaintenancePlannerService` (controlador del módulo de planificación), `MaintenancePlannerNotifier` (fabricación pura: el aviso al administrador) y los objetos de dominio `PropuestaVentanaTaller` y `TareaMantenimiento`.
 
-**GRASP.** *Controlador*: `FleetMaintenancePlannerService`. *Experto*: `PropuestaVentanaTaller` conoce su vigencia y su estado, y al aceptarse avisa a su `TareaMantenimiento`, que queda programada con esa ventana a la espera de que el administrador confirme el gasto.
+**GRASP.** *Controlador*: `MaintenancePlannerService`. *Experto*: `PropuestaVentanaTaller` conoce su vigencia y su estado, y al aceptarse deja a su `TareaMantenimiento` con esa ventana acordada, a la espera de que el administrador confirme el gasto. El servicio vuelve a verificar la cobertura de la zona antes de aceptar, porque entre la oferta y la respuesta otro vehículo pudo ocupar el día.
 
-**No se dibuja:** el guardado y el aviso al administrador.
+**No se dibuja:** la búsqueda de la propuesta del chofer, el bloqueo del caso mientras se decide, el rechazo si la propuesta venció o ya no está vigente y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `MaintenancePlannerService.aceptarVentanaDeMantenimiento(...)` | `MaintenancePlannerService.aceptar`: toma la propuesta del chofer que la recibe y, dentro de `MaintenancePlannerService.responder`, bloquea el caso y rechaza con 409 la que ya no está vigente o venció |
+| `PropuestaVentanaTaller.aceptar(...)` | `MaintenancePlannerService.aceptar`: pasa `MaintenanceWindowProposal.status` a ACCEPTED y fija `MaintenanceWindowProposal.respondedAt` |
+| `TareaMantenimiento.quedarPendienteDeConfirmacion(...)` | `MaintenancePlannerService.acordar`: pasa `MaintenancePlanningCase.status` a AWAITING_CONFIRMATION y guarda la ventana acordada en `MaintenancePlanningCase.chosenStart` y `MaintenancePlanningCase.chosenEnd` |
 
 ###### Operación: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
 
@@ -42293,26 +42307,29 @@ sequenceDiagram
     title DSD — CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota · confirmarVentanaDeTaller
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant PLN as :FleetMaintenancePlannerService
-    participant COL as :Map#lt;String, TareaMantenimiento#gt;
+    participant MPS as :MaintenancePlannerService
     participant TAR as tarea:TareaMantenimiento
-    participant FIT as :FleetAvailabilityPort
+    participant MPN as :MaintenancePlannerNotifier
 
-    ADM->>+PLN: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
-    PLN->>+COL: get(tareaId)
-    COL-->>-PLN: tarea
-    PLN->>TAR: programar(ventanaElegida, gastoEstimado)
-    PLN->>FIT: blockVehicleWindow(tarea, ventanaElegida)
-    PLN-->>-ADM: tarea
+    ADM->>+MPS: confirmarVentanaDeTaller(tareaId, ventanaElegida, gastoEstimado)
+    MPS->>MPS: verificarCobertura(distribuidoraId, vehiculoId, ventana, ahora)
+    MPS->>TAR: programar(ventanaElegida, gastoEstimado)
+    MPS-)MPN: ventanaConfirmada(chofer, caso, aviso)
+    MPS-->>-ADM: tarea
 ```
 
 </details>
 
-**Clases participantes (colaboración propuesta):** `FleetMaintenancePlannerService` (controlador del módulo de planificación), la colección `Map<String, TareaMantenimiento>`, el objeto de dominio `TareaMantenimiento` y `FleetAvailabilityPort` (fabricación pura: el puerto con el que el despacho sabe qué vehículos están aptos).
+**Clases participantes:** `MaintenancePlannerService` (controlador del módulo de planificación), `MaintenancePlannerNotifier` (fabricación pura: el aviso de la ventana confirmada al chofer) y el objeto de dominio `TareaMantenimiento`.
 
-**GRASP.** *Controlador*: `FleetMaintenancePlannerService`. *Experto*: `TareaMantenimiento` es quien queda programada con la ventana y el gasto que decide el administrador. *Bajo Acoplamiento*: el bloqueo de la agenda del vehículo sale por un puerto, que consume el despacho; el sistema nunca contrata el taller por su cuenta.
+**GRASP.** *Controlador*: `MaintenancePlannerService`. *Experto*: `TareaMantenimiento` es quien queda programada con la ventana y el gasto que decide el administrador. *Bajo Acoplamiento*: el planificador no avisa al despacho: la tarea programada es la fuente de la que lee `FleetDispatchLockService` para excluir a los choferes cuyo vehículo está en taller; el sistema nunca contrata el taller por su cuenta.
 
-**No se dibuja:** el guardado de la decisión.
+**No se dibuja:** el bloqueo del caso, el cierre de las propuestas pendientes y el guardado de la decisión.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `MaintenancePlannerService.confirmarVentanaDeTaller(...)` | `MaintenancePlannerService.confirmar`: confirma la ventana acordada con el chofer o la que elige el administrador; rechaza con 409 el caso que ya está resuelto |
+| `TareaMantenimiento.programar(...)` | `MaintenancePlannerService.programar`: pasa `MaintenanceTask.status` a SCHEDULED, fija `MaintenanceTask.scheduledAt` y, si el administrador los informa, `MaintenanceTask.provider` y `MaintenanceTask.cost`; el caso queda en CONFIRMED con `MaintenancePlanningCase.resolvedByUserId` |
 
 ---
 
@@ -42329,30 +42346,39 @@ sequenceDiagram
     title DSD — CU-106 Anticipar la Recompra por Consumo Estimado · aceptarInvitacionDeRecompra
     autonumber
     actor CLI as Cliente (ACT-01)
-    participant RFS as :RepurchaseForecastService
-    participant COL as :Map#lt;String, InvitacionRecompra#gt;
+    participant RAS as :RepurchaseAcceptService
+    participant INVS as :RepurchaseInvitationService
     participant INV as invitacion:InvitacionRecompra
+    participant ORD as :OrderService
 
-    CLI->>+RFS: aceptarInvitacionDeRecompra(invitacionId)
-    RFS->>+COL: get(invitacionId)
-    COL-->>-RFS: invitacion
-    RFS->>+INV: aceptar()
-    INV->>INV: validarVigencia()
-    INV-->>-RFS: items
-    Note over RFS,INV: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con sus ItemPedido
-    Note over RFS,INV: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
-    RFS-->>-CLI: pedido
+    CLI->>+RAS: aceptarInvitacionDeRecompra(invitacionId)
+    RAS->>+INVS: delCliente(invitacionId, usuarioId)
+    INVS-->>-RAS: invitacion
+    RAS->>INVS: exigirAbierta(invitacion)
+    RAS->>+ORD: create(pedidoSugerido, distribuidoraId)
+    Note over RAS,ORD: Pedido: ver DSD de crearPedido (CU-005). Crea el Pedido con sus ItemPedido
+    Note over RAS,ORD: Despacho: ver DSD de ofrecerAlSiguienteChofer (CU-013). Crea la OfertaDespacho
+    ORD-->>-RAS: pedido
+    RAS->>+INVS: aceptada(invitacionId, pedidoId, ahora)
+    INVS->>INV: aceptar(pedidoId)
+    INVS-->>-RAS: invitacion
+    RAS-->>-CLI: pedido
 ```
 
 </details>
 
-**Clases participantes:** `RepurchaseForecastService` (controlador del módulo de recompra, **colaboración propuesta**: no existe en el código), la colección `Map<String, InvitacionRecompra>` y el objeto de dominio `InvitacionRecompra`.
+**Clases participantes:** `RepurchaseAcceptService` (controlador de la aceptación), `RepurchaseInvitationService` (fabricación pura: lectura y cierre de la invitación), `OrderService` (existente: crea el pedido) y el objeto de dominio `InvitacionRecompra`.
 
-**GRASP.** *Controlador*: `RepurchaseForecastService`. *Experto*: `InvitacionRecompra` sabe hasta cuándo vale y es quien pasa a «aceptada» y entrega los ítems sugeridos; si venció o ya fue cerrada, la operación se rechaza.
+**GRASP.** *Controlador*: `RepurchaseAcceptService`, que serializa la respuesta con un cerrojo por invitación: aceptar y descartar no se pisan. *Experto*: `InvitacionRecompra` sabe hasta cuándo vale y es quien pasa a «aceptada» con el pedido que originó; si venció o ya fue cerrada, la operación se rechaza.
 
 **Referencias.** El pedido nace por el mismo camino que cualquier pedido creado desde la aplicación (`crearPedido`, CU-005), de modo que la reserva de stock, el cálculo de promociones y el despacho no se duplican; la `OfertaDespacho` al chofer más cercano la crea `ofrecerAlSiguienteChofer` (CU-013).
 
-**No se dibuja:** que, si el precio cambió desde la emisión, el cliente confirma sobre el importe vigente; que, si compró por su cuenta mientras la invitación corría, ésta se cierra sin efecto; y que, si el stock ya no alcanza, el pedido no se crea y se avisa al cliente.
+**No se dibuja:** que, si el precio cambió desde la emisión, el pedido se cotiza al precio de hoy; que, si el cliente compró por su cuenta mientras la invitación corría, ésta se cierra sin efecto; que la distribuidora suspendida no admite la aceptación; y el reintento que reconoce el pedido ya creado si falló el registro de la aceptación.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RepurchaseAcceptService.aceptarInvitacionDeRecompra(...)` | `RepurchaseAcceptService.aceptar`: toma el cerrojo de Redis de la invitación y rechaza con 409 la que venció, la que el cliente se adelantó a comprar o la que se está procesando |
+| `InvitacionRecompra.aceptar(...)` | `RepurchaseInvitationService.aceptada`: pasa `RepurchaseInvitation.status` a ACCEPTED y fija `RepurchaseInvitation.orderId` y `RepurchaseInvitation.respondedAt`; la aceptación gana sobre cualquier otro estado, porque el pedido ya está creado |
 
 ##### Operación: anticiparRecompras()
 
@@ -42366,41 +42392,53 @@ sequenceDiagram
     autonumber
     actor SIS as Sistema Automático (ACT-04)
     participant RFS as :RepurchaseForecastService
-    participant INVS as :List#lt;InvitacionRecompra#gt;
-    participant CLIS as :List#lt;Cliente#gt;
-    participant EST as :ConsumptionEstimatorService
-    participant NOT as :NotificationsService
+    participant EST as :RepurchaseEstimatorService
+    participant INVS as :RepurchaseInvitationService
+    participant SUG as :RepurchaseSuggestionService
+    participant NOT as :RepurchaseNotifier
 
     SIS->>+RFS: anticiparRecompras()
-    RFS->>INVS: caducarVencidas(hoy)
-    RFS->>+CLIS: buscarConHistorialSuficiente()
-    CLIS-->>-RFS: clientes
-    loop Por cada cliente
-        RFS->>+EST: estimarProximaRecompra(cliente)
-        EST-->>-RFS: fechaEstimada
-        opt La recompra cae dentro de los días de aviso del cliente
-            create participant INV as :InvitacionRecompra
-            RFS->>INV: «create»(cliente, fechaEstimada, vigencia)
-            create participant ITS as :ItemSugerido
-            INV->>ITS: «create»(producto, cantidad)
-            RFS-)NOT: sendRepurchaseInvitation(cliente, invitacion)
+    RFS->>+EST: parametros(distribuidoraId)
+    EST-->>-RFS: parametros
+    RFS->>INVS: vencerVencidas(ahora, distribuidoraId)
+    RFS->>+EST: estimar(distribuidoraId, ahora, parametros)
+    EST-->>-RFS: clientes
+    loop Por cada cliente con fecha estimada
+        opt El aviso está activo, la recompra cae dentro de sus días de aviso y no tiene un pedido ni una invitación reciente
+            RFS->>+SUG: armar(distribuidoraId, usuarioId, habitos)
+            SUG-->>-RFS: sugerencia
+            opt Hay stock de algún producto sugerido
+                RFS->>+INVS: abrir(datos)
+                create participant INV as :InvitacionRecompra
+                INVS->>INV: «create»(cliente, fechaEstimada, vigencia)
+                create participant ITS as :ItemSugerido
+                INV->>ITS: «create»(producto, cantidad)
+                INVS-->>-RFS: invitacion
+                RFS-)NOT: invitar(invitacion)
+            end
         end
     end
-    deactivate RFS
+    RFS-->>-SIS: resultado
 ```
 
 </details>
 
-**Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario), `ConsumptionEstimatorService` (fabricación pura: el cálculo de la fecha), `NotificationsService` (fabricación pura: el aviso al cliente), las colecciones `List<InvitacionRecompra>` y `List<Cliente>`, y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
+**Clases participantes:** `RepurchaseForecastService` (controlador del proceso diario), `RepurchaseEstimatorService` (fabricación pura: el cálculo de la fecha en que se le termina el gas a cada cliente), `RepurchaseInvitationService` (fabricación pura: vencimiento y alta de las invitaciones), `RepurchaseSuggestionService` (fabricación pura: el pedido sugerido según los hábitos del cliente), `RepurchaseNotifier` (fabricación pura: el aviso al cliente) y los objetos de dominio `InvitacionRecompra` e `ItemSugerido`.
 
-**GRASP.** *Controlador*: `RepurchaseForecastService` recibe la ejecución programada. *Creador*: el controlador crea la `InvitacionRecompra`, porque tiene los datos con que se inicializa, y la `InvitacionRecompra` crea sus `ItemSugerido` (los contiene, composición del modelo conceptual). *Experto*: la colección de invitaciones sabe cuáles vencieron y las pasa a «caducada»; el estimador calcula cuándo se le termina el gas al cliente. El cliente que no llega al mínimo de pedidos, o con una serie demasiado irregular, queda fuera de la corrida, y si no hay stock del producto sugerido no se emite la invitación.
+**GRASP.** *Controlador*: `RepurchaseForecastService` recibe la ejecución programada. *Creador*: `RepurchaseInvitationService` abre la `InvitacionRecompra` con los datos que le pasa el controlador, y la `InvitacionRecompra` crea sus `ItemSugerido` (los contiene, composición del modelo conceptual). *Experto*: el estimador conoce el historial de compras y calcula cuándo se le termina el gas al cliente; el servicio de invitaciones sabe cuáles vencieron y las pasa a «vencida». El cliente que no llega al mínimo de pedidos, o con una serie demasiado irregular, queda fuera de la corrida, y si no hay stock del producto sugerido no se emite la invitación.
 
-**No se dibuja:** el ciclo diario de ejecución, la lectura del historial de pedidos entregados y el guardado.
+**No se dibuja:** el cierre de las invitaciones a las que el cliente se adelantó con un pedido propio, el motivo por el que se omite a cada cliente (aviso desactivado, recompra lejana, pedido reciente, intervalo mínimo o mismo ciclo de consumo), la simulación con `dryRun` y el guardado.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RepurchaseForecastService.anticiparRecompras(...)` | `RepurchaseForecastService.ejecutar`: lo dispara `RepurchaseCron.anticipar` a la hora configurada para cada distribuidora; con `enabled` en 0 responde 409, porque el proceso viene apagado, y es idempotente, ya que no invita a quien tiene una invitación abierta ni a quien la tuvo hace menos del intervalo mínimo |
+| `InvitacionRecompra.«create»` | `RepurchaseInvitationService.abrir`: inserta la `RepurchaseInvitation` en estado PENDING, con la fecha proyectada (`RepurchaseInvitation.projectedDepletionAt`) y la vigencia (`RepurchaseInvitation.expiresAt`); devuelve nulo si otra corrida ya abrió una al cliente |
+| `ItemSugerido.«create»` | `RepurchaseSuggestionService.armar`: arma los ítems sugeridos (producto y cantidad de sus últimas compras, solo los que tienen stock) que la invitación guarda en `RepurchaseInvitation.suggestedItems` |
 
 **Observaciones de diseño**
 
-- `ConsumptionEstimatorService` y `RepurchaseInvitationRepositoryPort` son nombres del diseño: en el código el estimador de la fecha es `RepurchaseEstimatorService`. `RepurchaseForecastService`, `NotificationsService` y `CreateOrderUseCase` existen tal como se nombran y el módulo los consume: la aceptación de la invitación entra por el mismo camino que cualquier pedido creado desde la aplicación del cliente.
 - La invitación se emite con el pedido ya armado: el cliente la acepta o la deja vencer, y no vuelve a elegir los productos.
+- El proceso viene apagado: cada distribuidora lo habilita desde los parámetros de la recompra (`/module-config/repurchase`, `enabled`).
 
 ---
 
@@ -42417,51 +42455,53 @@ sequenceDiagram
     title DSD — CU-107 Agrupar Pedidos por Recorrido · agruparPedidosPorRecorrido
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant PLN as :RouteBatchPlannerService
-    participant ORD as :OrderRepositoryPort
+    participant RBS as :RouteBatchService
     participant CHO as chofer:Chofer
-    participant NOT as :NotificationsService
+    participant RBN as :RouteBatchNotifier
 
-    SIS->>+PLN: agruparPedidosPorRecorrido()
-    PLN->>+ORD: findScheduled(distribuidora)
-    ORD-->>-PLN: pedidos
-    PLN->>PLN: agruparPorProximidad(pedidos)
-    loop Por cada grupo de pedidos
-        create participant LOT as recorrido:LoteRecorrido
-        PLN->>LOT: «create»(pedidos)
-        loop Por cada pedido del grupo
-            create participant PRA as :ParadaLote
-            LOT->>PRA: «create»(pedido, orden)
-        end
-        loop Por cada chofer candidato
-            PLN->>+CHO: getCapacidadDeCarga()
-            CHO-->>-PLN: capacidad
-            PLN->>+LOT: ofrecerA(chofer, venceEn)
-            create participant OFL as :OfertaLote
-            LOT->>OFL: «create»(chofer, venceEn)
-            deactivate LOT
-            PLN-)NOT: sendBatchOffer(chofer, recorrido)
-        end
-        alt Un chofer acepta el recorrido
-            PLN->>PLN: aceptarRecorrido(recorrido)
-            Note over PLN,LOT: Aceptación: ver DSD de aceptarRecorrido (CU-107)
-        else Ningún chofer acepta
-            PLN->>LOT: deshacer()
-            Note over PLN,LOT: Los pedidos vuelven al circuito individual:<br/>ver DSD de ofrecerAlSiguienteChofer (CU-013)
+    SIS->>+RBS: agruparPedidosPorRecorrido()
+    RBS->>RBS: candidatos(distribuidoraId, ahora)
+    RBS->>RBS: distancias(pedidoIds)
+    loop Por cada pedido semilla que queda sin agrupar
+        RBS->>RBS: choferesCerca(distribuidoraId, latitud, longitud, ocupados)
+        loop Por cada chofer cercano hasta lograr un recorrido
+            RBS->>+CHO: getCapacidadDeCarga()
+            CHO-->>-RBS: capacidad
+            opt Hay al menos dos pedidos compatibles que caben en el vehículo
+                create participant LOT as recorrido:LoteRecorrido
+                RBS->>LOT: «create»(pedidos)
+                create participant PRA as :ParadaLote
+                LOT->>PRA: «create»(pedido, orden)
+                RBS->>+LOT: ofrecerA(chofer, venceEn)
+                create participant OFL as :OfertaLote
+                LOT->>OFL: «create»(chofer, venceEn)
+                deactivate LOT
+                RBS-)RBN: ofertaAlChofer(chofer, aviso)
+            end
         end
     end
-    deactivate PLN
+    Note over RBS,LOT: Respuesta del chofer: ver DSD de aceptarRecorrido (CU-107). Si nadie acepta, el recorrido se deshace y los pedidos vuelven a ofrecerse uno por uno: ver DSD de ofrecerAlSiguienteChofer (CU-013)
+    RBS-->>-SIS: resumen
 ```
 
 </details>
 
-**Clases participantes:** `RouteBatchPlannerService` (controlador del proceso temporal), `OrderRepositoryPort` (fabricación pura: la búsqueda de los pedidos programados atraviesa todos los pedidos), `NotificationsService` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido`, `ParadaLote`, `OfertaLote` y `Chofer`. **Colaboración:** `RouteBatchPlannerService` es el nombre del diseño; en el código la agrupación la realiza `RouteBatchService`, y `OrderRepositoryPort` y `NotificationsService` existen tal como se nombran. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
+**Clases participantes:** `RouteBatchService` (controlador del proceso temporal), `RouteBatchNotifier` (fabricación pura: el aviso de la oferta al chofer) y los objetos de dominio `Chofer`, `LoteRecorrido`, `ParadaLote` y `OfertaLote`. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
 
-**GRASP.** *Controlador*: `RouteBatchPlannerService` recibe la operación del proceso temporal. *Creador*: el controlador crea el `LoteRecorrido`, que es la raíz del agregado y se inicializa con los pedidos agrupados; el `LoteRecorrido` crea sus `ParadaLote` y sus `OfertaLote`, porque los contiene (composición). *Experto*: el `Chofer` conoce la capacidad de carga de su vehículo; el lote respeta el compromiso horario de cada pedido. El lote nunca se impone: ante el silencio o el rechazo generalizado, el `LoteRecorrido` se deshace y los pedidos siguen su camino individual.
+**GRASP.** *Controlador*: `RouteBatchService` recibe la operación del proceso temporal. *Creador*: el controlador crea el `LoteRecorrido`, que es la raíz del agregado y se inicializa con los pedidos agrupados; el `LoteRecorrido` crea sus `ParadaLote` y sus `OfertaLote`, porque los contiene (composición). *Experto*: el `Chofer` conoce la capacidad de carga de su vehículo; el lote respeta el compromiso horario de cada pedido. El lote nunca se impone: ante el silencio o el rechazo generalizado, el lote se deshace y los pedidos siguen su camino individual.
 
 **Referencias.** La aceptación del recorrido por el chofer es la operación `aceptarRecorrido` (CU-107) y la vuelta de los pedidos al circuito individual es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
 
-**No se dibuja:** el orden de las paradas, el cálculo de la capacidad de carga, el recorte del lote si ningún vehículo tiene capacidad, el recálculo si un pedido se acepta o se cancela mientras corre la oferta y la persistencia.
+**No se dibuja:** la lectura de los pedidos programados y de las distancias entre ellos, el orden de las paradas, el recorte del lote según la capacidad, el cerrojo por pedido que comparte con el despacho individual, la transacción de alta y el recálculo si un pedido se cancela mientras corre la oferta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RouteBatchService.agruparPedidosPorRecorrido(...)` | `RouteBatchService.evaluar`: lo dispara `RouteBatchCron.armar` para cada distribuidora con pedidos programados, con un cerrojo de Redis por distribuidora; con `enabled` en 0 el proceso no corre y, si otra instancia tiene el cerrojo, no hace nada |
+| `Chofer.getCapacidadDeCarga(...)` | `RouteBatchService.capacidadDelChofer`: lee `Car.carCapacity` del vehículo que el chofer tiene en uso; sin vehículo o sin capacidad cargada no limita el peso |
+| `LoteRecorrido.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta el `RouteBatch` en estado OFFERED con `RouteBatch.totalWeightKg`, después de bloquear los pedidos con `FOR UPDATE` y comprobar que siguen pendientes y sin chofer |
+| `ParadaLote.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta una `RouteBatchStop` por pedido con `RouteBatchStop.sequence`, `RouteBatchStop.etaAt` y `RouteBatchStop.legDistanceKm`, en el orden que calcula `ordenarParadas()` |
+| `LoteRecorrido.ofrecerA(...)` | `RouteBatchService.crearOferta`: ofrece el recorrido al chofer que eligió `RouteBatchService.choferesCerca` entre los habilitados más cercanos al punto de partida que no están ocupados con otro lote |
+| `OfertaLote.«create»` | `RouteBatchService.crearOferta`: inserta la `RouteBatchOffer` pendiente, con `RouteBatchOffer.expiresAt` igual al momento actual más `offerTtlSeconds` |
 
 ###### Operación: aceptarRecorrido(recorridoId)
 
@@ -42474,36 +42514,37 @@ sequenceDiagram
     title DSD — CU-107 Agrupar Pedidos por Recorrido · aceptarRecorrido
     autonumber
     actor CHF as Chofer (ACT-02)
-    participant SRV as :RouteBatchPlannerService
-    participant RECS as :Map#lt;String, LoteRecorrido#gt;
+    participant RBS as :RouteBatchService
+    participant ORD as :OrderService
     participant LOT as recorrido:LoteRecorrido
     participant OFL as oferta:OfertaLote
-    participant PRA as parada:ParadaLote
-    participant PED as pedido:Pedido
+    participant RBN as :RouteBatchNotifier
 
-    CHF->>+SRV: aceptarRecorrido(recorridoId)
-    SRV->>+RECS: get(recorridoId)
-    RECS-->>-SRV: recorrido
-    SRV->>+LOT: getOfertaVigente(chofer)
-    LOT-->>-SRV: oferta
-    SRV->>OFL: aceptar()
-    SRV->>+LOT: asignarChofer(chofer)
-    loop Por cada parada del recorrido
-        LOT->>+PRA: getPedido()
-        PRA-->>-LOT: pedido
-        LOT->>PED: aceptar(chofer)
+    CHF->>+RBS: aceptarRecorrido(recorridoId)
+    RBS->>RBS: ofertaViva(recorridoId, choferId)
+    loop Por cada parada del recorrido, en su orden
+        RBS->>ORD: assignDelivery(pedidoId, choferId, distribuidoraId, opciones)
     end
+    RBS->>+LOT: asignarChofer(chofer)
+    LOT->>OFL: aceptar()
     deactivate LOT
-    SRV-->>-CHF: pedidos
+    RBS-)RBN: loteAsignado(usuarioId, recorridoId, pedidoIds)
+    RBS-->>-CHF: resultado
 ```
 
 </details>
 
-**Clases participantes:** `RouteBatchPlannerService` (controlador; colaboración propuesta), la colección `Map<String, LoteRecorrido>` y los objetos de dominio `LoteRecorrido`, `OfertaLote`, `ParadaLote` y `Pedido`. **Colaboración propuesta:** `RouteBatchPlannerService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recorridos (C-19).
+**Clases participantes:** `RouteBatchService` (controlador del módulo de recorridos), `OrderService` (existente: asigna el pedido al chofer), `RouteBatchNotifier` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido` y `OfertaLote`.
 
-**GRASP.** *Controlador*: `RouteBatchPlannerService` recibe la operación. *Experto*: el `LoteRecorrido` conoce sus ofertas y sus paradas en orden, y es quien se asigna el chofer y se lo asigna a cada pedido por su `ParadaLote`; la `OfertaLote` es quien pasa a «aceptada»; cada `Pedido` pasa a «aceptado». Si al aceptar alguno de los pedidos ya no está disponible, se asigna el resto del lote y el faltante se descuenta del recorrido.
+**GRASP.** *Controlador*: `RouteBatchService` recibe la operación y la serializa con un cerrojo por lote. *Experto*: el `LoteRecorrido` es quien queda asignado al chofer y la `OfertaLote` es quien pasa a «aceptada». Los pedidos se asignan en el orden del recorrido, cada uno por el mismo camino que la asignación individual y con sus mismos controles de flota y de carga; si alguno ya no está disponible, se asigna el resto del lote y el faltante sale del recorrido.
 
-**No se dibuja:** el rechazo si la oferta venció o ya fue cerrada, la transacción y la persistencia.
+**No se dibuja:** la verificación de que el chofer esté habilitado, la medición de la capacidad del vehículo en uso, el rechazo si la oferta venció o ya fue cerrada, la devolución al despacho individual de los pedidos que no se asignaron y la transacción.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RouteBatchService.aceptarRecorrido(...)` | `RouteBatchService.aceptar`: toma el cerrojo del lote y rechaza con 409 la oferta vencida, el vehículo que no carga el peso del lote o el lote cuyos pedidos ya no están disponibles |
+| `LoteRecorrido.asignarChofer(...)` | `RouteBatchService.cerrarAceptacion`: pasa `RouteBatch.status` a ASSIGNED, fija `RouteBatch.deliveryId` y deja inactivas las paradas de los pedidos que no se asignaron |
+| `OfertaLote.aceptar(...)` | `RouteBatchService.cerrarAceptacion`: pasa `RouteBatchOffer.status` a ACCEPTED y fija `RouteBatchOffer.respondedAt` |
 
 ---
 
@@ -42520,50 +42561,59 @@ sequenceDiagram
     title DSD — CU-108 Recuperar Envases No Devueltos · gestionarEnvasesNoDevueltos
     autonumber
     actor SIS as Sistema Automático (ACT-04)
-    participant SRV as :CylinderRecoveryService
-    participant LIF as :CylinderLifecyclePort
+    participant CRS as :CylinderRecoveryService
     participant ENV as envase:Envase
-    participant NOT as :NotificationsService
+    participant CRN as :CylinderRecoveryNotifier
 
-    SIS->>+SRV: gestionarEnvasesNoDevueltos()
-    SRV->>+LIF: findHeldByCustomer(plazoDeTolerancia)
-    LIF-->>-SRV: envases
-    loop Por cada envase retenido
-        SRV->>+ENV: abrirCaso()
+    SIS->>+CRS: gestionarEnvasesNoDevueltos()
+    CRS->>CRS: parametros(distribuidoraId)
+    CRS->>CRS: envasesAfuera(distribuidoraId)
+    CRS->>CRS: clasificar(envasesAfuera, parametros, ahora)
+    loop Por cada envase retenido sin caso abierto
+        CRS->>+ENV: abrirCaso()
         create participant CAS as caso:CasoRecupero
         ENV->>CAS: «create»(cliente, deposito)
         deactivate ENV
-        loop Por cada escalón pendiente
-            SRV->>+ENV: fueDevuelto()
-            ENV-->>-SRV: devuelto
-            alt El envase ya fue devuelto
-                SRV->>CAS: cerrar(devuelto)
-            else El envase sigue retenido
-                SRV->>+CAS: avisar(escalon)
-                create participant AVI as :AvisoRecupero
-                CAS->>AVI: «create»(escalon)
-                deactivate CAS
-                SRV-)NOT: sendRecoveryStep(caso, escalon)
-                Note over SRV,CAS: Retiro en la entrega: ver DSD de aceptarRetiroEnLaEntrega (CU-108)
-            end
+    end
+    loop Por cada caso abierto
+        CRS->>CRS: procesarCaso(casoId, parametros, ahora)
+        alt El envase ya fue devuelto
+            CRS->>CAS: cerrar(devuelto)
+        else El envase sigue retenido
+            CRS->>+CAS: avisar(escalon)
+            create participant AVI as :AvisoRecupero
+            CAS->>AVI: «create»(escalon)
+            deactivate CAS
+            Note over CRS,CAS: Retiro en la entrega: ver DSD de aceptarRetiroEnLaEntrega (CU-108)
         end
-        opt Escalones agotados e importe sobre el umbral
-            SRV->>CAS: escalar()
-            SRV-)NOT: escalateToAdmin(caso)
+        opt Se agotaron los escalones
+            CRS->>CAS: escalar()
+            CRS-)CRN: escaladoAlAdmin(caso, contexto)
         end
     end
-    deactivate SRV
+    CRS-)CRN: alClienteAgrupado(usuarioId, avisos)
+    CRS-->>-SIS: resultado
 ```
 
 </details>
 
-**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal), `CylinderLifecyclePort` (fabricación pura: el ciclo de vida del envase), `NotificationsService` (fabricación pura: los avisos) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. **Colaboración:** `CylinderRecoveryService` es la clase del código que corre el recupero; la consulta que el diseño le pide al puerto del ciclo de envase (`findHeldByCustomer`) es del diseño, porque en el código el servicio separa por su cuenta los envases retenidos; el puerto existe, y es el mismo que registra los movimientos de despacho y devolución, de modo que la detección del envase retenido no necesita ninguna fuente de datos nueva.
+**Clases participantes:** `CylinderRecoveryService` (controlador del proceso temporal), `CylinderRecoveryNotifier` (fabricación pura: los avisos al cliente y al administrador) y los objetos de dominio `Envase`, `CasoRecupero` y `AvisoRecupero`. La detección del envase retenido no necesita una fuente de datos nueva: sale del estado del envase y de sus movimientos de despacho y devolución.
 
 **GRASP.** *Controlador*: `CylinderRecoveryService` recibe la operación del proceso temporal. *Creador*: el `Envase` que motiva el caso crea el `CasoRecupero`, y el `CasoRecupero` crea sus `AvisoRecupero` por cada escalón ejecutado, porque los contiene (composición). *Experto*: el `Envase` sabe si volvió; el `CasoRecupero` conoce su escalón y es quien se cierra o se escala. El caso se reevalúa antes de cada paso, porque el envase puede haber vuelto, y el sistema nunca cobra un depósito por su cuenta: agotada la secuencia, el caso queda a resolución del administrador.
 
 **Referencias.** El retiro del envase en una entrega ya programada es la operación `aceptarRetiroEnLaEntrega` (CU-108) y la decisión final sobre el depósito o la baja es `resolverCasoDeRecupero` (CU-108): cada una tiene su propio diagrama.
 
-**No se dibuja:** los plazos de cada escalón, la entrega programada del cliente donde se ofrece el retiro, el marcado para revisión manual si el último movimiento del envase no permite saber en poder de quién está, el cierre del caso por importe bajo el umbral como envase perdido y la persistencia.
+**No se dibuja:** los plazos de cada escalón, la oferta de retiro en la entrega programada del cliente (`CylinderRecoveryService.ofrecerRetiro`), el marcado para revisión manual si el último movimiento del envase no permite saber en poder de quién está, el cierre del caso por importe bajo el umbral como envase perdido y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CylinderRecoveryService.gestionarEnvasesNoDevueltos(...)` | `CylinderRecoveryService.ejecutar`: lo dispara `CylinderRecoveryCron.recuperar` a la hora configurada para cada distribuidora; con `enabled` en 0 responde 409, porque el proceso viene apagado, y es idempotente, ya que hay un solo caso vivo por envase y un solo aviso por escalón |
+| `Envase.abrirCaso(...)` | `CylinderRecoveryService.abrirCaso`: lo hace para cada envase en poder de un cliente cuya antigüedad supera `toleranceDays`, según `CylinderRecoveryService.envasesAfuera` y `CylinderRecoveryService.clasificar` |
+| `CasoRecupero.«create»` | `CylinderRecoveryService.abrirCaso`: inserta el `CylinderRecoveryCase` en estado OPEN, en el escalón 1, con `CylinderRecoveryCase.depositAmount` y `CylinderRecoveryCase.deliveredAt`; el índice único evita un segundo caso vivo del mismo envase |
+| `CasoRecupero.cerrar(...)` | `CylinderRecoveryService.cerrar`: dentro de `CylinderRecoveryService.procesarCaso`, si el envase volvió o se dio de baja por otra vía, pasa `CylinderRecoveryCase.status` a RETURNED o CLOSED_NO_CHARGE y fija `CylinderRecoveryCase.closedAt` |
+| `CasoRecupero.avisar(...)` | `CylinderRecoveryService.procesarCaso`: sube `CylinderRecoveryCase.step` cuando venció el plazo del escalón y fija `CylinderRecoveryCase.stepDueAt` con el plazo del escalón siguiente |
+| `AvisoRecupero.«create»` | `CylinderRecoveryService.procesarCaso`: inserta el `CylinderRecoveryNotice` del escalón, con su tipo según `avisoDelEscalon()` |
+| `CasoRecupero.escalar(...)` | `CylinderRecoveryService.procesarCaso`: agotados los escalones, pasa `CylinderRecoveryCase.status` a ESCALATED o LOST según `destinoAlAgotarse()` y el umbral `escalationAmountThreshold` |
 
 ###### Operación: aceptarRetiroEnLaEntrega(ofertaId)
 
@@ -42576,32 +42626,29 @@ sequenceDiagram
     title DSD — CU-108 Recuperar Envases No Devueltos · aceptarRetiroEnLaEntrega
     autonumber
     actor CLI as Cliente (ACT-01)
-    participant SRV as :CylinderRecoveryService
-    participant AVS as :Map#lt;String, AvisoRecupero#gt;
+    participant CCS as :CylinderRecoveryCasesService
+    participant OLS as :OrderLookupService
     participant AVI as aviso:AvisoRecupero
-    participant PED as pedido:Pedido
-    participant ENV as envase:Envase
 
-    CLI->>+SRV: aceptarRetiroEnLaEntrega(ofertaId)
-    SRV->>+AVS: get(ofertaId)
-    AVS-->>-SRV: aviso
-    SRV->>+AVI: getPedidoDeEntrega()
-    AVI-->>-SRV: pedido
-    SRV->>+AVI: getEnvase()
-    AVI-->>-SRV: envase
-    SRV->>AVI: aceptar(pedido)
-    SRV->>PED: incluirRetiro(envase)
-    SRV->>ENV: marcarParaRetiro(pedido)
-    SRV-->>-CLI: retiro
+    CLI->>+CCS: aceptarRetiroEnLaEntrega(ofertaId)
+    CCS->>+OLS: findManyForRecovery(pedidoIds, distribuidoraId)
+    OLS-->>-CCS: pedidos
+    CCS->>AVI: aceptar(pedido)
+    CCS-->>-CLI: retiro
 ```
 
 </details>
 
-**Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, AvisoRecupero>` y los objetos de dominio `AvisoRecupero`, `Pedido` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` no existe en el código; es un nombre propuesto, igual que el resto del módulo de recupero de envases (C-15).
+**Clases participantes:** `CylinderRecoveryCasesService` (controlador de lo que deciden las personas sobre el recupero), `OrderLookupService` (existente: lee los pedidos para el recupero) y el objeto de dominio `AvisoRecupero`.
 
-**GRASP.** *Controlador*: `CylinderRecoveryService` recibe la operación. *Experto*: el `AvisoRecupero` conoce la entrega programada en la que se ofreció el retiro y es quien pasa a «aceptado»; el `Pedido` de esa entrega es quien incluye el retiro y el `Envase` queda marcado para retirarlo en ella. Aprovecha una entrega ya programada como oportunidad de recupero sin costo adicional. Si el chofer no logra retirar el envase, el caso vuelve al escalón en el que estaba.
+**GRASP.** *Controlador*: `CylinderRecoveryCasesService` recibe la operación. *Experto*: el `AvisoRecupero` conoce la entrega programada en la que se ofreció el retiro y es quien pasa a «aceptado»; el retiro queda asociado al pedido de la oferta, que el chofer ve en su recorrido, y el caso espera la confirmación del retorno. Aprovecha una entrega ya programada como oportunidad de recupero sin costo adicional. Si el chofer no logra retirar el envase, el caso vuelve al escalón en el que estaba.
 
-**No se dibuja:** el rechazo si la oferta venció o ya fue cerrada, y la persistencia.
+**No se dibuja:** el bloqueo del caso, el rechazo si la oferta venció o ya fue cerrada y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CylinderRecoveryCasesService.aceptarRetiroEnLaEntrega(...)` | `CylinderRecoveryCasesService.aceptarRetiro`: delega en `CylinderRecoveryCasesService.responderOferta`, que bloquea el caso del cliente y rechaza con 409 el caso que no está abierto, la oferta inexistente o vencida y el pedido que ya no admite el retiro |
+| `AvisoRecupero.aceptar(...)` | `CylinderRecoveryCasesService.responderOferta`: pasa `CylinderRecoveryNotice.status` a ACCEPTED y fija `CylinderRecoveryNotice.respondedAt` |
 
 ###### Operación: resolverCasoDeRecupero(casoId, decision)
 
@@ -42614,32 +42661,34 @@ sequenceDiagram
     title DSD — CU-108 Recuperar Envases No Devueltos · resolverCasoDeRecupero
     autonumber
     actor ADM as Administrador (ACT-03)
-    participant SRV as :CylinderRecoveryService
-    participant COL as :Map#lt;String, CasoRecupero#gt;
+    participant CCS as :CylinderRecoveryCasesService
     participant CAS as caso:CasoRecupero
     participant ENV as envase:Envase
-    participant DEP as :DepositLedgerService
 
-    ADM->>+SRV: resolverCasoDeRecupero(casoId, decision)
-    SRV->>+COL: get(casoId)
-    COL-->>-SRV: caso
-    SRV->>+CAS: resolver(decision)
+    ADM->>+CCS: resolverCasoDeRecupero(casoId, decision)
+    CCS->>+CAS: resolver(decision)
     CAS->>CAS: validarEscalado()
     opt La decisión es dar de baja el envase
         CAS->>ENV: darDeBaja()
     end
     deactivate CAS
-    SRV->>DEP: registerDecision(caso, decision)
-    SRV-->>-ADM: caso
+    CCS-->>-ADM: caso
 ```
 
 </details>
 
-**Clases participantes:** `CylinderRecoveryService` (controlador; colaboración propuesta), la colección `Map<String, CasoRecupero>`, `DepositLedgerService` (fabricación pura propuesta: registra la decisión y el importe) y los objetos de dominio `CasoRecupero` y `Envase`. **Colaboración propuesta:** `CylinderRecoveryService` y `DepositLedgerService` no existen en el código.
+**Clases participantes:** `CylinderRecoveryCasesService` (controlador de lo que deciden las personas sobre el recupero) y los objetos de dominio `CasoRecupero` y `Envase`.
 
-**GRASP.** *Controlador*: `CylinderRecoveryService` recibe la operación. *Experto*: el `CasoRecupero` conoce su estado y es quien se resuelve con la decisión registrada, y valida que esté escalado; el `Envase` es quien se da de baja. El administrador decide con el legajo completo del caso. *Alta Cohesión*: `DepositLedgerService` registra la decisión y el importe sin cobro por pasarela: el cobro se hace aparte, y el sistema nunca ejecuta el cobro ni la baja sin una decisión registrada.
+**GRASP.** *Controlador*: `CylinderRecoveryCasesService` recibe la operación. *Experto*: el `CasoRecupero` conoce su estado y es quien se resuelve con la decisión registrada, y valida que esté escalado o perdido; el `Envase` es quien se da de baja. El administrador decide con el legajo completo del caso. *Alta Cohesión*: el sistema registra la decisión, la nota y quién la tomó, pero nunca ejecuta el cobro del depósito, que se hace aparte, ni la baja sin una decisión registrada.
 
-**No se dibuja:** la distribuidora del contexto, que filtra la lectura del caso, el rechazo si el caso no está escalado y la persistencia.
+**No se dibuja:** la distribuidora del contexto, que filtra la lectura del caso, el bloqueo del caso y del envase, el cierre del caso si el envase ya volvió o cambió de manos y la persistencia.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `CylinderRecoveryCasesService.resolverCasoDeRecupero(...)` | `CylinderRecoveryCasesService.resolver`: bloquea el caso y el envase, y rechaza con 409 el caso que sigue en su secuencia de avisos o ya está cerrado |
+| `CasoRecupero.resolver(...)` | `CylinderRecoveryCasesService.resolver`: según la decisión, pasa `CylinderRecoveryCase.status` a DEPOSIT_CHARGED, CLOSED_NO_CHARGE o WRITTEN_OFF, y fija `CylinderRecoveryCase.resolutionNote`, `CylinderRecoveryCase.resolvedByUserId` y `CylinderRecoveryCase.closedAt` |
+| `CasoRecupero.validarEscalado(...)` | `CylinderRecoveryCasesService.resolver`: exige que el estado esté entre los resolubles (escalado o perdido), con 409 en caso contrario |
+| `Envase.darDeBaja(...)` | `CylinderService.retireLost`: pasa el envase por la máquina de estados a RETIRED y deja el movimiento en su historial |
 
 ---
 
@@ -49601,8 +49650,8 @@ Los casos de uso expandidos de esencia (secciones 4 y 5 de este documento) descr
 | CU-128 Indicar Quién Recibe el Pedido | `indicarQuienRecibe(pedidoId identificador, nombre cadena, documento cadena, relacion cadena)` | `PATCH /orders/:id/receiver`<br>`POST /orders (con receiver)` | Paso 3: Si el pedido no existe o es de otro cliente, el sistema responde 404; si quien llama es un administrador o un chofer, responde 403.<br>Paso 3: Si el pedido ya fue entregado, el sistema responde 409 "El pedido ya fue entregado: no se puede indicar quién lo recibe"; si está cancelado, responde 409.<br>Paso 2: Si falta el nombre, el documento o la relación, o el documento no tiene de 6 a 15 letras o dígitos con al menos un dígito, el sistema responde 400. | Descripción: El cliente puede indicarlo al crear el pedido, con `receiver: { receiverName, receiverDocument, receiverRelationship }` en `POST /orders`, o después con `PATCH /orders/:id/receiver`; en los dos casos con las mismas validaciones.<br>Paso 2: Los tres datos son obligatorios: el nombre hasta 120 caracteres, el documento hasta 20 —se guarda sin puntos, guiones ni espacios y en mayúsculas— y la relación hasta 40. Lo nuevo reemplaza a lo anterior.<br>Paso 4: El sistema guarda los datos de quien recibe en el pedido, con el pedido bloqueado y su estado vuelto a comprobar adentro de la transacción, y responde el pedido completo.<br>Paso 5: La respuesta del pedido trae `receiver: { name, document, relationship }` para el cliente dueño, el chofer asignado y el administrador de la distribuidora; el chofer que ve el pedido desde el pool (`GET /orders/available`) o como oferta recibe `receiver: null`.<br>Paso 6: `ReceiverRetentionCron` corre todos los días a las 03:40, hora de Argentina, con el cerrojo distribuido `cron:order-receiver-retention`, y deja en `NULL` los tres campos de los pedidos entregados o cancelados cuya fecha de entrega, o de cancelación, supera `PLAZO_DE_RECLAMO_DIAS` (30 días); un pedido con un reclamo abierto (pendiente o en proceso) los conserva hasta que el reclamo se cierre. Registra la anulación en la auditoría de datos, sin los valores.<br>Rendimiento (diseño): Una lectura y una escritura.<br>Comentarios: **Datos personales de un tercero:** (1) se conservan hasta que vence el plazo de reclamo del pedido, porque un reclamo posterior necesita saber quién recibió, y después se anulan con un proceso diario, que es una tarea de mantenimiento del sistema y no una tarea configurable; (2) el nombre, el documento y la relación se excluyen del registro de auditoría de datos (`PROPIEDADES_EXCLUIDAS.Order`), de la bitácora HTTP (`SENSIBLES`, en `depurarCambios`, que los deja como `[depurado]`) y del log de requests (`cuerpoParaLog`, que los enmascara); (3) la respuesta del pedido los expone solo al cliente dueño, al chofer asignado y al administrador de la distribuidora.<br>Comentarios: Es idempotente (`Idempotency-Key`). |
 | CU-143 Declarar el Consumo Promedio al Registrarse | `declararConsumoPromedio(tipoGarrafa cadena, cantidadPorMes decimal)` | `POST /auth/registro (con consumption)` | Paso 3: Si el valor declarado está fuera de rango (menos de 5 o más de 500 kg por mes), el sistema responde 400 y pide confirmación; si la solicitud vuelve con `confirmOutOfRange: true`, lo acepta.<br>Paso 1: Si el tipo de garrafa no existe o está dado de baja, el sistema responde 400 y no crea ni el usuario ni la cuenta en Firebase. | Paso 1: El registro acepta `consumption: { cylinderTypeId, quantityPerMonth, confirmOutOfRange? }` (opcional): si se omite, el registro sigue igual y el dato queda vacío. Como el cliente se registra sin distribuidora, el tipo no se acota por distribuidora: la aplicación ofrece los tipos de la distribuidora en contexto (`GET /gascylinder/available/list`).<br>Paso 2: `kg por mes = peso del tipo de garrafa × garrafas por mes`, a 2 decimales (`repurchase/domain/consumption.ts`); se guarda en kilos para que siga sirviendo si el cliente cambia de tipo.<br>Paso 4: El sistema guarda `avg_monthly_consumption_kg` y `declared_cylinder_type_id` en la ficha del cliente, en la misma transacción que la ficha.<br>Paso 5: La fecha estimada (`next_repurchase_estimate_at`) es el inicio más (kg de la compra ÷ kg por mes) × 30 días; sin compras, el inicio es el momento de la declaración y los kg son los de una garrafa llena del tipo habitual.<br>Rendimiento (diseño): Una escritura, dentro de la transacción del registro.<br>Comentarios: Los campos del consumo ya estaban en `customer` (`avg_monthly_consumption_kg`, `declared_cylinder_type_id` y `next_repurchase_estimate_at`): no hubo migración.<br>Comentarios: Un consumo que da 0 kg por mes es 400 aun con `confirmOutOfRange`. El administrador ve el consumo y la garrafa habitual en la ficha del cliente (`CustomerResponseDto`: `avgMonthlyConsumptionKg`, `declaredCylinderTypeId`, `declaredCylinderType`, `nextRepurchaseEstimateAt`), pero el panel no muestra la recompra estimada, que sale de compras en cualquier distribuidora. |
 | CU-144 Modificar el Consumo Promedio Declarado | `actualizarConsumoPromedio(cantidadPorMes decimal)` | `GET /customers/me/consumption`<br>`PATCH /customers/me/consumption` | Paso 2: Si el valor está fuera de rango (menos de 5 o más de 500 kg por mes) sin `confirmOutOfRange`, el sistema responde 400 y no guarda; si da 0 kg por mes, responde 400 aun con la confirmación.<br>Paso 2: Si `quantityPerMonth` no es un número de 0,01 a 1000 con hasta 2 decimales, si el cuerpo no trae ni `quantityPerMonth` ni `cylinderTypeId`, si el tipo no existe o está dado de baja, o si el cliente nunca declaró un tipo y no manda `cylinderTypeId`, el sistema responde 400. | Paso 1: El cuerpo es `{ cylinderTypeId?, quantityPerMonth, confirmOutOfRange? }` y la respuesta, 200 con `ConsumptionResponseDto` (`cylinderTypeId`, `cylinderType`, `avgMonthlyConsumptionKg` y `nextRepurchaseEstimateAt`, todo `null` si nunca declaró). `quantityPerMonth` es opcional si se manda `cylinderTypeId` y el cliente ya declaró su consumo: se cambia solo la garrafa y se mantienen los kg por mes. Si se manda `cylinderTypeId` y hay `X-Distributor`, el tipo tiene que ser de esa distribuidora.<br>Paso 3: El sistema guarda el consumo nuevo.<br>Paso 4: Recalcula la estimación desde la última compra entregada; sin compras, desde ahora.<br>Rendimiento (diseño): Una lectura y una escritura.<br>Comentarios: Solo el rol cliente; `GET /customers/me/consumption` devuelve el consumo vigente. Que `pedido.entregado` vuelva a correr la estimación es parte del módulo M3 (CU-146). |
-| CU-145 Configurar los Días de Aviso Previo a la Recompra | `configurarDiasDeAviso(dias entero)` | — (planificado: todavía sin ruta) | — | Paso 4: El sistema guarda la preferencia.<br>Rendimiento (diseño): Una escritura.<br>Comentarios: Un valor nulo en la ficha significa que el cliente no eligió y rige el valor de la distribuidora, que se guarda en la configuración del proceso de recompra (CU-172). |
-| CU-146 Consultar la Fecha Estimada de Recompra | `consultarRecomprasEstimadas(dias entero)` | — (planificado: todavía sin ruta) | — | Rendimiento (diseño): Una lectura por rango sobre la fecha estimada. |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | `configurarDiasDeAviso(dias entero)` | `GET /v2/customers/me/repurchase/notice`<br>`PATCH /v2/customers/me/repurchase/notice` | Paso 2: Si `days` no es un entero de 1 a 30 o el cuerpo viene vacío, el sistema responde 400. | Paso 4: El sistema guarda la preferencia (`days`, o `enabled: false` para desactivar el aviso).<br>Rendimiento (diseño): Una escritura.<br>Comentarios: Un valor nulo en la ficha significa que el cliente no eligió y rige el valor de la distribuidora, que se guarda en la configuración del proceso de recompra (CU-172). |
+| CU-146 Consultar la Fecha Estimada de Recompra | `consultarRecomprasEstimadas(dias entero)` | `GET /v2/repurchase/forecast` | — | Paso 1: Los parámetros son `days` (por omisión 14), `limit` y `offset`; la lista trae, por cliente, la fecha estimada, los días que faltan (negativos si ya se pasó), la última compra y de dónde sale la estimación.<br>Rendimiento (diseño): Una lectura por rango sobre la fecha estimada. |
 | CU-147 Realizar una Compra Express | `realizarCompraExpress(tipoGarrafa cadena, medioDePago cadena)` | `POST /orders/express/quote`<br>`POST /orders/express` | Paso 2: Si el cliente no tiene dirección predeterminada, el sistema responde 404.<br>Paso 3: Si no hay cobertura, horario o chofer en moto, `POST /orders/express/quote` responde 200 con `available: false` y `fallback: "scheduled"`, y la app ofrece el flujo con franja horaria; `quote` es `null`.<br>Paso 7: Si la disponibilidad dejó de cumplirse al crear el pedido, `POST /orders/express` responde 409 con `code: "EXPRESS_NOT_AVAILABLE"` y el `reason` (`disabled`, `no_location`, `out_of_coverage`, `out_of_hours` o `no_motorcycle_driver`), sin reservar stock ni crear nada.<br>Paso 2: Si no hay compras previas y no manda `gasCylinderId`, o la cantidad no está entre 1 y 10, el sistema responde 400. | Paso 1: Solo el cliente. `POST /orders/express/quote` con `{ paymentMethod, gasCylinderId?, quantity? }` no escribe nada y responde 200 con `{ available, reason, message, fallback, address, item, quote, estimatedMinutes }`.<br>Paso 2: Usa la dirección predeterminada y la garrafa habitual —la del último pedido no cancelado del cliente en esa distribuidora—; `gasCylinderId` la pisa y es obligatorio si no hay compras. `quantity` va de 1 a 10 (por omisión 1).<br>Paso 5: El total es `(subtotal + recargo de zona) × (1 + recargo por medio de pago) + recargo express`: el recargo express se suma al final y no lleva el recargo por medio de pago, así lo que se devuelve si el pedido pierde el express es exactamente lo que se cobró de más. Con MercadoPago el checkout cobra el recargo como un renglón más (`express-surcharge`).<br>Paso 7: `POST /orders/express` con `{ paymentMethod, gasCylinderId?, quantity?, notificationToken? }` es idempotente (`Idempotency-Key`) y responde 201 con el pedido (`deliveryMode`, `expressSurchargeAmount`, `expressDegradedAt`) y `payment_url` si es MercadoPago. El express no se combina con reserva, franja ni fecha agendada (400), y un pedido express no es editable (`editable: false`; `PATCH /orders/:id` responde 409).<br>Rendimiento (diseño): Cuatro lecturas antes de mostrar el precio; el cliente espera esa respuesta.<br>Comentarios: El recargo express se calcula en el servidor y se guarda en el pedido (`express_surcharge_amount`, `numeric(10,2)`, por omisión 0) para poder explicar el total después; `OrderResponseDto` lo conserva aunque el pedido pase al reparto común.<br>Comentarios: La cobertura express no es una zona aparte: es un radio máximo en la configuración del proceso `express_dispatch` (CU-172). La migración es `ExpressYReintegros`. |
 | CU-148 Elegir la Modalidad de Entrega del Pedido | `consultarModalidadesDeEntrega(direccionId identificador)` | `GET /orders/delivery-options`<br>`POST /orders/quote (con deliveryMode)`<br>`POST /orders (con deliveryMode)` | Paso 2: Si la dirección no es del cliente o no existe, el sistema responde 404.<br>Paso 4: Si no se cumple alguna condición, el sistema responde 200 con el express `available: false` y el `reason` (`disabled`, `no_location`, `out_of_coverage`, `out_of_hours` o `no_motorcycle_driver`) con su `message`.<br>Paso 6: Si la modalidad express dejó de estar disponible al crear el pedido, `POST /orders` responde 409 con `code: "EXPRESS_NOT_AVAILABLE"` y no reserva stock ni crea nada; el express con reserva, franja o fecha agendada responde 400. | Paso 1: `GET /orders/delivery-options?addressId=<uuid>` lo usa el cliente; el administrador suma `customerId`. No escribe nada.<br>Paso 4: Responde `{ addressId, options: [{ mode, available, reason, message, surchargeAmount, estimatedMinutes }] }` con las modalidades `standard` y `express`. El express está disponible cuando se cumplen, en este orden: la distribuidora lo habilitó, la dirección tiene ubicación y está dentro de la cobertura, es horario de servicio y hay al menos un chofer en moto dentro del radio express, habilitado (licencia y documentos del vehículo) y con su carga de camión en regla.<br>Paso 6: `POST /orders/quote` y `POST /orders` aceptan `deliveryMode` con `standard` o `express`; la cotización suma `deliveryMode` y `expressSurcharge`.<br>Rendimiento (diseño): Dos lecturas, dentro del armado del pedido.<br>Comentarios: Consultar las opciones no escribe nada: la modalidad se guarda al crear el pedido, y la disponibilidad express se vuelve a evaluar en ese momento, porque entre una cosa y la otra el último chofer pudo ocuparse.<br>Comentarios: El radio, el recargo, el horario y el tiempo estimado son parámetros del proceso `express_dispatch` (CU-172).<br>Comentarios: Para reconocer una moto no hay un tipo enumerado: «en moto» es que el vehículo en uso del chofer tiene `type_car` que contiene «moto», sin distinguir mayúsculas ni tildes (`car/vehicle-type.util.ts`). |
 | CU-348 Consultar el Reintegro de un Pedido | `consultarReintegroDelPedido(pedidoId identificador)` | `GET /orders/:id/refunds/mine` | Paso 1: Si quien consulta no tiene rol de cliente, el sistema responde 403.<br>Paso 2: Si el identificador no es un UUID válido, el sistema responde 400.<br>Paso 2: Si el pedido no existe o es de otro cliente, el sistema responde 404 "Order with ID: … not found". | Descripción: La consulta es del cliente dueño del pedido, sin `X-Distributor`: el cliente es uno solo para todas las distribuidoras.<br>Paso 5: Responde 200 con `[{ kind, amount, status, requestedAt, completedAt }]`, de la más vieja a la más nueva; `kind` es `full` o `express_surcharge` y `status` es `pending`, `succeeded` o `failed`.<br>Paso 4: Omite el recargo express no acreditado si el pedido se canceló después de pasar al reparto común, porque la devolución total del mismo pago ya lo incluye. Sin devoluciones, responde 200 con una lista vacía.<br>Comentarios: No expone ids de pasarela, intentos ni el texto del error; la App Cliente lo muestra en el detalle del pedido. |
