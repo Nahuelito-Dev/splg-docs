@@ -608,7 +608,13 @@ responden **409** con `code: DELIVERY_CODE_BLOQUEADO` y el mensaje «Demasiados 
 código nuevo», **aunque el código sea el correcto**. Un administrador que confirma con motivo no suma intentos ni
 se bloquea.
 
+**Intentos y aviso al chofer.** `GET /orders/:id/delivery-code` (y el regenerar de abajo) devuelve además
+`attempts` (códigos incorrectos del cliente desde el último código nuevo) y `blocked` (`true` con 5 o más: el
+chofer debe generar un código nuevo). Cada código incorrecto del cliente se avisa al chofer asignado por el
+socket (`order:delivery-code-failed`, y al 5.º también `order:delivery-code-blocked`; ver `TIEMPO-REAL.md`). Es
+un cambio aditivo: la v1 conserva sus claves.
+
 **Código nuevo — `POST /api/v2/orders/:id/delivery-code/regenerate`.** El chofer asignado (o un admin) genera
 un código nuevo de 6 dígitos con el pedido **en camino**: reemplaza al anterior (que deja de valer), vuelve los
-intentos a 0 y responde `{ orderId, deliveryCode }`. Otro chofer recibe **403**; un pedido que no está en camino,
+intentos a 0 y responde `{ orderId, deliveryCode, attempts: 0, blocked: false }`. Otro chofer recibe **403**; un pedido que no está en camino,
 **409**. Queda en la auditoría de datos (el valor del código no se asienta, sólo el hecho).

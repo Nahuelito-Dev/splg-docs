@@ -59,6 +59,23 @@ leer el pedido). Reconecta sin tope de intentos mientras sigue el pedido.
 pantalla del viaje relee el pedido, rehace la ruta al destino nuevo y avisa «El cliente cambió la
 dirección de entrega».
 
+**Código de entrega errado (`order:delivery-code-failed` y `order:delivery-code-blocked`).** Cada código
+incorrecto que manda el **cliente** en `POST /orders/:id/confirm-delivery` se avisa al chofer asignado al pedido,
+en su sala personal `driver_<userId>` (la misma a la que se une con `driver:join`; el `userId` es el del usuario,
+no el de su perfil de reparto). Cuerpo de los dos: `{ orderId, attempts, maxAttempts, blocked }`.
+
+- `order:delivery-code-failed`: en cada error, con `attempts` entre 1 y `maxAttempts` (5) y `blocked: false`,
+  salvo el último, que trae `blocked: true`.
+- `order:delivery-code-blocked`: una sola vez, al llegar exactamente al máximo (`attempts == maxAttempts`,
+  `blocked: true`), justo después del `failed` de ese intento. Con errores simultáneos que pasan del tope no se
+  repite ningún aviso.
+- No se avisa si el pedido no tiene chofer, si el que confirma es un administrador (no suma intentos) ni a otro
+  chofer. Es best-effort: si el socket falla, el cliente recibe igual su 400/409.
+
+La app del chofer no depende sólo del evento: `GET /orders/:id/delivery-code` informa `attempts` y `blocked`
+(ver `PEDIDOS.md`) y lo relee mientras espera la confirmación. El chofer genera el código nuevo con
+`POST /api/v2/orders/:id/delivery-code/regenerate`.
+
 Probado el 28/10/2026 contra la API: el panel desde :3001 entra y desde otra página no; un chofer
 bloqueado pierde la conexión en el acto, no puede volver a entrar y sí al desbloquearlo (también en
 la app, en el simulador de iPhone); un reclamo y una incidencia nuevos avisan en la campana y
