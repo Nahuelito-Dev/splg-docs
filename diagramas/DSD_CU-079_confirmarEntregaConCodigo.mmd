@@ -15,6 +15,7 @@ sequenceDiagram
     PEDS-->>-CDU: pedido
     CDU->>+PED: validarCodigo(codigo)
     PED-->>-CDU: valido
+    Note over CDU,PED: Cada código rechazado que envía un cliente suma un intento fallido al pedido.<br/>Con cinco, el pedido queda bloqueado: se rechaza incluso el código correcto hasta que haya uno nuevo
     CDU->>+PED: entregar(motivo)
     PED->>PED: transicionar(entregado)
     create participant CAM as :CambioEstadoPedido

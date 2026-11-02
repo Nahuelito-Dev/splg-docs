@@ -407,7 +407,7 @@ La hoja inferior muestra los ítems, el total y la ventana de aceptación (`expi
 
 **Figura 6 — CU-078 Consultar el Código de Entrega (QR del chofer) — Interfaz Gráfica**
 
-Pantalla «Finalización» de la App Chofer: el código de entrega del pedido representado como QR, con el código en texto debajo, el cliente y el monto, y el aviso «Esperando la confirmación del cliente». Captura del golden de la app, con datos de prueba.
+Pantalla «Finalización» de la App Chofer: el código de entrega del pedido representado como QR, con el código de seis dígitos en texto debajo, grande y agrupado («482 913») para dictarlo, el botón «Generar código nuevo», el cliente y el monto, y el aviso «Esperando la confirmación del cliente». Captura del golden de la app, con datos de prueba.
 
 #### Especificación del CU Real
 
@@ -418,7 +418,7 @@ Pantalla «Finalización» de la App Chofer: el código de entrega del pedido re
 | **Actor Principal** | ACT-02 (Chofer), ACT-03 (Administrador), ACT-05 (Administrador General) |
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El chofer obtiene el código secreto de entrega del pedido que lleva, para mostrarlo como QR al cliente al llegar. El código se genera al aceptarse el pedido y es la mitad emisora del mecanismo antifraude que completa CU-079. `GET /orders/:id/delivery-code` es una lectura: comprueba que el pedido sea de la distribuidora y del chofer que lo pide y devuelve el código ya guardado, sin regenerarlo. |
+| **Descripción** | El chofer obtiene el código de entrega de seis dígitos del pedido que lleva, para mostrarlo como QR al cliente al llegar y dictarlo si hace falta. El código se genera al aceptarse el pedido y es la mitad emisora del mecanismo antifraude que completa CU-079. `GET /orders/:id/delivery-code` es una lectura: comprueba que el pedido sea de la distribuidora y del chofer que lo pide y devuelve el código ya guardado, sin regenerarlo. Con el pedido en camino, el chofer asignado o un administrador puede generar uno nuevo. |
 | **Precondición** | El solicitante está identificado como chofer, o como administrador. El pedido existe y ya fue aceptado, por lo que tiene código de entrega. Si es un chofer, es el asignado al pedido. |
 
 **Secuencia normal**
@@ -429,11 +429,14 @@ Pantalla «Finalización» de la App Chofer: el código de entrega del pedido re
 | 2 | La app envía `GET /orders/:id/delivery-code` con el token de la sesión. `@Auth(DELIVERY, ADMIN, SUPER_ADMIN)` admite chofer, administrador y administrador general; un cliente recibe 403 del guard de roles. El `id` pasa por `ParseUUIDPipe`. |
 | 3 | `OrderController.getDeliveryCode` llama a `OrderService.assertDeLaDistribuidora`: con distribuidora en contexto, un pedido de otra responde 404 «Order with ID: … not found». Luego invoca `OrderService.getDeliveryCode(id, userId, role)`. |
 | 4 | `getDeliveryCode` lee el pedido con `findOne(orderId)` y, si el rol es chofer, `assertPedidoDelChofer` resuelve su perfil con `DeliveryService.buscarPorIdOUsuario` y comprueba que `order.deliveryId` sea el suyo; si no, 403 «Este pedido no está asignado a tu usuario». |
-| 5 | Comprueba que el pedido tenga `deliveryCode`; el código lo generó `generateDeliveryCode` al aceptar el pedido —10 caracteres hexadecimales en mayúsculas, de `randomBytes(5)`— y no cambia mientras el pedido no cambie de chofer. |
+| 5 | Comprueba que el pedido tenga `deliveryCode`; el código lo generó `generateDeliveryCode` al aceptar el pedido —seis dígitos, de `crypto.randomInt`— y no cambia hasta que se genere uno nuevo. |
 | 6 | El controlador responde 200 con `{ orderId, deliveryCode }` (`CodigoDeEntregaResponseDto`); no se modifica ningún dato. |
-| 7 | `DeliveryQrView` dibuja el código como QR y lo repite en texto, y el chofer se lo muestra al cliente, que lo escanea con su app (CU-079). |
+| 7 | `DeliveryQrView` dibuja el código como QR y lo repite en texto, grande y agrupado de a tres dígitos, y el chofer se lo muestra o dicta al cliente, que lo escanea o lo escribe en su app (CU-079). |
+| 8 | Si hace falta otro código, el chofer toca «Generar código nuevo» y confirma; `DeliveryQrViewModel` llama a `TripService.regenerateDeliveryCode(orderId)`. |
+| 9 | `OrderService` verifica que el pedido esté en camino y que sea del chofer (o que lo pida un administrador), y reemplaza `deliveryCode` por un código nuevo de `generateDeliveryCode` y pone en cero el contador de intentos del cliente; el hecho queda en la auditoría, sin el valor del código. |
+| 10 | La app muestra el código nuevo al instante. |
 
-**Postcondición:** El chofer dispone del código secreto de diez caracteres del pedido y lo muestra como QR. El pedido no cambió: la operación es de sólo lectura y el código es siempre el mismo mientras el pedido no cambie de chofer.
+**Postcondición:** El chofer dispone del código de seis dígitos del pedido y lo muestra como QR o lo dicta. Consultarlo no cambia el pedido; si generó uno nuevo, el anterior dejó de valer, el contador de intentos del cliente volvió a cero y el pedido ya no está bloqueado.
 
 **Excepciones**
 
@@ -443,6 +446,7 @@ Pantalla «Finalización» de la App Chofer: el código de entrega del pedido re
 | 3 | Si el pedido no existe → 404 «Order with ID: … not found»; si es de otra distribuidora que la del solicitante → el mismo 404, sin revelar que existe. |
 | 4 | Si el chofer no tiene perfil de repartidor o el pedido está asignado a otro → 403 «Este pedido no está asignado a tu usuario». |
 | 5 | Si el pedido todavía no fue aceptado y por lo tanto no tiene código → 400 «El pedido todavía no tiene código de entrega (debe estar aceptado)». |
+| 9 | Si el pedido está asignado a otro chofer → 403 «Este pedido no está asignado a tu usuario»; si el pedido no está en camino → se rechaza la generación del código nuevo. |
 
 | Campo | Detalle |
 |-------|---------|
@@ -450,7 +454,7 @@ Pantalla «Finalización» de la App Chofer: el código de entrega del pedido re
 | **Frecuencia** | Una vez por cada pedido que llega al domicilio; el chofer puede repetirla si la pantalla se cierra. |
 | **Estabilidad** | Alta |
 
-**Comentarios.** El código de entrega no se regenera si el chofer lo pide varias veces: es siempre el mismo mientras el pedido no cambie de chofer, para que el QR mostrado sea estable durante todo el trayecto. Es la mitad emisora de la prueba de entrega: el cliente lo valida con `POST /orders/:id/confirm-delivery` (CU-079), que lo compara en tiempo constante.
+**Comentarios.** Consultar el código no lo cambia aunque el chofer lo pida varias veces: es siempre el mismo hasta que el chofer o un administrador genere uno nuevo, para que el QR mostrado sea estable durante todo el trayecto. Los códigos de pedidos ya en curso, con el formato anterior, siguen valiendo. Es la mitad emisora de la prueba de entrega: el cliente lo valida con `POST /orders/:id/confirm-delivery` (CU-079), que lo compara en tiempo constante.
 
 ---
 
@@ -461,7 +465,7 @@ Pantalla «Finalización» de la App Chofer: el código de entrega del pedido re
 
 #### Interfaz Gráfica
 
-La cámara lectora no se captura (el simulador no tiene cámara). La acción se dispara desde el seguimiento del pedido mientras el estado es «En camino» (figura siguiente): el cliente abre el lector de cámara para leer el QR que el chofer le muestra en su pantalla (obtenido en CU-078), y la app extrae del contenido leído el código de diez caracteres.
+La cámara lectora no se captura (el simulador no tiene cámara). La acción se dispara desde el seguimiento del pedido mientras el estado es «En camino» (figura siguiente): el cliente abre el lector de cámara para leer el QR que el chofer le muestra en su pantalla (obtenido en CU-078), y la app extrae del contenido leído el código de seis dígitos. Si no puede escanear, el cliente escribe los seis dígitos que el chofer le dicta, con un teclado numérico.
 
 ![Seguimiento del pedido en la App Cliente con el botón «Confirmar entrega (escanear QR)»](../diagramas/pantallas/CU-079-confirmar-entrega-qr.png)
 
@@ -486,12 +490,12 @@ Seguimiento del pedido en camino de la App Cliente: el botón «Confirmar entreg
 | Paso | Acción |
 |------|--------|
 | 1 | El chofer muestra en su pantalla el QR obtenido en CU-078. |
-| 2 | El cliente abre el lector de cámara desde `OrderTrackingView` y escanea el QR; la app extrae el código de diez caracteres del contenido leído. |
+| 2 | El cliente abre el lector de cámara desde `OrderTrackingView` y escanea el QR; la app extrae el código de seis dígitos del contenido leído; si el cliente no puede escanear, lo escribe con el teclado numérico. |
 | 3 | `OrderTrackingViewModel` llama `historyService.confirmDelivery(orderId, code)` → `POST /orders/:id/confirm-delivery` con `{ code }` y el encabezado `Idempotency-Key`. |
 | 4 | `OrderController.confirmDelivery()` invoca `OrderService.confirmDelivery(id, code, userId, role, reason)`, que delega en `ConfirmDeliveryUseCase.execute(orderId, code, userId, role, reason)`. |
 | 5 | `ConfirmDeliveryUseCase` recupera el pedido con `OrderRepositoryPort.findByIdFull(orderId)` y valida que, si el rol es CUSTOMER, `order.customer_id` sea el usuario autenticado. |
 | 6 | Verifica que el pedido esté en estado ON_THE_WAY. |
-| 7 | Compara el código recibido contra `order.deliveryCode` con `compareDeliveryCode()` (`DeliveryCodeUtil`), que usa `timingSafeEqual` para no filtrar el secreto por timing. |
+| 7 | Si el pedido ya está bloqueado por cinco intentos fallidos, lo rechaza aunque el código sea el correcto. Si no, comprueba el formato del código y compara el recibido contra `order.deliveryCode` con `compareDeliveryCode()` (`DeliveryCodeUtil`), que usa `timingSafeEqual` para no filtrar el secreto por timing. Si el solicitante es un cliente y el código es incorrecto, se suma un intento en el contador del pedido (cualquier código rechazado que envía un cliente); el administrador no suma ni se bloquea. |
 | 8 | Con el código válido, delega en `UpdateOrderStatusUseCase.execute(order_id, DELIVERED)` — el mismo caso de uso que usa `PATCH /orders/:id/status` en CU-020. Si el rol es administrador, le pasa el rol, el usuario y el motivo, y el caso de uso exige entre 10 y 500 caracteres y los asienta en `order_status_history` y en la auditoría. |
 | 9 | `UpdateOrderStatusUseCase` registra `deliveredAt = now()`. No toca `paymentStatus`: un pedido en efectivo sigue pendiente de cobro (CU-292). |
 | 10 | Llama `RealtimeDispatchPort.stopTracking(driverUserId)` para cortar el seguimiento GPS en vivo del chofer. |
@@ -510,7 +514,7 @@ Seguimiento del pedido en camino de la App Cliente: el botón «Confirmar entreg
 | 5 | Si el pedido pertenece a otro cliente → 403 "No autorizado a confirmar la entrega de otro cliente". |
 | 6 | Si el pedido ya está DELIVERED → no se trata como error: se devuelve el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red. |
 | 6 | Si el pedido está en cualquier otro estado que no sea ON_THE_WAY → 400 "El pedido no está en camino, no se puede confirmar la entrega". |
-| 7 | Si el código no coincide, o el pedido no tiene código cargado, o los largos difieren → 400 "Código de entrega inválido". |
+| 7 | Si el código no tiene el formato de seis dígitos (mal leído) → se rechaza como código mal leído. Si es el de otro pedido del cliente que también está en camino → se rechaza como código de otro pedido. En los dos casos, y si no coincide, o el pedido no tiene código cargado → 400 "Código de entrega inválido"; todo código rechazado que envía un cliente suma un intento fallido. Si el pedido ya sumó cinco intentos fallidos → 409 «Demasiados intentos: pedile al chofer un código nuevo», incluso con el código correcto, hasta que se genere uno nuevo. |
 | 8 | Si lo confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres → 400. |
 
 | Campo | Detalle |
@@ -519,7 +523,7 @@ Seguimiento del pedido en camino de la App Cliente: el botón «Confirmar entreg
 | **Frecuencia** | Una vez por pedido entregado, en el pico de la franja horaria de entrega. |
 | **Estabilidad** | Alta |
 
-**Comentarios.** La validación vive en `ConfirmDeliveryUseCase`; los efectos de pasar a DELIVERED se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH /orders/:id/status`: cero duplicación de lógica con CU-020. La doble idempotencia (encabezado `Idempotency-Key` más el chequeo de `status === DELIVERED` dentro del caso de uso) tolera el reintento de red y el doble escaneo. El espacio del código es de 16^10 combinaciones, por lo que adivinarlo a fuerza bruta es inviable; los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte. Limitación conocida: la garantía completa de este mecanismo depende de que el pedido conserve un único chofer asignado, y aceptar un pedido no comprueba que no tenga ya un chofer (CU-015), de modo que un segundo chofer puede regenerar el `deliveryCode` e invalidar el QR que el primero ya le había mostrado al cliente.
+**Comentarios.** La validación vive en `ConfirmDeliveryUseCase`; los efectos de pasar a DELIVERED se delegan en `UpdateOrderStatusUseCase`, el mismo que usa `PATCH /orders/:id/status`: cero duplicación de lógica con CU-020. La doble idempotencia (encabezado `Idempotency-Key` más el chequeo de `status === DELIVERED` dentro del caso de uso) tolera el reintento de red y el doble escaneo. El espacio del código es de un millón de combinaciones (seis dígitos), pero cada cliente puede equivocarse a lo sumo cinco veces por código antes de que el pedido se bloquee, por lo que adivinarlo a fuerza bruta es inviable; los roles ADMIN y SUPER_ADMIN también pueden confirmar, para entregas asistidas desde soporte.
 
 ---
 
@@ -1450,15 +1454,16 @@ sequenceDiagram
     SRV->>+PED: getCodigoDeEntrega()
     PED-->>-SRV: codigo
     SRV-->>-CHF: codigo
+    Note over CHF,PED: Generar un código nuevo (regenerarCodigoDeEntrega) reemplaza el código del pedido en camino<br/>por otro de seis dígitos y pone en cero sus intentos fallidos
 ```
 
 </details>
 
 **Clases participantes:** `OrderService` (controlador de fachada del módulo de pedidos), la colección `Map<String, Pedido>` y el objeto de dominio `Pedido`.
 
-**GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce su código de entrega, que generó al aceptarse (CU-015), y sabe si el chofer que lo pide es el asignado. Es una consulta: no cambia el estado del pedido.
+**GRASP.** *Controlador*: `OrderService` recibe la operación. *Experto*: `Pedido` conoce su código de entrega, que generó al aceptarse (CU-015), y sabe si el chofer que lo pide es el asignado. Es una consulta: no cambia el estado del pedido. Generar un código nuevo con el pedido en camino (`OrderService.regenerateDeliveryCode`) reemplaza el código del pedido y pone en cero su contador de intentos fallidos; se muestra como nota del diagrama.
 
-**No se dibuja:** la verificación de que el pedido sea de la distribuidora, y el error si el pedido todavía no tiene código porque no fue aceptado.
+**No se dibuja:** la verificación de que el pedido sea de la distribuidora, el error si el pedido todavía no tiene código porque no fue aceptado, el rechazo de la generación de un código nuevo si el pedido no está en camino o es de otro chofer, y el asiento del hecho en la auditoría (sin el valor del código).
 
 | Operación de diseño | Implementación |
 |---|---|
@@ -1496,6 +1501,7 @@ sequenceDiagram
     PEDS-->>-CDU: pedido
     CDU->>+PED: validarCodigo(codigo)
     PED-->>-CDU: valido
+    Note over CDU,PED: Cada código rechazado que envía un cliente suma un intento fallido al pedido.<br/>Con cinco, el pedido queda bloqueado: se rechaza incluso el código correcto hasta que haya uno nuevo
     CDU->>+PED: entregar(motivo)
     PED->>PED: transicionar(entregado)
     create participant CAM as :CambioEstadoPedido
@@ -1517,17 +1523,17 @@ sequenceDiagram
 
 **Clases participantes:** `ConfirmDeliveryUseCase` (controlador de caso de uso), la colección `Map<String, Pedido>`, los objetos de dominio `Pedido`, `Envase` y `CambioEstadoPedido`, `StockDeliveryService` (fabricación pura: el descuento del stock físico de lo entregado), `RealtimeDispatchPort` y `NotificationPort` (fabricación pura: los avisos).
 
-**GRASP.** *Controlador*: `ConfirmDeliveryUseCase` recibe la operación. *Experto*: `Pedido` conoce su código de entrega y es quien lo compara con el que escaneó el cliente y pasa a «entregado». La comparación se hace en tiempo constante y la operación es idempotente: un pedido ya entregado se devuelve sin reprocesar. *Creador*: `Pedido` crea el `CambioEstadoPedido` de la transición a «entregado», siempre; solo el motivo depende de quién confirma: lo trae el administrador y el cliente no lo manda (CU-020). El pago no se toca: un pedido en efectivo sigue pendiente de cobro (CU-292).
+**GRASP.** *Controlador*: `ConfirmDeliveryUseCase` recibe la operación. *Experto*: `Pedido` conoce su código de entrega y es quien lo compara con el que escaneó o escribió el cliente, cuenta los intentos fallidos —cuando el cliente se equivoca se suman, y con cinco queda bloqueado— y pasa a «entregado». La comparación se hace en tiempo constante y la operación es idempotente: un pedido ya entregado se devuelve sin reprocesar. *Creador*: `Pedido` crea el `CambioEstadoPedido` de la transición a «entregado», siempre; solo el motivo depende de quién confirma: lo trae el administrador y el cliente no lo manda (CU-020). El pago no se toca: un pedido en efectivo sigue pendiente de cobro (CU-292).
 
 **Referencias.** Los envases despachados pasan a poder del cliente y se descuenta el stock físico de lo entregado con la misma colaboración de la operación `confirmarEntrega` (CU-020); el descuento (CU-220) tiene su propio diagrama y acá sólo se muestra el llamado.
 
-**No se dibuja:** el cierre del seguimiento en vivo del chofer que entregó, la verificación de que el pedido sea del cliente que lo confirma, el rechazo si el pedido no está en camino o el código no coincide, la exigencia del motivo al administrador (de 10 a 500 caracteres, posterior a la del código) y la transacción con el bloqueo del pedido que resuelve `UpdateOrderStatusUseCase.execute`.
+**No se dibuja:** el cierre del seguimiento en vivo del chofer que entregó, la verificación de que el pedido sea del cliente que lo confirma, el rechazo si el pedido no está en camino o el código no coincide (mal leído, de otro pedido o incorrecto), el rechazo de un pedido bloqueado, la exigencia del motivo al administrador (de 10 a 500 caracteres, posterior a la del código) y la transacción con el bloqueo del pedido que resuelve `UpdateOrderStatusUseCase.execute`.
 
 | Operación de diseño | Implementación |
 |---|---|
 | `ConfirmDeliveryUseCase.confirmarEntregaConCodigo(...)` | `OrderController.confirmDelivery` → `OrderService.confirmDelivery` → `ConfirmDeliveryUseCase.execute` |
 | `Map<String, Pedido>.get(...)` | `ConfirmDeliveryUseCase.execute`: lee el `Order` con `OrderRepositoryPort.findByIdFull` |
-| `Pedido.validarCodigo(...)` | `compareDeliveryCode()`, contra `Order.deliveryCode` |
+| `Pedido.validarCodigo(...)` | `compareDeliveryCode()`, contra `Order.deliveryCode`; antes comprueba que el contador de intentos fallidos del pedido no haya llegado al máximo (5) y, si el código es incorrecto y lo envió un cliente, suma un intento con un UPDATE atómico |
 | `Pedido.entregar(...)` | `ConfirmDeliveryUseCase.execute`: delega en `UpdateOrderStatusUseCase.execute`, que registra `Order.deliveredAt` |
 | `Pedido.transicionar(...)` | `transitionOrder()` |
 | `CambioEstadoPedido.«create»` | `OrderStatusHistorySubscriber.asentar`: inserta el `OrderStatusHistory` de la transición, con el motivo si lo hay (el del administrador; el cliente no manda motivo) |

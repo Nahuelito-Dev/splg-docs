@@ -326,7 +326,7 @@ Los atributos derivados —los que se calculan a partir de otros datos y no se p
 | **Pedido** | fecha agendada: Fecha para la que el cliente programó la entrega. |
 | **Pedido** | método de pago: Efectivo, MercadoPago o transferencia. |
 | **Pedido** | seña: Importe adelantado en una reserva programada. Cero en un pedido normal. |
-| **Pedido** | código de entrega: Código secreto que prueba, al escanearlo, que el chofer estuvo presente en la entrega. |
+| **Pedido** | código de entrega: Código secreto de seis dígitos que prueba, al escanearlo o escribirlo, que el chofer estuvo presente en la entrega. |
 | **Pedido** | nombre de quien recibe: Si no es el cliente, nombre de la persona que recibe el pedido. |
 | **Pedido** | documento de quien recibe: Documento de esa persona. |
 | **Pedido** | vínculo con quien recibe: Relación con el cliente: familiar, encargado, vecino. |
@@ -776,7 +776,7 @@ sequenceDiagram
     CHO->>SIS: obtenerCodigoDeEntrega(pedidoId)
     activate SIS
     alt El pedido está asignado a este chofer y ya fue aceptado
-        SIS-->>CHO: código de entrega (para mostrarlo como QR al cliente)
+        SIS-->>CHO: código de entrega de seis dígitos (para mostrarlo como QR al cliente y dictarlo)
     else El identificador del pedido no es válido
         SIS-->>CHO: error de solicitud
     else El pedido no existe o es de otra distribuidora
@@ -789,7 +789,7 @@ sequenceDiagram
         SIS-->>CHO: acceso denegado (el cliente nunca conoce el código por el sistema)
     end
     deactivate SIS
-    Note over CHO,SIS: También lo inicia el Administrador (ACT-03). El código no se regenera:<br/>es siempre el mismo mientras el pedido no cambie de chofer
+    Note over CHO,SIS: También lo inicia el Administrador (ACT-03). Consultar el código no lo cambia: sólo cambia<br/>cuando el chofer asignado o un administrador genera uno nuevo con el pedido en camino
 ```
 
 </details>
@@ -825,17 +825,23 @@ sequenceDiagram
         SIS-->>CLI: recurso no encontrado
     else El pedido es de otro cliente
         SIS-->>CLI: acceso denegado (no autorizado a confirmar la entrega de otro cliente)
+    else El pedido está bloqueado por cinco códigos incorrectos del cliente
+        SIS-->>CLI: conflicto (demasiados intentos: se rechaza incluso el código correcto hasta que haya uno nuevo)
     else El pedido ya está entregado
         SIS-->>CLI: pedido tal cual está (no se reprocesa ni se vuelve a exigir el código)
     else El pedido está en otro estado distinto de en camino
         SIS-->>CLI: error de solicitud (el pedido no está en camino)
+    else El código está mal leído o no tiene el formato de seis dígitos
+        SIS-->>CLI: error de solicitud (código mal leído)
+    else El código es el de otro pedido del cliente que también está en camino
+        SIS-->>CLI: error de solicitud (código de otro pedido)
     else El código no coincide, o el pedido no tiene código
-        SIS-->>CLI: error de solicitud (código de entrega inválido)
+        SIS-->>CLI: error de solicitud (código de entrega inválido, y si lo envió un cliente suma un intento)
     else Confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres
         SIS-->>CLI: error de solicitud (motivo inválido)
     end
     deactivate SIS
-    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda). El Administrador General<br/>indica además la distribuidora
+    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda). El Administrador General<br/>indica además la distribuidora. El administrador no suma intentos ni se bloquea
 ```
 
 </details>
@@ -1036,10 +1042,10 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Responsabilidades** | Verificar que el código recibido coincida con el del pedido, como prueba de que el chofer estuvo presente, y dar la entrega por realizada. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-079. Funciones: IRQ-02, IRQ-08, OBJ-03, OBJ-04, OBJ-07. |
-| **Notas** | La confirma el Cliente titular del pedido, que escanea el QR que le muestra el chofer, o un administrador, que debe dejar el motivo por escrito (de 10 a 500 caracteres) y que no tiene la prueba del escaneo; el Administrador General indica además la distribuidora. El código se compara de una forma que no da pistas sobre cuán cerca estuvo el intento. Una segunda confirmación sobre un pedido ya entregado no reprocesa nada y muestra el pedido tal cual. Entregar no es cobrar: si el pago es en efectivo, sigue pendiente. El descuento del stock físico y el cambio de estado de los envases no revierten la entrega si fallan: lo pendiente queda para la conciliación. Se avisa al cliente y a los administradores. |
-| **Excepciones** | Si el código falta o viene vacío, o se repite el envío con datos distintos → error de validación. Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido es de otro cliente → acceso denegado. Si el pedido está en un estado distinto de «en camino» y de «entregado» → error de solicitud. Si el código no coincide o el pedido no tiene código → error de solicitud (código de entrega inválido). Si confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres → error de solicitud; esta comprobación es posterior a la del código. Si el pedido ya está entregado → no es un error: se muestra sin reprocesar. Si el Administrador General no indica la distribuidora → error de solicitud. |
+| **Notas** | La confirma el Cliente titular del pedido, que escanea el QR que le muestra el chofer o escribe el código que este le dicta, o un administrador, que debe dejar el motivo por escrito (de 10 a 500 caracteres) y que no tiene la prueba del escaneo; el Administrador General indica además la distribuidora. El código se compara de una forma que no da pistas sobre cuán cerca estuvo el intento. Cada código incorrecto del Cliente suma un intento fallido al Pedido; el Administrador no suma intentos ni se bloquea. Una segunda confirmación sobre un pedido ya entregado no reprocesa nada y muestra el pedido tal cual. Entregar no es cobrar: si el pago es en efectivo, sigue pendiente. El descuento del stock físico y el cambio de estado de los envases no revierten la entrega si fallan: lo pendiente queda para la conciliación. Se avisa al cliente y a los administradores. |
+| **Excepciones** | Si el código falta o viene vacío, o se repite el envío con datos distintos → error de validación. Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido es de otro cliente → acceso denegado. Si el pedido está en un estado distinto de «en camino» y de «entregado» → error de solicitud. Si el código está mal leído o no tiene el formato de seis dígitos → error de solicitud (código mal leído), y si lo envió un Cliente suma un intento fallido al Pedido. Si el Cliente envía el código de otro pedido suyo que también está en camino → error de solicitud (código de otro pedido), con el mismo intento fallido. Si el código no coincide o el pedido no tiene código → error de solicitud (código de entrega inválido), y si lo envió un Cliente suma un intento fallido al Pedido. Si el Pedido tiene cinco intentos fallidos → conflicto (demasiados intentos), incluso con el código correcto, hasta que se genere uno nuevo. Si confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres → error de solicitud; esta comprobación es posterior a la del código. Si el pedido ya está entregado → no es un error: se muestra sin reprocesar. Si el Administrador General no indica la distribuidora → error de solicitud. |
 | **Salida** | El pedido con estado entregado. |
-| **Precondiciones** | El solicitante es el Cliente titular del Pedido, o un Administrador o el Administrador General. El Pedido tiene estado «en camino» y un código de entrega desde su aceptación. El chofer está en el domicilio mostrando el QR. |
+| **Precondiciones** | El solicitante es el Cliente titular del Pedido, o un Administrador o el Administrador General. El Pedido tiene estado «en camino» y un código de entrega desde su aceptación, y no está bloqueado por intentos fallidos. El chofer está en el domicilio mostrando el QR. |
 | **Postcondiciones** | El atributo estado del Pedido pasó a «entregado», con el momento de la entrega. Se creó una instancia de CambioEstadoPedido asociada al Pedido y al Usuario que confirmó, con el estado anterior y el nuevo, y con el motivo si lo confirmó un administrador. Cada Envase despachado en el Pedido pasó a estar en poder del Cliente, y se creó su MovimientoEnvase. Se descontó el stock físico de lo entregado: las garrafas llenas salieron de la UbicacionDeStock del camión o del depósito y los envases vacíos recolectados entraron en la misma. |
 
 #### Importante Contrato: `confirmarTransferencia()`
@@ -1109,7 +1115,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Pasarela de pago** | Sistema externo | Servicio externo de cobros en línea (MercadoPago). Avisa al sistema el resultado de cada pago. |
 | **Pedido** | Concepto | Solicitud de compra de un cliente. Su estado es «pendiente», «aceptado», «en camino», «entregado» o «cancelado». |
 | **Pedido cancelado** | Estado | Pedido que dejó de ser válido por decisión del cliente o del administrador, o por un vencimiento automático. Devuelve el stock reservado. |
-| **Código de entrega** | Concepto | Código secreto de diez caracteres que se genera al aceptarse el pedido. El chofer lo muestra como QR y el cliente lo escanea para confirmar la entrega: prueba que el chofer estuvo presente. |
+| **Código de entrega** | Concepto | Código secreto de seis dígitos que se genera al aceptarse el pedido. El chofer lo muestra como QR (y en grande, para dictarlo) y el cliente lo escanea o lo escribe para confirmar la entrega: prueba que el chofer estuvo presente. Tiene un tope de cinco intentos incorrectos del cliente; superado, el pedido queda bloqueado hasta que el chofer asignado o un administrador genere un código nuevo. |
 | **Oferta de despacho** | Concepto | Propuesta de un pedido a un chofer determinado, con vigencia limitada. Si no la acepta, pasa al siguiente candidato. |
 | **Promoción por volumen** | Concepto | Descuento que se aplica a un producto cuando la cantidad pedida alcanza un mínimo. |
 | **Zona de cobertura** | Concepto | Área geográfica dentro de la cual una distribuidora acepta pedidos, con su recargo. |

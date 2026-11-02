@@ -1350,7 +1350,7 @@ sección 4.
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-03 |
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
-| **Descripción** | El chofer acepta el pedido que se le ofreció. El sistema se lo asigna, genera el código secreto de entrega que se usará en la confirmación por código (CU-079), cierra la oferta y avisa al cliente. |
+| **Descripción** | El chofer acepta el pedido que se le ofreció. El sistema se lo asigna, genera el código de entrega, de seis dígitos, que se usará en la confirmación por código (CU-079), cierra la oferta y avisa al cliente. |
 | **Precondición** | El chofer está identificado y conectado. El pedido está pendiente. El chofer está habilitado por el administrador y validado, tiene un vehículo en uso (CU-161) y ni su licencia ni ese vehículo tienen documentación vencida (CU-136 a CU-138). |
 | **Estado** | Implementado |
 
@@ -1453,7 +1453,7 @@ sección 4.
 |-------|---------|
 | **Objetivos asociados** | OBJ-04 |
 | **Requisitos asociados** | IRQ-02 |
-| **Descripción** | El chofer obtiene el código secreto de entrega del pedido que está llevando, para mostrarlo como QR al cliente al llegar. El código se genera al aceptarse el pedido y es la mitad emisora del mecanismo antifraude que se completa en CU-079. |
+| **Descripción** | El chofer obtiene el código de entrega del pedido que está llevando, de seis dígitos, para mostrarlo como QR al cliente al llegar; debajo del QR figura el mismo número, grande y agrupado («482 913»), para dictarlo. El código se genera al aceptarse el pedido y es la mitad emisora del mecanismo antifraude que se completa en CU-079. Con el pedido en camino, el chofer asignado —o un administrador— también puede generar un código nuevo si el actual se compartió o el cliente agotó sus intentos. |
 | **Precondición** | El solicitante está identificado como chofer, o como administrador. El pedido existe y ya fue aceptado, por lo que tiene código de entrega. Si es un chofer, es el asignado al pedido. |
 | **Estado** | Implementado |
 
@@ -1466,9 +1466,13 @@ sección 4.
 | 3 | Si el solicitante es un chofer, el sistema comprueba que el pedido esté asignado a él. |
 | 4 | El sistema verifica que el pedido tenga código de entrega. |
 | 5 | El sistema muestra el código del pedido. |
-| 6 | La aplicación del chofer muestra el código como QR. |
+| 6 | La aplicación del chofer muestra el código como QR y, debajo, en grande y agrupado de a tres dígitos, para dictarlo. |
+| 7 | Si hace falta otro código, el chofer elige «Generar código nuevo» y confirma. |
+| 8 | El sistema verifica que el pedido esté en camino y que sea del chofer que lo pide (o que lo pida un administrador). |
+| 9 | El sistema reemplaza el código anterior por uno nuevo, pone en cero los intentos fallidos del cliente y deja el hecho asentado en la auditoría, sin guardar el valor del código. |
+| 10 | La aplicación del chofer muestra el código nuevo al instante. |
 
-**Postcondición:** El chofer dispone del código secreto de diez caracteres del pedido y lo muestra como QR. El pedido no cambia: la operación es de solo lectura.
+**Postcondición:** El chofer dispone del código de seis dígitos del pedido y lo muestra como QR o lo dicta. Consultarlo no cambia el pedido. Si generó uno nuevo, el anterior dejó de valer, el cliente vuelve a tener todos sus intentos y el pedido deja de estar bloqueado, si lo estaba.
 
 **Excepciones**
 
@@ -1480,18 +1484,21 @@ sección 4.
 | 3 | Si el chofer no tiene perfil de repartidor o el pedido no está asignado a él, el sistema deniega la consulta e informa «Este pedido no está asignado a tu usuario». |
 | 4 | Si el pedido todavía no fue aceptado y por lo tanto no tiene código, el sistema informa «El pedido todavía no tiene código de entrega (debe estar aceptado)». |
 | 1 | Si el solicitante es un cliente, el sistema deniega la consulta: el cliente nunca conoce el código por el sistema, solo escaneando el QR que muestra el chofer. |
+| 8 | Si el pedido está asignado a otro chofer, el sistema deniega la operación e informa «Este pedido no está asignado a tu usuario». |
+| 8 | Si el pedido no está en camino, el sistema rechaza la generación del código nuevo. |
 
 **Rendimiento**
 
 | Paso | Cota de tiempo |
 |------|----------------|
 | 5 | 1 segundo |
+| 9 | 1 segundo |
 
 | Campo | Detalle |
 |-------|---------|
-| **Frecuencia** | Una vez por cada pedido que llega al domicilio; el chofer puede repetirla si la pantalla se cierra. |
+| **Frecuencia** | Una vez por cada pedido que llega al domicilio; el chofer puede repetirla si la pantalla se cierra. Generar un código nuevo es excepcional. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El código de entrega no se regenera si el chofer lo pide varias veces: es siempre el mismo mientras el pedido no cambie de chofer, para que el QR mostrado sea estable durante todo el trayecto. |
+| **Comentarios** | Consultar el código no lo cambia, por mucho que el chofer lo pida: es siempre el mismo hasta que el chofer o un administrador genere uno nuevo, para que el QR mostrado sea estable durante todo el trayecto. Los códigos de pedidos que ya estaban en curso, con otro formato, siguen valiendo hasta que se genere uno nuevo. |
 
 ---
 
@@ -1501,7 +1508,7 @@ sección 4.
 |-------|---------|
 | **Objetivos asociados** | OBJ-03, OBJ-04, OBJ-07 |
 | **Requisitos asociados** | IRQ-02, IRQ-08 |
-| **Descripción** | El cliente escanea con su aplicación el QR que le muestra el chofer; si el código coincide con el guardado en el pedido, el sistema da la entrega por realizada. Es el camino normal de cierre de la entrega y la prueba antifraude: el chofer no puede cerrarla (CU-020 es del administrador) y, como el cliente solo puede conocer el código habiendo visto el QR en la mano del chofer, la confirmación prueba que el chofer estuvo presente. Si el cliente no puede escanear, un administrador puede confirmar con el mismo código, que consigue con CU-078, dejando el motivo por escrito. |
+| **Descripción** | El cliente escanea con su aplicación el QR que le muestra el chofer —o escribe a mano los seis dígitos que el chofer le dicta, con un teclado numérico—; si el código coincide con el guardado en el pedido, el sistema da la entrega por realizada. Es el camino normal de cierre de la entrega y la prueba antifraude: el chofer no puede cerrarla (CU-020 es del administrador) y, como el cliente solo puede conocer el código habiendo visto el QR en la mano del chofer, la confirmación prueba que el chofer estuvo presente. Cada código incorrecto del cliente cuenta como un intento: al quinto, el pedido queda bloqueado hasta que el chofer o un administrador genere un código nuevo (CU-078). Si el cliente no puede confirmar, un administrador puede confirmar con el mismo código, que consigue con CU-078, dejando el motivo por escrito. |
 | **Precondición** | El solicitante está identificado como el cliente titular del pedido o como administrador (el Administrador General indica la distribuidora). El pedido está en camino y tiene código de entrega desde su aceptación (CU-015) o su asignación manual (CU-012). El chofer está en el domicilio mostrando el QR. |
 | **Estado** | Implementado |
 
@@ -1510,11 +1517,11 @@ sección 4.
 | Paso | Acción |
 |------|--------|
 | 1 | El chofer llega al domicilio y muestra en su aplicación el QR obtenido con CU-078. |
-| 2 | El cliente lo escanea con su aplicación, que lee el código de diez caracteres. |
+| 2 | El cliente lo escanea con su aplicación, que lee el código de seis dígitos; si no puede escanear, escribe los seis dígitos que el chofer le dicta, con el teclado numérico. |
 | 3 | La aplicación envía el código. Si se repite el envío por un corte de conexión, el sistema no lo procesa dos veces. |
 | 4 | El sistema recupera el pedido y comprueba la pertenencia: si el solicitante es un cliente, el pedido es suyo. |
 | 5 | El sistema verifica que el pedido esté en camino. |
-| 6 | El sistema compara el código recibido con el guardado, de una forma que no da pistas sobre cuán cerca estuvo el intento. |
+| 6 | El sistema comprueba que el pedido no esté bloqueado y compara el código recibido con el guardado, de una forma que no da pistas sobre cuán cerca estuvo el intento. Si el código es incorrecto y lo envió un cliente, suma un intento fallido; el administrador no suma intentos. |
 | 7 | Con el código válido, el sistema pasa el pedido a entregado con el mismo comportamiento que CU-020, registra el momento y asienta el cambio en el historial de estados. Si confirma un administrador, el sistema exige el motivo (de 10 a 500 caracteres) y lo guarda en el historial de estados y en la auditoría; para el cliente no se pide. |
 | 8 | Si el medio de pago es efectivo, el pago sigue pendiente: la entrega no lo marca como cobrado. |
 | 9 | El sistema corta el seguimiento en vivo del chofer que entregó. |
@@ -1536,7 +1543,10 @@ sección 4.
 | 4 | Si el pedido es de otro cliente, el sistema deniega la operación e informa «No autorizado a confirmar la entrega de otro cliente». |
 | 5 | Si el pedido ya está entregado, no es un error: el sistema muestra el pedido tal cual, sin reprocesar ni volver a exigir el código, para tolerar el doble escaneo y el reintento de red. |
 | 5 | Si el pedido está en cualquier otro estado que no sea en camino, el sistema rechaza la operación e informa «El pedido no está en camino, no se puede confirmar la entrega». |
-| 6 | Si el código no coincide, o el pedido no tiene código, o los largos difieren, el sistema rechaza la operación e informa «Código de entrega inválido». |
+| 6 | Si el código no tiene el formato de un código de entrega, porque se leyó mal o se escribió mal, el sistema rechaza la operación e informa que el código no se leyó bien, para que el cliente lo escanee o lo escriba de nuevo; si lo envió un cliente, suma un intento fallido. |
+| 6 | Si el solicitante es un cliente y el código es el de otro pedido suyo que también está en camino, el sistema rechaza la operación e informa que ese código corresponde a otro pedido, y suma un intento fallido. |
+| 6 | Si el código no coincide, o el pedido no tiene código, el sistema rechaza la operación e informa «Código de entrega inválido»; si lo envió un cliente, suma un intento fallido. |
+| 6 | Si el cliente ya sumó cinco códigos incorrectos, el pedido está bloqueado: el sistema rechaza la operación e informa «Demasiados intentos: pedile al chofer un código nuevo», incluso si el código es el correcto, hasta que el chofer o un administrador genere un código nuevo (CU-078). El administrador no se bloquea. |
 | 7 | Si confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres, el sistema rechaza la operación; esta comprobación es posterior a la del código. |
 | 11 | Si ni el camión ni el depósito tienen llenas suficientes, la entrega igual se completa y lo pendiente queda para la conciliación (CU-224); se resuelve con CU-278. |
 | 4 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
@@ -1551,7 +1561,7 @@ sección 4.
 |-------|---------|
 | **Frecuencia** | Una vez por pedido entregado, en el pico de la franja horaria de entrega. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El código tiene tantas combinaciones y solo vale mientras el pedido está en camino, por lo que adivinarlo es inviable. Los administradores también pueden confirmar, para entregas asistidas desde soporte: no tienen la prueba del escaneo, así que dejan el motivo asentado igual que en CU-020. El descuento del stock (CU-220, incluido en este caso) se hace en la misma operación; si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). El cobro del efectivo es un circuito aparte, a cargo del chofer (CU-292 y CU-293). |
+| **Comentarios** | El código tiene un millón de combinaciones y solo vale mientras el pedido está en camino; como cada cliente puede equivocarse a lo sumo cinco veces antes del bloqueo, adivinarlo es inviable. Los administradores también pueden confirmar, para entregas asistidas desde soporte: no tienen la prueba del escaneo, así que dejan el motivo asentado igual que en CU-020. El descuento del stock (CU-220, incluido en este caso) se hace en la misma operación; si no puede, la entrega igual queda confirmada y lo pendiente se ve en la conciliación (CU-224). El cobro del efectivo es un circuito aparte, a cargo del chofer (CU-292 y CU-293). |
 
 ---
 
@@ -2263,7 +2273,7 @@ El símbolo ● indica que el requisito contribuye al objetivo de esa columna.
 | Despacho automático | Proceso | Proceso que ofrece cada pedido nuevo al chofer disponible más cercano, de a uno por vez y con una vigencia acotada, ampliando el radio de búsqueda si nadie acepta (módulo M1). |
 | Oferta de despacho | Proceso | Propuesta que el sistema le hace a un chofer para que tome un pedido, con un plazo para aceptarla o rechazarla. |
 | Disponibilidad del chofer | Proceso | Condición del chofer en línea, que lo hace candidato a recibir ofertas de pedidos. |
-| Código de entrega | Dominio | Código secreto que el sistema genera al aceptarse el pedido y que el cliente confirma al recibirlo, escaneando el QR que le muestra el chofer. Es la prueba objetiva de la entrega. |
+| Código de entrega | Dominio | Código secreto de seis dígitos que el sistema genera al aceptarse el pedido y que el cliente confirma al recibirlo, escaneando el QR que le muestra el chofer o escribiendo el número que este le dicta. Es la prueba objetiva de la entrega. |
 | Cobro en efectivo | Proceso | Confirmación, por parte del chofer, de que cobró en mano el importe de un pedido entregado. |
 | Transferencia | Proceso | Pago de un pedido por transferencia bancaria, que el administrador confirma al verificar el comprobante. |
 | Pasarela de pago | Integración | Servicio externo que procesa el cobro en línea (MercadoPago) y avisa al sistema el resultado. |

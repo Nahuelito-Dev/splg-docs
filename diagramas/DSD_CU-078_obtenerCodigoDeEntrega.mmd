@@ -14,3 +14,4 @@ sequenceDiagram
     SRV->>+PED: getCodigoDeEntrega()
     PED-->>-SRV: codigo
     SRV-->>-CHF: codigo
+    Note over CHF,PED: Generar un código nuevo (regenerarCodigoDeEntrega) reemplaza el código del pedido en camino<br/>por otro de seis dígitos y pone en cero sus intentos fallidos

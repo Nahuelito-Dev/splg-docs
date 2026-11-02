@@ -17,14 +17,20 @@ sequenceDiagram
         SIS-->>CLI: recurso no encontrado
     else El pedido es de otro cliente
         SIS-->>CLI: acceso denegado (no autorizado a confirmar la entrega de otro cliente)
+    else El pedido está bloqueado por cinco códigos incorrectos del cliente
+        SIS-->>CLI: conflicto (demasiados intentos: se rechaza incluso el código correcto hasta que haya uno nuevo)
     else El pedido ya está entregado
         SIS-->>CLI: pedido tal cual está (no se reprocesa ni se vuelve a exigir el código)
     else El pedido está en otro estado distinto de en camino
         SIS-->>CLI: error de solicitud (el pedido no está en camino)
+    else El código está mal leído o no tiene el formato de seis dígitos
+        SIS-->>CLI: error de solicitud (código mal leído)
+    else El código es el de otro pedido del cliente que también está en camino
+        SIS-->>CLI: error de solicitud (código de otro pedido)
     else El código no coincide, o el pedido no tiene código
-        SIS-->>CLI: error de solicitud (código de entrega inválido)
+        SIS-->>CLI: error de solicitud (código de entrega inválido, y si lo envió un cliente suma un intento)
     else Confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres
         SIS-->>CLI: error de solicitud (motivo inválido)
     end
     deactivate SIS
-    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda). El Administrador General<br/>indica además la distribuidora
+    Note over CLI,SIS: También lo inician el Administrador (ACT-03) y el Administrador General (ACT-05),<br/>que deben indicar el motivo (el cliente no lo manda). El Administrador General<br/>indica además la distribuidora. El administrador no suma intentos ni se bloquea
