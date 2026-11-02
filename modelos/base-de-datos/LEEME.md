@@ -134,9 +134,9 @@ y tablas sobre el esquema que ya está, sin tocar los datos existentes.
 Los cuatro modelos (conceptual, DER, base de datos físico y clases de diseño) están en `modelos/drawio/`, generados por
 `herramientas/generar-drawio.py` a partir de `SPLG-modelo.json`, que escribe este script leyendo la base. Ver `modelos/drawio/LEEME.md`.
 
-## Qué pegarle a Gemini
+## Qué pasarle a un revisor externo
 
-Para que revise el modelo, el archivo que conviene pasarle es
+Para que un revisor externo revise el modelo, el archivo que conviene pasarle es
 **`SPLG-modelo-de-datos.md`**: es el único que trae, en un solo texto, el
 diccionario de datos, las relaciones que faltan declarar y los agregados
 pedidos, cada uno con el motivo por el que está.

@@ -22,7 +22,7 @@ import re, os, sys, glob, json
 D = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
 DOC = D + "documentos/"
 DOCS = ["2-Analisis.md", "3-Diseño.md", "Casos-de-Uso.md"]
-SALIDA = "/private/tmp/claude-501/-Users-nahuelwagner/d9854aad-6049-4dd8-9adb-953839ca219c/scratchpad/propuesta/"
+SALIDA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "propuesta") + "/"
 
 # ---------- 1. titulo ----------
 def nombres_del_catalogo():

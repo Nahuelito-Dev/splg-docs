@@ -6,7 +6,6 @@ de marca, el naranja de la llama, usado con intención (botón principal, secci�
 activa, gráficos y recargos por zona). Los estados de los pedidos tienen su propio
 código de color, separado de la marca, para leerse de un vistazo.
 
-Maqueta aprobada: https://claude.ai/artifact/3JTNH4wchKATfstS9ttyvn
 
 ## Escalas
 

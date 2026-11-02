@@ -1,7 +1,7 @@
 # Documentación técnica del sistema
 
 Lo que describe cómo está construido el código de SPLG. Vive acá, junto al resto de la
-documentación, y no en los repositorios de código. Los `AGENTS.md`, `CLAUDE.md`,
+documentación, y no en los repositorios de código. Los
 `CONVENCIONES.md` y `README.md` de cada repo de código, el `legal/` de las apps, `test/README.md`
 y los `scripts/**/LEEME.md` se quedan en su repo.
 
@@ -79,8 +79,7 @@ Copiados de `splg-app-backend/docs/` (rama `develop`, commit `e05a549` del 24/10
 
 ## Lo que queda en los repos de código
 
-Sólo lo que no es documentación: `AGENTS.md` y `CLAUDE.md` (configuración de los agentes y del
-gate), un `README.md` de dos líneas que apunta acá, `legal/` de las apps (va empaquetado en la
+Sólo lo que no es documentación: un `README.md` de dos líneas que apunta acá, `legal/` de las apps (va empaquetado en la
 app) y `ASSETS_LICENSES.md` de `splg-lib` (licencias de los recursos). Desde el 24/10/2026 la
 documentación de cada repo se escribe acá, en la misma tanda que el cambio de código.
 

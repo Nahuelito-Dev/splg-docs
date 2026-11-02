@@ -26,7 +26,7 @@ Todo lo demás está en `catedra/material-de-trabajo/` y no hace falta para entr
 
 ```
 splg-docs/
-├─ README.md · VERSION · AGENTS.md · CLAUDE.md · publicar.sh
+├─ README.md · VERSION · publicar.sh
 ├─ documentos/    los cinco documentos de la cátedra, Casos-de-Uso, INDICE-IMAGENES y las guías
 ├─ modelos/
 │  ├─ drawio/         MC, DER, DBD y DC en draw.io

@@ -9,7 +9,7 @@ Este repositorio contiene la documentación del proyecto, separada del código d
 
 ## Cómo está organizado
 
-La raíz tiene sólo `README.md`, `VERSION`, `AGENTS.md`, `CLAUDE.md` y `publicar.sh`. Todo lo
+La raíz tiene sólo `README.md`, `VERSION` y `publicar.sh`. Todo lo
 demás está en carpetas. Los documentos, que antes estaban en la raíz, están en `documentos/`.
 
 ```
