@@ -46236,11 +46236,11 @@ sequenceDiagram
 | Operación de diseño | Implementación |
 |---|---|
 | `StockReconciliationCron.conciliarStock(...)` | `StockReconciliationCron.conciliarTodas` → `StockReconciliationCron.conciliar`, con `@Cron('0 3 * * *')` |
-| `List<Producto>.getTodos(...)` | `StockReconciliationService.conciliar`: lee los `GasCylinder` de la distribuidora con su `GasCylinder.stock` |
-| `Producto.calcularDiferencia(...)` | `conciliarVendible()`: el esperado es las llenas físicas menos lo reservado, y la diferencia es el vendible menos el esperado |
-| `List<Pedido>.getEntregadosSinMovimiento(...)` | `StockReconciliationService.conciliar`: compara `OrderLookupService.deliveredItemsSince` con `StockReconciliationService.entregasConMovimiento` |
-| `StockReconciliationCron.borrarAviso(...)` | `StockReconciliationCron.conciliar`: borra el aviso de la distribuidora cuando todo cierra |
-| `StockReconciliationCron.coincideConElUltimoAviso(...)` | `firmaDe()`: huella `sha256` de las diferencias y de las entregas pendientes, comparada con la del último aviso |
+| `List<Producto>.getTodos(...)` | Procedimiento almacenado `conciliar_stock_del_dia` (invocado con `CALL` desde `StockReconciliationCron.conciliar`): lee los `GasCylinder` de la distribuidora con su `GasCylinder.stock` |
+| `Producto.calcularDiferencia(...)` | `conciliar_stock_del_dia`: el esperado es las llenas físicas menos lo reservado, y la diferencia es el vendible menos el esperado |
+| `List<Pedido>.getEntregadosSinMovimiento(...)` | `conciliar_stock_del_dia`: compara los pedidos entregados con los movimientos de stock que los descontaron |
+| `StockReconciliationCron.borrarAviso(...)` | `conciliar_stock_del_dia`: borra el aviso de la distribuidora cuando todo cierra (con `COMMIT`; ante un error, `ROLLBACK` y el aviso queda) |
+| `StockReconciliationCron.coincideConElUltimoAviso(...)` | `conciliar_stock_del_dia`: calcula la huella `sha256` de las diferencias y de las entregas pendientes, la compara con la del último aviso y devuelve si hay que avisar (parámetros `INOUT`) |
 | `StockReconciliationCron.guardarAviso(...)` | `StockReconciliationCron.conciliar`: `INSERT … ON CONFLICT (distributor_id)` de la firma con el instante del aviso |
 
 **Observaciones de diseño**
@@ -46288,9 +46288,9 @@ sequenceDiagram
 | Operación de diseño | Implementación |
 |---|---|
 | `StockReconciliationService.consultarConciliacionDeStock(...)` | `StockController.conciliar` → `StockReconciliationService.conciliar` |
-| `List<Producto>.getTodos(...)` | `StockReconciliationService.conciliar`: lee los `GasCylinder` de la distribuidora con su `GasCylinder.stock` |
+| `List<Producto>.getTodos(...)` | Procedimiento almacenado `conciliar_stock_del_dia` (invocado con `CALL` desde `StockReconciliationCron.conciliar`): lee los `GasCylinder` de la distribuidora con su `GasCylinder.stock` |
 | `Producto.calcularDiferencia(...)` | `conciliarVendible()`: el esperado es las llenas físicas menos lo reservado; agrega la corrección sugerida, que es la diferencia con el signo cambiado |
-| `List<Pedido>.getEntregadosSinMovimiento(...)` | `StockReconciliationService.conciliar`: compara `OrderLookupService.deliveredItemsSince` con `StockReconciliationService.entregasConMovimiento` |
+| `List<Pedido>.getEntregadosSinMovimiento(...)` | `conciliar_stock_del_dia`: compara los pedidos entregados con los movimientos de stock que los descontaron |
 
 **Observaciones de diseño**
 
