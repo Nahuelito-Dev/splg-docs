@@ -45,6 +45,8 @@ el usuario, la IP y la distribuidora que después lee el trigger de auditoría.
 La idempotencia de los pedidos HTTP (`Idempotency-Key`, guardada en Redis 24 h) evita
 que un reintento ejecute dos veces la misma operación; no reemplaza a la transacción.
 
+**Procedimientos con `COMMIT`.** Un procedimiento que controla la transacción (`COMMIT`/`ROLLBACK`) no se puede llamar dentro de una: la base responde «invalid transaction termination». Por eso se invoca siempre con `dataSource.query('CALL …')` sin transacción abierta, y la capa de auditoría (`ActorEnLaBase`) no envuelve los `CALL` en una transacción de una sentencia como hace con los `INSERT`/`UPDATE`/`DELETE`. El actor de auditoría (`splg.user_id`, etc.) vive sólo en la transacción donde se fijó y no sobrevive al `COMMIT` inicial del procedimiento: por eso estos procedimientos **no escriben tablas auditadas** (la alerta de stock no lo es; los de verificación sólo leen).
+
 ## 2. Lo que garantiza la base
 
 ### Triggers de auditoría e inmutabilidad
@@ -87,17 +89,18 @@ cualquier orden, y si al final no coinciden, el commit falla y todo vuelve atrá
 A esto se suman los CHECK, únicos, claves foráneas y exclusiones de
 [VALIDACIONES-BASE.md](VALIDACIONES-BASE.md).
 
-## 3. Por qué no hay procedimientos almacenados
+## 3. Funciones y procedimientos almacenados
 
-Las funciones de la base (`auditoria_trigger`, `verificar_saldo_de_caja`,
-`transicion_de_estado_<tabla>`, `es_cuit_valido`…) son funciones PL/pgSQL que **sólo
-disparan los triggers o usan los CHECK**: la aplicación nunca hace `CALL`.
+Las funciones de la base (`auditoria_trigger`, `verificar_saldo_de_caja`, `transicion_de_estado_<tabla>`, `es_cuit_valido`…) son funciones PL/pgSQL que sólo disparan los triggers o usan los CHECK.
 
-La decisión es deliberada. Siguiendo el Proceso Unificado, la lógica de cada caso de uso
-vive en el dominio (los controladores del back), donde se prueba con tests y se versiona
-con la API. La base cumple otro rol: guardar las invariantes que no pueden romperse nunca,
-venga de donde venga la escritura. Un procedimiento almacenado partiría el caso de uso en
-dos lugares sin ganar consistencia, porque la transacción de la aplicación ya es atómica.
+Los casos de uso siguen viviendo en el dominio (controladores del back), donde se prueban y se versionan con la API: un procedimiento almacenado partiría el caso de uso en dos lugares sin ganar consistencia. La excepción son dos tareas nocturnas de **verificación**, que no corrigen datos y se resuelven mejor dentro de la base, con una sola ida y vuelta y una transacción propia:
+
+| Procedimiento | Lo llama | Qué hace |
+|---|---|---|
+| `conciliar_stock_del_dia(distribuidora, INOUT consistente, avisar, firma, resultado)` | `StockReconciliationCron` (03:00) | Compara el vendible con el físico menos las reservas y busca entregas sin movimiento; si todo cierra borra la alerta vigente; si no, devuelve la huella y si corresponde avisar |
+| `verificar_saldos_de_caja(distribuidora, INOUT desfasadas, detalle)` | `FinanceReconciliationCron` (03:30) | Informa las cajas y cuentas corrientes cuyo saldo no es la suma de su libro |
+
+Se invocan con `CALL`, una vez por distribuidora, y devuelven lo encontrado por parámetros `INOUT`. Trabajan en `REPEATABLE READ` (las cifras son del mismo instante) y controlan la transacción: la lectura y las escrituras van en el cuerpo principal, los bloques `EXCEPTION` sólo capturan el error; si hubo error hacen `ROLLBACK` y relanzan con `RAISE EXCEPTION` conservando el SQLSTATE original. El cron de stock registra el fallo sin cortar a las demás distribuidoras; el de finanzas lo propaga. Reglas de uso: ver §1 (no se llaman dentro de una transacción y no escriben tablas auditadas). Se prueban contra un Postgres efímero (`test/integration/procedimientos-conciliacion.e2e-spec.ts`) mostrando `COMMIT`, `ROLLBACK`, la huella contra el algoritmo anterior y la llamada desde un contexto de request.
 
 ## 4. Operaciones con servicios externos
 
