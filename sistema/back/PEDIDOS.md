@@ -552,3 +552,35 @@ de la bandeja están en `MERCADOPAGO-CUENTAS.md` (API v2: `GET /api/v2/orders/:i
   está en blanco) para cliente y administrador; el chofer, que libera el pedido, no lo manda.
 - `scheduledDate` no puede ser una fecha pasada (día argentino), con o sin `timeSlotId`, en el alta y en la edición.
 - `items: []` en el alta es 400.
+
+## Confirmar la entrega con el QR — `POST /orders/:id/confirm-delivery`
+
+**El código.** Al aceptar el pedido el back genera un código de **6 dígitos** (`000000` a `999999`, con
+`crypto.randomInt`). El chofer lo muestra como QR y, debajo, en grande y agrupado («482 913») para dictarlo.
+Los pedidos en curso con un código anterior (10 hexadecimales o 6 dígitos del seed) siguen valiendo tal cual:
+la columna es `varchar(12)` y la comparación no distingue mayúsculas de minúsculas.
+
+El cliente manda el `code` que leyó del QR o tipeó. Si no es el del pedido responde **400** y,
+además del `message` de siempre, el cuerpo trae `code` para que la app diga por qué:
+
+| `code` | Cuándo |
+| --- | --- |
+| `DELIVERY_CODE_FORMATO` | Lo enviado no tiene forma de código de entrega (alfanumérico de 4 a 12): se leyó o se tipeó mal |
+| `DELIVERY_CODE_OTRO_PEDIDO` | Es el código de otro pedido en camino del mismo cliente y de la misma distribuidora (solo se evalúa para el cliente) |
+| `DELIVERY_CODE_INCORRECTO` | Tiene forma correcta pero no es el de este pedido |
+| `DELIVERY_CODE_BLOQUEADO` | **409.** Se agotaron los intentos (ver abajo) |
+
+Un 400 porque el pedido no está en camino no trae `code`. Es un campo agregado: la v1 no cambia de forma
+para quien lo ignore.
+
+**Límite de intentos.** Cada código incorrecto del **cliente** suma uno en `order.delivery_code_attempts`
+(columna `int` con `CHECK >= 0`, auditada). Se persiste en la base y no en Redis para que sobreviva a un
+reinicio y quede en la auditoría. Al quinto incorrecto el código queda bloqueado: ese intento y los siguientes
+responden **409** con `code: DELIVERY_CODE_BLOQUEADO` y el mensaje «Demasiados intentos: pedile al chofer un
+código nuevo», **aunque el código sea el correcto**. Un administrador que confirma con motivo no suma intentos ni
+se bloquea.
+
+**Código nuevo — `POST /api/v2/orders/:id/delivery-code/regenerate`.** El chofer asignado (o un admin) genera
+un código nuevo de 6 dígitos con el pedido **en camino**: reemplaza al anterior (que deja de valer), vuelve los
+intentos a 0 y responde `{ orderId, deliveryCode }`. Otro chofer recibe **403**; un pedido que no está en camino,
+**409**. Queda en la auditoría de datos (el valor del código no se asienta, sólo el hecho).

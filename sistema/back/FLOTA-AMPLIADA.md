@@ -41,11 +41,15 @@ de tarea y de un movimiento de neumático no pasa de 2.000.000 km (**400**).
 | `POST /fleet/fuel-loads`                       | Registra (administrador). 201                                  |
 | `POST /fleet/fuel-loads/mine`                  | Registra el chofer, siempre en su vehículo en uso. 201         |
 | `GET /fleet/fuel-loads?carId&employeeId&from&to&anomaly` | Vigentes, con `total`, `totalLiters` y `totalAmount` de lo filtrado |
+| `GET /api/v2/fleet/fuel-loads/quote?liters&unitPrice` | Calcula el importe de una carga: `{ liters, unitPrice, totalAmount }`, litros × precio a 2 decimales (administrador). **400** con litros o precio no positivos o con más decimales de los permitidos |
 | `GET /fleet/fuel-loads/:id`                    | Una carga, también la anulada (`voidedAt`)                     |
 | `PATCH /fleet/fuel-loads/:id`                  | Modifica y revalida                                            |
 | `DELETE /fleet/fuel-loads/:id`                 | Anula (baja lógica); si salió de una caja asienta el contraasiento |
 | `PATCH /fleet/fuel-loads/:id/cash-payment`     | Asienta en una caja la carga `cash_box` que registró el chofer (`cashBoxId`) |
 | `GET /cars/:carId/fuel-efficiency?from&to`     | Tramos, totales y cargas anómalas                              |
+
+El panel no hace la cuenta: pide el importe a `quote` y lo ofrece como importe de la carga. Es la misma
+cuenta (`importeEsperado`) con la que el alta valida `totalAmount`.
 
 Reglas al registrar y al modificar:
 
