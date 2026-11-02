@@ -279,13 +279,15 @@ def md2html(md):
 
 # ---------- casos de uso reales (documento 3, seccion 3) ----------
 _l3 = open(DOC + "3-Diseño.md", encoding="utf-8").read().split("\n")
-_s = next(i for i,x in enumerate(_l3) if re.match(r'^## 1\. Casos de Uso Reales', x))
-_e = next(i for i,x in enumerate(_l3) if re.match(r'^## 2\. ', x))
-_ix = [(i,m) for i in range(_s,_e) if (m:=re.match(r'^### 1\.(\d+) (CU-\d+)', _l3[i]))]
+# La sección cambia de número entre versiones (§3 en la v1 congelada, §1 desde la v2).
+_s = next(i for i,x in enumerate(_l3) if re.match(r'^## (\d+)\. Casos de Uso Reales', x))
+_ns = re.match(r'^## (\d+)\.', _l3[_s]).group(1)
+_e = next(i for i,x in enumerate(_l3) if i > _s and x.startswith('## '))
+_ix = [(i,m) for i in range(_s,_e) if (m:=re.match(r'^### ' + _ns + r'\.(\d+) (CU-\d+)', _l3[i]))]
 cur = {}
 for _n,(_i,_m) in enumerate(_ix):
     _f = _ix[_n+1][0] if _n+1 < len(_ix) else _e
-    cur[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])), sec="§1."+_m.group(1))
+    cur[_m.group(2)] = dict(md2html("\n".join(_l3[_i+1:_f])), sec="§"+_ns+"."+_m.group(1))
 
 # ---------- modulos inteligentes (sistema/DISENO-MODULOS-INTELIGENTES.md) ----------
 _l3 = open(D + "sistema/DISENO-MODULOS-INTELIGENTES.md", encoding="utf-8").read().split("\n")

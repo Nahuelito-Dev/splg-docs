@@ -67,13 +67,10 @@ while read -r id ref; do
   echo "→ version $id ($ref)"
   mkdir -p "$TMP/$id" "publicar/$id"
   git archive "$ref" | tar -x -C "$TMP/$id"
-  # Misma web para todas las versiones (como los sitios de librerías): del tag
-  # sale SÓLO el contenido (documentos, diagramas, modelos, capturas); el
-  # generador, la plantilla y los estilos son los de hoy, así el diseño, el
-  # menú y el selector son idénticos y al cambiar de versión cambia el texto.
-  for f in generar-sitio.py splg-plantilla.html visor.css visor.js index.html; do
-    cp "sitio/$f" "$TMP/$id/sitio/$f"
-  done
+  # Una versión congelada se arma con el generador y la plantilla de su propio tag:
+  # el contenido cambió de estructura entre versiones (el Documento 3 se rearmó en
+  # la v2) y el generador de hoy ya no sabe leer el de la v1. Así cada versión se
+  # ve como quedó el día que se congeló.
   python3 "$TMP/$id/sitio/generar-sitio.py" >/dev/null
   validar_js "$TMP/$id/sitio/splg-documentacion.html"
   copiar_sitio "$TMP/$id/sitio" "publicar/$id"
