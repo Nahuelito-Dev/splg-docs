@@ -60,6 +60,23 @@ y la siguiente lee lo guardado.
 La tabla es `module_config` (una fila por distribuidora y proceso, `UNIQUE (distributor_id, module)`), sin migración nueva: los
 valores del enum `configurable_process_enum` ya existían.
 
+## «Armar ahora» de los recorridos: por qué no se armó un lote (CU-107)
+
+`POST /api/v2/route-batches/run` (admin) responde `candidates`, `batches` y `orders` y, cuando algún pedido quedó sin lote,
+explica por qué con dos campos:
+
+- `reasons`: cuatro enteros que cuentan **pedidos candidatos que quedaron sin lote**, cada uno en un solo motivo (la suma de
+  los cuatro es `candidates - orders`). `noDriversNearby`: ningún chofer de la distribuidora en el radar.
+  `driversNotEligible`: hay choferes en el radar pero ninguno puede recibir el lote (vehículo en taller o fuera de servicio,
+  documentación o situación laboral, carga del camión, pedido en curso o lote ya ofrecido). `notEnoughStops`: el grupo
+  quedó con menos de 2 paradas por radio, franja o capacidad del vehículo. `lockConflict`: otro proceso (por ejemplo el
+  despacho individual) tomó o cambió los pedidos mientras se armaba.
+- `driversNotEligibleDetail`: hasta 5 choferes de la distribuidora, sin repetir, con `driverName` y `reasons` (textos en
+  castellano escritos para el administrador). Vacío si se armó todo o no hay choferes bloqueados.
+
+El detalle por chofer sólo se calcula en «armar ahora»; la pasada periódica no lo paga. El panel (Recorridos) arma con
+esto el aviso «No se armó ningún lote: …».
+
 ## Zonas de cobertura vencidas (CU-151)
 
 `CoverageZoneExpiryCron` (`src/coverage-zone/coverage-zone-expiry.cron.ts`) corre **cada cinco minutos** y desactiva las zonas con

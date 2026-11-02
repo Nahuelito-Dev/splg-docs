@@ -44,6 +44,8 @@ omisión); sin historial propio usa el promedio de la flota del mismo tipo. Si e
 6. **Lo urgente** (vencido o sin margen) se negocia igual, desde el primer día hábil, con ventanas marcadas urgentes.
    Una habilitación bloqueante vencida deja el vehículo fuera de servicio (`grounded`) y libera su asignación.
 
+Editar el turno agendado (`scheduledAt`, `PATCH /fleet/tasks/:id`) de una tarea con la ventana de M2 ya confirmada mueve esa ventana en la misma transacción, conservando la duración. Si el turno viene **sólo con fecha** (`YYYY-MM-DD`, lo que manda el panel) o a medianoche argentina, la ventana pasa a ese día (hora argentina) con su hora de inicio de siempre; si trae **hora**, arranca a esa hora. La tarea queda con `scheduledAt` igual al inicio de la ventana. Si el turno no cambió (el panel lo reenvía en cada edición), no se toca nada. Una ventana nueva que arrancaría en el pasado da 400 «scheduledAt: la ventana tiene que ser a futuro». Borrar el turno (`null`) cancela el caso. El caso registra quién lo movió o canceló (`resolvedByUserId`, `chosenSource = admin`). No se tocan ventanas que ya terminaron.
+
 Cerrar o cancelar la tarea por fuera del planificador cierra su caso; dar de baja el vehículo cancela sus casos
 abiertos. El seguro no pasa por taller: se paga por sus cuotas (`SEGUROS.md`).
 
