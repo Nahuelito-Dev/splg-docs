@@ -379,6 +379,14 @@ es 404; los `POST`/`PATCH` que mueven stock aceptan `Idempotency-Key`):
 | PUT      | `/truck-loads/:id/items` (sólo en `loading`)                                                                                                     |
 | PATCH    | `/truck-loads/:id/depart` (admin o el chofer de la carga), `/reload` (con `Idempotency-Key`), `/return` (admin o el chofer), `/close`, `/cancel` |
 
+### Total de una orden o remito — `POST /api/v2/purchase-orders/preview-total`
+
+Vista previa para el formulario, sin guardar nada (admin o super admin). Recibe `{ items: [{ quantity, unitCost }] }`
+y devuelve `{ items: [{ subtotal }], total }` con la misma cuenta con la que se guardan la orden y el remito
+(`totalDe`: Σ cantidad × costo unitario, aritmética decimal, 2 decimales). Mismos topes que el alta (hasta 20
+renglones, 5.000 unidades, $90.000 por unidad); un total por encima del máximo, 400. El panel muestra ese total y
+no multiplica.
+
 ## Pendiente
 
 La diferencia de una rendición a cargo del chofer se descuenta por el libro de comisiones (`FINANZAS.md`). El pago

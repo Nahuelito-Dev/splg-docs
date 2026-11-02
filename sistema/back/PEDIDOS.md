@@ -553,6 +553,34 @@ de la bandeja están en `MERCADOPAGO-CUENTAS.md` (API v2: `GET /api/v2/orders/:i
 - `scheduledDate` no puede ser una fecha pasada (día argentino), con o sin `timeSlotId`, en el alta y en la edición.
 - `items: []` en el alta es 400.
 
+## Informes con totales, impagos y total del día del chofer (API v2)
+
+Toda cuenta de plata la hace el back; el panel y la app del chofer muestran lo que la API devuelve. Los endpoints
+nuevos son aditivos (la v1 no cambia de contrato). Mismos criterios que los informes de la v1: días en hora
+argentina, `to` inclusivo, pedidos entregados por fecha de entrega y sólo lo **cobrado** (`paymentStatus: paid`);
+fecha inválida o rango invertido, 400.
+
+| Método | Ruta | Rol | Devuelve |
+|---|---|---|---|
+| GET | `/api/v2/reports/sales-by-driver` · `sales-by-payment` · `sales-by-product` | admin, super admin | `{ rows, totals }`: las filas de la v1 de mayor a menor venta y los totales sumados (`totalOrders`/`totalQuantity`, `totalSales`) |
+| GET | `/api/v2/reports/sales-summary` | admin, super admin | `{ current, previous, currentRange, previousRange }`; cada resumen trae `totalSales`, `totalOrders` y `averageTicket` |
+| GET | `/api/v2/reports/unpaid-total` | admin, super admin | `{ totalOrders, totalAmount }` de todos los pedidos `unpaid` |
+| GET | `/api/v2/reports/delivery/me/daily-totals` | chofer | `[{ day, deliveredOrders, totalAmount }]`, un renglón por día con entregas |
+
+- **Totales:** suma decimal (`decimal.js`) a 2 decimales. A igual venta, las filas se ordenan por nombre (chofer,
+  medio de pago, producto) y luego por id: el orden no cambia entre consultas. El ranking del tablero toma las
+  primeras N sin reordenar.
+- **`sales-summary`:** `previous` es el período inmediato anterior de la misma cantidad de días (`previousRange` da
+  los días exactos). Con `compare=false` no se calcula y `previous`/`previousRange` vienen en `null` (lo usa el
+  gráfico de «Año»). `averageTicket` = ventas / pedidos a 2 decimales; 0 sin pedidos.
+- **Lo que falta cobrar:** una sola cuenta (`saldoPendiente`, en `order/domain/saldo-pendiente.ts`): total menos la
+  seña **ya paga**. La usan `unpaid-total`, `unpaid` de `GET /reports/collections` y `daily-totals`, igual que
+  `remainingBalance` del pedido. `unpaid-total` suma los mismos pedidos que lista `GET /orders?paymentStatus=unpaid`,
+  sin acotar por fecha ni por página.
+- **`daily-totals`:** día argentino de la entrega; del chofer del token y de su distribuidora (un admin recibe 403).
+  Sin `from`/`to`, hoy.
+- Qué queda en el front: porcentajes de participación (rubros del estado de resultados, porciones de gráficos,
+  calificaciones) y la validación o el formato de lo que el usuario tipea; no son montos de negocio.
 ## Confirmar la entrega con el QR — `POST /orders/:id/confirm-delivery`
 
 **El código.** Al aceptar el pedido el back genera un código de **6 dígitos** (`000000` a `999999`, con

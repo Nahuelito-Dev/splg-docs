@@ -243,6 +243,13 @@ neumático»; la posición ocupada del vehículo, **409**; falta de `carId`/`pos
 rotación, **400**; `odometerKm` menor que el del montaje, **400**. `position` es un código corto
 (hasta 6 letras o números, en mayúsculas: `DI`, `TD`…). El movimiento es un asiento: no se modifica.
 
+## Importe de la carga del chofer — `GET /api/v2/fleet/fuel-loads/mine/quote?liters&unitPrice`
+
+Rol chofer. Devuelve `{ liters, unitPrice, totalAmount }` con litros × precio por litro a 2 decimales: la misma
+cuenta con la que `POST /fleet/fuel-loads/mine` valida el importe (tolerancia del 1 %). La app lo muestra mientras
+se tipea y manda ese mismo `totalAmount` al registrar. Litros o precio inválidos, o un importe por encima de
+$9.999.999.999,99, son 400 (la app muestra el mensaje del back).
+
 ## Migración `FlotaAmpliada`
 
 Tablas `fuel_load`, `traffic_fine`, `vehicle_accident`, `tire` y `tire_event`; `car.fuel_type` y
