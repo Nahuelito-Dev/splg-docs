@@ -8,5 +8,5 @@ sequenceDiagram
     ADM->>+SRV: consultarEmpleados(filtros)
     SRV->>+LST: filtrar(filtros)
     LST-->>-SRV: empleados
-    Note over SRV,LST: Trabajo futuro: el peor vencimiento de la documentación de cada empleado
+    Note over SRV,LST: el peor vencimiento de la documentación de cada empleado
     SRV-->>-ADM: página de empleados, sin datos personales sensibles

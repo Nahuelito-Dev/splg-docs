@@ -365,7 +365,7 @@ CU-347). Figuran en la lista con ese motivo y no se cuentan entre los vigentes.
 | CU-177 Registrar el Legajo de un Empleado | SS-19 | Administrador | Crítico | Implementado |  |
 | CU-178 Modificar el Legajo de un Empleado | SS-19 | Administrador | Importante | Implementado |  |
 | CU-179 Consultar el Legajo de un Empleado | SS-19 | Administrador, Administrador General | Importante | Implementado |  |
-| CU-180 Consultar el Listado de Empleados | SS-19 | Administrador, Administrador General | Importante | Implementado, con funcionalidad planificada |  |
+| CU-180 Consultar el Listado de Empleados | SS-19 | Administrador, Administrador General | Importante | Implementado |  |
 | CU-181 Registrar el Egreso de un Empleado | SS-19 | Administrador | Crítico | Implementado |  |
 | CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | Administrador | Importante | Implementado |  |
 | CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | SS-19 | Administrador | Crítico | Implementado |  |
