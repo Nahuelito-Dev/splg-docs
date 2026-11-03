@@ -20,10 +20,11 @@ omisión (un `PUT` sin campos restablece todo). Lo que viene se valida igual.
 | ----------------- | ---------- | ---------------------------------------------------------------- | ----------------- |
 | `radiusStepsKm`   | `number[]` | de 1 a 8 pasos, cada uno de 1 a 100 km y estrictamente creciente | `[5, 10, 15, 20]` |
 | `offerTtlSeconds` | `integer`  | de 10 a 300 s: ventana de aceptación de cada oferta              | `30`              |
+| `finishingRadiusMeters` | `integer` | de 0 a 5000 m: distancia al punto de entrega desde la que un chofer con un solo pedido en camino cuenta como «por terminar» (CU-013); `0` lo apaga | `300` |
 
 Cualquier violación responde **400** con el detalle del campo; un campo desconocido también.
 
-Respuesta de `GET` y `PUT`: los dos campos (con su valor efectivo) más `isDefault` (`true` si rigen
+Respuesta de `GET` y `PUT`: los tres campos (con su valor efectivo) más `isDefault` (`true` si rigen
 los valores por omisión: nada configurado, `PUT` sin campos, o todo coincide con ellos), `updatedAt` y `updatedByUserId` (quién modificó por última vez; `null` si nunca).
 
 Cómo rige:
@@ -31,6 +32,33 @@ Cómo rige:
 - `DispatchOrchestratorService` lee la configuración **en cada oferta** (pasos de radio y
   ventana); la asignación manual (`PATCH /orders/:id/assign/:deliveryId`) usa la misma ventana
   para el `expiresAt` del aviso al chofer.
+- **Choferes por terminar su entrega (`finishingRadiusMeters`, CU-013).** La regla vive en un solo
+  lugar, `situacionDelChofer` (`order/domain/chofer-por-terminar.ts`), y devuelve `libre`,
+  `por_terminar` u `ocupado`. Es `por_terminar` el chofer con **un solo** pedido en curso, en estado
+  `on_the_way`, cuya última posición conocida **y reciente** (el radar de Redis, la misma que reporta por socket o
+  por `PATCH /orders/:id/location`; si tiene más de 2 minutos, no tiene fecha o la fecha está más de
+  30 s en el futuro, no cuenta) está a `finishingRadiusMeters` o menos del punto de entrega de
+  ese pedido (haversine, límite inclusivo). Sin posición, sin punto de entrega, con un pedido sólo
+  `accepted` o con dos pedidos en curso es `ocupado`; con radio `0` la regla está apagada y rige el
+  comportamiento de antes (sólo libres).
+- `DispatchOrchestratorService` admite a los `libre` y a los `por_terminar` en las ofertas de M1; dentro
+  de cada paso de radio los libres van antes que los por terminar. Siguen aplicando flota, carga del camión,
+  habilitación laboral y distribuidora. **M4 (lotes), el despacho express y el diagnóstico de M4 usan
+  sólo choferes libres.** La asignación manual (`PATCH /orders/:id/assign/:deliveryId`) no controla
+  si el chofer está ocupado, como antes.
+- **Aceptar un pedido más.** El chofer (rol `delivery`) que acepta (`PATCH /orders/:id/status`
+  `accepted`) con otro pedido ya `accepted` recibe **409** «Ya tenés un pedido aceptado esperando:
+  terminá el actual antes de tomar otro»: nunca dos encolados. Quedan el actual (`on_the_way`) y el
+  nuevo (`accepted`). `GET /orders/delivery/me/active` devuelve el que va en camino; si no hay,
+  el aceptado más antiguo (el que espera aparece al entregar el actual); y si no hay activos, el
+  entregado en efectivo de hoy con el cobro pendiente. Un cobro pendiente nunca tapa a un pedido
+  activo: así el pedido en espera se abre aunque el cobro del anterior haya quedado en «Más tarde».
+  Es el mismo orden de siempre; el contrato no cambió.
+  Un chofer con un pedido `accepted` que todavía no salió tampoco puede tomar otro del listado. El administrador no tiene este límite.
+- **En la base:** `CHK_module_config_despacho` (migración `RadioPorTerminarEnDespacho1794700000019`) rechaza
+  un `finishingRadiusMeters` fuera de 0..5000 o no entero, un `offerTtlSeconds` fuera de 10..300 o no
+  entero y unos `radiusStepsKm` que no sean una lista de 1 a 8 elementos, aunque se escriban directo.
+  El orden creciente y el rango de cada paso los valida sólo el servicio.
 - Las ofertas ya creadas conservan su `expiresAt`; el cambio vale para las que se creen después.
 - Copia en memoria de **1 minuto** por distribuidora (`DispatchSettingsService`). Guardar
   descarta la copia de esa distribuidora en la instancia que atiende el `PUT`; en las demás

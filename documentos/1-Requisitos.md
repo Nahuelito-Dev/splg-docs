@@ -207,7 +207,7 @@ CU-347). Figuran en la lista con ese motivo y no se cuentan entre los vigentes.
 | CU-010 Cancelar un Pedido (Administrador) | SS-02 | Administrador | Importante | Implementado |  |
 | CU-011 Consultar Todos los Pedidos | SS-02 | Administrador | Importante | Implementado |  |
 | CU-012 Asignar un Chofer Manualmente | SS-03 | Administrador | Secundario | Implementado |  |
-| CU-013 Asignar un Pedido Automáticamente por Proximidad | SS-03 | Sistema Automático | Crítico | Implementado, con funcionalidad planificada | Sí |
+| CU-013 Asignar un Pedido Automáticamente por Proximidad | SS-03 | Sistema Automático | Crítico | Implementado | Sí |
 | CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer | SS-03 | Sistema Automático | Crítico | Implementado | Sí |
 | CU-015 Aceptar un Pedido | SS-03 | Chofer | Crítico | Implementado | Sí |
 | CU-016 Rechazar un Pedido Ofrecido | SS-03 | Chofer | Importante | Implementado |  |
@@ -1258,7 +1258,7 @@ sección 4.
 | **Requisitos asociados** | IRQ-02, IRQ-03 |
 | **Descripción** | Al crearse un pedido, el sistema ofrece el pedido a un solo chofer por vez: el más cercano al domicilio de entrega que todavía no haya sido contactado, con un plazo acotado para aceptar. La oferta queda registrada de forma durable, de modo que sobrevive a un reinicio del servidor y queda auditable. |
 | **Precondición** | Existe un pedido pendiente sin chofer asignado, con sus coordenadas de entrega. Al menos un chofer de la misma distribuidora está presente en el seguimiento de posiciones. |
-| **Estado** | Implementado, con funcionalidad planificada: admitir como candidatos a los choferes que están por terminar su entrega (paso 3.a). La verificación de la carga de camión (CU-248) y la de la situación laboral del chofer (CU-246) están implementadas. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -1267,7 +1267,7 @@ sección 4.
 | 1 | El sistema recibe el aviso de que se creó un pedido, una vez confirmada su alta. |
 | 2 | El sistema recupera los choferes a los que ya se les ofreció este pedido, para no contactarlos de nuevo. |
 | 3 | El sistema lee los parámetros del despacho de la distribuidora (CU-171) y busca el siguiente candidato recorriendo los pasos de radio de menor a mayor —por omisión 5, 10, 15 y 20 km—: toma los choferes presentes, ordenados por cercanía, solo los de la distribuidora del pedido, y descarta a los ya contactados, a los que no tienen un vehículo en uso, a los que tienen vencida la licencia o la documentación del vehículo (CU-161, CU-136 a CU-138), a los que no pueden recibir pedidos según su carga de camión abierta y a los que no están habilitados laboralmente. Se queda con el primero que aparece. |
-| 4 | Planificado, sin iteración asignada: entre los candidatos el sistema admite tanto a los choferes libres como a los que están por terminar su entrega en curso, pero descarta a los que están en pleno recorrido. Así un chofer que entrega la última garrafa puede recibir el pedido siguiente sin un hueco muerto entre uno y otro. |
+| 4 | Entre los candidatos el sistema admite tanto a los choferes libres como a los que están por terminar su entrega: los que llevan un solo pedido en camino y están, como mucho, a la distancia que fijó la distribuidora (300 metros por omisión; CU-171) del punto de entrega de ese pedido. Descarta a los que están en pleno recorrido, a los que ya tienen dos pedidos y a los que no tienen una ubicación conocida de los últimos dos minutos. Dentro de cada radio de búsqueda se ofrece primero a los choferes libres y después a los que están por terminar. Así un chofer que entrega la última garrafa puede recibir el pedido siguiente sin un hueco muerto entre uno y otro; si lo acepta, queda esperando como su próximo pedido y nunca se le acumulan dos. |
 | 5 | El sistema registra la oferta a nombre de ese chofer, con su vencimiento fijado en la ventana de aceptación de la distribuidora (30 segundos por omisión). |
 | 6 | El sistema le avisa al chofer en tiempo real, con el detalle del pedido y la hora en que la oferta pierde vigencia. |
 | 7 | El sistema le envía además una notificación al dispositivo, por si tiene la aplicación cerrada. El envío no frena el proceso. |
@@ -1281,6 +1281,7 @@ sección 4.
 | 3 | Si ningún paso de radio arroja un candidato nuevo, el sistema no emite ninguna oferta y el pedido queda a la espera. Avisa a los administradores de la distribuidora, una sola vez por agotamiento, si no hay choferes elegibles en el radio o si los que había rechazaron o esperan una re-oferta. El proceso de CU-014 lo reintenta cuando aparezcan choferes disponibles. |
 | 3 | Si el pedido no tiene punto de entrega, no hay contra qué medir la cercanía: no se emite oferta y se avisa a los administradores. |
 | 3 | Si los únicos choferes cercanos son de otra distribuidora, quedan descartados: un chofer nunca recibe ofertas de una empresa que no es la suya. |
+| 4 | Si el único chofer cercano lleva un pedido en camino pero todavía está lejos del punto de entrega, o la distribuidora dejó la distancia en cero, queda descartado y el pedido espera a otro chofer. |
 | 3 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, queda descartado y la oferta pasa al siguiente. |
 | 3 | Si el chofer tiene una carga de camión que no está en ruta, o su vehículo en uso no es el de la carga, o no tiene carga y la distribuidora exige tenerla (CU-249), queda descartado y la oferta pasa al siguiente. |
 | 7 | Si falla el envío de la notificación al dispositivo, el proceso sigue: la oferta ya fue registrada y el aviso en tiempo real ya se emitió. |
@@ -1384,6 +1385,7 @@ sección 4.
 | 4 | Si el chofer está deshabilitado, el sistema informa «El repartidor está deshabilitado»; si no está validado, «El repartidor no está validado». |
 | 4 | Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la aceptación e informa «No se puede asignar: …» con el motivo. Un chofer sin vehículo en uso tampoco recibe la oferta (CU-013). |
 | 5 | Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la aceptación e informa el motivo —por ejemplo «Tu distribuidora exige una carga de camión abierta para trabajar: pedile al administrador que abra tu carga del día»—. |
+| 3 | Si el chofer ya tiene otro pedido aceptado esperando —porque tomó uno estando por terminar su entrega, o porque aceptó uno que todavía no salió—, el sistema rechaza la aceptación e informa que termine el actual antes de tomar otro. Repetir la aceptación del mismo pedido no cuenta, y el administrador, al asignar, no tiene este límite. |
 | 1 | Si el solicitante es el Administrador General y no indica la distribuidora, el sistema rechaza la operación e informa que falta indicar la distribuidora. |
 
 **Rendimiento**
