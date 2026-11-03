@@ -16,6 +16,7 @@ interacción de diseño y, cuando modifica datos, contrato de operación— y fi
 | Pendiente | Descripción | CU | Iteración | Prioridad |
 |-----|-------------|----|:---------:|-----------|
 | Liberar el stock de un pago rechazado | Cuando Mercado Pago informa un pago rechazado o cancelado, el sistema lo registra con su motivo, le avisa al Cliente (`order:payment-rejected`) y le permite reintentar el pago mientras el pedido siga vivo; el stock queda reservado hasta que vence el plazo de pago. | CU-048 | — | Menor |
+| Estado de la documentación en el listado de empleados | El listado acepta el filtro por estado de la documentación y lo ignora: no calcula el peor vencimiento de cada persona. La ficha de documentación (CU-187) sí lo calcula. | CU-180 | — | Menor |
 
 ### 2 Parametrización pendiente
 

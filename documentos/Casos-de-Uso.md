@@ -385,7 +385,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-177 Registrar el Legajo de un Empleado | SS-19 | ACT-03 | Crítico | Implementado |
 | CU-178 Modificar el Legajo de un Empleado | SS-19 | ACT-03 | Importante | Implementado |
 | CU-179 Consultar el Legajo de un Empleado | SS-19 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Implementado |
+| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Implementado, con funcionalidad planificada |
 | CU-181 Registrar el Egreso de un Empleado | SS-19 | ACT-03 | Crítico | Implementado |
 | CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | ACT-03 | Importante | Implementado |
 | CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | SS-19 | ACT-03 | Crítico | Implementado |
@@ -14372,9 +14372,9 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador consulta los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (activo o egresado), si tienen cuenta de acceso y estado de su documentación. Cada fila trae el nombre, el legajo, el puesto, el estado, la fecha de ingreso, si tiene cuenta y el peor vencimiento de su documentación. |
+| **Descripción** | El administrador consulta los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (activo o egresado) y si tienen cuenta de acceso. Cada fila trae el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta. Trabajo futuro (Doc 3, §10): el filtro por estado de la documentación y el peor vencimiento de cada persona. |
 | **Precondición** | El administrador está identificado y su usuario tiene una distribuidora asociada. |
-| **Estado** | Implementado |
+| **Estado** | Implementado, con funcionalidad planificada: el estado de la documentación del empleado, su peor vencimiento en cada fila y el filtro por ese estado, que dependen de los documentos del personal. |
 
 **Secuencia Normal**
 
@@ -14383,7 +14383,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 1 | El administrador abre «Empresa · Personal» y, si quiere, elige filtros. |
 | 2 | El sistema busca los empleados de la distribuidora que cumplen los filtros, ordenados por apellido y nombre. |
 | 3 | El sistema muestra la página y el total, sin los datos personales sensibles. |
-| 4 | Para cada empleado de la página, el sistema calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
+| 4 | Trabajo futuro (Doc 3, §10): para cada empleado de la página, el sistema calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
 
 **Postcondición:** El administrador ve la página de empleados que pidió. No cambió ningún dato.
 
@@ -14404,7 +14404,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Alta: diaria. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). El filtro por estado de la documentación reutiliza el mismo cálculo de vencimientos que la flota (CU-139). |
+| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). Trabajo futuro (Doc 3, §10): el filtro por estado de la documentación reutilizará el mismo cálculo de vencimientos que la flota (CU-139); hasta entonces el filtro se acepta y se ignora. |
 
 ---
 
@@ -43153,7 +43153,7 @@ sequenceDiagram
     ADM->>+SRV: consultarEmpleados(filtros)
     SRV->>+LST: filtrar(filtros)
     LST-->>-SRV: empleados
-    Note over SRV,LST: el peor vencimiento de la documentación de cada empleado
+    Note over SRV,LST: Trabajo futuro: el peor vencimiento de la documentación de cada empleado
     SRV-->>-ADM: página de empleados, sin datos personales sensibles
 ```
 
@@ -43161,7 +43161,7 @@ sequenceDiagram
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal) y la colección `List<Empleado>`.
 
-**GRASP.** *Controlador*: `EmployeeService`. *Experto*: la colección conoce a los empleados de la distribuidora y es quien los filtra. Cada `Empleado` conoce su documentación y calcula el peor estado de vencimiento entre sus tareas y los planes que le faltan.
+**GRASP.** *Controlador*: `EmployeeService`. *Experto*: la colección conoce a los empleados de la distribuidora y es quien los filtra. Trabajo futuro (Doc 3, §10): cada `Empleado` conocerá su documentación y calculará el peor estado de vencimiento entre sus tareas y los planes que le faltan.
 
 **No se dibuja:** la paginación, el orden por apellido y nombre y el filtro por distribuidora.
 
@@ -43174,7 +43174,7 @@ sequenceDiagram
 
 - El listado no trae el documento, el CUIL, el domicilio ni el contacto de emergencia: cada fila tiene el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta.
 - La página tiene diez empleados por omisión y hasta cien; un límite o una página fuera de rango responden 400.
-- El estado de la documentación se calcula solo para los empleados de la página, y filtrar por «documentación vencida» exige el mismo cálculo sobre el total, resuelto con una consulta sobre las tareas abiertas y no empleado por empleado.
+- Trabajo futuro (Doc 3, §10): el estado de la documentación se calculará solo para los empleados de la página, y filtrar por «documentación vencida» exigirá el mismo cálculo sobre el total, resuelto con una consulta sobre las tareas abiertas y no empleado por empleado. Hasta entonces el parámetro `documentStatus` se acepta y se ignora.
 
 ---
 
