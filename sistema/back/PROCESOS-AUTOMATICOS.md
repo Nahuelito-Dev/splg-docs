@@ -105,3 +105,27 @@ su recargo ni su vigencia; sólo `isActive` pasa a `false`. Deja en el log cuál
   hora se guarda tal cual. Desde y hasta el mismo día es una zona de un día; un hasta anterior al desde responde 400, y un día que no existe
   (por ejemplo `2026-02-30`) también. En la edición, `null` quita ese límite (rige desde siempre / no vence) y omitir el campo no lo toca.
   El panel muestra y edita el día argentino del instante guardado.
+
+## Monitoreo de los procesos automáticos
+
+Cada corrida de una tarea programada queda en `process_run` (proceso, distribuidora —nula si es un barrido global—, inicio,
+fin, estado, contadores, error saneado, disparo e instancia). Lo registra `@ConRegistro`, que va debajo de cada `@Cron`
+(un test de contrato exige que todos lo tengan y que las cadencias coincidan con el catálogo). No cambia la lógica del
+proceso: si el registro falla, el proceso sigue.
+
+- **Estados de la corrida:** `running`, `ok`, `partial` (un error atrapado de una parte), `failed`, `skipped` (otra
+  instancia tenía el cerrojo: no hizo nada). Disparo: `cron` o `webhook` (la bandeja de pagos llamada desde el webhook).
+- **Muestreo:** los procesos de alta frecuencia (tic del despacho, vencimiento y armado de lotes, bandeja de pagos) dejan
+  una corrida cada 5 min; un error se registra siempre. Una corrida salteada no consume la ventana del muestreo.
+- **Salud:** se calcula sobre la última corrida de cron no salteada: `ok`, `partial`, `running`, `failed`, `late` (no corrió
+  en 1,5 veces su período), `stuck` (`running` hace más de `PROCESS_RUN_STUCK_MINUTES`, 30 por omisión), `never`.
+- **Vigilancia (cada 5 min):** `failed`, `late` o `stuck` generan un aviso `process_run_alert`, deduplicado por proceso,
+  estado, día y distribuidora. Si el proceso es global se avisa a todas las distribuidoras activas con un texto genérico
+  («El proceso «X» no corrió a tiempo. El equipo técnico ya fue avisado.»), sin contadores ni error. Las `running` de más de
+  24 h se cierran como `failed`.
+- **Retención:** purga diaria de las corridas de más de `PROCESS_RUN_RETENTION_DAYS` (30) días, conservando siempre la última
+  de cada proceso. Es telemetría: `process_run` está fuera de la auditoría por triggers (excepción aprobada).
+- **API v2** (admin y super): `GET /api/v2/process-runs/summary` y `GET /api/v2/process-runs?process=&status=&from=&to=&limit=&offset=`.
+  En una corrida global el admin ve sólo la salud (contadores vacíos, sin error); el super ve todo. Códigos: 200; 400 por
+  filtro inválido (proceso, estado, fecha, `limit` < 1, `offset` < 0); 401 sin token o token inválido; 403 cliente y chofer.
+- **Panel:** Configuración → «Monitoreo de procesos» (tarjetas por proceso e historial con filtros).
