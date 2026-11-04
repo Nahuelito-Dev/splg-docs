@@ -157,6 +157,23 @@ un puerto que justifique otra cosa.
 - Paginación: `PaginationDto` de `common/dtos/`, extendido si el listado filtra.
 - `@ApiProperty` en cada campo, con ejemplo.
 
+### 6.1 Mensajes de error
+
+El código va en inglés (campos, valores de enum, `code`); el texto que lee la persona (`message` y `error`) va en
+castellano y sin nombres internos.
+
+- Los mensajes de validación los arma el traductor central (`src/common/validation/`): no se escribe `message` en
+  `@IsEnum`/`@IsIn`. Un campo o un valor nuevo necesita su etiqueta en `etiquetas-campos.ts` / `etiquetas-valores.ts`
+  (o `etiquetas-por-clase.ts` si el nombre genérico no corresponde al DTO); `etiquetas.spec.ts` falla si falta.
+- El `ValidationPipe` se crea siempre con `crearValidationPipe()` (app, tests e2e y exportes).
+- Un mensaje de servicio se escribe ya legible; un campo que llega por parámetro pasa por `rutaLegible`, un valor de
+  enum por `valorLegible`. `mensajes-sin-nombres-internos.spec.ts` lo controla.
+- Si el panel o una app tienen que reconocer un error, la excepción lleva un `code` en inglés (`conCodigo`,
+  `CODIGOS_DE_ERROR`): el front decide por el `code`, nunca por el texto. Los textos que hoy buscan las apps
+  publicadas («fuera del rango razonable», «idempoten…», «jornada abierta», «Falta la distribuidora»…) se conservan.
+- El filtro global traduce lo que arma Nest (Parse*Pipe → «El identificador no es válido» con `code: INVALID_ID`,
+  ruta inexistente, el campo `error`, 500, throttler, multer, body-parser) sin cambiar el código de estado.
+
 ## 7. DTOs de salida
 
 - **Ningún endpoint devuelve una entidad.** Devuelve un `<nombre>-response.dto.ts`.
