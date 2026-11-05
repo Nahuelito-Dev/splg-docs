@@ -14,9 +14,7 @@ Sistema de Pedidos y Logística de Garrafas de Gas · Proceso Unificado · FCEQy
 | **Abrir los modelos en draw.io** (conceptual, DER, base de datos y clases) | `modelos/drawio/` — ver `modelos/drawio/LEEME.md` |
 | **Ver la base de datos** (SQL, diccionario, DER por módulo) | `modelos/base-de-datos/` — ver su `LEEME.md` |
 | **Poner una imagen en un documento** | `documentos/INDICE-IMAGENES.md` te dice cuál va dónde |
-| **Saber qué le falta al sistema** | `sistema/DISENO-PENDIENTES.md` (pendientes de implementación) |
-| **Seguimiento interno de las features nuevas (F1…FN, estado y % de avance; no va al sitio de la cátedra)** | **`FEATURES-NEW.md`** |
-| **Entender cómo está hecho el código** (backend, Postman, setup) | `sistema/` — ver `sistema/README.md` |
+| **Ver los anexos de diseño** (arquitectura, modelo de datos, módulos inteligentes) | `sistema/` |
 | **Ver las pantallas reales** del panel y de las apps | `capturas/` |
 | **Ver el sitio** | `sitio/` (se publica en https://splg-atlas.netlify.app con `./publicar.sh`; la v1 congelada queda en `/v1/` y el selector de la cabecera cambia de versión — config en `sitio/versiones.json`) |
 

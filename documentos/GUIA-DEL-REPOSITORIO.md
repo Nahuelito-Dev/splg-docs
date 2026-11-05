@@ -155,7 +155,7 @@ Cada script corre `integration_test/capturas_cu_reales_test.dart` con `--dart-de
 
 La documentación se contrasta contra el sistema construido con los verificadores de
 `herramientas/` (artefactos, relaciones, cifras de la base, cruce DSD↔clases y MC↔DER)
-y el gate `verificar-conformidad.py`. Lo pendiente de implementación está en `sistema/DISENO-PENDIENTES.md`.
+y el gate `verificar-conformidad.py`.
 Los informes de auditoría anteriores están en el historial de git del repositorio (se retiraron el 24/10/2026, antes de congelar la v1).
 
 Lo anterior a esa revisión está en el historial de git y no forma parte de la entrega.

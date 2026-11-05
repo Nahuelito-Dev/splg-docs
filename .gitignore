@@ -16,3 +16,15 @@ publicar/
 
 # Word de la cátedra (se regenera con generar-docx-catedra.py)
 catedra/entregables/catedra-docx/
+
+# Trabajo técnico interno del equipo: queda en la máquina, no en el repositorio
+# (el sitio de la cátedra se publica desde acá y lee NOVEDADES-V2.md localmente).
+sistema/back/
+sistema/panel/
+sistema/landing/
+sistema/postman.md
+sistema/README.md
+sistema/DISENO-PENDIENTES.md
+sistema/NOVEDADES-V2.md
+FEATURES-NEW.md
+.vscode/
