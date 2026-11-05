@@ -17,7 +17,7 @@ promociones y recargos, la emisión de notificaciones y la limpieza del índice
 geoespacial. Son obligaciones funcionales, no inteligencia; se documentan como parte
 del comportamiento normal del sistema en las secciones 3 y 4.
 
-Los cinco módulos seleccionados comparten una misma forma: **recorren una lista de
+Los siete módulos seleccionados comparten una misma forma: **recorren una lista de
 candidatos de a uno, ofrecen algo con vigencia limitada, esperan respuesta, pasan al
 siguiente ante rechazo o vencimiento, y reservan a una persona la decisión que
 compromete dinero.**
@@ -29,6 +29,8 @@ compromete dinero.**
 | **M3** | Anticipación de recompra por consumo estimado | CU-106 | Genera demanda — **ingresos** | Planificado (C-16); tablas en la base, servicio sin construir |
 | **M4** | Agrupación inteligente de pedidos por recorrido | CU-107 | Reduce el costo por entrega — costos | Planificado (C-19); tablas en la base, servicio sin construir |
 | **M5** | Recuperación de envases no devueltos | CU-108 | Protege el activo envase — costos | Planificado (C-15); tablas en la base, servicio sin construir |
+| **M6** | Lectura y conciliación inteligente de documentos | A definir | Elimina la carga manual y detecta errores y fraudes — costos | En construcción |
+| **M7** | Venta asistida por WhatsApp | A definir | Suma un canal de venta y recupera compras — **ingresos** | Planificado |
 
 ---
 
@@ -789,7 +791,194 @@ Diagrama de interacción de diseño: **DSD — CU-108**, sección 4.22 de este d
 
 ---
 
-### 6.6 Automatismos que NO se presentan como módulos inteligentes
+### 6.6 Módulo M6 — Lectura y conciliación inteligente de documentos
+
+**Entidades:** `Attachment`, `InsuranceInstallment`, `InsurancePolicy`, `TrafficFine`, `PurchaseReceipt`, `PurchaseOrder`, `Car`, `Employee`, `CashMovement`, `AdminNotification`
+**Casos de uso propios:** a definir con los artefactos del Proceso Unificado de las funcionalidades nuevas
+
+**Casos de uso que intervienen:**
+
+| Relación | Casos de uso |
+|---|---|
+| Se alimenta de | CU-136 Registrar el Seguro del Vehículo, CU-113 Consultar el Detalle del Vehículo, la carga de multas, de comprobantes de compra y de la documentación del personal |
+| Alimenta a | CU-139 Consultar los Vencimientos de la Flota y el módulo M2 (planificación de mantenimiento y habilitaciones) |
+| Desemboca en | El registro del egreso en Caja y la habilitación del vehículo o del empleado, siempre con confirmación del administrador |
+
+#### Descripción
+
+Todo documento que entra al sistema —un comprobante de pago de una multa o de una cuota
+de seguro, una factura o remito de un proveedor, una póliza, la revisión técnica o la
+cédula de un vehículo, la licencia o el apto médico de un empleado— **lo lee el sistema
+por su cuenta**: reconoce de qué tipo es, extrae sus datos y los **cruza con lo que el
+sistema espera encontrar**. No es una lectura aislada: el módulo **propone** la acción
+que corresponde (asentar el pago, aceptar el documento, actualizar un vencimiento),
+**espera la confirmación** del administrador con una vigencia, la recuerda si nadie
+responde y **escala** cuando el plazo se vence o cuando lo leído no coincide.
+
+Con cada corrección del administrador **aprende**: guarda cómo leyó mal un campo para un
+tipo de documento o un proveedor y usa esos casos en las lecturas siguientes, de modo que
+la cantidad de correcciones baja con el uso.
+
+#### Entradas
+
+- Documentos pendientes de lectura — `Attachment` (PDF o imagen) con el registro al que pertenecen
+- Lo que el sistema espera de cada uno — la cuota de seguro impaga (`InsuranceInstallment`), la multa (`TrafficFine`), la orden de compra y su recepción (`PurchaseOrder`, `PurchaseReceipt`), el vehículo (`Car`) o el empleado (`Employee`)
+- Correcciones anteriores del administrador para ese tipo de documento y ese emisor
+- Umbrales de confianza, tolerancias, vigencias y tope mensual de lecturas — parámetros configurados
+
+#### Algoritmo
+
+1. El proceso temporal se ejecuta con la frecuencia configurada y toma los documentos que esperan lectura, más los que se suben en el momento.
+2. Descartar duplicados: si el documento ya fue leído (mismo archivo, o mismo número, emisor e importe), marcarlo como repetido y avisar sin volver a procesarlo.
+3. Reconocer el tipo de documento cuando no viene declarado: comprobante de pago, factura o remito, póliza, revisión técnica, cédula, licencia o apto médico.
+4. Extraer los campos del tipo —fecha, importe, número, emisor y su CUIT, vencimiento, patente, aseguradora y póliza, documento de identidad— con un nivel de confianza por campo, apoyándose en las correcciones anteriores para ese tipo y ese emisor.
+5. Si algún campo obligatorio queda por debajo del umbral de confianza o el documento es ilegible, pedir una nueva imagen a quien lo subió, con una vigencia; agotados los reintentos configurados, pasarlo a carga manual.
+6. Cruzar lo leído con lo esperado: el importe y la fecha contra la cuota o la multa (dentro de la tolerancia configurada), los ítems y el total contra la orden de compra y su recepción, la patente contra el vehículo, el documento de identidad contra el empleado.
+7. Si todo coincide, armar la propuesta con los datos ya cargados: asentar el egreso en Caja, dar por pagada la cuota o la multa, aceptar el documento con su nuevo vencimiento.
+8. Si algo no coincide —importe distinto, patente de otro vehículo, documento vencido, comprobante de una fecha anterior a la deuda—, armar la propuesta marcada con cada diferencia y su detalle.
+9. Avisar al administrador en la bandeja con la propuesta y su vigencia; vencida la vigencia sin respuesta, enviar un recordatorio; vencido el segundo plazo, escalar con el impacto: la cuota que sigue impaga, el vehículo que quedaría sin habilitación, el empleado con documentación vencida.
+10. El administrador confirma, corrige o rechaza. Si corrige, el sistema guarda cada campo corregido como ejemplo para ese tipo de documento y ese emisor.
+11. Confirmada la propuesta, registrar la acción y, si el documento trae un vencimiento, actualizarlo para que el módulo M2 lo tenga en cuenta en su planificación.
+12. Respetar el tope mensual de lecturas configurado: alcanzado el tope, los documentos quedan en espera y se avisa al administrador.
+
+#### Salidas
+
+- Datos extraídos del documento, con su nivel de confianza por campo
+- Propuesta de acción lista para confirmar, o marcada con las diferencias encontradas — `AdminNotification`
+- Pedido de una nueva imagen a quien subió el documento ilegible
+- Recordatorio y escalamiento de la propuesta sin confirmar
+- Egreso en Caja y cuota o multa dada por pagada, con el comprobante asociado — `CashMovement`
+- Vencimiento actualizado del vehículo o del empleado, que alimenta al módulo M2
+- Corrección del administrador guardada como ejemplo para las lecturas siguientes
+
+#### Parámetros
+
+| Parámetro | Descripción |
+|-----------|-------------|
+| Frecuencia del proceso | Cada cuánto revisa los documentos pendientes |
+| Tipos de documento habilitados | Qué documentos lee el sistema y cuáles quedan para carga manual |
+| Umbral de confianza por campo | Desde qué nivel un dato leído se propone sin pedir otra imagen |
+| Tolerancia de importe y de fecha | Cuánto puede diferir lo leído de lo esperado sin marcarlo como diferencia |
+| Vigencia de la propuesta y plazo del recordatorio | Cuánto espera la confirmación antes de recordar y antes de escalar |
+| Reintentos de lectura | Cuántas veces pide una nueva imagen antes de pasar a carga manual |
+| Tope mensual de lecturas | Límite de documentos leídos por mes, para acotar el costo del servicio de lectura |
+
+#### Por qué no es una consulta
+
+Leer un documento no se resuelve con la base de datos: hay que **interpretar** un PDF o una
+foto. Pero el módulo no termina en la lectura: **cruza** lo leído con lo que el sistema
+espera, detecta duplicados y diferencias, **propone** la acción con una vigencia, insiste y
+escala, y **mejora con cada corrección** del administrador.
+
+#### Decisión humana
+
+**El administrador confirma todo lo que mueve dinero o habilita.** Asentar un egreso en
+Caja, dar por pagada una deuda o aceptar un documento que habilita a un vehículo o a un
+empleado lo decide siempre una persona; el sistema le deja la propuesta armada y le
+marca las diferencias.
+
+#### Precondiciones
+
+Hay al menos un documento cargado que espera lectura, y el servicio de lectura está habilitado y dentro del tope mensual.
+
+#### Postcondiciones
+
+El documento quedó leído y conciliado, con su propuesta confirmada, corregida o rechazada por el administrador, o escalado con su impacto; o quedó a la espera de una nueva imagen o de carga manual.
+
+---
+
+### 6.7 Módulo M7 — Venta asistida por WhatsApp
+
+**Entidades:** `Customer`, `UserAddress`, `Order`, `Cart`, `CoverageZone`, `RepurchaseInvitation`, `AdminNotification`
+**Casos de uso propios:** a definir con los artefactos del Proceso Unificado de las funcionalidades nuevas
+
+**Casos de uso que intervienen:**
+
+| Relación | Casos de uso |
+|---|---|
+| Desemboca en | CU-005 Crear un Pedido, CU-002 Registrarse como Cliente |
+| Es el canal de | CU-106 Anticipar la Recompra por Consumo Estimado (módulo M3) |
+| Escala a | La bandeja del operador en el panel |
+
+#### Descripción
+
+Muchos clientes de una distribuidora de gas prefieren pedir por mensaje. El módulo atiende
+esa conversación por su cuenta: **reconoce al cliente por su teléfono**, le ofrece repetir
+su último pedido o elegir productos, usa su dirección guardada y le muestra el total que
+calcula el sistema —con el cobro del envase cuando corresponde—. Confirmado, crea el
+pedido con el medio de pago elegido: efectivo al chofer o un **enlace de Mercado Pago con
+vigencia**. A quien todavía no es cliente lo **da de alta en el chat** con su nombre y la
+ubicación, verificando que esté dentro de la zona de cobertura.
+
+El módulo también **toma la iniciativa**: es el canal por el que salen las invitaciones de
+recompra del módulo M3, con su vigencia, su recordatorio y su cierre. Lo que no encaja en
+las reglas —un pedido fuera de lo habitual, un pedido a cuenta, un reclamo, un mensaje
+que no entiende— **pasa a un operador** con la conversación completa.
+
+#### Entradas
+
+- Mensajes entrantes del cliente y su número de teléfono
+- Ficha del cliente, sus direcciones y su último pedido — `Customer`, `UserAddress`, `Order`
+- Catálogo, precios y total calculado por el sistema, con el cobro del envase si corresponde
+- Zonas de cobertura de la distribuidora — `CoverageZone`
+- Invitaciones de recompra abiertas por el módulo M3 — `RepurchaseInvitation`
+- Horario de atención, vigencias, recordatorios y tope de pedido sin operador — parámetros configurados
+
+#### Algoritmo
+
+1. Ante un mensaje, identificar al cliente por su teléfono; si no existe, iniciar el alta: pedir el nombre y la ubicación, verificar la zona de cobertura y crear la cuenta, o informar que la zona no se atiende.
+2. Fuera del horario de atención configurado, tomar el pedido y avisar cuándo se procesa, o derivarlo al operador.
+3. Ofrecer repetir el último pedido o elegir productos; armar el carrito con vigencia y mostrar el total que calcula el sistema, con el envase si corresponde.
+4. Sin respuesta dentro de la vigencia del carrito, enviar un recordatorio; vencido el segundo plazo, cerrar la conversación y liberar lo reservado.
+5. Confirmado el pedido, crearlo con la dirección elegida y el medio de pago: efectivo al chofer, o un enlace de Mercado Pago con la vigencia configurada.
+6. Si el enlace vence sin pago, recordarlo una vez; vencido el segundo plazo, cancelar el pedido y avisar al cliente.
+7. Por iniciativa del sistema, enviar las invitaciones de recompra que abre el módulo M3, con su vigencia; aceptar la respuesta del cliente como confirmación del pedido sugerido y, sin respuesta, enviar el recordatorio y dejar que la invitación venza.
+8. Derivar al operador, con la conversación completa, todo lo que excede las reglas: un pedido por encima del tope configurado, un pedido a cuenta o con descuento, un reclamo, o un mensaje que el sistema no logra interpretar tras los reintentos configurados.
+9. El operador responde desde el panel, toma la decisión y la conversación vuelve al módulo cuando la resuelve.
+
+#### Salidas
+
+- Pedido creado por el canal WhatsApp, marcado con ese canal — `Order`
+- Cliente dado de alta desde el chat, con su dirección verificada en la zona de cobertura
+- Enlace de pago con vigencia, recordatorio y cancelación del pedido impago
+- Invitación de recompra enviada, recordada, aceptada o vencida
+- Conversación derivada a la bandeja del operador — `AdminNotification`
+
+#### Parámetros
+
+| Parámetro | Descripción |
+|-----------|-------------|
+| Horario de atención | Cuándo procesa pedidos y cuándo sólo los toma o deriva |
+| Vigencia del carrito y del enlace de pago | Cuánto espera respuesta o pago antes de recordar y antes de cerrar |
+| Recordatorios | Cuántos envía y con qué separación |
+| Tope de pedido sin operador | Desde qué cantidad o importe el pedido lo revisa una persona |
+| Reintentos de interpretación | Cuántas veces pide aclaración antes de derivar al operador |
+| Mensajes | Los textos de bienvenida, confirmación, recordatorio y cierre |
+
+#### Por qué no es una consulta
+
+Atender una conversación no es leer datos: el módulo **interpreta** lo que el cliente
+escribe, **lleva el pedido de punta a punta** con vigencias, recordatorios y cierres,
+**toma la iniciativa** para recuperar compras con el módulo M3 y **sabe cuándo no decidir**:
+deriva al operador lo que excede sus reglas.
+
+#### Decisión humana
+
+**El operador decide todo lo que sale de las reglas.** Un pedido a cuenta, un descuento,
+un pedido por encima del tope o una dirección fuera de la zona los resuelve una persona;
+el sistema le deja la conversación completa y el pedido armado.
+
+#### Precondiciones
+
+La distribuidora tiene el canal de WhatsApp habilitado y configurado, y el cliente escribe o tiene una invitación de recompra abierta.
+
+#### Postcondiciones
+
+La conversación terminó con un pedido creado por el canal WhatsApp, con un cliente dado de alta, con una invitación respondida o vencida, o derivada al operador con su contexto.
+
+---
+
+### 6.8 Automatismos que NO se presentan como módulos inteligentes
 
 Se documentan aquí para dejar constancia de que fueron evaluados y descartados, con el
 motivo del descarte.
