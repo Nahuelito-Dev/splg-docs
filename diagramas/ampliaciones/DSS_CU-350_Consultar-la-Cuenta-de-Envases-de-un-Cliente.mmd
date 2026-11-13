@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSS — CU-350 Consultar la Cuenta de Envases de un Cliente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+    ADM->>SIS: consultarCuentaDeEnvases(clienteId)
+    alt cliente de la distribuidora
+        SIS-->>ADM: saldo propio e historial por tipo
+    else cliente inexistente o ajeno
+        SIS-->>ADM: consulta rechazada
+    end

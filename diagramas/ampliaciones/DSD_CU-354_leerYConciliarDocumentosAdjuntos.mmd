@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-354 Leer y Conciliar Documentos Adjuntos · leerYConciliarDocumentosAdjuntos
+    autonumber
+    participant CRON as :DocumentReadingCron
+    participant RUN as :DocumentReadingRunnerService
+    participant COLA as :DocumentReadingQueueService
+    participant REC as :DocumentReconciliationService
+    CRON->>+RUN: leerYConciliarDocumentosAdjuntos()
+    RUN->>+COLA: tomarPendientes(distribuidora)
+    COLA-->>-RUN: adjuntos
+    RUN->>+REC: conciliar(adjuntos)
+    REC-->>-RUN: propuestas
+    RUN-->>-CRON: resultado

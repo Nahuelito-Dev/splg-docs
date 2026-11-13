@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSD — CU-350 Consultar la Cuenta de Envases de un Cliente · consultarCuentaDeEnvases
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CAS as :CustomerContainerQueryService
+    participant CTA as cuenta:CustomerContainerAccount
+    ADM->>+CAS: consultarCuentaDeEnvases(clienteId)
+    CAS->>+CTA: obtenerSaldoEHistorial()
+    CTA-->>-CAS: cuenta
+    CAS-->>-ADM: saldo e historial

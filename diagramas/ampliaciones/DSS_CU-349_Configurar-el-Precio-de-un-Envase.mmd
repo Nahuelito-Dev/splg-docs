@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSS — CU-349 Configurar el Precio de un Envase
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+    ADM->>SIS: configurarPrecioDeEnvase(tipoId, importe)
+    alt tipo e importe válidos
+        SIS-->>ADM: precio de envase actualizado
+    else tipo ajeno, inexistente o importe inválido
+        SIS-->>ADM: operación rechazada sin cambios
+    end

@@ -1,0 +1,12 @@
+sequenceDiagram
+    title DSD — CU-351 Ajustar la Cuenta de Envases de un Cliente · ajustarCuentaDeEnvases
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CAS as :CustomerContainerAdjustmentService
+    participant CTA as cuenta:CustomerContainerAccount
+    participant MOV as :CustomerContainerMovement
+    ADM->>+CAS: ajustarCuentaDeEnvases(clienteId, tipoId, cantidad, motivo)
+    CAS->>+CTA: ajustar(cantidad, motivo)
+    CTA->>MOV: «create»(cantidad, motivo)
+    CTA-->>-CAS: saldo actualizado
+    CAS-->>-ADM: movimiento registrado

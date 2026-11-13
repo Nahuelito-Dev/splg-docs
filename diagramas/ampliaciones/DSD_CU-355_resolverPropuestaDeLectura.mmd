@@ -1,0 +1,17 @@
+sequenceDiagram
+    title DSD — CU-355 Resolver una Propuesta de Lectura · resolverPropuestaDeLectura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant DEC as :DocumentReadingDecisionService
+    participant LEC as lectura:DocumentReading
+    participant PAGO as :ServicioDePago
+    ADM->>+DEC: resolverPropuestaDeLectura(lecturaId, decision, datos)
+    DEC->>+LEC: validarPendiente()
+    LEC-->>-DEC: propuesta
+    alt decision paga
+        DEC->>+PAGO: registrarPago(datos)
+        PAGO-->>-DEC: pago
+    end
+    DEC->>+LEC: decidir(decision)
+    LEC-->>-DEC: lectura
+    DEC-->>-ADM: lectura decidida

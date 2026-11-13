@@ -1,0 +1,10 @@
+sequenceDiagram
+    title DSD — CU-349 Configurar el Precio de un Envase · configurarPrecioDeEnvase
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant CAS as :GasCylinderUseCase
+    participant ENV as envase:GasCylinder
+    ADM->>+CAS: configurarPrecioDeEnvase(tipoId, importe)
+    CAS->>+ENV: actualizarPrecioDeEnvase(importe)
+    ENV-->>-CAS: precio vigente
+    CAS-->>-ADM: envase actualizado

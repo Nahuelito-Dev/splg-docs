@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSS — CU-351 Ajustar la Cuenta de Envases de un Cliente
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+    ADM->>SIS: ajustarCuentaDeEnvases(clienteId, tipoId, cantidad, motivo)
+    alt datos válidos y cliente de la distribuidora
+        SIS-->>ADM: movimiento inmutable registrado y saldo actualizado
+    else datos inválidos o cliente ajeno
+        SIS-->>ADM: operación rechazada sin cambios
+    end

@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSD — CU-353 Declarar las Vacías Recibidas en una Entrega · declararVaciasRecibidas
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant CAS as :OrderEmptiesService
+    participant PED as pedido:Order
+    participant CTA as :CustomerContainerAccount
+    CHO->>+CAS: declararVaciasRecibidas(pedidoId, cantidades)
+    CAS->>+PED: validarEntregaAsignada()
+    PED-->>-CAS: pedido
+    CAS->>+CTA: registrarDevolucion(cantidades)
+    CTA-->>-CAS: saldo actualizado
+    CAS-->>-CHO: vacías declaradas

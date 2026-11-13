@@ -691,6 +691,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     <a class="menu-link" href="#modelos" data-nav-hash="modelos">Modelos</a>
     <a class="menu-link" href="#datos" data-nav-hash="datos">Datos</a>
     <a class="menu-link" href="#arquitectura" data-nav-hash="arquitectura">Arquitectura</a>
+    __NAV_AMPLIACIONES_ARRIBA__
     __NAV_FEATURES_ARRIBA__
   </nav>
   <div class="espacio"></div>
@@ -743,6 +744,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
         <button type="button" class="seccion" data-pag="arquitectura"><span class="nombre">Arquitectura y despliegue</span></button>
       </div>
       __NAV_FEATURES_LADO__
+      __NAV_AMPLIACIONES_LADO__
       <div class="grupo-menu">
         <button type="button" class="rotulo-grupo" data-plegar="modulos" aria-expanded="true" aria-controls="listaModulos">
           <span class="flecha" aria-hidden="true">›</span>Módulos inteligentes
@@ -815,6 +817,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
   "use strict";
   var D = JSON.parse(document.getElementById("datos").textContent);
   var CU = D.cu, SS = D.subsistemas, MODS = D.modulos || {}, SIS = D.sistema || {};
+  var AMPLIACIONES = D.ampliaciones || {};
   var UMLSIS = D.umlsis || {};
   /* El tinte de cada subsistema sale de la misma hoja de estilos que pinta las
      marcas, así el punto del menú y la caja del diagrama nunca se separan. */
@@ -1031,6 +1034,23 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
     c.querySelectorAll("[data-uml]").forEach(function(b){ b.onclick=function(){ verUml(b.dataset.uml); cerrarSiEsCajon(); cerrarPaleta(); }; });
     c.querySelectorAll("[data-mod]").forEach(function(b){ b.onclick=function(){ verMod(b.dataset.mod); cerrarSiEsCajon(); cerrarPaleta(); }; });
     c.querySelectorAll("[data-sis]").forEach(function(b){ b.onclick=function(){ verSis(b.dataset.sis); cerrarSiEsCajon(); cerrarPaleta(); }; });
+    c.querySelectorAll("[data-ampliacion]").forEach(function(b){ b.onclick=function(){ verAmpliacion(b.dataset.ampliacion); cerrarSiEsCajon(); cerrarPaleta(); }; });
+  }
+
+  function verAmpliacion(codigo){
+    var v = AMPLIACIONES[codigo]; if (!v) return false;
+    sel = null; location.hash = "ampliacion-" + codigo;
+    var h = '<div class="head"><div class="over"><span>AMPLIACIONES V2</span><span>'+esc(codigo)+'</span></div>' +
+      '<h2>'+esc(v.nombre)+'</h2></div>' +
+      card("k-cua", "CU", "Especificación del caso de uso", "Ampliaciones v2", v.html) +
+      diagramas(v.dss, "k-dss", "DSS", "Diagrama de secuencia del sistema", "Ampliaciones v2") +
+      diagramas(v.dsd, "k-dsd", "DSD", "Diagrama de interacción de diseño", "Ampliaciones v2");
+    document.getElementById("detalle").innerHTML = h;
+    document.getElementById("main").scrollTop = 0;
+    ["dss", "dsd"].forEach(function(k){ (v[k] || []).forEach(function(d, i){
+      var n = document.querySelector('[data-src="k-'+k+'-'+i+'"]'); if (n) dibujar(n, d.src);
+    }); });
+    marcarMenu("pag", "ampliaciones"); pintar(); return true;
   }
 
   function abrir(c){
@@ -1309,6 +1329,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       if (n) dibujar(n, src);
     });
     if (window.marcarFigurasAmpliables) window.marcarFigurasAmpliables();
+    enlazar(document.getElementById("detalle"));
     document.getElementById("main").scrollTop = 0;
     document.querySelectorAll(".seccion[data-pag]").forEach(function(b){
       b.setAttribute("aria-current", String(b.dataset.pag === k)); });
@@ -1320,6 +1341,9 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       if (b.dataset.pag === "inicio") inicio(); else verPagina(b.dataset.pag);
       cerrarSiEsCajon();
     };
+  });
+  document.querySelectorAll("#navPrincipal [data-ampliacion]").forEach(function(b){
+    b.onclick = function(){ verAmpliacion(b.dataset.ampliacion); cerrarSiEsCajon(); };
   });
 
   /* Las cifras son la puerta de entrada, no un adorno: la portada dejó de
@@ -1598,6 +1622,7 @@ button.cifra:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
       return true;
     }
     if (h === "inicio"){ inicio(); return true; }
+    if (h.indexOf("ampliacion-") === 0) return verAmpliacion(h.slice(11));
     if (PAGS[h]){ salirDrill(); var ok = verPagina(h); marcarMenu("pag", h); return ok; }
     return false;
   }

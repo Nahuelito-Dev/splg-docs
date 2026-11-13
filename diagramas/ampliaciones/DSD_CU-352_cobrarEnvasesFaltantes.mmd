@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-352 Cobrar los Envases Faltantes de un Pedido · cobrarEnvasesFaltantes
+    autonumber
+    actor USR as Cliente o Administrador
+    participant CAS as :OrderContainerChargeService
+    participant PED as pedido:Order
+    participant CTA as :CustomerContainerAccount
+    participant PAGO as :PaymentService
+    USR->>+CAS: cobrarEnvasesFaltantes(pedidoId, cantidades, medioPago)
+    CAS->>+PED: calcularFaltantes(cantidades)
+    PED-->>-CAS: faltantes
+    CAS->>+PAGO: cobrar(total, medioPago)
+    PAGO-->>-CAS: cobro
+    CAS->>+CTA: acreditarPropiedad(faltantes)
+    CTA-->>-CAS: movimiento
+    CAS-->>-USR: cobro y envases propios

@@ -1,0 +1,13 @@
+sequenceDiagram
+    title DSS — CU-352 Cobrar los Envases Faltantes de un Pedido
+    autonumber
+    actor USR as Cliente o Administrador
+    participant SIS as :Sistema
+    USR->>SIS: cotizarCobroDeEnvases(pedidoId, cantidades)
+    SIS-->>USR: faltantes, precio y total
+    USR->>SIS: cobrarEnvasesFaltantes(pedidoId, cantidades, medioPago)
+    alt pedido y cobro válidos
+        SIS-->>USR: envases propios y cobro registrado
+    else faltantes o pago no válidos
+        SIS-->>USR: operación rechazada sin cambios
+    end

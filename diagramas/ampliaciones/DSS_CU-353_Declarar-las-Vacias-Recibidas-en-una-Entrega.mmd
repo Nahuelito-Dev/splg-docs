@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSS — CU-353 Declarar las Vacías Recibidas en una Entrega
+    autonumber
+    actor CHO as Chofer (ACT-02)
+    participant SIS as :Sistema
+    CHO->>SIS: declararVaciasRecibidas(pedidoId, cantidades)
+    alt pedido asignado y cantidades válidas
+        SIS-->>CHO: vacías declaradas para la entrega
+    else pedido ajeno, estado o cantidades inválidas
+        SIS-->>CHO: operación rechazada sin cambios
+    end

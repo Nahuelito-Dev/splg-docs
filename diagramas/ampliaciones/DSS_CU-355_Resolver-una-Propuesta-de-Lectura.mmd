@@ -1,0 +1,11 @@
+sequenceDiagram
+    title DSS — CU-355 Resolver una Propuesta de Lectura
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant SIS as :Sistema
+    ADM->>SIS: resolverPropuestaDeLectura(lecturaId, decision, datos)
+    alt propuesta pendiente y datos válidos
+        SIS-->>ADM: propuesta resuelta y efectos registrados
+    else propuesta ajena, vencida o ya resuelta
+        SIS-->>ADM: operación rechazada sin cambios
+    end

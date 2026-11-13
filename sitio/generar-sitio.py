@@ -101,7 +101,8 @@ for n,(i,m) in enumerate(idx):
 # ---------- diagramas ----------
 def cargar(prefijo):
     o = {}
-    for f in glob.glob(D+f"diagramas/{prefijo}_CU-*.mmd"):
+    for f in (glob.glob(D+f"diagramas/{prefijo}_CU-*.mmd")
+              + glob.glob(D+f"diagramas/ampliaciones/{prefijo}_CU-*.mmd")):
         base = os.path.basename(f)
         m = re.match(rf'{prefijo}_((?:CU-\d+_)+)(.+)\.mmd$', base)
         if not m: continue
@@ -564,6 +565,23 @@ def _novedades():
              'sin alterar lo que la versión 1 ya hacía.</p></div>')
     return {"titulo": "Novedades de la versión 2", "html": intro + res["html"], "mermaid": res.get("mermaid", [])}
 
+def _ampliaciones_v2():
+    """Casos incorporados al sitio sin modificar el catálogo congelado."""
+    texto = open(SITIO + "ampliaciones-v2.md", encoding="utf-8").read()
+    partes = re.split(r'^## (CU-\d+) — (.+)$', texto, flags=re.M)
+    casos = {}
+    for i in range(1, len(partes), 3):
+        codigo, nombre, cuerpo = partes[i:i+3]
+        casos[codigo] = dict(md2html(cuerpo.strip()), nombre=nombre.strip(),
+                             dss=dss.get(codigo, []), dsd=dsd.get(codigo, []))
+    indice = ('<div class="intro"><h1>Ampliaciones v2</h1>'
+              '<p>Casos de uso incorporados en la versión 2. Esta sección complementa '
+              'la documentación publicada sin alterar el catálogo ni los documentos numerados.</p></div>'
+              '<div class="tarjetas">' + ''.join(
+                  f'<button type="button" class="tarjeta" data-ampliacion="{c}"><b>{c}</b><p>{v["nombre"]}</p></button>'
+                  for c, v in casos.items()) + '</div>')
+    return casos, {"titulo": "Ampliaciones v2", "html": indice, "mermaid": []}
+
 datos["paginas"] = {
     "datos": _modelo_de_datos(),
     "diagramas": _diagramas(),
@@ -574,11 +592,19 @@ datos["paginas"] = {
                              'criterios está diseñada su interfaz HTTP. Anexo de diseño.</p></div>'
                              + _arq_html},
 }
+datos["ampliaciones"], datos["paginas"]["ampliaciones"] = _ampliaciones_v2()
 
 # FEATURES-NEW.md es el seguimiento interno del equipo (estado y avance de cada F): no va al sitio de la
 # cátedra. Las novedades de la v2 se cuentan en su propia página.
 # Sólo las versiones que tienen la página (la v1 congelada se arma sin ella ni su entrada en el menú).
 NAV_FEATURES_ARRIBA = NAV_FEATURES_LADO = ""
+NAV_AMPLIACIONES_ARRIBA = '<a class="menu-link" href="#ampliaciones" data-nav-hash="ampliaciones">Ampliaciones v2</a>'
+NAV_AMPLIACIONES_LADO = (
+    '<div class="grupo-menu">'
+    '<p class="rotulo-grupo">Versión 2</p>'
+    '<button type="button" class="seccion" data-pag="ampliaciones"><span class="nombre">Ampliaciones v2</span></button>'
+    '</div>'
+)
 if os.path.exists(D + "sistema/NOVEDADES-V2.md"):
     datos["paginas"]["novedades"] = _novedades()
     NAV_FEATURES_ARRIBA = '<a class="menu-link" href="#novedades" data-nav-hash="novedades">Novedades v2</a>'
@@ -621,6 +647,8 @@ html = (open(SITIO+"splg-plantilla.html", encoding="utf-8").read()
         .replace("__GENERADO__", generado)
         .replace("__NAV_FEATURES_ARRIBA__", NAV_FEATURES_ARRIBA)
         .replace("__NAV_FEATURES_LADO__", NAV_FEATURES_LADO)
+        .replace("__NAV_AMPLIACIONES_ARRIBA__", NAV_AMPLIACIONES_ARRIBA)
+        .replace("__NAV_AMPLIACIONES_LADO__", NAV_AMPLIACIONES_LADO)
         .replace("__NAV_DESTACADOS__", NAV_DESTACADOS)
         .replace("__N_MERMAID__", str(n_mermaid))
         .replace("__N_UML__", str(n_uml))
@@ -628,6 +656,7 @@ html = (open(SITIO+"splg-plantilla.html", encoding="utf-8").read()
         .replace("__COLORES_SS__", css_subsistemas(ss.keys()))
         .replace('href="visor.css"', f'href="visor.css?v={marcas["visor.css"]}"')
         .replace('src="visor.js"', f'src="visor.js?v={marcas["visor.js"]}"'))
+html = re.sub(r'(?m)^[ \t]+$', '', html)
 open(SITIO+"splg-documentacion.html", "w", encoding="utf-8").write(html)
 
 print(f"casos: {len(datos['cu'])} | CU reales: {len(cur)} | modulos: {len(mods)} | subsistemas con UML: {sum(1 for v in ss.values() if 'uml' in v)}")
