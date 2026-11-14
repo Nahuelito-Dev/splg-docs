@@ -28,3 +28,10 @@ sistema/DISENO-PENDIENTES.md
 sistema/NOVEDADES-V2.md
 FEATURES-NEW.md
 .vscode/
+# Documentos de trabajo internos (diseños y relevamientos): nunca se publican ni se suben
+sistema/DISENO-COMUNICACION.md
+sistema/DISENO-OBSERVABILIDAD.md
+sistema/DISENO-PLATAFORMA-ORIXTECH.md
+sistema/DISENO-ROLES-Y-PERMISOS.md
+sistema/DISENO-SUPERADMIN-Y-MODO-SOPORTE.md
+sistema/RELEVAMIENTO-*.md
