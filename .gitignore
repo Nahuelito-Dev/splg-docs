@@ -30,6 +30,7 @@ FEATURES-NEW.md
 .vscode/
 # Documentos de trabajo internos (diseños y relevamientos): nunca se publican ni se suben
 sistema/DISENO-COMUNICACION.md
+sistema/DISENO-CH-BOT.md
 sistema/DISENO-OBSERVABILIDAD.md
 sistema/DISENO-PLATAFORMA-ORIXTECH.md
 sistema/DISENO-ROLES-Y-PERMISOS.md
