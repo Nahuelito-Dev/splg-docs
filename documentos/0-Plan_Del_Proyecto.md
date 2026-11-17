@@ -83,6 +83,7 @@
 | 29 | 2026-11-02 | Egreso del chofer con una rendición pendiente construido (CU-181): el caso pasa a «Implementado» y sale de las mejoras diferidas a Trabajo futuro; quedan CU-180 y CU-013. | Nahuel Wagner |
 | 30 | 2026-11-02 | Choferes por terminar su entrega admitidos en la asignación automática (CU-013): el caso pasa a «Implementado» y sale de las mejoras diferidas a Trabajo futuro; la distancia de «por terminar» se configura en CU-171. Queda sólo CU-180. | Nahuel Wagner |
 | 31 | 2026-11-17 | Estado al 17/11/2026 y cambios respecto de la propuesta. Los módulos inteligentes M2 a M5 (CU-105 a CU-108) y la recompra del cliente (CU-145 y CU-146) se construyeron el 30 y el 31/10/2026 y pasan a «Implementado», y el estado de la documentación en el listado de empleados (CU-180), el 03/11/2026. C-13, C-14, C-15, C-16 y C-19 quedan cerradas con sus fechas reales; C-10 sigue en curso con el tiempo estimado de llegada (CU-017), que hoy calcula la aplicación del cliente, y la resolución de la dirección en el servidor (CU-116 y CU-118), que hoy hace el dispositivo. CU-336 queda con funcionalidad pendiente: el cambio de correo sólo se ofrece en el panel. Los casos de las comisiones (CU-049, CU-240 a CU-244, CU-333 a CU-335 y CU-347) figuran como retirados del alcance, como en el Documento 1. Cambios respecto de la propuesta: (a) la interfaz del sistema es REST, documentada con OpenAPI, más WebSocket para el tiempo real, y no se usó GraphQL: las pantallas consumen operaciones puntuales y REST con su documentación OpenAPI alcanzaba, sin sumar otra tecnología al proyecto; (b) la facturación electrónica (AFIP/ARCA, Facturante) queda fuera de esta etapa: la emisión de comprobantes fiscales se deja para una etapa posterior, como la propuesta ya preveía para la etapa final. | Nahuel Wagner |
+| 32 | 2026-11-17 | Fechas de las fases ajustadas al desarrollo real: Elaboración hasta el 31/07/2026, Construcción desde el 01/08/2026 y Transición hasta el 15/12/2026. | Nahuel Wagner |
 
 ---
 
@@ -106,9 +107,9 @@ El desarrollo se lleva a cabo en las cuatro fases del Proceso Unificado, con una
 | Fase | Nro. Iteraciones | Duración | Período |
 |------|:---------------:|:--------:|---------|
 | Fase de Inicio | 0 | 3 semanas | 07/04/2026 – 28/04/2026 |
-| Fase de Elaboración | 1 (E-01) | 3 semanas | 28/04/2026 – 19/05/2026 |
-| Fase de Construcción | 20 (C-01 a C-20) | 26 semanas | 19/05/2026 – 20/11/2026 |
-| Fase de Transición | 1 (T-01) | 9 semanas | 23/11/2026 – 22/01/2027 |
+| Fase de Elaboración | 1 (E-01) | 13 semanas | 28/04/2026 – 31/07/2026 |
+| Fase de Construcción | 20 (C-01 a C-20) | 16 semanas | 01/08/2026 – 20/11/2026 |
+| Fase de Transición | 1 (T-01) | 3 semanas | 23/11/2026 – 15/12/2026 |
 
 La Fase de Construcción reúne las iteraciones C-01 a C-05, que llevaron al Release 2.0, y las iteraciones C-06 a C-20, que construyen el alcance ampliado. Estas últimas se superponen en parte, porque el trabajo avanza en carriles que tocan módulos distintos del sistema; todas terminan el 20/11/2026, antes de que empiece la Fase de Transición. Cada iteración desde C-07 construye un paquete de casos de uso; la sección 4 da la correspondencia.
 
@@ -121,15 +122,15 @@ Los hitos que marcan el final de cada fase se describen en la siguiente tabla.
 | Fase | Descripción | Hito |
 |------|-------------|------|
 | Fase de Inicio | Identificación del escenario real (distribuidor de gas con operación telefónica y sin trazabilidad), relevamiento de necesidades con el cliente, identificación de actores y casos de uso principales, redacción de la Propuesta de Proyecto y presentación del Plan del Proyecto. | Plan del Proyecto aprobado por el docente (28/04/2026). |
-| Fase de Elaboración | Análisis de los casos de uso arquitectónicamente más críticos (CU-001, CU-005, CU-013, CU-017, CU-020); definición y validación de la arquitectura técnica (NestJS, Flutter, React, PostgreSQL, Redis, Firebase Auth); Modelo Conceptual preliminar; prototipo de arquitectura que valida el despacho automático con Redis GEORADIUS. | Arquitectura validada con el cliente y prototipo funcional demostrado (19/05/2026). |
-| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, tablero, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado, con el modelo de datos, el registro de auditoría y el mantenimiento de la flota. C-07 a C-20: construcción de los paquetes de casos de uso planificados: cimientos y huecos cortos (C-07), personal y legajos (C-08), stock y compras (C-09), pedido en curso (C-10), vigencia de envases (C-11), carrito persistente (C-12), consumo declarado (C-13), módulo M2 de flota (C-14), módulo M5 de recupero de envases (C-15), módulo M3 de recompra (C-16), compra express y reintegros (C-17), flota ampliada (C-18), módulo M4 de recorridos (C-19) y caja y rendición (C-20). | Release 2.0 al cierre de C-05 (08/09/2026); al 17/11/2026 están cerradas todas las iteraciones de construcción salvo C-10, que sigue en curso con el tiempo estimado de llegada (CU-017) y la resolución de la dirección en el servidor (CU-116 y CU-118); la construcción termina el 20/11/2026, antes de empezar la Transición. |
-| Fase de Transición | Pruebas de aceptación con usuarios reales (choferes y clientes del distribuidor), corrección de los defectos detectados, despliegue en producción (Docker Compose en un servidor propio) y entrega de la documentación (manuales de usuario y guías de despliegue). | Sistema en producción, usuarios capacitados y documentación entregada (22/01/2027). |
+| Fase de Elaboración | Análisis de los casos de uso arquitectónicamente más críticos (CU-001, CU-005, CU-013, CU-017, CU-020); definición y validación de la arquitectura técnica (NestJS, Flutter, React, PostgreSQL, Redis, Firebase Auth); Modelo Conceptual preliminar; prototipo de arquitectura que valida el despacho automático con Redis GEORADIUS. | Arquitectura validada con el cliente y prototipo funcional demostrado (31/07/2026). |
+| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, tablero, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado, con el modelo de datos, el registro de auditoría y el mantenimiento de la flota. C-07 a C-20: construcción de los paquetes de casos de uso planificados: cimientos y huecos cortos (C-07), personal y legajos (C-08), stock y compras (C-09), pedido en curso (C-10), vigencia de envases (C-11), carrito persistente (C-12), consumo declarado (C-13), módulo M2 de flota (C-14), módulo M5 de recupero de envases (C-15), módulo M3 de recompra (C-16), compra express y reintegros (C-17), flota ampliada (C-18), módulo M4 de recorridos (C-19) y caja y rendición (C-20). | Release 2.0 al cierre de C-05 (21/09/2026); al 17/11/2026 están cerradas todas las iteraciones de construcción salvo C-10, que sigue en curso con el tiempo estimado de llegada (CU-017) y la resolución de la dirección en el servidor (CU-116 y CU-118); la construcción termina el 20/11/2026, antes de empezar la Transición. |
+| Fase de Transición | Pruebas de aceptación con usuarios reales (choferes y clientes del distribuidor), corrección de los defectos detectados, despliegue en producción (Docker Compose en un servidor propio) y entrega de la documentación (manuales de usuario y guías de despliegue). | Sistema en producción, usuarios capacitados y documentación entregada (15/12/2026). |
 
 ---
 
 ## 4. Calendario del Proyecto — Diagrama de Gantt
 
-El cronograma abarca **41 semanas**, desde el **07/04/2026** hasta el **22/01/2027**. Es el único calendario del proyecto: el documento 0.1 (Planificación de Iteraciones) usa las mismas fechas para cada iteración. Los días sábado y domingo no se cuentan como laborables. Las fechas de lo ya construido son las del historial de los repositorios del sistema; las de lo pendiente son estimaciones al 17/11/2026 que respetan las dependencias entre iteraciones.
+El cronograma abarca **36 semanas**, desde el **07/04/2026** hasta el **15/12/2026**. Es el único calendario del proyecto: el documento 0.1 (Planificación de Iteraciones) usa las mismas fechas para cada iteración. Los días sábado y domingo no se cuentan como laborables. Las fechas de lo ya construido son las del historial de los repositorios del sistema; las de lo pendiente son estimaciones al 17/11/2026 que respetan las dependencias entre iteraciones.
 
 ### Cronograma (Diagrama de Gantt)
 
@@ -138,18 +139,18 @@ El cronograma abarca **41 semanas**, desde el **07/04/2026** hasta el **22/01/20
 **Figura 1 — Cronograma del proyecto: diagrama de Gantt**
 
 
-Las barras de color pleno son las fases y las iteraciones de Construcción hasta C-06; las iteraciones C-07 a C-20 se dibujan en un tono más claro, y C-10, que sigue en curso, en el más claro de todos. Las iteraciones construidas en un solo día (17/10/2026: C-11, C-12, C-17, C-18 y C-20; 30/10/2026: C-14; 31/10/2026: C-15, C-16 y C-19) se dibujan como un rombo, porque una barra de un día, o de un sábado, no tendría ancho. Los rombos son los hitos: Plan del Proyecto aprobado (28/04/2026), arquitectura validada (19/05/2026), Release 2.0 (08/09/2026), construcción terminada (20/11/2026) y sistema en producción (22/01/2027). La columna Duración cuenta días corridos.
+Las barras de color pleno son las fases y las iteraciones de Construcción hasta C-06; las iteraciones C-07 a C-20 se dibujan en un tono más claro, y C-10, que sigue en curso, en el más claro de todos. Las iteraciones construidas en un solo día (17/10/2026: C-11, C-12, C-17, C-18 y C-20; 30/10/2026: C-14; 31/10/2026: C-15, C-16 y C-19) se dibujan como un rombo, porque una barra de un día, o de un sábado, no tendría ancho. Los rombos son los hitos: Plan del Proyecto aprobado (28/04/2026), arquitectura validada (31/07/2026), Release 2.0 (21/09/2026), construcción terminada (20/11/2026) y sistema en producción (15/12/2026). La columna Duración cuenta días corridos.
 
 | Fase | Iteración | Paquete de casos de uso | Desde | Hasta | Duración (días corridos) | Estado al 17/11/2026 | Hito de cierre |
 |------|:---------:|:-----------------------:|:-----:|:-----:|:--------:|---|----------------|
 | Inicio | — | — | 07/04/2026 | 28/04/2026 | 21 días (3 semanas) | Cerrada | Plan del Proyecto aprobado |
-| Elaboración | E-01 | — | 28/04/2026 | 19/05/2026 | 21 días (3 semanas) | Cerrada | Arquitectura validada y prototipo demostrado |
-| Construcción | C-01 | — | 19/05/2026 | 02/06/2026 | 14 días (2 semanas) | Cerrada | Autenticación, roles y base del backend |
-| Construcción | C-02 | — | 02/06/2026 | 23/06/2026 | 21 días (3 semanas) | Cerrada | Pedidos, stock atómico y despacho automático |
-| Construcción | C-03 | — | 23/06/2026 | 14/07/2026 | 21 días (3 semanas) | Cerrada | Seguimiento en tiempo real y App Chofer |
-| Construcción | C-04 | — | 14/07/2026 | 04/08/2026 | 21 días (3 semanas) | Cerrada | Reclamos, reportes, tablero y Panel |
-| Construcción | C-05 | — | 04/08/2026 | 08/09/2026 | 35 días (5 semanas) | Cerrada | App Cliente y Release 2.0 |
-| Construcción | C-06 | — | 09/09/2026 | 30/09/2026 | 21 días (3 semanas) | Cerrada | Modelo de datos del alcance ampliado, registro de auditoría y mantenimiento de la flota |
+| Elaboración | E-01 | — | 28/04/2026 | 31/07/2026 | 94 días (13 semanas) | Cerrada | Arquitectura validada y prototipo demostrado |
+| Construcción | C-01 | — | 03/08/2026 | 06/08/2026 | 3 días (4 jornadas) | Cerrada | Autenticación, roles y base del backend |
+| Construcción | C-02 | — | 07/08/2026 | 17/08/2026 | 10 días (7 jornadas) | Cerrada | Pedidos, stock atómico y despacho automático |
+| Construcción | C-03 | — | 18/08/2026 | 26/08/2026 | 8 días (7 jornadas) | Cerrada | Seguimiento en tiempo real y App Chofer |
+| Construcción | C-04 | — | 27/08/2026 | 04/09/2026 | 8 días (7 jornadas) | Cerrada | Reclamos, reportes, tablero y Panel |
+| Construcción | C-05 | — | 07/09/2026 | 21/09/2026 | 14 días (11 jornadas) | Cerrada | App Cliente y Release 2.0 |
+| Construcción | C-06 | — | 22/09/2026 | 30/09/2026 | 8 días (7 jornadas) | Cerrada | Modelo de datos del alcance ampliado, registro de auditoría y mantenimiento de la flota |
 | Construcción | C-07 | C-07 | 01/10/2026 | 17/10/2026 | 16 días | Cerrada: construida | Cimientos y huecos cortos |
 | Construcción | C-08 | C-08 | 04/10/2026 | 17/10/2026 | 13 días | Cerrada: construida; el estado de la documentación en el listado de empleados (CU-180) se completó el 03/11/2026 | Personal y legajos |
 | Construcción | C-09 | C-09 | 11/10/2026 | 14/10/2026 | 3 días | Cerrada | Stock, compras y carga del camión |
@@ -164,7 +165,7 @@ Las barras de color pleno son las fases y las iteraciones de Construcción hasta
 | Construcción | C-18 | C-18 | 17/10/2026 | 17/10/2026 | 1 día | Cerrada: construida | Flota ampliada |
 | Construcción | C-19 | C-19 | 31/10/2026 | 31/10/2026 | 1 día | Cerrada: construida antes de lo estimado (20/11/2026), sin el recorte previsto | Módulo M4: agrupación por recorrido |
 | Construcción | C-20 | C-20 | 17/10/2026 | 17/10/2026 | 1 día | Cerrada: construida | Caja y rendición |
-| Transición | T-01 | — | 23/11/2026 | 22/01/2027 | 61 días (9 semanas) | Próxima: desde el 23/11/2026 | Sistema en producción y usuarios capacitados |
+| Transición | T-01 | — | 23/11/2026 | 15/12/2026 | 22 días (3 semanas) | Próxima: desde el 23/11/2026 | Sistema en producción y usuarios capacitados |
 
 ### Plan de construcción de los casos de uso planificados
 

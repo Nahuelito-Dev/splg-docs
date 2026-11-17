@@ -15,15 +15,15 @@ language es
 [Inicio] as [INI] starts 2026-04-07 and ends 2026-04-28
 [INI] is colored in #9FB8CC
 -- Fase de Elaboración --
-[E-01 Elaboración] as [E01] starts 2026-04-28 and ends 2026-05-19
+[E-01 Elaboración] as [E01] starts 2026-04-28 and ends 2026-07-31
 [E01] is colored in #8FB996
 -- Fase de Construcción: hasta el Release 2.0 --
-[C-01 Autenticación y base] as [C01] starts 2026-05-19 and ends 2026-06-02
-[C-02 Pedidos, stock y despacho] as [C02] starts 2026-06-02 and ends 2026-06-23
-[C-03 Tiempo real y App Chofer] as [C03] starts 2026-06-23 and ends 2026-07-14
-[C-04 Reclamos, reportes y Panel] as [C04] starts 2026-07-14 and ends 2026-08-04
-[C-05 App Cliente y Release 2.0] as [C05] starts 2026-08-04 and ends 2026-09-08
-[C-06 Modelo de datos, auditoría y flota] as [C06] starts 2026-09-09 and ends 2026-09-30
+[C-01 Autenticación y base] as [C01] starts 2026-08-03 and ends 2026-08-06
+[C-02 Pedidos, stock y despacho] as [C02] starts 2026-08-07 and ends 2026-08-17
+[C-03 Tiempo real y App Chofer] as [C03] starts 2026-08-18 and ends 2026-08-26
+[C-04 Reclamos, reportes y Panel] as [C04] starts 2026-08-27 and ends 2026-09-04
+[C-05 App Cliente y Release 2.0] as [C05] starts 2026-09-07 and ends 2026-09-21
+[C-06 Modelo de datos, auditoría y flota] as [C06] starts 2026-09-22 and ends 2026-09-30
 [C01] is colored in #D9A66B
 [C02] is colored in #D9A66B
 [C03] is colored in #D9A66B
@@ -51,13 +51,13 @@ language es
 [C10] is colored in #F0E1CC
 [C13] is colored in #E6C7A0
 -- Fase de Transición --
-[T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-11-23 and ends 2027-01-22
+[T-01 Pruebas beta, producción y manuales] as [T01] starts 2026-11-23 and ends 2026-12-15
 [T01] is colored in #B58AC2
 
 -- Hitos --
 [Plan del Proyecto aprobado] happens 2026-04-28
-[Arquitectura validada] happens 2026-05-19
-[Release 2.0] happens 2026-09-08
+[Arquitectura validada] happens 2026-07-31
+[Release 2.0] happens 2026-09-21
 [Construcción terminada] happens 2026-11-20
-[Sistema en producción] happens 2027-01-22
+[Sistema en producción] happens 2026-12-15
 @endgantt
