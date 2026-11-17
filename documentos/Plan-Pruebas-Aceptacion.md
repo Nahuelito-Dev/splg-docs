@@ -27,7 +27,6 @@ La prueba de aceptación no busca errores de programación, que se verifican ant
 | Fuera de esta prueba | Motivo |
 |---|---|
 | El tiempo estimado de llegada que acompaña la posición del chofer (CU-017) | Figura como funcionalidad planificada en la ficha del caso. |
-| La admisión como candidatos de los choferes que están por terminar su entrega (CU-013, paso 4) | Figura como funcionalidad planificada. |
 | La aceptación de la invitación de recompra en la aplicación del cliente (CU-106), el lote ofrecido en la aplicación del chofer (CU-107) y las pantallas de las aplicaciones para los envases (CU-108) | Están en curso: de estos tres casos se prueban el proceso automático y el panel de administración. |
 | Los casos de uso retirados del alcance (ganancias y comisiones del chofer) | El chofer cobra un sueldo mensual. |
 | Las pruebas de carga, el despliegue en producción, la capacitación y los manuales | Son otras metas de la iteración T-01 con su propio artefacto. |

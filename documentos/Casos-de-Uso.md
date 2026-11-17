@@ -309,9 +309,9 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-102 Probar el Servicio de Correo | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-104 Verificar la Salud del Sistema (vida y disponibilidad) | SS-18 | ACT-09 | Importante | Implementado |
 | CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | SS-07 | ACT-02, ACT-03, ACT-04 | Importante | Implementado |
-| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | ACT-01, ACT-04 | Importante | Implementado en el sistema y el panel; en curso en la aplicación del cliente |
-| CU-107 Agrupar Pedidos por Recorrido | SS-03 | ACT-02, ACT-04 | Importante | Implementado en el sistema y el panel; en curso en la aplicación del chofer |
-| CU-108 Recuperar Envases No Devueltos | SS-13 | ACT-01, ACT-03, ACT-04 | Importante | Implementado en el sistema y el panel; en curso en las aplicaciones |
+| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | ACT-01, ACT-04 | Importante | Implementado |
+| CU-107 Agrupar Pedidos por Recorrido | SS-03 | ACT-02, ACT-04 | Importante | Implementado |
+| CU-108 Recuperar Envases No Devueltos | SS-13 | ACT-01, ACT-03, ACT-04 | Importante | Implementado |
 | CU-109 Consultar el Detalle del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-110 Buscar un Chofer por Usuario | SS-07 | ACT-03 | Importante | Implementado |
 | CU-111 Modificar un Vehículo | SS-07 | ACT-03 | Importante | Implementado |
@@ -348,7 +348,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante | Implementado |
 | CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | ACT-01 | Importante | Implementado |
 | CU-144 Modificar el Consumo Promedio Declarado | SS-02 | ACT-01 | Importante | Implementado |
-| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Implementado en el sistema; en curso en la aplicación del cliente |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Implementado |
 | CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante | Implementado |
 | CU-147 Realizar una Compra Express | SS-02 | ACT-01 | Crítico | Implementado |
 | CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | ACT-01 | Importante | Implementado |
@@ -382,7 +382,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-177 Registrar el Legajo de un Empleado | SS-19 | ACT-03 | Crítico | Implementado |
 | CU-178 Modificar el Legajo de un Empleado | SS-19 | ACT-03 | Importante | Implementado |
 | CU-179 Consultar el Legajo de un Empleado | SS-19 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Implementado, con funcionalidad planificada |
+| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-181 Registrar el Egreso de un Empleado | SS-19 | ACT-03 | Crítico | Implementado |
 | CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | ACT-03 | Importante | Implementado |
 | CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | SS-19 | ACT-03 | Crítico | Implementado |
@@ -538,7 +538,7 @@ están en el documento 1 — Requisitos, §4.3.
 | CU-333 Modificar una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-334 Aprobar una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-335 Anular una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
-| CU-336 Cambiar el Correo del Usuario | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
+| CU-336 Cambiar el Correo del Usuario | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado, con funcionalidad planificada |
 | CU-337 Ajustar el Saldo del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-338 Retomar el Pedido en Curso | SS-02 | ACT-02 | Importante | Implementado |
 | CU-339 Modificar un Pedido Pendiente (Administrador) | SS-02 | ACT-03, ACT-05 | Importante | Implementado |
@@ -3944,7 +3944,7 @@ Los recuentos salen del catálogo de arriba y se verifican contra él: entre CU-
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El usuario cambia el correo de su cuenta informando el actual y el nuevo. El sistema comprueba que el pedido lo hace el dueño de la cuenta, actualiza el correo, lo marca como no verificado y envía un correo de verificación a la dirección nueva y un aviso a la anterior. |
 | **Precondición** | El usuario está identificado y conoce su correo actual. |
-| **Estado** | Implementado |
+| **Estado** | Implementado, con funcionalidad planificada: el cambio de correo desde las aplicaciones del cliente y del chofer; hoy sólo se ofrece en el panel. |
 
 **Secuencia Normal**
 
@@ -4711,7 +4711,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | El cliente elige con cuántos días de anticipación quiere el aviso de recompra, o lo desactiva. El sistema guarda la preferencia. |
 | **Precondición** | El cliente está identificado. |
-| **Estado** | Implementado en el sistema; en curso en la aplicación del cliente |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -5960,7 +5960,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-01, IRQ-02, IRQ-04 |
 | **Descripción** | El sistema recorre los clientes con historial suficiente, estima para cada uno cuándo se le termina el gas y le acerca la reposición antes de que la necesite, con el pedido armado y una vigencia acotada. El destinatario de la oferta es el propio cliente y la decisión es suya: el sistema no crea ningún pedido hasta que acepta. La caducidad y el período de enfriamiento evitan que la invitación se vuelva insistencia. |
 | **Precondición** | El cliente tiene al menos la cantidad mínima configurada de pedidos entregados, no tiene un pedido activo y no recibió una invitación dentro del intervalo mínimo de reiteración. |
-| **Estado** | Implementado en el sistema y el panel; en curso en la aplicación del cliente |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -6365,7 +6365,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-02, IRQ-03, IRQ-05 |
 | **Descripción** | El sistema arma lotes de pedidos que se pueden entregar en un mismo viaje sin incumplir el compromiso horario de ninguno ni exceder la capacidad del vehículo, y los negocia con los choferes de a uno por vez, igual que M1 negocia un pedido suelto. La diferencia es el objeto de la oferta: no un pedido, sino un recorrido con sus paradas ya ordenadas. El lote nunca se impone: ante el silencio o el rechazo generalizado, los pedidos siguen su camino individual y ninguno queda retenido. |
 | **Precondición** | Hay al menos dos pedidos programados con franja futura, de la misma distribuidora, dentro del radio de agrupación configurado y con franjas compatibles, y al menos un chofer activo con capacidad de carga disponible. |
-| **Estado** | Implementado en el sistema y el panel; en curso en la aplicación del chofer |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -12211,7 +12211,7 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 | **Requisitos asociados** | IRQ-01, IRQ-02 |
 | **Descripción** | Detectar el envase retenido es una consulta; lo que este caso especifica es la secuencia de gestión que se abre después. Cada escalón tiene su propio plazo, el caso se reevalúa antes de cada paso —el envase puede haber vuelto mientras tanto— y el sistema aprovecha cualquier entrega ya planificada al mismo cliente como oportunidad de recupero sin costo adicional. Agotada la secuencia, el legajo completo queda a resolución del administrador: el sistema nunca cobra un depósito por su cuenta. |
 | **Precondición** | Existe al menos un envase cuyo último movimiento lo deja en poder de un cliente, con antigüedad mayor al plazo de tolerancia de devolución configurado. |
-| **Estado** | Implementado en el sistema y el panel; en curso en las aplicaciones |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -14369,9 +14369,9 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-17 |
-| **Descripción** | El administrador consulta los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (activo o egresado) y si tienen cuenta de acceso. Cada fila trae el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta. Trabajo futuro (Doc 3, §10): el filtro por estado de la documentación y el peor vencimiento de cada persona. |
+| **Descripción** | El administrador consulta los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (activo o egresado) y si tienen cuenta de acceso, y por el estado de su documentación. Cada fila trae el nombre, el legajo, el puesto, el estado, la fecha de ingreso, si tiene cuenta y el peor vencimiento de su documentación. |
 | **Precondición** | El administrador está identificado y su usuario tiene una distribuidora asociada. |
-| **Estado** | Implementado, con funcionalidad planificada: el estado de la documentación del empleado, su peor vencimiento en cada fila y el filtro por ese estado, que dependen de los documentos del personal. |
+| **Estado** | Implementado |
 
 **Secuencia Normal**
 
@@ -14380,7 +14380,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 | 1 | El administrador abre «Empresa · Personal» y, si quiere, elige filtros. |
 | 2 | El sistema busca los empleados de la distribuidora que cumplen los filtros, ordenados por apellido y nombre. |
 | 3 | El sistema muestra la página y el total, sin los datos personales sensibles. |
-| 4 | Trabajo futuro (Doc 3, §10): para cada empleado de la página, el sistema calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
+| 4 | Para cada empleado de la página, el sistema calcula el peor estado de vencimiento de su documentación (vigente, por vencer, vencido o faltante). |
 
 **Postcondición:** El administrador ve la página de empleados que pidió. No cambió ningún dato.
 
@@ -14401,7 +14401,7 @@ El Administrador General puede crear solo el perfil de administrador de un usuar
 |-------|---------|
 | **Frecuencia** | Alta: diaria. |
 | **Estabilidad** | Alta |
-| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). Trabajo futuro (Doc 3, §10): el filtro por estado de la documentación reutilizará el mismo cálculo de vencimientos que la flota (CU-139); hasta entonces el filtro se acepta y se ignora. |
+| **Comentarios** | El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179). El filtro por estado de la documentación usa el mismo cálculo de vencimientos que cada fila del listado. |
 
 ---
 
@@ -43150,7 +43150,7 @@ sequenceDiagram
     ADM->>+SRV: consultarEmpleados(filtros)
     SRV->>+LST: filtrar(filtros)
     LST-->>-SRV: empleados
-    Note over SRV,LST: Trabajo futuro: el peor vencimiento de la documentación de cada empleado
+    Note over SRV,LST: peor vencimiento de la documentación, por empleado
     SRV-->>-ADM: página de empleados, sin datos personales sensibles
 ```
 
@@ -43158,7 +43158,7 @@ sequenceDiagram
 
 **Clases participantes:** `EmployeeService` (controlador de fachada del módulo de personal) y la colección `List<Empleado>`.
 
-**GRASP.** *Controlador*: `EmployeeService`. *Experto*: la colección conoce a los empleados de la distribuidora y es quien los filtra. Trabajo futuro (Doc 3, §10): cada `Empleado` conocerá su documentación y calculará el peor estado de vencimiento entre sus tareas y los planes que le faltan.
+**GRASP.** *Controlador*: `EmployeeService`. *Experto*: la colección conoce a los empleados de la distribuidora y es quien los filtra. El peor estado de vencimiento de cada `Empleado`, entre sus tareas y los planes que le faltan, se calcula en una sola consulta para los empleados de la página.
 
 **No se dibuja:** la paginación, el orden por apellido y nombre y el filtro por distribuidora.
 
@@ -43171,7 +43171,7 @@ sequenceDiagram
 
 - El listado no trae el documento, el CUIL, el domicilio ni el contacto de emergencia: cada fila tiene el nombre, el legajo, el puesto, el estado, la fecha de ingreso y si tiene cuenta.
 - La página tiene diez empleados por omisión y hasta cien; un límite o una página fuera de rango responden 400.
-- Trabajo futuro (Doc 3, §10): el estado de la documentación se calculará solo para los empleados de la página, y filtrar por «documentación vencida» exigirá el mismo cálculo sobre el total, resuelto con una consulta sobre las tareas abiertas y no empleado por empleado. Hasta entonces el parámetro `documentStatus` se acepta y se ignora.
+- El estado de la documentación se calcula solo para los empleados de la página, y filtrar por «documentación vencida» aplica el mismo cálculo sobre el total, resuelto con una consulta sobre las tareas abiertas y no empleado por empleado (parámetro `documentStatus`).
 
 ---
 
@@ -49979,7 +49979,7 @@ Los casos de uso expandidos de esencia (secciones 4 y 5 de este documento) descr
 | CU-177 Registrar el Legajo de un Empleado | `registrarEmpleado(datos registro)` | `POST /employees` | Paso 3: Si falta un dato obligatorio, el formato es inválido o el CUIL no tiene un dígito verificador correcto, el sistema responde 400 indicando el campo.<br>Paso 4: Si el puesto no existe o es de otra distribuidora, el sistema responde 404.<br>Paso 4: Si el puesto está inactivo, el sistema responde 409.<br>Paso 5: Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409.<br>Paso 3: Si el nacimiento no es anterior al ingreso, el sistema responde 400 «La fecha de nacimiento tiene que ser anterior a la de ingreso» (panel: «El nacimiento tiene que ser anterior al ingreso»; base: `CHK_employee_nacimiento`). Un CUIL inválido: 400 «cuil no es válido: son 11 dígitos con el dígito verificador correcto» (base: `CHK_employee_cuil`). | Descripción: El administrador registra el legajo de un empleado con su número de legajo (si no lo indica, el siguiente correlativo de la distribuidora), sus datos personales (nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, correo personal, contacto de emergencia y CBU), su puesto, su fecha de ingreso y su modalidad de contratación (`permanent`, `fixed_term`, `part_time` o `contractor`).<br>Paso 2: Completa nombre, apellido, tipo y número de documento, CUIL, fecha de nacimiento, domicilio, teléfono, contacto de emergencia, puesto, fecha de ingreso y modalidad de contratación, y el panel envía `POST /employees`.<br>Paso 3: El sistema valida el formato de lo recibido y, si trae CUIL, comprueba su dígito verificador.<br>Paso 5: El sistema comprueba que el documento, el CUIL y el número de legajo (si vino en el pedido) no pertenezcan a otro empleado vigente de la distribuidora.<br>Paso 6: Si el pedido no trae número de legajo, el sistema asigna el siguiente de la distribuidora, de cuatro dígitos; crea el empleado en estado `active` y lo devuelve.<br>Rendimiento (diseño): Una transacción con la lectura del puesto (con bloqueo compartido), las verificaciones de unicidad y una escritura; el número de legajo se toma con bloqueo de la secuencia para no repetirlo, y la transacción se reintenta ante un conflicto de serialización.<br>Comentarios: El alta de un chofer por `POST /users` (CU-031, CU-031) crea el legajo en la misma transacción (`EmployeeService.crearParaUsuario`), o vincula el legajo existente si el pedido trae su identificador `employeeId`: un chofer es un empleado con cuenta y perfil de reparto.<br>Comentarios: Sin datos de legajo, queda con el puesto activo más antiguo de categoría chofer, ingreso hoy y documento `PENDIENTE-<legajo>`.<br>Comentarios: Los datos personales (documento, CUIL, domicilio y contacto de emergencia) solo salen en la ficha (CU-179) y no en el listado (CU-180), por la Ley 25.326.<br>Comentarios: El legajo que la migración genera para los choferes y administradores ya existentes, y el que genera el alta de un chofer sin datos de legajo, lleva el documento marcado como pendiente y una observación para que el administrador lo complete.<br>Panel: el alta es la página `/employees/new` (`EmployeeForm`) y la edición `/employees/:id/edit`; al crear lleva a `/employees/details/:id`. `useUnsavedChangesGuard` frena la salida con cambios sin guardar (ver §3.37 del Documento 3). |
 | CU-178 Modificar el Legajo de un Empleado | `modificarEmpleado(empleadoId identificador, datos registro)` | `PATCH /employees/:id` | Paso 2: Si el empleado no existe o es de otra distribuidora, el sistema responde 404.<br>Paso 3: Si el formato es inválido, el CUIL no tiene un dígito verificador correcto, se envía en blanco un dato obligatorio o se intenta cambiar el estado, el sistema responde 400 indicando el campo.<br>Paso 4: Si el puesto no existe o es de otra distribuidora, el sistema responde 404; si está inactivo o su categoría no corresponde al rol de la cuenta del empleado, responde 409.<br>Paso 5: Si la fecha de ingreso es posterior a la de egreso, el sistema responde 400.<br>Paso 5: Si el documento, el CUIL o el número de legajo ya pertenecen a otro empleado vigente de la distribuidora, el sistema responde 409.<br>Comentarios: El estado del empleado, su fecha y su motivo de egreso no se editan por esta vía: solo cambian con el egreso y el reingreso (CU-181 y CU-312): enviarlos responde 400.<br>Paso 3: Si el nacimiento no es anterior al ingreso, 400 con el mismo mensaje; un número de legajo en blanco: 400 «fileNumber no puede quedar vacío»; un legajo repetido: 409 «Ya hay un empleado vigente con ese número de legajo». | Descripción: El estado, la fecha y el motivo de egreso no se editan por esta vía (CU-181 y CU-312); el legajo de un alta errónea se elimina con CU-311.<br>Paso 2: Edita los datos y el panel envía `PATCH /employees/:id` con los campos cambiados.<br>Paso 3: El sistema valida el formato de lo recibido y, si cambió el CUIL, su dígito verificador.<br>Paso 5: El sistema comprueba que la fecha de ingreso no sea posterior a la de egreso y que el documento, el CUIL y el número de legajo nuevos no pertenezcan a otro empleado vigente, y guarda los cambios.<br>Rendimiento (diseño): Una transacción con el bloqueo de la fila del legajo, las verificaciones de unicidad y una escritura.<br>Panel: la edición es la página `/employees/:id/edit` (`EmployeeForm`), con el mismo formulario del alta y el mismo aviso de cambios sin guardar. |
 | CU-179 Consultar el Legajo de un Empleado | `consultarEmpleado(empleadoId identificador)` | `GET /employees/:id` | Paso 1: Si el identificador no es un UUID, el sistema responde 400.<br>Paso 2: Si el empleado no existe o es de otra distribuidora, el sistema responde 404. | Paso 1: El administrador elige un empleado del listado (CU-180) y el panel envía `GET /employees/:id`.<br>Rendimiento (diseño): Una lectura del legajo con su puesto y su cuenta; se resuelve en menos de un segundo.<br>Comentarios: Es el único lugar donde salen el documento, el CUIL, el domicilio y el contacto de emergencia: el listado no los trae.<br>Comentarios: Para un chofer, la ficha enlaza con `/deliveries/details/:id`, y desde allí se vuelve al legajo. |
-| CU-180 Consultar el Listado de Empleados | `consultarEmpleados(filtros registro)` | `GET /employees` | Paso 2: Si un filtro tiene un valor inválido, o la página o el límite están fuera de rango, el sistema responde 400 indicando el filtro. | Descripción: El administrador lista los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (`active` o `terminated`) y si tienen cuenta de acceso.<br>Paso 2: El panel envía `GET /employees` con los filtros, la página y el límite.<br>Rendimiento (diseño): Una consulta paginada con el puesto y el total. Trabajo futuro (Doc 3, §10): el estado de la documentación se resolverá para los empleados de la página, no para todos.<br>Comentarios: El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179).<br>Comentarios: Trabajo futuro (Doc 3, §10): el filtro por estado de la documentación reutilizará el mismo cálculo de vencimientos que la flota (CU-139); hasta entonces el parámetro `documentStatus` se acepta y se ignora. |
+| CU-180 Consultar el Listado de Empleados | `consultarEmpleados(filtros registro)` | `GET /employees` | Paso 2: Si un filtro tiene un valor inválido, o la página o el límite están fuera de rango, el sistema responde 400 indicando el filtro. | Descripción: El administrador lista los empleados de su distribuidora, paginados (diez por página si no indica otra cosa, hasta cien), y los filtra por texto (nombre, apellido o legajo), puesto, categoría de puesto, estado (`active` o `terminated`) y si tienen cuenta de acceso.<br>Paso 2: El panel envía `GET /employees` con los filtros, la página y el límite.<br>Rendimiento (diseño): Una consulta paginada con el puesto y el total, más una consulta del estado de la documentación de los empleados de la página.<br>Comentarios: El listado no incluye documento, CUIL, domicilio ni contacto de emergencia (Ley 25.326): para verlos hay que abrir el legajo (CU-179).<br>Comentarios: El filtro por estado de la documentación (`documentStatus`) usa el mismo cálculo de vencimientos que cada fila del listado. |
 | CU-181 Registrar el Egreso de un Empleado | `registrarEgresoDelEmpleado(empleadoId identificador, fechaDeEgreso fecha, motivo cadena)` | `POST /employees/:id/termination` | Paso 2: Si el empleado no existe o es de otra distribuidora, el sistema responde 404; si el motivo no es uno de los admitidos o la fecha no es una fecha real, responde 400.<br>Paso 3: Si el empleado ya está egresado, el sistema responde 409; si la fecha de egreso es anterior a la de ingreso, responde 400.<br>Paso 4: Si el chofer tiene pedidos en curso, el sistema responde 409 con la cantidad: hay que cancelarlos o reasignarlos antes.<br>Paso 4: Si el chofer tiene una carga de camión abierta, el sistema responde 409 "No se puede dar de baja al chofer mientras haya una carga de camión abierta (carga N° n): cerrala o cancelala antes" y el egreso se revierte.<br>Paso 4: Si el chofer tiene una rendición abierta o presentada, el sistema responde 409 "No se puede dar de baja al chofer mientras tenga una rendición pendiente (rendición N° n, estado, del día): cerrala antes" y el egreso se revierte.<br>Paso 4: Si el chofer tiene pedidos en efectivo entregados que ninguna rendición tomó, el sistema responde 409 "No se puede dar de baja al chofer mientras tenga efectivo sin rendir (n pedido(s) en efectivo por $ monto): generá y aprobá su rendición antes" y el egreso se revierte.<br>Comentarios: La baja de un usuario con legajo (chofer o administrador, `DELETE /users/:id`, CU-097) egresa su legajo en la misma transacción con motivo `other`, deja constancia en las notas y suelta la cuenta (`userId` queda vacío); si el egreso tuviera un impedimento, la baja falla con 409 y se revierte todo.<br>Paso 3: Egreso anterior al ingreso: 400 «La fecha de egreso no puede ser anterior a la de ingreso» (panel: «El egreso no puede ser anterior al ingreso»). Una fecha de egreso futura se acepta (egreso programado). | Descripción: El administrador registra el egreso de un empleado: el legajo pasa a `terminated` con su fecha y su motivo (`resignation`, `dismissal`, `end_of_contract`, `retirement` u `other`).<br>Descripción: En la misma transacción, si el empleado tiene cuenta de acceso se la bloquea y, si es chofer, se lo deshabilita y se libera el vehículo que tenía en uso, por el mismo camino con que se libera un vehículo cuando se da de baja a un chofer.<br>Descripción: El reingreso de un empleado egresado es CU-312.<br>Paso 2: Elige «Registrar egreso» e indica la fecha de egreso y el motivo; el panel envía `POST /employees/:id/termination`.<br>Paso 4: Si la cuenta tiene perfil de reparto, el sistema comprueba que el chofer no tenga pedidos en curso (aceptados o en camino) y que no tenga una carga de camión abierta: libera su vehículo en uso en la misma transacción y esa liberación se rechaza si hay una carga abierta; antes, la regla que registra el módulo de rendiciones rechaza el egreso si el chofer tiene una rendición pendiente.<br>Paso 5: El sistema pasa el legajo a `terminated` con la fecha y el motivo.<br>Rendimiento (diseño): Una transacción con el legajo, el usuario, el chofer y su asignación de vehículo; toma los bloqueos en el mismo orden que la baja de un usuario (primero el usuario y el chofer, después el legajo) para no generar interbloqueos.<br>Estado: implementado; el egreso del chofer con una carga de camión abierta o con una rendición pendiente se impide con 409. |
 | CU-182 Otorgar una Cuenta de Acceso a un Empleado | `otorgarCuentaDeAcceso(empleadoId identificador, datosDeAcceso registro)` | `POST /employees/:id/account` | Paso 2: Si el empleado no existe o es de otra distribuidora, el sistema responde 404; si el correo no es válido o la contraseña tiene menos de seis caracteres, responde 400.<br>Paso 3: Si el empleado ya tiene cuenta o está egresado, el sistema responde 409.<br>Paso 4: Si la categoría del puesto no admite cuenta de acceso, el sistema responde 400 y nombra el puesto y su categoría.<br>Paso 5: Si falta un teléfono en formato E.164, el sistema responde 400.<br>Paso 6: Si el correo o el teléfono ya están en uso, el sistema responde 409 «Email o teléfono ya en uso». | Descripción: Hoy solo el puesto de categoría `driver` admite cuenta, con el rol chofer y su perfil de reparto: los administrativos (`administration` y `management`) reciben su cuenta de administrador con el alta del usuario (CU-082), que crea o vincula el legajo, y las demás categorías no admiten cuenta, porque el sistema no define roles para ellas.<br>Paso 2: Elige «Otorgar acceso» e indica el correo y la contraseña inicial de la cuenta, y el teléfono si el legajo no lo tiene; el panel envía `POST /employees/:id/account`.<br>Rendimiento (diseño): Una lectura del legajo y el alta de la cuenta con el vínculo al legajo en una transacción, dominada por el proveedor de identidad. |
 | CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | `registrarCursoDeMercanciasPeligrosas(empleadoId identificador, planId identificador, vencimiento fecha, detalle registro)` | `POST /fleet/tasks` | Paso 3: Si el plan no existe o es de otra distribuidora, el sistema responde 404; si el plan está inactivo, no es de empleados o no aplica a la categoría del puesto del empleado, responde 400.<br>Paso 3: Si el detalle no tiene la forma que exige este tipo de documento, tiene claves de más o falta la fecha de vencimiento, el sistema responde 400 y nombra el campo (`detalle.<campo>`).<br>Paso 4: Si el empleado no existe o es de otra distribuidora, el sistema responde 404; si está egresado, responde 409. | Descripción: El administrador carga, contra el plan «Curso de transporte de mercancías peligrosas (GLP)», el certificado de un chofer y su vencimiento.<br>Precondición: El plan «Curso de transporte de mercancías peligrosas (GLP)» (`documentKind: hazmat_driver_course`, 60 días de anticipación, bloqueante, aplica a `driver`) existe en su distribuidora, está activo y aplica a la categoría del puesto del empleado.<br>Paso 2: En la pestaña «Documentación» elige la tarjeta «Curso de transporte de mercancías peligrosas (GLP)» y carga el número de certificado, el emisor y la fecha de vencimiento.<br>Paso 2: El panel envía `POST /fleet/tasks` (idempotente, con `Idempotency-Key`) con el `planId` del plan, el `employeeId`, la fecha de vencimiento (`dueAt`, obligatoria en un plan de personal por fecha fija, que se normaliza a la medianoche UTC de su fecha) y el `details` del tipo de documento: `certificateNumber` (hasta 40 caracteres) y `issuer` (hasta 80).<br>Paso 3: El sistema busca el plan y comprueba que su sujeto sea `employee`, que esté activo y que aplique a la categoría del puesto del empleado.<br>Paso 5: El sistema crea la tarea en estado `scheduled`, con su vencimiento y su detalle, y la devuelve con su estado de vencimiento y si bloquea.<br>Postcondición: El empleado tiene una tarea de «Curso de transporte de mercancías peligrosas (GLP)» con su vencimiento asentado.<br>Rendimiento (diseño): Dos lecturas de verificación y una escritura.<br>Comentarios: El plan se siembra con cada distribuidora nueva y, para las que ya existían, por la migración `DocumentacionAsistenciaYLicenciasDelPersonal`.<br>Comentarios: La documentación del personal usa la misma tabla de tareas de flota (`maintenance_task`) con el sujeto `employee` en el plan; `maintenance_plan` suma `document_kind` y `applies_to_categories`, y `maintenance_task` suma `employee_id` y `details`.<br>Comentarios: `PATCH /fleet/tasks/:id` corrige el `details` de una tarea abierta, que se valida contra el tipo del plan; el dueño no se edita. Renovar es cargar la nueva y cerrar la anterior con `PATCH /fleet/tasks/:id/close`.<br>Comentarios: El `details` no se guarda en la auditoría de requests, ni en la auditoría de datos, ni en el log de requests: son datos personales. |

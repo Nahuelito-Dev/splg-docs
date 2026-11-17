@@ -1,7 +1,7 @@
 # Plan del Proyecto
 **Proyecto:** SPLG – Sistema de Pedidos y Logística de Garrafas de Gas  
-**Versión:** 2.0
-**Fecha:** 2026-10-15
+**Versión:** 2.1
+**Fecha:** 2026-11-17
 **Realizado por:** Nahuel Wagner  
 **Realizado para:** Distribuidor de Gas Envasado (Cliente Real)  
 **Institución:** FCEQyN – UNaM  
@@ -82,6 +82,7 @@
 | 28 | 2026-10-22 | Reservas contra el panel: el CUA de CU-072 suma que el administrador también crea la reserva, con la seña acotada al total; el de CU-073, la franja y el enlace de pago; el de CU-074, que la seña se confirma en efectivo o por transferencia y la de MercadoPago sólo por la pasarela; el de CU-006, el enlace de pago. | Nahuel Wagner |
 | 29 | 2026-11-02 | Egreso del chofer con una rendición pendiente construido (CU-181): el caso pasa a «Implementado» y sale de las mejoras diferidas a Trabajo futuro; quedan CU-180 y CU-013. | Nahuel Wagner |
 | 30 | 2026-11-02 | Choferes por terminar su entrega admitidos en la asignación automática (CU-013): el caso pasa a «Implementado» y sale de las mejoras diferidas a Trabajo futuro; la distancia de «por terminar» se configura en CU-171. Queda sólo CU-180. | Nahuel Wagner |
+| 31 | 2026-11-17 | Estado al 17/11/2026 y cambios respecto de la propuesta. Los módulos inteligentes M2 a M5 (CU-105 a CU-108) y la recompra del cliente (CU-145 y CU-146) se construyeron el 30 y el 31/10/2026 y pasan a «Implementado», y el estado de la documentación en el listado de empleados (CU-180), el 03/11/2026. C-13, C-14, C-15, C-16 y C-19 quedan cerradas con sus fechas reales; C-10 sigue en curso con el tiempo estimado de llegada (CU-017), que hoy calcula la aplicación del cliente, y la resolución de la dirección en el servidor (CU-116 y CU-118), que hoy hace el dispositivo. CU-336 queda con funcionalidad pendiente: el cambio de correo sólo se ofrece en el panel. Los casos de las comisiones (CU-049, CU-240 a CU-244, CU-333 a CU-335 y CU-347) figuran como retirados del alcance, como en el Documento 1. Cambios respecto de la propuesta: (a) la interfaz del sistema es REST, documentada con OpenAPI, más WebSocket para el tiempo real, y no se usó GraphQL: las pantallas consumen operaciones puntuales y REST con su documentación OpenAPI alcanzaba, sin sumar otra tecnología al proyecto; (b) la facturación electrónica (AFIP/ARCA, Facturante) queda fuera de esta etapa: la emisión de comprobantes fiscales se deja para una etapa posterior, como la propuesta ya preveía para la etapa final. | Nahuel Wagner |
 
 ---
 
@@ -121,14 +122,14 @@ Los hitos que marcan el final de cada fase se describen en la siguiente tabla.
 |------|-------------|------|
 | Fase de Inicio | Identificación del escenario real (distribuidor de gas con operación telefónica y sin trazabilidad), relevamiento de necesidades con el cliente, identificación de actores y casos de uso principales, redacción de la Propuesta de Proyecto y presentación del Plan del Proyecto. | Plan del Proyecto aprobado por el docente (28/04/2026). |
 | Fase de Elaboración | Análisis de los casos de uso arquitectónicamente más críticos (CU-001, CU-005, CU-013, CU-017, CU-020); definición y validación de la arquitectura técnica (NestJS, Flutter, React, PostgreSQL, Redis, Firebase Auth); Modelo Conceptual preliminar; prototipo de arquitectura que valida el despacho automático con Redis GEORADIUS. | Arquitectura validada con el cliente y prototipo funcional demostrado (19/05/2026). |
-| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, tablero, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado, con el modelo de datos, el registro de auditoría y el mantenimiento de la flota. C-07 a C-20: construcción de los paquetes de casos de uso planificados: cimientos y huecos cortos (C-07), personal y legajos (C-08), stock y compras (C-09), pedido en curso (C-10), vigencia de envases (C-11), carrito persistente (C-12), consumo declarado (C-13), módulo M2 de flota (C-14), módulo M5 de recupero de envases (C-15), módulo M3 de recompra (C-16), compra express y reintegros (C-17), flota ampliada (C-18), módulo M4 de recorridos (C-19) y caja y rendición (C-20). | Release 2.0 al cierre de C-05 (08/09/2026); al 15/10/2026 están construidos los paquetes de stock y compras (C-09) y parte de C-07, C-08 y C-10; toda la construcción termina el 18/12/2026, con la última iteración (C-20), antes de empezar la Transición. |
-| Fase de Transición | Pruebas de aceptación con usuarios reales (choferes y clientes del distribuidor), corrección de los defectos detectados, despliegue en producción (Docker Compose sobre un servidor virtual, VPS) y entrega de la documentación (manuales de usuario y guías de despliegue). | Sistema en producción, usuarios capacitados y documentación entregada (19/02/2027). |
+| Fase de Construcción | C-01: autenticación con Firebase Auth, roles y base del backend. C-02: pedidos con reserva atómica de stock y despacho automático por geolocalización. C-03: seguimiento GPS en tiempo real y App Chofer. C-04: reclamos, reportes, tablero, vehículos, notificaciones y Panel Admin. C-05: App Cliente completa. C-06: alcance ampliado, con el modelo de datos, el registro de auditoría y el mantenimiento de la flota. C-07 a C-20: construcción de los paquetes de casos de uso planificados: cimientos y huecos cortos (C-07), personal y legajos (C-08), stock y compras (C-09), pedido en curso (C-10), vigencia de envases (C-11), carrito persistente (C-12), consumo declarado (C-13), módulo M2 de flota (C-14), módulo M5 de recupero de envases (C-15), módulo M3 de recompra (C-16), compra express y reintegros (C-17), flota ampliada (C-18), módulo M4 de recorridos (C-19) y caja y rendición (C-20). | Release 2.0 al cierre de C-05 (08/09/2026); al 17/11/2026 están cerradas todas las iteraciones de construcción salvo C-10, que sigue en curso con el tiempo estimado de llegada (CU-017) y la resolución de la dirección en el servidor (CU-116 y CU-118); la construcción termina el 20/11/2026, antes de empezar la Transición. |
+| Fase de Transición | Pruebas de aceptación con usuarios reales (choferes y clientes del distribuidor), corrección de los defectos detectados, despliegue en producción (Docker Compose en un servidor propio) y entrega de la documentación (manuales de usuario y guías de despliegue). | Sistema en producción, usuarios capacitados y documentación entregada (22/01/2027). |
 
 ---
 
 ## 4. Calendario del Proyecto — Diagrama de Gantt
 
-El cronograma abarca **41 semanas**, desde el **07/04/2026** hasta el **22/01/2027**. Es el único calendario del proyecto: el documento 0.1 (Planificación de Iteraciones) usa las mismas fechas para cada iteración. Los días sábado y domingo no se cuentan como laborables. Las fechas de lo ya construido son las del historial de los repositorios del sistema; las de lo pendiente son estimaciones al 15/10/2026 que respetan las dependencias entre iteraciones.
+El cronograma abarca **41 semanas**, desde el **07/04/2026** hasta el **22/01/2027**. Es el único calendario del proyecto: el documento 0.1 (Planificación de Iteraciones) usa las mismas fechas para cada iteración. Los días sábado y domingo no se cuentan como laborables. Las fechas de lo ya construido son las del historial de los repositorios del sistema; las de lo pendiente son estimaciones al 17/11/2026 que respetan las dependencias entre iteraciones.
 
 ### Cronograma (Diagrama de Gantt)
 
@@ -137,9 +138,9 @@ El cronograma abarca **41 semanas**, desde el **07/04/2026** hasta el **22/01/20
 **Figura 1 — Cronograma del proyecto: diagrama de Gantt**
 
 
-Las barras de color pleno son las fases y las iteraciones de Construcción hasta C-06; las iteraciones C-07 a C-20 se dibujan en dos tonos: más oscuro las que ya empezaron y más claro las pendientes. Las iteraciones construidas en un solo día (17/10/2026: C-11, C-12, C-17, C-18 y C-20) se dibujan como un rombo, porque ese día es sábado y una barra no tendría ancho. Los rombos son los hitos: Plan del Proyecto aprobado (28/04/2026), arquitectura validada (19/05/2026), Release 2.0 (08/09/2026), construcción terminada (20/11/2026) y sistema en producción (22/01/2027). La columna Duración cuenta días corridos.
+Las barras de color pleno son las fases y las iteraciones de Construcción hasta C-06; las iteraciones C-07 a C-20 se dibujan en un tono más claro, y C-10, que sigue en curso, en el más claro de todos. Las iteraciones construidas en un solo día (17/10/2026: C-11, C-12, C-17, C-18 y C-20; 30/10/2026: C-14; 31/10/2026: C-15, C-16 y C-19) se dibujan como un rombo, porque una barra de un día, o de un sábado, no tendría ancho. Los rombos son los hitos: Plan del Proyecto aprobado (28/04/2026), arquitectura validada (19/05/2026), Release 2.0 (08/09/2026), construcción terminada (20/11/2026) y sistema en producción (22/01/2027). La columna Duración cuenta días corridos.
 
-| Fase | Iteración | Paquete de casos de uso | Desde | Hasta | Duración (días corridos) | Estado al 17/10/2026 | Hito de cierre |
+| Fase | Iteración | Paquete de casos de uso | Desde | Hasta | Duración (días corridos) | Estado al 17/11/2026 | Hito de cierre |
 |------|:---------:|:-----------------------:|:-----:|:-----:|:--------:|---|----------------|
 | Inicio | — | — | 07/04/2026 | 28/04/2026 | 21 días (3 semanas) | Cerrada | Plan del Proyecto aprobado |
 | Elaboración | E-01 | — | 28/04/2026 | 19/05/2026 | 21 días (3 semanas) | Cerrada | Arquitectura validada y prototipo demostrado |
@@ -150,49 +151,49 @@ Las barras de color pleno son las fases y las iteraciones de Construcción hasta
 | Construcción | C-05 | — | 04/08/2026 | 08/09/2026 | 35 días (5 semanas) | Cerrada | App Cliente y Release 2.0 |
 | Construcción | C-06 | — | 09/09/2026 | 30/09/2026 | 21 días (3 semanas) | Cerrada | Modelo de datos del alcance ampliado, registro de auditoría y mantenimiento de la flota |
 | Construcción | C-07 | C-07 | 01/10/2026 | 17/10/2026 | 16 días | Cerrada: construida | Cimientos y huecos cortos |
-| Construcción | C-08 | C-08 | 04/10/2026 | 17/10/2026 | 13 días | Cerrada: construida; lo que falta de CU-180 pasó a Trabajo futuro (Doc 3, §10) | Personal y legajos |
+| Construcción | C-08 | C-08 | 04/10/2026 | 17/10/2026 | 13 días | Cerrada: construida; el estado de la documentación en el listado de empleados (CU-180) se completó el 03/11/2026 | Personal y legajos |
 | Construcción | C-09 | C-09 | 11/10/2026 | 14/10/2026 | 3 días | Cerrada | Stock, compras y carga del camión |
-| Construcción | C-10 | C-10 | 14/10/2026 | 29/10/2026 (estimada) | 15 días | En curso: construidos los nueve casos; quedan planificados los tramos de CU-017, CU-116 y CU-118 | Pedido en curso |
+| Construcción | C-10 | C-10 | 14/10/2026 | 29/10/2026 (estimada) | 15 días | En curso: faltan el tiempo de llegada en el sistema (CU-017) y la dirección resuelta en el servidor (CU-116, CU-118) | Pedido en curso |
 | Construcción | C-11 | C-11 | 17/10/2026 | 17/10/2026 | 1 día | Cerrada: construida | Vigencia de envases |
 | Construcción | C-12 | C-12 | 17/10/2026 | 17/10/2026 | 1 día | Cerrada: construida | Carrito persistente |
-| Construcción | C-13 | C-13 | 17/10/2026 | 26/10/2026 (estimada) | 9 días | En curso: construidos CU-143 y CU-144; CU-145 y CU-146 siguen planificados | Consumo declarado |
-| Construcción | C-14 | C-14 | 19/10/2026 (estimada) | 30/10/2026 (estimada) | 11 días | Pendiente | Módulo M2: flota |
-| Construcción | C-15 | C-15 | 26/10/2026 (estimada) | 02/11/2026 (estimada) | 7 días | Pendiente | Módulo M5: recupero de envases |
-| Construcción | C-16 | C-16 | 27/10/2026 (estimada) | 03/11/2026 (estimada) | 7 días | Pendiente | Módulo M3: recompra |
+| Construcción | C-13 | C-13 | 17/10/2026 | 31/10/2026 | 14 días | Cerrada: construida (CU-143 y CU-144 el 17/10/2026; CU-145 y CU-146 el 31/10/2026), cinco días después de lo estimado | Consumo declarado |
+| Construcción | C-14 | C-14 | 30/10/2026 | 30/10/2026 | 1 día | Cerrada: construida en fecha | Módulo M2: flota |
+| Construcción | C-15 | C-15 | 31/10/2026 | 31/10/2026 | 1 día | Cerrada: construida antes de lo estimado (02/11/2026) | Módulo M5: recupero de envases |
+| Construcción | C-16 | C-16 | 31/10/2026 | 31/10/2026 | 1 día | Cerrada: construida antes de lo estimado (03/11/2026) | Módulo M3: recompra |
 | Construcción | C-17 | C-17 | 17/10/2026 | 17/10/2026 | 1 día | Cerrada: construida | Compra express y reintegros |
 | Construcción | C-18 | C-18 | 17/10/2026 | 17/10/2026 | 1 día | Cerrada: construida | Flota ampliada |
-| Construcción | C-19 | C-19 | 11/11/2026 (estimada) | 20/11/2026 (estimada) | 9 días | Pendiente | Módulo M4: agrupación por recorrido |
+| Construcción | C-19 | C-19 | 31/10/2026 | 31/10/2026 | 1 día | Cerrada: construida antes de lo estimado (20/11/2026), sin el recorte previsto | Módulo M4: agrupación por recorrido |
 | Construcción | C-20 | C-20 | 17/10/2026 | 17/10/2026 | 1 día | Cerrada: construida | Caja y rendición |
-| Transición | T-01 | — | 23/11/2026 | 22/01/2027 | 61 días (9 semanas) | Pendiente | Sistema en producción y usuarios capacitados |
+| Transición | T-01 | — | 23/11/2026 | 22/01/2027 | 61 días (9 semanas) | Próxima: desde el 23/11/2026 | Sistema en producción y usuarios capacitados |
 
 ### Plan de construcción de los casos de uso planificados
 
-El sistema construido no realiza seis casos de uso, que están especificados con sus artefactos completos y figuran como «Planificado» en el catálogo de la sección 8: los cuatro módulos inteligentes (CU-105, CU-106, CU-107 y CU-108) y los dos casos de recompra del cliente (CU-145 y CU-146). Los demás casos que la documentación venía señalando como no construidos se construyeron: la modificación de la franja horaria (CU-043) el 07/10/2026; el historial de estados (CU-169 y CU-170) el 14/10/2026; los parámetros del despacho y de las tareas programadas (CU-171 y CU-173) el 15/10/2026; y el 17/10/2026 todos los de las iteraciones C-11, C-12, C-17, C-18 y C-20, los de C-07 (CU-151, CU-172, CU-268 y CU-269), C-08 (personal), C-10 (CU-127 y CU-128) y C-13 (CU-143 y CU-144). Lo pendiente de los casos construidos se distingue en dos clases. Tres tienen una ampliación planificada con su iteración (C-10): el tiempo estimado de llegada (CU-017) y la resolución de la dirección contra el servicio de mapas (CU-116 y CU-118). Otro tiene una mejora diferida a Trabajo futuro (Documento 3, §10), sin iteración asignada: el estado de la documentación en el listado de empleados (CU-180). La fotografía del reclamo (CU-174 y CU-175, y el tramo de CU-023) ya está construida. Cada caso muestra su estado en el catálogo y en su caso de uso expandido: «Planificado (C-n)» mientras no se construye, e «Implementado» cuando se construyó.
+Al 17/11/2026 no queda ningún caso de uso sin construir: los seis que seguían planificados al 18/10/2026 se construyeron en el backend, el panel y las aplicaciones, el planificador de taller del módulo M2 (CU-105) el 30/10/2026 y los módulos M3, M4 y M5 (CU-106, CU-107 y CU-108) y los dos casos de recompra del cliente (CU-145 y CU-146) el 31/10/2026. Antes se habían construido los demás casos que la documentación venía señalando como no construidos: la modificación de la franja horaria (CU-043) el 07/10/2026; el historial de estados (CU-169 y CU-170) el 14/10/2026; los parámetros del despacho y de las tareas programadas (CU-171 y CU-173) el 15/10/2026; y el 17/10/2026 todos los de las iteraciones C-11, C-12, C-17, C-18 y C-20, los de C-07 (CU-151, CU-172, CU-268 y CU-269), C-08 (personal), C-10 (CU-127 y CU-128) y C-13 (CU-143 y CU-144). El estado de la documentación en el listado de empleados (CU-180), que había quedado diferido, se construyó el 03/11/2026. Quedan con una parte pendiente cuatro casos construidos. Tres tienen la ampliación planificada en su iteración (C-10, en curso): el tiempo estimado de llegada calculado por el sistema (CU-017), que hoy estima la aplicación del cliente, y la resolución de la dirección contra el servicio de mapas en el servidor (CU-116 y CU-118), que hoy hace el dispositivo del cliente. El cuarto, el cambio de correo (CU-336), sólo se ofrece en el panel: falta en las aplicaciones del cliente y del chofer. La fotografía del reclamo (CU-174 y CU-175, y el tramo de CU-023) ya está construida. Cada caso muestra su estado en el catálogo y en su caso de uso expandido: «Planificado (C-n)» mientras no se construye, e «Implementado» cuando se construyó.
 
 El plan agrupa los casos en catorce paquetes, I-1 a I-14, de acuerdo con el módulo del sistema que tocan y con sus dependencias, y construye cada uno en una iteración de la Fase de Construcción (C-07 a C-20).
 
 | Iteración | Paquete | Casos de uso | Tamaño | Qué se puede mostrar al cerrarla |
 |---|:---:|---|:---:|---|
 | **C-07** Cimientos y huecos cortos | I-1 | CU-043, CU-151, CU-171, CU-172, CU-173; CU-268 y CU-269 (reactivación de un producto dado de baja y listado de los dados de baja) | M | La franja se edita sin darla de baja; una zona vencida se desactiva sola; los parámetros del despacho, de los procesos automáticos y de las tareas programadas se editan desde el panel; un producto dado de baja vuelve al catálogo. Construidos: la modificación de la franja (CU-043, 07/10/2026) y los parámetros del despacho (CU-171) y la frecuencia de las tareas programadas (CU-173), el 15/10/2026; el 17/10/2026, la desactivación de las zonas vencidas (CU-151), los parámetros de los procesos automáticos (CU-172) y la reactivación de productos (CU-268 y CU-269). |
-| **C-08** Personal y legajos | I-11 | CU-176 a CU-194, CU-246, CU-255 a CU-257 y CU-311 a CU-319 | L+ | El administrador lleva el legajo de cada persona de la distribuidora, su asistencia y sus licencias, y un chofer con la documentación vencida o con licencia aprobada queda fuera del despacho. Construido desde el 04/10/2026: puestos, legajos, egreso y cuenta de acceso; el 17/10/2026, la documentación, la asistencia, las licencias, el saldo de vacaciones, el tablero y la habilitación laboral del chofer. Queda diferido a Trabajo futuro (Documento 3, §10) el estado de la documentación en el listado de empleados (CU-180). |
+| **C-08** Personal y legajos | I-11 | CU-176 a CU-194, CU-246, CU-255 a CU-257 y CU-311 a CU-319 | L+ | El administrador lleva el legajo de cada persona de la distribuidora, su asistencia y sus licencias, y un chofer con la documentación vencida o con licencia aprobada queda fuera del despacho. Construido desde el 04/10/2026: puestos, legajos, egreso y cuenta de acceso; el 17/10/2026, la documentación, la asistencia, las licencias, el saldo de vacaciones, el tablero y la habilitación laboral del chofer. El estado de la documentación en el listado de empleados (CU-180) se construyó el 03/11/2026. |
 | **C-09** Stock y compras | I-13 | CU-207 a CU-224, CU-248 a CU-250, CU-258 a CU-263 y CU-273 a CU-301 y CU-304; CU-038 (ajuste de stock) y CU-020 (descuento del stock al entregar) | L+ | El administrador ve el stock físico por depósito y por camión, compra a una planta de llenado y recibe el remito, carga el camión, lo rinde al volver y el sistema concilia el stock vendible con el físico. Construido el 11/10/2026 (stock físico y compras), el 12/10/2026 (carga y rendición del camión) y el 14/10/2026 (cobros y blindaje). |
-| **C-10** Pedido en curso | I-4 | CU-127, CU-128, CU-169, CU-170, CU-302, CU-303, CU-338, CU-339 y CU-341 | M | El cliente cambia la dirección de un pedido en curso y el chofer lo ve, con quién recibe; el cliente y el administrador ven el historial de estados del pedido; la cotización y la ruta de un pedido las calcula el sistema, el chofer retoma su pedido en curso al abrir la aplicación y el administrador y el cliente editan un pedido pendiente. Construido el 14/10/2026: el historial de estados (CU-169 y CU-170), la cotización, la ruta, el pedido en curso del chofer y la edición del pedido pendiente (del administrador y del cliente); el 17/10/2026, el cambio de dirección y quién recibe el pedido. Quedan planificados el tiempo estimado de llegada (CU-017) y la resolución de la dirección contra el servicio de mapas (CU-116 y CU-118). |
+| **C-10** Pedido en curso | I-4 | CU-127, CU-128, CU-169, CU-170, CU-302, CU-303, CU-338, CU-339 y CU-341 | M | El cliente cambia la dirección de un pedido en curso y el chofer lo ve, con quién recibe; el cliente y el administrador ven el historial de estados del pedido; la cotización y la ruta de un pedido las calcula el sistema, el chofer retoma su pedido en curso al abrir la aplicación y el administrador y el cliente editan un pedido pendiente. Construido el 14/10/2026: el historial de estados (CU-169 y CU-170), la cotización, la ruta, el pedido en curso del chofer y la edición del pedido pendiente (del administrador y del cliente); el 17/10/2026, el cambio de dirección y quién recibe el pedido. En curso al 17/11/2026: faltan el tiempo estimado de llegada calculado por el sistema (CU-017) y la resolución de la dirección contra el servicio de mapas en el servidor (CU-116 y CU-118). |
 | **C-11** Vigencia de envases | I-2 | CU-132, CU-133, CU-134, CU-135 | M | Un envase con la revisión vencida no puede asignarse a ningún pedido. Construida el 17/10/2026. |
 | **C-12** Carrito persistente | I-3 | CU-122, CU-123, CU-124, CU-125, CU-126 | L | El cliente arma el carrito, cierra la app, la vuelve a abrir y el carrito sigue ahí. Construida el 17/10/2026 en el backend. |
-| **C-13** Consumo declarado y reclamos con imagen | I-5 | CU-143, CU-144, CU-145, CU-146 | M | El administrador ve qué clientes se quedan sin gas esta semana. Construidos el 17/10/2026 CU-143 y CU-144; CU-145 y CU-146 siguen planificados. |
-| **C-14** Módulo M2: flota | I-10 | CU-105 | L+ | El planificador propone una ventana de taller al chofer y escala si se agotan las alternativas. |
-| **C-15** Módulo M5: recupero de envases | I-8 | CU-108 | L | Un envase retenido abre su caso, escala y el administrador lo resuelve. |
-| **C-16** Módulo M3: recompra | I-6 | CU-106 | L | Un cliente recibe la invitación a reponer y, al aceptarla, el pedido entra al despacho. |
+| **C-13** Consumo declarado y reclamos con imagen | I-5 | CU-143, CU-144, CU-145, CU-146 | M | El administrador ve qué clientes se quedan sin gas esta semana. Construidos CU-143 y CU-144 el 17/10/2026 y CU-145 y CU-146 el 31/10/2026. |
+| **C-14** Módulo M2: flota | I-10 | CU-105 | L+ | El planificador propone una ventana de taller al chofer y escala si se agotan las alternativas. Construida el 30/10/2026. |
+| **C-15** Módulo M5: recupero de envases | I-8 | CU-108 | L | Un envase retenido abre su caso, escala y el administrador lo resuelve. Construida el 31/10/2026. |
+| **C-16** Módulo M3: recompra | I-6 | CU-106 | L | Un cliente recibe la invitación a reponer y, al aceptarla, el pedido entra al despacho. Construida el 31/10/2026. |
 | **C-17** Compra express y reintegros | I-7 | CU-148, CU-147, CU-149, CU-168; CU-008 y CU-010 (reintegro) | L | Un pedido express sale a un chofer en moto o se degrada a reparto común avisándole al cliente; el pago de un pedido cancelado se devuelve por la pasarela. Construida el 17/10/2026. |
 | **C-18** Flota ampliada | I-12 | CU-195 a CU-206, CU-247 y CU-320 a CU-328 | L | El administrador y el chofer registran las cargas de combustible, las multas y los siniestros de cada vehículo, y el administrador ve el costo y el rendimiento de cada unidad y de toda la flota. Construida el 17/10/2026. |
-| **C-19** Módulo M4: agrupación por recorrido | I-9 | CU-107 | L | Tres pedidos programados cercanos se ofrecen como un solo recorrido ordenado. |
+| **C-19** Módulo M4: agrupación por recorrido | I-9 | CU-107 | L | Tres pedidos programados cercanos se ofrecen como un solo recorrido ordenado. Construida el 31/10/2026. |
 | **C-20** Caja y rendición | I-14 | CU-225 a CU-245, CU-264, CU-265, CU-309, CU-310, CU-329 a CU-335 y CU-340 | L+ | El administrador abre y cierra la caja con arqueo, el chofer rinde su cobranza del día y el administrador la aprueba; un cliente compra a cuenta corriente y paga después; las entregas devengan comisiones que se liquidan y se pagan desde una caja. Construida el 17/10/2026. |
 
 El tamaño es relativo, para una persona, e incluye el backend, el panel, las aplicaciones y la prueba
 contra el sistema en funcionamiento: S hasta un día, M de dos a cuatro días, L de cuatro a siete días y
 L+ más de siete.
 
-**Iteración C-08: Personal y legajos.** A diferencia de las que cierran lo que el sistema ya tenía especificado, la C-08 incorpora un módulo de gestión de la distribuidora: el personal. Son los veintitrés casos de uso CU-176 a CU-194, CU-246 y CU-255 a CU-257 del subsistema SS-19, con sus cinco artefactos. **Está construida:** los once casos de los puestos de trabajo y de los legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257, con las tablas `job_position` y `employee`) pasaron a «Implementado» desde el 04/10/2026, y el 17/10/2026 los demás —la documentación con vencimiento, la asistencia, las licencias, el saldo de vacaciones, el tablero y la habilitación laboral del chofer: CU-183 a CU-185, CU-187 a CU-194, CU-246 y CU-313 a CU-319—, con las tablas `employee_attendance` y `employee_leave` y las columnas nuevas de `maintenance_plan` y `maintenance_task` que hacen que la documentación con vencimiento del personal (curso de mercancías peligrosas, examen psicofísico y alta en la ART; la licencia de conducir ya existía) reutilice los planes, las tareas, los adjuntos, el aviso diario y el bloqueo de despacho de la flota. CU-180 conserva una mejora diferida a Trabajo futuro (Documento 3, §10); el egreso con una rendición pendiente (CU-181) se construyó el 02/11/2026. No hay roles nuevos: el personal administrativo que entra al panel es un administrador, y ayudantes, depósito y vendedores son legajos sin cuenta. Se estimó en 12 jornadas de una persona (tres de tablas y alta unificada del chofer, de dos a tres de documentación y bloqueo de despacho, dos de asistencia y licencias, de tres a cuatro de panel, más las pruebas contra el sistema en funcionamiento) y se construyó entre el 04/10/2026 y el 17/10/2026. Depende de los adjuntos genéricos y de la numeración del legajo. Modifica casos existentes sin reescribirlos: el alta de un chofer (CU-031) crea además su legajo en la misma transacción (construido); la licencia de conducir (CU-138) sigue colgando del perfil de reparto del chofer y se une con el legajo en la ficha, el tablero y el bloqueo; el tablero y el aviso de vencimientos de la flota (CU-139, CU-142) suman a las personas; y el bloqueo de despacho (CU-012, CU-013 y CU-015, que incluyen el caso nuevo CU-246) considera también las licencias aprobadas y el estado del legajo.
+**Iteración C-08: Personal y legajos.** A diferencia de las que cierran lo que el sistema ya tenía especificado, la C-08 incorpora un módulo de gestión de la distribuidora: el personal. Son los veintitrés casos de uso CU-176 a CU-194, CU-246 y CU-255 a CU-257 del subsistema SS-19, con sus cinco artefactos. **Está construida:** los once casos de los puestos de trabajo y de los legajos (CU-176 a CU-182, CU-186 y CU-255 a CU-257, con las tablas `job_position` y `employee`) pasaron a «Implementado» desde el 04/10/2026, y el 17/10/2026 los demás —la documentación con vencimiento, la asistencia, las licencias, el saldo de vacaciones, el tablero y la habilitación laboral del chofer: CU-183 a CU-185, CU-187 a CU-194, CU-246 y CU-313 a CU-319—, con las tablas `employee_attendance` y `employee_leave` y las columnas nuevas de `maintenance_plan` y `maintenance_task` que hacen que la documentación con vencimiento del personal (curso de mercancías peligrosas, examen psicofísico y alta en la ART; la licencia de conducir ya existía) reutilice los planes, las tareas, los adjuntos, el aviso diario y el bloqueo de despacho de la flota. El estado de la documentación en el listado de empleados (CU-180) se construyó el 03/11/2026 y el egreso con una rendición pendiente (CU-181), el 02/11/2026. No hay roles nuevos: el personal administrativo que entra al panel es un administrador, y ayudantes, depósito y vendedores son legajos sin cuenta. Se estimó en 12 jornadas de una persona (tres de tablas y alta unificada del chofer, de dos a tres de documentación y bloqueo de despacho, dos de asistencia y licencias, de tres a cuatro de panel, más las pruebas contra el sistema en funcionamiento) y se construyó entre el 04/10/2026 y el 17/10/2026. Depende de los adjuntos genéricos y de la numeración del legajo. Modifica casos existentes sin reescribirlos: el alta de un chofer (CU-031) crea además su legajo en la misma transacción (construido); la licencia de conducir (CU-138) sigue colgando del perfil de reparto del chofer y se une con el legajo en la ficha, el tablero y el bloqueo; el tablero y el aviso de vencimientos de la flota (CU-139, CU-142) suman a las personas; y el bloqueo de despacho (CU-012, CU-013 y CU-015, que incluyen el caso nuevo CU-246) considera también las licencias aprobadas y el estado del legajo.
 
 **Iteración C-18: Flota ampliada.** Suma los doce casos CU-195 a CU-206 y el caso CU-247 (Reactivar un Vehículo), más los nueve de las operaciones por separado (CU-320 a CU-328), al subsistema SS-07, con sus cinco artefactos y su modelo de datos: las tablas `fuel_load`, `traffic_fine`, `vehicle_accident`, `tire` y `tire_event`, y las columnas nuevas de `car` (migración `FlotaAmpliada`). **Está construida desde el 17/10/2026**, en el backend y en el panel, incluida la funcionalidad opcional de neumáticos: el chofer y el administrador registran las cargas de combustible, las multas y los siniestros de cada vehículo, y el administrador ve el costo y el rendimiento de cada unidad y de toda la flota. Depende del legajo del personal (C-08) y de los adjuntos genéricos, tiene tamaño L y se estimó del 06/11/2026 al 19/11/2026.
 
@@ -230,6 +231,8 @@ iteraciones se superponen y el trabajo se reparte en carriles que tocan módulos
 construcción es C-19, que termina el 20/11/2026, y la Transición empieza el 23/11/2026. Si el avance
 real se atrasa, se recortan primero los módulos inteligentes (C-19, C-14 y C-15); dentro de C-14, lo
 primero que se posterga es la negociación de ventana, el bloqueo del vehículo y la captura de kilómetros.
+Al 17/11/2026 el recorte no fue necesario: C-14 se construyó el 30/10/2026 y C-13, C-15, C-16 y C-19 el
+31/10/2026; queda C-10 en curso.
 
 **Decisiones de diseño incorporadas.** Los casos planificados recogen las siguientes decisiones, que
 quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
@@ -3586,7 +3589,7 @@ Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presen
 | CU-046 Consultar las Direcciones de Entrega del Cliente | SS-02 | ACT-01 | Importante | Implementado |
 | CU-047 Recuperar la Contraseña | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
 | CU-048 Procesar el Pago con MercadoPago | SS-14 | ACT-06 | Crítico | Implementado |
-| CU-049 Consultar las Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante | Implementado |
+| CU-049 Consultar las Ganancias del Chofer | SS-07 | ACT-02, ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-050 Bloquear un Usuario | SS-01 | ACT-03, ACT-05 | Secundario | Implementado |
 | CU-051 Consultar el Listado de Vehículos | SS-07 | ACT-03 | Importante | Implementado |
 | CU-052 Registrar una Distribuidora | SS-10 | ACT-05 | Crítico | Implementado |
@@ -3635,10 +3638,10 @@ Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presen
 | CU-101 Reenviar la Notificación de Confirmación de Pedido | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-102 Probar el Servicio de Correo | SS-17 | ACT-05 | Secundario | Implementado |
 | CU-104 Verificar la Salud del Sistema (vida y disponibilidad) | SS-18 | ACT-09 | Importante | Implementado |
-| CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | SS-07 | ACT-02, ACT-03, ACT-04 | Importante | Planificado (C-14) |
-| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | ACT-01, ACT-04 | Importante | Planificado (C-16) |
-| CU-107 Agrupar Pedidos por Recorrido | SS-03 | ACT-02, ACT-04 | Importante | Planificado (C-19) |
-| CU-108 Recuperar Envases No Devueltos | SS-13 | ACT-01, ACT-03, ACT-04 | Importante | Planificado (C-15) |
+| CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | SS-07 | ACT-02, ACT-03, ACT-04 | Importante | Implementado |
+| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | ACT-01, ACT-04 | Importante | Implementado |
+| CU-107 Agrupar Pedidos por Recorrido | SS-03 | ACT-02, ACT-04 | Importante | Implementado |
+| CU-108 Recuperar Envases No Devueltos | SS-13 | ACT-01, ACT-03, ACT-04 | Importante | Implementado |
 | CU-109 Consultar el Detalle del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-110 Buscar un Chofer por Usuario | SS-07 | ACT-03 | Importante | Implementado |
 | CU-111 Modificar un Vehículo | SS-07 | ACT-03 | Importante | Implementado |
@@ -3675,8 +3678,8 @@ Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presen
 | CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | ACT-04 | Importante | Implementado |
 | CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | ACT-01 | Importante | Implementado |
 | CU-144 Modificar el Consumo Promedio Declarado | SS-02 | ACT-01 | Importante | Implementado |
-| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Planificado (C-13) |
-| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante | Planificado (C-13) |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | ACT-01 | Menor | Implementado |
+| CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | ACT-03 | Importante | Implementado |
 | CU-147 Realizar una Compra Express | SS-02 | ACT-01 | Crítico | Implementado |
 | CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | ACT-01 | Importante | Implementado |
 | CU-149 Despachar un Pedido Express a un Chofer en Moto | SS-03 | ACT-04 | Crítico | Implementado |
@@ -3709,7 +3712,7 @@ Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presen
 | CU-177 Registrar el Legajo de un Empleado | SS-19 | ACT-03 | Crítico | Implementado |
 | CU-178 Modificar el Legajo de un Empleado | SS-19 | ACT-03 | Importante | Implementado |
 | CU-179 Consultar el Legajo de un Empleado | SS-19 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Implementado, con funcionalidad planificada |
+| CU-180 Consultar el Listado de Empleados | SS-19 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-181 Registrar el Egreso de un Empleado | SS-19 | ACT-03 | Crítico | Implementado |
 | CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | ACT-03 | Importante | Implementado |
 | CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | SS-19 | ACT-03 | Crítico | Implementado |
@@ -3769,11 +3772,11 @@ Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presen
 | CU-237 Registrar un Pago de Cuenta Corriente | SS-21 | ACT-03, ACT-02 | Crítico | Implementado |
 | CU-238 Consultar el Estado de Cuenta de un Cliente | SS-21 | ACT-03 | Importante | Implementado |
 | CU-239 Consultar la Antigüedad de la Deuda | SS-21 | ACT-03 | Secundario | Implementado |
-| CU-240 Crear una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Implementado |
-| CU-241 Registrar la Comisión de una Entrega | SS-21 | ACT-04 | Importante | Implementado |
-| CU-242 Liquidar las Comisiones de un Chofer | SS-21 | ACT-03 | Importante | Implementado |
-| CU-243 Registrar el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Implementado |
-| CU-244 Consultar Mis Comisiones | SS-21 | ACT-02 | Secundario | Implementado |
+| CU-240 Crear una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-241 Registrar la Comisión de una Entrega | SS-21 | ACT-04 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-242 Liquidar las Comisiones de un Chofer | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-243 Registrar el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-244 Consultar Mis Comisiones | SS-21 | ACT-02 | Secundario | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-245 Consultar el Tablero Financiero | SS-21 | ACT-03 | Importante | Implementado |
 | CU-246 Verificar la Habilitación Laboral del Chofer | SS-19 | — | Importante | Implementado |
 | CU-247 Reactivar un Vehículo | SS-07 | ACT-03 | Importante | Implementado |
@@ -3862,10 +3865,10 @@ Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presen
 | CU-330 Reabrir la Rendición del Chofer | SS-21 | ACT-03 | Importante | Implementado |
 | CU-331 Modificar la Cuenta Corriente de un Cliente | SS-21 | ACT-03 | Importante | Implementado |
 | CU-332 Asentar el Cargo de una Venta a Cuenta Corriente | SS-21 | ACT-04 | Crítico | Implementado |
-| CU-333 Modificar una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Implementado |
-| CU-334 Aprobar una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Implementado |
-| CU-335 Anular una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Implementado |
-| CU-336 Cambiar el Correo del Usuario | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado |
+| CU-333 Modificar una Regla de Comisión por Entrega | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-334 Aprobar una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-335 Anular una Liquidación de Comisiones | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
+| CU-336 Cambiar el Correo del Usuario | SS-01 | ACT-01, ACT-02, ACT-03 | Importante | Implementado, con funcionalidad planificada |
 | CU-337 Ajustar el Saldo del Chofer | SS-07 | ACT-03 | Importante | Implementado |
 | CU-338 Retomar el Pedido en Curso | SS-02 | ACT-02 | Importante | Implementado |
 | CU-339 Modificar un Pedido Pendiente (Administrador) | SS-02 | ACT-03, ACT-05 | Importante | Implementado |
@@ -3876,7 +3879,7 @@ Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presen
 | CU-344 Consultar el Catálogo de Productos (Administrador) | SS-08 | ACT-03 | Importante | Implementado |
 | CU-345 Modificar un Administrador | SS-16 | ACT-03, ACT-05 | Importante | Implementado |
 | CU-346 Dar de Baja un Administrador | SS-16 | ACT-03, ACT-05 | Importante | Implementado |
-| CU-347 Anular el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Implementado |
+| CU-347 Anular el Pago de una Liquidación | SS-21 | ACT-03 | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |
 | CU-348 Consultar el Reintegro de un Pedido | SS-14 | ACT-01 | Secundario | Implementado |
 
 ### Resumen de Calificación
@@ -3909,6 +3912,6 @@ Los 10 casos de la tabla se retiraron del catálogo porque no son procesos de ne
 Los recuentos salen del catálogo de arriba y se verifican contra él: entre CU-001 y CU-348 hay 348 números, 338 de casos del catálogo y 10 retirados.
 Los casos CU-001 a CU-051 provienen del relevamiento inicial. Los casos CU-052 a CU-104 se
 incorporaron al contrastar la documentación contra el sistema construido: son
-comportamientos que el sistema ya ejecuta y que el relevamiento no había registrado. Los casos CU-105 a CU-108 son los cuatro módulos inteligentes planificados (M2 a M5). Los casos CU-109 a CU-175 se incorporaron después: desglosan en casos propios las operaciones de los ABM de choferes, vehículos, clientes, direcciones y franjas horarias, y suman la funcionalidad construida y planificada del carrito, el pedido en curso, la vigencia de los envases, la flota, el consumo declarado, la compra express, los reintegros, el registro de auditoría y la configuración de los procesos automáticos. Los casos CU-251 a CU-272 parten en un caso de uso por operación los casos que agrupaban varias operaciones de un ABM (perfil, roles, puestos de trabajo, depósitos, proveedores, cajas, categorías, disponibilidad, estado y validación del chofer, productos inactivos, bloqueo y búsqueda de usuarios): el caso original conserva su número y nombra la primera operación, y la modificación y la baja incluyen a la consulta de la que parten.
+comportamientos que el sistema ya ejecuta y que el relevamiento no había registrado. Los casos CU-105 a CU-108 son los cuatro módulos inteligentes M2 a M5, construidos el 30 y el 31/10/2026. Los casos CU-109 a CU-175 se incorporaron después: desglosan en casos propios las operaciones de los ABM de choferes, vehículos, clientes, direcciones y franjas horarias, y suman la funcionalidad construida y planificada del carrito, el pedido en curso, la vigencia de los envases, la flota, el consumo declarado, la compra express, los reintegros, el registro de auditoría y la configuración de los procesos automáticos. Los casos CU-251 a CU-272 parten en un caso de uso por operación los casos que agrupaban varias operaciones de un ABM (perfil, roles, puestos de trabajo, depósitos, proveedores, cajas, categorías, disponibilidad, estado y validación del chofer, productos inactivos, bloqueo y búsqueda de usuarios): el caso original conserva su número y nombra la primera operación, y la modificación y la baja incluyen a la consulta de la que parten.
 
 ---

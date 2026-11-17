@@ -296,9 +296,9 @@ casos identificados, de los cuales 328 están vigentes y 10 retirados.
 | CU-102 Probar el Servicio de Correo | SS-17 | Administrador General | Secundario | Implementado |  |
 | CU-104 Verificar la Salud del Sistema (vida y disponibilidad) | SS-18 | Plataforma de despliegue | Importante | Implementado |  |
 | CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | SS-07 | Chofer, Administrador, Sistema Automático | Importante | Implementado | Sí |
-| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | Cliente, Sistema Automático | Importante | Implementado en el sistema y el panel; en curso en la aplicación del cliente | Sí |
-| CU-107 Agrupar Pedidos por Recorrido | SS-03 | Chofer, Sistema Automático | Importante | Implementado en el sistema y el panel; en curso en la aplicación del chofer | Sí |
-| CU-108 Recuperar Envases No Devueltos | SS-13 | Cliente, Administrador, Sistema Automático | Importante | Implementado en el sistema y el panel; en curso en las aplicaciones | Sí |
+| CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | Cliente, Sistema Automático | Importante | Implementado | Sí |
+| CU-107 Agrupar Pedidos por Recorrido | SS-03 | Chofer, Sistema Automático | Importante | Implementado | Sí |
+| CU-108 Recuperar Envases No Devueltos | SS-13 | Cliente, Administrador, Sistema Automático | Importante | Implementado | Sí |
 | CU-109 Consultar el Detalle del Chofer | SS-07 | Administrador | Importante | Implementado |  |
 | CU-110 Buscar un Chofer por Usuario | SS-07 | Administrador | Importante | Implementado |  |
 | CU-111 Modificar un Vehículo | SS-07 | Administrador | Importante | Implementado |  |
@@ -335,7 +335,7 @@ casos identificados, de los cuales 328 están vigentes y 10 retirados.
 | CU-142 Avisar los Vencimientos Próximos de la Flota | SS-07 | Sistema Automático | Importante | Implementado |  |
 | CU-143 Declarar el Consumo Promedio al Registrarse | SS-02 | Cliente | Importante | Implementado |  |
 | CU-144 Modificar el Consumo Promedio Declarado | SS-02 | Cliente | Importante | Implementado |  |
-| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | Cliente | Menor | Implementado en el sistema; en curso en la aplicación del cliente |  |
+| CU-145 Configurar los Días de Aviso Previo a la Recompra | SS-02 | Cliente | Menor | Implementado |  |
 | CU-146 Consultar la Fecha Estimada de Recompra | SS-02 | Administrador | Importante | Implementado |  |
 | CU-147 Realizar una Compra Express | SS-02 | Cliente | Crítico | Implementado |  |
 | CU-148 Elegir la Modalidad de Entrega del Pedido | SS-02 | Cliente | Importante | Implementado |  |
@@ -369,7 +369,7 @@ casos identificados, de los cuales 328 están vigentes y 10 retirados.
 | CU-177 Registrar el Legajo de un Empleado | SS-19 | Administrador | Crítico | Implementado |  |
 | CU-178 Modificar el Legajo de un Empleado | SS-19 | Administrador | Importante | Implementado |  |
 | CU-179 Consultar el Legajo de un Empleado | SS-19 | Administrador, Administrador General | Importante | Implementado |  |
-| CU-180 Consultar el Listado de Empleados | SS-19 | Administrador, Administrador General | Importante | Implementado, con funcionalidad planificada |  |
+| CU-180 Consultar el Listado de Empleados | SS-19 | Administrador, Administrador General | Importante | Implementado |  |
 | CU-181 Registrar el Egreso de un Empleado | SS-19 | Administrador | Crítico | Implementado |  |
 | CU-182 Otorgar una Cuenta de Acceso a un Empleado | SS-19 | Administrador | Importante | Implementado |  |
 | CU-183 Registrar el Curso de Transporte de Mercancías Peligrosas del Empleado | SS-19 | Administrador | Crítico | Implementado |  |
@@ -525,7 +525,7 @@ casos identificados, de los cuales 328 están vigentes y 10 retirados.
 | CU-333 Modificar una Regla de Comisión por Entrega | SS-21 | Administrador | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |  |
 | CU-334 Aprobar una Liquidación de Comisiones | SS-21 | Administrador | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |  |
 | CU-335 Anular una Liquidación de Comisiones | SS-21 | Administrador | Importante | Retirado del alcance: el chofer cobra un sueldo mensual |  |
-| CU-336 Cambiar el Correo del Usuario | SS-01 | Cliente, Chofer, Administrador | Importante | Implementado |  |
+| CU-336 Cambiar el Correo del Usuario | SS-01 | Cliente, Chofer, Administrador | Importante | Implementado, con funcionalidad planificada |  |
 | CU-337 Ajustar el Saldo del Chofer | SS-07 | Administrador | Importante | Implementado |  |
 | CU-338 Retomar el Pedido en Curso | SS-02 | Chofer | Importante | Implementado |  |
 | CU-339 Modificar un Pedido Pendiente (Administrador) | SS-02 | Administrador, Administrador General | Importante | Implementado |  |
