@@ -230,6 +230,7 @@ ASOCIACIONES = [
     ("Distribuidora", "1", "*", "0..*", "PuestoDeTrabajo", "define", PL),
     ("Distribuidora", "1", "-", "0..*", "Producto", "comercializa", UG),
     ("Distribuidora", "1", "-", "0..*", "Envase", "posee", PR),
+    ("Distribuidora", "1", "-", "0..*", "Vehiculo", "posee", PR),
     ("Distribuidora", "1", "-", "0..*", "Pedido", "gestiona", UG),
     ("Distribuidora", "1", "*", "0..*", "ZonaCobertura", "define", PL),
     ("Distribuidora", "1", "*", "0..*", "FranjaHoraria", "define", PL),
@@ -279,8 +280,8 @@ ASOCIACIONES = [
     ("OfertaLote", "0..*", "-", "1", "Chofer", "se dirige a", TR),
     ("Chofer", "0..1", "-", "0..*", "LoteRecorrido", "acepta", TR),
 
-    ("Chofer", "1", "-", "0..*", "Vehiculo", "tiene registrado", UG),
     ("Chofer", "0..*", "-", "0..*", "Vehiculo", "usa", UG),     # clase de asociación
+    ("Chofer", "0..1", "-", "0..*", "Vehiculo", "tiene registrado", UG),
     ("Chofer", "1", "-", "0..1", "UbicacionGPS", "se ubica en", DE),
     ("PlanMantenimiento", "1", "-", "0..*", "TareaMantenimiento", "genera", RG),
     ("TareaMantenimiento", "0..*", "-", "0..1", "Vehiculo", "habilita", TR),

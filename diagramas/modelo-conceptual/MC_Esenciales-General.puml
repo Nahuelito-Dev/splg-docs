@@ -73,6 +73,7 @@ Distribuidora "0..1" -- "0..*" Administrador : emplea >
 Distribuidora "1" -- "0..*" Empleado : emplea >
 Distribuidora "1" -- "0..*" Producto : comercializa >
 Distribuidora "1" -- "0..*" Envase : posee >
+Distribuidora "1" -- "0..*" Vehiculo : posee >
 Distribuidora "1" -- "0..*" Pedido : gestiona >
 Distribuidora "1" *-- "0..*" ZonaCobertura : define >
 Distribuidora "1" *-- "0..*" FranjaHoraria : define >
@@ -112,8 +113,9 @@ ParadaLote "0..*" -- "1" Pedido : atiende >
 LoteRecorrido "1" *-- "0..*" OfertaLote : genera >
 OfertaLote "0..*" -- "1" Chofer : se dirige a >
 Chofer "0..1" -- "0..*" LoteRecorrido : acepta >
-Chofer "1" -- "0..*" Vehiculo : tiene registrado >
 Chofer "0..*" -- "0..*" Vehiculo : usa >
+(Chofer, Vehiculo) .. AsignacionVehiculo
+Chofer "0..1" -- "0..*" Vehiculo : tiene registrado >
 Chofer "1" -- "0..1" UbicacionGPS : se ubica en >
 PlanMantenimiento "1" -- "0..*" TareaMantenimiento : genera >
 TareaMantenimiento "0..*" -- "0..1" Vehiculo : habilita >
@@ -150,7 +152,6 @@ Usuario "1" -- "0..*" CargaDeCamion : abre >
 Usuario "0..1" -- "0..*" CargaDeCamion : cierra >
 Empleado "0..1" -- "0..*" CargaDeCamion : ayuda en >
 Empleado "0..1" -- "0..1" Chofer : actúa como >
-(Chofer, Vehiculo) .. AsignacionVehiculo
 
 legend bottom right
   Vista de conjunto: sin atributos (están en la vista de cada área). Se omiten las

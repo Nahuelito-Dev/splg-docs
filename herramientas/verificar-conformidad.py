@@ -311,6 +311,8 @@ def geometria(nombre, doc):
     return errores
 
 def verificar_diagrama_cu():
+    # los retirados del alcance siguen en el catálogo con esa marca, pero ningún diagrama los dibuja
+    VIGENTES = TODOS - set(RETIRADOS_ALCANCE)
     errores = []
     laminas = sorted(glob.glob(D + "diagramas/uml/CU_Sistema_Completo-Lamina-*.svg"))
     rutam = D + "diagramas/uml/CU_Sistema_Mapa.svg"
@@ -320,7 +322,7 @@ def verificar_diagrama_cu():
     ESP, GEN = "05", "03"
     por_nombre = {"cliente": "01", "chofer": "02", "administrador": "03",
                   "sistema automático": "04", "sistema": "04", "administrador general": "05", "operador técnico": "10"}
-    cat_ss = {m.group(1): m.group(2) for m in re.finditer(r'\*\*Código:\*\*\s*(CU-\d+)\s*\|[^\n]*\n(?:\*\*[^\n]*\n)*?\*\*Subsistema:\*\*\s*(SS-\d\d)', _cat[_a:_b])}
+    cat_ss = {m.group(1): m.group(2) for m in re.finditer(r'\*\*Código:\*\*\s*(CU-\d+)\s*\|[^\n]*\n(?:\*\*[^\n]*\n)*?\*\*Subsistema:\*\*\s*(SS-\d\d)', _cat[_a:_b]) if m.group(1) in VIGENTES}
     cat = {}
     for m in re.finditer(r'\*\*Código:\*\*\s*(CU-\d+)\s*\|[^\n]*\n\*\*Actor/es:\*\*\s*([^\n]*)', _cat[_a:_b]):
         crudo = m.group(2)
@@ -328,7 +330,7 @@ def verificar_diagrama_cu():
         if not act:
             act = {por_nombre[x.strip().lower()] for x in re.split(r'\s*[,/]\s*|\s+y\s+', crudo)
                    if x.strip().lower() in por_nombre}
-        cat[m.group(1)] = act
+        if m.group(1) in VIGENTES: cat[m.group(1)] = act
     # formato único: actores en una sola columna a la izquierda y fuera del límite del sistema
     def revisar(nombre, doc, con_generalizacion=True):
         actores = [a["data-act"] for a in _elementos(doc, "actor")]
@@ -360,8 +362,8 @@ def verificar_diagrama_cu():
         cus |= {c["data-cu"] for c in _elementos(doc, "cu") if c["data-cu"].startswith("CU-")}
         asoc += [(a["data-act"], a["data-cu"], a["data-rol"]) for a in _elementos(doc, "asoc")]
         dib |= {(r["data-tipo"], r["data-desde"], r["data-hasta"]) for r in _elementos(doc, "rel")}
-    if cus != TODOS:
-        errores.append(f"laminas: casos de mas {sorted(cus - TODOS)} / de menos {sorted(TODOS - cus)}")
+    if cus != VIGENTES:
+        errores.append(f"laminas: casos de mas {sorted(cus - VIGENTES)} / de menos {sorted(VIGENTES - cus)}")
     rep = sorted({x for x in asoc if asoc.count(x) > 1})
     if rep: errores.append(f"laminas: asociaciones repetidas {rep[:5]}")
     # relaciones: las de las láminas = las de los diagramas por subsistema
@@ -391,12 +393,12 @@ def verificar_diagrama_cu():
     else:
         du = leer(ruta_u)
         cu_u = [c["data-cu"] for c in _elementos(du, "cu")]
-        if len(cu_u) != len(set(cu_u)) or set(cu_u) != TODOS:
-            errores.append(f"único: casos repetidos {sorted(x for x in set(cu_u) if cu_u.count(x) > 1)[:5]} / de más {sorted(set(cu_u) - TODOS)[:5]} / de menos {sorted(TODOS - set(cu_u))[:5]}")
+        if len(cu_u) != len(set(cu_u)) or set(cu_u) != VIGENTES:
+            errores.append(f"único: casos repetidos {sorted(x for x in set(cu_u) if cu_u.count(x) > 1)[:5]} / de más {sorted(set(cu_u) - VIGENTES)[:5]} / de menos {sorted(VIGENTES - set(cu_u))[:5]}")
         con = conectados(du); ent = con_entrada(du)
-        aisl = sorted(c for c in TODOS if not con.get(c) and c not in ent)
+        aisl = sorted(c for c in VIGENTES if not con.get(c) and c not in ent)
         if aisl: errores.append(f"único: casos aislados {aisl[:8]}")
-        dif = sorted(f"{c}: dibuja {sorted(con.get(c, set()))} y el catálogo dice {sorted(esperado[c])}" for c in TODOS if con.get(c, set()) != esperado.get(c, set()))
+        dif = sorted(f"{c}: dibuja {sorted(con.get(c, set()))} y el catálogo dice {sorted(esperado[c])}" for c in VIGENTES if con.get(c, set()) != esperado.get(c, set()))
         if dif: errores.append(f"único: {len(dif)} casos con actores distintos del catálogo, p. ej. {dif[:3]}")
         for _c_ in geometria("único", du): errores.append(_c_)
         # las relaciones salen de la fuente única (relaciones_cu.py): el Documento 1 ya no lleva la tabla
@@ -404,6 +406,7 @@ def verificar_diagrama_cu():
         tabla = {("include", b_, i_) for v_ in _R.INCLUYE.values() for b_, i_ in v_}
         tabla |= {("include", b_, i_) for b_, i_ in _R.INCLUYE_EXTERNO}
         tabla |= {("extend", e_, b_) for e_, b_, _x in _R.extensiones()}
+        tabla = {t_ for t_ in tabla if all(not x.startswith("CU-") or x in VIGENTES for x in t_[1:])}
         dib_u = {(r["data-tipo"], r["data-desde"], r["data-hasta"]) for r in _elementos(du, "rel")}
         falt = sorted(tabla - dib_u); sob = sorted(dib_u - tabla)
         if falt: errores.append(f"único: relaciones de relaciones_cu.py que no se dibujan o van al revés {falt[:5]}")
@@ -455,11 +458,9 @@ def verificar_diagrama_cu():
     cus_ss = set()
     for f in por_ss:
         cus_ss |= {c["data-cu"] for c in _elementos(leer(f), "cu") if c["data-cu"].startswith("CU-")}
-    if cus_ss != TODOS: errores.append(f"subsistemas: casos de mas {sorted(cus_ss - TODOS)} / de menos {sorted(TODOS - cus_ss)}")
+    if cus_ss != VIGENTES: errores.append(f"subsistemas: casos de mas {sorted(cus_ss - VIGENTES)} / de menos {sorted(VIGENTES - cus_ss)}")
     # mapa: los paquetes con su cantidad de casos
-    cuenta = collections.Counter()
-    for m in re.finditer(r'\*\*Código:\*\*\s*CU-\d+\s*\|[^\n]*\n(?:\*\*[^\n]*\n)*?\*\*Subsistema:\*\*\s*(SS-\d\d)', _cat[_a:_b]):
-        cuenta[m.group(1)] += 1
+    cuenta = collections.Counter(cat_ss.values())
     paq = {p["data-pq"]: int(p["data-n"]) for p in _elementos(mapa, "paquete")}
     if paq != dict(cuenta):
         errores.append(f"mapa: paquetes {paq} distintos del catalogo {dict(cuenta)}")

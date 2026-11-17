@@ -96,11 +96,9 @@ def cortar_png(ruta, alto_px, n):
     for i in range(n):
         y = i * alto_px
         hh = min(alto_px, h - y)
-        if y + hh >= h:
-            hh -= 1      # sips devuelve la imagen entera si el recorte llega justo al borde inferior
         out = ruta[:-4] + "-h%d-f%d.png" % (alto_px, i)
         if not os.path.exists(out):
-            sh(["sips", "--cropToHeightWidth", str(hh), str(w), "--cropOffset", str(y), "0", ruta, "--out", out],
+            sh(["magick", ruta, "-crop", "%dx%d+0+%d" % (w, hh, y), "+repage", out],
                stdout=subprocess.DEVNULL)
         franjas.append(out)
     return franjas
@@ -994,7 +992,8 @@ def figuras_e_indice(doc):
     if not tit or not figs:
         return doc
     sig = re.search(r'<w:p>(?:(?!</w:p>).)*?<w:pStyle w:val="Heading\d"', doc[tit.end():], re.S)
-    fin = tit.end() + (sig.start() if sig else 0)
+    # en un anexo final no hay título siguiente: la lista llega hasta las propiedades de sección del cuerpo
+    fin = tit.end() + sig.start() if sig else doc.rindex("<w:sectPr", 0, doc.rindex("</w:body>"))
     rpr = '<w:rFonts w:ascii="Verdana" w:hAnsi="Verdana"/><w:sz w:val="18"/>'
     filas = _envolver_en_campo([_entrada_indice(tx, nm, 0, rpr) for _, tx, nm in figs], 'TOC \\h \\z \\c "Figura"')
     return doc[:tit.end()] + "".join(filas) + doc[fin:]

@@ -35,6 +35,9 @@ fuente_include = set()
 for v in R.INCLUYE.values():
     fuente_include |= set(v)
 fuente_include |= set(R.INCLUYE_EXTERNO)
+# los retirados del alcance no se dibujan: sus relaciones tampoco
+from cu_esenciales import RETIRADOS_ALCANCE
+fuente_include = {(a, b) for a, b in fuente_include if a not in RETIRADOS_ALCANCE and b not in RETIRADOS_ALCANCE}
 fuente_extend = {(e, b) for e, b, _ in R.extensiones()}
 
 # ---------- 2. relaciones dibujadas ----------

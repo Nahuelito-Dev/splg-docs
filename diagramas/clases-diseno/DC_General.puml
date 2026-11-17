@@ -61,6 +61,7 @@ Usuario <|-- Chofer
 Distribuidora "1" -- "0..*" Chofer
 Distribuidora "1" -- "0..*" Producto
 Distribuidora "1" -- "0..*" Envase
+Distribuidora "1" -- "0..*" Vehiculo
 Distribuidora "1" -- "0..*" Pedido
 Distribuidora "1" *-- "0..*" ZonaCobertura
 Distribuidora "1" *-- "0..*" FranjaHoraria
@@ -88,8 +89,8 @@ ParadaLote "0..*" -- "1" Pedido
 LoteRecorrido "1" *--> "0..*" OfertaLote
 OfertaLote "0..*" -- "1" Chofer
 Chofer "0..1" -- "0..*" LoteRecorrido
-Chofer "1" -- "0..*" Vehiculo : tiene registrado
 Chofer "0..*" -- "0..*" Vehiculo : usa
+Chofer "0..1" -- "0..*" Vehiculo : tiene registrado
 Chofer "1" --> "0..1" UbicacionGPS
 TareaMantenimiento "0..*" -- "0..1" Vehiculo
 TareaMantenimiento "0..*" -- "0..1" Chofer

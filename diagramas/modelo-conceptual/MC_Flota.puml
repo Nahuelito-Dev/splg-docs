@@ -70,8 +70,10 @@ class Distribuidora #F1F1F1;line:8A97A3;text:55616C
 Usuario <|-- Chofer : {overlapping, incomplete}
 
 Distribuidora "1" -- "0..*" Chofer : emplea >
-Chofer "1" -- "0..*" Vehiculo : tiene registrado >
+Distribuidora "1" -- "0..*" Vehiculo : posee >
 Chofer "0..*" -- "0..*" Vehiculo : usa >
+(Chofer, Vehiculo) .. AsignacionVehiculo
+Chofer "0..1" -- "0..*" Vehiculo : tiene registrado >
 Chofer "1" -- "0..1" UbicacionGPS : se ubica en >
 PlanMantenimiento "1" -- "0..*" TareaMantenimiento : genera >
 TareaMantenimiento "0..*" -- "0..1" Vehiculo : habilita >
@@ -80,7 +82,6 @@ TareaMantenimiento "1" *-- "0..*" PropuestaVentanaTaller : origina >
 TareaMantenimiento "1" *-- "0..*" AdjuntoTarea : adjunta >
 PropuestaVentanaTaller "0..*" -- "1" Chofer : se dirige a >
 Vehiculo "1" *-- "0..*" RegistroUsoVehiculo : acumula >
-(Chofer, Vehiculo) .. AsignacionVehiculo
 
 legend bottom right
   Las clases en gris pertenecen a otra vista; se muestran solo como referencia.

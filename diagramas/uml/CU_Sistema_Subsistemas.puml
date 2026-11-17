@@ -1,5 +1,5 @@
 @startuml
-title Subsistemas del Proyecto — SPLG (21 subsistemas · 338 casos de uso)
+title Subsistemas del Proyecto — SPLG (21 subsistemas · 328 casos de uso)
 !include ../estilo-vp.iuml
 skinparam nodesep 25
 skinparam ranksep 55
@@ -19,7 +19,7 @@ package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
   }
   package "SS-06 Reportes y Tablero\n(6 casos de uso)" as MSS06 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-07 Gestión de Choferes y Vehículos\n(60 casos de uso)" as MSS07 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-07 Gestión de Choferes y Vehículos\n(59 casos de uso)" as MSS07 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
   package "SS-08 Gestión de Productos e Inventario\n(43 casos de uso)" as MSS08 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
@@ -31,7 +31,7 @@ package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
   }
   package "SS-13 Trazabilidad de Envases\n(10 casos de uso)" as MSS13 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-14 Pagos y Cobros\n(9 casos de uso)" as MSS14 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-14 Pagos y Conciliación\n(9 casos de uso)" as MSS14 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
   package "SS-15 Reservas Programadas\n(6 casos de uso)" as MSS15 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
@@ -39,7 +39,7 @@ package "Subsistemas de negocio" as GNEG #back:FFFFFF;line:3C6E8F {
   }
   package "SS-20 Compras\n(16 casos de uso)" as MSS20 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
-  package "SS-21 Caja, Rendiciones y Cuentas Corrientes\n(34 casos de uso)" as MSS21 <<subsystem>> #back:C6DAF0;line:3C5F8F {
+  package "SS-21 Caja, Rendiciones y Cuentas Corrientes\n(25 casos de uso)" as MSS21 <<subsystem>> #back:C6DAF0;line:3C5F8F {
   }
 }
 package "Subsistemas de soporte" as GSOP #back:FFFFFF;line:5A5896 {

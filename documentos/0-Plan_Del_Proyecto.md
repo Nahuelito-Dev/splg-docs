@@ -16,35 +16,34 @@
 - Figura 2 — Actores del sistema y el canal por el que operan
 - Figura 3 — Diagrama de casos de uso del sistema por subsistemas
 - Figura 4 — Diagrama de casos de uso del sistema (todos los casos de uso)
-- Figura 5 — Diagrama de casos de uso, lámina 1 de 28: Actores del sistema y generalización de ACT-05 en ACT-03
-- Figura 6 — Diagrama de casos de uso, lámina 2 de 28: Cliente (ACT-01), parte 1 de 3
-- Figura 7 — Diagrama de casos de uso, lámina 3 de 28: Cliente (ACT-01), parte 2 de 3
-- Figura 8 — Diagrama de casos de uso, lámina 4 de 28: Cliente (ACT-01), parte 3 de 3
-- Figura 9 — Diagrama de casos de uso, lámina 5 de 28: Chofer (ACT-02), parte 1 de 2
-- Figura 10 — Diagrama de casos de uso, lámina 6 de 28: Chofer (ACT-02), parte 2 de 2
-- Figura 11 — Diagrama de casos de uso, lámina 7 de 28: Administrador (ACT-03), parte 1 de 13
-- Figura 12 — Diagrama de casos de uso, lámina 8 de 28: Administrador (ACT-03), parte 2 de 13
-- Figura 13 — Diagrama de casos de uso, lámina 9 de 28: Administrador (ACT-03), parte 3 de 13
-- Figura 14 — Diagrama de casos de uso, lámina 10 de 28: Administrador (ACT-03), parte 4 de 13
-- Figura 15 — Diagrama de casos de uso, lámina 11 de 28: Administrador (ACT-03), parte 5 de 13
-- Figura 16 — Diagrama de casos de uso, lámina 12 de 28: Administrador (ACT-03), parte 6 de 13
-- Figura 17 — Diagrama de casos de uso, lámina 13 de 28: Administrador (ACT-03), parte 7 de 13
-- Figura 18 — Diagrama de casos de uso, lámina 14 de 28: Administrador (ACT-03), parte 8 de 13
-- Figura 19 — Diagrama de casos de uso, lámina 15 de 28: Administrador (ACT-03), parte 9 de 13
-- Figura 20 — Diagrama de casos de uso, lámina 16 de 28: Administrador (ACT-03), parte 10 de 13
-- Figura 21 — Diagrama de casos de uso, lámina 17 de 28: Administrador (ACT-03), parte 11 de 13
-- Figura 22 — Diagrama de casos de uso, lámina 18 de 28: Administrador (ACT-03), parte 12 de 13
-- Figura 23 — Diagrama de casos de uso, lámina 19 de 28: Administrador (ACT-03), parte 13 de 13
-- Figura 24 — Diagrama de casos de uso, lámina 20 de 28: Administrador General (ACT-05), parte 1 de 3
-- Figura 25 — Diagrama de casos de uso, lámina 21 de 28: Administrador General (ACT-05), parte 2 de 3
-- Figura 26 — Diagrama de casos de uso, lámina 22 de 28: Administrador General (ACT-05), parte 3 de 3
-- Figura 27 — Diagrama de casos de uso, lámina 23 de 28: Sistema Automático (ACT-04)
-- Figura 28 — Diagrama de casos de uso, lámina 24 de 28: Operador Técnico (ACT-10)
-- Figura 29 — Diagrama de casos de uso, lámina 25 de 28: MercadoPago (ACT-06)
-- Figura 30 — Diagrama de casos de uso, lámina 26 de 28: Firebase (ACT-07)
-- Figura 31 — Diagrama de casos de uso, lámina 27 de 28: Servicio de correo (ACT-08)
-- Figura 32 — Diagrama de casos de uso, lámina 28 de 28: Plataforma de despliegue (ACT-09)
-- Figura 33 — Mapa de navegación del sistema (no es un diagrama UML)
+- Figura 5 — Diagrama de casos de uso, lámina 1 de 27: Actores del sistema y generalización de ACT-05 en ACT-03
+- Figura 6 — Diagrama de casos de uso, lámina 2 de 27: Cliente (ACT-01), parte 1 de 3
+- Figura 7 — Diagrama de casos de uso, lámina 3 de 27: Cliente (ACT-01), parte 2 de 3
+- Figura 8 — Diagrama de casos de uso, lámina 4 de 27: Cliente (ACT-01), parte 3 de 3
+- Figura 9 — Diagrama de casos de uso, lámina 5 de 27: Chofer (ACT-02), parte 1 de 2
+- Figura 10 — Diagrama de casos de uso, lámina 6 de 27: Chofer (ACT-02), parte 2 de 2
+- Figura 11 — Diagrama de casos de uso, lámina 7 de 27: Administrador (ACT-03), parte 1 de 12
+- Figura 12 — Diagrama de casos de uso, lámina 8 de 27: Administrador (ACT-03), parte 2 de 12
+- Figura 13 — Diagrama de casos de uso, lámina 9 de 27: Administrador (ACT-03), parte 3 de 12
+- Figura 14 — Diagrama de casos de uso, lámina 10 de 27: Administrador (ACT-03), parte 4 de 12
+- Figura 15 — Diagrama de casos de uso, lámina 11 de 27: Administrador (ACT-03), parte 5 de 12
+- Figura 16 — Diagrama de casos de uso, lámina 12 de 27: Administrador (ACT-03), parte 6 de 12
+- Figura 17 — Diagrama de casos de uso, lámina 13 de 27: Administrador (ACT-03), parte 7 de 12
+- Figura 18 — Diagrama de casos de uso, lámina 14 de 27: Administrador (ACT-03), parte 8 de 12
+- Figura 19 — Diagrama de casos de uso, lámina 15 de 27: Administrador (ACT-03), parte 9 de 12
+- Figura 20 — Diagrama de casos de uso, lámina 16 de 27: Administrador (ACT-03), parte 10 de 12
+- Figura 21 — Diagrama de casos de uso, lámina 17 de 27: Administrador (ACT-03), parte 11 de 12
+- Figura 22 — Diagrama de casos de uso, lámina 18 de 27: Administrador (ACT-03), parte 12 de 12
+- Figura 23 — Diagrama de casos de uso, lámina 19 de 27: Administrador General (ACT-05), parte 1 de 3
+- Figura 24 — Diagrama de casos de uso, lámina 20 de 27: Administrador General (ACT-05), parte 2 de 3
+- Figura 25 — Diagrama de casos de uso, lámina 21 de 27: Administrador General (ACT-05), parte 3 de 3
+- Figura 26 — Diagrama de casos de uso, lámina 22 de 27: Sistema Automático (ACT-04)
+- Figura 27 — Diagrama de casos de uso, lámina 23 de 27: Operador Técnico (ACT-10)
+- Figura 28 — Diagrama de casos de uso, lámina 24 de 27: MercadoPago (ACT-06)
+- Figura 29 — Diagrama de casos de uso, lámina 25 de 27: Firebase (ACT-07)
+- Figura 30 — Diagrama de casos de uso, lámina 26 de 27: Servicio de correo (ACT-08)
+- Figura 31 — Diagrama de casos de uso, lámina 27 de 27: Plataforma de despliegue (ACT-09)
+- Figura 32 — Mapa de navegación del sistema (no es un diagrama UML)
 
 ---
 
@@ -262,7 +261,7 @@ quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
 | ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 249 casos de uso. |
 | ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 71 casos de uso. |
-| ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
+| ACT-06 | **MercadoPago** | Primario en CU-048 (notifica el resultado del pago) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
 | ACT-07 | **Firebase** | Secundario (sistema externo) | Servicio externo de identidad y mensajería. Verifica quién es el usuario que ingresa, crea y deshabilita cuentas, genera el enlace de recuperación de contraseña y entrega las notificaciones a los dispositivos. No inicia ningún caso de uso; participa como actor secundario en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-047, CU-072, CU-079, CU-082, CU-085, CU-100, CU-101 y CU-147. |
 | ACT-08 | **Servicio de correo** | Secundario (sistema externo) | Servicio externo que envía los correos del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y avisos de vencimientos, de stock bajo, de rendiciones sin cerrar y de multas por vencer. No inicia ningún caso de uso; participa como actor secundario en CU-002, CU-047, CU-102, CU-142, CU-188, CU-211, CU-224, CU-234 y CU-326. |
 | ACT-09 | **Plataforma de despliegue** | Primario (sistema externo) | Orquestador de contenedores, balanceador de carga o servicio de monitoreo, externo al sistema, que sondea el estado del backend para decidir si le envía tráfico o si reinicia la instancia. Es quien inicia CU-104. |
@@ -277,8 +276,9 @@ quedaron escritas en sus casos de uso expandidos, diagramas y contratos.
 > que lo hace desde una consola del servidor; ninguno accede directamente a la base de datos. El Sistema
 > Automático no tiene interfaz: son los procesos que el backend dispara por sí mismo, y es el
 > actor principal de los casos de uso que la documentación marca como automáticos.
-> MercadoPago, Firebase y el servicio de correo son sistemas externos que el backend invoca:
-> participan como actores secundarios y no inician ningún caso de uso. La plataforma de
+> Firebase y el servicio de correo son sistemas externos que el backend invoca: participan como
+> actores secundarios y no inician ningún caso de uso. MercadoPago es secundario cuando el sistema
+> le pide un cobro y es el actor primario de CU-048, que inicia al notificar el resultado del pago. La plataforma de
 > despliegue es un sistema externo que, al revés, es quien consulta el estado del backend.
 > El Operador Técnico es una persona que no usa ninguna aplicación: trabaja en el servidor y
 > sólo interviene en la puesta en marcha.
@@ -337,7 +337,7 @@ Persona con acceso al servidor donde corre el sistema, responsable de ponerlo en
 
 ## 6. Diagrama de Casos de Uso del Sistema
 
-Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos niveles, ambos en notación UML. La figura principal es el **diagrama por subsistemas**: los 21 subsistemas dibujados como paquetes dentro del límite del sistema y los actores fuera de él, cada uno unido a los subsistemas en los que participa; el Administrador General especializa al Administrador. El detalle —los 338 casos de uso, uno por uno, con sus relaciones «include» y «extend»— está en el **diagrama completo** y en sus **láminas** (anexo `catedra/entregables/diagramas-cu/`), que siguen a esta figura. Después, el **mapa de navegación** (que no es un diagrama UML) resume los paquetes y los actores en una página, como ayuda para ubicarse.
+Con 328 casos de uso vigentes, el diagrama de casos de uso del sistema se presenta en dos niveles, ambos en notación UML. La figura principal es el **diagrama por subsistemas**: los 21 subsistemas dibujados como paquetes dentro del límite del sistema y los actores fuera de él, cada uno unido a los subsistemas en los que participa; el Administrador General especializa al Administrador. El detalle —los 328 casos de uso vigentes, uno por uno, con sus relaciones «include» y «extend»— está en el **diagrama completo** y en sus **láminas** (anexo `catedra/entregables/diagramas-cu/`), que siguen a esta figura. Después, el **mapa de navegación** (que no es un diagrama UML) resume los paquetes y los actores en una página, como ayuda para ubicarse.
 
 **Figura 3 — Diagrama de casos de uso del sistema por subsistemas**
 
@@ -350,123 +350,119 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 
 ![Diagrama de casos de uso del sistema (todos los casos de uso)](../diagramas/uml/CU_Sistema_Diagrama-Completo.png)
 
-> **Láminas complementarias.** El mismo diagrama, en 28 láminas más cortas, con la misma grilla de tres columnas: la de los actores con la generalización del Administrador General en el Administrador y, por cada actor, sus casos de uso en la columna del medio (el Administrador y el Cliente se parten en varias partes) y, a la derecha, los casos relacionados con ellos por `«include»` o `«extend»`; un caso que inicia otro actor o que es de otro subsistema figura con borde discontinuo, solo como referencia. Los diagramas de cada subsistema (Documento 1 §4.3) usan la misma grilla.
+> **Láminas complementarias.** El mismo diagrama, en 27 láminas más cortas, con la misma grilla de tres columnas: la de los actores con la generalización del Administrador General en el Administrador y, por cada actor, sus casos de uso en la columna del medio (el Administrador y el Cliente se parten en varias partes) y, a la derecha, los casos relacionados con ellos por `«include»` o `«extend»`; un caso que inicia otro actor o que es de otro subsistema figura con borde discontinuo, solo como referencia. Los diagramas de cada subsistema (Documento 1 §4.3) usan la misma grilla.
 
-**Figura 5 — Diagrama de casos de uso, lámina 1 de 28: Actores del sistema y generalización de ACT-05 en ACT-03**
+**Figura 5 — Diagrama de casos de uso, lámina 1 de 27: Actores del sistema y generalización de ACT-05 en ACT-03**
 
-![Diagrama de casos de uso, lámina 1 de 28: Actores del sistema y generalización de ACT-05 en ACT-03](../diagramas/uml/CU_Sistema_Actores.png)
+![Diagrama de casos de uso, lámina 1 de 27: Actores del sistema y generalización de ACT-05 en ACT-03](../diagramas/uml/CU_Sistema_Actores.png)
 
-**Figura 6 — Diagrama de casos de uso, lámina 2 de 28: Cliente (ACT-01), parte 1 de 3**
+**Figura 6 — Diagrama de casos de uso, lámina 2 de 27: Cliente (ACT-01), parte 1 de 3**
 
-![Diagrama de casos de uso, lámina 2 de 28: Cliente (ACT-01), parte 1 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-01_Cliente_Parte-1.png)
+![Diagrama de casos de uso, lámina 2 de 27: Cliente (ACT-01), parte 1 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-01_Cliente_Parte-1.png)
 
-**Figura 7 — Diagrama de casos de uso, lámina 3 de 28: Cliente (ACT-01), parte 2 de 3**
+**Figura 7 — Diagrama de casos de uso, lámina 3 de 27: Cliente (ACT-01), parte 2 de 3**
 
-![Diagrama de casos de uso, lámina 3 de 28: Cliente (ACT-01), parte 2 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-02_Cliente_Parte-2.png)
+![Diagrama de casos de uso, lámina 3 de 27: Cliente (ACT-01), parte 2 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-02_Cliente_Parte-2.png)
 
-**Figura 8 — Diagrama de casos de uso, lámina 4 de 28: Cliente (ACT-01), parte 3 de 3**
+**Figura 8 — Diagrama de casos de uso, lámina 4 de 27: Cliente (ACT-01), parte 3 de 3**
 
-![Diagrama de casos de uso, lámina 4 de 28: Cliente (ACT-01), parte 3 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-03_Cliente_Parte-3.png)
+![Diagrama de casos de uso, lámina 4 de 27: Cliente (ACT-01), parte 3 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-03_Cliente_Parte-3.png)
 
-**Figura 9 — Diagrama de casos de uso, lámina 5 de 28: Chofer (ACT-02), parte 1 de 2**
+**Figura 9 — Diagrama de casos de uso, lámina 5 de 27: Chofer (ACT-02), parte 1 de 2**
 
-![Diagrama de casos de uso, lámina 5 de 28: Chofer (ACT-02), parte 1 de 2](../diagramas/uml/CU_Sistema_Completo-Lamina-04_Chofer_Parte-1.png)
+![Diagrama de casos de uso, lámina 5 de 27: Chofer (ACT-02), parte 1 de 2](../diagramas/uml/CU_Sistema_Completo-Lamina-04_Chofer_Parte-1.png)
 
-**Figura 10 — Diagrama de casos de uso, lámina 6 de 28: Chofer (ACT-02), parte 2 de 2**
+**Figura 10 — Diagrama de casos de uso, lámina 6 de 27: Chofer (ACT-02), parte 2 de 2**
 
-![Diagrama de casos de uso, lámina 6 de 28: Chofer (ACT-02), parte 2 de 2](../diagramas/uml/CU_Sistema_Completo-Lamina-05_Chofer_Parte-2.png)
+![Diagrama de casos de uso, lámina 6 de 27: Chofer (ACT-02), parte 2 de 2](../diagramas/uml/CU_Sistema_Completo-Lamina-05_Chofer_Parte-2.png)
 
-**Figura 11 — Diagrama de casos de uso, lámina 7 de 28: Administrador (ACT-03), parte 1 de 13**
+**Figura 11 — Diagrama de casos de uso, lámina 7 de 27: Administrador (ACT-03), parte 1 de 12**
 
-![Diagrama de casos de uso, lámina 7 de 28: Administrador (ACT-03), parte 1 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-06_Administrador_Parte-1.png)
+![Diagrama de casos de uso, lámina 7 de 27: Administrador (ACT-03), parte 1 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-06_Administrador_Parte-1.png)
 
-**Figura 12 — Diagrama de casos de uso, lámina 8 de 28: Administrador (ACT-03), parte 2 de 13**
+**Figura 12 — Diagrama de casos de uso, lámina 8 de 27: Administrador (ACT-03), parte 2 de 12**
 
-![Diagrama de casos de uso, lámina 8 de 28: Administrador (ACT-03), parte 2 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-07_Administrador_Parte-2.png)
+![Diagrama de casos de uso, lámina 8 de 27: Administrador (ACT-03), parte 2 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-07_Administrador_Parte-2.png)
 
-**Figura 13 — Diagrama de casos de uso, lámina 9 de 28: Administrador (ACT-03), parte 3 de 13**
+**Figura 13 — Diagrama de casos de uso, lámina 9 de 27: Administrador (ACT-03), parte 3 de 12**
 
-![Diagrama de casos de uso, lámina 9 de 28: Administrador (ACT-03), parte 3 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-08_Administrador_Parte-3.png)
+![Diagrama de casos de uso, lámina 9 de 27: Administrador (ACT-03), parte 3 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-08_Administrador_Parte-3.png)
 
-**Figura 14 — Diagrama de casos de uso, lámina 10 de 28: Administrador (ACT-03), parte 4 de 13**
+**Figura 14 — Diagrama de casos de uso, lámina 10 de 27: Administrador (ACT-03), parte 4 de 12**
 
-![Diagrama de casos de uso, lámina 10 de 28: Administrador (ACT-03), parte 4 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-09_Administrador_Parte-4.png)
+![Diagrama de casos de uso, lámina 10 de 27: Administrador (ACT-03), parte 4 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-09_Administrador_Parte-4.png)
 
-**Figura 15 — Diagrama de casos de uso, lámina 11 de 28: Administrador (ACT-03), parte 5 de 13**
+**Figura 15 — Diagrama de casos de uso, lámina 11 de 27: Administrador (ACT-03), parte 5 de 12**
 
-![Diagrama de casos de uso, lámina 11 de 28: Administrador (ACT-03), parte 5 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-10_Administrador_Parte-5.png)
+![Diagrama de casos de uso, lámina 11 de 27: Administrador (ACT-03), parte 5 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-10_Administrador_Parte-5.png)
 
-**Figura 16 — Diagrama de casos de uso, lámina 12 de 28: Administrador (ACT-03), parte 6 de 13**
+**Figura 16 — Diagrama de casos de uso, lámina 12 de 27: Administrador (ACT-03), parte 6 de 12**
 
-![Diagrama de casos de uso, lámina 12 de 28: Administrador (ACT-03), parte 6 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-11_Administrador_Parte-6.png)
+![Diagrama de casos de uso, lámina 12 de 27: Administrador (ACT-03), parte 6 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-11_Administrador_Parte-6.png)
 
-**Figura 17 — Diagrama de casos de uso, lámina 13 de 28: Administrador (ACT-03), parte 7 de 13**
+**Figura 17 — Diagrama de casos de uso, lámina 13 de 27: Administrador (ACT-03), parte 7 de 12**
 
-![Diagrama de casos de uso, lámina 13 de 28: Administrador (ACT-03), parte 7 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-12_Administrador_Parte-7.png)
+![Diagrama de casos de uso, lámina 13 de 27: Administrador (ACT-03), parte 7 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-12_Administrador_Parte-7.png)
 
-**Figura 18 — Diagrama de casos de uso, lámina 14 de 28: Administrador (ACT-03), parte 8 de 13**
+**Figura 18 — Diagrama de casos de uso, lámina 14 de 27: Administrador (ACT-03), parte 8 de 12**
 
-![Diagrama de casos de uso, lámina 14 de 28: Administrador (ACT-03), parte 8 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-13_Administrador_Parte-8.png)
+![Diagrama de casos de uso, lámina 14 de 27: Administrador (ACT-03), parte 8 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-13_Administrador_Parte-8.png)
 
-**Figura 19 — Diagrama de casos de uso, lámina 15 de 28: Administrador (ACT-03), parte 9 de 13**
+**Figura 19 — Diagrama de casos de uso, lámina 15 de 27: Administrador (ACT-03), parte 9 de 12**
 
-![Diagrama de casos de uso, lámina 15 de 28: Administrador (ACT-03), parte 9 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-14_Administrador_Parte-9.png)
+![Diagrama de casos de uso, lámina 15 de 27: Administrador (ACT-03), parte 9 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-14_Administrador_Parte-9.png)
 
-**Figura 20 — Diagrama de casos de uso, lámina 16 de 28: Administrador (ACT-03), parte 10 de 13**
+**Figura 20 — Diagrama de casos de uso, lámina 16 de 27: Administrador (ACT-03), parte 10 de 12**
 
-![Diagrama de casos de uso, lámina 16 de 28: Administrador (ACT-03), parte 10 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-15_Administrador_Parte-10.png)
+![Diagrama de casos de uso, lámina 16 de 27: Administrador (ACT-03), parte 10 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-15_Administrador_Parte-10.png)
 
-**Figura 21 — Diagrama de casos de uso, lámina 17 de 28: Administrador (ACT-03), parte 11 de 13**
+**Figura 21 — Diagrama de casos de uso, lámina 17 de 27: Administrador (ACT-03), parte 11 de 12**
 
-![Diagrama de casos de uso, lámina 17 de 28: Administrador (ACT-03), parte 11 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-16_Administrador_Parte-11.png)
+![Diagrama de casos de uso, lámina 17 de 27: Administrador (ACT-03), parte 11 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-16_Administrador_Parte-11.png)
 
-**Figura 22 — Diagrama de casos de uso, lámina 18 de 28: Administrador (ACT-03), parte 12 de 13**
+**Figura 22 — Diagrama de casos de uso, lámina 18 de 27: Administrador (ACT-03), parte 12 de 12**
 
-![Diagrama de casos de uso, lámina 18 de 28: Administrador (ACT-03), parte 12 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-17_Administrador_Parte-12.png)
+![Diagrama de casos de uso, lámina 18 de 27: Administrador (ACT-03), parte 12 de 12](../diagramas/uml/CU_Sistema_Completo-Lamina-17_Administrador_Parte-12.png)
 
-**Figura 23 — Diagrama de casos de uso, lámina 19 de 28: Administrador (ACT-03), parte 13 de 13**
+**Figura 23 — Diagrama de casos de uso, lámina 19 de 27: Administrador General (ACT-05), parte 1 de 3**
 
-![Diagrama de casos de uso, lámina 19 de 28: Administrador (ACT-03), parte 13 de 13](../diagramas/uml/CU_Sistema_Completo-Lamina-18_Administrador_Parte-13.png)
+![Diagrama de casos de uso, lámina 19 de 27: Administrador General (ACT-05), parte 1 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-18_Administrador-General_Parte-1.png)
 
-**Figura 24 — Diagrama de casos de uso, lámina 20 de 28: Administrador General (ACT-05), parte 1 de 3**
+**Figura 24 — Diagrama de casos de uso, lámina 20 de 27: Administrador General (ACT-05), parte 2 de 3**
 
-![Diagrama de casos de uso, lámina 20 de 28: Administrador General (ACT-05), parte 1 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-19_Administrador-General_Parte-1.png)
+![Diagrama de casos de uso, lámina 20 de 27: Administrador General (ACT-05), parte 2 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-19_Administrador-General_Parte-2.png)
 
-**Figura 25 — Diagrama de casos de uso, lámina 21 de 28: Administrador General (ACT-05), parte 2 de 3**
+**Figura 25 — Diagrama de casos de uso, lámina 21 de 27: Administrador General (ACT-05), parte 3 de 3**
 
-![Diagrama de casos de uso, lámina 21 de 28: Administrador General (ACT-05), parte 2 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-20_Administrador-General_Parte-2.png)
+![Diagrama de casos de uso, lámina 21 de 27: Administrador General (ACT-05), parte 3 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-20_Administrador-General_Parte-3.png)
 
-**Figura 26 — Diagrama de casos de uso, lámina 22 de 28: Administrador General (ACT-05), parte 3 de 3**
+**Figura 26 — Diagrama de casos de uso, lámina 22 de 27: Sistema Automático (ACT-04)**
 
-![Diagrama de casos de uso, lámina 22 de 28: Administrador General (ACT-05), parte 3 de 3](../diagramas/uml/CU_Sistema_Completo-Lamina-21_Administrador-General_Parte-3.png)
+![Diagrama de casos de uso, lámina 22 de 27: Sistema Automático (ACT-04)](../diagramas/uml/CU_Sistema_Completo-Lamina-21_Sistema-Automatico.png)
 
-**Figura 27 — Diagrama de casos de uso, lámina 23 de 28: Sistema Automático (ACT-04)**
+**Figura 27 — Diagrama de casos de uso, lámina 23 de 27: Operador Técnico (ACT-10)**
 
-![Diagrama de casos de uso, lámina 23 de 28: Sistema Automático (ACT-04)](../diagramas/uml/CU_Sistema_Completo-Lamina-22_Sistema-Automatico.png)
+![Diagrama de casos de uso, lámina 23 de 27: Operador Técnico (ACT-10)](../diagramas/uml/CU_Sistema_Completo-Lamina-22_Operador-Tecnico.png)
 
-**Figura 28 — Diagrama de casos de uso, lámina 24 de 28: Operador Técnico (ACT-10)**
+**Figura 28 — Diagrama de casos de uso, lámina 24 de 27: MercadoPago (ACT-06)**
 
-![Diagrama de casos de uso, lámina 24 de 28: Operador Técnico (ACT-10)](../diagramas/uml/CU_Sistema_Completo-Lamina-23_Operador-Tecnico.png)
+![Diagrama de casos de uso, lámina 24 de 27: MercadoPago (ACT-06)](../diagramas/uml/CU_Sistema_Completo-Lamina-23_MercadoPago.png)
 
-**Figura 29 — Diagrama de casos de uso, lámina 25 de 28: MercadoPago (ACT-06)**
+**Figura 29 — Diagrama de casos de uso, lámina 25 de 27: Firebase (ACT-07)**
 
-![Diagrama de casos de uso, lámina 25 de 28: MercadoPago (ACT-06)](../diagramas/uml/CU_Sistema_Completo-Lamina-24_MercadoPago.png)
+![Diagrama de casos de uso, lámina 25 de 27: Firebase (ACT-07)](../diagramas/uml/CU_Sistema_Completo-Lamina-24_Firebase.png)
 
-**Figura 30 — Diagrama de casos de uso, lámina 26 de 28: Firebase (ACT-07)**
+**Figura 30 — Diagrama de casos de uso, lámina 26 de 27: Servicio de correo (ACT-08)**
 
-![Diagrama de casos de uso, lámina 26 de 28: Firebase (ACT-07)](../diagramas/uml/CU_Sistema_Completo-Lamina-25_Firebase.png)
+![Diagrama de casos de uso, lámina 26 de 27: Servicio de correo (ACT-08)](../diagramas/uml/CU_Sistema_Completo-Lamina-25_Servicio-De-Correo.png)
 
-**Figura 31 — Diagrama de casos de uso, lámina 27 de 28: Servicio de correo (ACT-08)**
+**Figura 31 — Diagrama de casos de uso, lámina 27 de 27: Plataforma de despliegue (ACT-09)**
 
-![Diagrama de casos de uso, lámina 27 de 28: Servicio de correo (ACT-08)](../diagramas/uml/CU_Sistema_Completo-Lamina-26_Servicio-De-Correo.png)
-
-**Figura 32 — Diagrama de casos de uso, lámina 28 de 28: Plataforma de despliegue (ACT-09)**
-
-![Diagrama de casos de uso, lámina 28 de 28: Plataforma de despliegue (ACT-09)](../diagramas/uml/CU_Sistema_Completo-Lamina-27_Plataforma-De-Despliegue.png)
+![Diagrama de casos de uso, lámina 27 de 27: Plataforma de despliegue (ACT-09)](../diagramas/uml/CU_Sistema_Completo-Lamina-26_Plataforma-De-Despliegue.png)
 
 <!-- cu-completo:fin -->
 
-**Figura 33 — Mapa de navegación del sistema (no es un diagrama UML)**
+**Figura 32 — Mapa de navegación del sistema (no es un diagrama UML)**
 
 ![Mapa de navegación del sistema (no es un diagrama UML)](../diagramas/uml/CU_Sistema_Mapa.png)
 
@@ -562,7 +558,7 @@ Con 338 casos de uso, el diagrama de casos de uso del sistema se presenta en dos
 
 **Código:** CU-348 | **Caso de Uso:** Consultar el Reintegro de un Pedido  
 **Actor/es:** Cliente (ACT-01)  
-**Subsistema:** SS-14 Pagos y Cobros  
+**Subsistema:** SS-14 Pagos y Conciliación  
 **Calificación:** Secundario  
 **Descripción:** El cliente ve en el detalle de su pedido las devoluciones de dinero que se le hicieron o que están en trámite: de qué tipo son, cuánto se devuelve, en qué estado están y cuándo se acreditaron. Solo puede verlas el dueño del pedido.
 

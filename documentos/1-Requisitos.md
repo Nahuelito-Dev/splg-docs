@@ -1,7 +1,7 @@
 # Documento de Requisitos del Sistema
 **Proyecto:** SPLG – Sistema de Pedidos y Logística de Garrafas de Gas
 **Versión:** 2.0
-**Fecha:** 31/10/2026
+**Fecha:** 17/11/2026
 **Realizado por:** Nahuel Wagner
 **Realizado para:** Distribuidor de Gas Envasado (Cliente Real)
 **Institución:** FCEQyN – UNaM
@@ -38,9 +38,8 @@
 - Figura 25 — SS-18 Observabilidad y Operación: casos de uso
 - Figura 26 — SS-19 Personal y Legajos: casos de uso
 - Figura 27 — SS-20 Compras: casos de uso
-- Figura 28 — SS-21 Caja, Rendiciones y Cuentas Corrientes, parte 1 de 2: casos de uso
-- Figura 29 — SS-21 Caja, Rendiciones y Cuentas Corrientes, parte 2 de 2: casos de uso
-- Figura 30 — Actores del sistema y el canal por el que operan
+- Figura 28 — SS-21 Caja, Rendiciones y Cuentas Corrientes: casos de uso
+- Figura 29 — Actores del sistema y el canal por el que operan
 
 ---
 
@@ -71,6 +70,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 | 5 | 18/10/2026 | Casos de uso expandidos actualizados según lo construido: stock físico, compras, carga y rendición del camión, cobros, historial de estados del pedido y parámetros del despacho. Estado de cada caso alineado con el plan de iteraciones. | Nahuel Wagner |
 | 6 | 24/10/2026 | Revisión de contenido: cantidades por calificación, definición del Sistema Automático como el Tiempo, cuentas de los clientes, reservas con seña y reglas de validación en la aplicación, en el sistema y en la base de datos. | Nahuel Wagner |
 | 7 | 31/10/2026 | Se reduce el alcance documentado a los 21 casos de uso esenciales: el circuito completo del pedido, los cinco módulos inteligentes y la consulta de la auditoría conservan su caso de uso expandido, y los demás casos quedan en la lista de casos de uso con su importancia y en el diagrama de su subsistema. El documento sigue el orden de la plantilla de la cátedra. Los módulos inteligentes M2 a M5 pasan a implementados y la auditoría registra todo cambio de datos desde la base de datos (IRQ-16, NFR-10 y CU-152). Se retiran del alcance las ganancias del chofer y las comisiones por entrega con su liquidación (CU-049, CU-240 a CU-244, CU-333 a CU-335 y CU-347), porque el chofer cobra un sueldo mensual. Los requisitos no funcionales expresan la meta sin el mecanismo técnico y el glosario queda con los términos del negocio. | Nahuel Wagner |
+| 8 | 17/11/2026 | Revisión final para la entrega. | Nahuel Wagner |
 
 ---
 
@@ -80,7 +80,7 @@ El indicador **A** (*automático*) no es una prioridad sino una marca: señala e
 
 El proyecto SPLG surge de la necesidad de digitalizar la operación de un distribuidor de gas envasado que actualmente gestiona todos sus procesos de forma analógica: los clientes realizan pedidos por teléfono, los choferes reciben instrucciones verbales y el stock se registra manualmente en planillas. Esta situación genera demoras en la atención, errores en los pedidos, imposibilidad de rastrear entregas y reclamos sin evidencia objetiva.
 
-El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) para realizar pedidos y hacer seguimiento en tiempo real, una **App Chofer** (Flutter) para gestionar las entregas con GPS, un **Panel Administrativo** (React/Vite) para la gestión operativa completa, y un **Backend API** (NestJS) que centraliza toda la lógica de negocio, la base de datos PostgreSQL, el caché Redis y las notificaciones Firebase.
+El sistema propuesto integra cuatro componentes: una **aplicación para el cliente**, en su teléfono, para realizar pedidos y seguirlos en tiempo real; una **aplicación para el chofer**, para gestionar las entregas con la ubicación del teléfono; un **panel de administración** web para la gestión operativa completa; y un **servidor central** que concentra las reglas del negocio, guarda los datos y envía los avisos a los usuarios.
 
 ### Participantes del Proyecto
 
@@ -114,7 +114,7 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 | OBJ-12 | I | Medir la calidad del servicio | Permitir que el cliente y el chofer se califiquen mutuamente una vez entregado el pedido, con una sola calificación por pedido y por lado, y sostener con esas valoraciones el promedio que exhibe el perfil del chofer. | Alta | Cubierto por las calificaciones entre cliente y chofer (SS-12). |
 | OBJ-13 | I | Rastrear el envase físico | Seguir cada botellón por su número de serie a lo largo de todo su ciclo —depósito, carga, despacho, poder del cliente y devolución vacío—, dejando asentado cada cambio de estado con el pedido y el responsable que lo produjo. | Alta | Cubierto por la trazabilidad de envases (SS-13). |
 | OBJ-14 | I | Habilitar reservas programadas con seña | Permitir al cliente apartar garrafas para una fecha futura dejando una seña en garantía, con el stock descontado desde el momento de la reserva y con la activación del pedido y la expiración de la reserva impaga resueltas por procesos automáticos. | Alta | Cubierto por las reservas programadas con seña (SS-15). |
-| OBJ-15 | I | Verificar el estado operativo del sistema | Informar el estado del backend y de las dependencias de las que depende —base de datos, cache, memoria y disco— y permitir probar los canales de aviso, para que el orquestador decida a qué instancia enviar tráfico y el administrador confirme que la mensajería funciona. | Media | Cubierto por la observabilidad (SS-18); lo consulta la plataforma de despliegue. |
+| OBJ-15 | I | Verificar el estado operativo del sistema | Informar si el sistema y los servicios de los que depende están funcionando, y permitir probar los canales de aviso, para que la plataforma donde corre el sistema sepa si puede atender pedidos y el administrador confirme que los avisos llegan. | Media | Cubierto por la observabilidad (SS-18); lo consulta la plataforma de despliegue. |
 
 ---
 ## 3. Diagrama de Casos de Uso del Sistema
@@ -122,8 +122,11 @@ El sistema propuesto integra cuatro componentes: una **App Cliente** (Flutter) p
 El diagrama de casos de uso del sistema se presenta por subsistemas, en notación UML: los 21
 subsistemas dibujados como paquetes dentro del límite del sistema y los actores fuera de él, cada uno
 unido a los subsistemas en los que participa; el Administrador General especializa al Administrador.
-La sección 3.1 delimita el sistema con el diagrama de contexto, la sección 4 enumera todos los casos
-de uso con su importancia y el diagrama de casos de uso de cada subsistema está en la sección 8.1.
+Cada paquete indica cuántos casos de uso vigentes tiene: suman 328 (de los 338 identificados, los 10
+retirados del alcance no se dibujan en ningún diagrama).
+«Fronteras del Sistema» delimita el sistema con el diagrama de contexto, «Casos de Uso: lista e importancia»
+enumera todos los casos de uso y el diagrama de casos de uso de cada subsistema está en «Diagramas de Casos
+de Uso por Subsistema».
 
 **Figura 1 — Diagrama de casos de uso del sistema por subsistemas**
 
@@ -149,7 +152,7 @@ límite porque interactúan con el sistema sin formar parte de él.
 | Backend | Las reglas del negocio, la base de datos y los procesos programados |
 | Procesos automáticos | El despacho por proximidad, las reservas y los avisos, sin intervención humana |
 
-Los 21 subsistemas de la sección 5 son la división interna de ese límite.
+Los 21 subsistemas descriptos en «Subsistemas del Proyecto» son la división interna de ese límite.
 
 **Queda fuera del límite**
 
@@ -177,8 +180,8 @@ documento: **Crítico** (el sistema no puede operar sin el caso), **Importante**
 significativo), **Secundario** (deseable) y **Menor** (comodidad puntual); el criterio es el efecto de
 cada caso sobre la operación diaria de la distribuidora. La importancia es la que decide qué casos se
 abordan en cada iteración: la columna «Expandido» marca los 21 casos de uso esenciales que esta
-iteración especifica con su caso de uso expandido (sección 8.3). Los demás quedan con su descripción de
-alto nivel (Documento 0) y su lugar en el diagrama de su subsistema (sección 8.1).
+iteración especifica con su caso de uso expandido (ver «Casos de Uso del Sistema»). Los demás quedan con su descripción de
+alto nivel (Documento 0) y su lugar en el diagrama de su subsistema (ver «Diagramas de Casos de Uso por Subsistema»).
 
 | Importancia | Casos de uso vigentes |
 |:---:|:---:|
@@ -192,7 +195,8 @@ Diez casos fueron retirados del catálogo por no ser procesos de negocio element
 retirados, con el motivo y el reemplazo de cada uno, está en el Documento 0. Además, diez casos quedan
 retirados del alcance porque el chofer cobra un sueldo mensual y no gana comisiones por entrega: las
 ganancias del chofer (CU-049) y las comisiones con su liquidación (CU-240 a CU-244, CU-333 a CU-335 y
-CU-347). Figuran en la lista con ese motivo y no se cuentan entre los vigentes.
+CU-347). Figuran en la lista con ese motivo y no se cuentan entre los vigentes: la lista reúne los 338
+casos identificados, de los cuales 328 están vigentes y 10 retirados.
 
 | Caso de Uso | Subsistema | Actor principal | Importancia | Estado | Expandido |
 |-------------|:----------:|-----------------|:-----------:|--------|:---------:|
@@ -593,7 +597,7 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 
 > **Documento de Requisitos del Sistema — Requisitos de la Iteración**
 >
-> Proyecto: SPLG – Sistema de Pedidos y Logística de Garrafas de Gas · Versión 2.0 · Fecha: 31/10/2026
+> Proyecto: SPLG – Sistema de Pedidos y Logística de Garrafas de Gas · Versión 2.0 · Fecha: 17/11/2026
 >
 > Realizado por: Nahuel Wagner · Realizado para: Distribuidor de Gas Envasado (Cliente Real)
 
@@ -604,7 +608,7 @@ todo caso de uso de gestión queda acotado a la distribuidora del usuario que lo
 *Se debe hacer una lista con los objetivos que se esperan alcanzar con el software a desarrollar.*
 
 La iteración en curso, de la Fase de Construcción, persigue los objetivos que siguen. Se derivan de los
-objetivos del sistema de la sección 2 y acotan qué parte de cada uno se especifica y se construye en
+«Objetivos del Sistema» y acotan qué parte de cada uno se especifica y se construye en
 esta vuelta.
 
 | Código | Objetivo | Descripción | Estabilidad | Comentarios |
@@ -613,7 +617,7 @@ esta vuelta.
 | OBJ-I-02 | Incorporar los cinco módulos inteligentes | Construir los procesos automatizados que deciden por su cuenta, se parametrizan por distribuidora y nunca ejecutan sin una persona lo que compromete dinero: asignación secuencial de pedidos (M1), mantenimiento predictivo de la flota (M2), anticipación de la recompra (M3), agrupación de pedidos por recorrido (M4) y recuperación de envases no devueltos (M5). | Alta | M1 y M2 están construidos de punta a punta. M3, M4 y M5 están construidos en el sistema y en el panel de administración, apagados hasta que cada distribuidora los habilita; su etapa en las aplicaciones móviles está en curso. |
 | OBJ-I-03 | Garantizar la trazabilidad total de los datos | Dejar constancia de todo cambio de datos —quién, cuándo, desde dónde, el valor anterior y el nuevo—, de cada ingreso al sistema y de cada operación rechazada, sin que ninguna persona pueda modificar ni borrar ese registro, y ofrecer al administrador su consulta. | Alta | Realiza OBJ-04 y OBJ-05 por medio de IRQ-16, NFR-10 y CU-152. |
 | OBJ-I-04 | Sostener la operación de varias distribuidoras | Mantener aislados los datos de cada distribuidora en todos los casos de uso de la iteración. | Alta | Realiza OBJ-09 por medio de NFR-09. |
-| OBJ-I-05 | Ordenar el alcance por importancia | Mantener la lista completa de los casos de uso con su importancia (sección 4), de modo que cada iteración tome los que corresponden. | Media | Las ganancias del chofer y las comisiones por entrega quedan fuera del alcance, porque el chofer cobra un sueldo mensual. |
+| OBJ-I-05 | Ordenar el alcance por importancia | Mantener la lista completa de los casos de uso con su importancia (ver «Casos de Uso: lista e importancia»), de modo que cada iteración tome los que corresponden. | Media | Las ganancias del chofer y las comisiones por entrega quedan fuera del alcance, porque el chofer cobra un sueldo mensual. |
 
 ---
 
@@ -829,9 +833,9 @@ esta vuelta.
 *Debe tener una lista de los requisitos funcionales, expresado en forma tradicional o mediante casos de usos*
 
 Los requisitos funcionales se expresan con casos de uso. La lista de todos los casos, con su
-importancia, está en la sección 4 y su descripción de alto nivel, en el Documento 0. Esta sección
-reúne el diagrama de casos de uso de cada subsistema (8.1), la definición de los actores (8.2) y el
-caso de uso expandido de los 21 casos de uso esenciales de la iteración (8.3). El diagrama de secuencia
+importancia, está en «Casos de Uso: lista e importancia» y su descripción de alto nivel, en el Documento 0. Esta sección
+reúne el diagrama de casos de uso de cada subsistema, la definición de los actores y el
+caso de uso expandido de los 21 casos de uso esenciales de la iteración. El diagrama de secuencia
 del sistema de cada uno de esos casos está en el Documento 2 y su diagrama de interacción, en el
 Documento 3.
 
@@ -933,13 +937,9 @@ Cada subsistema tiene su diagrama de casos de uso, en notación UML: los actores
 ![SS-20 Compras](../diagramas/uml/CU_SS-20_Compras.png)
 
 **Figura 27 — SS-20 Compras: casos de uso**
-![SS-21 Caja, Rendiciones y Cuentas Corrientes, parte 1 de 2](../diagramas/uml/CU_SS-21_Caja-Rendiciones-Y-Cuentas-Corrientes_Parte-1.png)
+![SS-21 Caja, Rendiciones y Cuentas Corrientes](../diagramas/uml/CU_SS-21_Caja-Rendiciones-Y-Cuentas-Corrientes.png)
 
-**Figura 28 — SS-21 Caja, Rendiciones y Cuentas Corrientes, parte 1 de 2: casos de uso**
-
-![SS-21 Caja, Rendiciones y Cuentas Corrientes, parte 2 de 2](../diagramas/uml/CU_SS-21_Caja-Rendiciones-Y-Cuentas-Corrientes_Parte-2.png)
-
-**Figura 29 — SS-21 Caja, Rendiciones y Cuentas Corrientes, parte 2 de 2: casos de uso**
+**Figura 28 — SS-21 Caja, Rendiciones y Cuentas Corrientes: casos de uso**
 
 ### 8.2 Definición de Actores
 
@@ -950,7 +950,7 @@ Cada subsistema tiene su diagrama de casos de uso, en notación UML: los actores
 | ACT-03 | **Administrador** | Humano | Operador de una distribuidora, con alcance acotado a su propia empresa. Usa el panel web para gestionar choferes, vehículos, productos, stock, compras, personal, caja, cuentas corrientes, franjas horarias, reclamos y reportes. Tiene acceso total dentro de su distribuidora, salvo la cuenta de un cliente, que administra el Administrador General. Inicia 249 casos de uso. |
 | ACT-04 | **Sistema Automático** | Automático | Actor externo que representa el Tiempo, según la convención de Larman: el reloj o temporizador que dispara los casos de uso programados —el vencimiento de las ofertas de despacho, la activación y el vencimiento de las reservas, los avisos y las conciliaciones, y las revisiones periódicas de los cinco procesos automatizados: asignación secuencial de pedidos, planificación predictiva del mantenimiento, anticipación de la recompra, agrupación de pedidos por recorrido y recuperación de envases no devueltos— sin que los inicie una persona ni un sistema externo. Lo que el backend hace al ser disparado es comportamiento del sistema, no del actor. Única excepción documentada: la primera oferta de CU-013 sale por dentro de CU-005, al confirmarse el alta del pedido; se mantiene bajo este actor porque sus reintentos los dispara el reloj (CU-014). Es el actor principal de 22 casos de uso. |
 | ACT-05 | **Administrador General** | Humano | Operador de la plataforma, con alcance sobre todas las distribuidoras. Especializa al Administrador: hace todo lo que éste hace y además lo que es exclusivo de la plataforma —dar de alta las distribuidoras, designar a sus administradores y administrar los roles—. Es el único actor cuyo alcance no está acotado a una distribuidora; cuando escribe sobre pedidos, cobros, incidencias, reclamos, adjuntos o las cuentas del personal de una empresa, debe indicar con qué distribuidora trabaja: sin esa indicación el sistema no escribe nada. Participa en 71 casos de uso. |
-| ACT-06 | **MercadoPago** | Secundario (sistema externo) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
+| ACT-06 | **MercadoPago** | Primario en CU-048 (notifica el resultado del pago) | Pasarela de cobro, externa al sistema. El sistema le pide el cobro de cada pedido o seña que se paga por ese medio y recibe de ella el aviso de pago aprobado. Inicia CU-048 con ese aviso y participa como actor secundario en CU-005, CU-072 y CU-147. |
 | ACT-07 | **Firebase** | Secundario (sistema externo) | Servicio externo de identidad y mensajería. Verifica quién es el usuario que ingresa, crea y deshabilita cuentas, genera el enlace de recuperación de contraseña y entrega las notificaciones a los dispositivos. No inicia ningún caso de uso; participa como actor secundario en CU-001, CU-004, CU-005, CU-013, CU-014, CU-015, CU-016, CU-018, CU-019, CU-020, CU-047, CU-072, CU-079, CU-082, CU-085, CU-100, CU-101 y CU-147. |
 | ACT-08 | **Servicio de correo** | Secundario (sistema externo) | Servicio externo que envía los correos del sistema: bienvenida al cliente, recuperación de contraseña, prueba del servicio y avisos de vencimientos, de stock bajo, de rendiciones sin cerrar y de multas por vencer. No inicia ningún caso de uso; participa como actor secundario en CU-002, CU-047, CU-102, CU-142, CU-188, CU-211, CU-224, CU-234 y CU-326. |
 | ACT-09 | **Plataforma de despliegue** | Primario (sistema externo) | Orquestador de contenedores, balanceador de carga o servicio de monitoreo, externo al sistema, que sondea el estado del backend para decidir si le envía tráfico o si reinicia la instancia. Es quien inicia CU-104. |
@@ -958,17 +958,18 @@ Cada subsistema tiene su diagrama de casos de uso, en notación UML: los actores
 
 ![Actores del sistema y el canal por el que operan](../diagramas/uml/CU_Sistema_Actores.png)
 
-**Figura 30 — Actores del sistema y el canal por el que operan**
+**Figura 29 — Actores del sistema y el canal por el que operan**
 
 > Los cinco actores humanos operan siempre a través de una aplicación o del panel web, salvo el Operador Técnico,
 > que lo hace desde una consola del servidor; ninguno accede directamente a la base de datos. El Sistema
 > Automático no tiene interfaz: son los procesos que el backend dispara por sí mismo, y es el
 > actor principal de los casos de uso que la documentación marca como automáticos.
-> MercadoPago, Firebase y el servicio de correo son sistemas externos que el backend invoca:
-> participan como actores secundarios y no inician ningún caso de uso. La plataforma de
+> Firebase y el servicio de correo son sistemas externos que el backend invoca: participan como
+> actores secundarios y no inician ningún caso de uso. MercadoPago es secundario cuando el sistema
+> le pide un cobro y es el actor primario de CU-048, que inicia al notificar el resultado del pago. La plataforma de
 > despliegue es un sistema externo que, al revés, es quien consulta el estado del backend.
 
-> **Generalización.** El Administrador General (ACT-05) es una especialización del Administrador (ACT-03): hace todo lo que hace éste y además lo que es exclusivo de la plataforma. La especialización no reemplaza a las asociaciones: en los diagramas, cada actor se une a todos sus casos de uso, también ACT-05 a los que comparte con ACT-03, y la generalización se mantiene entre los dos. ACT-06, ACT-07 y ACT-08 son actores secundarios: el sistema los invoca para completar un caso que inició otro actor.
+> **Generalización.** El Administrador General (ACT-05) es una especialización del Administrador (ACT-03): hace todo lo que hace éste y además lo que es exclusivo de la plataforma. La especialización no reemplaza a las asociaciones: en los diagramas, cada actor se une a todos sus casos de uso, también ACT-05 a los que comparte con ACT-03, y la generalización se mantiene entre los dos. ACT-07 y ACT-08 son actores secundarios: el sistema los invoca para completar un caso que inició otro actor; ACT-06 también lo es, salvo en CU-048, que inicia él.
 
 ---
 
@@ -979,8 +980,8 @@ los cinco módulos inteligentes y la consulta de la auditoría. Se presentan en 
 ingreso y registro, alta y cancelación del pedido, disponibilidad del chofer, asignación automática
 (M1), aceptación, seguimiento, entrega con código, cobro, reclamo, módulos M2 a M5 y auditoría. Cada
 caso sigue la ficha de la plantilla; el encabezado indica su importancia y el campo Estado, lo que está
-construido. Un caso que este documento no expande se nombra por su código, que figura en la lista de la
-sección 4.
+construido. Un caso que este documento no expande se nombra por su código, que figura en la lista de
+«Casos de Uso: lista e importancia».
 
 ---
 
@@ -1039,7 +1040,7 @@ sección 4.
 | **Objetivos asociados** | OBJ-01 |
 | **Requisitos asociados** | IRQ-01 |
 | **Descripción** | Una persona nueva se registra como cliente informando sus datos personales. El sistema crea su cuenta y su perfil de cliente, le envía un correo de bienvenida y le avisa que ya puede iniciar sesión. El registro no abre la sesión y nunca crea un rol distinto del de cliente. |
-| **Precondición** | La persona tiene conexión a internet y no tiene una cuenta con el mismo correo ni con el mismo teléfono. |
+| **Precondición** | La persona tiene conexión a internet y no tiene la sesión iniciada. |
 | **Puntos de extensión** | PE-01: El cliente declara cuánto gas consume por mes, lo extiende CU-143 Declarar el Consumo Promedio al Registrarse. |
 | **Estado** | Implementado |
 
@@ -1799,7 +1800,7 @@ sección 4.
 | 5 | El sistema comprueba que el reclamo exista y sea de su distribuidora, que la nota no esté vacía y que el cambio de estado sea válido, sin admitir repetir el estado actual. |
 | 6 | El sistema guarda el nuevo estado y la nota de resolución. |
 
-**Postcondición:** El reclamo quedó con el estado elegido y su nota de resolución. No queda constancia de cuándo se resolvió ni de quién lo resolvió, y el cliente no fue avisado.
+**Postcondición:** El reclamo quedó con el estado elegido y su nota de resolución. El reclamo no guarda en sus datos quién ni cuándo lo resolvió: eso queda en el registro de auditoría, como todo cambio (NFR-10). El cliente no fue avisado.
 
 **Excepciones**
 
@@ -2099,7 +2100,7 @@ sección 4.
 | **Requisitos asociados** | IRQ-01, IRQ-09, CU-001 |
 | **Descripción** | El sistema debe garantizar que cada usuario solo acceda a las funciones y a los datos que corresponden a su rol (cliente, chofer, administrador o Administrador General). Toda solicitud y toda conexión en tiempo real deben estar autenticadas. La identidad se delega en un proveedor de identidad externo: el sistema no guarda contraseñas ni emite credenciales propias, y verifica la identidad y el rol en cada solicitud. |
 | **Estabilidad** | Alta |
-| **Comentarios** | Las limitaciones conocidas respecto de este requisito se registran en el campo Comentarios de los casos de uso afectados. El requisito describe la meta; su cumplimiento efectivo es parcial. |
+| **Comentarios** | Las limitaciones conocidas respecto de este requisito se registran en el campo Comentarios de los casos de uso afectados. |
 
 ### Crítico NFR-02 — Rendimiento
 
@@ -2117,7 +2118,7 @@ sección 4.
 |-------|---------|
 | **Objetivos asociados** | OBJ-01, OBJ-02 |
 | **Requisitos asociados** | IRQ-15, CU-104 |
-| **Descripción** | El sistema debe estar disponible durante el horario operativo del distribuidor (estimado de 8:00 a 21:00) y volver a funcionar solo ante una caída, sin intervención de una persona. El mantenimiento programado se hace fuera del horario operativo. |
+| **Descripción** | El sistema debe estar disponible durante el horario operativo del distribuidor (estimado de 8:00 a 21:00) y volver a funcionar solo ante una caída, sin intervención de una persona. El mantenimiento programado se hace fuera del horario operativo. Medida: disponibilidad del 99 % en el horario de atención y recuperación en menos de 5 minutos ante una caída del servicio. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El sistema expone sondas de vida y de disponibilidad que verifican base de datos, cache, memoria y disco (CU-104). No hay redundancia de instancias ni conmutación automática ante falla, de modo que la disponibilidad depende de un único nodo. |
 
@@ -2127,7 +2128,7 @@ sección 4.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | IRQ-09, IRQ-15, CU-104 |
-| **Descripción** | La arquitectura debe admitir el crecimiento de la cantidad de usuarios, distribuidoras y pedidos sin rediseño: debe poder sumar instancias del servidor sin perder avisos en tiempo real, y separar la base de datos y el caché en equipos propios si el volumen lo requiere. |
+| **Descripción** | La arquitectura debe admitir el crecimiento de la cantidad de usuarios, distribuidoras y pedidos sin rediseño: debe poder sumar instancias del servidor sin perder avisos en tiempo real, y separar la base de datos y el caché en equipos propios si el volumen lo requiere. Medida: sumar una segunda instancia del servidor sólo cambia la configuración del despliegue, sin modificar el código, y con dos instancias cada aviso en tiempo real llega a todos los usuarios conectados, sin pérdidas. |
 | **Estabilidad** | Alta |
 | **Comentarios** | La arquitectura es un monolito modular sin estado en el proceso: la sesión se valida contra el proveedor de identidad y el estado compartido vive en la base y en el caché. Eso habilita agregar instancias detrás de un balanceador sin rediseño, aunque se ejecuta una sola. |
 
@@ -2157,7 +2158,7 @@ sección 4.
 |-------|---------|
 | **Objetivos asociados** | OBJ-05 |
 | **Requisitos asociados** | CU-104 |
-| **Descripción** | El sistema debe ser comprensible, modular y fácil de modificar para agregar funcionalidades en fases posteriores: organizado en módulos por dominio, con la interfaz separada de la lógica del negocio en las aplicaciones y en el panel, y con un esquema de base de datos que evoluciona por migraciones versionadas. |
+| **Descripción** | El sistema debe ser comprensible, modular y fácil de modificar para agregar funcionalidades en fases posteriores: organizado en módulos por dominio, con la interfaz separada de la lógica del negocio en las aplicaciones y en el panel, y con un esquema de base de datos que evoluciona por migraciones versionadas. Medida: todo cambio del esquema se aplica con una migración versionada, nunca a mano, y ningún cambio se integra sin que la suite de pruebas automáticas del backend pase completa y sin fallas. |
 | **Estabilidad** | Alta |
 | **Comentarios** | El núcleo de pedidos sigue una separación en dominio, aplicación e infraestructura; el resto de los módulos mantiene una estructura de servicio y controlador más directa. La suite de pruebas del backend cubre el comportamiento de los casos críticos. |
 
@@ -2197,7 +2198,7 @@ sección 4.
 
 La matriz relaciona cada requisito con los objetivos del sistema que contribuye a alcanzar: primero los
 19 requisitos de información (RI), después los requisitos funcionales (RF), que son los 21 casos de uso
-expandidos de la sección 8.3, y por último los 10 requisitos no funcionales (RNF). Las marcas de los
+expandidos en «Casos de Uso del Sistema», y por último los 10 requisitos no funcionales (RNF). Las marcas de los
 casos de uso se derivan del campo **Objetivos asociados** que cada uno declara.
 
 |  | OBJ-01 | OBJ-02 | OBJ-03 | OBJ-04 | OBJ-05 | OBJ-06 | OBJ-07 | OBJ-08 | OBJ-09 | OBJ-10 | OBJ-11 | OBJ-12 | OBJ-13 | OBJ-14 | OBJ-15 |
@@ -2268,7 +2269,7 @@ El símbolo ● indica que el requisito contribuye al objetivo de esa columna.
 | Administrador | Actor | Persona que gestiona una distribuidora desde el panel de administración. |
 | Administrador General | Actor | Persona que opera la plataforma sobre todas las distribuidoras; especializa al Administrador. |
 | Pedido | Dominio | Solicitud de compra de un cliente: productos y cantidades, dirección de entrega, medio de pago y, si corresponde, franja horaria. |
-| Estado del pedido | Dominio | Etapa en la que está un pedido: pendiente (recién creado, sin chofer), aceptado (un chofer lo tomó), en camino, entregado o cancelado. Cada cambio queda en el historial de estados. |
+| Estado del pedido | Dominio | Etapa en la que está un pedido: reservado (agendado para una fecha futura con seña; el stock queda comprometido hasta que se activa), pendiente (recién creado, sin chofer), aceptado (un chofer lo tomó), en camino, entregado o cancelado. Cada cambio queda en el historial de estados. |
 | Franja horaria | Dominio | Rango de horas del día habilitado para las entregas (por ejemplo, mañana de 9 a 13), con una capacidad máxima de pedidos por día. |
 | Zona de cobertura | Dominio | Área dentro de la cual la distribuidora acepta pedidos, con el recargo que corresponde a cada una. |
 | Stock | Dominio | Cantidad de garrafas disponibles para la venta. Se reserva al crear un pedido y se restituye si el pedido se cancela. |

@@ -75,4 +75,4 @@ ARCHIVOS_DSD = tuple(f"DSD_{cu}_{op}.mmd" for cu, ops in OPERACIONES_DSD.items()
 assert set(CON_DSD) | set(SIN_DSD) == set(ESENCIALES) and not set(CON_DSD) & set(SIN_DSD)
 
 # Casos de uso reales cuya interfaz todavía no tiene captura de la pantalla real (la ficha la describe con palabras).
-SIN_CAPTURA = ("CU-301",)
+SIN_CAPTURA = ()

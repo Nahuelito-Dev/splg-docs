@@ -113,9 +113,12 @@ class Pedido <<referencia>>
 class Cliente <<referencia>>
 class Envase <<referencia>>
 class Usuario <<referencia>>
+class Distribuidora <<referencia>>
 
 Usuario <|-- Cliente : {overlapping, incomplete}
 Usuario <|-- Chofer
+Distribuidora "1" -- "0..*" Chofer : emplea
+Distribuidora "1" -- "0..*" Vehiculo : posee
 Pedido "0..*" -- "0..1" Vehiculo : se entrega con
 Chofer "0..1" -- "0..*" Pedido : entrega
 Pedido "1" *--> "0..*" OfertaDespacho : genera
@@ -125,8 +128,8 @@ ParadaLote "0..*" -- "1" Pedido : atiende
 LoteRecorrido "1" *--> "0..*" OfertaLote : genera
 OfertaLote "0..*" -- "1" Chofer : se dirige a
 Chofer "0..1" -- "0..*" LoteRecorrido : acepta
-Chofer "1" -- "0..*" Vehiculo : tiene registrado
 Chofer "0..*" -- "0..*" Vehiculo : usa
+Chofer "0..1" -- "0..*" Vehiculo : tiene registrado
 Chofer "1" --> "0..1" UbicacionGPS : se ubica en
 TareaMantenimiento "0..*" -- "0..1" Vehiculo : habilita
 TareaMantenimiento "0..*" -- "0..1" Chofer : habilita

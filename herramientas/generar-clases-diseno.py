@@ -69,7 +69,7 @@ VISTAS_DOMINIO = [
     ("Despacho, flota y recupero de envases", "Despacho-flota-y-recupero",
      ["OfertaDespacho", "LoteRecorrido", "OfertaLote", "ParadaLote", "PropuestaVentanaTaller", "TareaMantenimiento",
       "Chofer", "Vehiculo", "UbicacionGPS", "CasoRecupero", "AvisoRecupero"],
-     ["Pedido", "Cliente", "Envase", "Usuario"]),
+     ["Pedido", "Cliente", "Envase", "Usuario", "Distribuidora"]),
 ]
 _cubiertas = [c for _, _, f, _ in VISTAS_DOMINIO for c in f]
 

@@ -64,6 +64,13 @@ for m in re.finditer(r'^####\s+.*?(CU-\d+)\s+—.*?\|\s*\*\*Estado\*\*\s*\|\s*([
     if m.group(1) in casos:
         casos[m.group(1)]["planificado"] = not m.group(2).strip().lower().startswith("implementado")
 
+# los retirados del alcance (comisiones y ganancias del chofer) siguen en el catálogo con esa marca, pero no son
+# casos vigentes: no se dibujan ni se cuentan en ningún diagrama
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from cu_esenciales import RETIRADOS_ALCANCE
+for _r in RETIRADOS_ALCANCE:
+    casos.pop(_r, None)
+
 SS = {}
 for v in casos.values():
     SS.setdefault(v["ss"], v["ssnom"])
@@ -124,7 +131,7 @@ BASES_MAX_POR_SS = {"SS-07": 16}
 # casos de dos partes se dibuja en cada una, para que la flecha nunca quede sin destino.
 PARTES = {
   "SS-07": [("Choferes", "Choferes",
-             {"CU-031", "CU-032", "CU-033", "CU-034", "CU-035", "CU-049", "CU-096", "CU-097",
+             {"CU-031", "CU-032", "CU-033", "CU-034", "CU-035", "CU-096", "CU-097",
               "CU-109", "CU-110", "CU-115", "CU-138", "CU-267", "CU-271"}),
             ("Vehiculos", "Vehículos y vencimientos",
              {"CU-051", "CU-105", "CU-111", "CU-112", "CU-113", "CU-114", "CU-136", "CU-137",

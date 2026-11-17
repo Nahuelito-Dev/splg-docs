@@ -15,6 +15,7 @@
 | Define | Distribuidora | PuestoDeTrabajo | Composición | 1 a 0..* | Parte lógica de |
 | Comercializa | Distribuidora | Producto | Asociación | 1 a 0..* | Usa o gestiona |
 | Posee | Distribuidora | Envase | Asociación | 1 a 0..* | Es propiedad de |
+| Posee | Distribuidora | Vehiculo | Asociación | 1 a 0..* | Es propiedad de |
 | Gestiona | Distribuidora | Pedido | Asociación | 1 a 0..* | Usa o gestiona |
 | Define | Distribuidora | ZonaCobertura | Composición | 1 a 0..* | Parte lógica de |
 | Define | Distribuidora | FranjaHoraria | Composición | 1 a 0..* | Parte lógica de |
@@ -60,8 +61,8 @@
 | Genera | LoteRecorrido | OfertaLote | Composición | 1 a 0..* | Está relacionado con una transacción |
 | Se dirige a | OfertaLote | Chofer | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Acepta | Chofer | LoteRecorrido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
-| Tiene registrado | Chofer | Vehiculo | Asociación (clase de asociación AsignacionVehiculo) | 1 a 0..* | Usa o gestiona |
 | Usa | Chofer | Vehiculo | Asociación (clase de asociación AsignacionVehiculo) | 0..* a 0..* | Usa o gestiona |
+| Tiene registrado | Chofer | Vehiculo | Asociación | 0..1 a 0..* | Usa o gestiona |
 | Se ubica en | Chofer | UbicacionGPS | Asociación | 1 a 0..1 | Descripción para |
 | Genera | PlanMantenimiento | TareaMantenimiento | Asociación | 1 a 0..* | Es un registro de |
 | Habilita | TareaMantenimiento | Vehiculo | Asociación | 0..* a 0..1 | Está relacionado con una transacción |

@@ -1,7 +1,7 @@
 # Documento de Análisis — Fase II
 **Proyecto:** SPLG – Sistema de Pedidos y Logística de Garrafas de Gas
 **Versión:** 2.0
-**Fecha:** 01/11/2026
+**Fecha:** 17/11/2026
 **Realizado por:** Nahuel Wagner
 **Institución:** FCEQyN – UNaM
 **Metodología:** Proceso Unificado (PU)
@@ -17,16 +17,16 @@
 - Figura 5 — Modelo conceptual: flota y choferes
 - Figura 6 — Modelo conceptual: envases y catálogo
 - Figura 7 — Modelo conceptual: stock, carga del camión y posventa
-- Figura 8 — DSS DSS CU-001: Iniciar Sesión
-- Figura 9 — DSS DSS CU-002: Registrarse como Cliente
-- Figura 10 — DSS DSS CU-005: Crear un Pedido
-- Figura 11 — DSS DSS CU-008: Cancelar un Pedido (Cliente)
-- Figura 12 — DSS DSS CU-015: Aceptar un Pedido
-- Figura 13 — DSS DSS CU-078: Consultar el Código de Entrega (QR del chofer)
-- Figura 14 — DSS DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)
-- Figura 15 — DSS DSS CU-301: Confirmar una Transferencia
-- Figura 16 — DSS DSS CU-048: Procesar el Pago con MercadoPago
-- Figura 17 — DSS DSS CU-025: Resolver un Reclamo
+- Figura 8 — DSS CU-001: Iniciar Sesión
+- Figura 9 — DSS CU-002: Registrarse como Cliente
+- Figura 10 — DSS CU-005: Crear un Pedido
+- Figura 11 — DSS CU-008: Cancelar un Pedido (Cliente)
+- Figura 12 — DSS CU-015: Aceptar un Pedido
+- Figura 13 — DSS CU-078: Consultar el Código de Entrega (QR del chofer)
+- Figura 14 — DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)
+- Figura 15 — DSS CU-301: Confirmar una Transferencia
+- Figura 16 — DSS CU-048: Procesar el Pago con MercadoPago
+- Figura 17 — DSS CU-025: Resolver un Reclamo
 
 ---
 
@@ -36,6 +36,7 @@
 |-----|-------|-------------|-------|
 | 0 | 17/04/2026 | Versión inicial. | Nahuel Wagner |
 | 1 | 01/11/2026 | Se reduce el análisis a los 21 casos de uso esenciales; se modela el comportamiento de los 10 con interacción del actor. El documento sigue el orden de la plantilla de la cátedra: modelo conceptual, comportamiento del sistema y glosario. | Nahuel Wagner |
+| 2 | 17/11/2026 | Revisión final para la entrega. | Nahuel Wagner |
 
 ---
 
@@ -45,7 +46,7 @@ El modelo conceptual (en Larman, modelo de dominio) representa los conceptos del
 
 ### 1.1 Lista de Conceptos Candidatos
 
-La lista de categorías es la de Larman (*UML y Patrones*). Cada categoría trae los conceptos que terminaron siendo idóneos (§1.2).
+La lista de categorías es la de Larman (*UML y Patrones*). Cada categoría trae los conceptos que terminaron siendo idóneos (ver «Lista de Conceptos Idóneos»).
 
 | Categoría del Concepto | Ejemplos |
 |-----------|----------------------|
@@ -67,7 +68,7 @@ La lista de categorías es la de Larman (*UML y Patrones*). Cada categoría trae
 
 | Candidato | Descartado porque |
 |---|---|
-| Garrafa | Ambiguo entre dos idóneos distintos: **Envase** (el botellón físico con número de serie) y **Producto** (el tipo comercializado). Ver la nota sobre Producto y Envase en §1.3. |
+| Garrafa | Ambiguo entre dos idóneos distintos: **Envase** (el botellón físico con número de serie) y **Producto** (el tipo comercializado). Ver la nota sobre Producto y Envase en «Relaciones entre los Conceptos». |
 | Entrega | No agrega información propia: es uno de los valores del atributo estado de **Pedido** («en camino», «entregado»). |
 | Catálogo | Es el conjunto de **Producto** de una **Distribuidora** en un momento dado; no tiene identidad ni atributos propios. |
 
@@ -83,7 +84,7 @@ El sistema opera para varias distribuidoras a la vez, con los datos de cada una 
 |---|----------|---------|-----------|-----------|
 | 1 | **Distribuidora** | Distribuidora | Empresa comercializadora de garrafas que opera dentro del sistema. Unidad de aislamiento de los datos. | Cada empresa dada de alta en la plataforma. |
 | 2 | **Usuario** | Usuario | Persona registrada en el sistema con un rol asignado. | Todos los clientes, choferes y administradores. |
-| 3 | **Rol** | Rol | Conjunto de permisos que determina qué puede hacer un usuario. | Cliente, chofer, administrador y administrador general, además de un rol técnico de pruebas (`qa_pruebas`) que solo existe en los ambientes de prueba. |
+| 3 | **Rol** | Rol | Conjunto de permisos que determina qué puede hacer un usuario. | Cliente, chofer, administrador y administrador general. |
 | 4 | **Administrador** | Administrador | Perfil extendido de un Usuario que gestiona la operación. | Operadores internos con acceso al Panel Web. |
 | 5 | **ConfiguracionModulo** | ConfiguracionModulo | Parámetros con que una distribuidora ajusta un proceso automático. | Una por módulo inteligente y distribuidora. |
 | 6 | **AsientoAuditoria** | AsientoAuditoria | Constancia inmutable de una operación que modificó datos: quién, qué, cuándo, desde dónde y con qué resultado. | Cada alta, modificación o baja, exitosa o fallida. |
@@ -152,7 +153,7 @@ La multiplicidad usa la notación UML (`1`, `0..1`, `0..*`, `1..*`): nunca `N`, 
 | A está relacionado con una transacción B | ZonaCobertura – Pedido (el recargo que aplicó) |
 | A es propiedad de / está en poder de B | Envase – Cliente |
 
-La tabla completa (88 asociaciones y 8 especializaciones) indica la categoría de cada una en su columna. Chofer y Vehiculo se relacionan de dos maneras distintas: **tiene registrado** es el vehículo que figura a nombre del chofer y es permanente, mientras que **usa** es el uso efectivo en un momento dado y es una asociación con clase de asociación, AsignacionVehiculo, que guarda el período de cada uso.
+La tabla completa (89 asociaciones y 8 especializaciones) indica la categoría de cada una en su columna. Chofer y Vehiculo se relacionan de dos maneras distintas: **tiene registrado** es el vehículo que figura a nombre del chofer y es permanente, mientras que **usa** es el uso efectivo en un momento dado y es una asociación con clase de asociación, AsignacionVehiculo, que guarda el período de cada uso.
 
 | Relación | Concepto A | Concepto B | Tipo | Multiplicidad | Categoría (Larman) |
 |----------|-----------|-----------|------|---------------|---------------------|
@@ -170,6 +171,7 @@ La tabla completa (88 asociaciones y 8 especializaciones) indica la categoría d
 | Emplea | Distribuidora | Empleado | Asociación | 1 a 0..* | Es miembro de / empleado de |
 | Comercializa | Distribuidora | Producto | Asociación | 1 a 0..* | Usa o gestiona |
 | Posee | Distribuidora | Envase | Asociación | 1 a 0..* | Es propiedad de |
+| Posee | Distribuidora | Vehiculo | Asociación | 1 a 0..* | Es propiedad de |
 | Gestiona | Distribuidora | Pedido | Asociación | 1 a 0..* | Usa o gestiona |
 | Define | Distribuidora | ZonaCobertura | Composición | 1 a 0..* | Parte lógica de |
 | Define | Distribuidora | FranjaHoraria | Composición | 1 a 0..* | Parte lógica de |
@@ -211,8 +213,8 @@ La tabla completa (88 asociaciones y 8 especializaciones) indica la categoría d
 | Genera | LoteRecorrido | OfertaLote | Composición | 1 a 0..* | Está relacionado con una transacción |
 | Se dirige a | OfertaLote | Chofer | Asociación | 0..* a 1 | Está relacionado con una transacción |
 | Acepta | Chofer | LoteRecorrido | Asociación | 0..1 a 0..* | Está relacionado con una transacción |
-| Tiene registrado | Chofer | Vehiculo | Asociación (clase de asociación AsignacionVehiculo) | 1 a 0..* | Usa o gestiona |
 | Usa | Chofer | Vehiculo | Asociación (clase de asociación AsignacionVehiculo) | 0..* a 0..* | Usa o gestiona |
+| Tiene registrado | Chofer | Vehiculo | Asociación | 0..1 a 0..* | Usa o gestiona |
 | Se ubica en | Chofer | UbicacionGPS | Asociación | 1 a 0..1 | Descripción para |
 | Genera | PlanMantenimiento | TareaMantenimiento | Asociación | 1 a 0..* | Es un registro de |
 | Habilita | TareaMantenimiento | Vehiculo | Asociación | 0..* a 0..1 | Está relacionado con una transacción |
@@ -267,7 +269,7 @@ Los atributos derivados —los que se calculan a partir de otros datos y no se p
 |----------|------------------------|
 | **Distribuidora** | nombre: Nombre comercial, el que ve el cliente. |
 | **Distribuidora** | razón social: Nombre legal de la empresa comercializadora. |
-| **Distribuidora** | CUIT: Identificación tributaria de la empresa. No funciona como clave —hay distribuidoras con el mismo valor—; corregirlo es una tarea del modelo de datos, no del dominio. |
+| **Distribuidora** | CUIT: Identificación tributaria de la empresa. |
 | **Distribuidora** | estado: Si la distribuidora puede operar en la plataforma o está suspendida. |
 | **Usuario** | nombre: Nombre completo. |
 | **Usuario** | correo: Correo único. Identifica al usuario en la autenticación. |
@@ -527,9 +529,9 @@ Llevan diagrama los casos con interacción del actor, donde el sistema reacciona
 **Actor:** Cliente (ACT-01), Chofer (ACT-02), Administrador (ACT-03)  
 **Operación del sistema:** `iniciarSesion(correo, contrasena)`
 
-![DSS DSS CU-001: Iniciar Sesión](../diagramas/png/DSS_CU-001_Iniciar-Sesion.png)
+![DSS CU-001: Iniciar Sesión](../diagramas/png/DSS_CU-001_Iniciar-Sesion.png)
 
-**Figura 8 — DSS DSS CU-001: Iniciar Sesión**
+**Figura 8 — DSS CU-001: Iniciar Sesión**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -567,9 +569,9 @@ sequenceDiagram
 **Actor:** Cliente (ACT-01)  
 **Operación del sistema:** `registrarse(nombreCompleto, correo, telefono, contrasena, datosDelCliente)`
 
-![DSS DSS CU-002: Registrarse como Cliente](../diagramas/png/DSS_CU-002_Registrarse-Como-Cliente.png)
+![DSS CU-002: Registrarse como Cliente](../diagramas/png/DSS_CU-002_Registrarse-Como-Cliente.png)
 
-**Figura 9 — DSS DSS CU-002: Registrarse como Cliente**
+**Figura 9 — DSS CU-002: Registrarse como Cliente**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -604,9 +606,9 @@ sequenceDiagram
 **Actor:** Cliente (ACT-01), Administrador (ACT-03)  
 **Operación del sistema:** `crearPedido(items, direccionId, franjaId, fechaAgendada, metodoDePago)`
 
-![DSS DSS CU-005: Crear un Pedido](../diagramas/png/DSS_CU-005_Crear-un-Pedido.png)
+![DSS CU-005: Crear un Pedido](../diagramas/png/DSS_CU-005_Crear-un-Pedido.png)
 
-**Figura 10 — DSS DSS CU-005: Crear un Pedido**
+**Figura 10 — DSS CU-005: Crear un Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -663,9 +665,9 @@ sequenceDiagram
 **Actor:** Cliente (ACT-01)  
 **Operación del sistema:** `cancelarMiPedido(pedidoId, motivo)`
 
-![DSS DSS CU-008: Cancelar un Pedido (Cliente)](../diagramas/png/DSS_CU-008_Cancelar-un-Pedido.png)
+![DSS CU-008: Cancelar un Pedido (Cliente)](../diagramas/png/DSS_CU-008_Cancelar-un-Pedido.png)
 
-**Figura 11 — DSS DSS CU-008: Cancelar un Pedido (Cliente)**
+**Figura 11 — DSS CU-008: Cancelar un Pedido (Cliente)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -712,9 +714,9 @@ sequenceDiagram
 **Actor:** Chofer (ACT-02)  
 **Operación del sistema:** `aceptarPedido(pedidoId)`
 
-![DSS DSS CU-015: Aceptar un Pedido](../diagramas/png/DSS_CU-015_Aceptar-un-Pedido.png)
+![DSS CU-015: Aceptar un Pedido](../diagramas/png/DSS_CU-015_Aceptar-un-Pedido.png)
 
-**Figura 12 — DSS DSS CU-015: Aceptar un Pedido**
+**Figura 12 — DSS CU-015: Aceptar un Pedido**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -760,9 +762,9 @@ sequenceDiagram
 **Actor:** Chofer (ACT-02), Administrador (ACT-03)  
 **Operación del sistema:** `obtenerCodigoDeEntrega(pedidoId)`
 
-![DSS DSS CU-078: Consultar el Código de Entrega (QR del chofer)](../diagramas/png/DSS_CU-078_Consultar-El-Codigo-De-Entrega.png)
+![DSS CU-078: Consultar el Código de Entrega (QR del chofer)](../diagramas/png/DSS_CU-078_Consultar-El-Codigo-De-Entrega.png)
 
-**Figura 13 — DSS DSS CU-078: Consultar el Código de Entrega (QR del chofer)**
+**Figura 13 — DSS CU-078: Consultar el Código de Entrega (QR del chofer)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -799,9 +801,9 @@ sequenceDiagram
 **Actor:** Cliente (ACT-01), Administrador (ACT-03)  
 **Operación del sistema:** `confirmarEntregaConCodigo(pedidoId, codigo, motivo)`
 
-![DSS DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)](../diagramas/png/DSS_CU-079_Confirmar-una-Entrega-Escaneando-el-QR.png)
+![DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)](../diagramas/png/DSS_CU-079_Confirmar-una-Entrega-Escaneando-el-QR.png)
 
-**Figura 14 — DSS DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)**
+**Figura 14 — DSS CU-079: Confirmar una Entrega Escaneando el QR (cliente)**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -851,9 +853,9 @@ sequenceDiagram
 **Actor:** Administrador (ACT-03)  
 **Operación del sistema:** `confirmarTransferencia(pedidoId, recibida, motivo)`
 
-![DSS DSS CU-301: Confirmar una Transferencia](../diagramas/png/DSS_CU-301_Confirmar-una-Transferencia.png)
+![DSS CU-301: Confirmar una Transferencia](../diagramas/png/DSS_CU-301_Confirmar-una-Transferencia.png)
 
-**Figura 15 — DSS DSS CU-301: Confirmar una Transferencia**
+**Figura 15 — DSS CU-301: Confirmar una Transferencia**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -890,9 +892,9 @@ sequenceDiagram
 **Actor:** MercadoPago (ACT-06)  
 **Operación del sistema:** `notificarResultadoDePago(tipoDeNotificacion, identificadorDelPago, firma)`
 
-![DSS DSS CU-048: Procesar el Pago con MercadoPago](../diagramas/png/DSS_CU-048_Procesar-el-Pago-con-MercadoPago.png)
+![DSS CU-048: Procesar el Pago con MercadoPago](../diagramas/png/DSS_CU-048_Procesar-el-Pago-con-MercadoPago.png)
 
-**Figura 16 — DSS DSS CU-048: Procesar el Pago con MercadoPago**
+**Figura 16 — DSS CU-048: Procesar el Pago con MercadoPago**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -940,9 +942,9 @@ sequenceDiagram
 **Actor:** Administrador (ACT-03)  
 **Operación del sistema:** `resolverReclamo(reclamoId, resolucion, estadoFinal)`
 
-![DSS DSS CU-025: Resolver un Reclamo](../diagramas/png/DSS_CU-025_Resolver-un-Reclamo.png)
+![DSS CU-025: Resolver un Reclamo](../diagramas/png/DSS_CU-025_Resolver-un-Reclamo.png)
 
-**Figura 17 — DSS DSS CU-025: Resolver un Reclamo**
+**Figura 17 — DSS CU-025: Resolver un Reclamo**
 
 <details><summary>Ver código del diagrama</summary>
 
@@ -976,7 +978,7 @@ sequenceDiagram
 
 ### 2.2 Contratos de Operaciones del Sistema
 
-Un contrato describe el efecto de una operación del sistema sobre el modelo conceptual de §1. Sus **postcondiciones** se expresan en esos términos: la instancia que se creó o se eliminó, la asociación que se formó o se rompió, el atributo que se modificó. Hay un contrato por cada operación que cambia el estado del sistema en los diez casos de uso con diagrama de secuencia. Las dos operaciones de consulta, `iniciarSesion` (CU-001) y `obtenerCodigoDeEntrega` (CU-078), no llevan contrato: no crean, eliminan ni modifican nada del modelo conceptual.
+Un contrato describe el efecto de una operación del sistema sobre el modelo conceptual (ver «Modelo Conceptual»). Sus **postcondiciones** se expresan en esos términos: la instancia que se creó o se eliminó, la asociación que se formó o se rompió, el atributo que se modificó. Hay un contrato por cada operación que cambia el estado del sistema en los diez casos de uso con diagrama de secuencia. Las dos operaciones de consulta, `iniciarSesion` (CU-001) y `obtenerCodigoDeEntrega` (CU-078), no llevan contrato: no crean, eliminan ni modifican nada del modelo conceptual.
 
 #### Crítico Contrato: `registrarse()`
 
@@ -989,7 +991,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Notas** | Es la única alta pública: siempre crea un Cliente y nunca otro rol, y rechaza cualquier dato que no corresponda al registro de un cliente, como un rol o una distribuidora. Después del registro el cliente inicia sesión por separado. Se le envía un correo de bienvenida; si el envío falla, el registro queda hecho igual. Si el perfil no se puede guardar, se deshace todo y no queda ninguna cuenta a medias. |
 | **Excepciones** | Si el origen superó el máximo de registros por minuto → error de límite de solicitudes. Si falta algún dato, no tiene el formato esperado o sobra alguno → error de solicitud con el detalle del campo. Si el correo o el teléfono ya están en uso → conflicto, y no se modifica la cuenta existente. Si el proveedor de identidad rechaza la cuenta → error de solicitud y no se crea nada. |
 | **Salida** | Los datos del Usuario creado: identificador, rol, correo y perfil de cliente. |
-| **Precondiciones** | El solicitante todavía no tiene sesión iniciada y no tiene una cuenta con el mismo correo ni con el mismo teléfono. |
+| **Precondiciones** | El solicitante todavía no tiene sesión iniciada. |
 | **Postcondiciones** | Se creó una instancia de Usuario, con el rol Cliente, y una instancia de Cliente asociada a él. |
 
 #### Crítico Contrato: `crearPedido()`
@@ -1003,7 +1005,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Notas** | Lo invoca el Cliente con los ítems de su Carrito o el Administrador, por teléfono y a nombre de un Cliente, con los ítems que informa. Los precios, las promociones y los recargos los calcula siempre el sistema, nunca la aplicación. El total incluye las promociones por volumen, el recargo de la zona de cobertura y, si el pago es en línea (MercadoPago o transferencia), un recargo del 10 %. Si el medio de pago es MercadoPago, el sistema registra el intento de cobro y le pide a la pasarela el enlace de pago; el pedido no se ofrece a ningún chofer hasta que la pasarela confirme el cobro. Si el cliente reintenta con la misma clave de solicitud y los mismos datos, no se crea un segundo pedido. Al confirmarse el pedido se avisa al cliente y al panel de administración; si el aviso falla, el pedido queda creado igual. |
 | **Excepciones** | Si un Cliente pide un pedido a nombre de otro, o si el pedido sale del Carrito y quien opera no es el Cliente → acceso denegado. Si el pedido sale del Carrito y trae además ítems, no trae ningún ítem, repite una misma garrafa en dos renglones, trae una fecha agendada anterior a hoy, o es express y trae franja o fecha → error de solicitud. Si el cliente o la dirección no existen → recurso no encontrado. Si la dirección está fuera de todas las zonas de cobertura → error de solicitud (domicilio no cubierto), antes de tocar el stock. Si el pedido es express y la modalidad dejó de estar disponible para la dirección → conflicto, con el motivo. Si la franja no existe, está inactiva, no tiene cupo para esa fecha o es de hoy y ya terminó → error de solicitud (franja no disponible). Si un producto no existe → recurso no encontrado. Si un producto no es de la distribuidora → error de solicitud. Si el stock de algún ítem es insuficiente → la operación se revierte por completo, el pedido no se crea y se informa el producto. Si dos pedidos compiten por el mismo stock → la operación se reintenta completa y, agotados los reintentos, se informa un conflicto. Si se reintenta la misma solicitud con datos distintos → la operación no se ejecuta. |
 | **Salida** | El pedido creado con sus ítems (número, total y estado pendiente) y, si corresponde, el enlace de pago. |
-| **Precondiciones** | El solicitante —el Cliente o el Administrador que carga el pedido a su nombre— está identificado. La DireccionEntrega pertenece al Cliente. Cada Producto del pedido existe y es de la Distribuidora. Si se indica una FranjaHoraria, existe, está activa y es de la Distribuidora. |
+| **Precondiciones** | El solicitante —el Cliente o el Administrador que carga el pedido a su nombre— está identificado. |
 | **Postcondiciones** | Se creó una instancia de Pedido, en estado «pendiente», asociada al Cliente que lo realizó, a la DireccionEntrega elegida y, si se indicó, a la FranjaHoraria. Si la Distribuidora tiene zonas de cobertura y una cubre la dirección, el Pedido quedó asociado a esa ZonaCobertura y guardó una copia de su nombre y de su recargo, de modo que el total queda fijo aunque la zona se edite después. Los atributos subtotal de ítems, recargo de zona y recargo por medio de pago del Pedido tomaron sus valores. Se crearon las instancias de ItemPedido, cada una asociada a su Producto, con el precio unitario —con las promociones por volumen ya aplicadas— y el subtotal. El atributo stock de cada Producto pedido disminuyó en la cantidad pedida. Se creó una instancia de CambioEstadoPedido asociada al Pedido, sin estado de origen y con estado de destino «pendiente». Si los ítems salieron del Carrito, se eliminaron las instancias de ItemCarrito del Cliente. Si el medio de pago es MercadoPago, se creó una instancia de Pago, en estado «pendiente», asociada al Pedido, con el importe del intento y el enlace de pago. Si el medio de pago no es MercadoPago y hubo un Chofer elegible, se creó una instancia de OfertaDespacho asociada al Pedido y dirigida al Chofer disponible más cercano. |
 
 #### Importante Contrato: `cancelarMiPedido()`
@@ -1017,7 +1019,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Notas** | Lo inicia el Cliente sobre un pedido propio. El cambio de estado y la restitución del stock se confirman juntos, con el pedido reservado mientras se opera: dos cancelaciones simultáneas no devuelven el stock dos veces. Si el pedido tenía un pago aprobado por una pasarela, el sistema pide su reintegro. Se avisa al cliente, al panel de administración y, si el pedido tenía un Chofer asociado, a ese Chofer. Si la solicitud se repite por un corte de conexión, no se vuelve a procesar. El motivo es obligatorio y de hasta 500 caracteres. |
 | **Excepciones** | Si el pedido no existe, es de otro cliente o es de otra distribuidora → recurso no encontrado, sin revelar que existe. Si el pedido ya está entregado o cancelado → error de solicitud (no se puede cancelar un pedido finalizado). Si el pedido ya está en camino → error de solicitud (contactar al soporte). Si el motivo falta, está en blanco o supera los 500 caracteres → error de solicitud. Si se repite la misma solicitud con datos distintos → la operación no se ejecuta. |
 | **Salida** | El pedido con estado cancelado y el motivo registrado. |
-| **Precondiciones** | El Cliente está identificado y el Pedido es suyo. El estado del Pedido es «reservado», «pendiente» o «aceptado». El motivo está informado. |
+| **Precondiciones** | El Cliente está identificado en su aplicación. |
 | **Postcondiciones** | El atributo estado de la instancia de Pedido pasó a «cancelado», con el motivo de la cancelación. El cambio quedó registrado en el historial de estados del Pedido. Por cada ItemPedido, el atributo stock del Producto referenciado aumentó en la cantidad reservada. Si el Pedido tenía un pago aprobado por una pasarela, se pidió su reintegro. |
 
 #### Crítico Contrato: `aceptarPedido()`
@@ -1028,10 +1030,10 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Responsabilidades** | Asignar el pedido ofrecido al chofer que lo acepta, pasarlo a «aceptado», generar su código de entrega y avisar al cliente. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-015. Funciones: IRQ-02, IRQ-03, OBJ-02, OBJ-03. |
-| **Notas** | La identidad del chofer sale de su sesión: se ignora cualquier otro identificador de repartidor que venga en el pedido. Un administrador sí puede indicar a qué chofer asignarlo. Si el pedido ya tiene otro chofer asignado, una aceptación tardía no lo desplaza ni regenera el código. Si acepta el mismo chofer que ya lo tiene, la operación no cambia nada y conserva el código y el momento de aceptación. El pedido guarda una copia de la patente, la marca y el modelo del vehículo del chofer. Se avisa al cliente, con el nombre y el teléfono del chofer, y al panel de administración, y se les avisa a los demás choferes que su oferta ya no está vigente. |
-| **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido ya tiene asignado a otro chofer → acceso denegado. Si el pedido ya está entregado o cancelado → error de solicitud (transición no permitida). Si quien acepta no tiene perfil de repartidor o es de otra distribuidora → error de solicitud (repartidor no encontrado). Si el chofer está deshabilitado o no está validado → error de solicitud. Si el chofer no tiene vehículo en uso, o su licencia o ese vehículo tienen documentación vencida → error de solicitud (no se puede asignar, con el motivo). Si el chofer no puede recibir pedidos por su carga de camión → error de solicitud, con el motivo. Si el solicitante es el Administrador General y no indica la distribuidora → error de solicitud. |
+| **Notas** | La identidad del chofer sale de su sesión: se ignora cualquier otro identificador de repartidor que venga en el pedido. Si el pedido ya tiene otro chofer asignado, una aceptación tardía no lo desplaza ni regenera el código. Si acepta el mismo chofer que ya lo tiene, la operación no cambia nada y conserva el código y el momento de aceptación. El pedido guarda una copia de la patente, la marca y el modelo del vehículo del chofer. Se avisa al cliente, con el nombre y el teléfono del chofer, y al panel de administración, y se les avisa a los demás choferes que su oferta ya no está vigente. |
+| **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido ya tiene asignado a otro chofer → acceso denegado. Si el pedido ya está entregado o cancelado → error de solicitud (transición no permitida). Si quien acepta no tiene perfil de repartidor o es de otra distribuidora → error de solicitud (repartidor no encontrado). Si el chofer está deshabilitado o no está validado → error de solicitud. Si el chofer no tiene vehículo en uso, o su licencia o ese vehículo tienen documentación vencida → error de solicitud (no se puede asignar, con el motivo). Si el chofer no puede recibir pedidos por su carga de camión → error de solicitud, con el motivo. |
 | **Salida** | El pedido con estado aceptado, los datos de entrega y el código de entrega. |
-| **Precondiciones** | El Pedido tiene estado «pendiente». El Chofer está identificado, conectado y es de la distribuidora del Pedido. |
+| **Precondiciones** | El Chofer está identificado en su aplicación y recibió la oferta del Pedido. |
 | **Postcondiciones** | Se formó la asociación entre el Pedido y el Chofer que lo aceptó. El atributo estado del Pedido pasó a «aceptado», con el momento de aceptación y un código de entrega. El cambio quedó registrado en el historial de estados del Pedido. El estado de la OfertaDespacho del Chofer pasó a «aceptada». Las OfertaDespacho abiertas a otros Choferes pasaron a «retiradas» y no cuentan como intento. El Pedido guardó una copia de la patente, la marca y el modelo del vehículo en uso del Chofer. |
 
 #### Crítico Contrato: `confirmarEntregaConCodigo()`
@@ -1045,7 +1047,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Notas** | La confirma el Cliente titular del pedido, que escanea el QR que le muestra el chofer o escribe el código que este le dicta, o un administrador, que debe dejar el motivo por escrito (de 10 a 500 caracteres) y que no tiene la prueba del escaneo; el Administrador General indica además la distribuidora. El código se compara de una forma que no da pistas sobre cuán cerca estuvo el intento. Cada código incorrecto del Cliente suma un intento fallido al Pedido; el Administrador no suma intentos ni se bloquea. Una segunda confirmación sobre un pedido ya entregado no reprocesa nada y muestra el pedido tal cual. Entregar no es cobrar: si el pago es en efectivo, sigue pendiente. El descuento del stock físico y el cambio de estado de los envases no revierten la entrega si fallan: lo pendiente queda para la conciliación. Se avisa al cliente y a los administradores. |
 | **Excepciones** | Si el código falta o viene vacío, o se repite el envío con datos distintos → error de validación. Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el pedido es de otro cliente → acceso denegado. Si el pedido está en un estado distinto de «en camino» y de «entregado» → error de solicitud. Si el código está mal leído o no tiene el formato de seis dígitos → error de solicitud (código mal leído), y si lo envió un Cliente suma un intento fallido al Pedido. Si el Cliente envía el código de otro pedido suyo que también está en camino → error de solicitud (código de otro pedido), con el mismo intento fallido. Si el código no coincide o el pedido no tiene código → error de solicitud (código de entrega inválido), y si lo envió un Cliente suma un intento fallido al Pedido. Si el Pedido tiene cinco intentos fallidos → conflicto (demasiados intentos), incluso con el código correcto, hasta que se genere uno nuevo. Si confirma un administrador y el motivo falta o no tiene entre 10 y 500 caracteres → error de solicitud; esta comprobación es posterior a la del código. Si el pedido ya está entregado → no es un error: se muestra sin reprocesar. Si el Administrador General no indica la distribuidora → error de solicitud. |
 | **Salida** | El pedido con estado entregado. |
-| **Precondiciones** | El solicitante es el Cliente titular del Pedido, o un Administrador o el Administrador General. El Pedido tiene estado «en camino» y un código de entrega desde su aceptación, y no está bloqueado por intentos fallidos. El chofer está en el domicilio mostrando el QR. |
+| **Precondiciones** | El solicitante está identificado: el Cliente en su aplicación, o un Administrador o el Administrador General en el panel. |
 | **Postcondiciones** | El atributo estado del Pedido pasó a «entregado», con el momento de la entrega. Se creó una instancia de CambioEstadoPedido asociada al Pedido y al Usuario que confirmó, con el estado anterior y el nuevo, y con el motivo si lo confirmó un administrador. Cada Envase despachado en el Pedido pasó a estar en poder del Cliente, y se creó su MovimientoEnvase. Se descontó el stock físico de lo entregado: las garrafas llenas salieron de la UbicacionDeStock del camión o del depósito y los envases vacíos recolectados entraron en la misma. |
 
 #### Importante Contrato: `confirmarTransferencia()`
@@ -1059,7 +1061,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Notas** | Confirmar vale desde «pendiente» o desde «fallido» (llegó después de marcarla no recibida); marcar como no recibida vale sólo desde «pendiente» y con el pedido entregado. Si la decisión ya estaba tomada, no cambia nada y se muestra el pedido. El motivo, de 10 a 500 caracteres, queda en la nota de resolución y en el historial de estados. Una transferencia sin confirmar no suma a las ventas. Mientras se opera, el pedido queda reservado para que nadie lo cambie a la vez. El Administrador General indica la distribuidora sobre la que opera. |
 | **Excepciones** | Si el pedido no existe o es de otra distribuidora → recurso no encontrado. Si el Administrador General no indica la distribuidora, no se indica si llegó o no, el motivo falta o no tiene entre 10 y 500 caracteres, o el pedido no se paga por transferencia o está cancelado → error de solicitud. Si la transferencia ya estaba pagada y se la quiere marcar como no recibida, o se la quiere marcar como no recibida sin haber entregado el pedido → conflicto. Si se repite el mismo envío con datos distintos → la operación no se ejecuta. |
 | **Salida** | El pedido con el cobro resuelto. |
-| **Precondiciones** | El solicitante es Administrador o Administrador General. El Pedido es de su Distribuidora, se paga por transferencia y no está cancelado. |
+| **Precondiciones** | El solicitante es Administrador o Administrador General y está identificado en el panel. |
 | **Postcondiciones** | El atributo estado del cobro del Pedido pasó a «pagado» o a «fallido» según la decisión, y sus atributos cobro resuelto el y nota de resolución del cobro tomaron el momento y el motivo; se formó la asociación entre el Pedido y el Usuario administrador (resolvió el cobro de). Si el estado pasó a «pagado», el atributo cobro confirmado el tomó el mismo momento y se formó también la asociación con ese Usuario (confirmó el cobro de). Se creó una instancia de CambioEstadoPedido asociada al Pedido y al Usuario administrador, con el mismo estado de origen y de destino y el motivo. |
 
 #### Crítico Contrato: `notificarResultadoDePago()`
@@ -1073,7 +1075,7 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Notas** | La pasarela recibe siempre una respuesta de recibido, con o sin procesamiento, para que no reintente en bucle. El sistema nunca confía en el contenido del aviso: consulta el pago real a la pasarela, con un tiempo máximo de espera de cinco segundos. Si el mismo aviso llega más de una vez no produce efectos nuevos, y el aviso al cliente sale sólo en la primera confirmación. Si el pedido es una reserva, el pago corresponde a la seña y el pedido no se despacha, porque la reserva la activa el sistema el día agendado. Un pago rechazado o cancelado sólo se registra: el pedido queda pendiente con su stock reservado y el cliente no recibe aviso. |
 | **Excepciones** | Si la firma no se puede comprobar, o falta la clave configurada → se descarta sin procesar y no se revela si el pago o el pedido existen. Si el tipo de aviso no es de pago, falta el identificador, o el pago no trae referencia a un pedido → se ignora. Si la consulta del pago a la pasarela falla o supera el tiempo de espera → se aborta sin tocar el pedido. Si la referencia no corresponde a ningún pedido → se registra la advertencia y se corta. Si el pedido ya está cancelado o entregado → se registra el pago y no se reactiva el pedido. Si el pago ya estaba aprobado y llega un aviso atrasado como pendiente, rechazado o cancelado → se ignora: un pago aprobado sólo puede pasar a devuelto. Si la pasarela aprueba un importe distinto del esperado → el pago queda marcado, se deja una alerta y el pedido no se da por pagado ni se despacha. Si falla el aviso al cliente o el despacho → se registra el error y el pago no se revierte. |
 | **Salida** | Confirmación de recibido hacia la pasarela. |
-| **Precondiciones** | El aviso proviene de la pasarela. Existe un Pedido con medio de pago MercadoPago y un Pago pendiente referido a él. |
+| **Precondiciones** | Ninguna: el aviso llega sin sesión, y su autenticidad y el pedido al que se refiere se comprueban dentro de la operación (ver Excepciones). |
 | **Postcondiciones** | El atributo estado del Pago tomó el que informó la pasarela (aprobado, rechazado, cancelado, devuelto o pendiente) y se le asignó el identificador de pago de la pasarela. Si el Pago fue aprobado y el Pedido es una reserva, el atributo seña pagada del Pedido pasó a verdadero. Si fue aprobado y el Pedido es un pedido común, el atributo estado del cobro del Pedido pasó a «pagado» y se creó una instancia de OfertaDespacho dirigida al Chofer más cercano. |
 
 #### Importante Contrato: `resolverReclamo()`
@@ -1084,10 +1086,10 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Responsabilidades** | Resolver o rechazar un reclamo pendiente o en proceso, con una nota de resolución obligatoria. |
 | **Tipo** | Sistema |
 | **Referencias cruzadas** | Casos de uso: CU-025. Funciones: IRQ-06, OBJ-04, OBJ-05. |
-| **Notas** | El cambio de estado se valida contra las reglas del reclamo: pendiente y en proceso admiten resolución directa; uno resuelto o rechazado sólo se modifica reabriéndolo antes, y repetir el estado actual también se rechaza. Dos resoluciones simultáneas se serializan: la segunda se valida contra el estado que dejó la primera. El sistema no registra quién ni cuándo resolvió, y el cliente no recibe aviso. El Administrador General indica la distribuidora sobre la que opera. |
+| **Notas** | El cambio de estado se valida contra las reglas del reclamo: pendiente y en proceso admiten resolución directa; uno resuelto o rechazado sólo se modifica reabriéndolo antes, y repetir el estado actual también se rechaza. Dos resoluciones simultáneas se serializan: la segunda se valida contra el estado que dejó la primera. El Reclamo no guarda en sus propios atributos quién ni cuándo lo resolvió: el actor y la fecha del cambio quedan en el registro de auditoría, como todo cambio de datos (NFR-10). El cliente no recibe aviso. El Administrador General indica la distribuidora sobre la que opera. |
 | **Excepciones** | Si la nota de resolución falta, está vacía o tiene sólo espacios → error de solicitud (dato obligatorio). Si el estado final no es «resuelto» ni «rechazado» → error de solicitud. Si el reclamo no existe o es de otra distribuidora → recurso no encontrado, sin distinguir los casos. Si el reclamo ya está resuelto o rechazado → error de solicitud (transición de reclamo inválida), y la nota anterior no se pisa. |
 | **Salida** | El reclamo con el estado final y la nota de resolución. |
-| **Precondiciones** | El solicitante es Administrador o Administrador General. El Reclamo existe, es de su Distribuidora y su estado es «pendiente» o «en proceso». |
+| **Precondiciones** | El solicitante es Administrador o Administrador General y está identificado en el panel. |
 | **Postcondiciones** | El atributo estado de la instancia de Reclamo pasó al estado final elegido, «resuelto» o «rechazado», y su atributo nota de resolución tomó el texto indicado. |
 
 ---
@@ -1113,7 +1115,8 @@ Un contrato describe el efecto de una operación del sistema sobre el modelo con
 | **Administrador** | Rol | Operador de una distribuidora que gestiona la operación desde el panel de administración. El Administrador General (ACT-05) puede operar sobre cualquier distribuidora. |
 | **Proveedor de identidad** | Sistema externo | Servicio externo que verifica el correo y la contraseña del usuario. El sistema no guarda contraseñas. |
 | **Pasarela de pago** | Sistema externo | Servicio externo de cobros en línea (MercadoPago). Avisa al sistema el resultado de cada pago. |
-| **Pedido** | Concepto | Solicitud de compra de un cliente. Su estado es «pendiente», «aceptado», «en camino», «entregado» o «cancelado». |
+| **Pedido** | Concepto | Solicitud de compra de un cliente. Su estado es «reservado», «pendiente», «aceptado», «en camino», «entregado» o «cancelado». |
+| **Pedido reservado** | Estado | Pedido agendado para una fecha futura con una seña en garantía. El stock queda comprometido desde la reserva y el pedido se activa el día agendado. |
 | **Pedido cancelado** | Estado | Pedido que dejó de ser válido por decisión del cliente o del administrador, o por un vencimiento automático. Devuelve el stock reservado. |
 | **Código de entrega** | Concepto | Código secreto de seis dígitos que se genera al aceptarse el pedido. El chofer lo muestra como QR (y en grande, para dictarlo) y el cliente lo escanea o lo escribe para confirmar la entrega: prueba que el chofer estuvo presente. Tiene un tope de cinco intentos incorrectos del cliente; superado, el pedido queda bloqueado hasta que el chofer asignado o un administrador genere un código nuevo. |
 | **Oferta de despacho** | Concepto | Propuesta de un pedido a un chofer determinado, con vigencia limitada. Si no la acepta, pasa al siguiente candidato. |

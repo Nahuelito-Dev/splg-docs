@@ -101,9 +101,12 @@ def vista(titulo, foco, ref, detalle=True, paquetes=False):
     # generalizaciones primero: ordenan el diagrama de arriba hacia abajo
     lin += generalizaciones(nombres, set(foco))
     lin.append("")
-    for _, _, l in asociaciones(nombres, set(foco), not detalle):
+    # PlantUML cuelga la clase de asociación del último vínculo declarado entre los dos conceptos: va justo
+    # después de «usa», para que no quede sobre «tiene registrado»
+    for a_, b_, l in asociaciones(nombres, set(foco), not detalle):
         lin.append(l)
-    lin += clase_de_asociacion(nombres)
+        if (a_, b_) == CLASE_ASOCIACION[1:] and l.endswith(": usa >"):
+            lin += clase_de_asociacion(nombres)
     if paquetes:
         lin += ["", "legend bottom right",
                 "  Vista de conjunto: sin atributos (están en la vista de cada área). Se omiten las",
@@ -150,7 +153,7 @@ def tabla():
         for h in hijos:
             fil.append(f"| Es un tipo de | {h} | {padre} | Especialización | — | — |")
     for a, ma, t, mb, b, n, cat in ASOCIACIONES:
-        if (a, b) == (CLASE_ASOCIACION[1], CLASE_ASOCIACION[2]):
+        if (a, b) == (CLASE_ASOCIACION[1], CLASE_ASOCIACION[2]) and n == "usa":
             tipo = f"Asociación (clase de asociación {CLASE_ASOCIACION[0]})"
         else:
             tipo = "Composición" if t == "*" else "Asociación"

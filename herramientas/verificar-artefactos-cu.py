@@ -121,8 +121,8 @@ n_plan = n_parcial = 0
 for cu in codigos:
     m = cat_cas[cu]
     ss = m.group(3)
-    # 1. diagrama del subsistema
-    if not any(svg_ss.get(a) == ss for a in svg_cu.get(cu, ())):
+    # 1. diagrama del subsistema (los retirados del alcance no se dibujan)
+    if cu not in RETIRADOS_ALCANCE and not any(svg_ss.get(a) == ss for a in svg_cu.get(cu, ())):
         falta(cu, f"no está en el diagrama de casos de uso de {ss}")
     # 2. CUA
     if not tiene_cua(CUA_PLAN, cu):

@@ -4,7 +4,7 @@ Las genera `generar-clases-diseno.py`; no se editan a mano.
 
 - Clases de diseño: **71**; operaciones: **158**.
 - Por papel: coleccion: 4, controlador: 6, dominio: 26, fabricación pura: 18, fachada: 12, puerto: 5.
-- Asociaciones: 90 (47 del modelo conceptual, 43 de colaboración); dependencias: 40; realizaciones: 0.
+- Asociaciones: 91 (48 del modelo conceptual, 43 de colaboración); dependencias: 40; realizaciones: 0.
 - Dependencias entre módulos: 27.
 
 | Vista | Archivo | Clases | Operaciones |
