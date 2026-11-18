@@ -1,6 +1,7 @@
 {
   "versiones": [
-    {"id": "v1", "titulo": "v1 — 24/10/2026", "ref": "v1", "congelada": true}
+    {"id": "v1", "titulo": "v1 — 24/10/2026", "ref": "v1", "congelada": true},
+    {"id": "v2", "titulo": "v2 — 18/11/2026", "ref": "v2", "congelada": true}
   ],
-  "actual": {"titulo": "v2 (en desarrollo)"}
+  "actual": {"titulo": "v3 (en desarrollo)"}
 }
