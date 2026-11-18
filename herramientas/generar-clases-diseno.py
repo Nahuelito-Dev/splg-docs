@@ -53,7 +53,7 @@ VISTAS_MODULOS = [
      ["payments", "=ConfirmPaymentUseCase", "stock", "truck-load", "claims"]),
     ("Despacho y seguimiento en tiempo real", "Despacho",
      ["=DispatchOrchestratorService", "=DispatchService", "=DispatchOfferRepositoryPort", "=RealtimeDispatchPort",
-      "route-batch", "distributor", "delivery", "gateways", "notifications"]),
+      "=RouteMatrixPort", "route-batch", "distributor", "delivery", "gateways", "notifications"]),
     ("Flota, recompra y recupero de envases", "Flota-recompra-y-recupero", ["fleet", "repurchase", "repurchase-forecast", "cylinder"]),
 ]
 
@@ -67,7 +67,7 @@ VISTAS_DOMINIO = [
      ["Pedido", "ItemPedido", "CambioEstadoPedido", "Pago", "Reclamo"],
      ["Cliente", "Chofer", "Producto", "Usuario", "Envase"]),
     ("Despacho, flota y recupero de envases", "Despacho-flota-y-recupero",
-     ["OfertaDespacho", "LoteRecorrido", "OfertaLote", "ParadaLote", "PropuestaVentanaTaller", "TareaMantenimiento",
+     ["OfertaDespacho", "LoteRecorrido", "PropuestaVentanaTaller", "TareaMantenimiento",
       "Chofer", "Vehiculo", "UbicacionGPS", "CasoRecupero", "AvisoRecupero"],
      ["Pedido", "Cliente", "Envase", "Usuario", "Distribuidora"]),
 ]

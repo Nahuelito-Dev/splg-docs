@@ -50,14 +50,27 @@ interface RealtimeDispatchPort <<puerto>> {
   + notifyDriverOrderCancelled(choferAnterior: Chofer,\n      pedido: Pedido)
   + stopTracking(choferAnterior: Chofer)
 }
-class RouteBatchService <<fachada>> {
-  + agruparPedidosPorRecorrido(): Registro
-  + candidatos(distribuidoraId: Identificador,\n      ahora: FechaHora)
-  + choferesCerca(distribuidoraId: Identificador,\n      latitud: Decimal, longitud: Decimal,\n      ocupados: Registro)
-  + distancias(pedidoIds: Identificador)
+interface RouteMatrixPort <<puerto>> {
+  + matrix(puntos: Registro)
 }
-class RouteBatchNotifier <<fabricación pura>> {
-  + ofertaAlChofer(chofer: Chofer, aviso: AvisoRecupero)
+class RoutePlanProposalService <<fachada>> {
+  + proponerHojasDeRuta(fecha: Fecha): Cadena
+}
+class RoutePlanService <<fabricación pura>> {
+  + abrir(distribuidoraId: Identificador, fecha: Fecha)
+}
+class RouteSheetDataService <<fabricación pura>> {
+  + choferes(distribuidoraId: Identificador, fecha: Fecha)
+  + deposito(distribuidoraId: Identificador)
+  + pedidosSinHoja(distribuidoraId: Identificador,\n      fecha: Fecha, hojasARehacer: Registro)
+  + vehiculos(distribuidoraId: Identificador, fecha: Fecha)
+}
+class RouteSheetCalculator <<fabricación pura>> {
+  + escenario(pedidos: Pedido[*], deposito: Moneda,\n      salida: MovimientoDeCaja,\n      parametros: Registro): Registro
+}
+class RouteSheetWriter <<fabricación pura>> {
+  + escribirOrden(manager: Registro, hojaId: Identificador,\n      pedidoIds: Identificador)
+  + recalcular(manager: Registro, hoja: Registro,\n      parametros: Registro)
 }
 class DispatchSettingsService <<fabricación pura>> {
   + obtener(distribuidora: Distribuidora): Registro
@@ -104,7 +117,11 @@ DispatchService --> "1" OrderService
 DispatchService --> "1" ScheduledTasksSettingsService
 DriversGateway --> "1" AdminGateway
 DriversGateway --> "1" CustomersGateway
-RouteBatchService --> "1" RouteBatchNotifier
+RoutePlanProposalService --> "1" RoutePlanService
+RoutePlanProposalService --> "1" RouteSheetCalculator
+RoutePlanProposalService --> "1" RouteSheetDataService
+RoutePlanProposalService --> "1" RouteSheetWriter
+RouteSheetCalculator --> "1" RouteMatrixPort
 DeliveryService ..> Chofer
 DeliveryService ..> UbicacionGPS
 DispatchOrchestratorService ..> Chofer
@@ -112,8 +129,7 @@ DispatchOrchestratorService ..> OfertaDespacho
 DispatchOrchestratorService ..> Pedido
 DispatchOrchestratorService ..> TruckLoadGateService
 DriversGateway ..> Chofer
-RouteBatchService ..> Chofer
-RouteBatchService ..> "<<create>>" LoteRecorrido
+RoutePlanProposalService ..> "<<create>>" LoteRecorrido
 
 legend bottom right
   Las clases en gris pertenecen a otra vista o a otro módulo; se muestran solo como referencia.

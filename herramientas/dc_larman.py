@@ -1663,4 +1663,7 @@ GLOSARIO.update({
     "vehiculosActivos": "Registro", "consumos": "Registro", "proyeccion": "Registro",
     "sugerencia": "Registro",
 })
+# Hojas de ruta (CU-107): argumentos y retornos de sus DSD.
+GLOSARIO.update({"hoja": "Registro", "hojasARehacer": "Registro", "puntos": "Registro", "escenario": "Registro"})
+_PLURALES |= {"hojasARehacer", "puntos"}
 _PLURALES |= {"avisos", "envasesAfuera", "pedidoIds", "proyectadas", "vehiculosActivos", "ocupados", "consumos"}

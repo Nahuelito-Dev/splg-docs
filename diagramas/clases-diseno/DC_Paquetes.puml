@@ -113,8 +113,8 @@ registro ..> firebase
 registro ..> users
 repurchase ..> repurchase_forecast
 repurchase_forecast ..> customer
-route_batch ..> delivery
 route_batch ..> order
+route_batch ..> routes
 
 legend bottom right
   Cada flecha punteada es una dependencia entre módulos: alguna clase del origen le manda

@@ -6363,49 +6363,50 @@ Cliente y Administrador General no pertenecen a ninguna distribuidora; Chofer y 
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-08 |
 | **Requisitos asociados** | IRQ-02, IRQ-03, IRQ-05 |
-| **Descripción** | El sistema arma lotes de pedidos que se pueden entregar en un mismo viaje sin incumplir el compromiso horario de ninguno ni exceder la capacidad del vehículo, y los negocia con los choferes de a uno por vez, igual que M1 negocia un pedido suelto. La diferencia es el objeto de la oferta: no un pedido, sino un recorrido con sus paradas ya ordenadas. El lote nunca se impone: ante el silencio o el rechazo generalizado, los pedidos siguen su camino individual y ninguno queda retenido. |
-| **Precondición** | Hay al menos dos pedidos programados con franja futura, de la misma distribuidora, dentro del radio de agrupación configurado y con franjas compatibles, y al menos un chofer activo con capacidad de carga disponible. |
+| **Descripción** | El sistema arma la hoja de ruta de cada chofer para el día siguiente: reparte los pedidos programados de ese día entre los vehículos disponibles agrupándolos por zona, franja horaria y capacidad de carga, ordena las paradas por la distancia real por calle y calcula la hora estimada de cada parada, la carga sugerida del vehículo y los envases a retirar. El sistema propone; el administrador revisa, ajusta y confirma. Si nadie revisa la propuesta dentro del margen configurado, el sistema la confirma solo. |
+| **Precondición** | La hoja de ruta está habilitada para la distribuidora. Hay pedidos programados para el día que se planifica y al menos un chofer con un vehículo disponible. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El proceso automático se ejecuta con la frecuencia que fija la configuración de la distribuidora. |
-| 2 | El sistema recupera los pedidos programados con franja futura y sin chofer, de la distribuidora y su zona de cobertura. |
-| 3 | El sistema agrupa los candidatos por cercanía, sin superar el radio de agrupación configurado entre paradas del mismo lote. |
-| 4 | Dentro de cada grupo, el sistema descarta las combinaciones cuyas franjas difieren más que la tolerancia configurada: el lote no puede hacer que un cliente reciba fuera de la franja que eligió. |
-| 5 | El sistema arma los lotes candidatos respetando el tamaño máximo configurado y la capacidad de carga del vehículo en uso del chofer al que se le va a ofrecer (CU-161). |
-| 6 | El sistema ordena las paradas de cada lote de modo que el recorrido cumpla las franjas comprometidas y minimice la distancia entre paradas. |
-| 7 | El sistema ofrece el lote completo al primer chofer candidato —el más cercano al punto de partida que no fue contactado por este lote—, con el detalle de las paradas, el peso total y la vigencia de la oferta. |
-| 8 | Si el chofer acepta dentro de la vigencia, el sistema le asigna los pedidos del lote en el orden establecido y cada uno sigue su ciclo de entrega normal. |
-| 9 | Si el chofer rechaza, la oferta se cierra y el lote pasa de inmediato al siguiente candidato, sin esperar el vencimiento. |
-| 10 | Si la vigencia pasa sin respuesta, la oferta se da por vencida y el lote pasa al siguiente candidato. |
-| 11 | Agotados los candidatos, el sistema deshace el lote y devuelve los pedidos al circuito individual, donde cada uno se ofrece por separado (CU-013). |
+| 1 | Se abre la planificación del día siguiente (la abre el sistema o el administrador al elegir la fecha). Desde ese momento, los pedidos programados de ese día quedan reservados para la hoja de ruta: el despacho individual (CU-013) no los ofrece. |
+| 2 | A la hora de cierre configurada (18 h por omisión), el Sistema Automático pide la propuesta; el administrador también puede pedirla antes con «Proponer». |
+| 3 | El sistema toma los pedidos programados de la fecha y los choferes con vehículo disponibles. |
+| 4 | El sistema reparte los pedidos entre los vehículos agrupándolos por zona y franja horaria, sin superar la capacidad de carga de cada vehículo ni el máximo de paradas por hoja configurado. |
+| 5 | El sistema ordena las paradas de cada hoja con la distancia y el tiempo reales por calle, respetando la franja comprometida de cada pedido. |
+| 6 | Para cada hoja, el sistema calcula la hora de salida, la hora estimada de llegada a cada parada (con los minutos de atención por parada y el factor de tránsito configurados), los kilómetros, la duración y la hora de regreso, la carga sugerida del vehículo y los envases a retirar. |
+| 7 | El sistema deja las hojas como propuestas y las muestra al administrador con el mapa del recorrido, junto con los pedidos que no pudo ubicar en ninguna hoja. |
+| 8 | El administrador revisa la propuesta: puede mover una parada de una hoja a otra, cambiar el orden de las paradas o pedir una nueva propuesta. |
+| 9 | El administrador confirma las hojas, de a una o todas juntas. |
+| 10 | Confirmada, cada hoja queda asignada a su chofer y vehículo; el día del reparto el chofer la ve en su aplicación y la ejecuta. |
 
-**Postcondición:** Cada lote armado está asignado a un único chofer con sus paradas ordenadas, o fue deshecho y sus pedidos volvieron al circuito individual. Ningún pedido queda retenido por la agrupación ni asignado dos veces.
+**Postcondición:** Cada pedido programado del día quedó en una sola hoja confirmada, asignada a un chofer y a un vehículo, con sus paradas ordenadas y su hora estimada; o quedó sin asignar, a la vista del administrador.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si no hay pedidos suficientes para armar un lote, el proceso no hace nada y los pedidos siguen su curso individual. |
-| 5 | Si ningún vehículo disponible tiene capacidad para el peso total del lote candidato, el lote se recorta hasta que entre, o se descarta si con dos paradas ya excede la capacidad. |
-| 7 | Si un pedido del lote es aceptado o cancelado por otra vía mientras la oferta corre, el sistema recalcula el lote antes de ofrecerlo al candidato siguiente. |
-| 8 | Si al aceptar el chofer alguno de los pedidos ya no está disponible, se le asigna el resto del lote y el faltante se descuenta del recorrido. |
-| 11 | Si al deshacer el lote los pedidos ya superaron su franja comprometida, vuelven al circuito individual con la prioridad que corresponde a su demora. |
+| 3 | Si no hay pedidos programados para la fecha, el sistema no arma hojas y la planificación del día se cierra sin hojas. |
+| 4 | Si no hay vehículos o choferes disponibles, o un pedido no entra en ninguna hoja por capacidad, el pedido queda sin asignar con su motivo y el administrador recibe el aviso. |
+| 5 | Si el servicio de distancias por calle no responde, el sistema ordena las paradas con la distancia en línea recta e indica en la hoja qué cálculo usó. |
+| 8 | Si un pedido de la hoja se cancela después de armada, el sistema saca esa parada y recalcula la hoja. |
+| 9 | Si pasa el margen de revisión configurado (60 minutos por omisión) sin que el administrador confirme, el Sistema Automático confirma las hojas propuestas que se pueden confirmar. |
+| 9 | Si entra un pedido para ese día después del cierre, el sistema, según la configuración, sugiere la hoja donde insertarlo para que el administrador decida, o lo deja al despacho individual (CU-013). |
+| 10 | Una planificación cerrada no se reabre ni se vuelve a proponer. |
 
 **Rendimiento**
 
 | Paso | Cota de tiempo |
 |------|----------------|
-| 1 | Proceso periódico, fuera del horario de mayor demanda |
+| 2 a 7 | Propuesta del día en menos de 30 segundos |
 
 | Campo | Detalle |
 |-------|---------|
-| **Frecuencia** | Automático, con la periodicidad configurada por la distribuidora. |
+| **Frecuencia** | Una vez por día, al cierre de la planificación del día siguiente; a pedido del administrador, las veces que quiera hasta confirmar. |
 | **Estabilidad** | Media |
-| **Comentarios** | Módulo inteligente M4, implementado en el sistema y en el panel de administración, donde el administrador sigue los recorridos ofrecidos, asignados, completados y deshechos; la etapa de la aplicación del chofer está en curso. El proceso viene apagado: cada distribuidora lo habilita desde sus parámetros. Su especificación de diseño está en el Documento 3. No reserva ninguna decisión al administrador: el destinatario de la oferta es el chofer, que acepta o rechaza el recorrido. Convive con M1 sin reemplazarlo: el lote que nadie toma se disuelve y sus pedidos vuelven a la asignación individual, de modo que la agrupación optimiza el costo por entrega pero nunca es condición para que un pedido salga. El tamaño máximo del lote, el radio de agrupación, la tolerancia de franja, la vigencia de la oferta y la frecuencia se leen de la configuración de la distribuidora. Decisión de diseño: se agrupan solo los pedidos programados con franja futura; los inmediatos quedan a cargo de M1. |
+| **Comentarios** | Módulo inteligente M4. Sigue el criterio del sistema: el sistema propone, el administrador decide y, si no decide a tiempo, el sistema confirma. Viene habilitado y cada distribuidora configura la hora de cierre, la propuesta y la confirmación automáticas, el margen de revisión, el máximo de paradas por hoja, los minutos de atención por parada, el factor de tránsito, la media franja que se le comunica al cliente y los días de reparto. La hora estimada de cada parada alimenta el seguimiento del cliente y el asistente del chat («¿cuánto falta?»). Los pedidos inmediatos siguen a cargo del despacho individual (M1). La modalidad anterior, en la que el sistema ofrecía un lote de pedidos cercanos a un chofer para que lo aceptara («Recorridos»), sigue disponible como alternativa configurable. |
 
 ---
 
@@ -20895,8 +20896,8 @@ sequenceDiagram
 
 #### DSS — CU-107: Agrupar Pedidos por Recorrido
 
-**Actor:** Chofer (ACT-02), Sistema Automático (ACT-04)
-**Operaciones del sistema:** `agruparPedidosPorRecorrido()`, `aceptarRecorrido(recorridoId)`
+**Actor:** Administrador (ACT-03), Sistema Automático (ACT-04)
+**Operaciones del sistema:** `abrirPlanificacion(fecha)`, `proponerHojasDeRuta(fecha)`, `moverParada(hojaId, pedidoId, hojaDestinoId)`, `confirmarHojasDeRuta(fecha)`
 
 ![DSS — CU-107 Agrupar Pedidos por Recorrido](../diagramas/png/DSS_CU-107_Agrupar-Pedidos-Por-Recorrido.png)
 
@@ -20908,29 +20909,32 @@ sequenceDiagram
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant SIS as :Sistema
-    actor CHO as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
 
-    Note over SAU: Se ejecuta con la<br/>periodicidad configurada
-    SAU->>SIS: agruparPedidosPorRecorrido()
-    activate SIS
+    ADM->>SIS: abrirPlanificacion(fecha)
+    SIS-->>ADM: planificación abierta, pedidos programados reservados
 
-    loop Por cada lote armado
-        loop Por cada chofer candidato no contactado
-            SIS-)CHO: notificarOfertaDeRecorrido(recorrido)
-            opt El chofer acepta dentro de la vigencia
-                CHO->>SIS: aceptarRecorrido(recorridoId)
-                SIS-->>CHO: pedidos asignados en el orden establecido
-            end
-        end
-
-        alt Ningún chofer tomó el lote
-            SIS-->>SAU: lote deshecho, pedidos al circuito individual
-        else El lote quedó asignado
-            SIS-->>SAU: recorrido asignado
-        end
+    alt Llega la hora de cierre
+        SAU->>SIS: proponerHojasDeRuta(fecha)
+    else El administrador la pide antes
+        ADM->>SIS: proponerHojasDeRuta(fecha)
     end
-    SIS-->>SAU: lotes procesados
+    activate SIS
+    SIS-->>ADM: hojas propuestas (paradas ordenadas, hora estimada, carga) y pedidos sin asignar
     deactivate SIS
+
+    opt El administrador ajusta la propuesta
+        ADM->>SIS: moverParada(hojaId, pedidoId, hojaDestinoId)
+        SIS-->>ADM: hojas recalculadas
+    end
+
+    alt El administrador confirma
+        ADM->>SIS: confirmarHojasDeRuta(fecha)
+        SIS-->>ADM: hojas confirmadas y asignadas a cada chofer
+    else Pasa el margen de revisión
+        SAU->>SIS: confirmarHojasDeRuta(fecha)
+        SIS-->>SAU: hojas confirmadas automáticamente
+    end
 ```
 
 </details>
@@ -42466,107 +42470,175 @@ sequenceDiagram
 
 #### DSD — CU-107: Agrupar Pedidos por Recorrido
 
-###### Operación: agruparPedidosPorRecorrido()
+###### Operación: abrirPlanificacion(fecha)
 
-![DSD — CU-107 Agrupar Pedidos por Recorrido · agruparPedidosPorRecorrido](../diagramas/png/DSD_CU-107_agruparPedidosPorRecorrido.png)
-
-<details><summary>Ver código del diagrama</summary>
-
-```mermaid
-sequenceDiagram
-    title DSD — CU-107 Agrupar Pedidos por Recorrido · agruparPedidosPorRecorrido
-    autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant RBS as :RouteBatchService
-    participant CHO as chofer:Chofer
-    participant RBN as :RouteBatchNotifier
-
-    SIS->>+RBS: agruparPedidosPorRecorrido()
-    RBS->>RBS: candidatos(distribuidoraId, ahora)
-    RBS->>RBS: distancias(pedidoIds)
-    loop Por cada pedido semilla que queda sin agrupar
-        RBS->>RBS: choferesCerca(distribuidoraId, latitud, longitud, ocupados)
-        loop Por cada chofer cercano hasta lograr un recorrido
-            RBS->>+CHO: getCapacidadDeCarga()
-            CHO-->>-RBS: capacidad
-            opt Hay al menos dos pedidos compatibles que caben en el vehículo
-                create participant LOT as recorrido:LoteRecorrido
-                RBS->>LOT: «create»(pedidos)
-                create participant PRA as :ParadaLote
-                LOT->>PRA: «create»(pedido, orden)
-                RBS->>+LOT: ofrecerA(chofer, venceEn)
-                create participant OFL as :OfertaLote
-                LOT->>OFL: «create»(chofer, venceEn)
-                deactivate LOT
-                RBS-)RBN: ofertaAlChofer(chofer, aviso)
-            end
-        end
-    end
-    Note over RBS,LOT: Respuesta del chofer: ver DSD de aceptarRecorrido (CU-107). Si nadie acepta, el recorrido se deshace y los pedidos vuelven a ofrecerse uno por uno: ver DSD de ofrecerAlSiguienteChofer (CU-013)
-    RBS-->>-SIS: resumen
-```
-
-</details>
-
-**Clases participantes:** `RouteBatchService` (controlador del proceso temporal), `RouteBatchNotifier` (fabricación pura: el aviso de la oferta al chofer) y los objetos de dominio `Chofer`, `LoteRecorrido`, `ParadaLote` y `OfertaLote`. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
-
-**GRASP.** *Controlador*: `RouteBatchService` recibe la operación del proceso temporal. *Creador*: el controlador crea el `LoteRecorrido`, que es la raíz del agregado y se inicializa con los pedidos agrupados; el `LoteRecorrido` crea sus `ParadaLote` y sus `OfertaLote`, porque los contiene (composición). *Experto*: el `Chofer` conoce la capacidad de carga de su vehículo; el lote respeta el compromiso horario de cada pedido. El lote nunca se impone: ante el silencio o el rechazo generalizado, el lote se deshace y los pedidos siguen su camino individual.
-
-**Referencias.** La aceptación del recorrido por el chofer es la operación `aceptarRecorrido` (CU-107) y la vuelta de los pedidos al circuito individual es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
-
-**No se dibuja:** la lectura de los pedidos programados y de las distancias entre ellos, el orden de las paradas, el recorte del lote según la capacidad, el cerrojo por pedido que comparte con el despacho individual, la transacción de alta y el recálculo si un pedido se cancela mientras corre la oferta.
-
-| Operación de diseño | Implementación |
-|---|---|
-| `RouteBatchService.agruparPedidosPorRecorrido(...)` | `RouteBatchService.evaluar`: lo dispara `RouteBatchCron.armar` para cada distribuidora con pedidos programados, con un cerrojo de Redis por distribuidora; con `enabled` en 0 el proceso no corre y, si otra instancia tiene el cerrojo, no hace nada |
-| `Chofer.getCapacidadDeCarga(...)` | `RouteBatchService.capacidadDelChofer`: lee `Car.carCapacity` del vehículo que el chofer tiene en uso; sin vehículo o sin capacidad cargada no limita el peso |
-| `LoteRecorrido.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta el `RouteBatch` en estado OFFERED con `RouteBatch.totalWeightKg`, después de bloquear los pedidos con `FOR UPDATE` y comprobar que siguen pendientes y sin chofer |
-| `ParadaLote.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta una `RouteBatchStop` por pedido con `RouteBatchStop.sequence`, `RouteBatchStop.etaAt` y `RouteBatchStop.legDistanceKm`, en el orden que calcula `ordenarParadas()` |
-| `LoteRecorrido.ofrecerA(...)` | `RouteBatchService.crearOferta`: ofrece el recorrido al chofer que eligió `RouteBatchService.choferesCerca` entre los habilitados más cercanos al punto de partida que no están ocupados con otro lote |
-| `OfertaLote.«create»` | `RouteBatchService.crearOferta`: inserta la `RouteBatchOffer` pendiente, con `RouteBatchOffer.expiresAt` igual al momento actual más `offerTtlSeconds` |
-
-###### Operación: aceptarRecorrido(recorridoId)
-
-![DSD — CU-107 Agrupar Pedidos por Recorrido · aceptarRecorrido](../diagramas/png/DSD_CU-107_aceptarRecorrido.png)
+![DSD — CU-107 Agrupar Pedidos por Recorrido · abrirPlanificacion](../diagramas/png/DSD_CU-107_abrirPlanificacion.png)
 
 <details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-107 Agrupar Pedidos por Recorrido · aceptarRecorrido
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · abrirPlanificacion
     autonumber
-    actor CHF as Chofer (ACT-02)
-    participant RBS as :RouteBatchService
-    participant ORD as :OrderService
-    participant LOT as recorrido:LoteRecorrido
-    participant OFL as oferta:OfertaLote
-    participant RBN as :RouteBatchNotifier
+    actor ADM as Administrador (ACT-03)
+    participant RPS as :RoutePlanService
 
-    CHF->>+RBS: aceptarRecorrido(recorridoId)
-    RBS->>RBS: ofertaViva(recorridoId, choferId)
-    loop Por cada parada del recorrido, en su orden
-        RBS->>ORD: assignDelivery(pedidoId, choferId, distribuidoraId, opciones)
-    end
-    RBS->>+LOT: asignarChofer(chofer)
-    LOT->>OFL: aceptar()
-    deactivate LOT
-    RBS-)RBN: loteAsignado(usuarioId, recorridoId, pedidoIds)
-    RBS-->>-CHF: resultado
+    ADM->>+RPS: abrirPlanificacion(fecha)
+    RPS->>RPS: abrir(distribuidoraId, fecha)
+    RPS-->>-ADM: planificación del día
 ```
 
 </details>
 
-**Clases participantes:** `RouteBatchService` (controlador del módulo de recorridos), `OrderService` (existente: asigna el pedido al chofer), `RouteBatchNotifier` (fabricación pura: el aviso al chofer) y los objetos de dominio `LoteRecorrido` y `OfertaLote`.
+**Clases participantes:** `RoutePlanService` (controlador de la operación: es quien guarda el plan del día).
 
-**GRASP.** *Controlador*: `RouteBatchService` recibe la operación y la serializa con un cerrojo por lote. *Experto*: el `LoteRecorrido` es quien queda asignado al chofer y la `OfertaLote` es quien pasa a «aceptada». Los pedidos se asignan en el orden del recorrido, cada uno por el mismo camino que la asignación individual y con sus mismos controles de flota y de carga; si alguno ya no está disponible, se asigna el resto del lote y el faltante sale del recorrido.
+**GRASP.** *Controlador*: `RoutePlanService` recibe la operación. *Experto en información*: es quien conoce los planes de cada distribuidora y su hora de cierre. La operación es idempotente: si el día ya estaba abierto, lo devuelve como está.
 
-**No se dibuja:** la verificación de que el chofer esté habilitado, la medición de la capacidad del vehículo en uso, el rechazo si la oferta venció o ya fue cerrada, la devolución al despacho individual de los pedidos que no se asignaron y la transacción.
+**No se dibuja:** la lectura de la hora de cierre configurada para la distribuidora (`ProcessConfigService`), la inserción del plan con `ON CONFLICT DO NOTHING` y el armado de la vista del día que el panel muestra.
 
 | Operación de diseño | Implementación |
 |---|---|
-| `RouteBatchService.aceptarRecorrido(...)` | `RouteBatchService.aceptar`: toma el cerrojo del lote y rechaza con 409 la oferta vencida, el vehículo que no carga el peso del lote o el lote cuyos pedidos ya no están disponibles |
-| `LoteRecorrido.asignarChofer(...)` | `RouteBatchService.cerrarAceptacion`: pasa `RouteBatch.status` a ASSIGNED, fija `RouteBatch.deliveryId` y deja inactivas las paradas de los pedidos que no se asignaron |
-| `OfertaLote.aceptar(...)` | `RouteBatchService.cerrarAceptacion`: pasa `RouteBatchOffer.status` a ACCEPTED y fija `RouteBatchOffer.respondedAt` |
+| `RoutePlanService.abrirPlanificacion(...)` | `RoutePlanService.abrir`: lo llama `POST /v2/route-plans/:date/open`; si la fecha ya pasó responde 409 (`ROUTE_PLAN_DATE_PAST`) y, desde que se abre, los pedidos programados de ese día quedan retenidos para la hoja |
+
+###### Operación: proponerHojasDeRuta(fecha)
+
+![DSD — CU-107 Agrupar Pedidos por Recorrido · proponerHojasDeRuta](../diagramas/png/DSD_CU-107_proponerHojasDeRuta.png)
+
+<details><summary>Ver código del diagrama</summary>
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · proponerHojasDeRuta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant RPP as :RoutePlanProposalService
+    participant RPS as :RoutePlanService
+    participant DAT as :RouteSheetDataService
+    participant CAL as :RouteSheetCalculator
+    participant MAT as :RouteMatrixPort
+    participant WRI as :RouteSheetWriter
+
+    ADM->>+RPP: proponerHojasDeRuta(fecha)
+    RPP->>RPS: abrir(distribuidoraId, fecha)
+    RPP->>DAT: pedidosSinHoja(distribuidoraId, fecha, hojasARehacer)
+    RPP->>DAT: choferes(distribuidoraId, fecha)
+    RPP->>DAT: vehiculos(distribuidoraId, fecha)
+    RPP->>DAT: deposito(distribuidoraId)
+    RPP->>+CAL: escenario(pedidos, deposito, salida, parametros)
+    CAL->>MAT: matrix(puntos)
+    CAL-->>-RPP: escenario
+    Note over RPP: planFleet reparte por franja y capacidad<br/>las hojas propuestas y los pedidos sin asignar
+    loop Por cada hoja propuesta
+        create participant HOJ as hoja:LoteRecorrido
+        RPP->>HOJ: «create»(chofer, vehiculo, fecha)
+        RPP->>WRI: escribirOrden(manager, hojaId, pedidoIds)
+        RPP->>WRI: recalcular(manager, hoja, parametros)
+    end
+    Note over ADM,RPP: A la hora de cierre la dispara el Sistema Automático (ACT-04) con la misma operación
+    RPP-->>-ADM: resultado
+```
+
+</details>
+
+**Clases participantes:** `RoutePlanProposalService` (controlador de la operación), `RoutePlanService` (la planificación del día), `RouteSheetDataService` (lee pedidos, choferes, vehículos y depósito), `RouteSheetCalculator` (arma el escenario), `RouteMatrixPort` (distancias y tiempos por calle; lo implementa `OsrmTableMatrixAdapter`), `RouteSheetWriter` (escribe el orden de las paradas y recalcula cada hoja) y el objeto de dominio `LoteRecorrido` (la hoja de ruta).
+
+**GRASP.** *Controlador*: `RoutePlanProposalService` recibe la operación, la pida el administrador o el proceso del cierre (el Sistema Automático, ACT-04, con la misma operación). *Experto en información*: `RouteSheetCalculator` reparte y ordena porque conoce pedidos, vehículos y matriz. *Indirección / Variaciones protegidas*: `RouteMatrixPort` aísla el servicio de distancias; si no responde, se usa la distancia en línea recta. *Fabricación pura*: `RouteSheetWriter` persiste las hojas y sus paradas.
+
+**Referencias.** Mover una parada (`moverParada`) y confirmar (`confirmarHojasDeRuta`, a mano o por `RoutePlanAutoConfirmService` al vencer el margen de revisión) son operaciones del mismo caso de uso; la ejecución de la hoja por el chofer es parte del ciclo de entrega.
+
+**No se dibuja:** el cerrojo de Redis por distribuidora y fecha, la lectura de los parámetros de la distribuidora, la retención de los pedidos del día y el detalle del reparto (`planFleet`) y del orden de paradas (`ordenarParadas`).
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RoutePlanProposalService.proponerHojasDeRuta(...)` | `RoutePlanProposalService.proponer`: lo llama `POST /v2/route-plans/:date/propose` (administrador) o el proceso del cierre (`autoPropose`), con un cerrojo de Redis por distribuidora y fecha |
+| `RoutePlanService.abrir(...)` | Abre (o devuelve) el plan del día; desde ahí los pedidos programados de esa fecha quedan retenidos para la hoja |
+| `RouteSheetDataService.pedidosSinHoja(...)` | Pedidos programados de la fecha que no están en otra hoja; `choferes`, `vehiculos` y `deposito` dan los recursos disponibles |
+| `RouteSheetCalculator.escenario(...)` | Pide la matriz a `RouteMatrixPort.matrix`, reparte con `planFleet` (zona, franja, capacidad y máximo de paradas), ordena con `ordenarParadas` y calcula hora estimada, kilómetros, carga y envases |
+| `LoteRecorrido.«create»` | `RoutePlanProposalService.proponer`: inserta cada `RouteBatch` de tipo planificada, en borrador y propuesta por el sistema; antes disuelve los borradores del sistema sin ediciones que reemplaza |
+| `RouteSheetWriter.escribirOrden(...)` / `recalcular(...)` | Guarda las paradas en orden en `route_batch_stop` (hoja `route_batch` de tipo planificada) y recalcula totales y horarios |
+
+###### Operación: moverParada(hojaId, pedidoId, hojaDestinoId)
+
+![DSD — CU-107 Agrupar Pedidos por Recorrido · moverParada](../diagramas/png/DSD_CU-107_moverParada.png)
+
+<details><summary>Ver código del diagrama</summary>
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · moverParada
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant RSE as :RouteSheetEditingService
+    participant WRI as :RouteSheetWriter
+    participant ORI as origen:LoteRecorrido
+    participant DES as destino:LoteRecorrido
+
+    ADM->>+RSE: moverParada(hojaId, pedidoId, hojaDestinoId)
+    RSE->>WRI: parametros(distribuidoraId)
+    RSE->>WRI: paradasActivas(manager, hojaId)
+    RSE->>ORI: quitarParada(pedidoId)
+    RSE->>WRI: escribirOrden(manager, hojaId, pedidoIds)
+    RSE->>DES: agregarParada(pedidoId)
+    RSE->>WRI: escribirOrden(manager, hojaDestinoId, pedidoIds)
+    RSE->>WRI: recalcular(manager, hojaOrigen, parametros)
+    RSE->>WRI: recalcular(manager, hojaDestino, parametros)
+    RSE-->>-ADM: hojas recalculadas
+```
+
+</details>
+
+**Clases participantes:** `RouteSheetEditingService` (controlador de la operación), `RouteSheetWriter` (escribe el orden de las paradas y recalcula cada hoja) y el objeto de dominio `LoteRecorrido`, en sus dos papeles: la hoja de origen y la de destino.
+
+**GRASP.** *Controlador*: `RouteSheetEditingService` recibe la operación y la serializa con un cerrojo sobre las dos hojas. *Experto*: cada `LoteRecorrido` es quien pierde o gana la parada. *Fabricación pura*: `RouteSheetWriter` persiste el nuevo orden y recalcula horarios y cargas de las dos hojas.
+
+**No se dibuja:** el bloqueo de las dos hojas con su versión (409 si alguien las cambió), la verificación de que las dos estén en borrador y sean del mismo día, el cálculo de la posición en que entra la parada en la hoja de destino y el rechazo de una parada fuera de franja si el administrador no lo acepta.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RouteSheetEditingService.moverParada(...)` | `RouteSheetEditingService.mover`: lo llama `POST /v2/route-sheets/:id/stops/:orderId/move` |
+| `LoteRecorrido.quitarParada(...)` | `RouteSheetWriter.apagarParada`: deja inactiva la parada de la hoja de origen, con el motivo MOVED |
+| `LoteRecorrido.agregarParada(...)` | `RouteSheetWriter.activarParada`: activa la parada en la hoja de destino, conservando si su posición estaba fijada |
+| `RouteSheetWriter.escribirOrden(...)` / `recalcular(...)` | Guarda las paradas en orden en `route_batch_stop` y recalcula totales y horarios de la hoja |
+
+###### Operación: confirmarHojasDeRuta(fecha)
+
+![DSD — CU-107 Agrupar Pedidos por Recorrido · confirmarHojasDeRuta](../diagramas/png/DSD_CU-107_confirmarHojasDeRuta.png)
+
+<details><summary>Ver código del diagrama</summary>
+
+```mermaid
+sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · confirmarHojasDeRuta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant RPS as :RoutePlanService
+    participant RSL as :RouteSheetLifecycleService
+    participant HOJ as hoja:LoteRecorrido
+
+    ADM->>+RPS: confirmarHojasDeRuta(fecha)
+    RPS->>RPS: buscar(distribuidoraId, fecha)
+    loop Por cada hoja en borrador del día
+        RPS->>+RSL: confirmar(distribuidoraId, hojaId, version, usuarioId)
+        RSL->>HOJ: confirmar()
+        RSL-->>-RPS: hoja confirmada
+    end
+    RPS-->>-ADM: hojas confirmadas y las que no pudo confirmar
+```
+
+</details>
+
+**Clases participantes:** `RoutePlanService` (controlador de la operación), `RouteSheetLifecycleService` (confirma cada hoja) y el objeto de dominio `LoteRecorrido` (la hoja de ruta).
+
+**GRASP.** *Controlador*: `RoutePlanService` recibe la operación y recorre los borradores del día. *Experto*: el `LoteRecorrido` es quien pasa a «confirmada». Si una hoja no cumple las reglas, no se confirma y el resultado informa cuál y por qué; las demás se confirman igual.
+
+**Referencias.** Pasado el margen de revisión, el Sistema Automático (ACT-04) confirma las hojas con `RoutePlanAutoConfirmService.confirmarLasVencidas`, que usa el mismo camino de confirmación de cada hoja.
+
+**No se dibuja:** la validación de las reglas de cada hoja (franjas, capacidad), la numeración de la hoja, el congelado de la hora estimada de cada parada y el aviso del horario a los pedidos sin franja fija.
+
+| Operación de diseño | Implementación |
+|---|---|
+| `RoutePlanService.confirmarHojasDeRuta(...)` | `RoutePlanService.confirmarTodas`: lo llama `POST /v2/route-plans/:date/confirm-all` y devuelve las hojas confirmadas y las que no pudo, con el motivo |
+| `LoteRecorrido.confirmar(...)` | `RouteSheetLifecycleService.confirmar`: pasa `RouteBatch.status` a CONFIRMED, fija `RouteBatch.confirmedAt` y congela la hora estimada de cada parada |
 
 ---
 
@@ -49611,7 +49683,7 @@ sequenceDiagram
 |-------------|--------|-----------|---------------------------|------------|-----------------|--------------------|
 | CU-105 | M2 | OBJ-02, OBJ-05 | IRQ-02, IRQ-03 | SS-07 | ACT-04 | ACT-03 confirma el gasto del taller |
 | CU-106 | M3 | OBJ-01 | IRQ-01, IRQ-02, IRQ-04 | SS-02 | ACT-04 | ACT-01 decide la compra |
-| CU-107 | M4 | OBJ-02, OBJ-08 | IRQ-02, IRQ-03, IRQ-05 | SS-03 | ACT-04 | ACT-02 acepta o rechaza el recorrido |
+| CU-107 | M4 | OBJ-02, OBJ-08 | IRQ-02, IRQ-03, IRQ-05 | SS-03 | ACT-04 | ACT-03 revisa, ajusta y confirma las hojas |
 | CU-108 | M5 | OBJ-04, OBJ-05 | IRQ-01, IRQ-02 | SS-13 | ACT-04 | ACT-03 decide el cobro o la baja |
 
 > Los cuatro casos de uso de este documento describen módulos **especificados y
@@ -49693,7 +49765,7 @@ Los casos de uso expandidos de esencia (secciones 4 y 5 de este documento) descr
 | CU-014 Vencer la Oferta y Ofrecer al Siguiente Chofer | `vencerOfertasExpiradas()` | — (proceso programado del sistema: no tiene ruta) | — | Precondición: Existe al menos una oferta vencida, o un pedido en estado PENDING sin oferta vigente.<br>Paso 2: A continuación decide, de una sola pasada, a qué distribuidoras con ofertas vencidas o pedidos pendientes les toca el ciclo según su intervalo `dispatchRetrySeconds` (CU-173; 15 segundos por omisión); las demás esperan a su propio ciclo.<br>Paso 5: Si el pedido sigue en estado PENDING y sin chofer asignado, ejecuta CU-013 para ofrecerlo al siguiente candidato.<br>Rendimiento (diseño): Cada ejecución del barrido, acotada a 50 pedidos, se completa en menos de 3 segundos.<br>Frecuencia: Automático: ciclo fijo de 15 segundos; cada distribuidora lo recibe con su propio intervalo (15 segundos por omisión, hasta 300).<br>Comentarios: Cuando se agotan los candidatos, el sistema avisa a los administradores de la distribuidora con el evento en vivo `order:no-drivers` (una sola vez por agotamiento, CU-013) y el pedido permanece pendiente.<br>Comentarios: Si la ejecución falla, el bloqueo que impide la ejecución simultánea se libera igual, de modo que la ejecución siguiente pueda tomarlo. |
 | CU-015 Aceptar un Pedido | `aceptarPedido(pedidoId identificador)` | `PATCH /orders/:id/status (aceptado)` | Paso 3: Si el pedido ya tiene asignado a otro chofer, el sistema rechaza la aceptación con "Este pedido no está asignado a tu usuario" (403), antes de mirar la transición: una aceptación tardía no desplaza al chofer que ya lo tomó.<br>Paso 4: Si el repartidor está deshabilitado, el sistema responde 400 "El repartidor está deshabilitado"; si no está validado, 400 "El repartidor no está validado".<br>Paso 4: Si el chofer no tiene un vehículo en uso, o su licencia o ese vehículo tienen documentación vencida, el sistema rechaza la aceptación con 400 "No se puede asignar: …" (por ejemplo, "no tiene un vehículo asignado").<br>Paso 4: Si el chofer no puede recibir pedidos por su carga de camión, el sistema rechaza la aceptación con 400 y el motivo, por ejemplo "Tu distribuidora exige una carga de camión abierta para trabajar: pedile al administrador que abra tu carga del día" o "La carga N° n ya volvió: no se reciben pedidos hasta cerrar su rendición".<br>Paso 2: Si el solicitante es el Administrador General y no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)".<br>Comentarios: La aceptación y la asignación manual toman la carga abierta del chofer en modo compartido dentro de su transacción, antes de leer su estado, y la vuelta del camión (CU-221) la toma en modo exclusivo: si ocurren a la vez, una espera a la otra y, o la aceptación termina antes —y la vuelta ve el pedido en curso y responde 409— o la vuelta termina antes —y la aceptación ve la carga devuelta y responde 400—. | Excepción, paso 3: Si el mismo chofer que ya tiene el pedido vuelve a aceptarlo, la operación no falla y no cambia nada: reaplicar el mismo estado es idempotente y conserva el código de entrega y el momento de aceptación que ya tenía.<br>Precondición: El pedido está en estado PENDING.<br>Paso 2: La app pide el paso del pedido a estado ACCEPTED.<br>Paso 2: La identidad del chofer sale de su token: cualquier identificador de repartidor que venga en el cuerpo de la solicitud se ignora.<br>Paso 4: Comprueba además —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que la carga de camión del chofer que queda con el pedido lo habilite a recibir pedidos; es el que acepta o, si acepta un administrador, el que indica con `deliveryId`.<br>Paso 5: Le asigna el pedido, lo pasa a estado ACCEPTED, registra el momento de la aceptación, guarda en el pedido una copia de la patente, la marca y el modelo del vehículo en uso del chofer y genera el código de entrega, de seis dígitos, que se usará en la confirmación por código QR (CU-079).<br>Paso 7: Retira, en la misma transacción, las ofertas abiertas a los demás choferes: pasan a «reemplazadas» (`superseded`), excluido el chofer que aceptó, y no cuentan como intento.<br>Paso 7: Después de confirmada la transacción, avisa a esos choferes que la oferta ya no está vigente.<br>Postcondición: El pedido tiene estado ACCEPTED con el chofer asignado y con su código de entrega generado.<br>Rendimiento (diseño): La aceptación se completa en menos de 1 segundo.<br>Comentarios: Incluye **CU-246 Verificar la Habilitación Laboral del Chofer**: la aceptación repite la comprobación de la situación laboral del chofer.<br>Comentarios: **Carga del camión (C-09, implementado):** antes de aceptarle el pedido, el sistema verifica —**incluye CU-248 Verificar la Carga de Camión Abierta del Chofer**— que el chofer pueda recibir pedidos según su carga: con una carga abierta solo en ruta y con el camión de la carga; sin carga, siempre que la distribuidora no exija tenerla (CU-249; viene apagado).<br>Comentarios: El momento de la aceptación, de la salida y de la entrega (`acceptedAt`, `onTheWayAt` y `deliveredAt`) sale del reloj de la base, el mismo que usa la carga del camión, de modo que los dos módulos comparan momentos del mismo reloj; los cobros y las ofertas de despacho siguen con el reloj del proceso. |
 | CU-016 Rechazar un Pedido Ofrecido | `rechazarOferta(pedidoId identificador)` | `POST /orders/:id/reject` | — | Precondición: El pedido está en estado PENDING.<br>Paso 3: La solicitud **no lleva contenido**: el chofer se identifica por su token y el pedido, por el identificador de la solicitud.<br>Paso 4: El registro de ofertas es lo que impide volver a ofrecerle el mismo pedido: no existe una lista de rechazos guardada en el pedido.<br>Paso 5: El pedido continúa en estado PENDING.<br>Postcondición: El pedido permanece en estado PENDING.<br>Rendimiento (diseño): El rechazo, incluida la búsqueda inmediata del siguiente candidato, se completa en menos de 1 segundo.<br>Comentarios: El sistema no acepta ni guarda un motivo de rechazo: la solicitud no admite cuerpo, con lo que se pierde la información sobre por qué los choferes rechazan pedidos.<br>Comentarios: La exclusión del chofer ya contactado se sostiene únicamente en la tabla de ofertas de despacho; el pedido no guarda ninguna lista de choferes rechazados. |
-| CU-107 Agrupar Pedidos por Recorrido | `aceptarRecorrido(recorridoId identificador)`<br>`agruparPedidosPorRecorrido()` | — (proceso programado del sistema: no tiene ruta) | — | Rendimiento (diseño): El armado de los lotes de una distribuidora se resuelve dentro del intervalo de ejecución configurado, sin retrasar el despacho individual de los pedidos que no entran en ningún lote.<br>Comentarios: Las tablas `route_batch`, `route_batch_stop` y `route_batch_offer` existen desde el 25/09/2026; faltan los servicios, las rutas y el proceso.<br>Comentarios: **Decisión de diseño:** se agrupan solo los pedidos programados con franja futura y los inmediatos quedan a cargo de M1, porque un pedido pendiente se ofrece individualmente apenas se crea, antes de que el agrupador lo vea (carrera con M1); la única modificación al núcleo del despacho es la guarda de no ofrecer por separado un pedido que está dentro de un lote con oferta activa. |
+| CU-107 Agrupar Pedidos por Recorrido | `abrirPlanificacion(fecha fecha)`<br>`confirmarHojasDeRuta(fecha fecha)`<br>`moverParada(hojaId identificador, pedidoId identificador, hojaDestinoId identificador)`<br>`proponerHojasDeRuta(fecha fecha)` | `POST /v2/route-plans/:date/open`<br>`POST /v2/route-plans/:date/propose`<br>`POST /v2/route-sheets/:id/stops/:orderId/move`<br>`POST /v2/route-plans/:date/confirm-all` | — | Rendimiento (diseño): La propuesta de las hojas de una distribuidora se resuelve dentro del intervalo de ejecución configurado, sin retrasar el despacho individual de los pedidos que no entran en ninguna hoja.<br>Comentarios: **Decisión de diseño:** se agrupan solo los pedidos programados con franja futura y los inmediatos quedan a cargo de M1, porque un pedido pendiente se ofrece individualmente apenas se crea, antes de que el sistema arme las hojas; desde que se abre la planificación del día, el despacho individual no ofrece los pedidos de esa fecha.<br>Comentarios: La propuesta y la confirmación automáticas las dispara el Sistema Automático (`RoutePlanAutoConfirmService.confirmarLasVencidas`) al vencer el margen de revisión. |
 | CU-149 Despachar un Pedido Express a un Chofer en Moto | `despacharPedidoExpress(pedidoId identificador)` | — (proceso programado del sistema: no tiene ruta propia; lo dispara la creación del pedido y el tic del despacho) | Paso 1: Si el pedido express es de MercadoPago y todavía no se pagó, el sistema no lo despacha hasta que el pago se aprueba.<br>Paso 5: Si un chofer que no tiene una moto en uso intenta aceptarlo (`PATCH /orders/:id/status` con `accepted`) o se lo asignan (`PATCH /orders/:id/assign/:deliveryId`), el sistema responde 400. | Paso 2: `DispatchOrchestratorService` aplica una política propia a los pedidos `express`: busca a los choferes en moto dentro de `maxRadiusKm`, habilitados (licencia y documentos del vehículo) y con su carga de camión en regla.<br>Paso 4: Ofrece de a uno, del más cercano al más lejano, con la ventana `offerTtlSeconds` (por omisión 20 s). El tic del despacho es de 15 s: una ventana de 20 s se vence, en la práctica, entre 20 y 35 s. No amplía el radio y no re-ofrece a quien ya vio el pedido. La oferta (`NEW_ORDER`) trae `deliveryMode: "express"`.<br>Paso 5: Un pedido express no figura en el pool de `GET /orders/available`; el despacho sí lo ve, para no dejarlo sin oferta.<br>Paso 7: `ExpressDegradeService`, con el pedido bloqueado y una sola vez, deja `delivery_mode = standard`, el `total_amount` sin el recargo y `express_degraded_at`, y sigue por el despacho normal. Avisa al cliente por el socket `order:express-degraded` (`{ orderId, surchargeRemoved, total, refundRequested, message }`) y por push, y al panel por el mismo evento.<br>Paso 8: Si el cliente había pagado en línea, pide la devolución del recargo (CU-168); en efectivo o por transferencia basta con descontarlo.<br>Rendimiento (diseño): Una consulta espacial por ciclo de oferta, con la ventana más corta que el despacho normal.<br>Comentarios: Los parámetros (`enabled`, `surchargeAmount`, `maxRadiusKm`, `offerTtlSeconds`, horario y tiempos) son los del proceso `express_dispatch` (CU-172). |
 | CU-171 Configurar los Parámetros de Despacho de la Distribuidora | `configurarParametrosDeDespacho(radiosKm lista, ventanaDeAceptacion entero)` | `GET /module-config/dispatch`<br>`PUT /module-config/dispatch` | Paso 1: Si no hay sesión, el sistema responde 401.<br>Paso 1: Si el solicitante es un chofer o un cliente, responde 403 "Acceso denegado. Requiere rol: admin, super_admin".<br>Paso 1, 3: Si el Administrador General no indica la distribuidora con `X-Distributor`, el sistema responde 400 "Falta la distribuidora: enviá el header X-Distributor (slug o id)", tanto en el `GET` como en el `PUT`.<br>Paso 3: Si el cuerpo trae un campo desconocido, el sistema responde 400 "property <campo> should not exist".<br>Paso 4: Si `radiusStepsKm` no es una lista de 1 a 8 pasos o algún paso sale de 1 a 100 km, el sistema responde 400 con el detalle del campo: "radiusStepsKm must contain at least 1 elements", "radiusStepsKm must contain no more than 8 elements", "each value in radiusStepsKm must not be less than 1" o "each value in radiusStepsKm must not be greater than 100".<br>Paso 4: Si los pasos repiten o desordenan valores, el sistema responde 400 "radiusStepsKm tiene que ser una lista estrictamente creciente: cada valor mayor que el anterior, sin repetidos".<br>Paso 4: Si `offerTtlSeconds` no es un entero de 10 a 300, el sistema responde 400 "offerTtlSeconds must be an integer number", "offerTtlSeconds must not be less than 10" u "offerTtlSeconds must not be greater than 300". | Descripción: El administrador consulta y modifica los parámetros del módulo inteligente M1 de su distribuidora: los pasos de radio (`radiusStepsKm`), en kilómetros, con que se amplía la búsqueda de choferes (CU-013, CU-014), y la ventana de aceptación de cada oferta (`offerTtlSeconds`), en segundos.<br>Descripción: Los valores se guardan por distribuidora.<br>Precondición: El solicitante está autenticado con rol Administrador (ACT-03) o Administrador General (ACT-05).<br>Precondición: El administrador opera siempre sobre su distribuidora, sin importar el encabezado `X-Distributor`; el Administrador General indica la distribuidora con el encabezado `X-Distributor` (slug o id).<br>Paso 1: El administrador abre «Parámetros del despacho» en Configuración; el panel consulta los valores vigentes con `GET /module-config/dispatch`, que devuelve `radiusStepsKm`, `offerTtlSeconds`, `isDefault` (`true` si rigen los valores por omisión), `updatedAt` y `updatedByUserId` (quién modificó por última vez; `null` si nunca).<br>Paso 1: Si la distribuidora no configuró nada, devuelve los valores por omisión: `[5, 10, 15, 20]` km y 30 segundos.<br>Paso 3: El panel envía `PUT /module-config/dispatch` con `radiusStepsKm` y `offerTtlSeconds`; los dos campos son opcionales.<br>Paso 4: El sistema valida lo que viene: de 1 a 8 pasos, cada uno de 1 a 100 km y estrictamente mayor que el anterior; una ventana entera de 10 a 300 segundos.<br>Paso 5: El sistema guarda en `module_config` (proceso `dispatch`) solo los campos que vinieron, con el usuario que los modificó y la fecha, y descarta la copia en memoria de esa distribuidora.<br>Paso 6: El sistema devuelve la configuración con el mismo formato que el `GET`: lo que no se envió toma su valor por omisión.<br>Postcondición: Las ofertas que se creen a partir de ese momento los usan; las ofertas ya enviadas conservan su `expiresAt` original.<br>Postcondición: Un `PUT` sin campos restablece los valores por omisión.<br>Rendimiento (diseño): Una lectura y una escritura. Responde en menos de 1 segundo.<br>Comentarios: Cumple el criterio de parametrización del proyecto para el módulo M1 (Documento 3, §6.1): los pasos de radio y la ventana de aceptación, que eran constantes del programa (`RADIUS_STEPS_KM` y `OFFER_TTL_SECONDS`), son ahora configurables por distribuidora.<br>Comentarios: Se guardan en `module_config`, en la fila de la distribuidora para el proceso `dispatch`, un valor que la migración `ParametrosDespachoYTareas` agrega a `configurable_process_enum`.<br>Comentarios: Los valores por omisión son los de las constantes anteriores, de modo que una distribuidora que no configura nada se comporta igual; el `PUT` es parcial y lo que no se envía se lee con su valor por omisión.<br>Comentarios: El `GET` lee de la base lo guardado y calcula `isDefault`; si el JSON guardado trae un valor fuera de rango, se lee con el valor por omisión en vez de romper el despacho.<br>Comentarios: El orquestador (`DispatchOrchestratorService`) lee la configuración en cada oferta a través de `DispatchSettingsService`, con una copia en memoria de 1 minuto por distribuidora para no consultar la base en cada ciclo: guardar descarta la copia de la instancia que atiende el `PUT`, y en las demás el cambio rige, como máximo, un minuto después.<br>Comentarios: La asignación manual (CU-012) usa la misma ventana para el `expiresAt` del aviso al chofer. |
 

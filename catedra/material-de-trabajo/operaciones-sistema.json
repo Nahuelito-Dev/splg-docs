@@ -523,12 +523,57 @@
       "cambiaEstado": true
     },
     {
-      "nombre": "aceptarRecorrido",
-      "firma": "aceptarRecorrido(recorridoId)",
-      "firmaConTipos": "aceptarRecorrido(recorridoId identificador)",
+      "nombre": "abrirPlanificacion",
+      "firma": "abrirPlanificacion(fecha)",
+      "firmaConTipos": "abrirPlanificacion(fecha fecha)",
       "parametros": [
         {
-          "nombre": "recorridoId",
+          "nombre": "fecha",
+          "tipo": "fecha"
+        }
+      ],
+      "casosDeUso": [
+        "CU-107"
+      ],
+      "actores": [
+        "ACT-03"
+      ],
+      "cambiaEstado": false
+    },
+    {
+      "nombre": "proponerHojasDeRuta",
+      "firma": "proponerHojasDeRuta(fecha)",
+      "firmaConTipos": "proponerHojasDeRuta(fecha fecha)",
+      "parametros": [
+        {
+          "nombre": "fecha",
+          "tipo": "fecha"
+        }
+      ],
+      "casosDeUso": [
+        "CU-107"
+      ],
+      "actores": [
+        "ACT-03",
+        "ACT-04"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "moverParada",
+      "firma": "moverParada(hojaId, pedidoId, hojaDestinoId)",
+      "firmaConTipos": "moverParada(hojaId identificador, pedidoId identificador, hojaDestinoId identificador)",
+      "parametros": [
+        {
+          "nombre": "hojaId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "pedidoId",
+          "tipo": "identificador"
+        },
+        {
+          "nombre": "hojaDestinoId",
           "tipo": "identificador"
         }
       ],
@@ -536,7 +581,25 @@
         "CU-107"
       ],
       "actores": [
-        "ACT-02",
+        "ACT-03"
+      ],
+      "cambiaEstado": true
+    },
+    {
+      "nombre": "confirmarHojasDeRuta",
+      "firma": "confirmarHojasDeRuta(fecha)",
+      "firmaConTipos": "confirmarHojasDeRuta(fecha fecha)",
+      "parametros": [
+        {
+          "nombre": "fecha",
+          "tipo": "fecha"
+        }
+      ],
+      "casosDeUso": [
+        "CU-107"
+      ],
+      "actores": [
+        "ACT-03",
         "ACT-04"
       ],
       "cambiaEstado": true
@@ -814,20 +877,6 @@
       ],
       "actores": [
         "ACT-01"
-      ],
-      "cambiaEstado": true
-    },
-    {
-      "nombre": "agruparPedidosPorRecorrido",
-      "firma": "agruparPedidosPorRecorrido()",
-      "firmaConTipos": "agruparPedidosPorRecorrido()",
-      "parametros": [],
-      "casosDeUso": [
-        "CU-107"
-      ],
-      "actores": [
-        "ACT-02",
-        "ACT-04"
       ],
       "cambiaEstado": true
     },

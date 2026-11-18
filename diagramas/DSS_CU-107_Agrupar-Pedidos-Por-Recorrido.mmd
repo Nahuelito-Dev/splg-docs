@@ -3,26 +3,29 @@ sequenceDiagram
     autonumber
     actor SAU as Sistema Automático (ACT-04)
     participant SIS as :Sistema
-    actor CHO as Chofer (ACT-02)
+    actor ADM as Administrador (ACT-03)
 
-    Note over SAU: Se ejecuta con la<br/>periodicidad configurada
-    SAU->>SIS: agruparPedidosPorRecorrido()
-    activate SIS
+    ADM->>SIS: abrirPlanificacion(fecha)
+    SIS-->>ADM: planificación abierta, pedidos programados reservados
 
-    loop Por cada lote armado
-        loop Por cada chofer candidato no contactado
-            SIS-)CHO: notificarOfertaDeRecorrido(recorrido)
-            opt El chofer acepta dentro de la vigencia
-                CHO->>SIS: aceptarRecorrido(recorridoId)
-                SIS-->>CHO: pedidos asignados en el orden establecido
-            end
-        end
-
-        alt Ningún chofer tomó el lote
-            SIS-->>SAU: lote deshecho, pedidos al circuito individual
-        else El lote quedó asignado
-            SIS-->>SAU: recorrido asignado
-        end
+    alt Llega la hora de cierre
+        SAU->>SIS: proponerHojasDeRuta(fecha)
+    else El administrador la pide antes
+        ADM->>SIS: proponerHojasDeRuta(fecha)
     end
-    SIS-->>SAU: lotes procesados
+    activate SIS
+    SIS-->>ADM: hojas propuestas (paradas ordenadas, hora estimada, carga) y pedidos sin asignar
     deactivate SIS
+
+    opt El administrador ajusta la propuesta
+        ADM->>SIS: moverParada(hojaId, pedidoId, hojaDestinoId)
+        SIS-->>ADM: hojas recalculadas
+    end
+
+    alt El administrador confirma
+        ADM->>SIS: confirmarHojasDeRuta(fecha)
+        SIS-->>ADM: hojas confirmadas y asignadas a cada chofer
+    else Pasa el margen de revisión
+        SAU->>SIS: confirmarHojasDeRuta(fecha)
+        SIS-->>SAU: hojas confirmadas automáticamente
+    end

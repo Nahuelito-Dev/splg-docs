@@ -78,6 +78,7 @@ CancelOrderUseCase --> "1" RealtimeDispatchPort
 CancelOrderUseCase --> "1" RefundsService
 CashCollectionUseCase --> "1" Map_String_Pedido
 ConfirmDeliveryUseCase --> "1" Map_String_Pedido
+ConfirmDeliveryUseCase --> "1" RealtimeDispatchPort
 CreateOrderUseCase --> "1" NotificationPort
 OrderService --> "1" Map_String_Pedido
 UpdateOrderStatusUseCase --> "1" FleetDispatchLockService
@@ -88,7 +89,6 @@ CashCollectionUseCase ..> Pedido
 ConfirmDeliveryUseCase ..> Envase
 ConfirmDeliveryUseCase ..> NotificationPort
 ConfirmDeliveryUseCase ..> Pedido
-ConfirmDeliveryUseCase ..> RealtimeDispatchPort
 ConfirmDeliveryUseCase ..> StockDeliveryService
 CreateOrderUseCase ..> Carrito
 CreateOrderUseCase ..> Cliente

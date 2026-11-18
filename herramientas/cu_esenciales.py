@@ -68,7 +68,7 @@ OPERACIONES_DSD = {
     "CU-022": ("activarDisponibilidad",), "CU-292": ("confirmarCobroEnEfectivo",), "CU-023": ("registrarReclamo",),
     "CU-013": ("ofrecerAlSiguienteChofer",), "CU-014": ("vencerOfertasExpiradas",), "CU-017": ("actualizarUbicacion",),
     "CU-105": ("planificarMantenimientoDeFlota",), "CU-106": ("anticiparRecompras",),
-    "CU-107": ("agruparPedidosPorRecorrido",), "CU-108": ("gestionarEnvasesNoDevueltos",),
+    "CU-107": ("proponerHojasDeRuta",), "CU-108": ("gestionarEnvasesNoDevueltos",),
 }
 CON_DSD = tuple(OPERACIONES_DSD)
 ARCHIVOS_DSD = tuple(f"DSD_{cu}_{op}.mmd" for cu, ops in OPERACIONES_DSD.items() for op in ops)

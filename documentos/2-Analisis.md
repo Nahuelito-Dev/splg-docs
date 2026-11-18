@@ -520,7 +520,7 @@ Llevan diagrama los casos con interacción del actor, donde el sistema reacciona
 | CU-017 Modificar la Ubicación GPS del Chofer | Estático | el sistema sólo registra la posición informada por el dispositivo; lo resuelve una sola clase. |
 | CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | Automático | proceso diario del sistema; las respuestas del chofer y del administrador son decisiones sobre propuestas ya emitidas. |
 | CU-106 Anticipar la Recompra por Consumo Estimado | Automático | proceso diario del sistema, sin eventos del actor. |
-| CU-107 Agrupar Pedidos por Recorrido | Automático | proceso periódico del sistema, sin eventos del actor. |
+| CU-107 Agrupar Pedidos por Recorrido | Administrador y automático | el sistema propone las hojas al cierre; el administrador las revisa, ajusta y confirma (o se confirman solas). |
 | CU-108 Recuperar Envases No Devueltos | Automático | proceso periódico del sistema, sin eventos del actor. |
 | CU-152 Consultar el Registro de Auditoría | Estático | es una consulta que no modifica nada: la resuelve una sola clase. |
 

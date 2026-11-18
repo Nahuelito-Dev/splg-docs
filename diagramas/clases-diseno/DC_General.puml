@@ -47,8 +47,6 @@ class FranjaHoraria
 class Pago
 class OfertaDespacho
 class LoteRecorrido
-class ParadaLote
-class OfertaLote
 class Chofer
 class Vehiculo
 class TareaMantenimiento
@@ -84,10 +82,6 @@ Chofer "0..1" -- "0..*" Pedido
 Pedido "1" -- "0..*" Pago
 Pedido "1" *--> "0..*" OfertaDespacho
 OfertaDespacho "0..*" -- "1" Chofer
-LoteRecorrido "1" *--> "1..*" ParadaLote
-ParadaLote "0..*" -- "1" Pedido
-LoteRecorrido "1" *--> "0..*" OfertaLote
-OfertaLote "0..*" -- "1" Chofer
 Chofer "0..1" -- "0..*" LoteRecorrido
 Chofer "0..*" -- "0..*" Vehiculo : usa
 Chofer "0..1" -- "0..*" Vehiculo : tiene registrado

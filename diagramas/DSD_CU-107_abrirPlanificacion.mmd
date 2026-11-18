@@ -1,0 +1,9 @@
+sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · abrirPlanificacion
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant RPS as :RoutePlanService
+
+    ADM->>+RPS: abrirPlanificacion(fecha)
+    RPS->>RPS: abrir(distribuidoraId, fecha)
+    RPS-->>-ADM: planificación del día

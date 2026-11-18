@@ -1,0 +1,16 @@
+sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · confirmarHojasDeRuta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant RPS as :RoutePlanService
+    participant RSL as :RouteSheetLifecycleService
+    participant HOJ as hoja:LoteRecorrido
+
+    ADM->>+RPS: confirmarHojasDeRuta(fecha)
+    RPS->>RPS: buscar(distribuidoraId, fecha)
+    loop Por cada hoja en borrador del día
+        RPS->>+RSL: confirmar(distribuidoraId, hojaId, version, usuarioId)
+        RSL->>HOJ: confirmar()
+        RSL-->>-RPS: hoja confirmada
+    end
+    RPS-->>-ADM: hojas confirmadas y las que no pudo confirmar

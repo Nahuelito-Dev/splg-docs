@@ -297,7 +297,7 @@ casos identificados, de los cuales 328 están vigentes y 10 retirados.
 | CU-104 Verificar la Salud del Sistema (vida y disponibilidad) | SS-18 | Plataforma de despliegue | Importante | Implementado |  |
 | CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | SS-07 | Chofer, Administrador, Sistema Automático | Importante | Implementado | Sí |
 | CU-106 Anticipar la Recompra por Consumo Estimado | SS-02 | Cliente, Sistema Automático | Importante | Implementado | Sí |
-| CU-107 Agrupar Pedidos por Recorrido | SS-03 | Chofer, Sistema Automático | Importante | Implementado | Sí |
+| CU-107 Agrupar Pedidos por Recorrido | SS-03 | Administrador, Sistema Automático | Importante | Implementado | Sí |
 | CU-108 Recuperar Envases No Devueltos | SS-13 | Cliente, Administrador, Sistema Automático | Importante | Implementado | Sí |
 | CU-109 Consultar el Detalle del Chofer | SS-07 | Administrador | Importante | Implementado |  |
 | CU-110 Buscar un Chofer por Usuario | SS-07 | Administrador | Importante | Implementado |  |
@@ -1938,49 +1938,50 @@ construido. Un caso que este documento no expande se nombra por su código, que 
 |-------|---------|
 | **Objetivos asociados** | OBJ-02, OBJ-08 |
 | **Requisitos asociados** | IRQ-02, IRQ-03, IRQ-05 |
-| **Descripción** | El sistema arma lotes de pedidos que se pueden entregar en un mismo viaje sin incumplir el compromiso horario de ninguno ni exceder la capacidad del vehículo, y los negocia con los choferes de a uno por vez, igual que M1 negocia un pedido suelto. La diferencia es el objeto de la oferta: no un pedido, sino un recorrido con sus paradas ya ordenadas. El lote nunca se impone: ante el silencio o el rechazo generalizado, los pedidos siguen su camino individual y ninguno queda retenido. |
-| **Precondición** | Hay al menos dos pedidos programados con franja futura, de la misma distribuidora, dentro del radio de agrupación configurado y con franjas compatibles, y al menos un chofer activo con capacidad de carga disponible. |
+| **Descripción** | El sistema arma la hoja de ruta de cada chofer para el día siguiente: reparte los pedidos programados de ese día entre los vehículos disponibles agrupándolos por zona, franja horaria y capacidad de carga, ordena las paradas por la distancia real por calle y calcula la hora estimada de cada parada, la carga sugerida del vehículo y los envases a retirar. El sistema propone; el administrador revisa, ajusta y confirma. Si nadie revisa la propuesta dentro del margen configurado, el sistema la confirma solo. |
+| **Precondición** | La hoja de ruta está habilitada para la distribuidora. Hay pedidos programados para el día que se planifica y al menos un chofer con un vehículo disponible. |
 | **Estado** | Implementado |
 
 **Secuencia Normal**
 
 | Paso | Acción |
 |------|--------|
-| 1 | El proceso automático se ejecuta con la frecuencia que fija la configuración de la distribuidora. |
-| 2 | El sistema recupera los pedidos programados con franja futura y sin chofer, de la distribuidora y su zona de cobertura. |
-| 3 | El sistema agrupa los candidatos por cercanía, sin superar el radio de agrupación configurado entre paradas del mismo lote. |
-| 4 | Dentro de cada grupo, el sistema descarta las combinaciones cuyas franjas difieren más que la tolerancia configurada: el lote no puede hacer que un cliente reciba fuera de la franja que eligió. |
-| 5 | El sistema arma los lotes candidatos respetando el tamaño máximo configurado y la capacidad de carga del vehículo en uso del chofer al que se le va a ofrecer (CU-161). |
-| 6 | El sistema ordena las paradas de cada lote de modo que el recorrido cumpla las franjas comprometidas y minimice la distancia entre paradas. |
-| 7 | El sistema ofrece el lote completo al primer chofer candidato —el más cercano al punto de partida que no fue contactado por este lote—, con el detalle de las paradas, el peso total y la vigencia de la oferta. |
-| 8 | Si el chofer acepta dentro de la vigencia, el sistema le asigna los pedidos del lote en el orden establecido y cada uno sigue su ciclo de entrega normal. |
-| 9 | Si el chofer rechaza, la oferta se cierra y el lote pasa de inmediato al siguiente candidato, sin esperar el vencimiento. |
-| 10 | Si la vigencia pasa sin respuesta, la oferta se da por vencida y el lote pasa al siguiente candidato. |
-| 11 | Agotados los candidatos, el sistema deshace el lote y devuelve los pedidos al circuito individual, donde cada uno se ofrece por separado (CU-013). |
+| 1 | Se abre la planificación del día siguiente (la abre el sistema o el administrador al elegir la fecha). Desde ese momento, los pedidos programados de ese día quedan reservados para la hoja de ruta: el despacho individual (CU-013) no los ofrece. |
+| 2 | A la hora de cierre configurada (18 h por omisión), el Sistema Automático pide la propuesta; el administrador también puede pedirla antes con «Proponer». |
+| 3 | El sistema toma los pedidos programados de la fecha y los choferes con vehículo disponibles. |
+| 4 | El sistema reparte los pedidos entre los vehículos agrupándolos por zona y franja horaria, sin superar la capacidad de carga de cada vehículo ni el máximo de paradas por hoja configurado. |
+| 5 | El sistema ordena las paradas de cada hoja con la distancia y el tiempo reales por calle, respetando la franja comprometida de cada pedido. |
+| 6 | Para cada hoja, el sistema calcula la hora de salida, la hora estimada de llegada a cada parada (con los minutos de atención por parada y el factor de tránsito configurados), los kilómetros, la duración y la hora de regreso, la carga sugerida del vehículo y los envases a retirar. |
+| 7 | El sistema deja las hojas como propuestas y las muestra al administrador con el mapa del recorrido, junto con los pedidos que no pudo ubicar en ninguna hoja. |
+| 8 | El administrador revisa la propuesta: puede mover una parada de una hoja a otra, cambiar el orden de las paradas o pedir una nueva propuesta. |
+| 9 | El administrador confirma las hojas, de a una o todas juntas. |
+| 10 | Confirmada, cada hoja queda asignada a su chofer y vehículo; el día del reparto el chofer la ve en su aplicación y la ejecuta. |
 
-**Postcondición:** Cada lote armado está asignado a un único chofer con sus paradas ordenadas, o fue deshecho y sus pedidos volvieron al circuito individual. Ningún pedido queda retenido por la agrupación ni asignado dos veces.
+**Postcondición:** Cada pedido programado del día quedó en una sola hoja confirmada, asignada a un chofer y a un vehículo, con sus paradas ordenadas y su hora estimada; o quedó sin asignar, a la vista del administrador.
 
 **Excepciones**
 
 | Paso | Acción |
 |------|--------|
-| 2 | Si no hay pedidos suficientes para armar un lote, el proceso no hace nada y los pedidos siguen su curso individual. |
-| 5 | Si ningún vehículo disponible tiene capacidad para el peso total del lote candidato, el lote se recorta hasta que entre, o se descarta si con dos paradas ya excede la capacidad. |
-| 7 | Si un pedido del lote es aceptado o cancelado por otra vía mientras la oferta corre, el sistema recalcula el lote antes de ofrecerlo al candidato siguiente. |
-| 8 | Si al aceptar el chofer alguno de los pedidos ya no está disponible, se le asigna el resto del lote y el faltante se descuenta del recorrido. |
-| 11 | Si al deshacer el lote los pedidos ya superaron su franja comprometida, vuelven al circuito individual con la prioridad que corresponde a su demora. |
+| 3 | Si no hay pedidos programados para la fecha, el sistema no arma hojas y la planificación del día se cierra sin hojas. |
+| 4 | Si no hay vehículos o choferes disponibles, o un pedido no entra en ninguna hoja por capacidad, el pedido queda sin asignar con su motivo y el administrador recibe el aviso. |
+| 5 | Si el servicio de distancias por calle no responde, el sistema ordena las paradas con la distancia en línea recta e indica en la hoja qué cálculo usó. |
+| 8 | Si un pedido de la hoja se cancela después de armada, el sistema saca esa parada y recalcula la hoja. |
+| 9 | Si pasa el margen de revisión configurado (60 minutos por omisión) sin que el administrador confirme, el Sistema Automático confirma las hojas propuestas que se pueden confirmar. |
+| 9 | Si entra un pedido para ese día después del cierre, el sistema, según la configuración, sugiere la hoja donde insertarlo para que el administrador decida, o lo deja al despacho individual (CU-013). |
+| 10 | Una planificación cerrada no se reabre ni se vuelve a proponer. |
 
 **Rendimiento**
 
 | Paso | Cota de tiempo |
 |------|----------------|
-| 1 | Proceso periódico, fuera del horario de mayor demanda |
+| 2 a 7 | Propuesta del día en menos de 30 segundos |
 
 | Campo | Detalle |
 |-------|---------|
-| **Frecuencia** | Automático, con la periodicidad configurada por la distribuidora. |
+| **Frecuencia** | Una vez por día, al cierre de la planificación del día siguiente; a pedido del administrador, las veces que quiera hasta confirmar. |
 | **Estabilidad** | Media |
-| **Comentarios** | Módulo inteligente M4, implementado en el sistema y en el panel de administración, donde el administrador sigue los recorridos ofrecidos, asignados, completados y deshechos; la etapa de la aplicación del chofer está en curso. El proceso viene apagado: cada distribuidora lo habilita desde sus parámetros. Su especificación de diseño está en el Documento 3. No reserva ninguna decisión al administrador: el destinatario de la oferta es el chofer, que acepta o rechaza el recorrido. Convive con M1 sin reemplazarlo: el lote que nadie toma se disuelve y sus pedidos vuelven a la asignación individual, de modo que la agrupación optimiza el costo por entrega pero nunca es condición para que un pedido salga. El tamaño máximo del lote, el radio de agrupación, la tolerancia de franja, la vigencia de la oferta y la frecuencia se leen de la configuración de la distribuidora. Decisión de diseño: se agrupan solo los pedidos programados con franja futura; los inmediatos quedan a cargo de M1. |
+| **Comentarios** | Módulo inteligente M4. Sigue el criterio del sistema: el sistema propone, el administrador decide y, si no decide a tiempo, el sistema confirma. Viene habilitado y cada distribuidora configura la hora de cierre, la propuesta y la confirmación automáticas, el margen de revisión, el máximo de paradas por hoja, los minutos de atención por parada, el factor de tránsito, la media franja que se le comunica al cliente y los días de reparto. La hora estimada de cada parada alimenta el seguimiento del cliente y el asistente del chat («¿cuánto falta?»). Los pedidos inmediatos siguen a cargo del despacho individual (M1). La modalidad anterior, en la que el sistema ofrecía un lote de pedidos cercanos a un chofer para que lo aceptara («Recorridos»), sigue disponible como alternativa configurable. |
 
 ---
 

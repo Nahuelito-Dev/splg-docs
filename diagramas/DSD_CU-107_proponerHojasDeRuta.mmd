@@ -1,0 +1,29 @@
+sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · proponerHojasDeRuta
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant RPP as :RoutePlanProposalService
+    participant RPS as :RoutePlanService
+    participant DAT as :RouteSheetDataService
+    participant CAL as :RouteSheetCalculator
+    participant MAT as :RouteMatrixPort
+    participant WRI as :RouteSheetWriter
+
+    ADM->>+RPP: proponerHojasDeRuta(fecha)
+    RPP->>RPS: abrir(distribuidoraId, fecha)
+    RPP->>DAT: pedidosSinHoja(distribuidoraId, fecha, hojasARehacer)
+    RPP->>DAT: choferes(distribuidoraId, fecha)
+    RPP->>DAT: vehiculos(distribuidoraId, fecha)
+    RPP->>DAT: deposito(distribuidoraId)
+    RPP->>+CAL: escenario(pedidos, deposito, salida, parametros)
+    CAL->>MAT: matrix(puntos)
+    CAL-->>-RPP: escenario
+    Note over RPP: planFleet reparte por franja y capacidad<br/>las hojas propuestas y los pedidos sin asignar
+    loop Por cada hoja propuesta
+        create participant HOJ as hoja:LoteRecorrido
+        RPP->>HOJ: «create»(chofer, vehiculo, fecha)
+        RPP->>WRI: escribirOrden(manager, hojaId, pedidoIds)
+        RPP->>WRI: recalcular(manager, hoja, parametros)
+    end
+    Note over ADM,RPP: A la hora de cierre la dispara el Sistema Automático (ACT-04) con la misma operación
+    RPP-->>-ADM: resultado

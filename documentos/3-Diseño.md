@@ -38,7 +38,7 @@
 - Figura 26 — DSD CU-025: Resolver un Reclamo — Operación: resolverReclamo(reclamoId, resolucion, estadoFinal)
 - Figura 27 — DSD CU-105: Planificar el Mantenimiento y las Habilitaciones de la Flota — Operación: planificarMantenimientoDeFlota()
 - Figura 28 — DSD CU-106: Anticipar la Recompra por Consumo Estimado — Operación: anticiparRecompras()
-- Figura 29 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()
+- Figura 29 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: proponerHojasDeRuta()
 - Figura 30 — DSD CU-108: Recuperar Envases No Devueltos — Operación: gestionarEnvasesNoDevueltos()
 - Figura 31 — Diagrama de Clase: dominio, vista general
 - Figura 32 — Diagrama de Clase: dominio, cuentas, clientes y catálogo
@@ -735,7 +735,7 @@ El diagrama de interacción (en Larman, diagrama de secuencia de diseño) muestr
 | `resolverReclamo(reclamoId, resolucion, estadoFinal)` | CU-025 Resolver un Reclamo | Administrador (ACT-03) |
 | `planificarMantenimientoDeFlota()` | CU-105 Planificar el Mantenimiento y las Habilitaciones de la Flota | Chofer (ACT-02), Administrador (ACT-03), Sistema Automático (ACT-04) |
 | `anticiparRecompras()` | CU-106 Anticipar la Recompra por Consumo Estimado | Cliente (ACT-01), Sistema Automático (ACT-04) |
-| `agruparPedidosPorRecorrido()` | CU-107 Agrupar Pedidos por Recorrido | Chofer (ACT-02), Sistema Automático (ACT-04) |
+| `proponerHojasDeRuta(fecha)` | CU-107 Agrupar Pedidos por Recorrido | Administrador (ACT-03), Sistema Automático (ACT-04) |
 | `gestionarEnvasesNoDevueltos()` | CU-108 Recuperar Envases No Devueltos | Cliente (ACT-01), Administrador (ACT-03), Sistema Automático (ACT-04) |
 
 #### Operación: iniciarSesion(correo, contrasena)
@@ -1954,69 +1954,67 @@ sequenceDiagram
 - La invitación se emite con el pedido ya armado: el cliente la acepta o la deja vencer, y no vuelve a elegir los productos.
 - El proceso viene apagado: cada distribuidora lo habilita desde los parámetros de la recompra (`/module-config/repurchase`, `enabled`).
 
-#### Operación: agruparPedidosPorRecorrido()
+#### Operación: proponerHojasDeRuta(fecha)
 
 **Caso de uso:** CU-107 Agrupar Pedidos por Recorrido  
-**Actor iniciador:** Chofer (ACT-02), Sistema Automático (ACT-04)
+**Actor iniciador:** Administrador (ACT-03), Sistema Automático (ACT-04)
 
-![DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()](../diagramas/png/DSD_CU-107_agruparPedidosPorRecorrido.png)
+![DSD CU-107: Agrupar Pedidos por Recorrido — Operación: proponerHojasDeRuta()](../diagramas/png/DSD_CU-107_proponerHojasDeRuta.png)
 
-**Figura 29 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: agruparPedidosPorRecorrido()**
+**Figura 29 — DSD CU-107: Agrupar Pedidos por Recorrido — Operación: proponerHojasDeRuta()**
 
 <details><summary>Ver código del diagrama</summary>
 
 ```mermaid
 sequenceDiagram
-    title DSD — CU-107 Agrupar Pedidos por Recorrido · agruparPedidosPorRecorrido
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · proponerHojasDeRuta
     autonumber
-    actor SIS as Sistema Automático (ACT-04)
-    participant RBS as :RouteBatchService
-    participant CHO as chofer:Chofer
-    participant RBN as :RouteBatchNotifier
+    actor ADM as Administrador (ACT-03)
+    participant RPP as :RoutePlanProposalService
+    participant RPS as :RoutePlanService
+    participant DAT as :RouteSheetDataService
+    participant CAL as :RouteSheetCalculator
+    participant MAT as :RouteMatrixPort
+    participant WRI as :RouteSheetWriter
 
-    SIS->>+RBS: agruparPedidosPorRecorrido()
-    RBS->>RBS: candidatos(distribuidoraId, ahora)
-    RBS->>RBS: distancias(pedidoIds)
-    loop Por cada pedido semilla que queda sin agrupar
-        RBS->>RBS: choferesCerca(distribuidoraId, latitud, longitud, ocupados)
-        loop Por cada chofer cercano hasta lograr un recorrido
-            RBS->>+CHO: getCapacidadDeCarga()
-            CHO-->>-RBS: capacidad
-            opt Hay al menos dos pedidos compatibles que caben en el vehículo
-                create participant LOT as recorrido:LoteRecorrido
-                RBS->>LOT: «create»(pedidos)
-                create participant PRA as :ParadaLote
-                LOT->>PRA: «create»(pedido, orden)
-                RBS->>+LOT: ofrecerA(chofer, venceEn)
-                create participant OFL as :OfertaLote
-                LOT->>OFL: «create»(chofer, venceEn)
-                deactivate LOT
-                RBS-)RBN: ofertaAlChofer(chofer, aviso)
-            end
-        end
+    ADM->>+RPP: proponerHojasDeRuta(fecha)
+    RPP->>RPS: abrir(distribuidoraId, fecha)
+    RPP->>DAT: pedidosSinHoja(distribuidoraId, fecha, hojasARehacer)
+    RPP->>DAT: choferes(distribuidoraId, fecha)
+    RPP->>DAT: vehiculos(distribuidoraId, fecha)
+    RPP->>DAT: deposito(distribuidoraId)
+    RPP->>+CAL: escenario(pedidos, deposito, salida, parametros)
+    CAL->>MAT: matrix(puntos)
+    CAL-->>-RPP: escenario
+    Note over RPP: planFleet reparte por franja y capacidad<br/>las hojas propuestas y los pedidos sin asignar
+    loop Por cada hoja propuesta
+        create participant HOJ as hoja:LoteRecorrido
+        RPP->>HOJ: «create»(chofer, vehiculo, fecha)
+        RPP->>WRI: escribirOrden(manager, hojaId, pedidoIds)
+        RPP->>WRI: recalcular(manager, hoja, parametros)
     end
-    Note over RBS,LOT: Respuesta del chofer: ver DSD de aceptarRecorrido (CU-107). Si nadie acepta, el recorrido se deshace y los pedidos vuelven a ofrecerse uno por uno: ver DSD de ofrecerAlSiguienteChofer (CU-013)
-    RBS-->>-SIS: resumen
+    Note over ADM,RPP: A la hora de cierre la dispara el Sistema Automático (ACT-04) con la misma operación
+    RPP-->>-ADM: resultado
 ```
 
 </details>
 
-**Clases participantes:** `RouteBatchService` (controlador del proceso temporal), `RouteBatchNotifier` (fabricación pura: el aviso de la oferta al chofer) y los objetos de dominio `Chofer`, `LoteRecorrido`, `ParadaLote` y `OfertaLote`. La agrupación se construye por encima del despacho vigente y no lo modifica, salvo por la guarda de no ofrecer un pedido que ya está dentro de un lote con oferta activa.
+**Clases participantes:** `RoutePlanProposalService` (controlador de la operación), `RoutePlanService` (la planificación del día), `RouteSheetDataService` (lee pedidos, choferes, vehículos y depósito), `RouteSheetCalculator` (arma el escenario), `RouteMatrixPort` (distancias y tiempos por calle; lo implementa `OsrmTableMatrixAdapter`), `RouteSheetWriter` (escribe el orden de las paradas y recalcula cada hoja) y el objeto de dominio `LoteRecorrido` (la hoja de ruta).
 
-**GRASP.** *Controlador*: `RouteBatchService` recibe la operación del proceso temporal. *Creador*: el controlador crea el `LoteRecorrido`, que es la raíz del agregado y se inicializa con los pedidos agrupados; el `LoteRecorrido` crea sus `ParadaLote` y sus `OfertaLote`, porque los contiene (composición). *Experto*: el `Chofer` conoce la capacidad de carga de su vehículo; el lote respeta el compromiso horario de cada pedido. El lote nunca se impone: ante el silencio o el rechazo generalizado, el lote se deshace y los pedidos siguen su camino individual.
+**GRASP.** *Controlador*: `RoutePlanProposalService` recibe la operación, la pida el administrador o el proceso del cierre (el Sistema Automático, ACT-04, con la misma operación). *Experto en información*: `RouteSheetCalculator` reparte y ordena porque conoce pedidos, vehículos y matriz. *Indirección / Variaciones protegidas*: `RouteMatrixPort` aísla el servicio de distancias; si no responde, se usa la distancia en línea recta. *Fabricación pura*: `RouteSheetWriter` persiste las hojas y sus paradas.
 
-**Referencias.** La aceptación del recorrido por el chofer es la operación `aceptarRecorrido` (CU-107) y la vuelta de los pedidos al circuito individual es `ofrecerAlSiguienteChofer` (CU-013): cada una tiene su propio diagrama.
+**Referencias.** Mover una parada (`moverParada`) y confirmar (`confirmarHojasDeRuta`, a mano o por `RoutePlanAutoConfirmService` al vencer el margen de revisión) son operaciones del mismo caso de uso; la ejecución de la hoja por el chofer es parte del ciclo de entrega.
 
-**No se dibuja:** la lectura de los pedidos programados y de las distancias entre ellos, el orden de las paradas, el recorte del lote según la capacidad, el cerrojo por pedido que comparte con el despacho individual, la transacción de alta y el recálculo si un pedido se cancela mientras corre la oferta.
+**No se dibuja:** el cerrojo de Redis por distribuidora y fecha, la lectura de los parámetros de la distribuidora, la retención de los pedidos del día y el detalle del reparto (`planFleet`) y del orden de paradas (`ordenarParadas`).
 
 | Operación de diseño | Implementación |
 |---|---|
-| `RouteBatchService.agruparPedidosPorRecorrido(...)` | `RouteBatchService.evaluar`: lo dispara `RouteBatchCron.armar` para cada distribuidora con pedidos programados, con un cerrojo de Redis por distribuidora; con `enabled` en 0 el proceso no corre y, si otra instancia tiene el cerrojo, no hace nada |
-| `Chofer.getCapacidadDeCarga(...)` | `RouteBatchService.capacidadDelChofer`: lee `Car.carCapacity` del vehículo que el chofer tiene en uso; sin vehículo o sin capacidad cargada no limita el peso |
-| `LoteRecorrido.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta el `RouteBatch` en estado OFFERED con `RouteBatch.totalWeightKg`, después de bloquear los pedidos con `FOR UPDATE` y comprobar que siguen pendientes y sin chofer |
-| `ParadaLote.«create»` | `RouteBatchService.crearLoteOfrecido`: inserta una `RouteBatchStop` por pedido con `RouteBatchStop.sequence`, `RouteBatchStop.etaAt` y `RouteBatchStop.legDistanceKm`, en el orden que calcula `ordenarParadas()` |
-| `LoteRecorrido.ofrecerA(...)` | `RouteBatchService.crearOferta`: ofrece el recorrido al chofer que eligió `RouteBatchService.choferesCerca` entre los habilitados más cercanos al punto de partida que no están ocupados con otro lote |
-| `OfertaLote.«create»` | `RouteBatchService.crearOferta`: inserta la `RouteBatchOffer` pendiente, con `RouteBatchOffer.expiresAt` igual al momento actual más `offerTtlSeconds` |
+| `RoutePlanProposalService.proponerHojasDeRuta(...)` | `RoutePlanProposalService.proponer`: lo llama `POST /v2/route-plans/:date/propose` (administrador) o el proceso del cierre (`autoPropose`), con un cerrojo de Redis por distribuidora y fecha |
+| `RoutePlanService.abrir(...)` | Abre (o devuelve) el plan del día; desde ahí los pedidos programados de esa fecha quedan retenidos para la hoja |
+| `RouteSheetDataService.pedidosSinHoja(...)` | Pedidos programados de la fecha que no están en otra hoja; `choferes`, `vehiculos` y `deposito` dan los recursos disponibles |
+| `RouteSheetCalculator.escenario(...)` | Pide la matriz a `RouteMatrixPort.matrix`, reparte con `planFleet` (zona, franja, capacidad y máximo de paradas), ordena con `ordenarParadas` y calcula hora estimada, kilómetros, carga y envases |
+| `LoteRecorrido.«create»` | `RoutePlanProposalService.proponer`: inserta cada `RouteBatch` de tipo planificada, en borrador y propuesta por el sistema; antes disuelve los borradores del sistema sin ediciones que reemplaza |
+| `RouteSheetWriter.escribirOrden(...)` / `recalcular(...)` | Guarda las paradas en orden en `route_batch_stop` (hoja `route_batch` de tipo planificada) y recalcula totales y horarios |
 
 #### Operación: gestionarEnvasesNoDevueltos()
 

@@ -1,0 +1,19 @@
+sequenceDiagram
+    title DSD — CU-107 Agrupar Pedidos por Recorrido · moverParada
+    autonumber
+    actor ADM as Administrador (ACT-03)
+    participant RSE as :RouteSheetEditingService
+    participant WRI as :RouteSheetWriter
+    participant ORI as origen:LoteRecorrido
+    participant DES as destino:LoteRecorrido
+
+    ADM->>+RSE: moverParada(hojaId, pedidoId, hojaDestinoId)
+    RSE->>WRI: parametros(distribuidoraId)
+    RSE->>WRI: paradasActivas(manager, hojaId)
+    RSE->>ORI: quitarParada(pedidoId)
+    RSE->>WRI: escribirOrden(manager, hojaId, pedidoIds)
+    RSE->>DES: agregarParada(pedidoId)
+    RSE->>WRI: escribirOrden(manager, hojaDestinoId, pedidoIds)
+    RSE->>WRI: recalcular(manager, hojaOrigen, parametros)
+    RSE->>WRI: recalcular(manager, hojaDestino, parametros)
+    RSE-->>-ADM: hojas recalculadas

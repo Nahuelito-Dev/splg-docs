@@ -176,7 +176,7 @@ una en `svg/`, que conviene si hay que ampliarla.
 | CU-104 | Verificar la Salud del Sistema (vida y disponibilidad) | `DSS_CU-104_Verificar-La-Salud-Del-Sistema.png` | `DSD_CU-104_verificarDisponibilidad.png` · `DSD_CU-104_verificarSalud.png` · `DSD_CU-104_verificarVida.png` |
 | CU-105 | Planificar el Mantenimiento y las Habilitaciones de la Flota | `DSS_CU-105_Planificar-El-Mantenimiento-Y-Las-Habilitaciones-De-La-Flota.png` | `DSD_CU-105_aceptarVentanaDeMantenimiento.png` · `DSD_CU-105_confirmarVentanaDeTaller.png` · `DSD_CU-105_planificarMantenimientoDeFlota.png` |
 | CU-106 | Anticipar la Recompra por Consumo Estimado | `DSS_CU-106_Anticipar-La-Recompra-Por-Consumo-Estimado.png` | `DSD_CU-106_aceptarInvitacionDeRecompra.png` · `DSD_CU-106_anticiparRecompras.png` |
-| CU-107 | Agrupar Pedidos por Recorrido | `DSS_CU-107_Agrupar-Pedidos-Por-Recorrido.png` | `DSD_CU-107_aceptarRecorrido.png` · `DSD_CU-107_agruparPedidosPorRecorrido.png` |
+| CU-107 | Agrupar Pedidos por Recorrido | `DSS_CU-107_Agrupar-Pedidos-Por-Recorrido.png` | `DSD_CU-107_abrirPlanificacion.png` · `DSD_CU-107_confirmarHojasDeRuta.png` · `DSD_CU-107_moverParada.png` · `DSD_CU-107_proponerHojasDeRuta.png` |
 | CU-108 | Recuperar Envases No Devueltos | `DSS_CU-108_Recuperar-Envases-No-Devueltos.png` | `DSD_CU-108_aceptarRetiroEnLaEntrega.png` · `DSD_CU-108_gestionarEnvasesNoDevueltos.png` · `DSD_CU-108_resolverCasoDeRecupero.png` |
 | CU-109 | Consultar el Detalle del Chofer | `DSS_CU-109_Consultar-el-Detalle-del-Chofer.png` | `DSD_CU-109_consultarDetalleDelChofer.png` |
 | CU-110 | Buscar un Chofer por Usuario | `DSS_CU-110_Buscar-un-Chofer-por-Usuario.png` | `DSD_CU-110_buscarChoferPorUsuario.png` |

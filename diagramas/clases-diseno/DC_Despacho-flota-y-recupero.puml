@@ -36,15 +36,7 @@ class OfertaDespacho {
 class LoteRecorrido {
   - estado: EstadoDelLote
   - /pesoTotal: Decimal
-  + «create» LoteRecorrido(pedidos: Pedido[*])
-  + ofrecerA(chofer: Chofer, venceEn: Entero)
-}
-class OfertaLote {
-  + «create» OfertaLote(chofer: Chofer, venceEn: Entero)
-}
-class ParadaLote {
-  - orden: Entero
-  + «create» ParadaLote(pedido: Pedido, orden: Entero)
+  + «create» LoteRecorrido(chofer: Chofer,\n      vehiculo: Vehiculo, fecha: Fecha)
 }
 class PropuestaVentanaTaller {
   - desde: FechaHora
@@ -70,7 +62,6 @@ class Chofer {
   + activarDisponibilidad(verdadero: Booleano)
   + actualizarUbicacion(latitud: Decimal, longitud: Decimal)
   + assertElegibleParaAsignacion()
-  + getCapacidadDeCarga(): Entero
   + getPedidoEnCurso(): Pedido
   + getUbicacion(): UbicacionGPS
   + puedeRecibirOferta(distribuidora: Distribuidora): Booleano
@@ -123,10 +114,6 @@ Pedido "0..*" -- "0..1" Vehiculo : se entrega con
 Chofer "0..1" -- "0..*" Pedido : entrega
 Pedido "1" *--> "0..*" OfertaDespacho : genera
 OfertaDespacho "0..*" -- "1" Chofer : se dirige a
-LoteRecorrido "1" *--> "1..*" ParadaLote : se compone de
-ParadaLote "0..*" -- "1" Pedido : atiende
-LoteRecorrido "1" *--> "0..*" OfertaLote : genera
-OfertaLote "0..*" -- "1" Chofer : se dirige a
 Chofer "0..1" -- "0..*" LoteRecorrido : acepta
 Chofer "0..*" -- "0..*" Vehiculo : usa
 Chofer "0..1" -- "0..*" Vehiculo : tiene registrado
